@@ -1,3 +1,7 @@
 # air
 
-Describe your project here.
+An ultra-lightweight static site generator.
+
+## Installation
+
+TODO
