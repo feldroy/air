@@ -9,3 +9,7 @@
 #   generate-hashes: false
 
 -e file:.
+jinja2==3.1.4
+    # via air
+markupsafe==2.1.5
+    # via jinja2
