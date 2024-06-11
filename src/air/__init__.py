@@ -3,8 +3,9 @@ from air.plugins.markdown_plugin import MarkdownPlugin
 
 
 def main() -> int:
-    print("Hello from air!")
-    generator = StaticSiteGenerator("source", "output")
+    print("Building site...")
+    generator = StaticSiteGenerator("templates", "output")
     generator.register_plugin(MarkdownPlugin)
     generator.build()
+    print("Site built from templates/ to output/")
     return 0

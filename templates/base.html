@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>My Air-Powered Static Website</title>
+
+
+    <!-- You MUST include jQuery 3.4+ before Fomantic -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+
+</head>
+
+<body>
+    <section class="section">
+        <div class="ui container">
+            <a href="/">
+                <h1 class="ui header">
+                    My Air-Powered Static Website
+                </h1>
+            </a>
+            <p class="subtitle">
+                Powered by <a href="https://github.com/audreyfeldroy/air">Air</a>
+            </p>
+        </div>
+    </section>
+    <section class="section">
+        <div class="ui main container">
+            {% block content %} {% endblock %}
+        </div>
+    </section>
+</body>
+
+</html>

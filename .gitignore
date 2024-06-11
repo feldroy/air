@@ -58,6 +58,5 @@ docs/_build/
 # PyBuilder
 target/
 
-# Air source and output
-source/
+# Air static site generator - generated output
 output/
