@@ -59,4 +59,4 @@ docs/_build/
 target/
 
 # Air static site generator - generated output
-output/
+public/
