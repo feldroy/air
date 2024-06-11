@@ -1,3 +1,4 @@
+import re
 import shutil
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -31,9 +32,16 @@ class StaticSiteGenerator:
             shutil.rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
 
+        base_pattern = re.compile(r"^base.*\.html$")
+
         for path in self.source_dir.rglob("*.html"):
             relative_path = path.relative_to(self.source_dir)
             output_path = self.output_dir / relative_path
+
+            # Skip rendering templates that start with "base"
+            if base_pattern.match(path.name):
+                continue
+
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
             with open(output_path, "w", encoding="utf-8") as f:
