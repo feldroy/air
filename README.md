@@ -4,4 +4,12 @@ An ultra-lightweight static site generator.
 
 ## Installation
 
-TODO
+```bash
+pip install air
+```
+
+## Usage
+
+```bash
+rye run air
+```
