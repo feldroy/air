@@ -7,9 +7,13 @@ authors = [
 ]
 dependencies = [
     "Jinja2==3.1.4",
+    "markdown==3.6",
 ]
 readme = "README.md"
 requires-python = ">= 3.12"
+
+[project.scripts]
+"air" = "air:main"
 
 [build-system]
 requires = ["hatchling"]
