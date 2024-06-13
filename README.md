@@ -56,3 +56,19 @@ Create a `pages` directory and add some pages:
 mkdir pages
 touch pages/index.md
 ```
+
+## Deploying to GitHub Pages
+
+First, create a repository on GitHub with your site's domain name as the repository name, e.g. example.github.io
+
+Enable GitHub Pages: In your repository, go to "Settings" > "Pages" and set:
+
+* Source: Deploy from a branch
+* Branch: main
+* Folder: / (root)
+
+Click "Save".
+
+Commit and push your HTML files to the `main` branch.
+
+Set up your custom domain per GitHub's instructions.
