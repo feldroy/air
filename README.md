@@ -4,7 +4,7 @@ An ultra-lightweight static site generator.
 
 ## Quickstart
 
-First, create a directory for your site, initialize it with Rye, and add the `air` package:
+First, create a directory for your site, initialize it with Rye, and add the `air` package. Replace `example.com` with the name of your site:
 
 ```bash
 mkdir example.com
