@@ -2,6 +2,10 @@
 
 An ultra-lightweight static site generator.
 
+* Project homepage and documentation: https://air.feldroy.com
+* GitHub repo: https://github.com/feldroy/air
+* PyPI package: https://pypi.org/project/air/
+
 ## Quickstart
 
 First, create a directory for your site, initialize it with Rye, and add the `air` package. Replace `example.com` with the name of your site:
