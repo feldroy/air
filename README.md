@@ -1,6 +1,6 @@
 # air
 
-An ultra-lightweight static site generator.
+An ultra-lightweight static site generator created by [https://audrey.feldroy.com](@audreyfeldroy).
 
 * Project homepage and documentation: https://air.feldroy.com
 * GitHub repo: https://github.com/feldroy/air
@@ -52,14 +52,25 @@ rye run air
 
 The generated site will be in the `public` directory.
 
-## Creating Markdown Pages
+## Using Markdown
 
-Create a `pages` directory and add some pages:
+Put the following content in `templates/hello.md`:
+
+```markdown
+---
+title: Home
+---
+
+# Hello, world!
+```
+
+Then run the `air` command:
 
 ```bash
-mkdir pages
-touch pages/index.md
+rye run air
 ```
+
+The generated site will be in the `public` directory, with a `hello.html` page generated from the `hello.md` file.
 
 ## Deploying to GitHub Pages
 
