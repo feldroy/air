@@ -17,13 +17,13 @@ rye init
 rye add air
 ```
 
-Then create a `templates` directory and add some templates:
+Then create an `input` directory and add some templates:
 
 ```bash
-touch templates/base.html templates/index.html
+touch input/base.html input/index.html
 ```
 
-Put the following content in `templates/base.html`:
+Put the following content in `input/base.html`:
 
 ```html
 <!DOCTYPE html>
@@ -34,7 +34,7 @@ Put the following content in `templates/base.html`:
 </html>
 ```
 
-And put the following content in `templates/index.html`:
+And put the following content in `input/index.html`:
 
 ```html
 {% extends "base.html" %}
@@ -54,7 +54,7 @@ The generated site will be in the `public` directory.
 
 ## Using Markdown
 
-Put the following content in `templates/hello.md`:
+Put the following content in `input/hello.md`:
 
 ```markdown
 ---
