@@ -29,3 +29,10 @@ The generated site will be in the `public` directory.
 Make your changes, write tests, and submit a pull request.
 
 Try to implement features as plugins rather than adding them to the core codebase. This will keep the core codebase small and focused.
+
+## Releasing a New Version
+
+```bash
+rye version -b minor
+git commit -am "Release version x.y.z"
+```
