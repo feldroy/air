@@ -35,4 +35,6 @@ Try to implement features as plugins rather than adding them to the core codebas
 ```bash
 rye version -b minor
 git commit -am "Release version x.y.z"
+rye build
+rye publish
 ```
