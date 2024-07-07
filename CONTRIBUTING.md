@@ -36,5 +36,21 @@ Try to implement features as plugins rather than adding them to the core codebas
 rye version -b minor
 git commit -am "Release version x.y.z"
 rye build
+```
+
+Make sure the built package works:
+
+```bash
+python -m venv .venvtmp
+source .venvtmp/bin/activate
+pip install dist/your-package-0.3.0-py3-none-any.whl
+(test your package here)
+deactivate
+rm -rf .venvtmp
+```
+
+Then publish the package to PyPI:
+
+```bash
 rye publish
 ```
