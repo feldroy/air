@@ -7,6 +7,8 @@ Clone the repository and install the dependencies:
 ```bash
 git clone https://github.com/feldroy/air.git
 cd air
+python3 -m venv .venv
+source .venv/bin/activate
 rye sync
 ```
 
