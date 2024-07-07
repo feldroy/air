@@ -58,5 +58,8 @@ docs/_build/
 # PyBuilder
 target/
 
+# macOS
+.DS_Store
+
 # Air static site generator - generated output
 public/
