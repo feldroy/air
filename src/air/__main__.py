@@ -1,3 +1,3 @@
 import air
 
-
+air.main()
