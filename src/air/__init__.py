@@ -7,5 +7,6 @@ def main() -> int:
     generator = StaticSiteGenerator("input", "public")
     generator.register_plugin(MarkdownPlugin)
     generator.build()
+    generator.copy_static_files()
     print("Site built from input/ to public/")
     return 0
