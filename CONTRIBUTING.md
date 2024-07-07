@@ -18,6 +18,12 @@ Run the tests:
 rye test
 ```
 
+If you want to run the tests in all the Tox environments:
+
+```bash
+rye run tox
+```
+
 Experiment by creating an `input` directory with some templates or Markdown files, and run the `air` command:
 
 ```bash

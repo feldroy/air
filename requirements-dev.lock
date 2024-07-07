@@ -9,6 +9,17 @@
 #   generate-hashes: false
 
 -e file:.
+cachetools==5.3.3
+    # via tox
+chardet==5.2.0
+    # via tox
+colorama==0.4.6
+    # via tox
+distlib==0.3.8
+    # via virtualenv
+filelock==3.15.4
+    # via tox
+    # via virtualenv
 iniconfig==2.0.0
     # via pytest
 jinja2==3.1.4
@@ -18,8 +29,20 @@ markdown==3.6
 markupsafe==2.1.5
     # via jinja2
 packaging==24.1
+    # via pyproject-api
     # via pytest
+    # via tox
+platformdirs==4.2.2
+    # via tox
+    # via virtualenv
 pluggy==1.5.0
     # via pytest
+    # via tox
+pyproject-api==1.7.1
+    # via tox
 pytest==8.2.2
     # via air
+tox==4.16.0
+    # via air
+virtualenv==20.26.3
+    # via tox
