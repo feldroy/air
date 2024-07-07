@@ -72,6 +72,12 @@ rye run air
 
 The generated site will be in the `public` directory, with a `hello.html` page generated from the `hello.md` file.
 
+## Adding Static Files
+
+To add static files to your site, place them in the `input` directory. When you run the `air` command, these files will be copied to the `public` directory.
+
+For example, if you have an image file `input/images/logo.png`, it will be copied to `public/images/logo.png`.
+
 ## Deploying to GitHub Pages
 
 First, create a repository on GitHub with your site's domain name as the repository name, e.g. example.github.io

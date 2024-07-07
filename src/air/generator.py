@@ -50,3 +50,13 @@ class StaticSiteGenerator:
 
         for plugin in self.plugins:
             plugin.run()
+
+        self.copy_static_files()
+
+    def copy_static_files(self) -> None:
+        for path in self.source_dir.rglob("*"):
+            if path.is_file() and not path.suffix in [".html", ".md"]:
+                relative_path = path.relative_to(self.source_dir)
+                output_path = self.output_dir / relative_path
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(path, output_path)
