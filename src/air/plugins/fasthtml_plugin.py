@@ -24,21 +24,22 @@ class FastHTMLPlugin(Plugin):
 
             if not app or not rt:
                 print("Could not find 'app' or 'rt' in the module.")
-                return
+                continue
 
             # Get all routes
             routes = app.routes
 
             # Execute each route's function to get the HTML
-            # TODO: only support GET requests perhaps?
             for route in routes:
-                print(f"\nExecuting route: {route.path}")
-                func = route.endpoint
-                result = func(request=None)
-                print(f"Result: {result}")
+                if route.methods and 'GET' in route.methods:
+                    print(f"\nExecuting route: {route.path}")
+                    func = route.endpoint
+                    result = func(request=None)
+                    print(f"Result: {result}")
 
-                # Write the result to the output file
-                with open(output_path, "w", encoding="utf-8") as f:
-                    f.write(ft_html(result))
+                    # Write the result to the output file
+                    route_output_path = output_path.with_name(route.path.strip('/').replace('/', '_') + '.html')
+                    with open(route_output_path, "w", encoding="utf-8") as f:
+                        f.write(ft_html(result))
 
         print("FastHTMLPlugin done.")
