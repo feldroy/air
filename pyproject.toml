@@ -6,7 +6,7 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" }
 ]
 dependencies = [
-    "Jinja2==3.1.4",
+    "Jinja2==3.1.6",
     "markdown==3.6",
     "pytest>=8.2.2",
     "tox>=4.16.0",
