@@ -1,3 +1,0 @@
-import air
-
-air.main()

@@ -6,30 +6,60 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" }
 ]
 dependencies = [
+    "fastapi>=0.115.12",
     "Jinja2==3.1.4",
     "markdown==3.6",
-    "pytest>=8.2.2",
-    "tox>=4.16.0",
 ]
 readme = "README.md"
-requires-python = ">= 3.12"
-
-[project.scripts]
-"air" = "air:main"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "pytest>=8.2.2",
-    "tox>=4.16.0",
+requires-python = ">= 3.10"
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
-[tool.hatch.metadata]
-allow-direct-references = true
+[project.scripts]
+"air" = "air.cli:main"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/air"]
+[project.optional-dependencies]
+dev = [
+    "coverage>=7.8.2",
+    "httpx>=0.28.1",
+    "ipdb>=0.13.13",
+    "mypy>=1.16.0",
+    "pytest>=8.4.0",
+    "ruff>=0.11.13",
+    "tox>=4.16.0",    
+    "types-Markdown>=3.8.0",
+]
+
+[project.urls]
+homepage = "https://github.com/audreyfeldroy/air"
+bugs = "https://github.com/audreyfeldroy/air/issues"
+
+
+
+[tool.mypy]
+exclude = "^build/"
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+]
+
+[tool.uv]
+package = true
+

@@ -1,5 +1,4 @@
 import markdown
-from pathlib import Path
 from air.generator import Plugin
 
 
