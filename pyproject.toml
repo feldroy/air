@@ -9,6 +9,7 @@ dependencies = [
     "fastapi>=0.115.12",
     "Jinja2==3.1.4",
     "markdown==3.6",
+    "typer>=0.16.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -32,7 +33,7 @@ classifiers = [
 ]
 
 [project.scripts]
-"air" = "air.cli:main"
+"air" = "air.cli:app"
 
 [project.optional-dependencies]
 dev = [

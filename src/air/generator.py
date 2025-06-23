@@ -14,9 +14,9 @@ class Plugin:
 
 
 class StaticSiteGenerator:
-    def __init__(self, source_dir: str, output_dir: str) -> None:
-        self.source_dir = Path(source_dir)
-        self.output_dir = Path(output_dir)
+    def __init__(self, source_dir: Path, output_dir: Path) -> None:
+        self.source_dir = source_dir
+        self.output_dir = output_dir
         self.env = Environment(
             loader=FileSystemLoader(str(self.source_dir)),
             autoescape=select_autoescape(["html"]),

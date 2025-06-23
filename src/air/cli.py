@@ -1,11 +1,21 @@
+import typer
 from air.generator import StaticSiteGenerator
 from air.plugins.markdown_plugin import MarkdownPlugin
+from pathlib import Path
+from typing_extensions import Annotated
+
+app = typer.Typer()
 
 
-def main() -> int:
+@app.command()
+def html(
+    source_dir: Annotated[Path, typer.Argument()] = Path("input"),
+    output_dir: Annotated[Path, typer.Argument()] = Path("public"),
+) -> int:
+    """Build a static site from source files."""
     print("Building site...")
-    generator = StaticSiteGenerator("input", "public")
+    generator = StaticSiteGenerator(source_dir, output_dir)
     generator.register_plugin(MarkdownPlugin)
     generator.build()
-    print("Site built from input/ to public/")
+    print(f"Site built from {source_dir}/ to {output_dir}/")
     return 0
