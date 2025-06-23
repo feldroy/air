@@ -1,6 +1,6 @@
 # air
 
-An ultra-lightweight static site generator created by [https://audrey.feldroy.com](@audreyfeldroy).
+An ultra-lightweight static site generator created by [@audreyfeldroy](https://audrey.feldroy.com).
 
 * Project homepage and documentation: https://air.feldroy.com
 * GitHub repo: https://github.com/feldroy/air
