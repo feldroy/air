@@ -7,6 +7,7 @@ authors = [
 ]
 dependencies = [
     "fastapi>=0.115.12",
+    "fastapi-tags>=0.4.0",
     "Jinja2==3.1.4",
     "markdown==3.6",
     "typer>=0.16.0",
@@ -37,19 +38,25 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = [
+    # Measure how much of the code is covered by tests
     "coverage>=7.8.2",
+    # For the test client
     "httpx>=0.28.1",
+    # Used with debugging
     "ipdb>=0.13.13",
+    # For checking types
     "mypy>=1.16.0",
+    # Test runner
     "pytest>=8.4.0",
+    # Linting and formatting
     "ruff>=0.11.13",
-    "tox>=4.16.0",    
+    # Types for the markdown library
     "types-Markdown>=3.8.0",
 ]
 
 [project.urls]
-homepage = "https://github.com/audreyfeldroy/air"
-bugs = "https://github.com/audreyfeldroy/air/issues"
+homepage = "https://github.com/feldroy/air"
+bugs = "https://github.com/feldroy/air/issues"
 
 
 
