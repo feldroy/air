@@ -53,6 +53,10 @@ dev = [
     # Types for the markdown library
     "types-Markdown>=3.8.0",
 ]
+docs = [
+    "mkdocs-material",
+    "mkdocs-material[imaging]",        
+]
 
 [project.urls]
 homepage = "https://github.com/feldroy/air"

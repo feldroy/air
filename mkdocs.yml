@@ -1,0 +1,19 @@
+site_name: air
+site_url: https://air.feldroy.com
+repo_url: https://github.com/feldroy/air
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - search.suggest
+    - search.highlight
+    - search.share
+  icon:
+    repo: fontawesome/brands/github
+# markdown_extensions:
+#   - admonition
+#   - pymdownx.details
+#   - pymdownx.superfences
+plugins:
+  - search

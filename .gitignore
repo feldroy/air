@@ -63,3 +63,6 @@ target/
 
 # Air static site generator - generated output
 public/
+
+# Docs page
+site

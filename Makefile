@@ -59,3 +59,9 @@ tag:  ## Tag the current version in git and put to github
 	echo "Tagging version $(VERSION)"
 	git tag -a $(VERSION) -m "Creating version $(VERSION)"
 	git push origin $(VERSION)
+
+doc: ## Serve docs locally
+	mkdocs serve
+
+doc-build: ## Build and deploy docs
+	mkdocs gh-deploy --force
