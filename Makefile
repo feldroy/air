@@ -47,6 +47,7 @@ coverage:  ## Run coverage, and build to HTML
 	@:	
 
 build:  ## Build the project, useful for checking that packaging is correct
+	rm -rf build
 	rm -rf dist
 	uv build
 
