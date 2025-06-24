@@ -1,5 +1,6 @@
 """Adds s-expression HTML tags to air."""
 
+from fastapi_tags import TagResponse as TagResponse  # noqa
 from fastapi_tags import Tag as Tag  # noqa
 from fastapi_tags import A as A  # noqa
 from fastapi_tags import Abbr as Abbr  # noqa
