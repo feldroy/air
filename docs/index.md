@@ -1,17 +1,64 @@
-# Welcome to MkDocs
+# Air
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+> A breath of fresh air in python web development. Built on top of FastAPI and pydantic.
 
-## Commands
+Current Features 
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+- Designed to work with FastAPI so you can have your API and web pages server from one app
+- HTML generation from jinja2 or Python classes. Pick one or both!
+- ⁠Shortcut Response  class and fastapi tags
+- Built from the beginning with ⁠HTMX in mind
+- ⁠Shortcut utility functions galore
+- Static site generation
+- Lots of tests
 
-## Project layout
+Planned features
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+- ⁠Serious documentation powered by material-for-mkdocs
+- ⁠pydantic-powered html forms
+- ⁠Shortcut Response class for jinja2
+
+
+## Installation
+
+```sh
+pip install air
+```
+
+## Use with fastapi tags
+
+```python
+from fastapi import FastAPI
+from air.responses import TagResponse
+from air import tags as tg
+
+app = FastAPI()
+
+
+@app.get("/", response_class=TagResponse)
+async def index():
+    return tg.Html(tg.H1("Hello, world!", style="color: blue;"))
+```
+
+## Generate HTML and API
+
+```python
+from fastapi import FastAPI
+from air.responses import TagResponse
+from air import tags as tg
+
+app = FastAPI()
+
+
+@app.get("/", response_class=TagResponse)
+async def index():
+    return tg.Html(
+        tg.H1("Hello, world!", style="color: blue;"),
+        tg.A("Go to API docs", href="/docs"),
+    )
+
+
+@app.get("/api")
+async def api_root():
+    return {}
+```
