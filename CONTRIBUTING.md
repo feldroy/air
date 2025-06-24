@@ -1,33 +1,35 @@
 # Contributing to Air
 
-Make sure you have [Rye](https://rye.astral.sh/) installed.
+Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/) installed.
 
 Clone the repository and install the dependencies:
 
 ```bash
 git clone https://github.com/feldroy/air.git
 cd air
-python3 -m venv .venv
+uv venv
 source .venv/bin/activate
-rye sync
+uv sync --extra dev
 ```
+
+If you are writing docs, install those dependencies
+
+```sh
+uv sync --extra docs
+```
+
+Add features, fix bugs, document!
 
 Run the tests:
 
 ```bash
-rye test
+make test
 ```
 
-If you want to run the tests in all the Tox environments:
+Experiment with the CLI by creating an `input` directory with some templates or Markdown files, and run the `air` command:
 
 ```bash
-rye run tox
-```
-
-Experiment by creating an `input` directory with some templates or Markdown files, and run the `air` command:
-
-```bash
-rye run air
+air
 ```
 
 The generated site will be in the `public` directory.
@@ -38,34 +40,36 @@ Try to implement features as plugins rather than adding them to the core codebas
 
 ## Releasing a New Version
 
+Change the version number in `src/air/__init__.py` and `pyproject.toml`.
+
+Regenerate the lockfile:
+
 ```bash
-rye version -b minor
+uv lock
+```
+
+Commit the changes:
+
+```sh
 git commit -am "Release version x.y.z"
-rye build
 ```
 
-Make sure the built package works:
+Tag the release and push to github:
 
-```bash
-python -m venv .venvtmp
-source .venvtmp/bin/activate
-pip install dist/your-package-0.3.0-py3-none-any.whl
-(test your package here)
-deactivate
-rm -rf .venvtmp
+```sh
+make tag
 ```
 
-Then publish the package to PyPI:
+Build locally:
 
 ```bash
-rye publish
+make build
 ```
 
-Then publish the tag to GitHub:
+Publish the package to PyPI:
 
 ```bash
-git tag -a x.y.z -m "Version x.y.z"
-git push --tags
+uv publish -t $UV_PUBLISH_TOKEN
 ```
 
 Finally, create a new release on GitHub:
@@ -75,5 +79,4 @@ Finally, create a new release on GitHub:
 * Click "Generate release notes" to auto-populate the release notes
 * Copy in whatever notes you have from the `CHANGELOG.md` file
 * Revise the notes as needed
-* Attach the distribution package: drag and drop the `.tar.gz` and `.whl` files from the `dist/` directory
 * Click "Publish release"
