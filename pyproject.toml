@@ -54,8 +54,7 @@ dev = [
     "types-Markdown>=3.8.0",
 ]
 docs = [
-    "mkdocs-material",
-    "mkdocs-material[imaging]",        
+    "mkdocs-material",      
 ]
 
 [project.urls]
