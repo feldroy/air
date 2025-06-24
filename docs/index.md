@@ -10,11 +10,11 @@ Current Features
 - Built from the beginning with ⁠HTMX in mind
 - ⁠Shortcut utility functions galore
 - Static site generation
+- ⁠Serious documentation powered by material-for-mkdocs
 - Lots of tests
 
 Planned features
 
-- ⁠Serious documentation powered by material-for-mkdocs
 - ⁠pydantic-powered html forms
 - ⁠Shortcut Response class for jinja2
 

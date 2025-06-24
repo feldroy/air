@@ -1,89 +1,64 @@
-# air
+# Air
 
-An ultra-lightweight static site generator created by [@audreyfeldroy](https://audrey.feldroy.com).
+> A breath of fresh air in python web development. Built on top of FastAPI and pydantic.
 
-* Project homepage and documentation: https://air.feldroy.com
-* GitHub repo: https://github.com/feldroy/air
-* PyPI package: https://pypi.org/project/air/
+Current Features 
 
-## Quickstart
+- Designed to work with FastAPI so you can have your API and web pages server from one app
+- HTML generation from jinja2 or Python classes. Pick one or both!
+- ⁠Shortcut Response  class and fastapi tags
+- Built from the beginning with ⁠HTMX in mind
+- ⁠Shortcut utility functions galore
+- Static site generation
+- ⁠Serious documentation powered by material-for-mkdocs
+- Lots of tests
 
-First, create a directory for your site, initialize it with Rye, and add the `air` package. Replace `example.com` with the name of your site:
+Planned features
 
-```bash
-mkdir example.com
-cd example.com
-rye init
-rye add air
+- ⁠pydantic-powered html forms
+- ⁠Shortcut Response class for jinja2
+
+
+## Installation
+
+```sh
+pip install air
 ```
 
-Then create an `input` directory and add some templates:
+## Use with fastapi tags
 
-```bash
-touch input/base.html input/index.html
+```python
+from fastapi import FastAPI
+from air.responses import TagResponse
+from air import tags as tg
+
+app = FastAPI()
+
+
+@app.get("/", response_class=TagResponse)
+async def index():
+    return tg.Html(tg.H1("Hello, world!", style="color: blue;"))
 ```
 
-Put the following content in `input/base.html`:
+## Generate HTML and API
 
-```html
-<!DOCTYPE html>
-<html>
-<body>
-    {% block content %}{% endblock %}
-</body>
-</html>
+```python
+from fastapi import FastAPI
+from air.responses import TagResponse
+from air import tags as tg
+
+app = FastAPI()
+
+
+@app.get("/", response_class=TagResponse)
+async def index():
+    return tg.Html(
+        tg.H1("Hello, world!", style="color: blue;"),
+        tg.A("Go to API docs", href="/docs"),
+    )
+
+
+@app.get("/api")
+async def api_root():
+    return {}
 ```
-
-And put the following content in `input/index.html`:
-
-```html
-{% extends "base.html" %}
-
-{% block content %}
-<h1>Hello, world!</h1>
-{% endblock %}
-```
-
-Then run the `air` command:
-
-```bash
-rye run air
-```
-
-The generated site will be in the `public` directory.
-
-## Using Markdown
-
-Put the following content in `input/hello.md`:
-
-```markdown
----
-title: Home
----
-
-# Hello, world!
-```
-
-Then run the `air` command:
-
-```bash
-rye run air
-```
-
-The generated site will be in the `public` directory, with a `hello.html` page generated from the `hello.md` file.
-
-## Deploying to GitHub Pages
-
-First, create a repository on GitHub with your site's domain name as the repository name, e.g. example.github.io
-
-Enable GitHub Pages: In your repository, go to "Settings" > "Pages" and set:
-
-* Source: Deploy from a branch
-* Branch: main
-* Folder: / (root)
-
-Click "Save".
-
-Commit and push your HTML files to the `main` branch.
-
-Set up your custom domain per GitHub's instructions.
