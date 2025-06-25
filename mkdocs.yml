@@ -1,15 +1,16 @@
-site_name: air
+site_name: Air
 site_url: https://air.feldroy.com
 repo_url: https://github.com/feldroy/air
 theme:
   name: material
   features:
+    - content.code.copy
+    - content.tabs.link
     - navigation.instant
     - navigation.instant.prefetch
     - search.suggest
     - search.highlight
     - search.share
-    - content.tabs.link
   icon:
     repo: fontawesome/brands/github
 markdown_extensions:
