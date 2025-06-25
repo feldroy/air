@@ -94,6 +94,50 @@ class Htmx(Html):
         ) + headers  # type: ignore[operator]
 
 
+class RawHTML(Tag):
+    """Custom tag for rendering raw HTML content without escaping.
+
+    Args:
+        html_string: A single string containing raw HTML to render
+
+    Raises:
+        TypeError: If non-string content is provided
+        ValueError: If multiple arguments are provided
+
+    Example:
+        >>> RawHTML('<strong>Bold</strong> text')
+        '<strong>Bold</strong> text'
+
+        >>> # Use with other tags
+        >>> Div(
+        ...     P("Safe content"),
+        ...     RawHTML('<hr class="divider">'),
+        ...     P("More safe content")
+        ... )
+    """
+
+    def __init__(self, *args, **kwargs):
+        """Initialize RawHTML with a single string argument.
+
+        Args:
+            *args: Should be exactly one string argument
+            **kwargs: Ignored (for consistency with Tag interface)
+        """
+        if len(args) > 1:
+            raise ValueError("RawHTML accepts only one string argument")
+
+        html_string = args[0] if args else ""
+
+        if not isinstance(html_string, str):
+            raise TypeError("RawHTML only accepts string content")
+
+        super().__init__(html_string)
+
+    def render(self) -> str:
+        """Render the raw HTML string without escaping."""
+        return self._children[0] if self._children else ""
+
+
 # Stock tags
 
 

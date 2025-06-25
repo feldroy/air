@@ -85,6 +85,7 @@ from .tags import (
     Pre as Pre,
     Progress as Progress,
     Q as Q,
+    RawHTML as RawHTML,
     Rp as Rp,
     Rt as Rt,
     Ruby as Ruby,

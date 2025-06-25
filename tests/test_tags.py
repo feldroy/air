@@ -90,3 +90,43 @@ def test_htmx_render():
         html
         == '<!doctype html><html><head><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.5/dist/htmx.min.js"></script></head><body><p>Hello, world</p></body></html>'
     )
+
+
+def test_raw_html_basic():
+    """Test basic RawHTML rendering without escaping."""
+    raw = air.RawHTML("<strong>Bold</strong> & <em>italic</em>")
+    assert raw.render() == "<strong>Bold</strong> & <em>italic</em>"
+
+
+def test_raw_html_with_script():
+    """Test that RawHTML does not escape script tags (security risk)."""
+    raw = air.RawHTML('<script>alert("XSS")</script>')
+    assert raw.render() == '<script>alert("XSS")</script>'
+    # This test documents the security risk
+
+
+def test_raw_html_invalid_args():
+    """Test that RawHTML raises errors with invalid arguments."""
+    try:
+        air.RawHTML("first", "second")
+        assert False, "Expected ValueError"
+    except ValueError as e:
+        assert "RawHTML accepts only one string argument" in str(e)
+
+    try:
+        air.RawHTML(123)
+        assert False, "Expected TypeError"
+    except TypeError as e:
+        assert "RawHTML only accepts string content" in str(e)
+
+    try:
+        air.RawHTML(air.Div("test"))
+        assert False, "Expected TypeError"
+    except TypeError as e:
+        assert "RawHTML only accepts string content" in str(e)
+
+
+def test_raw_html_ignores_kwargs():
+    """Test that RawHTML ignores keyword arguments."""
+    raw = air.RawHTML("<div>Test</div>", id="ignored", cls="also-ignored")
+    assert raw.render() == "<div>Test</div>"
