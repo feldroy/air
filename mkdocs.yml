@@ -1,9 +1,11 @@
-site_name: air
+site_name: Air
 site_url: https://air.feldroy.com
 repo_url: https://github.com/feldroy/air
 theme:
   name: material
   features:
+    - content.code.copy
+    - content.tabs.link
     - navigation.instant
     - navigation.instant.prefetch
     - search.suggest
@@ -15,5 +17,7 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true  
 plugins:
   - search
