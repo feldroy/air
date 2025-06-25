@@ -99,3 +99,35 @@ raw_content = RawHTML('<strong>Bold text</strong> and <em>italic</em>')
 html_string = '<p>First</p><p>Second</p>'
 raw = RawHTML(html_string)
 ```
+
+## REST + HTML without HTML in the docs
+
+For when you need FastAPI docs but without the web pages appearing in the docs:
+
+```python
+from fastapi import FastAPI
+import air
+
+# API app
+app = FastAPI()
+# HTML page app
+html = FastAPI()
+
+@app.get("/api")
+async def read_root():
+    return {"Hello": "World"}
+
+
+@html.get("/", response_class=air.TagResponse)
+async def index():
+    return air.H1("Welcome to Air")
+
+# Combine into one app
+app.mount("/", html)
+```
+
+URLs to see the results:
+
+- http://127.0.0.1:8000/
+- http://127.0.0.1:8000/api
+- http://127.0.0.1:8000/docs
