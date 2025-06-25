@@ -7,7 +7,6 @@ authors = [
 ]
 dependencies = [
     "fastapi>=0.115.12",
-    "fastapi-tags>=0.4.0",
     "Jinja2==3.1.4",
     "markdown==3.6",
     "typer>=0.16.0",

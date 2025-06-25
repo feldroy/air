@@ -1,117 +1,763 @@
 """Adds s-expression HTML tags to air."""
 
-from fastapi_tags import TagResponse as TagResponse  # noqa
-from fastapi_tags import Tag as Tag  # noqa
-from fastapi_tags import A as A  # noqa
-from fastapi_tags import Abbr as Abbr  # noqa
-from fastapi_tags import Address as Address  # noqa
-from fastapi_tags import Area as Area  # noqa
-from fastapi_tags import Article as Article  # noqa
-from fastapi_tags import Aside as Aside  # noqa
-from fastapi_tags import Audio as Audio  # noqa
-from fastapi_tags import B as B  # noqa
-from fastapi_tags import Base as Base  # noqa
-from fastapi_tags import Bdi as Bdi  # noqa
-from fastapi_tags import Bdo as Bdo  # noqa
-from fastapi_tags import Blockquote as Blockquote  # noqa
-from fastapi_tags import Body as Body  # noqa
-from fastapi_tags import Br as Br  # noqa
-from fastapi_tags import Button as Button  # noqa
-from fastapi_tags import Canvas as Canvas  # noqa
-from fastapi_tags import Caption as Caption  # noqa
-from fastapi_tags import Cite as Cite  # noqa
-from fastapi_tags import Code as Code  # noqa
-from fastapi_tags import Col as Col  # noqa
-from fastapi_tags import Colgroup as Colgroup  # noqa
-from fastapi_tags import Data as Data  # noqa
-from fastapi_tags import Datalist as Datalist  # noqa
-from fastapi_tags import Dd as Dd  # noqa
-from fastapi_tags import Del as Del  # noqa
-from fastapi_tags import Details as Details  # noqa
-from fastapi_tags import Dfn as Dfn  # noqa
-from fastapi_tags import Dialog as Dialog  # noqa
-from fastapi_tags import Div as Div  # noqa
-from fastapi_tags import Dl as Dl  # noqa
-from fastapi_tags import Dt as Dt  # noqa
-from fastapi_tags import Em as Em  # noqa
-from fastapi_tags import Embed as Embed  # noqa
-from fastapi_tags import Fieldset as Fieldset  # noqa
-from fastapi_tags import Figcaption as Figcaption  # noqa
-from fastapi_tags import Figure as Figure  # noqa
-from fastapi_tags import Footer as Footer  # noqa
-from fastapi_tags import Form as Form  # noqa
-from fastapi_tags import H1 as H1  # noqa
-from fastapi_tags import H2 as H2  # noqa
-from fastapi_tags import H3 as H3  # noqa
-from fastapi_tags import H4 as H4  # noqa
-from fastapi_tags import H5 as H5  # noqa
-from fastapi_tags import H6 as H6  # noqa
-from fastapi_tags import Head as Head  # noqa
-from fastapi_tags import Header as Header  # noqa
-from fastapi_tags import Hgroup as Hgroup  # noqa
-from fastapi_tags import Hr as Hr  # noqa
-from fastapi_tags import Html as Html  # noqa
-from fastapi_tags import I as I  # noqa
-from fastapi_tags import Iframe as Iframe  # noqa
-from fastapi_tags import Img as Img  # noqa
-from fastapi_tags import Input as Input  # noqa
-from fastapi_tags import Ins as Ins  # noqa
-from fastapi_tags import Kbd as Kbd  # noqa
-from fastapi_tags import Label as Label  # noqa
-from fastapi_tags import Legend as Legend  # noqa
-from fastapi_tags import Li as Li  # noqa
-from fastapi_tags import Link as Link  # noqa
-from fastapi_tags import Main as Main  # noqa
-from fastapi_tags import Map as Map  # noqa
-from fastapi_tags import Mark as Mark  # noqa
-from fastapi_tags import Menu as Menu  # noqa
-from fastapi_tags import Meta as Meta  # noqa
-from fastapi_tags import Meter as Meter  # noqa
-from fastapi_tags import Nav as Nav  # noqa
-from fastapi_tags import Noscript as Noscript  # noqa
-from fastapi_tags import Object as Object  # noqa
-from fastapi_tags import Ol as Ol  # noqa
-from fastapi_tags import Optgroup as Optgroup  # noqa
-from fastapi_tags import Option as Option  # noqa
-from fastapi_tags import Output as Output  # noqa
-from fastapi_tags import P as P  # noqa
-from fastapi_tags import Param as Param  # noqa
-from fastapi_tags import Picture as Picture  # noqa
-from fastapi_tags import Pre as Pre  # noqa
-from fastapi_tags import Progress as Progress  # noqa
-from fastapi_tags import Q as Q  # noqa
-from fastapi_tags import Rp as Rp  # noqa
-from fastapi_tags import Rt as Rt  # noqa
-from fastapi_tags import Ruby as Ruby  # noqa
-from fastapi_tags import S as S  # noqa
-from fastapi_tags import Samp as Samp  # noqa
-from fastapi_tags import Script as Script  # noqa
-from fastapi_tags import Search as Search  # noqa
-from fastapi_tags import Section as Section  # noqa
-from fastapi_tags import Select as Select  # noqa
-from fastapi_tags import Small as Small  # noqa
-from fastapi_tags import Source as Source  # noqa
-from fastapi_tags import Span as Span  # noqa
-from fastapi_tags import Strong as Strong  # noqa
-from fastapi_tags import Style as Style  # noqa
-from fastapi_tags import Sub as Sub  # noqa
-from fastapi_tags import Summary as Summary  # noqa
-from fastapi_tags import Sup as Sup  # noqa
-from fastapi_tags import Svg as Svg  # noqa
-from fastapi_tags import Table as Table  # noqa
-from fastapi_tags import Tbody as Tbody  # noqa
-from fastapi_tags import Td as Td  # noqa
-from fastapi_tags import Template as Template  # noqa
-from fastapi_tags import Textarea as Textarea  # noqa
-from fastapi_tags import Tfoot as Tfoot  # noqa
-from fastapi_tags import Th as Th  # noqa
-from fastapi_tags import Thead as Thead  # noqa
-from fastapi_tags import Time as Time  # noqa
-from fastapi_tags import Title as Title  # noqa
-from fastapi_tags import Tr as Tr  # noqa
-from fastapi_tags import Track as Track  # noqa
-from fastapi_tags import U as U  # noqa
-from fastapi_tags import Ul as Ul  # noqa
-from fastapi_tags import Var as Var  # noqa
-from fastapi_tags import Video as Video  # noqa
-from fastapi_tags import Wbr as Wbr  # noqa
+from functools import cached_property
+
+
+def _fix_k(k):
+    # This function originated in fastcore.
+    return k if k == "_" else k.lstrip("_").replace("_", "-")
+
+
+_specials = set("@.-!~:[](){}$%^&*+=|/?<>,`")
+
+
+def attrmap(o):
+    """Converts shims for class and for such as _class, cls, _for, fr into
+    their HTML implementations
+    """
+    # This function originated in fastcore.
+    if _specials & set(o):
+        return o
+    o = dict(
+        htmlClass="class",
+        cls="class",
+        _class="class",
+        klass="class",
+        _for="for",
+        fr="for",
+        htmlFor="for",
+    ).get(o, o)
+    return _fix_k(o)
+
+
+class Tag:
+    def __init__(self, *children, **kwargs):
+        """Sets four attributes, name, module, children, and attrs.
+        These are important for Starlette view responses, as nested objects
+        get auto-serialized to JSON and need to be rebuilt. Without
+        the values of these attributes, the object reconstruction can't occur"""
+        self._name = self.__class__.__name__
+        self._module = self.__class__.__module__
+        self._children, self._attrs = children, kwargs
+
+    @property
+    def name(self) -> str:
+        return self._name.lower()
+
+    @property
+    def attrs(self) -> str:
+        if not self._attrs:
+            return ""
+        return " " + " ".join(f'{attrmap(k)}="{v}"' for k, v in self._attrs.items())
+
+    @cached_property
+    def children(self):
+        return "".join(
+            [c.render() if isinstance(c, Tag) else c for c in self._children]
+        )
+
+    def render(self) -> str:
+        return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
+
+
+class CaseTag(Tag):
+    """This is for case-sensitive tags like those used in SVG generation."""
+
+    @property
+    def name(self) -> str:
+        return self._name[0].lower() + self._name[1:]
+
+
+# Special tags
+
+
+class Html(Tag):
+    """Defines the root of an HTML document"""
+
+    def __init__(self, *children, headers: tuple | None = (), **kwargs):
+        super().__init__(*children, **kwargs)
+        self._headers = headers
+
+    @property
+    def headers(self):
+        return "".join([c.render() if isinstance(c, Tag) else c for c in self._headers])
+
+    def render(self) -> str:
+        return f"""<!doctype html><html{self.attrs}><head>{self.headers}</head><body>{self.children}</body></html>"""
+
+
+class Htmx(Html):
+    def __init__(self, *children, headers: tuple | None = (), **kwargs):
+        super().__init__(*children, **kwargs)
+        self._headers = (
+            Script(src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.5/dist/htmx.min.js"),
+        ) + headers  # type: ignore[operator]
+
+
+# Stock tags
+
+
+class A(Tag):
+    """Defines a hyperlink"""
+
+    pass
+
+
+class Abbr(Tag):
+    """Defines an abbreviation or an acronym"""
+
+    pass
+
+
+class Address(Tag):
+    """Defines contact information for the author/owner of a document"""
+
+    pass
+
+
+class Area(Tag):
+    """Defines an area inside an image map"""
+
+    pass
+
+
+class Article(Tag):
+    """Defines an article"""
+
+    pass
+
+
+class Aside(Tag):
+    """Defines content aside from the page content"""
+
+    pass
+
+
+class Audio(Tag):
+    """Defines embedded sound content"""
+
+    pass
+
+
+class B(Tag):
+    """Defines bold text"""
+
+    pass
+
+
+class Base(Tag):
+    """Specifies the base URL/target for all relative URLs in a document"""
+
+    pass
+
+
+class Bdi(Tag):
+    """Isolates a part of text that might be formatted in a different direction from other text outside it"""
+
+    pass
+
+
+class Bdo(Tag):
+    """Overrides the current text direction"""
+
+    pass
+
+
+class Blockquote(Tag):
+    """Defines a section that is quoted from another source"""
+
+    pass
+
+
+class Body(Tag):
+    """Defines the document's body"""
+
+    pass
+
+
+class Br(Tag):
+    """Defines a single line break"""
+
+    pass
+
+
+class Button(Tag):
+    """Defines a clickable button"""
+
+    pass
+
+
+class Canvas(Tag):
+    """Used to draw graphics, on the fly, via scripting (usually JavaScript)"""
+
+    pass
+
+
+class Caption(Tag):
+    """Defines a table caption"""
+
+    pass
+
+
+class Cite(Tag):
+    """Defines the title of a work"""
+
+    pass
+
+
+class Code(Tag):
+    """Defines a piece of computer code"""
+
+    pass
+
+
+class Col(Tag):
+    """Specifies column properties for each column within a <colgroup> element"""
+
+    pass
+
+
+class Colgroup(Tag):
+    """Specifies a group of one or more columns in a table for formatting"""
+
+    pass
+
+
+class Data(Tag):
+    """Adds a machine-readable translation of a given content"""
+
+    pass
+
+
+class Datalist(Tag):
+    """Specifies a list of pre-defined options for input controls"""
+
+    pass
+
+
+class Dd(Tag):
+    """Defines a description/value of a term in a description list"""
+
+    pass
+
+
+class Del(Tag):
+    """Defines text that has been deleted from a document"""
+
+    pass
+
+
+class Details(Tag):
+    """Defines additional details that the user can view or hide"""
+
+    pass
+
+
+class Dfn(Tag):
+    """Specifies a term that is going to be defined within the content"""
+
+    pass
+
+
+class Dialog(Tag):
+    """Defines a dialog box or window"""
+
+    pass
+
+
+class Div(Tag):
+    """Defines a section in a document"""
+
+    pass
+
+
+class Dl(Tag):
+    """Defines a description list"""
+
+    pass
+
+
+class Dt(Tag):
+    """Defines a term/name in a description list"""
+
+    pass
+
+
+class Em(Tag):
+    """Defines emphasized text"""
+
+    pass
+
+
+class Embed(Tag):
+    """Defines a container for an external application"""
+
+    pass
+
+
+class Fieldset(Tag):
+    """Groups related elements in a form"""
+
+    pass
+
+
+class Figcaption(Tag):
+    """Defines a caption for a <figure> element"""
+
+    pass
+
+
+class Figure(Tag):
+    """Specifies self-contained content"""
+
+    pass
+
+
+class Footer(Tag):
+    """Defines a footer for a document or section"""
+
+    pass
+
+
+class Form(Tag):
+    """Defines an HTML form for user input"""
+
+    pass
+
+
+class H1(Tag):
+    """H1 header"""
+
+    pass
+
+
+class H2(Tag):
+    """H2 header"""
+
+    pass
+
+
+class H3(Tag):
+    """H3 header"""
+
+    pass
+
+
+class H4(Tag):
+    """H4 header"""
+
+    pass
+
+
+class H5(Tag):
+    """H5 header"""
+
+    pass
+
+
+class H6(Tag):
+    """H6 header"""
+
+    pass
+
+
+class Head(Tag):
+    """Contains metadata/information for the document"""
+
+    pass
+
+
+class Header(Tag):
+    """Defines a header for a document or section"""
+
+    pass
+
+
+class Hgroup(Tag):
+    """Defines a header and related content"""
+
+    pass
+
+
+class Hr(Tag):
+    """Defines a thematic change in the content"""
+
+    pass
+
+
+class I(Tag):  # noqa: E742
+    """Defines a part of text in an alternate voice or mood"""
+
+    pass
+
+
+class Iframe(Tag):
+    """Defines an inline frame"""
+
+    pass
+
+
+class Img(Tag):
+    """Defines an image"""
+
+    pass
+
+
+class Input(Tag):
+    """Defines an input control"""
+
+    pass
+
+
+class Ins(Tag):
+    """Defines a text that has been inserted into a document"""
+
+    pass
+
+
+class Kbd(Tag):
+    """Defines keyboard input"""
+
+    pass
+
+
+class Label(Tag):
+    """Defines a label for an <input> element"""
+
+    pass
+
+
+class Legend(Tag):
+    """Defines a caption for a <fieldset> element"""
+
+    pass
+
+
+class Li(Tag):
+    """Defines a list item"""
+
+    pass
+
+
+class Link(Tag):
+    """Defines the relationship between a document and an external resource (most used to link to style sheets)"""
+
+    pass
+
+
+class Main(Tag):
+    """Specifies the main content of a document"""
+
+    pass
+
+
+class Map(Tag):
+    """Defines an image map"""
+
+    pass
+
+
+class Mark(Tag):
+    """Defines marked/highlighted text"""
+
+    pass
+
+
+class Menu(Tag):
+    """Defines an unordered list"""
+
+    pass
+
+
+class Meta(Tag):
+    """Defines metadata about an HTML document"""
+
+    pass
+
+
+class Meter(Tag):
+    """Defines a scalar measurement within a known range (a gauge)"""
+
+    pass
+
+
+class Nav(Tag):
+    """Defines navigation links"""
+
+    pass
+
+
+class Noscript(Tag):
+    """Defines an alternate content for users that do not support client-side scripts"""
+
+    pass
+
+
+class Object(Tag):
+    """Defines a container for an external application"""
+
+    pass
+
+
+class Ol(Tag):
+    """Defines an ordered list"""
+
+    pass
+
+
+class Optgroup(Tag):
+    """Defines a group of related options in a drop-down list"""
+
+    pass
+
+
+class Option(Tag):
+    """Defines an option in a drop-down list"""
+
+    pass
+
+
+class Output(Tag):
+    """Defines the result of a calculation"""
+
+    pass
+
+
+class P(Tag):
+    """Defines a paragraph"""
+
+    pass
+
+
+class Param(Tag):
+    """Defines a parameter for an object"""
+
+    pass
+
+
+class Picture(Tag):
+    """Defines a container for multiple image resources"""
+
+    pass
+
+
+class Pre(Tag):
+    """Defines preformatted text"""
+
+    pass
+
+
+class Progress(Tag):
+    """Represents the progress of a task"""
+
+    pass
+
+
+class Q(Tag):
+    """Defines a short quotation"""
+
+    pass
+
+
+class Rp(Tag):
+    """Defines what to show in browsers that do not support ruby annotations"""
+
+    pass
+
+
+class Rt(Tag):
+    """Defines an explanation/pronunciation of characters (for East Asian typography)"""
+
+    pass
+
+
+class Ruby(Tag):
+    """Defines a ruby annotation (for East Asian typography)"""
+
+    pass
+
+
+class S(Tag):
+    """Defines text that is no longer correct"""
+
+    pass
+
+
+class Samp(Tag):
+    """Defines sample output from a computer program"""
+
+    pass
+
+
+class Script(Tag):
+    """Defines a client-side script"""
+
+    pass
+
+
+class Search(Tag):
+    """Defines a search section"""
+
+    pass
+
+
+class Section(Tag):
+    """Defines a section in a document"""
+
+    pass
+
+
+class Select(Tag):
+    """Defines a drop-down list"""
+
+    pass
+
+
+class Small(Tag):
+    """Defines smaller text"""
+
+    pass
+
+
+class Source(Tag):
+    """Defines multiple media resources for media elements (<video> and <audio>)"""
+
+    pass
+
+
+class Span(Tag):
+    """Defines a section in a document"""
+
+    pass
+
+
+class Strong(Tag):
+    """Defines important text"""
+
+    pass
+
+
+class Style(Tag):
+    """Defines style information for a document"""
+
+    pass
+
+
+class Sub(Tag):
+    """Defines subscripted text"""
+
+    pass
+
+
+class Summary(Tag):
+    """Defines a visible heading for a <details> element"""
+
+    pass
+
+
+class Sup(Tag):
+    """Defines superscripted text"""
+
+    pass
+
+
+class Table(Tag):
+    """Defines a table"""
+
+    pass
+
+
+class Tbody(Tag):
+    """Groups the body content in a table"""
+
+    pass
+
+
+class Td(Tag):
+    """Defines a cell in a table"""
+
+    pass
+
+
+class Template(Tag):
+    """Defines a container for content that should be hidden when the page loads"""
+
+    pass
+
+
+class Textarea(Tag):
+    """Defines a multiline input control (text area)"""
+
+    pass
+
+
+class Tfoot(Tag):
+    """Groups the footer content in a table"""
+
+    pass
+
+
+class Th(Tag):
+    """Defines a header cell in a table"""
+
+    pass
+
+
+class Thead(Tag):
+    """Groups the header content in a table"""
+
+    pass
+
+
+class Time(Tag):
+    """Defines a specific time (or datetime)"""
+
+    pass
+
+
+class Title(Tag):
+    """Defines a title for the document"""
+
+    pass
+
+
+class Tr(Tag):
+    """Defines a row in a table"""
+
+    pass
+
+
+class Track(Tag):
+    """Defines text tracks for media elements (<video> and <audio>)"""
+
+    pass
+
+
+class U(Tag):
+    """Defines some text that is unarticulated and styled differently from normal text"""
+
+    pass
+
+
+class Ul(Tag):
+    """Defines an unordered list"""
+
+    pass
+
+
+class Var(Tag):
+    """Defines a variable"""
+
+    pass
+
+
+class Video(Tag):
+    """Defines embedded video content"""
+
+    pass
+
+
+class Wbr(Tag):
+    """Defines a possible line-break"""
+
+    pass
