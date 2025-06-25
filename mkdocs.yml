@@ -1,6 +1,18 @@
 site_name: Air
 site_url: https://air.feldroy.com
 repo_url: https://github.com/feldroy/air
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - Static Sites: static-sites.md
+  - API Reference:
+    - CLI: api/cli.md
+    - Generator: api/generator.md
+    - Requests: api/requests.md
+    - Responses: api/responses.md
+    - SVG: api/svg.md
+    - Tags: api/tags.md
+    - Templates: api/templates.md
 theme:
   name: material
   features:
@@ -21,3 +33,9 @@ markdown_extensions:
       alternate_style: true  
 plugins:
   - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+          options:
+            show_source: true
