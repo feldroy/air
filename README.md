@@ -21,8 +21,14 @@ Planned features
 
 ## Installation
 
+If you are a more advanced user who plans to contribute to Air (and we invite you to!), follow the install instructions in CONTRIBUTING.md instead of the following.
+
+Otherwise, create a virtualenv and install the air package, like:
+
 ```sh
-pip install air
+uv venv
+source .venv/bin/activate
+uv add air
 ```
 
 ## Use with fastapi tags
