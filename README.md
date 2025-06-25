@@ -1,6 +1,6 @@
 # Air
 
-> A breath of fresh air in python web development. Built on top of FastAPI and pydantic.
+> A FastAPI-powered breath of fresh air for Python web development.
 
 Current Features 
 
