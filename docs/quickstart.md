@@ -55,3 +55,21 @@ A minimal Air application:
     3. We use `Jinja2Renderer` factory to configure a `render()` shortcut. This is easier to remember and faster to type than `template.TemplateResponse`.
     4. We define a GET route using `@api.get`, with a response class of `HtmlResponse`.
     4. Our return calls `render()`, which reads the specified Jinja2 template and then produces the result as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages
+
+## Running the Application
+
+To run your FastAPI application with uvicorn:
+
+```bash
+uvicorn main:app --reload
+```
+
+Where:
+
+- `main` is the name of your Python file (main.py)
+- `app` is the name of your FastAPI instance
+- `--reload` enables auto-reloading when you make changes to your code (useful for development)
+
+Once the server is running, open your browser and navigate to:
+
+- **http://localhost:8000** - Your application
