@@ -7,32 +7,31 @@ A minimal Air application:
 === "Air Tags"
 
     ```python title="main.py"
-    from fastapi import FastAPI
     import air
 
-    app = FastAPI()
+    app = air.Air()
 
-    @app.get('/', response_class=TagResponse)
+    @app.get('/')
     async def index():
         return air.H1('Hello, world')
     ```
 
     So what does this code do?
 
-    1. First we import FastAPI and air.
-    2. Next we instantiate the FastAPI app. 
-    3. We define a GET route using `@api.get`, with a response class of `TagResponse`. Now, when we return Tags, they are automatically rendered as HTML
-    4. We return `air.H1`, which renders as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages
+    1. First we import the air project.
+    2. Next we instantiate the Air app. `air.Air` is just a conveinance wrapper around `fastapi.FastAPI` that sets the `default_response_class` to be `air.TagResponse`
+    3. We define a GET route using `@api.get`, with comes with a response class of `TagResponse`. Now, when we return Air Tags, they are automatically rendered as HTML
+    4. We return `air.H1`, which renders as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages.
 
 === "Jinja2"
 
 
     ```python title="main.py"
-    from fastapi import FastAPI, Request
+    import air    
+    from fastapi import Request
     from fastapi.responses import HtmlResponse
-    import air
 
-    app = FastAPI()
+    app = Air()
 
     render = air.Jinja2Renderer(directory="templates")
 
@@ -50,11 +49,11 @@ A minimal Air application:
 
     So what does this code do?
 
-    1. First we import FastAPI and air.
-    2. Next we instantiate the FastAPI app. 
+    1. First we import the air project and a few select things from FastAPI.
+    2. Next we instantiate the Air app. `air.Air` is just a conveinance wrapper around `fastapi.FastAPI` that sets the `default_response_class` to be `air.TagResponse`
     3. We use `Jinja2Renderer` factory to configure a `render()` shortcut. This is easier to remember and faster to type than `template.TemplateResponse`.
     4. We define a GET route using `@api.get`, with a response class of `HtmlResponse`.
-    4. Our return calls `render()`, which reads the specified Jinja2 template and then produces the result as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages
+    5. Our return calls `render()`, which reads the specified Jinja2 template and then produces the result as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages
 
 ## Running the Application
 
