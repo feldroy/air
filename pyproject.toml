@@ -9,7 +9,7 @@ authors = [
 dependencies = [
     "fastapi>=0.115.12",
     "Jinja2==3.1.4",
-    "markdown==3.6",
+    "markdown==3.8.2",
     "typer>=0.16.0",
 ]
 readme = "README.md"
