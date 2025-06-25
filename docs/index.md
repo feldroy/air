@@ -25,9 +25,10 @@ Planned features
 pip install air
 ```
 
-## Use with fastapi tags
+## Basic usage
 
 ```python
+# main.py
 from fastapi import FastAPI
 from air.responses import TagResponse
 import air
@@ -35,30 +36,45 @@ import air
 app = FastAPI()
 
 
-@app.get("/", response_class=TagResponse)
+@app.get("/")
 async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
+Call with `fastapi` CLI:
+
+```sh
+fastapi dev
+```
+
 ## Generate HTML and API
+
+For when you need FastAPI docs but without the web pages appearing in the docs:
 
 ```python
 from fastapi import FastAPI
-from air.responses import TagResponse
 import air
 
+# API app
 app = FastAPI()
-
-
-@app.get("/", response_class=TagResponse)
-async def index():
-    return air.Html(
-        air.H1("Hello, world!", style="color: blue;"),
-        air.A("Go to API docs", href="/docs"),
-    )
-
+# HTML page app
+html = air.Air()
 
 @app.get("/api")
-async def api_root():
-    return {}
+async def read_root():
+    return {"Hello": "World"}
+
+
+@html.get("/", response_class=air.TagResponse)
+async def index():
+    return air.H1("Welcome to Air")
+
+# Combine into one app
+app.mount("/", html)
 ```
+
+URLs to see the results:
+
+- http://127.0.0.1:8000/
+- http://127.0.0.1:8000/api
+- http://127.0.0.1:8000/docs
