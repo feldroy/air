@@ -30,14 +30,14 @@ pip install air
 ```python
 from fastapi import FastAPI
 from air.responses import TagResponse
-from air import tags as tg
+import air
 
 app = FastAPI()
 
 
 @app.get("/", response_class=TagResponse)
 async def index():
-    return tg.Html(tg.H1("Hello, world!", style="color: blue;"))
+    return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
 ## Generate HTML and API
@@ -45,16 +45,16 @@ async def index():
 ```python
 from fastapi import FastAPI
 from air.responses import TagResponse
-from air import tags as tg
+import air
 
 app = FastAPI()
 
 
 @app.get("/", response_class=TagResponse)
 async def index():
-    return tg.Html(
-        tg.H1("Hello, world!", style="color: blue;"),
-        tg.A("Go to API docs", href="/docs"),
+    return air.Html(
+        air.H1("Hello, world!", style="color: blue;"),
+        air.A("Go to API docs", href="/docs"),
     )
 
 
