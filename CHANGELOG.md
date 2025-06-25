@@ -1,5 +1,17 @@
 # Changelog
 
+# 0.5.0 - 2025-06-25
+
+## What's Changed
+* Merged in fastapi-tags by @pydanny in https://github.com/feldroy/air/pull/36
+* Improve install docs by @audreyfeldroy in https://github.com/feldroy/air/pull/39
+* Shortcut renderer for jinja2 by @pydanny in https://github.com/feldroy/air/pull/40
+* Document how to remove HTML results from API docs by @pydanny in https://github.com/feldroy/air/pull/41
+* Quick start tutorial by @pydanny in https://github.com/feldroy/air/pull/42
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.4.0...v0.5.0
+
 # 0.4.0 - 2025-06-24
 
 ## What's Changed
