@@ -1,6 +1,6 @@
 # Air
 
-> A breath of fresh air in python web development. Built on top of FastAPI and pydantic.
+> A FastAPI-powered breath of fresh air for Python web development.
 
 Current Features 
 
@@ -29,15 +29,14 @@ pip install air
 
 ```python
 from fastapi import FastAPI
-from air.responses import TagResponse
-from air import tags as tg
+import air
 
 app = FastAPI()
 
 
 @app.get("/", response_class=TagResponse)
 async def index():
-    return tg.Html(tg.H1("Hello, world!", style="color: blue;"))
+    return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
 ## Generate HTML and API
@@ -45,20 +44,36 @@ async def index():
 ```python
 from fastapi import FastAPI
 from air.responses import TagResponse
-from air import tags as tg
+import air
 
 app = FastAPI()
 
 
 @app.get("/", response_class=TagResponse)
 async def index():
-    return tg.Html(
-        tg.H1("Hello, world!", style="color: blue;"),
-        tg.A("Go to API docs", href="/docs"),
+    return air.Html(
+        air.H1("Hello, world!", style="color: blue;"),
+        air.A("Go to API docs", href="/docs"),
     )
 
 
 @app.get("/api")
 async def api_root():
     return {}
+```
+
+## Raw HTML Content
+
+For cases where you need to render raw HTML:
+
+```python
+from air import RawHTML
+
+# Render raw HTML content
+raw_content = RawHTML('<strong>Bold text</strong> and <em>italic</em>')
+
+# Note: RawHTML only accepts a single string argument
+# For multiple elements, combine them first:
+html_string = '<p>First</p><p>Second</p>'
+raw = RawHTML(html_string)
 ```
