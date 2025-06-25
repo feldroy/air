@@ -4,6 +4,7 @@ __version__ = "0.5.0"
 
 from .requests import is_htmx_request as is_htmx_request
 from .responses import TagResponse as TagResponse
+from .templates import Jinja2Renderer as Jinja2Renderer
 from .tags import Tag as Tag
 from .tags import (
     A as A,

@@ -5,8 +5,9 @@
 Current Features 
 
 - Designed to work with FastAPI so you can have your API and web pages server from one app
-- HTML generation from jinja2 or Python classes. Pick one or both!
-- ⁠Shortcut Response  class and fastapi tags
+- When it comes to HTML generation, Jinja2 and Air tags are both first class citizens 
+- ⁠Shortcut Response class for jinja2 rendering
+- Air tags, for quick HTML content generation using Pythonc lasses
 - Built from the beginning with ⁠HTMX in mind
 - ⁠Shortcut utility functions galore
 - Static site generation
@@ -16,7 +17,6 @@ Current Features
 Planned features
 
 - ⁠pydantic-powered html forms
-- ⁠Shortcut Response class for jinja2
 
 
 ## Installation
@@ -31,7 +31,7 @@ source .venv/bin/activate
 uv add air
 ```
 
-## Use with fastapi tags
+## Use Air with tags
 
 ```python
 from fastapi import FastAPI
@@ -43,6 +43,22 @@ app = FastAPI()
 @app.get("/", response_class=TagResponse)
 async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
+```
+
+## Use Air with Jinja2 shortcut
+
+```python
+from air import Jinja2Renderer
+
+render = Jinja2Renderer(directory="tests/templates")
+
+@app.get("/test")
+def test_endpoint(request: Request):
+    return render(
+        request,
+        name="home.html",
+        context={"title": "Test Page", "content": "Hello, World!"},
+    )
 ```
 
 ## Generate HTML and API
