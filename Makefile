@@ -62,7 +62,7 @@ tag:  ## Tag the current version in git and put to github
 	git push origin $(VERSION)
 
 doc: ## Serve docs locally
-	mkdocs serve -a localhost:3000
+	mkdocs serve -a localhost:3000 --livereload
 
 doc-build: ## Build and deploy docs
 	mkdocs gh-deploy --force
