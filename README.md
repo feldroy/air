@@ -34,7 +34,6 @@ uv add air
 ## Use Air with tags
 
 ```python
-from fastapi import FastAPI
 import air
 
 app = air.Air()
