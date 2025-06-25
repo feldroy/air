@@ -1,6 +1,6 @@
 [project]
 name = "air"
-version = "0.5.0"
+version = "0.6.0"
 description = "A FastAPI-powered breath of fresh air for Python web development."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },

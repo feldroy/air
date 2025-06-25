@@ -37,10 +37,10 @@ uv add air
 from fastapi import FastAPI
 import air
 
-app = FastAPI()
+app = air.Air()
 
 
-@app.get("/", response_class=TagResponse)
+@app.get("/")
 async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
@@ -61,7 +61,7 @@ def test_endpoint(request: Request):
     )
 ```
 
-## Generate HTML and API
+## Generate HTML and API using explicit TagResponse
 
 ```python
 from fastapi import FastAPI
@@ -111,7 +111,7 @@ import air
 # API app
 app = FastAPI()
 # HTML page app
-html = FastAPI()
+html = air.Air()
 
 @app.get("/api")
 async def read_root():

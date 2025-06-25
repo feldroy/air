@@ -1,7 +1,8 @@
 """A FastAPI-powered breath of fresh air for Python web development."""
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
+from .applications import Air as Air
 from .requests import is_htmx_request as is_htmx_request
 from .responses import TagResponse as TagResponse
 from .templates import Jinja2Renderer as Jinja2Renderer
