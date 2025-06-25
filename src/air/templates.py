@@ -24,11 +24,13 @@ class Jinja2Renderer:
     """
 
     def __init__(self, directory: str):
+        """Initialize with template directory path"""
         self.templates = Jinja2Templates(directory=directory)
 
     def __call__(
         self, request: Request, name: str, context: dict[Any, Any] | None = None
     ):
+        """Render template with request and context"""
         if context is None:
             context = {}
         return self.templates.TemplateResponse(
