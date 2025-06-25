@@ -7,6 +7,7 @@ from typing import List
 
 class Plugin:
     """Base class for static site generator plugins"""
+
     def __init__(self, generator) -> None:
         """Initialize plugin with generator instance"""
         self.generator = generator
@@ -18,6 +19,7 @@ class Plugin:
 
 class StaticSiteGenerator:
     """Generates static sites from HTML templates"""
+
     def __init__(self, source_dir: Path, output_dir: Path) -> None:
         """Initialize generator with source and output directories"""
         self.source_dir = source_dir
