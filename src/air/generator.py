@@ -6,15 +6,22 @@ from typing import List
 
 
 class Plugin:
+    """Base class for static site generator plugins"""
+
     def __init__(self, generator) -> None:
+        """Initialize plugin with generator instance"""
         self.generator = generator
 
     def run(self) -> None:
+        """Execute plugin functionality"""
         pass
 
 
 class StaticSiteGenerator:
+    """Generates static sites from HTML templates"""
+
     def __init__(self, source_dir: Path, output_dir: Path) -> None:
+        """Initialize generator with source and output directories"""
         self.source_dir = source_dir
         self.output_dir = output_dir
         self.env = Environment(
@@ -24,10 +31,12 @@ class StaticSiteGenerator:
         self.plugins: List[Plugin] = []
 
     def register_plugin(self, plugin: type) -> None:
+        """Register a plugin class with the generator"""
         plugin_instance = plugin(self)
         self.plugins.append(plugin_instance)
 
     def build(self) -> None:
+        """Build the static site by rendering templates"""
         if self.output_dir.exists():
             shutil.rmtree(self.output_dir)
         self.output_dir.mkdir(parents=True)
