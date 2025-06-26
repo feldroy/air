@@ -1,6 +1,6 @@
 # Air
 
-> A FastAPI-powered breath of fresh air for Python web development.
+> A FastAPI-powered breath of fresh air in Python web development.
 
 Current Features 
 
