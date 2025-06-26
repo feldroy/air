@@ -7,7 +7,7 @@ nav:
   - Static Sites: static-sites.md
   - API Reference:
     - api/index.md
-    - CLI: api/applications.md    
+    - Applications: api/applications.md    
     - CLI: api/cli.md
     - Generator: api/generator.md
     - Requests: api/requests.md
