@@ -1,11 +1,12 @@
 site_name: Air
-site_url: https://air.feldroy.com
+site_url: http://feldroy.github.io/air/
 repo_url: https://github.com/feldroy/air
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
   - Static Sites: static-sites.md
   - API Reference:
+    - api/index.md
     - CLI: api/cli.md
     - Generator: api/generator.md
     - Requests: api/requests.md
@@ -18,11 +19,14 @@ theme:
   features:
     - content.code.copy
     - content.tabs.link
+    - navigation.indexes
     - navigation.instant
     - navigation.instant.prefetch
+    - navigation.tracking    
     - search.suggest
     - search.highlight
     - search.share
+    - navigation.tabs    
   icon:
     repo: fontawesome/brands/github
 markdown_extensions:
