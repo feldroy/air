@@ -4,7 +4,7 @@ repo_url: https://github.com/feldroy/air
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
-  - Static Sites: static-sites.md
+  - Air Tags: air-tags.md
   - API Reference:
     - api/index.md
     - Applications: api/applications.md    
@@ -15,6 +15,7 @@ nav:
     - SVG: api/svg.md
     - Tags: api/tags.md
     - Templates: api/templates.md
+  - Static Sites: static-sites.md    
 theme:
   name: material
   features:

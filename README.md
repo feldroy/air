@@ -2,12 +2,12 @@
 
 > A FastAPI-powered breath of fresh air in Python web development.
 
-Current Features 
+
 
 - Designed to work with FastAPI so you can have your API and web pages server from one app
-- When it comes to HTML generation, Jinja2 and Air tags are both first class citizens 
+- When it comes to HTML generation, Jinja2 and Air tags both are first class citizens 
 - ⁠Shortcut Response class for jinja2 rendering
-- Air tags, for quick HTML content generation using Pythonc lasses
+- Air tags, for quick HTML content generation using Python classes
 - Built from the beginning with ⁠HTMX in mind
 - ⁠Shortcut utility functions galore
 - Static site generation
@@ -17,6 +17,24 @@ Current Features
 Planned features
 
 - ⁠pydantic-powered html forms
+
+---
+
+**Documentation**: <a href="https://feldroy.github.io/air/" target="_blank">https://feldroy.github.io/air/</a>
+
+**Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
+
+---
+
+The key features are:
+
+- Use your FastAPI skills to build web pages to go along with your API
+- Air tags, for quick HTML content generation using Python classes
+- ⁠Shortcut Response class for jinja2 rendering
+- Jinja2 and Air tags both are first class citizens 
+- Built from the beginning with ⁠HTMX in mind
+- Documented
+- Robust
 
 
 ## Installation
@@ -29,9 +47,12 @@ Otherwise, create a virtualenv and install the air package, like:
 uv venv
 source .venv/bin/activate
 uv add air
+uv add fastapi[standard]
 ```
 
-## Use Air with tags
+## Example
+
+Create a `main.py` with:
 
 ```python
 import air
@@ -44,12 +65,15 @@ async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
-## Use Air with Jinja2 shortcut
+> [!NOTE]  
+> This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
+
+## Example using Jinja2
 
 ```python
 from air import Jinja2Renderer
 
-render = Jinja2Renderer(directory="tests/templates")
+render = Jinja2Renderer(directory="templates")
 
 @app.get("/test")
 def test_endpoint(request: Request):
@@ -58,29 +82,6 @@ def test_endpoint(request: Request):
         name="home.html",
         context={"title": "Test Page", "content": "Hello, World!"},
     )
-```
-
-## Generate HTML and API using explicit TagResponse
-
-```python
-from fastapi import FastAPI
-from air.responses import TagResponse
-import air
-
-app = FastAPI()
-
-
-@app.get("/", response_class=TagResponse)
-async def index():
-    return air.Html(
-        air.H1("Hello, world!", style="color: blue;"),
-        air.A("Go to API docs", href="/docs"),
-    )
-
-
-@app.get("/api")
-async def api_root():
-    return {}
 ```
 
 ## Raw HTML Content
