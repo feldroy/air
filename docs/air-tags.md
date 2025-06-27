@@ -40,8 +40,8 @@ Unlike HTML, SVG tags are case-sensitive. You can access SVG tags by importing t
 ```python
 from air import svg
 
-air.Svg(
-    air.Circle(cx='50', cy='50', r='40', fill='blue'),
+svg.Svg(
+    svg.Circle(cx='50', cy='50', r='40', fill='blue'),
     width='100',
     height='100'
 )
@@ -55,6 +55,33 @@ This will render the following SVG:
 </svg>
 ```
 
-## Defining your own Air Tags
+## Custom Air Tags
 
-The best way to define your own Air Tags is to subclass the `air.Tag` class. This allows you to create custom tags that can be used just like any other Air Tag.
+The best way to define your own Air Tags is to subclass the `air.Tag` class. Here's a simple example:
+
+
+```python
+from air import Tag
+
+class Tasty(Tag):
+    pass
+```
+
+Let's instantiate this class and call its `render()` method:
+
+```python
+Tasty('Ice Cream', cls='dessert').render()
+```
+
+This will produce the following HTML:
+
+```html
+<awesome class="desert">Ice Cream</awesome>
+```
+
+## More complex custom Air Tags
+
+For this to be documented, these tickets need to be resolved:
+
+- https://github.com/feldroy/air/issues/57
+- https://github.com/feldroy/air/issues/44
