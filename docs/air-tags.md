@@ -79,9 +79,37 @@ This will produce the following HTML:
 <awesome class="desert">Ice Cream</awesome>
 ```
 
-## More complex custom Air Tags
+## Functions as Custom Air Tags 
 
-For this to be documented, these tickets need to be resolved:
+Subclasses are not the only way to create custom Air Tags. You can also use functions to create Air Tags. This is particularly useful for putting together components quickly without needing to define a class. Here's an example of a function that creates a custom Air Tag for a [picocss card](https://picocss.com/docs/card):
 
-- https://github.com/feldroy/air/issues/57
-- https://github.com/feldroy/air/issues/44
+```python
+def card(*content, header:str, footer:str):
+    return air.Article(
+        air.Header(header),
+        *content,
+        air.Footer(footer)
+    )
+```
+
+We can use this function to create a card:
+
+```python
+card(
+    air.P("This is a card with some content."),
+    air.P("It can have multiple paragraphs."),
+    header="Card Header",
+    footer="Card Footer",
+).render()
+```
+
+Which produces the following HTML:
+
+```html
+<article>
+    <header>Card Header</header>
+    <p>This is a card with some content.</p>
+    <p>It can have multiple paragraphs.</p>
+    <footer>Card Footer</footer>
+</article>
+```
