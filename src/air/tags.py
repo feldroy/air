@@ -52,9 +52,22 @@ class Tag:
 
     @cached_property
     def children(self):
-        return "".join(
-            [c.render() if isinstance(c, Tag) else c for c in self._children]
-        )
+        elements = []
+        for child in self._children:
+            if isinstance(child, Tag):
+                elements.append(child.render())
+            elif isinstance(child, str):
+                elements.append(child)
+            elif isinstance(child, int):
+                elements.append(str(child))
+            else:
+                # TODO: Produce a better error message
+                msg = f"Unsupported child type: {type(child)}"
+                msg += f"\n in tag {self.name}"
+                msg += f"\n child {child}"
+                msg += f"\n data {self.__dict__}"
+                raise TypeError(msg)
+        return "".join(elements)
 
     def render(self) -> str:
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"

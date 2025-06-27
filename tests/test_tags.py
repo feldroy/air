@@ -130,3 +130,43 @@ def test_raw_html_ignores_kwargs():
     """Test that RawHTML ignores keyword arguments."""
     raw = air.RawHTML("<div>Test</div>", id="ignored", cls="also-ignored")
     assert raw.render() == "<div>Test</div>"
+
+
+def test_functions_as_tags():
+    """Test that functions can be used as tags."""
+
+    def article_preview(title: str, slug: str, description: str):
+        return air.Article(
+            air.H2(air.A(title, href=f"/posts/{slug}")), air.P(description)
+        )
+
+    articles = [
+        article_preview("First Post", "first-post", "This is the first post."),
+        article_preview("Second Post", "second-post", "This is the second post."),
+        article_preview("Third Post", "third-post", "This is the third post."),
+    ]
+
+    content = air.Main(air.H1("Articles"), *articles, air.P("Read more on our blog."))
+    assert isinstance(content.render(), str)
+
+    def layout(*children):
+        return air.Html(*children)
+
+    html = layout(content)
+    assert isinstance(html.render(), str)
+
+
+def test_pico_card():
+    def card(*content, header: str, footer: str):
+        return air.Article(air.Header(header), *content, air.Footer(footer))
+
+    html = card(
+        air.P("This is a card with some content."),
+        header="Card Header",
+        footer="Card Footer",
+    ).render()
+
+    assert (
+        html
+        == "<article><header>Card Header</header><p>This is a card with some content.</p><footer>Card Footer</footer></article>"
+    )
