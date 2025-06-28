@@ -1,5 +1,43 @@
 # Changelog
 
+# 0.7.0 - 2025-06-28
+
+## What's Changed
+* Api docs by @Isaac-Flath in https://github.com/feldroy/air/pull/47
+* Motto grammar fix by @pydanny in https://github.com/feldroy/air/pull/49
+* Add missing function signatures to `application.Air` by @pydanny in https://github.com/feldroy/air/pull/52
+* Add doc nav improvements and API Ref index by @pydanny in https://github.com/feldroy/air/pull/50
+* Add missing applications ref by @pydanny in https://github.com/feldroy/air/pull/53
+* Explain air tags by @pydanny in https://github.com/feldroy/air/pull/62
+* Convert `Tag.children` property to for loop and fix bug by @pydanny in https://github.com/feldroy/air/pull/64
+* Dependency upgrade by @pydanny in https://github.com/feldroy/air/pull/67
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.6.0...v0.7.0
+
+# 0.6.0 - 2025-06-26
+
+## What's Changed
+* Add run instructions to quickstart docs by @Isaac-Flath in https://github.com/feldroy/air/pull/45
+* Create applications.Air wrapper for fastapi.FastAPI by @pydanny in https://github.com/feldroy/air/pull/46
+
+Minimal apps now look like this:
+
+```python
+import air
+
+app = air.Air()
+
+@app.get("/")
+async def index():
+    return air.Html(air.H1("Hello, world!", style="color: blue;"))
+```
+
+## New Contributors
+* @Isaac-Flath made their first contribution in https://github.com/feldroy/air/pull/45
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.5.0...v0.6.0
+
 # 0.5.0 - 2025-06-25
 
 ## What's Changed
