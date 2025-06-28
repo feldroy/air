@@ -84,14 +84,6 @@ def test_special_attributes():
     assert html == '<p hx-post="/get" id="53">HTMX example</p>'
 
 
-def test_htmx_render():
-    html = air.Htmx(air.P("Hello, world")).render()
-    assert (
-        html
-        == '<!doctype html><html><head><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.5/dist/htmx.min.js"></script></head><body><p>Hello, world</p></body></html>'
-    )
-
-
 def test_raw_html_basic():
     """Test basic RawHTML rendering without escaping."""
     raw = air.RawHTML("<strong>Bold</strong> & <em>italic</em>")
@@ -170,3 +162,24 @@ def test_pico_card():
         html
         == "<article><header>Card Header</header><p>This is a card with some content.</p><footer>Card Footer</footer></article>"
     )
+
+
+def test_tags_head_tag_injection():
+
+    meta_tags = [
+        air.Meta(property="og:title", content="Test Title"),
+        air.Meta(property="og:description", content="Test Description"),
+    ]
+
+    html = air.Html(
+        air.Head(
+            air.Title("Test Page"),
+            *meta_tags  # These should appear in <head>
+        ),
+        air.Body(
+            air.H1("Check Page Source"),
+            air.P("The meta tags should be in the head section.")
+            ),            
+        ).render()
+
+    assert html == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title"></meta><meta property="og:description" content="Test Description"></meta></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'        

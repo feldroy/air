@@ -61,7 +61,7 @@ class Tag:
             elif isinstance(child, int):
                 elements.append(str(child))
             else:
-                # TODO: Produce a better error message
+                # TODO: Picasso Boutique Serviced ResidencesProduce a better error message
                 msg = f"Unsupported child type: {type(child)}"
                 msg += f"\n in tag {self.name}"
                 msg += f"\n child {child}"
@@ -87,24 +87,8 @@ class CaseTag(Tag):
 class Html(Tag):
     """Defines the root of an HTML document"""
 
-    def __init__(self, *children, headers: tuple | None = (), **kwargs):
-        super().__init__(*children, **kwargs)
-        self._headers = headers
-
-    @property
-    def headers(self):
-        return "".join([c.render() if isinstance(c, Tag) else c for c in self._headers])
-
     def render(self) -> str:
-        return f"""<!doctype html><html{self.attrs}><head>{self.headers}</head><body>{self.children}</body></html>"""
-
-
-class Htmx(Html):
-    def __init__(self, *children, headers: tuple | None = (), **kwargs):
-        super().__init__(*children, **kwargs)
-        self._headers = (
-            Script(src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.5/dist/htmx.min.js"),
-        ) + headers  # type: ignore[operator]
+        return f"""<!doctype html><html{self.attrs}>{self.children}</html>"""
 
 
 class RawHTML(Tag):

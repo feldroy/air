@@ -51,10 +51,12 @@ def test_TagResponse_html():
     @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
         return air.Html(
+            air.Head(),
+            air.Body(
             air.Main(
                 air.H1("Hello, clean HTML response!"),
                 air.P("This is a paragraph in the response."),
-            )
+            )),
         )
 
     client = TestClient(app)
@@ -73,7 +75,7 @@ def test_strings_and_tag_children():
 
     @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
-        return air.Html(air.P("This isn't a ", air.Strong("cut off"), " sentence"))
+        return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
 
     client = TestClient(app)
     response = client.get("/test")
@@ -81,7 +83,7 @@ def test_strings_and_tag_children():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == "<!doctype html><html><head></head><body><p>This isn't a <strong>cut off</strong> sentence</p></body></html>"
+        == "<!doctype html><html><body><p>This isn't a <strong>cut off</strong> sentence</p></body></html>"
     )
 
 
@@ -140,7 +142,7 @@ def test_TagResponse_with_layout_names():
 
     @app.get("/test", response_class=CustomLayoutResponse)
     def test_endpoint():
-        return air.Main(air.H1("Hello, World!"))
+        return air.Body(air.Main(air.H1("Hello, World!")))
 
     client = TestClient(app)
     response = client.get("/test")
@@ -149,5 +151,5 @@ def test_TagResponse_with_layout_names():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == "<!doctype html><html><head></head><body><main><h1>Hello, World!</h1></main></body></html>"
+        == "<!doctype html><html><body><main><h1>Hello, World!</h1></main></body></html>"
     )
