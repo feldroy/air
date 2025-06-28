@@ -165,7 +165,6 @@ def test_pico_card():
 
 
 def test_tags_head_tag_injection():
-
     meta_tags = [
         air.Meta(property="og:title", content="Test Title"),
         air.Meta(property="og:description", content="Test Description"),
@@ -174,12 +173,15 @@ def test_tags_head_tag_injection():
     html = air.Html(
         air.Head(
             air.Title("Test Page"),
-            *meta_tags  # These should appear in <head>
+            *meta_tags,  # These should appear in <head>
         ),
         air.Body(
             air.H1("Check Page Source"),
-            air.P("The meta tags should be in the head section.")
-            ),            
-        ).render()
+            air.P("The meta tags should be in the head section."),
+        ),
+    ).render()
 
-    assert html == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title"></meta><meta property="og:description" content="Test Description"></meta></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'        
+    assert (
+        html
+        == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title"></meta><meta property="og:description" content="Test Description"></meta></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'
+    )

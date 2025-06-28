@@ -61,7 +61,7 @@ class Tag:
             elif isinstance(child, int):
                 elements.append(str(child))
             else:
-                # TODO: Picasso Boutique Serviced ResidencesProduce a better error message
+                # TODO: Produce a better error message
                 msg = f"Unsupported child type: {type(child)}"
                 msg += f"\n in tag {self.name}"
                 msg += f"\n child {child}"

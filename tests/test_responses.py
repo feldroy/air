@@ -53,10 +53,11 @@ def test_TagResponse_html():
         return air.Html(
             air.Head(),
             air.Body(
-            air.Main(
-                air.H1("Hello, clean HTML response!"),
-                air.P("This is a paragraph in the response."),
-            )),
+                air.Main(
+                    air.H1("Hello, clean HTML response!"),
+                    air.P("This is a paragraph in the response."),
+                )
+            ),
         )
 
     client = TestClient(app)
@@ -75,7 +76,9 @@ def test_strings_and_tag_children():
 
     @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
-        return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
+        return air.Html(
+            air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence"))
+        )
 
     client = TestClient(app)
     response = client.get("/test")
