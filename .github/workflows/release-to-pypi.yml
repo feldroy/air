@@ -1,0 +1,27 @@
+# .github/workflows/publish-on-tag.yml
+name: Publish Python Package with uv
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on tags like v1.0.0
+
+jobs:
+  publish:
+    name: Build and Publish with uv
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v6
+
+    - name: Build with uv
+      run: uv build
+
+    - name: Publish with uv
+      env:
+        UV_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      run: uv publish --token $UV_PYPI_TOKEN
