@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-
+from fastapi.responses import HTMLResponse
 import air
 
 
@@ -81,3 +81,38 @@ def test_page_decorator():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About page</h1>"
+
+def test_air_404_response():
+    app = air.Air()
+
+    client = TestClient(app)
+    response = client.get("/nonexistent")
+
+    assert response.status_code == 404
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<!doctype html><html><head><title>404 Not Found</title></head><body><main><h1>404 Not Found</h1><p>The requested resource was not found on this server.</p></main></body></html>"
+
+
+
+def test_air_500_response():
+
+    app = air.Air()
+
+    @app.get("/error")
+    def error_endpoint():
+        raise Exception("This is a test error")
+
+
+    client = TestClient(app)
+
+    try:
+        response = client.get("/error")
+    except:
+        pass
+
+
+
+    assert response.status_code == 500
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert "Internal Server Error" in response.text
+    assert "This is a test error" in response.text

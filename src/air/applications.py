@@ -19,10 +19,44 @@ from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
+from fastapi import FastAPI
+from .responses import TagResponse
+from .tags import Html, Head, Body, Main, H1, P, Title
 
 from .responses import AirResponse
 
 AppType = TypeVar("AppType", bound="FastAPI")
+
+
+async def default_404_exception_handler(request, exc):
+    return TagResponse(
+        Html(
+            Head(
+                Title("404 Not Found")),
+            Body(
+                Main(
+                    H1("404 Not Found"),
+                    P("The requested resource was not found on this server."),
+                )
+            ),
+        ),
+        status_code=404
+    )
+    
+
+async def default_500_exception_handler(request, exc):
+    return TagResponse(
+        Html(
+            Head(
+                Title("500 Internal Server Error")),
+            Body(
+                Main(
+                    H1("500 Internal Server Error"),
+                )
+            ),
+        ),
+        status_code=500
+    )    
 
 
 class Air(FastAPI):
@@ -313,7 +347,7 @@ class Air(FastAPI):
             dependencies=dependencies,
             default_response_class=default_response_class,
             middleware=middleware,
-            exception_handlers=exception_handlers,
+            exception_handlers={404: default_404_exception_handler, 500: default_500_exception_handler},
             on_startup=on_startup,
             on_shutdown=on_shutdown,
             lifespan=lifespan,
