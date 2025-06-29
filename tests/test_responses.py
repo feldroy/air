@@ -86,7 +86,7 @@ def test_strings_and_tag_children():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == "<!doctype html><html><body><p>This isn't a <strong>cut off</strong> sentence</p></body></html>"
+        == "<!doctype html><html><body><p>This isn&#x27;t a <strong>cut off</strong> sentence</p></body></html>"
     )
 
 
@@ -139,7 +139,7 @@ def test_TagResponse_with_layout_names():
     class CustomLayoutResponse(air.TagResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content).decode("utf-8")
-            return air.Html(content).render().encode("utf-8")
+            return air.Html(air.RawHTML(content)).render().encode("utf-8")
 
     app = FastAPI()
 
