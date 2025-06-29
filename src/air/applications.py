@@ -309,3 +309,11 @@ class Air(FastAPI):
             deprecated=deprecated,
             **extra,
         )
+
+    def page(self, func):
+        """Decorator that creates a GET route using the function name as the path."""
+        if func.__name__ == "index":
+            route_name = "/"
+        else:
+            route_name = f"/{func.__name__}"
+        return self.get(route_name)(func)
