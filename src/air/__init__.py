@@ -57,7 +57,6 @@ from .tags import (
     Hgroup as Hgroup,
     Hr as Hr,
     Html as Html,
-    Htmx as Htmx,
     I as I,
     Iframe as Iframe,
     Img as Img,
