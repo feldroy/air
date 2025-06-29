@@ -186,6 +186,7 @@ def test_tags_head_tag_injection():
         == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title"></meta><meta property="og:description" content="Test Description"></meta></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'
     )
 
+
 def test_escape_html():
-    html = air.P('<strong>Strong</strong>')
-    assert html == ''
+    html = air.P("I'm <strong>Strong</strong>").render()
+    assert html == "<p>I&#x27;m &lt;strong&gt;Strong&lt;/strong&gt;</p>"
