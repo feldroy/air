@@ -1,5 +1,15 @@
 # Changelog
 
+# 0.8.0 - 2025-06-29
+
+## What's Changed
+* Remove headers arg from Html tag by @pydanny in https://github.com/feldroy/air/pull/68
+* Escape strings in tags  by @pydanny in https://github.com/feldroy/air/pull/72
+* Add GH action to release on PyPI by @pydanny in https://github.com/feldroy/air/pull/74
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.7.0...v0.8.0
+
 # 0.7.0 - 2025-06-28
 
 ## What's Changed
