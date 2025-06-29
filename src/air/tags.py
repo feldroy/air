@@ -1,6 +1,7 @@
 """Adds s-expression HTML tags to air."""
 
 from functools import cached_property
+import html
 
 
 def _fix_k(k):
@@ -57,7 +58,7 @@ class Tag:
             if isinstance(child, Tag):
                 elements.append(child.render())
             elif isinstance(child, str):
-                elements.append(child)
+                elements.append(html.escape(child))
             elif isinstance(child, int):
                 elements.append(str(child))
             else:
