@@ -46,3 +46,27 @@ def test_air_plus_fastapi():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
+
+
+def test_page_decorator():
+    app = air.Air()
+    page = app.page
+
+    @page
+    def index():
+        return air.H1("Home page")
+
+    @page
+    def about():
+        return air.H1("About page")
+
+    client = TestClient(app)
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Home page</h1>"
+
+    response = client.get("/about")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>About page</h1>"
