@@ -84,9 +84,22 @@ def test_endpoint(request: Request):
     )
 ```
 
+## HTTP GET page shortcut decorator
+
+For when you want to write pages real fast.
+
+```python
+@app.page
+def dashboard():
+    return air.H1("Hello, World")
+```
+
+Using the function's name, `@app.page` maps the `dashboard` view to the `/dashboard` URL. 
+
+
 ## Raw HTML Content
 
-For cases where you need to render raw HTML:
+For cases where you need to render raw HTML from the tag engine:
 
 ```python
 from air import RawHTML
@@ -118,7 +131,7 @@ async def read_root():
     return {"Hello": "World"}
 
 
-@html.get("/", response_class=air.TagResponse)
+@html.get("/")
 async def index():
     return air.H1("Welcome to Air")
 
