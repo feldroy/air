@@ -84,7 +84,7 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
     app = air.Air()
 
 
-    @air.page
+    @app.page
     def dashboard():
         return H1('Dashboard')
     ```
@@ -97,17 +97,27 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
     import air    
     from fastapi import Request
 
-    app = Air()
+    app = air.Air()
     render = air.Jinja2Renderer(directory="templates")
 
-    @air.page
+    @app.page
     async def dashboard(request: Request):
         return render(
             request,
             name="dashboard.html"
-        )       
+        )     
     ```
 
     ```jinja title="templates/home.html"
     <h1>Dashboard</h1>
     ```
+
+## Running the Application
+
+```bash
+uvicorn main:app --reload
+```
+
+Once the server is running, open your browser and navigate to:
+
+- **[http://localhost:8000/dashboard](http://localhost:8000/dashboard)** - Your application
