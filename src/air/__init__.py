@@ -1,6 +1,6 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 
 from .applications import Air as Air
 from .requests import is_htmx_request as is_htmx_request
