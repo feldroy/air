@@ -146,9 +146,9 @@ class Air(FastAPI):
 
                 ```python
                 from fastapi import FastAPI
-                from air import TagResponse
+                from air import AirResponse
 
-                app = FastAPI(default_response_class=TagResponse)
+                app = FastAPI(default_response_class=AirResponse)
                 ```
                 """
             ),
