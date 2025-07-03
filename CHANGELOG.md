@@ -1,5 +1,13 @@
 # Changelog
 
+# 0.9.0 - 2025-07-03
+
+## What's Changed
+
+* Add AirResponse and get-only `app.page` route decorator shortcut by @pydanny in https://github.com/feldroy/air/pull/76
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.8.0...v0.9.0
+
 # 0.8.0 - 2025-06-29
 
 ## What's Changed
