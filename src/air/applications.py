@@ -21,14 +21,14 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
 from fastapi import FastAPI
-from .responses import TagResponse
+from .responses import AirResponse
 
 
 AppType = TypeVar("AppType", bound="FastAPI")
 
 
 class Air(FastAPI):
-    """FastAPI wrapper class with TagResponse as the default response class."""
+    """FastAPI wrapper class with AirResponse as the default response class."""
 
     def __init__(
         self: AppType,
@@ -146,13 +146,13 @@ class Air(FastAPI):
 
                 ```python
                 from fastapi import FastAPI
-                from air import TagResponse
+                from air import AirResponse
 
-                app = FastAPI(default_response_class=TagResponse)
+                app = FastAPI(default_response_class=AirResponse)
                 ```
                 """
             ),
-        ] = Default(TagResponse),
+        ] = Default(AirResponse),
         redirect_slashes: Annotated[
             bool,
             Doc(
@@ -288,10 +288,10 @@ class Air(FastAPI):
             ),
         ],
     ) -> None:
-        """Initialize Air app with TagResponse as default response class.
+        """Initialize Air app with AirResponse as default response class.
 
         This preserves all FastAPI initialization parameters while setting
-        TagResponse as the default response class.
+        AirResponse as the default response class.
         """
         super().__init__(
             debug=debug,
@@ -299,7 +299,7 @@ class Air(FastAPI):
             servers=servers,
             dependencies=dependencies,
             # TODO: Have this accept default_response_class=default_response_class
-            default_response_class=TagResponse,
+            default_response_class=AirResponse,
             middleware=middleware,
             exception_handlers=exception_handlers,
             on_startup=on_startup,
@@ -309,3 +309,11 @@ class Air(FastAPI):
             deprecated=deprecated,
             **extra,
         )
+
+    def page(self, func):
+        """Decorator that creates a GET route using the function name as the path."""
+        if func.__name__ == "index":
+            route_name = "/"
+        else:
+            route_name = f"/{func.__name__}"
+        return self.get(route_name)(func)
