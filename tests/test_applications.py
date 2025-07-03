@@ -30,6 +30,10 @@ def test_air_plus_fastapi():
     def test_page():
         return air.H1("Hello, World!")
 
+    @html.get("/page-html")
+    def test_page_html():
+        return "<h1>Hello, World!</h1>"
+
     # Combine into one app
     app.mount("/", html)
 
@@ -47,6 +51,12 @@ def test_air_plus_fastapi():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
 
+    # Test the page with HTML
+    response = client.get("/page-html")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Hello, World!</h1>"
+
 
 def test_page_decorator():
     app = air.Air()
@@ -58,7 +68,7 @@ def test_page_decorator():
 
     @page
     def about():
-        return air.H1("About page")
+        return "<h1>About page</h1>"
 
     client = TestClient(app)
     response = client.get("/")

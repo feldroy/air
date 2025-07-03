@@ -14,12 +14,26 @@ def dict_to_ft_component(d):
 
 
 class TagResponse(Response):
-    """Custom response class to handle air.tags.Tags."""
+    """Response class to handle air.tags.Tags."""
 
     media_type = "text/html; charset=utf-8"
 
     def render(self, content: Any) -> bytes:
         """Render Tag elements to bytes of HTML."""
+        if isinstance(content, dict):
+            content = dict_to_ft_component(content)
+        return content.render().encode("utf-8")
+
+
+class AirResponse(Response):
+    """Response class to handle air.tags.Tags or HTML (from Jinja2)."""
+
+    media_type = "text/html; charset=utf-8"
+
+    def render(self, content: Any) -> bytes:
+        """Render Tag elements to bytes of HTML."""
+        if isinstance(content, str):
+            return content.encode("utf-8")
         if isinstance(content, dict):
             content = dict_to_ft_component(content)
         return content.render().encode("utf-8")

@@ -4,7 +4,7 @@ __version__ = "0.8.0"
 
 from .applications import Air as Air
 from .requests import is_htmx_request as is_htmx_request
-from .responses import TagResponse as TagResponse
+from .responses import AirResponse as AirResponse, TagResponse as TagResponse
 from .templates import Jinja2Renderer as Jinja2Renderer
 from .tags import Tag as Tag
 from .tags import (

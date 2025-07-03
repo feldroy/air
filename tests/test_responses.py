@@ -156,3 +156,29 @@ def test_TagResponse_with_layout_names():
         response.text
         == "<!doctype html><html><body><main><h1>Hello, World!</h1></main></body></html>"
     )
+
+
+def test_AirResponse():
+    """Test the AirResponse class."""
+    app = FastAPI()
+
+    @app.get("/test_tag", response_class=air.AirResponse)
+    def test_tag_endpoint():
+        return air.H1("Hello, World!")
+
+    @app.get("/test_html", response_class=air.AirResponse)
+    def test_html_endpoint():
+        return "<h1>Hello, World!</h1>"
+
+    client = TestClient(app)
+    response = client.get("/test_tag")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Hello, World!</h1>"
+
+    response = client.get("/test_html")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Hello, World!</h1>"
