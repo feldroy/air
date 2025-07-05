@@ -1,6 +1,11 @@
 from fastapi import Request
 from pydantic import ValidationError
-from typing import Self
+
+try:
+    from typing import Self  # type: ignore [attr-defined]
+except ImportError:
+    # NOTE: Remove once Python 3.10 support is dropped
+    Self = "AirForm"  # type: ignore [assignment]
 
 
 class AirForm:
