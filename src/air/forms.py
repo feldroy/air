@@ -45,3 +45,9 @@ class AirForm:
             self.errors = e.errors()
             self.is_valid = False
         return self
+
+    @classmethod
+    async def validate(cls, request: Request) -> Self:
+        self = cls()
+        await self(request)
+        return self
