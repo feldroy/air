@@ -53,7 +53,7 @@ A minimal Air application:
     4. We define a GET route using `@app.get`. Unlike normal FastAPI projects using Jinja we don't need to set the `response_class` to HtmlResponse. That's because the `air.Air` wrapper handles that for us
     5. Our return calls `render()`, which reads the specified Jinja2 template and then produces the result as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages
 
-## Running the Application
+## Running Applications
 
 To run your FastAPI application with uvicorn:
 
@@ -108,16 +108,107 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
         )     
     ```
 
-    ```jinja title="templates/home.html"
+    ```jinja title="templates/dashboard.html"
     <h1>Dashboard</h1>
     ```
 
-## Running the Application
+## Form Handling with Air Forms
 
-```bash
-uvicorn main:app --reload
-```
+Air's form handling  leverages FastAPI's `Depends` and pydantic's `BaseModel`:
 
-Once the server is running, open your browser and navigate to:
+=== "Air Tags"
 
-- **[http://localhost:8000/dashboard](http://localhost:8000/dashboard)** - Your application
+    ```python title="main.py"
+    from typing import Annotated
+
+    from fastapi import Depends
+    from pydantic import BaseModel
+    import air    
+
+    app = air.Air()
+
+
+    class CheeseModel(BaseModel):
+        name: str
+        age: int
+
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+
+    @app.page
+    async def cheese():
+        return air.Html(
+            air.H1("Cheese Form"),
+            air.Form(
+                air.Input(name="name"),
+                air.Input(name="age", type="number"),
+                air.Button("Submit", type="submit"),
+                method="post",
+                action="/cheese-info",
+            ),
+        )
+
+
+    @app.post("/cheese-info")
+    async def cheese_info(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
+        if cheese.is_valid:
+            return air.Html(air.H1(cheese.data.name))
+        return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
+
+    ```
+
+
+=== "Jinja2"
+
+
+    ```python title="main.py"
+    import air
+    from fastapi import Request, Depends
+    from pydantic import BaseModel
+    from typing import Annotated
+
+
+    app = air.Air()
+    render = air.Jinja2Renderer(directory="templates")
+
+
+    class CheeseModel(BaseModel):
+        name: str
+        age: int
+
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+
+    @app.page
+    async def cheese(request: Request):
+        return render(request, name="cheese_form.html")
+
+
+    @app.post("/cheese-info")
+    async def cheese_info(
+        request: Request, cheese: Annotated[CheeseForm, Depends(CheeseForm())]
+    ):
+        return render(request, name="cheese_info.html", cheese=cheese)
+    ```
+
+    ```jinja title="templates/cheese_form.html"
+    <h1>Cheese Form</h1>
+    <form method="post" action="/cheese-info">
+      <input name="name">
+      <input name="age" type="number">
+      <button type="submit">Submit</button>
+    </form>
+    ```
+
+    ```jinja title="templates/cheese_info.html"
+    {% if cheese.is_valid %}
+        <h1>{{cheese.data.name}}</h1>
+        <p>Age: {{cheese.data.age}}</p>
+    {% else %}
+        <h1>Errors {{len(cheese.errors)}}</h1>
+    {% endif %}
+    ```    
