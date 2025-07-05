@@ -21,31 +21,10 @@ from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
 from fastapi import FastAPI
 from .responses import AirResponse
-from .tags import Html, Head, Body, Main, H1, P, Title
 
 from .responses import AirResponse
 
 AppType = TypeVar("AppType", bound="FastAPI")
-
-
-async def default_422_exception_handler(request, exc):
-    return AirResponse(
-        Html(
-            Head(Title("422 form validation error")),
-            Body(
-                Main(
-                    H1("422 form validation error"),
-                    P("Give a better response, and get this somehow into the view"),
-                )
-            ),
-        ),
-        status_code=422,
-    )
-
-
-DEFAULT_EXCEPTION_HANDLERS = {
-    422: default_422_exception_handler,
-}
 
 
 class Air(FastAPI):
@@ -321,7 +300,7 @@ class Air(FastAPI):
             dependencies=dependencies,
             default_response_class=default_response_class,
             middleware=middleware,
-            # exception_handlers=DEFAULT_EXCEPTION_HANDLERS,
+            exception_handlers=exception_handlers,
             on_startup=on_startup,
             on_shutdown=on_shutdown,
             lifespan=lifespan,
@@ -329,8 +308,6 @@ class Air(FastAPI):
             deprecated=deprecated,
             **extra,
         )
-        # self.exception_handlers = DEFAULT_EXCEPTION_HANDLERS
-        # self.exception_handler(RequestValidationError)(default_422_exception_handler)
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path."""
