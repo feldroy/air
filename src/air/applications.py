@@ -21,9 +21,30 @@ from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
 from fastapi import FastAPI
 from .responses import AirResponse
+from .tags import Html, Head, Body, Main, H1, P, Title
 
 
 AppType = TypeVar("AppType", bound="FastAPI")
+
+
+async def default_422_exception_handler(request, exc):
+    return AirResponse(
+        Html(
+            Head(
+                Title("404 Not Found")),
+            Body(
+                Main(
+                    H1("404 Not Found"),
+                    P("The requested resource was not found on this server."),
+                )
+            ),
+        ),
+        status_code=404
+    )
+
+DEFAULT_EXCEPTION_HANDLERS = {
+    422: default_422_exception_handler,
+}
 
 
 class Air(FastAPI):
@@ -299,7 +320,7 @@ class Air(FastAPI):
             dependencies=dependencies,
             default_response_class=default_response_class,
             middleware=middleware,
-            exception_handlers=exception_handlers,
+            exception_handlers=DEFAULT_EXCEPTION_HANDLERS,
             on_startup=on_startup,
             on_shutdown=on_shutdown,
             lifespan=lifespan,
@@ -307,6 +328,7 @@ class Air(FastAPI):
             deprecated=deprecated,
             **extra,
         )
+        self.exception_handlers = DEFAULT_EXCEPTION_HANDLERS
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path."""
