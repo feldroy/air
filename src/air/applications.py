@@ -12,7 +12,6 @@ from typing import (
 )
 
 from fastapi import routing
-from fastapi.datastructures import Default
 from fastapi.params import Depends
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -152,7 +151,7 @@ class Air(FastAPI):
                 ```
                 """
             ),
-        ] = Default(AirResponse),
+        ] = AirResponse,
         redirect_slashes: Annotated[
             bool,
             Doc(
@@ -298,8 +297,7 @@ class Air(FastAPI):
             routes=routes,
             servers=servers,
             dependencies=dependencies,
-            # TODO: Have this accept default_response_class=default_response_class
-            default_response_class=AirResponse,
+            default_response_class=default_response_class,
             middleware=middleware,
             exception_handlers=exception_handlers,
             on_startup=on_startup,
