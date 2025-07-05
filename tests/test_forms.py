@@ -10,20 +10,20 @@ def test_is_form_response_html():
 
     app = air.Air()
 
-    @app.post("/login/")
-    async def login(username: Annotated[str, Form()], password: Annotated[str, Form()]):
-        return air.Html(air.H1(username), air.H2(password))
+    @app.post("/cheese/")
+    async def new_cheese_form(cheese: Annotated[str, Form()]):
+        return air.Html(air.H1(cheese))
 
     client = TestClient(app)
 
     # Test with valid form data
-    response = client.post("/login", data={'username': 'testuser', 'password': 'testpass'})
+    response = client.post("/cheese", data={'cheese': 'cheddar'})
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<!doctype html><html><h1>testuser</h1><h2>testpass</h2></html>"
+    assert response.text == "<!doctype html><html><h1>cheddar</h1></html>"
     
     # Test with empty form data
-    response = client.post("/login", data={})
+    response = client.post("/cheese", data={})
     assert response.status_code == 422  # Unprocessable Entity
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == 'asfsad'   

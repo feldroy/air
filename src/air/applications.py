@@ -20,6 +20,7 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from .responses import AirResponse
 from .tags import Html, Head, Body, Main, H1, P, Title
 
@@ -32,15 +33,15 @@ async def default_422_exception_handler(request, exc):
     return AirResponse(
         Html(
             Head(
-                Title("404 Not Found")),
+                Title("422 form validation error")),
             Body(
                 Main(
-                    H1("404 Not Found"),
-                    P("The requested resource was not found on this server."),
+                    H1("422 form validation error"),
+                    P("Give a better response, and get this somehow into the view"),
                 )
             ),
         ),
-        status_code=404
+        status_code=422
     )
 
 DEFAULT_EXCEPTION_HANDLERS = {
@@ -330,6 +331,7 @@ class Air(FastAPI):
             **extra,
         )
         self.exception_handlers = DEFAULT_EXCEPTION_HANDLERS
+        self.exception_handler(RequestValidationError)(default_422_exception_handler)
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path."""
