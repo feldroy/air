@@ -14,8 +14,8 @@ Django pioneered high-quality, accessible documentation. That and its pluggable 
 
 !!! note "Inspires Air to"
 
- 1. Incorporate an HTML form validation system powered by pydantic.
- 2. Add a pluggable system for supporting an ecosystem of third-party packages.
+ 1. Incorporate an HTML form validation system powered by pydantic
+ 2. Add a pluggable system for supporting an ecosystem of third-party packages
  3. Include user management as an early pluggable package.
 
 ### Flask
@@ -28,8 +28,8 @@ Of note is that core Flask uses a flat namespace. Instead of having to learn lon
 
 !!! note "Inspires Air to"
 
- 1. When possible, use the `air` namespace to simplify imports.
- 2. Stay simple and easy to learn.
+ 1. When possible, use the `air` namespace to simplify imports
+ 2. Stay simple and easy to learn
  3. Have a good quickstart document that provides an overview of performing common tasks.
 
 
@@ -44,7 +44,7 @@ This is in line with FastHTML's pattern of providing a lot of syntactical sugar 
 
 !!! note "Inspired Air to"
 
- 1. Have an abstraction of HTML as Python objects, which in Air parlance is "Air Tags".
+ 1. Have an abstraction of HTML as Python objects, which in Air parlance is "Air Tags"
  2. Bundle Air's `AirResponse` to the `Air()` app factory for an easier, more intuitive design.
 
 
@@ -60,5 +60,5 @@ FastAPI uses types to provide an intuitive and explicit API. Behaviors are somet
 
  1. Have superlative documentation
  2. Stay positive - we're in this to support each other and have fun    
- 3. Provide an intuitive and explicit API for people to build projects with\
- 4. Lean into types for better IDE and AI integrations
+ 3. For people building sites provide an intuitive and explicit API
+ 4. Lean into types for better IDE and AI integrations.
