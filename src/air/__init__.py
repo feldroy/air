@@ -1,10 +1,10 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-__version__ = "0.7.0"
+__version__ = "0.9.0"
 
 from .applications import Air as Air
 from .requests import is_htmx_request as is_htmx_request
-from .responses import TagResponse as TagResponse
+from .responses import AirResponse as AirResponse, TagResponse as TagResponse
 from .templates import Jinja2Renderer as Jinja2Renderer
 from .tags import Tag as Tag
 from .tags import (

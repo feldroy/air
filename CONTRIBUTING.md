@@ -60,17 +60,7 @@ Tag the release and push to github:
 make tag
 ```
 
-Build locally:
-
-```bash
-make build
-```
-
-Publish the package to PyPI:
-
-```bash
-uv publish -t $UV_PUBLISH_TOKEN
-```
+This will deploy the new package to PyPI. Once confirmed the new package has been found on GitHub.
 
 Finally, create a new release on GitHub:
 
