@@ -18,7 +18,7 @@ def test_simple_form():
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
+    async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)]):
         if cheese.is_valid:
             return air.Html(air.H1(cheese.data.name))
         return air.Html(air.H1(air.RawHTML(str(len(cheese.errors)))))  # type: ignore [arg-type]

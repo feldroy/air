@@ -123,7 +123,7 @@ Air's form handling  leverages FastAPI's `Depends` and pydantic's `BaseModel`:
 
     from fastapi import Depends
     from pydantic import BaseModel
-    import air    
+    import air
 
     app = air.Air()
 
@@ -152,7 +152,7 @@ Air's form handling  leverages FastAPI's `Depends` and pydantic's `BaseModel`:
 
 
     @app.post("/cheese-info")
-    async def cheese_info(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
+    async def cheese_info(cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)]):
         if cheese.is_valid:
             return air.Html(air.H1(cheese.data.name))
         return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
@@ -190,7 +190,7 @@ Air's form handling  leverages FastAPI's `Depends` and pydantic's `BaseModel`:
 
     @app.post("/cheese-info")
     async def cheese_info(
-        request: Request, cheese: Annotated[CheeseForm, Depends(CheeseForm())]
+        request: Request, cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)]
     ):
         return render(request, name="cheese_info.html", cheese=cheese)
     ```
