@@ -21,6 +21,14 @@ class Jinja2Renderer:
         ...     'home.html',
         ...     context={'id': 5}
         ... )
+
+    Can also pass in kwargs, which will be added to the context:
+
+        >>> return render(
+        ...     request,
+        ...     'home.html',
+        ...     name='Parmesan'
+        ... )
     """
 
     def __init__(self, directory: str):
@@ -28,11 +36,17 @@ class Jinja2Renderer:
         self.templates = Jinja2Templates(directory=directory)
 
     def __call__(
-        self, request: Request, name: str, context: dict[Any, Any] | None = None
+        self,
+        request: Request,
+        name: str,
+        context: dict[Any, Any] | None = None,
+        **kwargs,
     ):
         """Render template with request and context"""
         if context is None:
             context = {}
+        if kwargs:
+            context = context | kwargs
         return self.templates.TemplateResponse(
             request=request, name=name, context=context
         )
