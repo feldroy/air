@@ -93,7 +93,7 @@ class Html(Tag):
 
 
 class RawHTML(Tag):
-    """Custom tag for rendering raw HTML content without escaping.
+    """Renders raw HTML content without escaping.
 
     Args:
         html_string: A single string containing raw HTML to render

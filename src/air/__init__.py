@@ -7,6 +7,7 @@ from .applications import Air as Air
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import TagResponse as TagResponse
+from .shortcuts import pico_page as pico_page
 from .tags import (
     H1 as H1,
 )
