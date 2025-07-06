@@ -1,7 +1,7 @@
 """Adds s-expression HTML tags to air."""
 
-from functools import cached_property
 import html
+from functools import cached_property
 
 
 def _fix_k(k):

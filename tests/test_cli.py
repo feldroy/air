@@ -1,5 +1,6 @@
-from air.cli import html
 from pathlib import Path
+
+from air.cli import html
 
 
 def test_html():

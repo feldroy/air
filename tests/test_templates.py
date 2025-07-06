@@ -1,7 +1,7 @@
-from air import Air, Jinja2Renderer
-
 from fastapi import FastAPI, Request
 from fastapi.testclient import TestClient
+
+from air import Air, Jinja2Renderer
 
 
 def test_Jinja2Renderer():

@@ -1,6 +1,7 @@
+from typing import Any
+
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
-from typing import Any
 
 
 class Jinja2Renderer:

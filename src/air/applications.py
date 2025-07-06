@@ -11,7 +11,7 @@ from typing import (
     Union,
 )
 
-from fastapi import routing
+from fastapi import FastAPI, routing
 from fastapi.params import Depends
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -19,9 +19,8 @@ from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
-from fastapi import FastAPI
-from .responses import AirResponse
 
+from .responses import AirResponse
 
 AppType = TypeVar("AppType", bound="FastAPI")
 
