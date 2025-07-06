@@ -112,9 +112,111 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
     <h1>Dashboard</h1>
     ```
 
-## Form Handling with Air Forms
+## Form Validation with Air Forms
 
-Air's form handling  leverages FastAPI's `Depends` and pydantic's `BaseModel`:
+Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate data coming from HTML forms.
+
+### Form handling in views
+
+=== "Air Tags"
+
+    ```python title="main.py"
+    from typing import Annotated
+
+    from fastapi import Depends, Request
+    from pydantic import BaseModel
+    import air
+
+    app = air.Air()
+
+
+    class CheeseModel(BaseModel):
+        name: str
+        age: int
+
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+
+    @app.page
+    async def cheese():
+        return air.Html(
+            air.H1("Cheese Form"),
+            air.Form(
+                air.Input(name="name"),
+                air.Input(name="age", type="number"),
+                air.Button("Submit", type="submit"),
+                method="post",
+                action="/cheese-info",
+            ),
+        )
+
+
+    @app.post("/cheese-info")
+    async def cheese_info(request: Request):
+        cheese = await CheeseForm.validate(request)
+        if cheese.is_valid:
+            return air.Html(air.H1(cheese.data.name))
+        return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
+    ```
+
+
+=== "Jinja2"
+
+
+    ```python title="main.py"
+    import air
+    from fastapi import Request, Depends
+    from pydantic import BaseModel
+    from typing import Annotated
+
+
+    app = air.Air()
+    render = air.Jinja2Renderer(directory="templates")
+
+
+    class CheeseModel(BaseModel):
+        name: str
+        age: int
+
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+
+    @app.page
+    async def cheese(request: Request):
+        return render(request, name="cheese_form.html")
+
+
+    @app.post("/cheese-info")
+    async def cheese_info(request: Request):
+        cheese = await CheeseForm.validate(request)
+        return render(request, name="cheese_info.html", cheese=cheese)
+    ```
+
+    ```jinja title="templates/cheese_form.html"
+    <h1>Cheese Form</h1>
+    <form method="post" action="/cheese-info">
+      <input name="name">
+      <input name="age" type="number">
+      <button type="submit">Submit</button>
+    </form>
+    ```
+
+    ```jinja title="templates/cheese_info.html"
+    {% if cheese.is_valid %}
+        <h1>{{cheese.data.name}}</h1>
+        <p>Age: {{cheese.data.age}}</p>
+    {% else %}
+        <h1>Errors {{len(cheese.errors)}}</h1>
+    {% endif %}
+    ```
+
+### Form handling using dependency injection
+
+It is possible to use AirForms through FastAPI's dependency injection mechanism.
 
 === "Air Tags"
 
