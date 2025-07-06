@@ -37,6 +37,9 @@ theme:
     repo: fontawesome/brands/github
 markdown_extensions:
   - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed:
