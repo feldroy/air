@@ -19,8 +19,6 @@ from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
-from fastapi import FastAPI
-from .responses import AirResponse
 
 from .responses import AirResponse
 

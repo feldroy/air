@@ -2,9 +2,9 @@ from typing import Annotated
 
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
-import air
-
 from pydantic import BaseModel
+
+import air
 
 
 def test_form_validation_dependency_injection():
