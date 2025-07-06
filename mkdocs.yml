@@ -5,6 +5,10 @@ nav:
   - Home: index.md
   - Quickstart: quickstart.md
   - Air Tags: air-tags.md
+  - About:  
+    - about/index.md
+    - about/history.md    
+    - about/alternatives.md
   - API Reference:
     - api/index.md
     - Applications: api/applications.md    
