@@ -4,6 +4,7 @@ __version__ = "0.9.0"
 
 from . import svg as svg
 from .applications import Air as Air
+from .forms import AirForm as AirForm
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import TagResponse as TagResponse
