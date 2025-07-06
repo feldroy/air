@@ -1,8 +1,10 @@
+from pathlib import Path
+
 import typer
+from typing_extensions import Annotated
+
 from air.generator import StaticSiteGenerator
 from air.plugins.markdown_plugin import MarkdownPlugin
-from pathlib import Path
-from typing_extensions import Annotated
 
 app = typer.Typer()
 

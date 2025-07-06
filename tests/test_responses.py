@@ -1,6 +1,8 @@
+from typing import Any
+
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from typing import Any
+
 import air
 
 

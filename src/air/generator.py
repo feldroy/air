@@ -1,8 +1,9 @@
 import re
 import shutil
 from pathlib import Path
-from jinja2 import Environment, FileSystemLoader, select_autoescape
 from typing import List
+
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 class Plugin:
