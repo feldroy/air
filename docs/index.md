@@ -61,8 +61,9 @@ async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
-> [!NOTE]  
-> This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
+!!! note
+
+    This example uses [Air Tags](/air/ref/tags), which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
 
 ## Example using Jinja2
 
