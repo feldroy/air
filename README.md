@@ -2,21 +2,29 @@
 
 > A FastAPI-powered breath of fresh air in Python web development.
 
+<p align="center">
+<a href="https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main" target="_blank">
+    <img src="https://github.com/feldroy/air/actions/workflows/python-package.yml/badge.svg?event=push&branch=main" alt="Test">
+</a>
+<a href="https://pypi.org/project/air" target="_blank">
+    <img src="https://img.shields.io/pypi/v/air?color=%2334D058&label=pypi%20package" alt="Package version">
+</a>
+<a href="https://pypi.org/project/air" target="_blank">
+    <img src="https://img.shields.io/pypi/pyversions/air.svg?color=%2334D058" alt="Supported Python versions">
+</a>
+</p>
+
+## Why use Air?
 
 
-- Designed to work with FastAPI so you can have your API and web pages server from one app
-- When it comes to HTML generation, Jinja2 and Air tags both are first class citizens 
-- ⁠Shortcut Response class for jinja2 rendering
-- Air tags, for quick HTML content generation using Python classes
-- Built from the beginning with ⁠HTMX in mind
-- ⁠Shortcut utility functions galore
-- Static site generation
-- ⁠Serious documentation powered by material-for-mkdocs
-- Lots of tests
-
-Planned features
-
-- ⁠pydantic-powered html forms
+- **Powered by FastAPI** - Designed to work with FastAPI so you can server your API and web pages from one app
+- **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
+- **Air Tags** - Easy to write and performant TML content generation using Python classes to render HTML
+- **Jinja Friendly** - No need to write `response_class=HtmlResponse` and `templates.TemplateResponse` for every HTML view
+- **Mix Jinja and Air Tags** - Jinja and Air Tags both are first class citizens. Use either or both in the same view!
+- **HTMX friendly** - We love HTMX and provide utilities to use it with Air
+- **HTML form validation powered by pydantic** - We love using pydantic to validate incoming data. Air Forms provide two ways to use pydantic with HTML forms (dependency injection or from within views)
+- **Easy to learn yet well documented** - Hopefully Air is so intuitive and well-typed you'll barely need to use the documentation. In case you do need to look something up we're taking our experience writing technical books and using it to make documentation worth boasting about
 
 ---
 
@@ -24,24 +32,12 @@ Planned features
 
 **Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
 
----
-
-The key features are:
-
-- Use your FastAPI skills to build web pages to go along with your API
-- Air tags, for quick HTML content generation using Python classes
-- ⁠Shortcut Response class for jinja2 rendering
-- Jinja2 and Air tags both are first class citizens 
-- Built from the beginning with ⁠HTMX in mind
-- Documented
-- Robust
-
 
 ## Installation
 
-If you are a more advanced user who plans to contribute to Air (and we invite you to!), follow the install instructions in CONTRIBUTING.md instead of the following.
+Install using `pip install -U air` or `conda install air -c conda-forge`.
 
-Otherwise, create a virtualenv and install the air package, like:
+For `uv` users, just create a virtualenv and install the air package, like:
 
 ```sh
 uv venv
@@ -50,7 +46,7 @@ uv add air
 uv add fastapi[standard]
 ```
 
-## Example
+## A Simple Example
 
 Create a `main.py` with:
 
@@ -76,71 +72,14 @@ from air import Jinja2Renderer
 render = Jinja2Renderer(directory="templates")
 
 @app.get("/test")
-def test_endpoint(request: Request):
+def index(request: Request):
     return render(
         request,
         name="home.html",
-        context={"title": "Test Page", "content": "Hello, World!"},
+        context={"title": "Hello World Page"}, content="Hello, World",
     )
 ```
 
-## HTTP GET page shortcut decorator
+## Contributing
 
-For when you want to write pages real fast.
-
-```python
-@app.page
-def dashboard():
-    return air.H1("Hello, World")
-```
-
-Using the function's name, `@app.page` maps the `dashboard` view to the `/dashboard` URL. 
-
-
-## Raw HTML Content
-
-For cases where you need to render raw HTML from the tag engine:
-
-```python
-from air import RawHTML
-
-# Render raw HTML content
-raw_content = RawHTML('<strong>Bold text</strong> and <em>italic</em>')
-
-# Note: RawHTML only accepts a single string argument
-# For multiple elements, combine them first:
-html_string = '<p>First</p><p>Second</p>'
-raw = RawHTML(html_string)
-```
-
-## REST + HTML without HTML in the docs
-
-For when you need FastAPI docs but without the web pages appearing in the docs:
-
-```python
-from fastapi import FastAPI
-import air
-
-# API app
-app = FastAPI()
-# HTML page app
-html = air.Air()
-
-@app.get("/api")
-async def read_root():
-    return {"Hello": "World"}
-
-
-@html.get("/")
-async def index():
-    return air.H1("Welcome to Air")
-
-# Combine into one app
-app.mount("/", html)
-```
-
-URLs to see the results:
-
-- http://127.0.0.1:8000/
-- http://127.0.0.1:8000/api
-- http://127.0.0.1:8000/docs
+For guidance on setting up a development environment and how to make a contribution to Air, see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).

@@ -26,15 +26,13 @@ Run the tests:
 make test
 ```
 
-Experiment with the CLI by creating an `input` directory with some templates or Markdown files, and run the `air` command:
+To lint and format the code to pass the linters:
 
 ```bash
-air
+make clean
 ```
 
-The generated site will be in the `public` directory.
-
-Make your changes, write tests, and submit a pull request.
+As needed, make your changes, write tests, and submit a pull request.
 
 Try to implement features as plugins rather than adding them to the core codebase. This will keep the core codebase small and focused.
 

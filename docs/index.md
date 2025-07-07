@@ -2,38 +2,58 @@
 
 > A FastAPI-powered breath of fresh air in Python web development.
 
-Current Features 
+<p align="center">
+<a href="https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main" target="_blank">
+    <img src="https://github.com/feldroy/air/actions/workflows/python-package.yml/badge.svg?event=push&branch=main" alt="Test">
+</a>
+<a href="https://pypi.org/project/air" target="_blank">
+    <img src="https://img.shields.io/pypi/v/air?color=%2334D058&label=pypi%20package" alt="Package version">
+</a>
+<a href="https://pypi.org/project/air" target="_blank">
+    <img src="https://img.shields.io/pypi/pyversions/air.svg?color=%2334D058" alt="Supported Python versions">
+</a>
+</p>
 
-- Designed to work with FastAPI so you can have your API and web pages server from one app
-- HTML generation from jinja2 or Python classes. Pick one or both!
-- ⁠Shortcut Response  class and fastapi tags
-- Built from the beginning with ⁠HTMX in mind
-- ⁠Shortcut utility functions galore
-- Static site generation
-- ⁠Serious documentation powered by material-for-mkdocs
-- Lots of tests
+## Why use Air?
 
-Planned features
 
-- ⁠pydantic-powered html forms
-- ⁠Shortcut Response class for jinja2
+- **Powered by FastAPI** - Designed to work with FastAPI so you can server your API and web pages from one app
+- **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
+- **Air Tags** - Easy to write and performant TML content generation using Python classes to render HTML
+- **Jinja Friendly** - No need to write `response_class=HtmlResponse` and `templates.TemplateResponse` for every HTML view
+- **Mix Jinja and Air Tags** - Jinja and Air Tags both are first class citizens. Use either or both in the same view!
+- **HTMX friendly** - We love HTMX and provide utilities to use it with Air
+- **HTML form validation powered by pydantic** - We love using pydantic to validate incoming data. Air Forms provide two ways to use pydantic with HTML forms (dependency injection or from within views)
+- **Easy to learn yet well documented** - Hopefully Air is so intuitive and well-typed you'll barely need to use the documentation. In case you do need to look something up we're taking our experience writing technical books and using it to make documentation worth boasting about
+
+---
+
+**Documentation**: <a href="https://feldroy.github.io/air/" target="_blank">https://feldroy.github.io/air/</a>
+
+**Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
 
 
 ## Installation
 
+Install using `pip install -U air` or `conda install air -c conda-forge`.
+
+For `uv` users, just create a virtualenv and install the air package, like:
+
 ```sh
-pip install air
+uv venv
+source .venv/bin/activate
+uv add air
+uv add fastapi[standard]
 ```
 
-## Basic usage
+## A Simple Example
+
+Create a `main.py` with:
 
 ```python
-# main.py
-from fastapi import FastAPI
-from air.responses import TagResponse
 import air
 
-app = FastAPI()
+app = air.Air()
 
 
 @app.get("/")
@@ -41,40 +61,25 @@ async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
-Call with `fastapi` CLI:
+> [!NOTE]  
+> This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
 
-```sh
-fastapi dev
-```
-
-## Generate HTML and API
-
-For when you need FastAPI docs but without the web pages appearing in the docs:
+## Example using Jinja2
 
 ```python
-from fastapi import FastAPI
-import air
+from air import Jinja2Renderer
 
-# API app
-app = FastAPI()
-# HTML page app
-html = air.Air()
+render = Jinja2Renderer(directory="templates")
 
-@app.get("/api")
-async def read_root():
-    return {"Hello": "World"}
-
-
-@html.get("/", response_class=air.TagResponse)
-async def index():
-    return air.H1("Welcome to Air")
-
-# Combine into one app
-app.mount("/", html)
+@app.get("/test")
+def index(request: Request):
+    return render(
+        request,
+        name="home.html",
+        context={"title": "Hello World Page"}, content="Hello, World",
+    )
 ```
 
-URLs to see the results:
+## Contributing
 
-- http://127.0.0.1:8000/
-- http://127.0.0.1:8000/api
-- http://127.0.0.1:8000/docs
+For guidance on setting up a development environment and how to make a contribution to Air, see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).
