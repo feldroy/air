@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "air>=0.10.0",
     "eidosui",
+    "fastapi[standard]>=0.115.14",
 ]
 
 [tool.uv.sources]

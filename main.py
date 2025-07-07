@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 import os
 
 # Mount static files for CSS
-app.mount("/eidos", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "..", "eidos")), name="eidos")
+app.mount("/eidos", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "..", "eidosui")), name="eidos")
 
 def layout(*content):
     return Html(
