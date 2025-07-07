@@ -5,7 +5,7 @@ requires-python = ">=3.13"
 [[package]]
 name = "air"
 version = "0.10.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../air" }
 dependencies = [
     { name = "fastapi" },
     { name = "jinja2" },
@@ -13,10 +13,26 @@ dependencies = [
     { name = "python-multipart" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/22/d1/b38dcabc5a4df11529bbe93a43eca89ab2004bdf0fd2b111f8d92ee20df0/air-0.10.0.tar.gz", hash = "sha256:f7e1c3d19608d77ec127c6d2359f6a5f2ff26997176f742189e43e13b103f8b7", size = 20269, upload-time = "2025-07-07T00:37:11.088Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1f/2e/9a7064cd588c4c7e9e3d1d8114b90b8964f4540fb7e24c448b5f7c9e0713/air-0.10.0-py3-none-any.whl", hash = "sha256:2d9966c5c4ef7a8080b6ea6a77e64ab2d8a80c7f741ecc138af64b22323515b7", size = 16479, upload-time = "2025-07-07T00:37:10.197Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.8.2" },
+    { name = "fastapi", specifier = ">=0.115.12" },
+    { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.28.1" },
+    { name = "ipdb", marker = "extra == 'dev'", specifier = ">=0.13.13" },
+    { name = "jinja2", specifier = ">=3.1.4" },
+    { name = "markdown", specifier = ">=3.6" },
+    { name = "mkdocs-material", marker = "extra == 'docs'" },
+    { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.16.0" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.0" },
+    { name = "python-multipart", specifier = ">=0.0.20" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.13" },
+    { name = "typer", specifier = ">=0.16.0" },
+    { name = "types-markdown", marker = "extra == 'dev'", specifier = ">=3.8.0" },
+    { name = "uvicorn", marker = "extra == 'dev'", specifier = ">=0.34.0" },
 ]
+provides-extras = ["dev", "docs"]
 
 [[package]]
 name = "airdocs"
@@ -30,7 +46,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "air", specifier = ">=0.10.0" },
+    { name = "air", editable = "../air" },
     { name = "eidosui", editable = "../EidosUI" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.14" },
 ]

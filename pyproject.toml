@@ -5,10 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "air>=0.10.0",
+    "air",
     "eidosui",
     "fastapi[standard]>=0.115.14",
 ]
 
 [tool.uv.sources]
+air = { path = "../air", editable = true }
 eidosui = { path = "../EidosUI", editable = true }
