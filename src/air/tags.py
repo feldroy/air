@@ -136,6 +136,33 @@ class RawHTML(Tag):
         return self._children[0] if self._children else ""
 
 
+class NoEscapeTag(Tag):
+    """Custom tag that does not escape its children.
+
+    This is used for tags like Script and Style where content
+    should not be HTML-escaped.
+    """
+
+    def render(self) -> str:
+        """Render the tag with unescaped content."""
+        content = self._children[0] if self._children else ""
+        return f"<{self.name}{self.attrs}>{content}</{self.name}>"
+
+
+class Script(NoEscapeTag):
+    """Defines a client-side script
+
+    Warning: Script tag does not protect against code injection.
+    """
+
+
+class Style(NoEscapeTag):
+    """Defines style information for a document
+
+    Warning: Style tag does not protect against code injection.
+    """
+
+
 # Stock tags
 
 
@@ -631,12 +658,6 @@ class Samp(Tag):
     pass
 
 
-class Script(Tag):
-    """Defines a client-side script"""
-
-    pass
-
-
 class Search(Tag):
     """Defines a search section"""
 
@@ -675,12 +696,6 @@ class Span(Tag):
 
 class Strong(Tag):
     """Defines important text"""
-
-    pass
-
-
-class Style(Tag):
-    """Defines style information for a document"""
 
     pass
 
