@@ -1,25 +1,22 @@
 from air import *
+from eidos.components.headers import EidosHeaders
 from eidos.tags import *
+from eidos.utils import get_eidos_static_directory
 
 app = Air()
 
 from fastapi.staticfiles import StaticFiles
-import os
 
 # Mount static files for CSS
-app.mount("/eidos", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "..", "eidosui")), name="eidos")
+app.mount("/eidos", StaticFiles(directory=get_eidos_static_directory()), name="eidos")
 
 def layout(*content):
     return Html(
         Head(
+            *EidosHeaders(),
             Meta(charset="UTF-8"),
             Meta(name="viewport", content="width=device-width, initial-scale=1.0"),
             Title("EidosUI MVP - Semantic Components"),
-            Script(src="https://cdn.tailwindcss.com"),
-            Link(rel="stylesheet", href="https://cdn.jsdelivr.net/gh/kentro-tech/EidosUI@main/eidos/css/styles.css"),
-            Link(rel="stylesheet", href="/eidos/css/themes/eidos-variables.css"),
-            Link(rel="stylesheet", href="/eidos/css/themes/light.css"),
-            Link(rel="stylesheet", href="/eidos/css/themes/dark.css")
             ),
         Body(
             Main(
