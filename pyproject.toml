@@ -1,0 +1,13 @@
+[project]
+name = "airdocs"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "air>=0.10.0",
+    "eidosui",
+]
+
+[tool.uv.sources]
+eidosui = { path = "../EidosUI", editable = true }
