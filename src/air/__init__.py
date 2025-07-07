@@ -2,12 +2,12 @@
 
 __version__ = "0.9.0"
 
+from . import layouts as layouts
 from . import svg as svg
 from .applications import Air as Air
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import TagResponse as TagResponse
-from . import layouts as layouts
 from .tags import (
     H1 as H1,
 )
