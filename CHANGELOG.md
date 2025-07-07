@@ -1,5 +1,19 @@
 # Changelog
 
+# 0.10.0 - 2025-07-07
+
+## What's Changed
+
+* Remove the ability to change the Air default response class by @pydanny in https://github.com/feldroy/air/pull/79
+* Add kwargs to Jinja2Renderer by @pydanny in https://github.com/feldroy/air/pull/84
+* About section by @pydanny in https://github.com/feldroy/air/pull/73
+* Sort imports and add import sorting to clean command by @pydanny in https://github.com/feldroy/air/pull/90
+* Added form validation via Air Forms by @pydanny in https://github.com/feldroy/air/pull/81
+* Support mkdoc-material admonitions by @pydanny in https://github.com/feldroy/air/pull/95
+* Allow non-escaped code through Style and Script tags by @Isaac-Flath and @pydanny in https://github.com/feldroy/air/pull/96
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.9.0...v0.10.0
+
 # 0.9.0 - 2025-07-03
 
 ## What's Changed
