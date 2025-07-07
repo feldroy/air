@@ -2,6 +2,7 @@
 
 __version__ = "0.10.0"
 
+from . import layouts as layouts
 from . import svg as svg
 from .applications import Air as Air
 from .forms import AirForm as AirForm
