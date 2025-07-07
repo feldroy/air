@@ -1,7 +1,17 @@
 from .tags import Base, Body, Head, Html, Link, Main, Meta, Script, Style, Tag, Title
 
+HEAD_TAG_TYPES: tuple[Tag] = (Title, Style, Meta, Link, Script, Base)  # type: ignore [assignment]
 
-def pico_page(*children, htmx: bool = True, **kwargs):
+
+def filter_body_tags(tags) -> list:
+    return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]  # type: ignore [arg-type]
+
+def filter_head_tags(tags) -> list:
+    return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]  # type: ignore [arg-type]
+
+
+
+def pico(*children, htmx: bool = True, **kwargs):
     """Renders the basic layout with Pico and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the <head>
@@ -14,8 +24,8 @@ def pico_page(*children, htmx: bool = True, **kwargs):
         you'll have to create your own layouts.
     """
     HEAD_TAG_TYPES: tuple[Tag] = (Title, Style, Meta, Link, Script, Base)  # type: ignore [assignment]
-    body_tags = [c for c in children if not isinstance(c, HEAD_TAG_TYPES)]  # type: ignore [arg-type]
-    head_tags = [c for c in children if isinstance(c, HEAD_TAG_TYPES)]  # type: ignore [arg-type]
+    body_tags = filter_body_tags(children)  # type: ignore [arg-type]
+    head_tags = filter_head_tags(children)  # type: ignore [arg-type]
     if htmx:
         head_tags.insert(
             0,
