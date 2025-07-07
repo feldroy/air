@@ -190,3 +190,15 @@ def test_tags_head_tag_injection():
 def test_escape_html():
     html = air.P("I'm <strong>Strong</strong>").render()
     assert html == "<p>I&#x27;m &lt;strong&gt;Strong&lt;/strong&gt;</p>"
+
+
+def test_script_tag():
+    js = "console.log('I am a snippet of javascript');"
+    html = air.Script(js, cls="test").render()
+    assert html == f"""<script class="test">{js}</script>"""
+
+
+def test_style_tag():
+    css = "p {border-style: solid; border-width: 5px;}"
+    html = air.Style(css, cls="test").render()
+    assert html == f"""<style class="test">{css}</style>"""

@@ -1,10 +1,11 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-__version__ = "0.9.0"
+__version__ = "0.10.0"
 
 from . import layouts as layouts
 from . import svg as svg
 from .applications import Air as Air
+from .forms import AirForm as AirForm
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import TagResponse as TagResponse
