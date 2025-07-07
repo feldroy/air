@@ -1,4 +1,12 @@
-# Static Site Generation
+# CLI
+
+!!! warning
+
+    Air's CLI is currently being completely reworked. Everything on this
+    page will change in the future. Until the design and UI are more stable,
+    do not use the features described here for critical projects.
+
+## Static Site Generation
 
 First, create a directory for your site:
 
@@ -42,7 +50,7 @@ air
 
 The generated site will be in the `public` directory.
 
-## Using Markdown
+### Using Markdown
 
 Put the following content in `input/hello.md`:
 
@@ -62,7 +70,7 @@ air
 
 The generated site will be in the `public` directory, with a `hello.html` page generated from the `hello.md` file.
 
-## Deploying to GitHub Pages
+### Deploying to GitHub Pages
 
 First, create a repository on GitHub with your site's domain name as the repository name, e.g. example.github.io
 
@@ -77,3 +85,6 @@ Click "Save".
 Commit and push your HTML files to the `main` branch.
 
 Set up your custom domain per GitHub's instructions.
+
+
+::: air.cli
