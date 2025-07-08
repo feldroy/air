@@ -1,6 +1,11 @@
-# Tags
 
-Tags, also known as "Air Tags", are a fast, expressive way to generate HTML. Instead of a template language, Air Tags use Python classes to represent HTML elements. This allows leveraging Python's capabilities to generate content..
+# Air Tags
+
+Tags, also known as "Air Tags", are a fast, expressive way to generate HTML. Instead of a template language, Air Tags use Python classes to represent HTML elements. This allows leveraging Python's capabilities to generate content.
+
+!!! note
+
+    This document covers how Tags, or Air Tags work. The full reference for them is the [Tag API Reference](../api/tags.md).
 
 ## What are Air Tags?
 
@@ -113,7 +118,3 @@ Which produces the following HTML:
     <footer>Card Footer</footer>
 </article>
 ```
-
-## API Reference
-
-::: air.tags
