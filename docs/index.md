@@ -1,6 +1,10 @@
-# Air
+<p align="center">
+  <a href="http://feldroy.github.io/air/"><img src="img/logo-blue-369x369.png" alt="FastAPI"></a>
+</p>
 
-> A FastAPI-powered breath of fresh air in Python web development.
+<p align="center">
+    <em>A FastAPI-powered breath of fresh air in Python web development.</em>
+</p>
 
 <p align="center">
 <a href="https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main" target="_blank">
