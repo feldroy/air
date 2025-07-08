@@ -12,12 +12,12 @@ class Jinja2Renderer:
 
     Example:
         >>> # Instantiate the render callable
-        >>> render = TemplateRenderer('templates')
+        >>> jinja = TemplateRenderer('templates')
         >>>
         >>> # Use for returning Jinja2 from views
         >>> @app.get('/')
         >>> async def home(request: Request):
-        >>> return render(
+        >>> return jinja(
         ...     request,
         ...     'home.html',
         ...     context={'id': 5}
@@ -25,7 +25,7 @@ class Jinja2Renderer:
 
     Can also pass in kwargs, which will be added to the context:
 
-        >>> return render(
+        >>> return jinja(
         ...     request,
         ...     'home.html',
         ...     name='Parmesan'

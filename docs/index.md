@@ -74,11 +74,11 @@ async def index():
 ```python
 from air import Jinja2Renderer
 
-render = Jinja2Renderer(directory="templates")
+jinja = Jinja2Renderer(directory="templates")
 
 @app.get("/test")
 def index(request: Request):
-    return render(
+    return jinja(
         request,
         name="home.html",
         context={"title": "Hello World Page"}, content="Hello, World",

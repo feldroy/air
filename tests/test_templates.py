@@ -8,11 +8,11 @@ def test_Jinja2Renderer():
     """Test the Jinja2Renderer class."""
     app = FastAPI()
 
-    render = Jinja2Renderer(directory="tests/templates")
+    jinja = Jinja2Renderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
-        return render(
+        return jinja(
             request,
             name="home.html",
             context={"title": "Test Page", "content": "Hello, World!"},
@@ -33,11 +33,11 @@ def test_Jinja2Renderer_no_context():
     """Test the Jinja2Renderer class."""
     app = FastAPI()
 
-    render = Jinja2Renderer(directory="tests/templates")
+    jinja = Jinja2Renderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
-        return render(request, name="home.html")
+        return jinja(request, name="home.html")
 
     client = TestClient(app)
     response = client.get("/test")
@@ -51,11 +51,11 @@ def test_Jinja2Renderer_with_Air():
     """Test the Jinja2Renderer class with air.Air."""
     app = Air()
 
-    render = Jinja2Renderer(directory="tests/templates")
+    jinja = Jinja2Renderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
-        return render(request, name="home.html")
+        return jinja(request, name="home.html")
 
     client = TestClient(app)
     response = client.get("/test")
@@ -68,11 +68,11 @@ def test_Jinja2Renderer_with_Air():
 def test_Jinja2Renderer_with_kwargs():
     app = FastAPI()
 
-    render = Jinja2Renderer(directory="tests/templates")
+    jinja = Jinja2Renderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
-        return render(
+        return jinja(
             request,
             name="home.html",
             context={"title": "Test Page"},

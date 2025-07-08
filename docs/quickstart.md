@@ -31,11 +31,11 @@ A minimal Air application:
     from fastapi import Request
 
     app = Air()
-    render = air.Jinja2Renderer(directory="templates")
+    jinja = air.Jinja2Renderer(directory="templates")
 
     @app.get('/')
     async def index(request: Request):
-        return render(
+        return jinja(
             request,
             name="home.html"
         )       
@@ -98,11 +98,11 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
     from fastapi import Request
 
     app = air.Air()
-    render = air.Jinja2Renderer(directory="templates")
+    jinja = air.Jinja2Renderer(directory="templates")
 
     @app.page
     async def dashboard(request: Request):
-        return render(
+        return jinja(
             request,
             name="dashboard.html"
         )     
@@ -173,7 +173,7 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 
 
     app = air.Air()
-    render = air.Jinja2Renderer(directory="templates")
+    jinja = air.Jinja2Renderer(directory="templates")
 
 
     class CheeseModel(BaseModel):
@@ -187,13 +187,13 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 
     @app.page
     async def cheese(request: Request):
-        return render(request, name="cheese_form.html")
+        return jinja(request, name="cheese_form.html")
 
 
     @app.post("/cheese-info")
     async def cheese_info(request: Request):
         cheese = await CheeseForm.validate(request)
-        return render(request, name="cheese_info.html", cheese=cheese)
+        return jinja(request, name="cheese_info.html", cheese=cheese)
     ```
 
     ```jinja title="templates/cheese_form.html"
@@ -273,7 +273,7 @@ It is possible to use AirForms through FastAPI's dependency injection mechanism.
 
 
     app = air.Air()
-    render = air.Jinja2Renderer(directory="templates")
+    jinja = air.Jinja2Renderer(directory="templates")
 
 
     class CheeseModel(BaseModel):
@@ -287,14 +287,14 @@ It is possible to use AirForms through FastAPI's dependency injection mechanism.
 
     @app.page
     async def cheese(request: Request):
-        return render(request, name="cheese_form.html")
+        return jinja(request, name="cheese_form.html")
 
 
     @app.post("/cheese-info")
     async def cheese_info(
         request: Request, cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)]
     ):
-        return render(request, name="cheese_info.html", cheese=cheese)
+        return jinja(request, name="cheese_info.html", cheese=cheese)
     ```
 
     ```jinja title="templates/cheese_form.html"
