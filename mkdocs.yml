@@ -51,3 +51,4 @@ plugins:
           paths: [.]
           options:
             show_source: true
+            unwrap_annotated: true

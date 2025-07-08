@@ -26,7 +26,26 @@ AppType = TypeVar("AppType", bound="FastAPI")
 
 
 class Air(FastAPI):
-    """FastAPI wrapper class with AirResponse as the default response class."""
+    """FastAPI wrapper class with AirResponse as the default response class.
+
+    Args:
+        debug: Enables additional logging or diagnostic output.
+        dependencies: A list of global dependencies, they will be applied to each *path operation*,
+                including in sub-routers.
+        middleware: List of middleware to be added when creating the application.
+        default_response_class: The default response class to be used.
+        redirect_slashes: Whether to detect and redirect slashes in URLs when the client doesn't
+                use the same format.
+        on_startup: A list of startup event handler functions.
+        on_shutdown: A list of shutdown event handler functions.
+        lifespan: A `Lifespan` context manager handler. This replaces `startup` and
+                `shutdown` functions with a single context manager.
+    Example:
+
+        import air
+
+        app = air.Air()
+    """
 
     def __init__(
         self: AppType,
@@ -136,16 +155,12 @@ class Air(FastAPI):
             Doc(
                 """
                 The default response class to be used.
-
                 Read more in the
                 [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
-
                 **Analogy**
-
                 ```python
                 from fastapi import FastAPI
                 from air import AirResponse
-
                 app = FastAPI(default_response_class=AirResponse)
                 ```
                 """
