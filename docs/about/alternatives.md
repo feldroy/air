@@ -52,13 +52,31 @@ This is in line with FastHTML's pattern of providing a lot of syntactical sugar 
 
 ### FastAPI
 
-The FastAPI project has superlative, engaging documentation. There's a sense of positivity in the prose that is infectious. Of note is how the project explains its inspiration, which in turn inspired this document.
+The most popular Python framework, FastAPI is a proven tool for building APIs. Odds are you came here because you wanted improved web page generation with FastAPI. 
 
 FastAPI uses types to provide an intuitive and explicit API. Behaviors are sometimes controlled by types rather than configuration. A pleasant result of this is how nicely code completion works for FastAPI projects. This is a pattern we are emulating in Air.
 
+The FastAPI project has superlative, engaging documentation. There's a sense of positivity in the prose that is infectious. Of note is how the project explains its inspiration, which in turn inspired this document.
+
+
 !!! note "Air uses FastAPI to"
 
- 1. Have superlative documentation
- 2. Stay positive - we're in this to support each other and have fun    
- 3. For people building sites provide an intuitive and explicit API
+ 1. Provide an application server
+ 2. Inspire us to have superlative documentation
+ 3. Stay positive - we're in this to support each other and have fun    
  4. Lean into types for better IDE and AI integrations.
+
+ ### Pydantic
+
+Pydantic is the most widely used data validation library for Python. We love using it to confirm the structure and quality of data.
+
+One of the core components of FastAPI, Pydantic also uses types to provide an intuitive and explicit API. From simple to complex use cases, Pydantic handles everything and thanks to its Rust-powered backend, does so excellently at scale.
+
+What we like about Pydantic's documention is the clean, intuitive structure of it. All the objects are well-documented, something that Air is working towards copying.
+
+
+!!! note "Air uses Pydantic to"
+
+ 1. Power the form validation system
+ 2. Inspire us to better organize our documentation
+ 3. Lean into types for better IDE and AI integrations.
