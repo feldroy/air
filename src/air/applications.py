@@ -323,7 +323,20 @@ class Air(FastAPI):
         )
 
     def page(self, func):
-        """Decorator that creates a GET route using the function name as the path."""
+        """Decorator that creates a GET route using the function name as the path.
+
+        If the name of the function is "index", then the route is "/".
+
+        Examples:
+
+            import air
+
+            app = Air()
+
+            @app.page
+            def index():
+                return H1("I am the home page")
+        """
         if func.__name__ == "index":
             route_name = "/"
         else:
