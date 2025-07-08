@@ -314,3 +314,45 @@ It is possible to use AirForms through FastAPI's dependency injection mechanism.
         <h1>Errors {{len(cheese.errors)}}</h1>
     {% endif %}
     ```    
+
+## Escaping HTML
+
+Escaping HTML is where text is converted from tags and script that will interact with the DOM to representations of those things. For example:
+
+Unscaped HTML:
+
+```html
+<h1>Hello, World!</h1>
+```
+
+Escaped HTML:
+
+```html
+&lt;h1&gt;Hello, World!&lt;/h1&gt;
+```
+
+By default Air Tags escapes everything, but Jinja2 escapes nothing. 
+
+=== "Air Tags"
+
+    ```python
+    air.RawHTML("<h1>Hello, World!</h1>")
+    ```
+
+
+=== "Jinja2"
+
+    ```jinja
+    <h1>Hello, World!</h1>
+    ```
+
+
+
+## Using the `<script>` tag
+
+=== "Air Tags"
+
+By default Air Tags escapes HTML. 
+
+
+=== "Jinja2"
