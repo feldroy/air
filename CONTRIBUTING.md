@@ -12,13 +12,13 @@ source .venv/bin/activate
 uv sync --extra dev
 ```
 
-If you are writing docs, install those dependencies
+Now you're ready to run Air from your local clone of your fork. Play with it, fix bugs, document, have fun!
+
+If you are writing docs, install those dependencies:
 
 ```sh
 uv sync --extra docs
 ```
-
-Add features, fix bugs, document!
 
 Run the tests:
 
