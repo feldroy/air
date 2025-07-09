@@ -45,7 +45,7 @@ def picocss(*children, htmx: bool = True, **kwargs):
             ),
             *head_tags,
         ),
-        Body(Main(*body_tags, cls="container")),
+        Body(Main(*body_tags, class_="container")),
     ).render()
 
 

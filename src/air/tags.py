@@ -4,31 +4,13 @@ import html
 from functools import cached_property
 
 
-def _fix_k(k):
-    # This function originated in fastcore.
-    return k if k == "_" else k.lstrip("_").replace("_", "-")
-
-
-_specials = set("@.-!~:[](){}$%^&*+=|/?<>,`")
-
-
-def attrmap(o):
-    """Converts shims for class and for such as _class, cls, _for, fr into
-    their HTML implementations
-    """
-    # This function originated in fastcore.
-    if _specials & set(o):
-        return o
-    o = dict(
-        htmlClass="class",
-        cls="class",
-        _class="class",
-        klass="class",
-        _for="for",
-        fr="for",
-        htmlFor="for",
-    ).get(o, o)
-    return _fix_k(o)
+def clean_html_attr_key(key):
+    """Clean up HTML attribute keys to match the standard W3C HTML spec."""
+    # If a "_"-suffixed proxy for "class", "for", or "id" is used,
+    # convert it to its normal HTML equivalent.
+    key = dict(class_="class", for_="for", id_="id").get(key, key)
+    # Remove leading underscores and replace underscores with dashes
+    return key.lstrip("_").replace("_", "-")
 
 
 class Tag:
@@ -49,7 +31,9 @@ class Tag:
     def attrs(self) -> str:
         if not self._attrs:
             return ""
-        return " " + " ".join(f'{attrmap(k)}="{v}"' for k, v in self._attrs.items())
+        return " " + " ".join(
+            f'{clean_html_attr_key(k)}="{v}"' for k, v in self._attrs.items()
+        )
 
     @cached_property
     def children(self):
