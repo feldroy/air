@@ -1,5 +1,23 @@
 # Changelog
 
+# 0.11.0 - 2025-07-09
+
+## What's Changed
+
+* Add layouts module with pico example by @audreyfeldroy and @pydanny in https://github.com/feldroy/air/pull/87
+* Restructure docs by @pydanny in https://github.com/feldroy/air/pull/100
+* Add README badges and refactor README by @pydanny in https://github.com/feldroy/air/pull/101
+* Documentation improvements by @pydanny in https://github.com/feldroy/air/pull/102
+* Add logo by @audreyfeldroy and @pydanny in https://github.com/feldroy/air/pull/103
+* Document how `page` works with index by @pydanny in https://github.com/feldroy/air/pull/105
+* For Jinja rendering, change "render" var name to "jinja" by @pydanny in https://github.com/feldroy/air/pull/106
+* Restructure docs yet again by @pydanny in https://github.com/feldroy/air/pull/109
+* Add MVP.css and change `pico()` function name to `picocss()` by @audreyfeldroy and @pydanny in https://github.com/feldroy/air/pull/114
+* Refactor HTML attr cleanup function by @audreyfeldroy and @pydanny in https://github.com/feldroy/air/pull/115
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.10.0...v0.11.0
+
 # 0.10.0 - 2025-07-07
 
 ## What's Changed
