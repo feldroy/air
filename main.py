@@ -40,9 +40,20 @@ def layout(*content):
         )    
 
 
-@app.get('/')
+@app.page
 def index():
     return layout(
-        air.Title('Hello, world'),
-        et.H1('Hello, World'))
+        air.Title('Air: The New FastAPI-Powered Python Web Framework (2025)'),
+        # TODO: replace with Eidos UI nav
+        air.Div(
+            air.Ul(
+                air.Li("A I R"),
+                air.Li("Tutorials"),
+                air.Li("Explanations"),
+                air.Li("API Reference")
+            )
+        ),
+        et.H1('Air Documentation'),
+        air.P("TODO: docs index")
+    )
     
