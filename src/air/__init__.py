@@ -1,6 +1,6 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-__version__ = "0.10.0"
+__version__ = "0.11.0"
 
 from . import layouts as layouts
 from . import svg as svg
