@@ -8,6 +8,8 @@ dependencies = [
     "air",
     "eidosui",
     "fastapi[standard]>=0.115.14",
+    "marimo>=0.14.10",
+    "mkdocstrings[python]>=0.29.1",
 ]
 
 [tool.uv.sources]
