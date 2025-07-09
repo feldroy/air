@@ -26,7 +26,7 @@
 
 - **Powered by FastAPI** - Designed to work with FastAPI so you can server your API and web pages from one app
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
-- **Air Tags** - Easy to write and performant TML content generation using Python classes to render HTML
+- **Air Tags** - Easy to write and performant HTML content generation using Python classes to render HTML
 - **Jinja Friendly** - No need to write `response_class=HtmlResponse` and `templates.TemplateResponse` for every HTML view
 - **Mix Jinja and Air Tags** - Jinja and Air Tags both are first class citizens. Use either or both in the same view!
 - **HTMX friendly** - We love HTMX and provide utilities to use it with Air
