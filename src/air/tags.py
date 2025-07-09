@@ -4,8 +4,16 @@ import html
 from functools import cached_property
 
 
-def clean_html_attr_key(key):
-    """Clean up HTML attribute keys to match the standard W3C HTML spec."""
+def clean_html_attr_key(key: str) -> str:
+    """Clean up HTML attribute keys to match the standard W3C HTML spec.
+    
+        Args:
+            key: An uncleaned HTML attribute key
+
+        Returns:
+
+            Cleaned HTML attribute key
+    """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
     key = dict(class_="class", for_="for", id_="id").get(key, key)
