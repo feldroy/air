@@ -14,6 +14,13 @@
 </a>
 </p>
 
+
+> [!CAUTION]
+> Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
+>
+> We ask that you hold off on contributing mostly for now, to give us space to focus on
+> getting our ideas down. If you happen to fix a bug, though, little PRs for that are welcome.
+
 ## Why use Air?
 
 
