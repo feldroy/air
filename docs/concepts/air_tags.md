@@ -22,7 +22,7 @@ This example:
 >>> content = Article(
 ...     H1("Air Tags"),
 ...     P("Air Tags are a fast, expressive way to generate HTML.",
-...             cls="subtitle")
+...             class_="subtitle")
 ... )
 >>> content
 <air.tags.Article at 0x1052f2cf0>
@@ -75,7 +75,7 @@ class Tasty(Tag):
 Let's instantiate this class and call its `render()` method:
 
 ```python
-Tasty('Ice Cream', cls='dessert').render()
+Tasty('Ice Cream', class_='dessert').render()
 ```
 
 This will produce the following HTML:

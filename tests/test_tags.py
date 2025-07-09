@@ -6,24 +6,24 @@ def test_atag_no_attrs_no_children():
 
 
 def test_atag_yes_attrs_no_children():
-    tag = air.A(href="/", cls="link").render()
+    tag = air.A(href="/", class_="link").render()
     assert tag == '<a href="/" class="link"></a>'
 
 
 def test_atag_yes_attrs_text_children():
-    tag = air.A("Link here", href="/", cls="link").render()
+    tag = air.A("Link here", href="/", class_="link").render()
     assert tag == '<a href="/" class="link">Link here</a>'
 
 
 def test_divtag_yes_attrs_a_child():
-    html = air.Div(air.A("Link here", href="/", cls="link")).render()
+    html = air.Div(air.A("Link here", href="/", class_="link")).render()
     assert html == '<div><a href="/" class="link">Link here</a></div>'
 
 
 def test_divtag_yes_attrs_multiple_a_children():
     html = air.Div(
-        air.A("Link here", href="/", cls="link"),
-        air.A("Another link", href="/", cls="timid"),
+        air.A("Link here", href="/", class_="link"),
+        air.A("Another link", href="/", class_="timid"),
     ).render()
     assert (
         html
@@ -35,8 +35,8 @@ def test_divtag_yes_attrs_nested_children():
     html = air.Div(
         air.P(
             "Links are here",
-            air.A("Link here", href="/", cls="link"),
-            air.A("Another link", href="/", cls="timid"),
+            air.A("Link here", href="/", class_="link"),
+            air.A("Another link", href="/", class_="timid"),
         )
     ).render()
     assert (
@@ -120,7 +120,7 @@ def test_raw_html_invalid_args():
 
 def test_raw_html_ignores_kwargs():
     """Test that RawHTML ignores keyword arguments."""
-    raw = air.RawHTML("<div>Test</div>", id="ignored", cls="also-ignored")
+    raw = air.RawHTML("<div>Test</div>", id="ignored", class_="also-ignored")
     assert raw.render() == "<div>Test</div>"
 
 
@@ -194,11 +194,11 @@ def test_escape_html():
 
 def test_script_tag():
     js = "console.log('I am a snippet of javascript');"
-    html = air.Script(js, cls="test").render()
+    html = air.Script(js, class_="test").render()
     assert html == f"""<script class="test">{js}</script>"""
 
 
 def test_style_tag():
     css = "p {border-style: solid; border-width: 5px;}"
-    html = air.Style(css, cls="test").render()
+    html = air.Style(css, class_="test").render()
     assert html == f"""<style class="test">{css}</style>"""
