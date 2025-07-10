@@ -110,6 +110,22 @@ def test_form_render():
     )
 
 
+def test_form_render_with_values():
+    class CheeseModel(BaseModel):
+        name: str  # type: ignore [annotation-unchecked]
+        age: int  # type: ignore [annotation-unchecked]
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    cheese = CheeseForm(form_data=dict(name="Cheddar", age=3))
+
+    assert (
+        cheese.render()
+        == '<fieldset><input name="name" type="text" id="name" value="Cheddar"></input><input name="age" type="number" id="age" value="3"></input></fieldset>'
+    )
+
+
 def test_form_render_in_view():
     class CheeseModel(BaseModel):
         name: str  # type: ignore [annotation-unchecked]

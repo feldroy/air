@@ -80,7 +80,7 @@ class AirForm:
 
     def render(self) -> tags.SafeStr:
         return tags.SafeStr(
-            self.widget(model=self.model, data=self.data, errors=self.errors)
+            self.widget(model=self.model, data=self.initial_data, errors=self.errors)
         )
 
 
@@ -129,6 +129,14 @@ def default_form_widget(
             args = get_args(field_type)
             field_type = next((arg for arg in args if arg is not type(None)), str)
         input_type = pydantic_type_to_html_type(field_info)
-        fields.append(tags.Input(name=field_name, type=input_type, id=field_name))
+        kwargs = {}
+        # Inject values
+        if data is not None and field_name in data:
+            kwargs["value"] = data[field_name]
+        # Note that something is in error
+        # TODO
+        fields.append(
+            tags.Input(name=field_name, type=input_type, id=field_name, **kwargs)
+        )
 
     return tags.Fieldset(*fields).render()
