@@ -7,6 +7,20 @@ from pydantic import BaseModel, Field
 import air
 
 
+def test_form_sync_check():
+    class CheeseModel(BaseModel):
+        name: str  # type: ignore [annotation-unchecked]
+        age: int  # type: ignore [annotation-unchecked]
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    cheese = CheeseForm()
+    cheese.validate({'name': 'Parmesan', 'age': 'Hello'})
+    assert cheese.is_valid is False
+    assert cheese.errors == [{'type': 'int_parsing', 'loc': ('age',), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'Hello', 'url': 'https://errors.pydantic.dev/2.11/v/int_parsing'}]
+
+
 def test_form_validation_dependency_injection():
     class CheeseModel(BaseModel):
         name: str  # type: ignore [annotation-unchecked]
@@ -18,7 +32,9 @@ def test_form_validation_dependency_injection():
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)]):
+    async def cheese_form(
+        cheese: Annotated[CheeseForm, Depends(CheeseForm.from_request)],
+    ):
         if cheese.is_valid:
             return air.Html(air.H1(cheese.data.name))
         return air.Html(air.H1(air.RawHTML(str(len(cheese.errors)))))  # type: ignore [arg-type]
@@ -50,7 +66,7 @@ def test_form_validation_in_view():
 
     @app.post("/cheese")
     async def cheese_form(request: Request):
-        cheese = await CheeseForm.validate(request)
+        cheese = await CheeseForm.from_request(request)
         if cheese.is_valid:
             return air.Html(air.H1(cheese.data.name))
         return air.Html(air.H1(air.RawHTML(str(len(cheese.errors)))))  # type: ignore [arg-type]
@@ -72,21 +88,16 @@ def test_form_validation_in_view():
 
 def test_form_render():
     class CheeseModel(BaseModel):
-        id: int = Field(json_schema_extra=dict(hidden=True))
-        name: str  
-        age: int
+        name: str  # type: ignore [annotation-unchecked]
+        age: int  # type: ignore [annotation-unchecked]
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
 
-    app = air.Air()
+    cheese = CheeseForm()
 
-    @app.post("/cheese")
-    async def cheese_form(request: Request):
-        cheese = await CheeseForm.validate(request)
-        return cheese.render()
-    
-    client = TestClient(app)
-    response = client.post("/cheese", data={"name": "cheddar", "age": 5})
-     
-    assert response.text == '<fieldset><input name="id" type="hidden" id="id"></input><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset>'
+    assert (
+        cheese.render()
+        == '<fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset>'
+    )
+

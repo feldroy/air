@@ -1,8 +1,9 @@
-from typing import Callable, Any, get_args
+from typing import Any, Callable, get_args
+
+from fastapi import Request
+from pydantic import BaseModel, ValidationError
 
 from . import tags
-from fastapi import Request
-from pydantic import ValidationError, BaseModel
 
 try:
     from typing import Self  # type: ignore [attr-defined]
@@ -34,31 +35,38 @@ class AirForm:
 
     model = None
     data = None
+    initial_data = None
     errors = None
     is_valid = None
 
-    async def __call__(self, request: Request) -> Self:
+    def __init__(self, form_data: dict | None = None):
         if self.model is None:
             raise NotImplementedError("model")
-        data = await request.form()
+        self.initial_data = form_data
+
+    async def __call__(self, form_data: dict) -> Self:
+        self.validate(form_data)
+        return self
+
+    def validate(self, form_data: dict | None = None):
         try:
-            self.data = self.model(**data)
+            self.data = self.model(**form_data)
             self.is_valid = True
         except ValidationError as e:
             self.errors = e.errors()
             self.is_valid = False
-        return self
 
     @classmethod
-    async def validate(cls, request: Request) -> Self:
+    async def from_request(cls, request: Request) -> Self:
+        form_data = await request.form()
         self = cls()
-        await self(request)
+        await self(form_data)
         return self
 
     @property
     def widget(self) -> Callable:
         """Widget for rendering of form in HTML
-        
+
         If you want a custom widget, replace with a function that accepts:
 
             - model: BaseModel
@@ -66,55 +74,56 @@ class AirForm:
             - errors:dict|None=None
         """
         return default_form_widget
-    
+
     def render(self) -> str:
         return self.widget(model=self.model, data=self.data, errors=self.errors)
-    
+
+
 def pydantic_type_to_html_type(field_info: Any) -> str:
     """Return HTML type from pydantic type.
-    
+
     Default to 'text' for unknown types.
     """
-    special_fields = ['hidden', 'email', 'password', 'url', 'date'
-        'datetime-local', 'month', 'time', 'color', 'file'
+    special_fields = [
+        "hidden",
+        "email",
+        "password",
+        "url",
+        "datedatetime-local",
+        "month",
+        "time",
+        "color",
+        "file",
     ]
     for field in special_fields:
-
-        if field_info.json_schema_extra and field_info.json_schema_extra.get(field, False):            
+        if field_info.json_schema_extra and field_info.json_schema_extra.get(
+            field, False
+        ):
             return field
 
-    return {
-        int: 'number',
-        float: 'number',
-        bool: 'checkbox',
-        str: 'text'
-    }.get(field_info.annotation , 'text')
+    return {int: "number", float: "number", bool: "checkbox", str: "text"}.get(
+        field_info.annotation, "text"
+    )
 
 
-
-
-def default_form_widget(model: type[BaseModel],
-                        data: dict|None=None, errors:dict|None=None) -> str:
+def default_form_widget(
+    model: type[BaseModel], data: dict | None = None, errors: dict | None = None
+) -> str:
     # TODO add looping through data and associated with any errors
     # Make individual inputs their own widget?
     fields = []
     for field_name, field_info in model.model_fields.items():
         field_type = field_info.annotation
-        
+
         # Handle optional types (Union with None)
-        if hasattr(field_type, '__origin__') and field_type.__origin__ is type(None | str).__origin__:
+        if (
+            hasattr(field_type, "__origin__")
+            and field_type.__origin__ is type(None | str).__origin__
+        ):
             # This is a Union type, get the non-None type
             args = get_args(field_type)
-            field_type = next((arg for arg in args if arg is not type(None)), str)        
+            field_type = next((arg for arg in args if arg is not type(None)), str)
         input_type = pydantic_type_to_html_type(field_info)
-        fields.append(
-            tags.Input(
-                name=field_name,
-                type=input_type,
-                id=field_name
-            )
-        )
+        fields.append(tags.Input(name=field_name, type=input_type, id=field_name))
 
-    return tags.Fieldset(
-                *fields
-    ).render()
+    return tags.Fieldset(*fields).render()
