@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 import air
 
@@ -16,9 +16,17 @@ def test_form_sync_check():
         model = CheeseModel
 
     cheese = CheeseForm()
-    cheese.validate({'name': 'Parmesan', 'age': 'Hello'})
+    cheese.validate({"name": "Parmesan", "age": "Hello"})
     assert cheese.is_valid is False
-    assert cheese.errors == [{'type': 'int_parsing', 'loc': ('age',), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'Hello', 'url': 'https://errors.pydantic.dev/2.11/v/int_parsing'}]
+    assert cheese.errors == [
+        {
+            "type": "int_parsing",
+            "loc": ("age",),
+            "msg": "Input should be a valid integer, unable to parse string as an integer",
+            "input": "Hello",
+            "url": "https://errors.pydantic.dev/2.11/v/int_parsing",
+        }
+    ]
 
 
 def test_form_validation_dependency_injection():
@@ -36,7 +44,7 @@ def test_form_validation_dependency_injection():
         cheese: Annotated[CheeseForm, Depends(CheeseForm.from_request)],
     ):
         if cheese.is_valid:
-            return air.Html(air.H1(cheese.data.name))
+            return air.Html(air.H1(cheese.data.name))  # type: ignore [union-attr]
         return air.Html(air.H1(air.RawHTML(str(len(cheese.errors)))))  # type: ignore [arg-type]
 
     client = TestClient(app)
@@ -101,6 +109,7 @@ def test_form_render():
         == '<fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset>'
     )
 
+
 def test_form_render_in_view():
     class CheeseModel(BaseModel):
         name: str  # type: ignore [annotation-unchecked]
@@ -108,8 +117,6 @@ def test_form_render_in_view():
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
-
-    cheese = CheeseForm()
 
     app = air.Air()
 
@@ -124,4 +131,7 @@ def test_form_render_in_view():
     response = client.post("/cheese", data={"name": "cheddar", "age": 5})
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == '<form><fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset></form>'
+    assert (
+        response.text
+        == '<form><fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset></form>'
+    )

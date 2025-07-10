@@ -6,10 +6,11 @@ from functools import cached_property
 
 class SafeStr(str):
     """A strtring subclass that doesn't trigger html.escape() when called by Tag.render()
-    
-        Example:
-            sample = SafeStr('Hello, world')
+
+    Example:
+        sample = SafeStr('Hello, world')
     """
+
     def __new__(cls, value):
         obj = super().__new__(cls, value)
         return obj

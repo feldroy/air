@@ -2,6 +2,7 @@ from typing import Any, Callable, get_args
 
 from fastapi import Request
 from pydantic import BaseModel, ValidationError
+from starlette.datastructures import FormData
 
 from . import tags
 
@@ -10,6 +11,7 @@ try:
 except ImportError:
     # NOTE: Remove once Python 3.10 support is dropped
     Self = "AirForm"  # type: ignore [assignment]
+
 
 class AirForm:
     """
@@ -32,8 +34,8 @@ class AirForm:
     NOTE: This is named AirForm to avoid collisions with tags.Form
     """
 
-    model = None
-    data = None
+    model: type[BaseModel] | None = None
+    data: Any = None  # TODO change type to something more specific
     initial_data = None
     errors = None
     is_valid = None
@@ -43,11 +45,13 @@ class AirForm:
             raise NotImplementedError("model")
         self.initial_data = form_data
 
-    async def __call__(self, form_data: dict) -> Self:
+    async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:
         self.validate(form_data)
         return self
 
-    def validate(self, form_data: dict | None = None):
+    def validate(self, form_data: dict[Any, Any] | FormData):
+        if self.model is None:
+            raise NotImplementedError("model")
         try:
             self.data = self.model(**form_data)
             self.is_valid = True
@@ -75,7 +79,9 @@ class AirForm:
         return default_form_widget
 
     def render(self) -> tags.SafeStr:
-        return tags.SafeStr(self.widget(model=self.model, data=self.data, errors=self.errors))
+        return tags.SafeStr(
+            self.widget(model=self.model, data=self.data, errors=self.errors)
+        )
 
 
 def pydantic_type_to_html_type(field_info: Any) -> str:
@@ -117,7 +123,7 @@ def default_form_widget(
         # Handle optional types (Union with None)
         if (
             hasattr(field_type, "__origin__")
-            and field_type.__origin__ is type(None | str).__origin__
+            and field_type.__origin__ is type(None | str).__origin__  # type: ignore
         ):
             # This is a Union type, get the non-None type
             args = get_args(field_type)
