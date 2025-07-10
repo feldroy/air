@@ -101,3 +101,27 @@ def test_form_render():
         == '<fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset>'
     )
 
+def test_form_render_in_view():
+    class CheeseModel(BaseModel):
+        name: str  # type: ignore [annotation-unchecked]
+        age: int  # type: ignore [annotation-unchecked]
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    cheese = CheeseForm()
+
+    app = air.Air()
+
+    @app.post("/cheese")
+    async def cheese_form(request: Request):
+        cheese = CheeseForm()
+        return air.Form(cheese.render())
+
+    client = TestClient(app)
+
+    # Test with valid form data
+    response = client.post("/cheese", data={"name": "cheddar", "age": 5})
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == ""
