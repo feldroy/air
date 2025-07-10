@@ -14,17 +14,25 @@ uv sync --extra dev
 
 Now you're ready to run Air from your local clone of your fork. Play with it, fix bugs, document, have fun!
 
-If you are writing docs, install those dependencies:
+## Docs
+
+The docs are temporarily in this repo in docs/ and are built with [MkDocs](https://www.mkdocs.org/). Soon they will be in https://github.com/feldroy/airdocs
+
+If you are contributing to the files in docs/ and want to build the MkDocs site, install those dependencies:
 
 ```sh
 uv sync --extra docs
 ```
+
+## Tests
 
 Run the tests:
 
 ```bash
 make test
 ```
+
+## Linting and Formatting
 
 To lint and format the code to pass the linters:
 
@@ -33,6 +41,10 @@ make clean
 ```
 
 As needed, make your changes, write tests, and submit a pull request.
+
+## Plugins vs. Core Features
+
+We don't have a plugin system yet, but when we do:
 
 Try to implement features as plugins rather than adding them to the core codebase. This will keep the core codebase small and focused.
 
@@ -68,3 +80,11 @@ Finally, create a new release on GitHub:
 * Copy in whatever notes you have from the `CHANGELOG.md` file
 * Revise the notes as needed
 * Click "Publish release"
+
+## Troubleshooting
+
+If you run into issues, try the following:
+
+* Delete `.venv/` and run `uv venv` again to recreate the virtualenv.
+* Make sure you aren't accidentally activating another virtualenv in your shell startup files.
+* File a GitHub issue with details if you're still stuck.
