@@ -124,4 +124,4 @@ def test_form_render_in_view():
     response = client.post("/cheese", data={"name": "cheddar", "age": 5})
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == ""
+    assert response.text == '<form><fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset></form>'

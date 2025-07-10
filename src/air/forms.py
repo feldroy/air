@@ -11,7 +11,6 @@ except ImportError:
     # NOTE: Remove once Python 3.10 support is dropped
     Self = "AirForm"  # type: ignore [assignment]
 
-
 class AirForm:
     """
     A form handler that validates incoming form data against a Pydantic model.
@@ -75,8 +74,8 @@ class AirForm:
         """
         return default_form_widget
 
-    def render(self) -> str:
-        return self.widget(model=self.model, data=self.data, errors=self.errors)
+    def render(self) -> tags.SafeStr:
+        return tags.SafeStr(self.widget(model=self.model, data=self.data, errors=self.errors))
 
 
 def pydantic_type_to_html_type(field_info: Any) -> str:

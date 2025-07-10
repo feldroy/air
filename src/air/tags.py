@@ -4,6 +4,20 @@ import html
 from functools import cached_property
 
 
+class SafeStr(str):
+    """A strtring subclass that doesn't trigger html.escape() when called by Tag.render()
+    
+        Example:
+            sample = SafeStr('Hello, world')
+    """
+    def __new__(cls, value):
+        obj = super().__new__(cls, value)
+        return obj
+
+    def __repr__(self):
+        return super().__repr__()
+
+
 def clean_html_attr_key(key: str) -> str:
     """Clean up HTML attribute keys to match the standard W3C HTML spec.
 
@@ -49,6 +63,8 @@ class Tag:
         for child in self._children:
             if isinstance(child, Tag):
                 elements.append(child.render())
+            elif isinstance(child, SafeStr):
+                elements.append(child)
             elif isinstance(child, str):
                 elements.append(html.escape(child))
             elif isinstance(child, int):
