@@ -40,10 +40,10 @@ class AirForm:
     errors = None
     is_valid = None
 
-    def __init__(self, form_data: dict | None = None):
+    def __init__(self, initial_data: dict | None = None):
         if self.model is None:
             raise NotImplementedError("model")
-        self.initial_data = form_data
+        self.initial_data = initial_data
 
     async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:
         self.validate(form_data)
@@ -111,11 +111,17 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
     )
 
 
+def errors_to_dict(errors: list[dict] | None) -> list[str, dict]:
+    "Converts a pydantic error list to a dictionary for easier reference."
+    if errors is None:
+        return {}
+    return {error["loc"][0]: error for error in errors}
+
+
 def default_form_widget(
-    model: type[BaseModel], data: dict | None = None, errors: dict | None = None
+    model: type[BaseModel], data: dict | None = None, errors: list | None = None
 ) -> str:
-    # TODO add looping through data and associated with any errors
-    # Make individual inputs their own widget?
+    error_dict = errors_to_dict(errors)
     fields = []
     for field_name, field_info in model.model_fields.items():
         field_type = field_info.annotation
@@ -133,10 +139,17 @@ def default_form_widget(
         # Inject values
         if data is not None and field_name in data:
             kwargs["value"] = data[field_name]
-        # Note that something is in error
-        # TODO
+
+        if error := error_dict.get(field_name, False):
+            kwargs["aria-invalid"] = "true"
         fields.append(
-            tags.Input(name=field_name, type=input_type, id=field_name, **kwargs)
+            tags.Label(
+                field_name,
+                tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
+                tags.Small("Please correct this value", id=f"{field_name}-error")
+                if error
+                else "",
+            )
         )
 
     return tags.Fieldset(*fields).render()

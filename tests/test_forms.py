@@ -106,7 +106,7 @@ def test_form_render():
 
     assert (
         cheese.render()
-        == '<fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset>'
+        == '<fieldset><label>name<input name="name" type="text" id="name"></input></label><label>age<input name="age" type="number" id="age"></input></label></fieldset>'
     )
 
 
@@ -118,11 +118,11 @@ def test_form_render_with_values():
     class CheeseForm(air.AirForm):
         model = CheeseModel
 
-    cheese = CheeseForm(form_data=dict(name="Cheddar", age=3))
+    cheese = CheeseForm(dict(name="Cheddar", age=3))
 
     assert (
         cheese.render()
-        == '<fieldset><input name="name" type="text" id="name" value="Cheddar"></input><input name="age" type="number" id="age" value="3"></input></fieldset>'
+        == '<fieldset><label>name<input name="name" type="text" id="name" value="Cheddar"></input></label><label>age<input name="age" type="number" id="age" value="3"></input></label></fieldset>'
     )
 
 
@@ -149,5 +149,22 @@ def test_form_render_in_view():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<form><fieldset><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset></form>'
+        == '<form><fieldset><label>name<input name="name" type="text" id="name"></input></label><label>age<input name="age" type="number" id="age"></input></label></fieldset></form>'
+    )
+
+
+def test_form_render_with_errors():
+    class CheeseModel(BaseModel):
+        name: str  # type: ignore [annotation-unchecked]
+        age: int  # type: ignore [annotation-unchecked]
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    cheese = CheeseForm()
+    cheese.validate({})
+
+    assert (
+        cheese.render()
+        == '<fieldset><label>name<input name="name" type="text" id="name" aria-invalid="true"></input><small id="name-error">Please correct this value</small></label><label>age<input name="age" type="number" id="age" aria-invalid="true"></input><small id="age-error">Please correct this value</small></label></fieldset>'
     )
