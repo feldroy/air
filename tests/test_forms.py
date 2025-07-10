@@ -68,3 +68,24 @@ def test_form_validation_in_view():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<!doctype html><html><h1>2</h1></html>"
+
+
+def test_form_render():
+    class CheeseModel(BaseModel):
+        name: str  # type: ignore [annotation-unchecked]
+        age: int  # type: ignore [annotation-unchecked]    
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    app = air.Air()
+
+    @app.post("/cheese")
+    async def cheese_form(request: Request):
+        cheese = await CheeseForm.validate(request)
+        return cheese.render()
+    
+    client = TestClient(app)
+    response = client.post("/cheese", data={"name": "cheddar", "age": 5})
+     
+    assert response.text == ''
