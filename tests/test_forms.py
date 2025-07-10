@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 import air
 
@@ -72,8 +72,9 @@ def test_form_validation_in_view():
 
 def test_form_render():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]    
+        id: int = Field(json_schema_extra=dict(hidden=True))
+        name: str  
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -88,4 +89,4 @@ def test_form_render():
     client = TestClient(app)
     response = client.post("/cheese", data={"name": "cheddar", "age": 5})
      
-    assert response.text == ''
+    assert response.text == '<fieldset><input name="id" type="hidden" id="id"></input><input name="name" type="text" id="name"></input><input name="age" type="number" id="age"></input></fieldset>'
