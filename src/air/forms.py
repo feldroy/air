@@ -111,7 +111,7 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
     )
 
 
-def errors_to_dict(errors: list[dict] | None) -> list[str, dict]:
+def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
     "Converts a pydantic error list to a dictionary for easier reference."
     if errors is None:
         return {}
@@ -146,7 +146,7 @@ def default_form_widget(
             tags.Label(
                 field_name,
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
-                tags.Small("Please correct this value", id=f"{field_name}-error")
+                tags.Small("Please correct this error.", id=f"{field_name}-error")
                 if error
                 else "",
             )

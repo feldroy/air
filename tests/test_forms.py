@@ -162,9 +162,18 @@ def test_form_render_with_errors():
         model = CheeseModel
 
     cheese = CheeseForm()
+
+    # render without validation
+    html = cheese.render()
+    assert "Please correct this error." not in html
+
+    # render with validation
     cheese.validate({})
+    html = cheese.render()
+
+    assert "Please correct this error." in html
 
     assert (
-        cheese.render()
-        == '<fieldset><label>name<input name="name" type="text" id="name" aria-invalid="true"></input><small id="name-error">Please correct this value</small></label><label>age<input name="age" type="number" id="age" aria-invalid="true"></input><small id="age-error">Please correct this value</small></label></fieldset>'
+        html
+        == '<fieldset><label>name<input name="name" type="text" id="name" aria-invalid="true"></input><small id="name-error">Please correct this error.</small></label><label>age<input name="age" type="number" id="age" aria-invalid="true"></input><small id="age-error">Please correct this error.</small></label></fieldset>'
     )
