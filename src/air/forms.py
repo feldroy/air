@@ -63,7 +63,7 @@ class AirForm:
     async def from_request(cls, request: Request) -> Self:
         form_data = await request.form()
         self = cls()
-        await self(form_data)
+        await self(form_data=form_data)
         return self
 
     @property

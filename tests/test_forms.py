@@ -181,9 +181,9 @@ def test_form_render_with_errors():
 
 def test_html_input_field_types():
     class ContactModel(BaseModel):
-        name: str
-        email: str = Field(json_schema_extra={"email": True})
-        date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})
+        name: str  # type: ignore [annotation-unchecked]
+        email: str = Field(json_schema_extra={"email": True})  # type: ignore [annotation-unchecked]
+        date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})  # type: ignore [annotation-unchecked]
 
     class ContactForm(air.AirForm):
         model = ContactModel
