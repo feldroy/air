@@ -117,3 +117,7 @@ Which produces the following HTML:
     <footer>Card Footer</footer>
 </article>
 ```
+
+## Converting HTML to Air Tags
+
+If you have a block of HTML that would you want to convert to Air Tags, the `air.html_to_tags`

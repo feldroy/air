@@ -1,7 +1,47 @@
 """Adds s-expression HTML tags to air."""
 
-import html
 from functools import cached_property
+from xml.etree import ElementTree as ET
+import html
+
+def html_to_airtags(html: str, air_prefix:bool=True) -> str:
+    """Converts a string of HTML to a string of Python Air Tags. 
+    
+        args:
+            html: The HTML to be converted.
+            air_prefix: Whether or not the generated text has a "air.prefix"
+
+    """    
+    def convert_attrs(attrs):
+        parts = []
+        for key, value in attrs.items():
+            key = key + '_' if key in {'class', 'for'} else key
+            value = html.escape(value, quote=True)
+            parts.append(f"{key}='{value}'")
+        return ', '.join(parts)
+
+    def convert_element(el, indent=0):
+        ind = '    ' * indent
+        if air_prefix: tag = f"air.{el.tag.capitalize()}"
+        else: tag = el.tag.capitalize()
+        children = list(el)
+        attrs = convert_attrs(el.attrib)
+
+        if children:
+            inner = ',\n'.join(convert_element(child, indent + 1) for child in children)
+            if attrs:
+                return f"{ind}{tag}(\n{inner},\n{ind}{'    '}{attrs}\n{ind})"
+            else:
+                return f"{ind}{tag}(\n{inner}\n{ind})"
+        else:
+            text = (el.text or '').strip()
+            args = [f"'{html.escape(text)}'"] if text else []
+            if attrs:
+                args.append(attrs)
+            return f"{ind}{tag}({', '.join(args)})"
+
+    root = ET.fromstring(html)
+    return convert_element(root)
 
 
 def clean_html_attr_key(key: str) -> str:

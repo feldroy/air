@@ -202,3 +202,36 @@ def test_style_tag():
     css = "p {border-style: solid; border-width: 5px;}"
     html = air.Style(css, class_="test").render()
     assert html == f"""<style class="test">{css}</style>"""
+
+
+def test_html_to_tags():
+    sample = """
+    <html>
+        <body>
+            <main>
+                <h1 class="header">Hello, World</h1>
+            </main>
+        </body>
+    </html>"""
+    target = """
+air.Html(
+    air.Body(
+        air.Main(
+            air.H1('Hello, World', class_='header')
+        )
+    )
+)
+""".strip()   
+    assert air.html_to_airtags(sample) == target
+
+    # Now test with no prefix
+    target_no_prefix = """
+Html(
+    Body(
+        Main(
+            H1('Hello, World', class_='header')
+        )
+    )
+)
+""".strip()     
+    assert air.html_to_airtags(sample, air_prefix=False) == target_no_prefix
