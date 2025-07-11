@@ -235,3 +235,14 @@ Html(
 )
 """.strip()     
     assert air.html_to_airtags(sample, air_prefix=False) == target_no_prefix
+
+def test_html_to_tags_multi_attrs():    
+    sample = """
+    <form action="." method="post" class="searcho">
+        <label for="search">
+        Search:
+        <input type="search" name="search" />
+        </label>
+    </form>
+"""
+    assert air.html_to_airtags(sample) == ''

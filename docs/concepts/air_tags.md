@@ -120,4 +120,54 @@ Which produces the following HTML:
 
 ## Converting HTML to Air Tags
 
-If you have a block of HTML that would you want to convert to Air Tags, the `air.html_to_tags`
+When you have a block of HTML that needs to be converted to Air Tags, use the `air.html_to_airtags` function:
+
+```python
+html = """
+<html>
+    <body>
+        <main>
+            <h1 class="header">Hello, World</h1>
+        </main>
+    </body>
+</html>"""
+air.html_to_airtags(html)
+```
+
+This generates:
+
+```python
+air.Html(
+    air.Body(
+        air.Main(
+            air.H1('Hello, World', class_='header')
+        )
+    )
+)
+```
+
+Removal of the `air.` prefix is done with the `air_prefix` boolean:
+
+```python
+html = """
+<html>
+    <body>
+        <main>
+            <h1 class="header">Hello, World</h1>
+        </main>
+    </body>
+</html>"""
+print(air.html_to_airtags(html, air_prefix=False))
+```
+
+This will generate:
+
+```python
+Html(
+    Body(
+        Main(
+            H1('Hello, World', class_='header')
+        )
+    )
+)
+```
