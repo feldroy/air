@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 import air
 
@@ -177,3 +177,18 @@ def test_form_render_with_errors():
         html
         == '<fieldset><label>name<input name="name" type="text" id="name" aria-invalid="true"></input><small id="name-error">Please correct this error.</small></label><label>age<input name="age" type="number" id="age" aria-invalid="true"></input><small id="age-error">Please correct this error.</small></label></fieldset>'
     )
+
+
+def test_html_input_field_types():
+    class ContactModel(BaseModel):
+        name: str
+        email: str = Field(json_schema_extra={"email": True})
+        date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})
+
+    class ContactForm(air.AirForm):
+        model = ContactModel
+
+    contact_form = ContactForm()
+    html = contact_form.render()
+    assert 'type="datedatetime-local"' in html
+    assert 'type="email"' in html
