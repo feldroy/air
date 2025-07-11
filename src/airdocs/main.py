@@ -1,4 +1,5 @@
 import air
+from airdocs.utils import get_readme_as_html
 from eidos.components.headers import EidosHeaders
 import eidos.tags as et
 from eidos.utils import get_eidos_static_directory
@@ -54,6 +55,7 @@ def index():
             )
         ),
         et.H1('Air Documentation'),
+        air.RawHTML(get_readme_as_html()),
         air.P("TODO: docs index")
     )
     

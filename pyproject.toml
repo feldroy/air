@@ -1,17 +1,29 @@
 [project]
 name = "airdocs"
 version = "0.1.0"
-description = "Add your description here"
+description = "Documentation for Air, the Python web framework."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "air",
     "eidosui",
-    "fastapi[standard]>=0.115.14",
-    "marimo>=0.14.10",
+    "fastapi[standard]>=0.116.0",
     "mkdocstrings[python]>=0.29.1",
 ]
+
+[project.scripts]
+airdocs = "airdocs:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.uv.sources]
 air = { path = "../air", editable = true }
 eidosui = { path = "../EidosUI", editable = true }
+
+[dependency-groups]
+dev = [
+    "marimo>=0.14.10",
+    "pytest>=8.4.1",
+]
