@@ -1,7 +1,7 @@
 [project]
 name = "air"
 version = "0.11.0"
-description = "A FastAPI-powered breath of fresh air in Python web development."
+description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }

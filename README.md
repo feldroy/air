@@ -1,6 +1,6 @@
 # Air
 
-> A FastAPI-powered breath of fresh air in Python web development.
+> The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
 
 <p align="center">
 <a href="https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main" target="_blank">
