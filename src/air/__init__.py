@@ -9,7 +9,6 @@ from .forms import AirForm as AirForm
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import TagResponse as TagResponse
-from .tags import html_to_airtags as html_to_airtags
 from .tags import (
     H1 as H1,
 )
@@ -350,4 +349,5 @@ from .tags import (
 from .tags import (
     Wbr as Wbr,
 )
+from .tags import html_to_airtags as html_to_airtags
 from .templates import Jinja2Renderer as Jinja2Renderer

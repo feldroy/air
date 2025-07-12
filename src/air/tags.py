@@ -1,10 +1,11 @@
 """Adds s-expression HTML tags to air."""
 
+import html
 from functools import cached_property
 from xml.etree import ElementTree as ET
-import html
 
-def html_to_airtags(html_text: str, air_prefix:bool = True) -> str:
+
+def html_to_airtags(html_text: str, air_prefix: bool = True) -> str:
     def convert_attrs(attrs):
         parts = []
         for key, value in attrs.items():
@@ -13,8 +14,8 @@ def html_to_airtags(html_text: str, air_prefix:bool = True) -> str:
             parts.append(f"{key}='{html.escape(value, quote=True)}'")
         return parts
 
-    def convert_node(el, indent=0, air_prefix:bool=True):
-        ind = '    ' * indent
+    def convert_node(el, indent=0, air_prefix: bool = True):
+        ind = "    " * indent
         if air_prefix:
             tag = f"air.{el.tag.capitalize()}"
         else:
@@ -39,14 +40,13 @@ def html_to_airtags(html_text: str, air_prefix:bool = True) -> str:
             if len(all_args) == 1:
                 return f"{ind}{tag}(\n{all_args[0]})\n"
             else:
-                joined = ',\n'.join('    ' * (indent + 1) + arg for arg in all_args)
+                joined = ",\n".join("    " * (indent + 1) + arg for arg in all_args)
                 return f"{ind}{tag}(\n{joined}\n{ind})"
         else:
             return f"{ind}{tag}()"
 
     root = ET.fromstring(html_text)
     return convert_node(root, air_prefix=air_prefix)
-
 
 
 def clean_html_attr_key(key: str) -> str:

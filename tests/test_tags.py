@@ -213,28 +213,15 @@ def test_html_to_tags():
             </main>
         </body>
     </html>"""
-    target = """
-air.Html(\n    air.Body(\n        air.Main(\n            air.H1(\n                'Hello, World',\n                class_='header'\n            ))\n)\n)\n
-""".strip()   
-    assert 'air.H1' in air.html_to_airtags(sample)
-    assert 'H1' in air.html_to_airtags(sample)
+    assert "air.H1" in air.html_to_airtags(sample)
+    assert "H1" in air.html_to_airtags(sample)
 
     # Now test with no prefix
-    target_no_prefix = """
-Html(
-    Body(
-        Main(
-            H1(
-                'Hello, World',
-                class_='header'
-            ))
-)
-)
-""".strip()     
-    assert 'air.H1' not in air.html_to_airtags(sample, air_prefix=False)
-    assert 'H1' in air.html_to_airtags(sample, air_prefix=False)
+    assert "air.H1" not in air.html_to_airtags(sample, air_prefix=False)
+    assert "H1" in air.html_to_airtags(sample, air_prefix=False)
 
-def test_html_to_tags_multi_attrs():    
+
+def test_html_to_tags_multi_attrs():
     sample = """
     <form action="." method="post" class="searcho">
         <label for="search">
@@ -243,7 +230,9 @@ def test_html_to_tags_multi_attrs():
         </label>
     </form>
 """
-    assert air.html_to_airtags(sample) == """
+    assert (
+        air.html_to_airtags(sample)
+        == """
 air.Form(
         air.Label(
         'Search:',
@@ -258,3 +247,4 @@ air.Form(
     class_='searcho'
 )
 """.strip()
+    )
