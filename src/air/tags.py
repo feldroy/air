@@ -4,44 +4,49 @@ from functools import cached_property
 from xml.etree import ElementTree as ET
 import html
 
-def html_to_airtags(html: str, air_prefix:bool=True) -> str:
-    """Converts a string of HTML to a string of Python Air Tags. 
-    
-        args:
-            html: The HTML to be converted.
-            air_prefix: Whether or not the generated text has a "air.prefix"
-
-    """    
+def html_to_airtags(html_text: str, air_prefix:bool = True) -> str:
     def convert_attrs(attrs):
         parts = []
         for key, value in attrs.items():
-            key = key + '_' if key in {'class', 'for'} else key
-            value = html.escape(value, quote=True)
-            parts.append(f"{key}='{value}'")
-        return ', '.join(parts)
+            if key in {"class", "for", "id_"}:
+                key += "_"
+            parts.append(f"{key}='{html.escape(value, quote=True)}'")
+        return parts
 
-    def convert_element(el, indent=0):
+    def convert_node(el, indent=0, air_prefix:bool=True):
         ind = '    ' * indent
-        if air_prefix: tag = f"air.{el.tag.capitalize()}"
-        else: tag = el.tag.capitalize()
-        children = list(el)
-        attrs = convert_attrs(el.attrib)
-
-        if children:
-            inner = ',\n'.join(convert_element(child, indent + 1) for child in children)
-            if attrs:
-                return f"{ind}{tag}(\n{inner},\n{ind}{'    '}{attrs}\n{ind})"
-            else:
-                return f"{ind}{tag}(\n{inner}\n{ind})"
+        if air_prefix:
+            tag = f"air.{el.tag.capitalize()}"
         else:
-            text = (el.text or '').strip()
-            args = [f"'{html.escape(text)}'"] if text else []
-            if attrs:
-                args.append(attrs)
-            return f"{ind}{tag}({', '.join(args)})"
+            tag = el.tag.capitalize()
 
-    root = ET.fromstring(html)
-    return convert_element(root)
+        args = []
+        # Add text before children if any
+        if el.text and el.text.strip():
+            args.append(repr(el.text.strip()))
+
+        # Add children recursively
+        for child in el:
+            args.append(convert_node(child, indent + 1, air_prefix=air_prefix))
+            if child.tail and child.tail.strip():
+                args.append(repr(child.tail.strip()))
+
+        # Add attributes
+        attr_args = convert_attrs(el.attrib)
+        all_args = args + attr_args
+
+        if all_args:
+            if len(all_args) == 1:
+                return f"{ind}{tag}(\n{all_args[0]})\n"
+            else:
+                joined = ',\n'.join('    ' * (indent + 1) + arg for arg in all_args)
+                return f"{ind}{tag}(\n{joined}\n{ind})"
+        else:
+            return f"{ind}{tag}()"
+
+    root = ET.fromstring(html_text)
+    return convert_node(root, air_prefix=air_prefix)
+
 
 
 def clean_html_attr_key(key: str) -> str:
