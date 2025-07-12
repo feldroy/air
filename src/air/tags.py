@@ -94,6 +94,8 @@ class Tag:
         for child in self._children:
             if isinstance(child, Tag):
                 elements.append(child.render())
+            elif isinstance(child, SafeStr):
+                elements.append(child)
             elif isinstance(child, str):
                 elements.append(html.escape(child))
             elif isinstance(child, int):
@@ -117,6 +119,24 @@ class CaseTag(Tag):
     @property
     def name(self) -> str:
         return self._name[0].lower() + self._name[1:]
+
+
+# Utilities
+
+
+class SafeStr(str):
+    """A string subclass that doesn't trigger html.escape() when called by Tag.render()
+
+    Example:
+        sample = SafeStr('Hello, world')
+    """
+
+    def __new__(cls, value):
+        obj = super().__new__(cls, value)
+        return obj
+
+    def __repr__(self):
+        return super().__repr__()
 
 
 # Special tags

@@ -67,6 +67,9 @@ public/
 # Docs page
 site
 
+# Notebooks
+nbs
+
 # Caches
 .mypy_cache
 .pytest_cache
