@@ -76,21 +76,82 @@ async def index():
 
     This example uses [Air Tags](/air/ref/tags), which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
 
-## Example using Jinja2
+## Combining FastAPI and Air
+
+Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app. 
 
 ```python
-from air import Jinja2Renderer
+import air
+from fastapi import FastAPI
 
-jinja = Jinja2Renderer(directory="templates")
+app = air.Air()
+api = FastAPI()
 
-@app.get("/test")
-def index(request: Request):
-    return jinja(
-        request,
-        name="home.html",
-        context={"title": "Hello World Page"}, content="Hello, World",
+@app.get("/")
+def landing_page():
+    return air.Html(
+        air.Head(air.Title("Awesome SaaS")),
+        air.Body(
+            air.H1("Awesome SaaS"),
+            air.P(air.A("API Docs", target="_blank", href="/api/docs")),
+        ),
     )
+
+
+@api.get("/")
+def api_root():
+    return {"message": "Awesome SaaS is powered by FastAPI"}
+
+# Combining the Air and and FastAPI apps into one
+app.mount("/api", api)
 ```
+
+## Combining FastAPI and Air using Jinja2
+
+Want to use Jinja2 instead of Air Tags? We've got you covered.
+
+```python
+import air
+from fastapi import FastAPI
+
+app = air.Air()
+api = FastAPI()
+
+# Air's Jinja2Renderer is a shortcut for using Jinja templates
+jinja = air.Jinja2Renderer(directory="templates")
+
+@app.get("/")
+def index(request: Request):
+    return jinja(request, name="home.html")
+
+@api.get("/")
+def api_root():
+    return {"message": "Awesome SaaS is powered by FastAPI"}
+
+# Combining the Air and and FastAPI apps into one
+app.mount("/api", api)    
+```
+
+Don't forget the Jinja template!
+
+```html
+<!doctype html
+<html>
+    <head>
+        <title>Awesome SaaS</title>
+    </head>
+    <body>
+        <h1>Awesome SaaS</h1>
+        <p>
+            <a target="_blank" href="/api/docs">API Docs</a>
+        </p>
+    </body>
+</html>
+```
+
+!!! note
+
+    Air makes Jinja templates easier to use from within FastAPI. It takes a little more work than Air Tags, but sometimes its nicer to work closer to actual HTML.
 
 ## Contributing
 

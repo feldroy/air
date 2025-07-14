@@ -1,24 +1,24 @@
-from pydantic import BaseModel
-
 import air
+from fastapi import FastAPI
 
 app = air.Air()
+api = FastAPI()
 
 
-class CheeseModel(BaseModel):
-    name: str  # type: ignore [annotation-unchecked]
-    age: int  # type: ignore [annotation-unchecked]
-
-
-class CheeseForm(air.AirForm):
-    model = CheeseModel
-
-
-@app.page
-def index():
-    cheese = CheeseForm()
-    cheese.validate({})
-
-    return air.layouts.picocss(
-        air.Body(air.Form(air.H1("Cheese Form"), cheese.render(), action="."))
+@app.get("/")
+def landing_page():
+    return air.Html(
+        air.Head(air.Title("Awesome SaaS")),
+        air.Body(
+            air.H1("Awesome SaaS"),
+            air.P(air.A("API Docs", target="_blank", href="/api/docs")),
+        ),
     )
+
+
+@api.get("/")
+def api_root():
+    return {"message": "Awesome SaaS is powered by FastAPI"}
+
+
+app.mount("/api", api)
