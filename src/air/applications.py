@@ -310,6 +310,13 @@ class Air(FastAPI):
         This preserves all FastAPI initialization parameters while setting
         AirResponse as the default response class.
         """
+        DEFAULT_EXCEPTION_HANDLERS = {
+                404: default_picocss_404_exception_handler,
+                500: default_picocss_500_exception_handler,
+            }
+        if exception_handlers is None: 
+            exception_handlers = {}
+        exception_handlers = DEFAULT_EXCEPTION_HANDLERS | exception_handlers
         super().__init__(
             debug=debug,
             routes=routes,
