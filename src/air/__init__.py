@@ -5,6 +5,7 @@ __version__ = "0.12.0"
 from . import layouts as layouts
 from . import svg as svg
 from .applications import Air as Air
+from .exceptions import HTTPException as HTTPException
 from .forms import AirForm as AirForm
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-from fastapi.responses import HTMLResponse
+
 import air
 
 
@@ -82,6 +82,7 @@ def test_page_decorator():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About page</h1>"
 
+
 def test_air_404_response():
     app = air.Air()
 
@@ -90,27 +91,23 @@ def test_air_404_response():
 
     assert response.status_code == 404
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<!doctype html><html><head><title>404 Not Found</title></head><body><main><h1>404 Not Found</h1><p>The requested resource was not found on this server.</p></main></body></html>"
-
+    assert (
+        response.text
+        == '<!doctype html><html><head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"></link><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script><title>404 Not Found</title></head><body><main class="container"><h1>404 Not Found</h1><p>The requested resource was not found on this server.</p></main></body></html>'
+    )
 
 
 def test_air_500_response():
-
     app = air.Air()
 
-    @app.get("/error")
-    def error_endpoint():
-        raise Exception("This is a test error")
-
+    @app.page
+    def index():
+        raise air.HTTPException(status_code=500)
+        return "Error page"
 
     client = TestClient(app)
 
-    try:
-        response = client.get("/error")
-    except:
-        pass
-
-
+    response = client.get("/")
 
     assert response.status_code == 500
     assert response.headers["content-type"] == "text/html; charset=utf-8"

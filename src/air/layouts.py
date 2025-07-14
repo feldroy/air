@@ -1,4 +1,19 @@
-from .tags import Base, Body, Head, Html, Link, Main, Meta, Script, Style, Tag, Title
+from .responses import AirResponse
+from .tags import (
+    Base,
+    Body,
+    Head,
+    Html,
+    Link,
+    Main,
+    Meta,
+    Script,
+    Style,
+    Tag,
+    Title,
+    H1,
+    P,
+)
 
 # ruff: noqa F841
 HEAD_TAG_TYPES: tuple[Tag] = (Title, Style, Meta, Link, Script, Base)  # type: ignore [assignment]
@@ -47,6 +62,28 @@ def picocss(*children, htmx: bool = True, **kwargs):
         ),
         Body(Main(*body_tags, class_="container")),
     ).render()
+
+
+async def default_picocss_404_exception_handler(request, exc) -> AirResponse:
+    return AirResponse(
+        picocss(
+            Title("404 Not Found"),
+            H1("404 Not Found"),
+            P("The requested resource was not found on this server."),
+        ),
+        status_code=404,
+    )
+
+
+async def default_picocss_500_exception_handler(request, exc) -> AirResponse:
+    return AirResponse(
+        picocss(
+            Title("500 Internal Server Error"),
+            H1("500 Internal Server Error"),
+            P("500 Internal Server Error"),
+        ),
+        status_code=500,
+    )
 
 
 def mvpcss(*children, htmx: bool = True, **kwargs):
