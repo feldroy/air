@@ -1,6 +1,10 @@
-# Air
+<p align="center">
+  <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" alt="Air: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."></a>
+</p>
 
-> The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
+<p align="center">
+    <em>Air: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.</em>
+</p>
 
 <p align="center">
 <a href="https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main" target="_blank">
