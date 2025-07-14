@@ -11,7 +11,8 @@ nav:
     - concepts/escaping_html.md
   - Reference:
     - api/index.md
-    - Applications: api/applications.md    
+    - Applications: api/applications.md
+    - Background Tasks: api/background.md    
     - CLI: api/cli.md
     - Generator: api/generator.md
     - Layouts: api/layouts.md
