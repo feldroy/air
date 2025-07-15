@@ -28,7 +28,7 @@ A minimal Air application:
 
     ```python title="main.py"
     import air    
-    from fastapi import Request
+    from air import Request
 
     app = Air()
     jinja = air.Jinja2Renderer(directory="templates")
@@ -95,7 +95,7 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
 
     ```python title="main.py"
     import air    
-    from fastapi import Request
+    from air import Request
 
     app = air.Air()
     jinja = air.Jinja2Renderer(directory="templates")
@@ -167,7 +167,8 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 
     ```python title="main.py"
     import air
-    from fastapi import Request, Depends
+    from air import Request
+    from fastapi import Depends
     from pydantic import BaseModel
     from typing import Annotated
 
@@ -267,7 +268,8 @@ It is possible to use AirForms through FastAPI's dependency injection mechanism.
 
     ```python title="main.py"
     import air
-    from fastapi import Request, Depends
+    from air import Request
+    from fastapi import Depends
     from pydantic import BaseModel
     from typing import Annotated
 

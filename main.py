@@ -1,5 +1,6 @@
-import air
 from fastapi import FastAPI
+
+import air
 
 app = air.Air()
 api = FastAPI()
