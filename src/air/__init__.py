@@ -7,6 +7,7 @@ from . import svg as svg
 from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .forms import AirForm as AirForm
+from .requests import Request as Request
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import TagResponse as TagResponse

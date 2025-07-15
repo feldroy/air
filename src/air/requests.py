@@ -1,4 +1,5 @@
 from fastapi import Header
+from starlette.requests import Request as Request  # noqa: F401
 
 
 def is_htmx_request(hx_request: str = Header(default=None)) -> bool:
