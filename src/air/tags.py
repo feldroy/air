@@ -220,13 +220,56 @@ class Style(NoEscapeTag):
     """
 
 
+# HTML tag attribute map
+
+html_attributes = {
+    "A": [
+        "href",
+        "target",
+        "download",
+        "rel",
+        "hreflang",
+        "typereferrerpolicy",
+        "media",
+        "ping",
+        "class_",
+        "id_",
+    ]
+}
+
+
+def locals_cleanup(local_data, obj):
+    """Converts arguments to kwargs per the html_attributes structure"""
+    data = {}
+    for attr in html_attributes.get(obj.__class__.__name__, []):
+        if local_data.get(attr) is not None:
+            data[attr] = local_data[attr]
+    return data
+
+
 # Stock tags
 
 
 class A(Tag):
     """Defines a hyperlink"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        href: str | None = None,
+        target: str | None = None,
+        download: str | None = None,
+        rel: str | None = None,
+        hreflang: str | None = None,
+        type: str | None = None,
+        referrerpolicy: str | None = None,
+        media: str | None = None,
+        ping: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Abbr(Tag):

@@ -248,3 +248,8 @@ air.Form(
 )
 """.strip()
     )
+
+
+def test_tags_support_global_attributes():
+    assert air.A("Hello", data=123).render() == '<a data="123">Hello</a>'
+    assert air.A("this", draggable=True).render() == '<a draggable="True">this</a>'
