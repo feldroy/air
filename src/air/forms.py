@@ -1,10 +1,10 @@
 from typing import Any, Callable, get_args
 
-from fastapi import Request
 from pydantic import BaseModel, ValidationError
 from starlette.datastructures import FormData
 
 from . import tags
+from .requests import Request
 
 try:
     from typing import Self  # type: ignore [attr-defined]
