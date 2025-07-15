@@ -149,7 +149,7 @@ Don't forget the Jinja template!
 ```
 
 > [!NOTE]
-> Air makes Jinja templates easier to use from within FastAPI. It takes a little more work than Air Tags, but sometimes its nicer to work closer to actual HTML.
+> Using Jinja with Air is easier than with FastAPI. That's because as much as we enjoy Air Tags, we also love Jinja!
 
 ## Contributing
 
