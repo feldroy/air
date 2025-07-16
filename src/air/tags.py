@@ -98,15 +98,12 @@ class Tag:
                 elements.append(child)
             elif isinstance(child, str):
                 elements.append(html.escape(child))
-            elif isinstance(child, int):
-                elements.append(str(child))
             else:
-                # TODO: Produce a better error message
-                msg = f"Unsupported child type: {type(child)}"
-                msg += f"\n in tag {self.name}"
-                msg += f"\n child {child}"
-                msg += f"\n data {self.__dict__}"
-                raise TypeError(msg)
+                # If the type isn't supported, we just convert to `str`
+                # and then escape it for safety. This matches to what most
+                # template tools do, which prevents hard bugs in production
+                # from stopping users cold.
+                elements.append(html.escape(str(child)))
         return "".join(elements)
 
     def render(self) -> str:
