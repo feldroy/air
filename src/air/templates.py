@@ -12,25 +12,24 @@ class Jinja2Renderer:
         directory: Template directory
 
     Example:
-        >>> # Instantiate the render callable
-        >>> jinja = TemplateRenderer('templates')
-        >>>
-        >>> # Use for returning Jinja2 from views
-        >>> @app.get('/')
-        >>> async def home(request: Request):
-        >>> return jinja(
-        ...     request,
-        ...     'home.html',
-        ...     context={'id': 5}
-        ... )
+        # Instantiate the render callable
+        jinja = TemplateRenderer('templates')
 
-    Can also pass in kwargs, which will be added to the context:
+        # Use for returning Jinja2 from views
+        @app.get('/')
+        async def home(request: Request):
+            return jinja(
+                request,
+                'home.html',
+                context={'id': 5}
+             )
 
-        >>> return jinja(
-        ...     request,
-        ...     'home.html',
-        ...     name='Parmesan'
-        ... )
+         # Can also pass in kwargs, which will be added to the context:
+            return jinja(
+                request,
+                'home.html',
+                name='Parmesan'
+            )
     """
 
     def __init__(self, directory: str):

@@ -8,7 +8,7 @@ api = FastAPI()
 
 @app.get("/")
 def landing_page():
-    return air.Html(
+    return air.layouts.picocss(
         air.Head(air.Title("Awesome SaaS")),
         air.Body(
             air.H1("Awesome SaaS"),
