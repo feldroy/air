@@ -235,7 +235,7 @@ html_attributes = {
         "class_",
         "id_",
     ],
-    'Audio': [
+    "Audio": [
         "autoplay",
         "controls",
         "loop",
@@ -243,114 +243,110 @@ html_attributes = {
         "preload",
         "src",
     ],
-    'Button': [
-        'name',
-        'type',
-        'value',
-        'autofocus',
-        'disabled',
-        'form',
-        'formaction',
-        'formenctype',
-        'formmethod',
-        'formnovalidate',
-        'formtarget',
-        'popovertarget',
-        'popovertargetaction',
+    "Button": [
+        "name",
+        "type",
+        "value",
+        "autofocus",
+        "disabled",
+        "form",
+        "formaction",
+        "formenctype",
+        "formmethod",
+        "formnovalidate",
+        "formtarget",
+        "popovertarget",
+        "popovertargetaction",
     ],
-    'Canvas': [
-        'width',
-        'height',
+    "Canvas": [
+        "width",
+        "height",
     ],
-    'Col': ['span'],
-    'Colgroup': ['span'],
-    'Data': ['value'],
-    'Dd': ['cite','datetime'],
-    'Details': ['open'],
-    'Dialog': ['open'],
-    'Embded':[
-        'src',
-        'type'
-        'width'
-        'height',
+    "Col": ["span"],
+    "Colgroup": ["span"],
+    "Data": ["value"],
+    "Dd": ["cite", "datetime"],
+    "Details": ["open"],
+    "Dialog": ["open"],
+    "Embded": [
+        "src",
+        "typewidthheight",
     ],
-    'Fieldset': [
-        'disabled',
-        'form',
-        'name',
+    "Fieldset": [
+        "disabled",
+        "form",
+        "name",
     ],
-    'Form': [
-        'accept-charset',
-        'action',
-        'autocomplete',
-        'enctype',
-        'method',
-        'name',
-        'novalidate',
-        'rel',
-        'target',
+    "Form": [
+        "accept-charset",
+        "action",
+        "autocomplete",
+        "enctype",
+        "method",
+        "name",
+        "novalidate",
+        "rel",
+        "target",
     ],
-    'Iframe': [
-        'src',
-        'srcdoc',
-        'width',
-        'height',
-        'allow',
-        'allowfullscreen',
-        'allowpaymentrequest',
-        'loading',
-        'name',
-        'referrerpolicy',
-        'sandbox',
+    "Iframe": [
+        "src",
+        "srcdoc",
+        "width",
+        "height",
+        "allow",
+        "allowfullscreen",
+        "allowpaymentrequest",
+        "loading",
+        "name",
+        "referrerpolicy",
+        "sandbox",
     ],
-    'Img': [
-        'src',
-        'width',
-        'height'
-        'srcset',
-        'alt',
-        'crossorigin',
-        'ismap',
-        'loading',
-        'longdesc',
-        'referrerpolicy',
-        'sizes'
-        'usemap',
+    "Img": [
+        "src",
+        "width",
+        "heightsrcset",
+        "alt",
+        "crossorigin",
+        "ismap",
+        "loading",
+        "longdesc",
+        "referrerpolicy",
+        "sizesusemap",
     ],
-    'Input': [
-        'type',
-        'value',
-        'readonly',
-        'required',
-        'accept',
-        'alt',
-        'autocomplete',
-        'autofocus',
-        'checked',
-        'dirname',
-        'disabled',
-        'form',
-        'formaction',
-        'formenctype',
-        'formmethod',
-        'formnovalidate',
-        'formtarget',
-        'height',
-        'list',
-        'max',
-        'maxlength',
-        'min',
-        'minlength',
-        'multiple',
-        'name',
-        'pattern',
-        'placeholder',
-        'popovertarget',
-        'popovertargetaction',
-        'size',
-        'src',
-        'step',
-    ]
+    "Input": [
+        "type",
+        "value",
+        "readonly",
+        "required",
+        "accept",
+        "alt",
+        "autocomplete",
+        "autofocus",
+        "checked",
+        "dirname",
+        "disabled",
+        "form",
+        "formaction",
+        "formenctype",
+        "formmethod",
+        "formnovalidate",
+        "formtarget",
+        "height",
+        "list",
+        "max",
+        "maxlength",
+        "min",
+        "minlength",
+        "multiple",
+        "name",
+        "pattern",
+        "placeholder",
+        "popovertarget",
+        "popovertargetaction",
+        "size",
+        "src",
+        "step",
+    ],
 }
 
 
@@ -420,6 +416,7 @@ class Aside(Tag):
 
 class Audio(Tag):
     """Defines embedded sound content"""
+
     def __init__(
         self,
         *children,
@@ -480,6 +477,7 @@ class Br(Tag):
 
 class Button(Tag):
     """Defines a clickable button"""
+
     def __init__(
         self,
         *children,
@@ -505,6 +503,7 @@ class Button(Tag):
 
 class Canvas(Tag):
     """Used to draw graphics, on the fly, via scripting (usually JavaScript)"""
+
     def __init__(
         self,
         *children,
@@ -548,6 +547,7 @@ class Col(Tag):
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
+
 class Colgroup(Tag):
     """Specifies a group of one or more columns in a table for formatting"""
 
@@ -576,7 +576,6 @@ class Data(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
-
 class Datalist(Tag):
     """Specifies a list of pre-defined options for input controls"""
 
@@ -600,8 +599,6 @@ class Dd(Tag):
 
 class Del(Tag):
     """Defines text that has been deleted from a document"""
-
-    
 
 
 class Details(Tag):
@@ -694,6 +691,7 @@ class Fieldset(Tag):
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
+
 class Figcaption(Tag):
     """Defines a caption for a <figure> element"""
 
@@ -732,6 +730,7 @@ class Form(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+
 
 class H1(Tag):
     """H1 header"""
@@ -857,7 +856,7 @@ class Input(Tag):
         type: str | None = None,
         value: str | None = None,
         readonly: str | None = None,
-        required: str | None = None,    
+        required: str | None = None,
         accept: str | None = None,
         alt: str | None = None,
         autocomplete: str | None = None,
