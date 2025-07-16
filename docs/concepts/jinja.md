@@ -6,6 +6,14 @@ We love Jinja. Proven and fast, its our go-to for when we want to manually craft
 
     This document covers the concepts and how Jinja2 works in Air. The full reference for the tooling can be found at the [Templates API Reference](../api/templates.md).
 
+!!! note "Jinja or Jinja2?"
+
+    While the package is listed on [PyPI as Jinja2](https://pypi.org/project/jinja2/), that package and the [official Jinja docs](https://jinja.palletsprojects.com/) refers to Jinja as just "Jinja". Also, Jinja was released in 2008 and is well into the 3.x release cycle. If we want to lean into pedantry, we are arguably using Jinja 5 (base plus major releases cycles of 0.x, 1.x, 2.x, and 3.x)
+
+    In any case, for the sake of brevity and to match the Jinja documentation, in the Air documentation we use the term "Jinja".
+
+
+
 ## Using Jinja for the HTML Layout
 
 Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes its easy to construct layouts using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is easier. 
