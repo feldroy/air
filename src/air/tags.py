@@ -234,6 +234,122 @@ html_attributes = {
         "ping",
         "class_",
         "id_",
+    ],
+    'Audio': [
+        "autoplay",
+        "controls",
+        "loop",
+        "muted",
+        "preload",
+        "src",
+    ],
+    'Button': [
+        'name',
+        'type',
+        'value',
+        'autofocus',
+        'disabled',
+        'form',
+        'formaction',
+        'formenctype',
+        'formmethod',
+        'formnovalidate',
+        'formtarget',
+        'popovertarget',
+        'popovertargetaction',
+    ],
+    'Canvas': [
+        'width',
+        'height',
+    ],
+    'Col': ['span'],
+    'Colgroup': ['span'],
+    'Data': ['value'],
+    'Dd': ['cite','datetime'],
+    'Details': ['open'],
+    'Dialog': ['open'],
+    'Embded':[
+        'src',
+        'type'
+        'width'
+        'height',
+    ],
+    'Fieldset': [
+        'disabled',
+        'form',
+        'name',
+    ],
+    'Form': [
+        'accept-charset',
+        'action',
+        'autocomplete',
+        'enctype',
+        'method',
+        'name',
+        'novalidate',
+        'rel',
+        'target',
+    ],
+    'Iframe': [
+        'src',
+        'srcdoc',
+        'width',
+        'height',
+        'allow',
+        'allowfullscreen',
+        'allowpaymentrequest',
+        'loading',
+        'name',
+        'referrerpolicy',
+        'sandbox',
+    ],
+    'Img': [
+        'src',
+        'width',
+        'height'
+        'srcset',
+        'alt',
+        'crossorigin',
+        'ismap',
+        'loading',
+        'longdesc',
+        'referrerpolicy',
+        'sizes'
+        'usemap',
+    ],
+    'Input': [
+        'type',
+        'value',
+        'readonly',
+        'required',
+        'accept',
+        'alt',
+        'autocomplete',
+        'autofocus',
+        'checked',
+        'dirname',
+        'disabled',
+        'form',
+        'formaction',
+        'formenctype',
+        'formmethod',
+        'formnovalidate',
+        'formtarget',
+        'height',
+        'list',
+        'max',
+        'maxlength',
+        'min',
+        'minlength',
+        'multiple',
+        'name',
+        'pattern',
+        'placeholder',
+        'popovertarget',
+        'popovertargetaction',
+        'size',
+        'src',
+        'step',
     ]
 }
 
@@ -304,8 +420,20 @@ class Aside(Tag):
 
 class Audio(Tag):
     """Defines embedded sound content"""
-
-    pass
+    def __init__(
+        self,
+        *children,
+        autoplay: str | None = None,
+        controls: str | None = None,
+        loop: str | None = None,
+        muted: str | None = None,
+        preload: str | None = None,
+        src: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class B(Tag):
@@ -352,14 +480,41 @@ class Br(Tag):
 
 class Button(Tag):
     """Defines a clickable button"""
-
-    pass
+    def __init__(
+        self,
+        *children,
+        name: str | None = None,
+        type: str | None = None,
+        value: str | None = None,
+        autofocus: str | None = None,
+        disabled: str | None = None,
+        form: str | None = None,
+        formaction: str | None = None,
+        formenctype: str | None = None,
+        formmethod: str | None = None,
+        formnovalidate: str | None = None,
+        formtarget: str | None = None,
+        popovertarget: str | None = None,
+        popovertargetaction: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Canvas(Tag):
     """Used to draw graphics, on the fly, via scripting (usually JavaScript)"""
-
-    pass
+    def __init__(
+        self,
+        *children,
+        width: str | None = None,
+        height: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Caption(Tag):
@@ -383,19 +538,43 @@ class Code(Tag):
 class Col(Tag):
     """Specifies column properties for each column within a <colgroup> element"""
 
-    pass
-
+    def __init__(
+        self,
+        *children,
+        span: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 class Colgroup(Tag):
     """Specifies a group of one or more columns in a table for formatting"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        span: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Data(Tag):
     """Adds a machine-readable translation of a given content"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        value: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+
 
 
 class Datalist(Tag):
@@ -407,19 +586,36 @@ class Datalist(Tag):
 class Dd(Tag):
     """Defines a description/value of a term in a description list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        cite: str | None = None,
+        datetime: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Del(Tag):
     """Defines text that has been deleted from a document"""
 
-    pass
+    
 
 
 class Details(Tag):
     """Defines additional details that the user can view or hide"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        open: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dfn(Tag):
@@ -431,7 +627,15 @@ class Dfn(Tag):
 class Dialog(Tag):
     """Defines a dialog box or window"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        open: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Div(Tag):
@@ -461,14 +665,34 @@ class Em(Tag):
 class Embed(Tag):
     """Defines a container for an external application"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        src: str | None = None,
+        type: str | None = None,
+        width: str | None = None,
+        height: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Fieldset(Tag):
     """Groups related elements in a form"""
 
-    pass
-
+    def __init__(
+        self,
+        *children,
+        disabled: str | None = None,
+        form: str | None = None,
+        name: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 class Figcaption(Tag):
     """Defines a caption for a <figure> element"""
@@ -491,8 +715,23 @@ class Footer(Tag):
 class Form(Tag):
     """Defines an HTML form for user input"""
 
-    pass
-
+    def __init__(
+        self,
+        *children,
+        accept_charset: str | None = None,
+        action: str | None = None,
+        autocomplete: str | None = None,
+        enctype: str | None = None,
+        method: str | None = None,
+        name: str | None = None,
+        novalidate: str | None = None,
+        rel: str | None = None,
+        target: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 class H1(Tag):
     """H1 header"""
@@ -563,19 +802,95 @@ class I(Tag):  # noqa: E742
 class Iframe(Tag):
     """Defines an inline frame"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        src: str | None = None,
+        srcdoc: str | None = None,
+        width: str | None = None,
+        height: str | None = None,
+        allow: str | None = None,
+        allowfullscreen: str | None = None,
+        allowpaymentrequest: str | None = None,
+        loading: str | None = None,
+        name: str | None = None,
+        referrerpolicy: str | None = None,
+        sandbox: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Img(Tag):
     """Defines an image"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        src: str | None = None,
+        width: str | None = None,
+        height: str | None = None,
+        srcset: str | None = None,
+        alt: str | None = None,
+        crossorigin: str | None = None,
+        ismap: str | None = None,
+        loading: str | None = None,
+        longdesc: str | None = None,
+        referrerpolicy: str | None = None,
+        sizes: str | None = None,
+        usemap: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Input(Tag):
     """Defines an input control"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        type: str | None = None,
+        value: str | None = None,
+        readonly: str | None = None,
+        required: str | None = None,    
+        accept: str | None = None,
+        alt: str | None = None,
+        autocomplete: str | None = None,
+        autofocus: str | None = None,
+        checked: str | None = None,
+        dirname: str | None = None,
+        disabled: str | None = None,
+        form: str | None = None,
+        formaction: str | None = None,
+        formenctype: str | None = None,
+        formmethod: str | None = None,
+        formnovalidate: str | None = None,
+        formtarget: str | None = None,
+        height: str | None = None,
+        list: str | None = None,
+        max: str | None = None,
+        maxlength: str | None = None,
+        min: str | None = None,
+        minlength: str | None = None,
+        multiple: str | None = None,
+        name: str | None = None,
+        pattern: str | None = None,
+        placeholder: str | None = None,
+        popovertarget: str | None = None,
+        popovertargetaction: str | None = None,
+        size: str | None = None,
+        src: str | None = None,
+        step: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Ins(Tag):
