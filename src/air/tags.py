@@ -853,6 +853,7 @@ class Input(Tag):
     def __init__(
         self,
         *children,
+        name: str | None = None,
         type: str | None = None,
         value: str | None = None,
         readonly: str | None = None,
@@ -877,7 +878,6 @@ class Input(Tag):
         min: str | None = None,
         minlength: str | None = None,
         multiple: str | None = None,
-        name: str | None = None,
         pattern: str | None = None,
         placeholder: str | None = None,
         popovertarget: str | None = None,
