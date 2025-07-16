@@ -2,6 +2,8 @@
 
 __version__ = "0.12.0"
 
+from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
+
 from . import layouts as layouts
 from . import responses as responses
 from . import svg as svg
