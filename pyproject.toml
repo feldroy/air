@@ -52,6 +52,7 @@ dev = [
     # Linting and formatting
     "ruff>=0.11.13",
     # Types for the markdown library
+    "ty>=0.0.1a14",
     "types-Markdown>=3.8.0",
     # Lets you run full example apps
     "uvicorn>=0.34.0",
