@@ -77,4 +77,3 @@ omit = [
 
 [tool.uv]
 package = true
-
