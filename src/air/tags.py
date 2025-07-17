@@ -84,9 +84,17 @@ class Tag:
     def attrs(self) -> str:
         if not self._attrs:
             return ""
-        return " " + " ".join(
-            f'{clean_html_attr_key(k)}="{v}"' for k, v in self._attrs.items()
-        )
+        attrs = []
+        for k, v in self._attrs.items():
+            if isinstance(v, bool) and v is True:
+                # Add single word attribute like "selected"
+                attrs.append(k)
+            elif isinstance(v, bool) and v is False:
+                # Skip single word attribute like "selected"
+                continue
+            else:
+                attrs.append(f'{clean_html_attr_key(k)}="{v}"')
+        return " " + " ".join(attrs)
 
     @cached_property
     def children(self):
@@ -230,7 +238,7 @@ html_attributes = {
         "media",
         "ping",
         "class_",
-        "id_",
+        "id",
     ]
 }
 
@@ -263,7 +271,7 @@ class A(Tag):
         media: str | None = None,
         ping: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))

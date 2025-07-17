@@ -1,6 +1,11 @@
 import air
 
 
+def _r(tag):
+    "Shortcut for easy renders"
+    return tag.render()
+
+
 def test_atag_no_attrs_no_children():
     assert air.A().render() == "<a></a>"
 
@@ -252,4 +257,20 @@ air.Form(
 
 def test_tags_support_global_attributes():
     assert air.A("Hello", data=123).render() == '<a data="123">Hello</a>'
-    assert air.A("this", draggable=True).render() == '<a draggable="True">this</a>'
+    assert air.A("this", draggable="true").render() == '<a draggable="true">this</a>'
+
+
+def test_special_characters():
+    assert air.P("Hello", id="mine").render() == '<p id="mine">Hello</p>'
+    assert air.P("Hello", **{"@data": 1}).render() == '<p @data="1">Hello</p>'
+
+
+def test_bool_attributes():
+    assert (
+        _r(air.Option("South America", value="SA", selected=True))
+        == '<option value="SA" selected>South America</option>'
+    )
+    assert (
+        _r(air.Option("North America", value="NA", selected=False))
+        == '<option value="NA">North America</option>'
+    )
