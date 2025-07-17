@@ -35,4 +35,4 @@ jobs:
           pytest .
       - name: Check types with mypy
         run: |-
-          mypy .
+          ty check .

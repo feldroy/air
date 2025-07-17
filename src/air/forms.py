@@ -45,7 +45,7 @@ class AirForm:
             raise NotImplementedError("model")
         self.initial_data = initial_data
 
-    async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:
+    async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:  # ty: ignore [invalid-type-form]
         self.validate(form_data)
         return self
 
@@ -60,7 +60,7 @@ class AirForm:
             self.is_valid = False
 
     @classmethod
-    async def from_request(cls, request: Request) -> Self:
+    async def from_request(cls, request: Request) -> Self:  # ty:ignore [invalid-type-form]
         form_data = await request.form()
         self = cls()
         await self(form_data=form_data)

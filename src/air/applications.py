@@ -306,7 +306,7 @@ class Air(FastAPI):
         This preserves all FastAPI initialization parameters while setting
         AirResponse as the default response class.
         """
-        super().__init__(
+        super().__init__(  # ty: ignore [invalid-super-argument]
             debug=debug,
             routes=routes,
             servers=servers,
