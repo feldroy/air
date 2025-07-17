@@ -106,7 +106,7 @@ def test_form_render():
 
     assert (
         cheese.render()
-        == '<fieldset><label>name<input name="name" type="text" id="name"></input></label><label>age<input name="age" type="number" id="age"></input></label></fieldset>'
+        == '<fieldset><label>name<input name="name" type="text" id="name" /></label><label>age<input name="age" type="number" id="age" /></label></fieldset>'
     )
 
 
@@ -122,7 +122,7 @@ def test_form_render_with_values():
 
     assert (
         cheese.render()
-        == '<fieldset><label>name<input name="name" type="text" id="name" value="Cheddar"></input></label><label>age<input name="age" type="number" id="age" value="3"></input></label></fieldset>'
+        == '<fieldset><label>name<input name="name" type="text" id="name" value="Cheddar" /></label><label>age<input name="age" type="number" id="age" value="3" /></label></fieldset>'
     )
 
 
@@ -149,7 +149,7 @@ def test_form_render_in_view():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<form><fieldset><label>name<input name="name" type="text" id="name"></input></label><label>age<input name="age" type="number" id="age"></input></label></fieldset></form>'
+        == '<form><fieldset><label>name<input name="name" type="text" id="name" /></label><label>age<input name="age" type="number" id="age" /></label></fieldset></form>'
     )
 
 
@@ -175,7 +175,7 @@ def test_form_render_with_errors():
 
     assert (
         html
-        == '<fieldset><label>name<input name="name" type="text" id="name" aria-invalid="true"></input><small id="name-error">Please correct this error.</small></label><label>age<input name="age" type="number" id="age" aria-invalid="true"></input><small id="age-error">Please correct this error.</small></label></fieldset>'
+        == '<fieldset><label>name<input name="name" type="text" id="name" aria-invalid="true" /><small id="name-error">Please correct this error.</small></label><label>age<input name="age" type="number" id="age" aria-invalid="true" /><small id="age-error">Please correct this error.</small></label></fieldset>'
     )
 
 

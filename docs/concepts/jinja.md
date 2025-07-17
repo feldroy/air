@@ -26,7 +26,7 @@ Here's a simple Jinja layout file:
     <head>
         <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"></link>
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
         <script
             src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" 
             integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"

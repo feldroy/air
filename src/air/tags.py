@@ -67,6 +67,8 @@ def clean_html_attr_key(key: str) -> str:
 
 
 class Tag:
+    self_closing = False
+
     def __init__(self, *children, **kwargs):
         """Sets four attributes, name, module, children, and attrs.
         These are important for Starlette view responses, as nested objects
@@ -115,6 +117,8 @@ class Tag:
         return "".join(elements)
 
     def render(self) -> str:
+        if self.self_closing:
+            return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
 
@@ -292,7 +296,7 @@ class Address(Tag):
 class Area(Tag):
     """Defines an area inside an image map"""
 
-    pass
+    self_closing = True
 
 
 class Article(Tag):
@@ -322,7 +326,7 @@ class B(Tag):
 class Base(Tag):
     """Specifies the base URL/target for all relative URLs in a document"""
 
-    pass
+    self_closing = True
 
 
 class Bdi(Tag):
@@ -352,7 +356,7 @@ class Body(Tag):
 class Br(Tag):
     """Defines a single line break"""
 
-    pass
+    self_closing = True
 
 
 class Button(Tag):
@@ -388,7 +392,7 @@ class Code(Tag):
 class Col(Tag):
     """Specifies column properties for each column within a <colgroup> element"""
 
-    pass
+    self_closing = True
 
 
 class Colgroup(Tag):
@@ -466,7 +470,7 @@ class Em(Tag):
 class Embed(Tag):
     """Defines a container for an external application"""
 
-    pass
+    self_closing = True
 
 
 class Fieldset(Tag):
@@ -556,7 +560,7 @@ class Hgroup(Tag):
 class Hr(Tag):
     """Defines a thematic change in the content"""
 
-    pass
+    self_closing = True
 
 
 class I(Tag):  # noqa: E742
@@ -574,13 +578,13 @@ class Iframe(Tag):
 class Img(Tag):
     """Defines an image"""
 
-    pass
+    self_closing = True
 
 
 class Input(Tag):
     """Defines an input control"""
 
-    pass
+    self_closing = True
 
 
 class Ins(Tag):
@@ -616,7 +620,7 @@ class Li(Tag):
 class Link(Tag):
     """Defines the relationship between a document and an external resource (most used to link to style sheets)"""
 
-    pass
+    self_closing = True
 
 
 class Main(Tag):
@@ -646,7 +650,7 @@ class Menu(Tag):
 class Meta(Tag):
     """Defines metadata about an HTML document"""
 
-    pass
+    self_closing = True
 
 
 class Meter(Tag):
@@ -706,7 +710,7 @@ class P(Tag):
 class Param(Tag):
     """Defines a parameter for an object"""
 
-    pass
+    self_closing = True
 
 
 class Picture(Tag):
@@ -892,7 +896,7 @@ class Tr(Tag):
 class Track(Tag):
     """Defines text tracks for media elements (<video> and <audio>)"""
 
-    pass
+    self_closing = True
 
 
 class U(Tag):
@@ -922,4 +926,4 @@ class Video(Tag):
 class Wbr(Tag):
     """Defines a possible line-break"""
 
-    pass
+    self_closing = True
