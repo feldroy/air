@@ -188,7 +188,7 @@ def test_tags_head_tag_injection():
 
     assert (
         html
-        == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title"></meta><meta property="og:description" content="Test Description"></meta></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'
+        == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title" /><meta property="og:description" content="Test Description" /></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'
     )
 
 
@@ -274,3 +274,8 @@ def test_bool_attributes():
         _r(air.Option("North America", value="NA", selected=False))
         == '<option value="NA">North America</option>'
     )
+
+
+def test_self_closing_tags():
+    html = _r(air.Area(shape="rect", coords="10,20,30,40", alt="Box", href="/box"))
+    assert html == '<area shape="rect" coords="10,20,30,40" alt="Box" href="/box" />'
