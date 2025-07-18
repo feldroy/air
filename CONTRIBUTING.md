@@ -14,6 +14,21 @@ uv sync --extra dev
 
 Now you're ready to run Air from your local clone of your fork. Play with it, fix bugs, document, have fun!
 
+## Types of Contributions
+
+We are actively looking for contributions in the following areas:
+
+*   **Bug fixes:** If you find a bug, please feel free to submit a pull request with a fix.
+*   **Refactoring:** We welcome improvements to the existing codebase for clarity, performance, and maintainability.
+*   **Documentation:** Enhancements to our documentation, including docstrings, are always appreciated.
+
+While we are grateful for all interest, we are more hesitant to accept contributions that:
+
+*   Add new features
+*   Introduce new dependencies
+
+This helps us keep the core of Air lean and focused. If you have an idea for a new feature, we recommend discussing it with us by opening an issue first. Do understand that in a lot of cases for new features we will suggest that you create your own package that extends or uses Air rather than adding a new feature to core Air itself.
+
 ## Docs
 
 The docs are temporarily in this repo in docs/ and are built with [MkDocs](https://www.mkdocs.org/). Soon they will be in https://github.com/feldroy/airdocs
