@@ -1,6 +1,6 @@
 from typing import Any, Callable, get_args
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 from starlette.datastructures import FormData
 
 from . import tags
@@ -142,9 +142,10 @@ def default_form_widget(
 
         if error := error_dict.get(field_name, False):
             kwargs["aria-invalid"] = "true"
+        json_schema_extra = field_info.json_schema_extra or {}
         fields.append(
             tags.Label(
-                field_name,
+                json_schema_extra.get("label") or field_name,
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
                 tags.Small("Please correct this error.", id=f"{field_name}-error")
                 if error
@@ -153,3 +154,18 @@ def default_form_widget(
         )
 
     return tags.Fieldset(*fields).render()
+
+
+def AirField(type: str | None = None, label: str | None = None, **kwargs: Any) -> Any:
+    """A wrapper around pydantic.Field to provide a cleaner interface for defining
+    special input types and labels in air forms.
+
+    NOTE: This is named AirField to adhere to the same naming convention as AirForm.
+    """
+    json_schema_extra = {}
+    if type:
+        json_schema_extra[type] = True
+    if label:
+        json_schema_extra["label"] = label
+
+    return Field(json_schema_extra=json_schema_extra, **kwargs)
