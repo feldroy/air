@@ -27,7 +27,7 @@ While we are grateful for all interest, we are more hesitant to accept contribut
 *   Add new features
 *   Introduce new dependencies
 
-This helps us keep the core of Air lean and focused. If you have an idea for a new feature, we recommend discussing it with us by opening an issue first. Do understand that in a lot of cases for new features we will suggest that you create your own package that extends or uses Air rather than adding a new feature to core Air itself.
+This helps us keep the core of Air lean and focused. If you have an idea for a new feature, we recommend discussing it with us by opening an issue first. Do understand that for most new feature ideas we will suggest that you create your own package that extends or uses Air rather than adding a new feature to core Air itself.
 
 ## Docs
 
