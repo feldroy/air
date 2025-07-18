@@ -15,6 +15,7 @@ from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import RedirectResponse as RedirectResponse
 from .responses import TagResponse as TagResponse
+from .tags import Children as Children
 from .tags import (
     H1 as H1,
 )
