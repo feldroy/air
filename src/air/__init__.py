@@ -1,6 +1,6 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-__version__ = "0.14.1"
+__version__ = "0.14.2"
 
 from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
 
