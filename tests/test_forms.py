@@ -192,3 +192,21 @@ def test_html_input_field_types():
     html = contact_form.render()
     assert 'type="datedatetime-local"' in html
     assert 'type="email"' in html
+
+
+def test_air_field():
+    class ContactModel(BaseModel):
+        name: str
+        email: str = air.AirField(type="email", label="Email")
+        date_and_time: str = air.AirField(
+            type="datedatetime-local", label="Date and Time"
+        )
+
+    class ContactForm(air.AirForm):
+        model = ContactModel
+
+    contact_form = ContactForm()
+    html = contact_form.render()
+    assert 'type="datedatetime-local"' in html
+    assert 'type="email"' in html
+    assert "<label>Date and Time<input" in html
