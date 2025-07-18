@@ -229,6 +229,11 @@ class Style(NoEscapeTag):
     """
 
 
+class Children(Tag):
+    def render(self) -> str:
+        return self.children
+
+
 # HTML tag attribute map
 
 html_attributes = {

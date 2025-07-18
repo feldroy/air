@@ -279,3 +279,12 @@ def test_bool_attributes():
 def test_self_closing_tags():
     html = _r(air.Area(shape="rect", coords="10,20,30,40", alt="Box", href="/box"))
     assert html == '<area shape="rect" coords="10,20,30,40" alt="Box" href="/box" />'
+
+
+def test_children_tag():
+    html = _r(air.Children(air.P("Hello, world!")))
+    assert html == "<p>Hello, world!</p>"
+    assert (
+        _r(air.Children(air.P("Hello, world!"), air.P("Uma")))
+        == "<p>Hello, world!</p><p>Uma</p>"
+    )
