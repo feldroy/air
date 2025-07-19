@@ -2,6 +2,7 @@
 
 import html
 from functools import cached_property
+from typing import Optional
 from xml.etree import ElementTree as ET
 
 
@@ -72,8 +73,13 @@ class Tag:
     def __init__(self, *children, **kwargs):
         """Sets four attributes, name, module, children, and attrs.
         These are important for Starlette view responses, as nested objects
-        get auto-serialized to JSON and need to be rebuilt. Without
-        the values of these attributes, the object reconstruction can't occur"""
+        get auto-serialized to JSON and need to be rebuilt. With
+        the values of these attributes, the object reconstruction can occur.
+
+        Args:
+            children: Tags, strings, or other rendered content.
+            kwargs: Keyword arguments transformed into tag attributes.
+        """
         self._name = self.__class__.__name__
         self._module = self.__class__.__module__
         self._children, self._attrs = children, kwargs
@@ -610,7 +616,7 @@ def locals_cleanup(local_data, obj):
     """Converts arguments to kwargs per the html_attributes structure"""
     data = {}
     attrs = html_attributes.get(obj.__class__.__name__, [])
-    attrs += ["class_", "id"]
+    attrs += ["class_", "id", "style"]
     for attr in attrs:
         if local_data.get(attr) is not None:
             data[attr] = local_data[attr]
@@ -624,6 +630,7 @@ class A(Tag):
     """Defines a hyperlink
 
     Args:
+        children: Tags, strings, or other rendered content.
         href: Specifies the URL of the page the link goes to.
         target: Specifies where to open the linked document.
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
@@ -635,12 +642,14 @@ class A(Tag):
         ping: Specifies a space-separated list of URLs to which, when the link is followed, post requests with the body ping will be sent by the browser (in the background). Typically used for tracking.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children,
-        href: str | None = None,
+        href: Optional[str] = None,
         target: str | None = None,
         download: str | None = None,
         rel: str | None = None,
@@ -651,6 +660,7 @@ class A(Tag):
         ping: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -662,6 +672,7 @@ class Abbr(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -669,6 +680,7 @@ class Abbr(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -680,6 +692,7 @@ class Address(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -687,6 +700,7 @@ class Address(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -707,6 +721,7 @@ class Area(Tag):
         target: Specifies where to open the linked document.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -723,6 +738,7 @@ class Area(Tag):
         target: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -735,6 +751,7 @@ class Article(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -742,6 +759,7 @@ class Article(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -753,6 +771,7 @@ class Aside(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -760,6 +779,7 @@ class Aside(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -777,6 +797,7 @@ class Audio(Tag):
         src: Specifies the URL of the audio file.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -790,6 +811,7 @@ class Audio(Tag):
         src: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -801,6 +823,7 @@ class B(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -808,6 +831,7 @@ class B(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -819,6 +843,7 @@ class Base(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -828,6 +853,7 @@ class Base(Tag):
         target: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -840,6 +866,7 @@ class Bdi(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -847,6 +874,7 @@ class Bdi(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -859,6 +887,7 @@ class Bdo(Tag):
         dir: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -867,6 +896,7 @@ class Bdo(Tag):
         dir: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -879,6 +909,7 @@ class Blockquote(Tag):
         cite: Specifies the source of the quotation.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -887,6 +918,7 @@ class Blockquote(Tag):
         cite: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -898,6 +930,7 @@ class Body(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -905,6 +938,7 @@ class Body(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -916,6 +950,7 @@ class Br(Tag):
     Args:
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -923,6 +958,7 @@ class Br(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -948,6 +984,7 @@ class Button(Tag):
         popovertargetaction: Specifies what action to perform on the popover element.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
+        style: Inline style attribute.
     """
 
     def __init__(
@@ -968,6 +1005,7 @@ class Button(Tag):
         popovertargetaction: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
