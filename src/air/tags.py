@@ -693,7 +693,21 @@ class Address(Tag):
 
 
 class Area(Tag):
-    """Defines an area inside an image map"""
+    """Defines an area inside an image map
+
+    Args:
+        alt: Specifies an alternate text for an area. Required if the href attribute is present.
+        coords: Specifies the coordinates of an area.
+        download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
+        href: Specifies the URL of the page the link goes to.
+        ping: Specifies a space-separated list of URLs to which, when the link is followed, post requests with the body ping will be sent by the browser (in the background). Typically used for tracking.
+        referrerpolicy: Specifies which referrer information to send with the link.
+        rel: Specifies the relationship between the current document and the linked document.
+        shape: Specifies the shape of an area.
+        target: Specifies where to open the linked document.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -716,7 +730,12 @@ class Area(Tag):
 
 
 class Article(Tag):
-    """Defines an article"""
+    """Defines an article
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -729,7 +748,12 @@ class Article(Tag):
 
 
 class Aside(Tag):
-    """Defines content aside from the page content"""
+    """Defines content aside from the page content
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -742,7 +766,18 @@ class Aside(Tag):
 
 
 class Audio(Tag):
-    """Defines embedded sound content"""
+    """Defines embedded sound content
+
+    Args:
+        autoplay: Specifies that the audio will start playing as soon as it is ready.
+        controls: Specifies that audio controls should be displayed (such as a play/pause button etc).
+        loop: Specifies that the audio will start over again, every time it is finished.
+        muted: Specifies that the audio output should be muted.
+        preload: Specifies if and how the author thinks the audio should be loaded when the page loads.
+        src: Specifies the URL of the audio file.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -761,7 +796,12 @@ class Audio(Tag):
 
 
 class B(Tag):
-    """Defines bold text"""
+    """Defines bold text
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -774,7 +814,12 @@ class B(Tag):
 
 
 class Base(Tag):
-    """Specifies the base URL/target for all relative URLs in a document"""
+    """Specifies the base URL/target for all relative URLs in a document
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -790,7 +835,12 @@ class Base(Tag):
 
 
 class Bdi(Tag):
-    """Isolates a part of text that might be formatted in a different direction from other text outside it"""
+    """Isolates a part of text that might be formatted in a different direction from other text outside it
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -803,7 +853,13 @@ class Bdi(Tag):
 
 
 class Bdo(Tag):
-    """Overrides the current text direction"""
+    """Overrides the current text direction
+
+    Args:
+        dir: Specifies the text direction of the text inside the <bdo> element.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -817,7 +873,13 @@ class Bdo(Tag):
 
 
 class Blockquote(Tag):
-    """Defines a section that is quoted from another source"""
+    """Defines a section that is quoted from another source
+
+    Args:
+        cite: Specifies the source of the quotation.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -831,7 +893,12 @@ class Blockquote(Tag):
 
 
 class Body(Tag):
-    """Defines the document's body"""
+    """Defines the document's body
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -844,7 +911,12 @@ class Body(Tag):
 
 
 class Br(Tag):
-    """Defines a single line break"""
+    """Defines a single line break
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -858,7 +930,25 @@ class Br(Tag):
 
 
 class Button(Tag):
-    """Defines a clickable button"""
+    """Defines a clickable button
+
+    Args:
+        name: Specifies a name for the button.
+        type: Specifies the type of button.
+        value: Specifies an initial value for the button.
+        autofocus: Specifies that a button should automatically get focus when the page loads.
+        disabled: Specifies that a button should be disabled.
+        form: Specifies which form the button belongs to.
+        formaction: Specifies where to send the form-data when a form is submitted. Only for type="submit".
+        formenctype: Specifies how the form-data should be encoded before sending it to a server. Only for type="submit".
+        formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type="submit".
+        formnovalidate: Specifies that the form-data should not be validated on submission. Only for type="submit".
+        formtarget: Specifies where to display the response that is received after submitting the form. Only for type="submit".
+        popovertarget: Specifies which popover element to invoke.
+        popovertargetaction: Specifies what action to perform on the popover element.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
