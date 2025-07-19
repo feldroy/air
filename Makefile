@@ -31,13 +31,19 @@ clean:  ## Run all the formatting, linting, and testing commands
 
 MAKECMDGOALS ?= .	
 
+testall:  ## Run all the tests for all the supported Python versions
+	uv run --python=3.10 --with pytest --with httpx pytest
+	uv run --python=3.11 --with pytest --with httpx pytest
+	uv run --python=3.12 --with pytest --with httpx pytest
+	uv run --python=3.13 --with pytest --with httpx pytest
+
 test:  ## Run all the tests, but allow for arguments to be passed
 	@echo "Running with arg: $(filter-out $@,$(MAKECMDGOALS))"
-	pytest $(filter-out $@,$(MAKECMDGOALS))
+	uv run --python=3.13 --with pytest --with httpx pytest $(filter-out $@,$(MAKECMDGOALS))
 
 pdb:  ## Run all the tests, but on failure, drop into the debugger
 	@echo "Running with arg: $(filter-out $@,$(MAKECMDGOALS))"
-	pytest --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb $(filter-out $@,$(MAKECMDGOALS))
+	uv run --python=3.13 --with pytest --with httpx pytest --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb $(filter-out $@,$(MAKECMDGOALS))
 
 coverage:  ## Run coverage, and build to HTML
 	coverage run -m pytest .
@@ -63,7 +69,7 @@ tag:  ## Tag the current version in git and put to github
 	git push origin $(VERSION)
 
 doc: ## Serve docs locally
-	mkdocs serve -a localhost:3000
+	uv run --with "mkdocs-material" --with "mkdocstrings[python]" mkdocs serve -a localhost:3000
 
 doc-build: ## Build and deploy docs
 	mkdocs gh-deploy --force

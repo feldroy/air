@@ -46,10 +46,7 @@ dev = [
     # For the test client
     "httpx>=0.28.1",
     # Used with debugging
-    "ipdb>=0.13.13",
-    # Used for docs
-    "mkdocs-material",
-    "mkdocstrings[python]",    
+    "ipdb>=0.13.13",   
     # Test runner
     "pytest>=8.4.0",
     # Linting and formatting
