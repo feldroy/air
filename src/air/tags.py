@@ -1129,7 +1129,16 @@ class Col(Tag):
 
 
 class Colgroup(Tag):
-    """Specifies a group of one or more columns in a table for formatting"""
+    """Specifies a group of one or more columns in a table for formatting
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        span: Specifies the number of columns a <colgroup> element should span.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1137,13 +1146,23 @@ class Colgroup(Tag):
         span: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Data(Tag):
-    """Adds a machine-readable translation of a given content"""
+    """Adds a machine-readable translation of a given content
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        value: Specifies the machine-readable translation of the content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1151,6 +1170,7 @@ class Data(Tag):
         value: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
