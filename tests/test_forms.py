@@ -1,5 +1,6 @@
 from typing import Annotated
 
+import pytest
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
 from pydantic import BaseModel, Field
@@ -210,3 +211,10 @@ def test_air_field():
     assert 'type="datedatetime-local"' in html
     assert 'type="email"' in html
     assert "<label>Date and Time<input" in html
+
+
+def test_airform_notimplementederror():
+    with pytest.raises(NotImplementedError) as exc:
+        air.AirForm()
+
+    assert "model" in str(exc.value)

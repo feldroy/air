@@ -6,9 +6,9 @@ from starlette.datastructures import FormData
 from . import tags
 from .requests import Request
 
-try:
+try:  # pragma: no cover
     from typing import Self  # type: ignore [attr-defined]
-except ImportError:
+except ImportError:  # pragma: no cover
     # NOTE: Remove once Python 3.10 support is dropped
     Self = "AirForm"  # type: ignore [assignment]
 
@@ -50,8 +50,6 @@ class AirForm:
         return self
 
     def validate(self, form_data: dict[Any, Any] | FormData):
-        if self.model is None:
-            raise NotImplementedError("model")
         try:
             self.data = self.model(**form_data)
             self.is_valid = True
