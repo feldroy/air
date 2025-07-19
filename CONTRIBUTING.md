@@ -44,7 +44,7 @@ uv sync --extra docs
 Run the tests:
 
 ```bash
-make test
+make testall
 ```
 
 ## Linting and Formatting
