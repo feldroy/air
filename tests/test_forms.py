@@ -106,7 +106,7 @@ def test_form_render():
 
     assert (
         cheese.render()
-        == '<fieldset><label>name<input name="name" type="text" id="name" /></label><label>age<input name="age" type="number" id="age" /></label></fieldset>'
+        == '<fieldset><label>name<input type="text" name="name" id="name" /></label><label>age<input type="number" name="age" id="age" /></label></fieldset>'
     )
 
 
@@ -122,7 +122,7 @@ def test_form_render_with_values():
 
     assert (
         cheese.render()
-        == '<fieldset><label>name<input name="name" type="text" id="name" value="Cheddar" /></label><label>age<input name="age" type="number" id="age" value="3" /></label></fieldset>'
+        == '<fieldset><label>name<input type="text" value="Cheddar" name="name" id="name" /></label><label>age<input type="number" value="3" name="age" id="age" /></label></fieldset>'
     )
 
 
@@ -149,7 +149,7 @@ def test_form_render_in_view():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<form><fieldset><label>name<input name="name" type="text" id="name" /></label><label>age<input name="age" type="number" id="age" /></label></fieldset></form>'
+        == '<form><fieldset><label>name<input type="text" name="name" id="name" /></label><label>age<input type="number" name="age" id="age" /></label></fieldset></form>'
     )
 
 
@@ -175,7 +175,7 @@ def test_form_render_with_errors():
 
     assert (
         html
-        == '<fieldset><label>name<input name="name" type="text" id="name" aria-invalid="true" /><small id="name-error">Please correct this error.</small></label><label>age<input name="age" type="number" id="age" aria-invalid="true" /><small id="age-error">Please correct this error.</small></label></fieldset>'
+        == '<fieldset><label>name<input aria-invalid="true" type="text" name="name" id="name" /><small id="name-error">Please correct this error.</small></label><label>age<input aria-invalid="true" type="number" name="age" id="age" /><small id="age-error">Please correct this error.</small></label></fieldset>'
     )
 
 

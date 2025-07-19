@@ -93,5 +93,5 @@ def test_air_404_response():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<!doctype html><html><head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /><title>404 Not Found</title></head><body><main class="container"><h1>404 Not Found</h1><p>The requested resource was not found on this server.</p><p>URL: http://testserver/nonexistent</p></main></body></html>'
+        == '<!doctype html><html><head><link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet" /><title>404 Not Found</title></head><body><main class="container"><h1>404 Not Found</h1><p>The requested resource was not found on this server.</p><p>URL: http://testserver/nonexistent</p></main></body></html>'
     )

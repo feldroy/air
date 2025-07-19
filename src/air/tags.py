@@ -220,6 +220,7 @@ class Script(NoEscapeTag):
 
     Warning: Script tag does not protect against code injection.
     """
+
     pass
 
 
@@ -228,6 +229,7 @@ class Style(NoEscapeTag):
 
     Warning: Style tag does not protect against code injection.
     """
+
     pass
 
 
@@ -606,7 +608,9 @@ html_attributes = {
 def locals_cleanup(local_data, obj):
     """Converts arguments to kwargs per the html_attributes structure"""
     data = {}
-    for attr in html_attributes.get(obj.__class__.__name__, []):
+    attrs = html_attributes.get(obj.__class__.__name__, [])
+    attrs += ["class_", "id"]
+    for attr in attrs:
         if local_data.get(attr) is not None:
             data[attr] = local_data[attr]
     return data
@@ -644,7 +648,7 @@ class Abbr(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -657,7 +661,7 @@ class Address(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -679,7 +683,7 @@ class Area(Tag):
         shape: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -693,7 +697,7 @@ class Article(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -706,7 +710,7 @@ class Aside(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -725,7 +729,7 @@ class Audio(Tag):
         preload: str | None = None,
         src: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -738,7 +742,7 @@ class B(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -753,7 +757,7 @@ class Base(Tag):
         href: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -767,7 +771,7 @@ class Bdi(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -781,7 +785,7 @@ class Bdo(Tag):
         *children,
         dir: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -795,7 +799,7 @@ class Blockquote(Tag):
         *children,
         cite: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -808,7 +812,7 @@ class Body(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -821,7 +825,7 @@ class Br(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -848,7 +852,7 @@ class Button(Tag):
         popovertarget: str | None = None,
         popovertargetaction: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -863,7 +867,7 @@ class Canvas(Tag):
         width: str | None = None,
         height: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -876,7 +880,7 @@ class Caption(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -889,7 +893,7 @@ class Cite(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -902,7 +906,7 @@ class Code(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -916,7 +920,7 @@ class Col(Tag):
         *children,
         span: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -931,7 +935,7 @@ class Colgroup(Tag):
         *children,
         span: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -945,7 +949,7 @@ class Data(Tag):
         *children,
         value: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -958,7 +962,7 @@ class Datalist(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -973,7 +977,7 @@ class Dd(Tag):
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -986,7 +990,7 @@ class Del(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1000,7 +1004,7 @@ class Details(Tag):
         *children,
         open: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1013,7 +1017,7 @@ class Dfn(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1027,7 +1031,7 @@ class Dialog(Tag):
         *children,
         open: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1040,7 +1044,7 @@ class Div(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1053,7 +1057,7 @@ class Dl(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1066,7 +1070,7 @@ class Dt(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1079,7 +1083,7 @@ class Em(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1096,7 +1100,7 @@ class Embed(Tag):
         width: str | None = None,
         height: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1113,7 +1117,7 @@ class Fieldset(Tag):
         form: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1126,7 +1130,7 @@ class Figcaption(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1139,7 +1143,7 @@ class Figure(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1152,7 +1156,7 @@ class Footer(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1174,7 +1178,7 @@ class Form(Tag):
         rel: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1187,7 +1191,7 @@ class H1(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1200,7 +1204,7 @@ class H2(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1213,7 +1217,7 @@ class H3(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1226,7 +1230,7 @@ class H4(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1239,7 +1243,7 @@ class H5(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1252,7 +1256,7 @@ class H6(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1266,7 +1270,7 @@ class Head(Tag):
         *children,
         profile: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1279,7 +1283,7 @@ class Header(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1292,7 +1296,7 @@ class Hgroup(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1305,7 +1309,7 @@ class Hr(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1319,7 +1323,7 @@ class I(Tag):  # noqa: E742
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1343,7 +1347,7 @@ class Iframe(Tag):
         referrerpolicy: str | None = None,
         sandbox: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1368,7 +1372,7 @@ class Img(Tag):
         sizes: str | None = None,
         usemap: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1414,7 +1418,7 @@ class Input(Tag):
         src: str | None = None,
         step: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1430,7 +1434,7 @@ class Ins(Tag):
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1443,7 +1447,7 @@ class Kbd(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1457,7 +1461,7 @@ class Label(Tag):
         *children,
         for_: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1470,7 +1474,7 @@ class Legend(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1484,7 +1488,7 @@ class Li(Tag):
         *children,
         value: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1513,7 +1517,7 @@ class Link(Tag):
         title: str | None = None,
         type: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1527,7 +1531,7 @@ class Main(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1541,7 +1545,7 @@ class Map(Tag):
         *children,
         name: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1554,7 +1558,7 @@ class Mark(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1568,7 +1572,7 @@ class Menu(Tag):
         *children,
         compact: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1586,7 +1590,7 @@ class Meta(Tag):
         media: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1606,7 +1610,7 @@ class Meter(Tag):
         high: str | None = None,
         optimum: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1619,7 +1623,7 @@ class Nav(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1632,7 +1636,7 @@ class Noscript(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1659,7 +1663,7 @@ class Object(Tag):
         usemap: str | None = None,
         width: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1676,7 +1680,7 @@ class Ol(Tag):
         start: str | None = None,
         type: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1691,7 +1695,7 @@ class Optgroup(Tag):
         disabled: str | None = None,
         label: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1705,10 +1709,10 @@ class Option(Tag):
         *children,
         disabled: str | None = None,
         label: str | None = None,
-        selected: str | None = None,
+        selected: bool | None = None,
         value: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1724,7 +1728,7 @@ class Output(Tag):
         form: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1737,7 +1741,7 @@ class P(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1750,7 +1754,7 @@ class Param(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1764,7 +1768,7 @@ class Picture(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1779,7 +1783,7 @@ class Pre(Tag):
         width: str | None = None,
         wrap: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1794,7 +1798,7 @@ class Progress(Tag):
         max: str | None = None,
         value: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1808,7 +1812,7 @@ class Q(Tag):
         *children,
         cite: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1821,7 +1825,7 @@ class Rp(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1834,7 +1838,7 @@ class Rt(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1847,7 +1851,7 @@ class Ruby(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1860,7 +1864,7 @@ class S(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1873,7 +1877,7 @@ class Samp(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1886,7 +1890,7 @@ class Search(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1899,7 +1903,7 @@ class Section(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1920,7 +1924,7 @@ class Select(Tag):
         required: str | None = None,
         size: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1933,7 +1937,7 @@ class Small(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1953,7 +1957,7 @@ class Source(Tag):
         height: str | None = None,
         width: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1966,7 +1970,7 @@ class Span(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1979,7 +1983,7 @@ class Strong(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1992,7 +1996,7 @@ class Sub(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2005,7 +2009,7 @@ class Summary(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2018,7 +2022,7 @@ class Sup(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2031,7 +2035,7 @@ class Table(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2044,7 +2048,7 @@ class Tbody(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2060,7 +2064,7 @@ class Td(Tag):
         rowspan: str | None = None,
         headers: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2077,7 +2081,7 @@ class Template(Tag):
         shadowrootclonable: str | None = None,
         shadowrootserializable: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2107,7 +2111,7 @@ class Textarea(Tag):
         spellcheck: str | None = None,
         wrap: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2120,7 +2124,7 @@ class Tfoot(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2138,7 +2142,7 @@ class Th(Tag):
         rowspan: str | None = None,
         scope: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2151,7 +2155,7 @@ class Thead(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2165,7 +2169,7 @@ class Time(Tag):
         *children,
         datetime: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2178,7 +2182,7 @@ class Title(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2191,7 +2195,7 @@ class Tr(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2209,7 +2213,7 @@ class Track(Tag):
         srclang: str | None = None,
         src: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2225,7 +2229,7 @@ class U(Tag):
         compact: str | None = None,
         type: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2238,7 +2242,7 @@ class Ul(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2251,7 +2255,7 @@ class Var(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2278,7 +2282,7 @@ class Video(Tag):
         poster: str | None = None,
         preload: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2291,7 +2295,7 @@ class Wbr(Tag):
         self,
         *children,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))

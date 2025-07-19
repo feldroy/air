@@ -268,7 +268,7 @@ def test_special_characters():
 def test_bool_attributes():
     assert (
         _r(air.Option("South America", value="SA", selected=True))
-        == '<option value="SA" selected>South America</option>'
+        == '<option selected value="SA">South America</option>'
     )
     assert (
         _r(air.Option("North America", value="NA", selected=False))
@@ -278,7 +278,7 @@ def test_bool_attributes():
 
 def test_self_closing_tags():
     html = _r(air.Area(shape="rect", coords="10,20,30,40", alt="Box", href="/box"))
-    assert html == '<area shape="rect" coords="10,20,30,40" alt="Box" href="/box" />'
+    assert html == '<area alt="Box" coords="10,20,30,40" href="/box" shape="rect" />'
 
 
 def test_children_tag():
