@@ -757,7 +757,7 @@ class Base(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
-        selfself_closing = True
+        self.self_closing = True
 
 
 class Bdi(Tag):
