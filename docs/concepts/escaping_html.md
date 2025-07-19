@@ -43,7 +43,7 @@ renders as:
 &lt;h1&gt;Hello, World!&lt;/h1&gt;
 ```
 
-To provide unescaped code, Air Tags provides three options: the `Style`, `Script`, and `RawHTML` tags - which are described below.
+To provide unescaped code, Air Tags provides three options: the `Style`, `Script`, and `Raw` tags - which are described below.
 
 ### `Style`: Unescaped CSS
 
@@ -99,12 +99,12 @@ function capitalize(str) {
 </script> 
 ```   
 
-### `RawHTML`: Unescaped text
+### `Raw`: Unescaped text
 
-To avoid escaping anything and everything, use the `RawHTML` tag:
+To avoid escaping anything and everything, use the `Raw` tag:
 
 ```python
-air.RawHTML("<h1>Hello, World<h1>")
+air.Raw("<h1>Hello, World<h1>")
 ```
 
 Renders as:

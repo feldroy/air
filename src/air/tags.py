@@ -158,47 +158,48 @@ class Html(Tag):
         return f"""<!doctype html><html{self.attrs}>{self.children}</html>"""
 
 
-class RawHTML(Tag):
+class Raw(Tag):
     """Renders raw HTML content without escaping.
 
     Args:
-        html_string: A single string containing raw HTML to render
+        raw_string: A single string containing raw text to render
 
     Raises:
         TypeError: If non-string content is provided
         ValueError: If multiple arguments are provided
 
     Example:
-        >>> RawHTML('<strong>Bold</strong> text')
-        '<strong>Bold</strong> text'
 
-        >>> # Use with other tags
-        >>> Div(
-        ...     P("Safe content"),
-        ...     RawHTML('<hr class="divider">'),
-        ...     P("More safe content")
-        ... )
+        # Produces '<strong>Bold</strong> text'
+        Raw('<strong>Bold</strong> text')
+
+        # Use with other tags
+        Div(
+            P("Safe content"),
+            Raw('<hr class="divider">'),
+            P("More safe content")
+        )
     """
 
     def __init__(self, *args, **kwargs):
-        """Initialize RawHTML with a single string argument.
+        """Initialize Raw with a single string argument.
 
         Args:
             *args: Should be exactly one string argument
             **kwargs: Ignored (for consistency with Tag interface)
         """
         if len(args) > 1:
-            raise ValueError("RawHTML accepts only one string argument")
+            raise ValueError("Raw accepts only one string argument")
 
-        html_string = args[0] if args else ""
+        raw_string = args[0] if args else ""
 
-        if not isinstance(html_string, str):
-            raise TypeError("RawHTML only accepts string content")
+        if not isinstance(raw_string, str):
+            raise TypeError("Raw only accepts string content")
 
-        super().__init__(html_string)
+        super().__init__(raw_string)
 
     def render(self) -> str:
-        """Render the raw HTML string without escaping."""
+        """Render the string without escaping."""
         return self._children[0] if self._children else ""
 
 
@@ -620,7 +621,21 @@ def locals_cleanup(local_data, obj):
 
 
 class A(Tag):
-    """Defines a hyperlink"""
+    """Defines a hyperlink
+
+    Args:
+        href: Specifies the URL of the page the link goes to.
+        target: Specifies where to open the linked document.
+        download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
+        rel: Specifies the relationship between the current document and the linked document.
+        hreflang: Specifies the language of the linked document.
+        type: Specifies the media type of the linked document.
+        referrerpolicy: Specifies which referrer information to send with the link.
+        media: Specifies what media/device the linked document is optimized for.
+        ping: Specifies a space-separated list of URLs to which, when the link is followed, post requests with the body ping will be sent by the browser (in the background). Typically used for tracking.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -642,7 +657,12 @@ class A(Tag):
 
 
 class Abbr(Tag):
-    """Defines an abbreviation or an acronym"""
+    """Defines an abbreviation or an acronym
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,
@@ -655,7 +675,12 @@ class Abbr(Tag):
 
 
 class Address(Tag):
-    """Defines contact information for the author/owner of a document"""
+    """Defines contact information for the author/owner of a document
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+    """
 
     def __init__(
         self,

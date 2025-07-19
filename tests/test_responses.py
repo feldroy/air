@@ -141,7 +141,7 @@ def test_TagResponse_with_layout_names():
     class CustomLayoutResponse(air.TagResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content).decode("utf-8")
-            return air.Html(air.RawHTML(content)).render().encode("utf-8")
+            return air.Html(air.Raw(content)).render().encode("utf-8")
 
     app = FastAPI()
 
