@@ -61,7 +61,7 @@ def clean_html_attr_key(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = dict(class_="class", for_="for", id_="id").get(key, key)
+    key = dict(class_="class", for_="for", id_="id", as_="as").get(key, key)
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
 
@@ -212,12 +212,46 @@ class Script(NoEscapeTag):
     Warning: Script tag does not protect against code injection.
     """
 
+    def __init__(
+        self,
+        *children,
+        async_: str | None = None,
+        attributionsrc: str | None = None,
+        blocking: str | None = None,
+        crossorigin: str | None = None,
+        defer: str | None = None,
+        fetchpriority: str | None = None,
+        integrity: str | None = None,
+        nomodule: str | None = None,
+        nonce: str | None = None,
+        referrerpolicy: str | None = None,
+        src: str | None = None,
+        type: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+
 
 class Style(NoEscapeTag):
     """Defines style information for a document
 
     Warning: Style tag does not protect against code injection.
     """
+
+    def __init__(
+        self,
+        *children,
+        media: str | None = None,
+        nonce: str | None = None,
+        title: str | None = None,
+        blocking: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 # HTML tag attribute map
@@ -235,6 +269,17 @@ html_attributes = {
         "class_",
         "id_",
     ],
+    "Area": [
+        "alt",
+        "coords",
+        "download",
+        "href",
+        "ping",
+        "referrerpolicy",
+        "rel",
+        "shape",
+        "target",
+    ],
     "Audio": [
         "autoplay",
         "controls",
@@ -242,6 +287,16 @@ html_attributes = {
         "muted",
         "preload",
         "src",
+    ],
+    "Base": [
+        "href",
+        "target",
+    ],
+    "Bdi": [
+        "dir",
+    ],
+    "Blockquote": [
+        "cite",
     ],
     "Button": [
         "name",
@@ -287,6 +342,9 @@ html_attributes = {
         "novalidate",
         "rel",
         "target",
+    ],
+    "Head": [
+        "profile",
     ],
     "Iframe": [
         "src",
@@ -347,6 +405,219 @@ html_attributes = {
         "src",
         "step",
     ],
+    "Ins": [
+        "cite",
+        "datetime",
+    ],
+    "Label": ["for"],
+    "Li": [
+        "value",
+    ],
+    "Link": [
+        "href",
+        "as_",
+        "blocking",
+        "crossorigin",
+        "disabled",
+        "fetchpriority",
+        "hreflang",
+        "imagesizes",
+        "imagesrcset",
+        "integrity",
+        "media",
+        "referrerpolicy",
+        "rel",
+        "sizes",
+        "title",
+        "type",
+    ],
+    "Map": [
+        "name",
+    ],
+    "Marquee": [
+        "behavior",
+        "direction",
+        "height",
+        "width",
+        "loop",
+        "scrollamount",
+        "scrolldelay",
+        "truespeed",
+        "vspace",
+    ],
+    "Menu": [
+        "compact",
+    ],
+    "Meta": [
+        "charset",
+        "content",
+        "http_equiv",
+        "media",
+        "name",
+    ],
+    "Meter": [
+        "value",
+        "min",
+        "max",
+        "low",
+        "high",
+        "optimum",
+    ],
+    "Object": [
+        "archive",
+        "border",
+        "classidcodebase",
+        "codetype",
+        "data",
+        "declare",
+        "form",
+        "height",
+        "name",
+        "standby",
+        "type",
+        "usemap",
+        "width",
+    ],
+    "Ol": [
+        "compact",
+        "reversed",
+        "start",
+        "type",
+    ],
+    "Optgroup": [
+        "disabled",
+        "label",
+    ],
+    "Option": [
+        "disabled",
+        "label",
+        "selected",
+        "value",
+    ],
+    "Output": [
+        "for_",
+        "form",
+        "name",
+    ],
+    "Pre": [
+        "width",
+        "wrap",
+    ],
+    "Progress": [
+        "max",
+        "value",
+    ],
+    "Q": [
+        "cite",
+    ],
+    "Script": [
+        "async",
+        "attributionsrc",
+        "blocking",
+        "crossorigin",
+        "defer",
+        "fetchpriority",
+        "integrity",
+        "nomodule",
+        "noncereferrerpolicy",
+        "src",
+        "type",
+    ],
+    "Select": [
+        "autocomplete",
+        "autofocus",
+        "disabled",
+        "form",
+        "multiple",
+        "name",
+        "required",
+        "size",
+    ],
+    "Slot": [
+        "name",
+    ],
+    "Source": [
+        "src",
+        "type",
+        "sizes",
+        "media",
+        "srcset",
+        "height",
+        "width",
+    ],
+    "Style": [
+        "media",
+        "nonce",
+        "title",
+        "blocking",
+    ],
+    "Td": [
+        "colspan",
+        "rowspan",
+        "headers",
+    ],
+    "Template": [
+        "shadowrootmode",
+        "shadowrootdelegatesfocus",
+        "shadowrootclonable",
+        "shadowrootserializable",
+    ],
+    "Textarea": [
+        "autocapitalize",
+        "autocomplete",
+        "autocorrect",
+        "autofocus",
+        "cols",
+        "dirname",
+        "disabled",
+        "form",
+        "maxlength",
+        "minlength",
+        "name",
+        "placeholder",
+        "readonly",
+        "required",
+        "rows",
+        "spellcheck",
+        "wrap",
+    ],
+    "Th": [
+        "abbr",
+        "colspan",
+        "headers",
+        "rowspan",
+        "scope",
+    ],
+    "Time": [
+        "datetime",
+    ],
+    "Track": [
+        "default",
+        "kind",
+        "label",
+        "srclang",
+        "src",
+    ],
+    "Ul": [
+        "compact",
+        "type",
+    ],
+    "Video": [
+        "src",
+        "autoplay",
+        "controls",
+        "controlslist",
+        "crossorigin",
+        "disablepictureinpicture",
+        "disableremoteplayback",
+        "height",
+        "width",
+        "loop",
+        "muted",
+        "playsinline",
+        "poster",
+        "preload",
+    ],
 }
 
 
@@ -387,31 +658,75 @@ class A(Tag):
 class Abbr(Tag):
     """Defines an abbreviation or an acronym"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Address(Tag):
     """Defines contact information for the author/owner of a document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Area(Tag):
     """Defines an area inside an image map"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        alt: str | None = None,
+        coords: str | None = None,
+        download: str | None = None,
+        href: str | None = None,
+        ping: str | None = None,
+        referrerpolicy: str | None = None,
+        rel: str | None = None,
+        shape: str | None = None,
+        target: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Article(Tag):
     """Defines an article"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Aside(Tag):
     """Defines content aside from the page content"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Audio(Tag):
@@ -436,43 +751,96 @@ class Audio(Tag):
 class B(Tag):
     """Defines bold text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Base(Tag):
     """Specifies the base URL/target for all relative URLs in a document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        href: str | None = None,
+        target: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Bdi(Tag):
     """Isolates a part of text that might be formatted in a different direction from other text outside it"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Bdo(Tag):
     """Overrides the current text direction"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        dir: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Blockquote(Tag):
     """Defines a section that is quoted from another source"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        cite: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Body(Tag):
     """Defines the document's body"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Br(Tag):
     """Defines a single line break"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Button(Tag):
@@ -519,19 +887,40 @@ class Canvas(Tag):
 class Caption(Tag):
     """Defines a table caption"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Cite(Tag):
     """Defines the title of a work"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Code(Tag):
     """Defines a piece of computer code"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Col(Tag):
@@ -579,7 +968,14 @@ class Data(Tag):
 class Datalist(Tag):
     """Specifies a list of pre-defined options for input controls"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dd(Tag):
@@ -600,6 +996,15 @@ class Dd(Tag):
 class Del(Tag):
     """Defines text that has been deleted from a document"""
 
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+
 
 class Details(Tag):
     """Defines additional details that the user can view or hide"""
@@ -618,7 +1023,14 @@ class Details(Tag):
 class Dfn(Tag):
     """Specifies a term that is going to be defined within the content"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dialog(Tag):
@@ -638,25 +1050,53 @@ class Dialog(Tag):
 class Div(Tag):
     """Defines a section in a document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dl(Tag):
     """Defines a description list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dt(Tag):
     """Defines a term/name in a description list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Em(Tag):
     """Defines emphasized text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Embed(Tag):
@@ -695,19 +1135,40 @@ class Fieldset(Tag):
 class Figcaption(Tag):
     """Defines a caption for a <figure> element"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Figure(Tag):
     """Specifies self-contained content"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Footer(Tag):
     """Defines a footer for a document or section"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Form(Tag):
@@ -735,67 +1196,145 @@ class Form(Tag):
 class H1(Tag):
     """H1 header"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H2(Tag):
     """H2 header"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H3(Tag):
     """H3 header"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H4(Tag):
     """H4 header"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H5(Tag):
     """H5 header"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H6(Tag):
     """H6 header"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Head(Tag):
     """Contains metadata/information for the document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        profile: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Header(Tag):
     """Defines a header for a document or section"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Hgroup(Tag):
     """Defines a header and related content"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Hr(Tag):
     """Defines a thematic change in the content"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class I(Tag):  # noqa: E742
     """Defines a part of text in an alternate voice or mood"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Iframe(Tag):
@@ -895,340 +1434,870 @@ class Input(Tag):
 class Ins(Tag):
     """Defines a text that has been inserted into a document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        cite: str | None = None,
+        datetime: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Kbd(Tag):
     """Defines keyboard input"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Label(Tag):
     """Defines a label for an <input> element"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        for_: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Legend(Tag):
     """Defines a caption for a <fieldset> element"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Li(Tag):
     """Defines a list item"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        value: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Link(Tag):
     """Defines the relationship between a document and an external resource (most used to link to style sheets)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        href: str | None = None,
+        as_: str | None = None,
+        blocking: str | None = None,
+        crossorigin: str | None = None,
+        disabled: str | None = None,
+        fetchpriority: str | None = None,
+        hreflang: str | None = None,
+        imagesizes: str | None = None,
+        imagesrcset: str | None = None,
+        integrity: str | None = None,
+        media: str | None = None,
+        referrerpolicy: str | None = None,
+        rel: str | None = None,
+        sizes: str | None = None,
+        title: str | None = None,
+        type: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Main(Tag):
     """Specifies the main content of a document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Map(Tag):
     """Defines an image map"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        name: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Mark(Tag):
     """Defines marked/highlighted text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Menu(Tag):
     """Defines an unordered list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        compact: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Meta(Tag):
     """Defines metadata about an HTML document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        charset: str | None = None,
+        content: str | None = None,
+        http_equiv: str | None = None,
+        media: str | None = None,
+        name: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Meter(Tag):
     """Defines a scalar measurement within a known range (a gauge)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        value: str | None = None,
+        min: str | None = None,
+        max: str | None = None,
+        low: str | None = None,
+        high: str | None = None,
+        optimum: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Nav(Tag):
     """Defines navigation links"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Noscript(Tag):
     """Defines an alternate content for users that do not support client-side scripts"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Object(Tag):
     """Defines a container for an external application"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        archive: str | None = None,
+        border: str | None = None,
+        classid: str | None = None,
+        codebase: str | None = None,
+        codetype: str | None = None,
+        data: str | None = None,
+        declare: str | None = None,
+        form: str | None = None,
+        height: str | None = None,
+        name: str | None = None,
+        standby: str | None = None,
+        type: str | None = None,
+        usemap: str | None = None,
+        width: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Ol(Tag):
     """Defines an ordered list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        compact: str | None = None,
+        reversed: str | None = None,
+        start: str | None = None,
+        type: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Optgroup(Tag):
     """Defines a group of related options in a drop-down list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        disabled: str | None = None,
+        label: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Option(Tag):
     """Defines an option in a drop-down list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        disabled: str | None = None,
+        label: str | None = None,
+        selected: str | None = None,
+        value: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Output(Tag):
     """Defines the result of a calculation"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        for_: str | None = None,
+        form: str | None = None,
+        name: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class P(Tag):
     """Defines a paragraph"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Param(Tag):
     """Defines a parameter for an object"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Picture(Tag):
     """Defines a container for multiple image resources"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Pre(Tag):
     """Defines preformatted text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        width: str | None = None,
+        wrap: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Progress(Tag):
     """Represents the progress of a task"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        max: str | None = None,
+        value: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Q(Tag):
     """Defines a short quotation"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        cite: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Rp(Tag):
     """Defines what to show in browsers that do not support ruby annotations"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Rt(Tag):
     """Defines an explanation/pronunciation of characters (for East Asian typography)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Ruby(Tag):
     """Defines a ruby annotation (for East Asian typography)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class S(Tag):
     """Defines text that is no longer correct"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Samp(Tag):
     """Defines sample output from a computer program"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Search(Tag):
     """Defines a search section"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Section(Tag):
     """Defines a section in a document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Select(Tag):
     """Defines a drop-down list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        autocomplete: str | None = None,
+        autofocus: str | None = None,
+        disabled: str | None = None,
+        form: str | None = None,
+        multiple: str | None = None,
+        name: str | None = None,
+        required: str | None = None,
+        size: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Small(Tag):
     """Defines smaller text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Source(Tag):
     """Defines multiple media resources for media elements (<video> and <audio>)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        src: str | None = None,
+        type: str | None = None,
+        sizes: str | None = None,
+        media: str | None = None,
+        srcset: str | None = None,
+        height: str | None = None,
+        width: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Span(Tag):
     """Defines a section in a document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Strong(Tag):
     """Defines important text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Sub(Tag):
     """Defines subscripted text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Summary(Tag):
     """Defines a visible heading for a <details> element"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Sup(Tag):
     """Defines superscripted text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Table(Tag):
     """Defines a table"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Tbody(Tag):
     """Groups the body content in a table"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Td(Tag):
     """Defines a cell in a table"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        colspan: str | None = None,
+        rowspan: str | None = None,
+        headers: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Template(Tag):
     """Defines a container for content that should be hidden when the page loads"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        shadowrootmode: str | None = None,
+        shadowrootdelegatesfocus: str | None = None,
+        shadowrootclonable: str | None = None,
+        shadowrootserializable: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Textarea(Tag):
     """Defines a multiline input control (text area)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        autocapitalize: str | None = None,
+        autocomplete: str | None = None,
+        autocorrect: str | None = None,
+        autofocus: str | None = None,
+        cols: str | None = None,
+        dirname: str | None = None,
+        disabled: str | None = None,
+        form: str | None = None,
+        maxlength: str | None = None,
+        minlength: str | None = None,
+        name: str | None = None,
+        placeholder: str | None = None,
+        readonly: str | None = None,
+        required: str | None = None,
+        rows: str | None = None,
+        spellcheck: str | None = None,
+        wrap: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Tfoot(Tag):
     """Groups the footer content in a table"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Th(Tag):
     """Defines a header cell in a table"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        abbr: str | None = None,
+        colspan: str | None = None,
+        headers: str | None = None,
+        rowspan: str | None = None,
+        scope: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Thead(Tag):
     """Groups the header content in a table"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Time(Tag):
     """Defines a specific time (or datetime)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        datetime: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Title(Tag):
     """Defines a title for the document"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Tr(Tag):
     """Defines a row in a table"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Track(Tag):
     """Defines text tracks for media elements (<video> and <audio>)"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        default: str | None = None,
+        kind: str | None = None,
+        label: str | None = None,
+        srclang: str | None = None,
+        src: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class U(Tag):
     """Defines some text that is unarticulated and styled differently from normal text"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        compact: str | None = None,
+        type: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Ul(Tag):
     """Defines an unordered list"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Var(Tag):
     """Defines a variable"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Video(Tag):
     """Defines embedded video content"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        src: str | None = None,
+        autoplay: str | None = None,
+        controls: str | None = None,
+        controlslist: str | None = None,
+        crossorigin: str | None = None,
+        disablepictureinpicture: str | None = None,
+        disableremoteplayback: str | None = None,
+        height: str | None = None,
+        width: str | None = None,
+        loop: str | None = None,
+        muted: str | None = None,
+        playsinline: str | None = None,
+        poster: str | None = None,
+        preload: str | None = None,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Wbr(Tag):
     """Defines a possible line-break"""
 
-    pass
+    def __init__(
+        self,
+        *children,
+        class_: str | None = None,
+        id_: str | None = None,
+        **kwargs,
+    ):
+        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
