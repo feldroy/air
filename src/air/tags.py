@@ -220,27 +220,7 @@ class Script(NoEscapeTag):
 
     Warning: Script tag does not protect against code injection.
     """
-
-    def __init__(
-        self,
-        *children,
-        async_: str | None = None,
-        attributionsrc: str | None = None,
-        blocking: str | None = None,
-        crossorigin: str | None = None,
-        defer: str | None = None,
-        fetchpriority: str | None = None,
-        integrity: str | None = None,
-        nomodule: str | None = None,
-        nonce: str | None = None,
-        referrerpolicy: str | None = None,
-        src: str | None = None,
-        type: str | None = None,
-        class_: str | None = None,
-        id_: str | None = None,
-        **kwargs,
-    ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+    pass
 
 
 class Style(NoEscapeTag):
@@ -248,19 +228,7 @@ class Style(NoEscapeTag):
 
     Warning: Style tag does not protect against code injection.
     """
-
-    def __init__(
-        self,
-        *children,
-        media: str | None = None,
-        nonce: str | None = None,
-        title: str | None = None,
-        blocking: str | None = None,
-        class_: str | None = None,
-        id_: str | None = None,
-        **kwargs,
-    ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+    pass
 
 
 class Children(Tag):
@@ -1133,7 +1101,7 @@ class Embed(Tag):
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
         self.self_closing = True
-        
+
 
 class Fieldset(Tag):
     """Groups related elements in a form"""
