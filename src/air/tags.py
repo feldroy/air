@@ -1012,7 +1012,17 @@ class Button(Tag):
 
 
 class Canvas(Tag):
-    """Used to draw graphics, on the fly, via scripting (usually JavaScript)"""
+    """Used to draw graphics, on the fly, via scripting (usually JavaScript)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        width: Specifies the width of the canvas.
+        height: Specifies the height of the canvas.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1021,52 +1031,89 @@ class Canvas(Tag):
         height: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Caption(Tag):
-    """Defines a table caption"""
+    """Defines a table caption
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Cite(Tag):
-    """Defines the title of a work"""
+    """Defines the title of a work
+
+   Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Code(Tag):
-    """Defines a piece of computer code"""
+    """Defines a piece of computer code
+
+   Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Col(Tag):
-    """Specifies column properties for each column within a <colgroup> element"""
+    """Specifies column properties for each column within a <colgroup> element
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        span: Specifies the number of columns a <col> element should span.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1074,6 +1121,7 @@ class Col(Tag):
         span: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
