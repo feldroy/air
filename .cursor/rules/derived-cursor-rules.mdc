@@ -1,0 +1,44 @@
+---
+description: AI rules derived by SpecStory from the project AI interaction history
+globs: *
+---
+
+## HEADERS
+
+This document outlines the rules and guidelines for the AI coding assistant. It covers project standards, coding conventions, workflow processes, and best practices. This file is a living document, and will be updated as the project evolves.
+
+## TECH STACK
+
+*   Python 3.x
+*   [List other technologies and versions here]
+
+## PROJECT DOCUMENTATION & CONTEXT SYSTEM
+
+*   All code must be well-documented.
+*   Follow the existing documentation structure.
+*   Use docstrings to explain the purpose, arguments, and return values of functions and classes.
+
+## CODING STANDARDS
+
+*   Follow PEP 8 guidelines for Python code.
+*   Use descriptive variable and function names.
+*   Keep functions short and focused.
+*   Avoid code duplication.
+*   Add type hinting to HTML tags. `class_` and `id` should be present for every tag. Other attributes should be specific to that tag (excluding global attributes). These need to be added to `html_attributes` dictionary and then type hinted in the tag below that.
+    *   Each tag's specific attributes are listed in `html_attributes`.
+    *   The tag's `__init__` method includes all those attributes as typed parameters (using `str | None = None`).
+    *   Every tag also includes `class_` and `id` parameters.
+    *   The `super().__init__` call includes `**kwargs | locals_cleanup(locals(), self)`.
+
+## DEBUGGING
+
+*   Use a debugger to step through code and identify issues.
+*   Write unit tests to verify the correctness of code.
+*   Use logging to track the execution of code and identify errors.
+
+## WORKFLOW & RELEASE RULES
+
+*   Use Git for version control.
+*   Create branches for new features or bug fixes.
+*   Submit pull requests for code review.
+*   Follow the established release process.

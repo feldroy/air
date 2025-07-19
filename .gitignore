@@ -79,3 +79,4 @@ nbs
 
 # User config and extension
 .specstory
+.cursor/
