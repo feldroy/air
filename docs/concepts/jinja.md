@@ -8,9 +8,11 @@ We love Jinja. Proven and fast, its our go-to for when we want to manually craft
 
 !!! note "Jinja or Jinja2?"
 
-    While the package is listed on [PyPI as Jinja2](https://pypi.org/project/jinja2/), that package and the [official Jinja docs](https://jinja.palletsprojects.com/) refers to Jinja as just "Jinja". Also, Jinja was released in 2008 and is well into the 3.x release cycle. If we want to lean into pedantry, we are arguably using Jinja 5 (base plus major releases cycles of 0.x, 1.x, 2.x, and 3.x)
+    While the package is listed on [PyPI as Jinja2](https://pypi.org/project/jinja2/), that package and the [official Jinja docs](https://jinja.palletsprojects.com/) refers to Jinja as just "Jinja". Also, Jinja was released in 2008 and is well into the 3.x release cycle. If we want to lean into pedantry, we are arguably using Jinja 5 (base plus major releases cycles of 0.x, 1.x, 2.x, and 3.x).
 
-    In any case, for the sake of brevity and to match the Jinja documentation, in the Air documentation we use the term "Jinja".
+    Most importantly, it is the intent of the maintainer of Jinja to not only document the package as 'Jinja' but to even provide a `jinja` namespace in addition to `jinja2`.
+
+    In short, to match the Jinja documentation and the intent of the maintainer, in the Air documentation we use the term "Jinja".
 
 
 
