@@ -1,6 +1,6 @@
 [project]
 name = "air"
-version = "0.12.0"
+version = "0.14.2"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -30,6 +30,8 @@ classifiers = [
     "Framework :: FastAPI",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
@@ -45,12 +47,12 @@ dev = [
     "httpx>=0.28.1",
     # Used with debugging
     "ipdb>=0.13.13",
-    # For checking types
-    "mypy>=1.16.0",
     # Test runner
     "pytest>=8.4.0",
     # Linting and formatting
     "ruff>=0.11.13",
+    # for checking types
+    "ty>=0.0.1a14",
     # Types for the markdown library
     "types-Markdown>=3.8.0",
     # Lets you run full example apps
@@ -77,4 +79,3 @@ omit = [
 
 [tool.uv]
 package = true
-

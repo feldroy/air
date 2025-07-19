@@ -67,6 +67,8 @@ def clean_html_attr_key(key: str) -> str:
 
 
 class Tag:
+    self_closing = False
+
     def __init__(self, *children, **kwargs):
         """Sets four attributes, name, module, children, and attrs.
         These are important for Starlette view responses, as nested objects
@@ -84,9 +86,17 @@ class Tag:
     def attrs(self) -> str:
         if not self._attrs:
             return ""
-        return " " + " ".join(
-            f'{clean_html_attr_key(k)}="{v}"' for k, v in self._attrs.items()
-        )
+        attrs = []
+        for k, v in self._attrs.items():
+            if isinstance(v, bool) and v is True:
+                # Add single word attribute like "selected"
+                attrs.append(k)
+            elif isinstance(v, bool) and v is False:
+                # Skip single word attribute like "selected"
+                continue
+            else:
+                attrs.append(f'{clean_html_attr_key(k)}="{v}"')
+        return " " + " ".join(attrs)
 
     @cached_property
     def children(self):
@@ -98,18 +108,17 @@ class Tag:
                 elements.append(child)
             elif isinstance(child, str):
                 elements.append(html.escape(child))
-            elif isinstance(child, int):
-                elements.append(str(child))
             else:
-                # TODO: Produce a better error message
-                msg = f"Unsupported child type: {type(child)}"
-                msg += f"\n in tag {self.name}"
-                msg += f"\n child {child}"
-                msg += f"\n data {self.__dict__}"
-                raise TypeError(msg)
+                # If the type isn't supported, we just convert to `str`
+                # and then escape it for safety. This matches to what most
+                # template tools do, which prevents hard bugs in production
+                # from stopping users cold.
+                elements.append(html.escape(str(child)))
         return "".join(elements)
 
     def render(self) -> str:
+        if self.self_closing:
+            return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
 
@@ -254,6 +263,11 @@ class Style(NoEscapeTag):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
+class Children(Tag):
+    def render(self) -> str:
+        return self.children
+
+
 # HTML tag attribute map
 
 html_attributes = {
@@ -267,7 +281,7 @@ html_attributes = {
         "media",
         "ping",
         "class_",
-        "id_",
+        "id",
     ],
     "Area": [
         "alt",
@@ -649,7 +663,7 @@ class A(Tag):
         media: str | None = None,
         ping: str | None = None,
         class_: str | None = None,
-        id_: str | None = None,
+        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -701,6 +715,7 @@ class Area(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Article(Tag):
@@ -774,6 +789,7 @@ class Base(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        selfself_closing = True
 
 
 class Bdi(Tag):
@@ -841,6 +857,7 @@ class Br(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Button(Tag):
@@ -935,6 +952,7 @@ class Col(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Colgroup(Tag):
@@ -1114,7 +1132,8 @@ class Embed(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
-
+        self.self_closing = True
+        
 
 class Fieldset(Tag):
     """Groups related elements in a form"""
@@ -1322,6 +1341,7 @@ class Hr(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class I(Tag):  # noqa: E742
@@ -1384,6 +1404,7 @@ class Img(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Input(Tag):
@@ -1429,6 +1450,7 @@ class Input(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Ins(Tag):
@@ -1527,6 +1549,7 @@ class Link(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Main(Tag):
@@ -1599,6 +1622,7 @@ class Meta(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Meter(Tag):
@@ -1762,6 +1786,7 @@ class Param(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class Picture(Tag):
@@ -2220,6 +2245,7 @@ class Track(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True
 
 
 class U(Tag):
@@ -2301,3 +2327,4 @@ class Wbr(Tag):
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        self.self_closing = True

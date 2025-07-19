@@ -1,6 +1,6 @@
 from typing import Any, Callable, get_args
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 from starlette.datastructures import FormData
 
 from . import tags
@@ -45,7 +45,7 @@ class AirForm:
             raise NotImplementedError("model")
         self.initial_data = initial_data
 
-    async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:
+    async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:  # ty: ignore [invalid-type-form]
         self.validate(form_data)
         return self
 
@@ -60,7 +60,7 @@ class AirForm:
             self.is_valid = False
 
     @classmethod
-    async def from_request(cls, request: Request) -> Self:
+    async def from_request(cls, request: Request) -> Self:  # ty:ignore [invalid-type-form]
         form_data = await request.form()
         self = cls()
         await self(form_data=form_data)
@@ -142,9 +142,10 @@ def default_form_widget(
 
         if error := error_dict.get(field_name, False):
             kwargs["aria-invalid"] = "true"
+        json_schema_extra = field_info.json_schema_extra or {}
         fields.append(
             tags.Label(
-                field_name,
+                json_schema_extra.get("label") or field_name,
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
                 tags.Small("Please correct this error.", id=f"{field_name}-error")
                 if error
@@ -153,3 +154,76 @@ def default_form_widget(
         )
 
     return tags.Fieldset(*fields).render()
+
+
+def AirField(
+    default: Any = None,
+    *,
+    type: str | None = None,
+    label: str | None = None,
+    default_factory: Callable[[], Any] | None = None,
+    alias: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
+    gt: float | None = None,
+    ge: float | None = None,
+    lt: float | None = None,
+    le: float | None = None,
+    multiple_of: float | None = None,
+    min_length: int | None = None,
+    max_length: int | None = None,
+    pattern: str | None = None,
+    max_digits: int | None = None,
+    decimal_places: int | None = None,
+    examples: list[Any] | None = None,
+    deprecated: bool | str | None = None,
+    exclude: bool = False,
+    discriminator: str | None = None,
+    frozen: bool | None = None,
+    validate_default: bool | None = None,
+    repr: bool = True,
+    init_var: bool | None = None,
+    kw_only: bool | None = None,
+    json_schema_extra: dict | None = None,
+    **extra: Any,
+) -> Any:
+    """A wrapper around pydantic.Field to provide a cleaner interface for defining
+    special input types and labels in air forms.
+
+    NOTE: This is named AirField to adhere to the same naming convention as AirForm.
+    """
+    if json_schema_extra is None:
+        json_schema_extra = {}
+    if type:
+        json_schema_extra[type] = True
+    if label:
+        json_schema_extra["label"] = label
+
+    return Field(
+        default,
+        json_schema_extra=json_schema_extra,
+        default_factory=default_factory,
+        alias=alias,
+        title=title,
+        description=description,
+        gt=gt,
+        ge=ge,
+        lt=lt,
+        le=le,
+        multiple_of=multiple_of,
+        min_length=min_length,
+        max_length=max_length,
+        pattern=pattern,
+        max_digits=max_digits,
+        decimal_places=decimal_places,
+        examples=examples,
+        deprecated=deprecated,
+        exclude=exclude,
+        discriminator=discriminator,
+        frozen=frozen,
+        validate_default=validate_default,
+        repr=repr,
+        init_var=init_var,
+        kw_only=kw_only,
+        **extra,
+    )

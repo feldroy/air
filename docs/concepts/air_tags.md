@@ -1,16 +1,12 @@
 # Air Tags
 
-Tags, also known as "Air Tags", are a fast, expressive way to generate HTML. Instead of a template language, Air Tags use Python classes to represent HTML elements. This allows leveraging Python's capabilities to generate content.
+**Air Tags**, sometimes shortend to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool.
 
 !!! note
 
-    This document covers how Tags, or Air Tags work. The full reference for them is the [Tag API Reference](../api/tags.md).
+    This document covers how **Air Tags** work. The full reference for them is the [Tag API Reference](../api/tags.md).
 
-## What are Air Tags?
-
-**Air Tags** are Python classes that render HTML. They can be combined to render web pages or small components. Air Tags are typed and documented, working well with any code completion tool.
-
-## How Air Tags work
+## How **Air Tags** work
 
 Used individually or combined into a greater whole, every Air Tag includes a `render()` method. When the render method is called, it returns the HTML representation of the Air Tag, as well as all the children of the Air Tag.
 
@@ -37,6 +33,104 @@ This is the output of the `render()` method for the example above:
 </article>
 ```
 
+## Attributes
+
+**Air Tags** convert keyword arguments into attributes. So:
+
+```python+html
+air.P('Hello', id="mine")
+```
+
+renders as:
+
+```html
+<p id="mine">Hello</p>
+```
+
+Lets take a look at some additional scenarios.
+
+### Setting the `class` attribute
+
+In Python `class` is a protected word. To set the `class` attribute in **Air Tags**, use the `class_` keyword.
+
+```python
+air.P('Hello', class_='plain')
+```
+
+renders as
+
+```html
+<p class="plain">Hello</p>
+```
+
+### Setting the `for` attribute
+
+In Python `for` is a protected word. To set the `for` attribute in **Air Tags**, use the `for_` keyword.
+
+```python
+air.Label(
+    'Email',
+    air.Input(name='email', type='email')
+    for_='email'
+)
+```
+
+renders as
+
+```html
+<label for="email">
+    Email
+    <input name="email" type="email" />
+</label>
+```
+
+### Attributes starting with special characters
+
+To get around that in Python we can't begin function arguments with special characters, we lean into how **Air Tags** is kwargs friendly.
+
+```python
+air.P('Hello', class_='plain', **{'@data': 6})
+```
+
+Renders as:
+
+```html
+<p class="plain" @data="6">Hello</p>
+```
+
+
+### Single word attributes
+
+To set or hide single word attributes like `@selected`, set the tag to `True` or `False` respectively. 
+
+```python
+air.Select(
+    air.Option('South America', value='SA', selected=True),
+    air.Option('North America', value='NA', selected=False)
+)
+```
+
+Renders as:
+
+```html
+<select>
+    <option value="SA" selected>South America</option>
+    <option value="NA">North America</option>
+</select>
+```
+
+If you need an value set to `true`, use `"true"` in Python. For example:
+
+```python
+air.P("Air makes FastAPI web pages easy", draggable="true")
+```
+
+Renders as:
+
+```html
+<p draggable="true">Air makes FastAPI web pages easy</p>
+```
+
 ## Works well with SVGs
 
 Unlike HTML, SVG tags are case-sensitive. You can access SVG tags by importing them from the `air.svg` module. Here's a simple example:
@@ -61,7 +155,7 @@ This will render the following SVG:
 
 ## Custom Air Tags
 
-The best way to define your own Air Tags is to subclass the `air.Tag` class. Here's a simple example:
+The best way to define your own **Air Tags** is to subclass the `air.Tag` class. Here's a simple example:
 
 
 ```python
@@ -83,7 +177,7 @@ This will produce the following HTML:
 <awesome class="desert">Ice Cream</awesome>
 ```
 
-## Functions as Custom Air Tags 
+## Functions as Custom **Air Tags** 
 
 Subclasses are not the only way to create custom Air Tags. You can also use functions to create Air Tags. This is particularly useful for putting together components quickly without needing to define a class. Here's an example of a function that creates a custom Air Tag for a [picocss card](https://picocss.com/docs/card):
 
@@ -171,3 +265,41 @@ Html(
     )
 )
 ```
+
+## Returning Multiple Children (used in HTMX)
+
+When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are heirchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Children`. Here's how to use it:
+
+
+```python
+import
+
+@app.post('/cart/add/{product_id}/')
+def update_cart(request: air.Request, product_id: int):
+    "This is a simplified update cart view"
+    # air.Children renders the child tags without adding anything of its own
+    return air.Children(
+        # Mark that an item has been added to the cart
+        Button('Added!', hx_post='/cart/add/{{product.id}}', hx_swap_oob='true', id='add-button'),
+
+        # Cart icon quantity changed
+        A(f'Cart {count}', id='cart-icon', href='/cart', hx_trigger='polling 30s', hx_get='/cart-icon', hx_swap_oob='true'),
+    )
+```
+
+This will generate HTML that looks something like this, without any wrapping text around the elements we are passing to the user's browser:
+
+
+```html
+<!-- Mark that an item has been added to the cart -->
+<button
+    hx-post="/cart/add/35"
+    hx-swap-oob="true"
+    id="add-button"
+    >Added!</button>
+<!-- Cart icon quantity changed -->
+<a id="cart-icon" href="/cart"
+    hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true"
+     >Cart 2</a>
+```
+

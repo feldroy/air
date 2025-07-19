@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.testclient import TestClient
 
+import air
 from air import Air, Jinja2Renderer
 
 
@@ -87,4 +88,27 @@ def test_Jinja2Renderer_with_kwargs():
     assert (
         response.text
         == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
+    )
+
+
+def test_jinja_plus_airtags():
+    app = Air()
+
+    jinja = Jinja2Renderer(directory="tests/templates")
+
+    @app.page
+    def index(request: Request):
+        return jinja(
+            request,
+            name="jinja_airtags.html",
+            title="Jinja+Air Tags",
+            content=air.Main(air.P("Air Tags work great with Jinja")).render(),
+        )
+
+    client = TestClient(app)
+    response = client.get("/")
+    assert response.status_code == 200
+    assert (
+        response.text
+        == """<html>\n    <head>\n        <title>Jinja+Air Tags</title>\n    </head>\n    <body>\n        <h1>Jinja+Air Tags</h1>\n        <main><p>Air Tags work great with Jinja</p></main>\n    </body>\n</html>"""
     )

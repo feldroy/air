@@ -1,18 +1,22 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-__version__ = "0.12.0"
+__version__ = "0.14.2"
+
+from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
 
 from . import layouts as layouts
 from . import responses as responses
 from . import svg as svg
 from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
+from .forms import AirField as AirField
 from .forms import AirForm as AirForm
 from .requests import Request as Request
 from .requests import is_htmx_request as is_htmx_request
 from .responses import AirResponse as AirResponse
 from .responses import RedirectResponse as RedirectResponse
 from .responses import TagResponse as TagResponse
+from .tags import Children as Children
 from .tags import (
     H1 as H1,
 )

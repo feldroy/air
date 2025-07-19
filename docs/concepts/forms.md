@@ -6,12 +6,11 @@ Forms, or AirForms in Air parlance, are powered by pydantic. That includes both 
 
 ```python
 from pydantic import BaseModel, Field
-from air import AirForm
+from air import AirForm, AirField
 
 class ContactModel(BaseModel):
     name: str
-    email: str = Field(json_schema_extra={'email': True
-    })
+    email: str = AirField(type="email", label="Email")
 
 class ContactForm(AirForm):
     model = ContactModel
@@ -30,10 +29,10 @@ contact_form.render()
 ```html
 <fieldset>
     <label>name
-        <input name="name" type="text" id="name"></input>
+        <input name="name" type="text" id="name" />
     </label>
-    <label>email
-        <input name="email" type="email" id="email"></input>
+    <label>Email
+        <input name="email" type="email" id="email" />
     </label>
 </fieldset>
 ```
@@ -56,12 +55,12 @@ contact_form.render()
 <fieldset>
     <label>
         name
-        <input name="name" type="text" id="name" aria-invalid="true"></input>
+        <input name="name" type="text" id="name" aria-invalid="true" />
         <small id="name-error">Please correct this error.</small>
     </label>
     <label>
-        email
-        <input name="email" type="email" id="email" aria-invalid="true"></input>
+        Email
+        <input name="email" type="email" id="email" aria-invalid="true" />
         <small id="email-error">Please correct this error.</small>
     </label>
 </fieldset>

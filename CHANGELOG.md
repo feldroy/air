@@ -1,5 +1,39 @@
 # Changelog
 
+# 0.13.0 - 2025-07-17
+
+## What's Changed
+* Implement FastAPI background tasks by @pydanny in https://github.com/feldroy/air/pull/127
+* Pass through requests by @pydanny in https://github.com/feldroy/air/pull/138
+* Add function signature for Tag A by @pydanny in https://github.com/feldroy/air/pull/140
+* Passthru all the responses by @pydanny in https://github.com/feldroy/air/pull/141
+* Pass through starlette staticfiles by @pydanny in https://github.com/feldroy/air/pull/144
+* Stringify/escape unsupported tag children so 500 errors aren't thrown on tag children type failures by @pydanny in https://github.com/feldroy/air/pull/147
+* Explaining how to use Jinja with Air Tags by @pydanny in https://github.com/feldroy/air/pull/148
+* Add boolean attributes to Air Tags plus improve docs by @pydanny in https://github.com/feldroy/air/pull/152
+* Properly make self-closing tags like input and img self-close by @pydanny in https://github.com/feldroy/air/pull/154
+* Switch from mypy to ty by @pydanny in https://github.com/feldroy/air/pull/155
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.12.0...v0.13.0
+
+# 0.11.0 - 2025-07-12
+
+
+## New Features
+* Update .editorconfig for improved file handling by @audreyfeldroy in https://github.com/feldroy/air/pull/121
+* Added Form rendering by @pydanny in https://github.com/feldroy/air/pull/120
+* Added `html_to_airtags` function, converts HTML to Air Tags by @pydanny in https://github.com/feldroy/air/pull/125
+
+
+## Documentaton improvements
+* Reorder member order in object docs by @pydanny in https://github.com/feldroy/air/pull/116
+* Documentation on how to escape HTML by @pydanny in https://github.com/feldroy/air/pull/108
+* Update project description in README and pyproject.toml by @audreyfeldroy in https://github.com/feldroy/air/pull/118
+* Update CONTRIBUTING.md with docs, tests, and troubleshooting by @audreyfeldroy in https://github.com/feldroy/air/pull/119
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.11.0...v0.12.0
+
 # 0.11.0 - 2025-07-09
 
 ## What's Changed

@@ -81,3 +81,17 @@ def test_page_decorator():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About page</h1>"
+
+
+def test_air_404_response():
+    app = air.Air()
+
+    client = TestClient(app)
+    response = client.get("/nonexistent")
+
+    assert response.status_code == 404
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert (
+        response.text
+        == '<!doctype html><html><head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" /><title>404 Not Found</title></head><body><main class="container"><h1>404 Not Found</h1><p>The requested resource was not found on this server.</p><p>URL: http://testserver/nonexistent</p></main></body></html>'
+    )

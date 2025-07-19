@@ -7,8 +7,9 @@ nav:
   - Concepts:
     - concepts/index.md
     - concepts/air_tags.md
-    - concepts/forms.md
     - concepts/escaping_html.md
+    - concepts/forms.md
+    - concepts/jinja.md
   - Reference:
     - api/index.md
     - Applications: api/applications.md
@@ -45,6 +46,7 @@ markdown_extensions:
   - attr_list
   - footnotes
   - md_in_html
+  - pymdownx.emoji
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed:
