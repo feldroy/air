@@ -29,7 +29,7 @@ class AirForm:
         async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
             if cheese.is_valid:
                 return air.Html(air.H1(cheese.data.name))
-            return air.Html(air.H1(air.RawHTML(str(len(cheese.errors)))))
+            return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
 
     NOTE: This is named AirForm to avoid collisions with tags.Form
     """

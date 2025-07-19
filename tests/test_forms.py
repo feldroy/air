@@ -45,7 +45,7 @@ def test_form_validation_dependency_injection():
     ):
         if cheese.is_valid:
             return air.Html(air.H1(cheese.data.name))  # type: ignore [union-attr]
-        return air.Html(air.H1(air.RawHTML(str(len(cheese.errors)))))  # type: ignore [arg-type]
+        return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))  # type: ignore [arg-type]
 
     client = TestClient(app)
 
@@ -77,7 +77,7 @@ def test_form_validation_in_view():
         cheese = await CheeseForm.from_request(request)
         if cheese.is_valid:
             return air.Html(air.H1(cheese.data.name))
-        return air.Html(air.H1(air.RawHTML(str(len(cheese.errors)))))  # type: ignore [arg-type]
+        return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))  # type: ignore [arg-type]
 
     client = TestClient(app)
 

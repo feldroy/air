@@ -252,7 +252,7 @@ from .tags import (
     Q as Q,
 )
 from .tags import (
-    RawHTML as RawHTML,
+    Raw as Raw,
 )
 from .tags import (
     Rp as Rp,

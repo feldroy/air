@@ -17,15 +17,15 @@ Using the function's name, `@app.page` maps the `dashboard` view to the `/dashbo
 For cases where you need to render raw HTML from the tag engine:
 
 ```python
-from air import RawHTML
+from air import Raw
 
 # Render raw HTML content
-raw_content = RawHTML('<strong>Bold text</strong> and <em>italic</em>')
+raw_content = Raw('<strong>Bold text</strong> and <em>italic</em>')
 
-# Note: RawHTML only accepts a single string argument
+# Note: Raw only accepts a single string argument
 # For multiple elements, combine them first:
 html_string = '<p>First</p><p>Second</p>'
-raw = RawHTML(html_string)
+raw = Raw(html_string)
 ```
 
 ## REST + HTML without HTML in the docs
