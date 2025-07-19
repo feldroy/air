@@ -156,16 +156,74 @@ def default_form_widget(
     return tags.Fieldset(*fields).render()
 
 
-def AirField(type: str | None = None, label: str | None = None, **kwargs: Any) -> Any:
+def AirField(
+    default: Any = None,
+    *,
+    type: str | None = None,
+    label: str | None = None,
+    default_factory: Callable[[], Any] | None = None,
+    alias: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
+    gt: float | None = None,
+    ge: float | None = None,
+    lt: float | None = None,
+    le: float | None = None,
+    multiple_of: float | None = None,
+    min_length: int | None = None,
+    max_length: int | None = None,
+    pattern: str | None = None,
+    max_digits: int | None = None,
+    decimal_places: int | None = None,
+    examples: list[Any] | None = None,
+    deprecated: bool | str | None = None,
+    exclude: bool = False,
+    discriminator: str | None = None,
+    frozen: bool | None = None,
+    validate_default: bool | None = None,
+    repr: bool = True,
+    init_var: bool | None = None,
+    kw_only: bool | None = None,
+    json_schema_extra: dict | None = None,
+    **extra: Any,
+) -> Any:
     """A wrapper around pydantic.Field to provide a cleaner interface for defining
     special input types and labels in air forms.
 
     NOTE: This is named AirField to adhere to the same naming convention as AirForm.
     """
-    json_schema_extra = {}
+    if json_schema_extra is None:
+        json_schema_extra = {}
     if type:
         json_schema_extra[type] = True
     if label:
         json_schema_extra["label"] = label
 
-    return Field(json_schema_extra=json_schema_extra, **kwargs)
+    return Field(
+        default,
+        json_schema_extra=json_schema_extra,
+        default_factory=default_factory,
+        alias=alias,
+        title=title,
+        description=description,
+        gt=gt,
+        ge=ge,
+        lt=lt,
+        le=le,
+        multiple_of=multiple_of,
+        min_length=min_length,
+        max_length=max_length,
+        pattern=pattern,
+        max_digits=max_digits,
+        decimal_places=decimal_places,
+        examples=examples,
+        deprecated=deprecated,
+        exclude=exclude,
+        discriminator=discriminator,
+        frozen=frozen,
+        validate_default=validate_default,
+        repr=repr,
+        init_var=init_var,
+        kw_only=kw_only,
+        **extra,
+    )
