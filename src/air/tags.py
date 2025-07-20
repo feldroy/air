@@ -669,9 +669,11 @@ class Abbr(Tag):
     """Defines an abbreviation or an acronym
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -689,9 +691,11 @@ class Address(Tag):
     """Defines contact information for the author/owner of a document
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -709,6 +713,7 @@ class Area(Tag):
     """Defines an area inside an image map
 
     Args:
+        children: Tags, strings, or other rendered content.
         alt: Specifies an alternate text for an area. Required if the href attribute is present.
         coords: Specifies the coordinates of an area.
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
@@ -721,6 +726,7 @@ class Area(Tag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -748,9 +754,11 @@ class Article(Tag):
     """Defines an article
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -768,9 +776,11 @@ class Aside(Tag):
     """Defines content aside from the page content
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -788,6 +798,7 @@ class Audio(Tag):
     """Defines embedded sound content
 
     Args:
+        children: Tags, strings, or other rendered content.
         autoplay: Specifies that the audio will start playing as soon as it is ready.
         controls: Specifies that audio controls should be displayed (such as a play/pause button etc).
         loop: Specifies that the audio will start over again, every time it is finished.
@@ -797,6 +808,7 @@ class Audio(Tag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -820,9 +832,11 @@ class B(Tag):
     """Defines bold text
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -840,9 +854,11 @@ class Base(Tag):
     """Specifies the base URL/target for all relative URLs in a document
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -863,9 +879,11 @@ class Bdi(Tag):
     """Isolates a part of text that might be formatted in a different direction from other text outside it
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -883,10 +901,12 @@ class Bdo(Tag):
     """Overrides the current text direction
 
     Args:
+        children: Tags, strings, or other rendered content.
         dir: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -905,10 +925,12 @@ class Blockquote(Tag):
     """Defines a section that is quoted from another source
 
     Args:
+        children: Tags, strings, or other rendered content.
         cite: Specifies the source of the quotation.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -927,17 +949,16 @@ class Body(Tag):
     """Defines the document's body
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children,
-        class_: str | None = None,
-        id: str | None = None,
-        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -947,9 +968,11 @@ class Br(Tag):
     """Defines a single line break
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -968,6 +991,7 @@ class Button(Tag):
     """Defines a clickable button
 
     Args:
+        children: Tags, strings, or other rendered content.
         name: Specifies a name for the button.
         type: Specifies the type of button.
         value: Specifies an initial value for the button.
@@ -984,6 +1008,7 @@ class Button(Tag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1176,20 +1201,39 @@ class Data(Tag):
 
 
 class Datalist(Tag):
-    """Specifies a list of pre-defined options for input controls"""
+    """Specifies a list of pre-defined options for input controls
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dd(Tag):
-    """Defines a description/value of a term in a description list"""
+    """Defines a description/value of a term in a description list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        cite: Specifies the source of the quotation.
+        datetime: Specifies the date and time of the quotation.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1198,26 +1242,45 @@ class Dd(Tag):
         datetime: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Del(Tag):
-    """Defines text that has been deleted from a document"""
+    """Defines text that has been deleted from a document
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Details(Tag):
-    """Defines additional details that the user can view or hide"""
+    """Defines additional details that the user can view or hide
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        open: Specifies that the details should be visible (open) to the user.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1225,26 +1288,45 @@ class Details(Tag):
         open: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dfn(Tag):
-    """Specifies a term that is going to be defined within the content"""
+    """Specifies a term that is going to be defined within the content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dialog(Tag):
-    """Defines a dialog box or window"""
+    """Defines a dialog box or window
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        open: Specifies that the dialog box should be visible (open) to the user.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1252,65 +1334,114 @@ class Dialog(Tag):
         open: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Div(Tag):
-    """Defines a section in a document"""
+    """Defines a section in a document
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dl(Tag):
-    """Defines a description list"""
+    """Defines a description list
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Dt(Tag):
-    """Defines a term/name in a description list"""
+    """Defines a term/name in a description list
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Em(Tag):
-    """Defines emphasized text"""
+    """Defines emphasized text
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Embed(Tag):
-    """Defines a container for an external application"""
+    """Defines a container for an external application
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        src: Specifies the address of the external file to embed.
+        type: Specifies the media type of the embedded content.
+        width: Specifies the width of the embedded content.
+        height: Specifies the height of the embedded content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1321,6 +1452,7 @@ class Embed(Tag):
         height: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1328,7 +1460,18 @@ class Embed(Tag):
 
 
 class Fieldset(Tag):
-    """Groups related elements in a form"""
+    """Groups related elements in a form
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        disabled: Specifies that a group of related form elements should be disabled.
+        form: Specifies which form the fieldset belongs to.
+        name: Specifies a name for the fieldset.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1338,198 +1481,329 @@ class Fieldset(Tag):
         name: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Figcaption(Tag):
-    """Defines a caption for a <figure> element"""
+    """Defines a caption for a <figure> element
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Figure(Tag):
-    """Specifies self-contained content"""
+    """Specifies self-contained content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Footer(Tag):
-    """Defines a footer for a document or section"""
+    """Defines a footer for a document or section
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Form(Tag):
-    """Defines an HTML form for user input"""
+    """Defines an HTML form for user input
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        action: Specifies where to send the form-data when a form is submitted.
+        method: Specifies the HTTP method to use when sending form-data.
+        accept_charset: Specifies the character encodings that are to be used for the form submission.
+        autocomplete: Specifies whether a form should have autocomplete on or off.
+        enctype: Specifies how the form-data should be encoded when submitting it to the server.
+        name: Specifies the name of the form.
+        novalidate: Specifies that the form should not be validated when submitted.
+        rel: Specifies the relationship between a linked resource and the current document.
+        target: Specifies where to display the response that is received after submitting the form.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
-        accept_charset: str | None = None,
         action: str | None = None,
+        method: str | None = None,
+        accept_charset: str | None = None,
         autocomplete: str | None = None,
         enctype: str | None = None,
-        method: str | None = None,
         name: str | None = None,
         novalidate: str | None = None,
         rel: str | None = None,
         target: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H1(Tag):
-    """H1 header"""
+    """H1 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H2(Tag):
-    """H2 header"""
+    """H2 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H3(Tag):
-    """H3 header"""
+    """H3 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H4(Tag):
-    """H4 header"""
+    """H4 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H5(Tag):
-    """H5 header"""
+    """H5 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class H6(Tag):
-    """H6 header"""
+    """H6 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Head(Tag):
-    """Contains metadata/information for the document"""
+    """Contains metadata/information for the document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        profile: Specifies the URL of a document that contains a line-break-separated list of links.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         profile: str | None = None,
-        class_: str | None = None,
-        id: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Header(Tag):
-    """Defines a header for a document or section"""
+    """Defines a header for a document or section
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Hgroup(Tag):
-    """Defines a header and related content"""
+    """Defines a header and related content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Hr(Tag):
-    """Defines a thematic change in the content"""
+    """Defines a thematic change in the content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1537,13 +1811,22 @@ class Hr(Tag):
 
 
 class I(Tag):  # noqa: E742
-    """Defines a part of text in an alternate voice or mood"""
+    """Defines a part of text in an alternate voice or mood
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1568,6 +1851,7 @@ class Iframe(Tag):
         sandbox: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1593,6 +1877,7 @@ class Img(Tag):
         usemap: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1639,6 +1924,7 @@ class Input(Tag):
         step: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1655,6 +1941,7 @@ class Ins(Tag):
         datetime: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1668,6 +1955,7 @@ class Kbd(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1682,6 +1970,7 @@ class Label(Tag):
         for_: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1695,6 +1984,7 @@ class Legend(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1709,6 +1999,7 @@ class Li(Tag):
         value: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1752,6 +2043,7 @@ class Main(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1766,6 +2058,7 @@ class Map(Tag):
         name: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1779,6 +2072,7 @@ class Mark(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1793,6 +2087,7 @@ class Menu(Tag):
         compact: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1831,6 +2126,7 @@ class Meter(Tag):
         optimum: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1844,6 +2140,7 @@ class Nav(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1884,6 +2181,7 @@ class Object(Tag):
         width: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1901,6 +2199,7 @@ class Ol(Tag):
         type: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1916,6 +2215,7 @@ class Optgroup(Tag):
         label: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1933,6 +2233,7 @@ class Option(Tag):
         value: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1949,6 +2250,7 @@ class Output(Tag):
         name: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1962,6 +2264,7 @@ class P(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -1989,6 +2292,7 @@ class Picture(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2004,6 +2308,7 @@ class Pre(Tag):
         wrap: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2019,6 +2324,7 @@ class Progress(Tag):
         value: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2033,6 +2339,7 @@ class Q(Tag):
         cite: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2085,6 +2392,7 @@ class S(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2098,6 +2406,7 @@ class Samp(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2111,6 +2420,7 @@ class Search(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2124,6 +2434,7 @@ class Section(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2145,6 +2456,7 @@ class Select(Tag):
         size: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2158,6 +2470,7 @@ class Small(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2178,6 +2491,7 @@ class Source(Tag):
         width: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2191,6 +2505,7 @@ class Span(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2204,6 +2519,7 @@ class Strong(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2217,6 +2533,7 @@ class Sub(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2230,6 +2547,7 @@ class Summary(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2243,6 +2561,7 @@ class Sup(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2256,6 +2575,7 @@ class Table(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2269,6 +2589,7 @@ class Tbody(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2285,6 +2606,7 @@ class Td(Tag):
         headers: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2332,6 +2654,7 @@ class Textarea(Tag):
         wrap: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2345,6 +2668,7 @@ class Tfoot(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2363,6 +2687,7 @@ class Th(Tag):
         scope: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2376,6 +2701,7 @@ class Thead(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2390,6 +2716,7 @@ class Time(Tag):
         datetime: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2403,6 +2730,7 @@ class Title(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2416,6 +2744,7 @@ class Tr(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2434,6 +2763,7 @@ class Track(Tag):
         src: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2450,6 +2780,7 @@ class U(Tag):
         type: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2463,6 +2794,7 @@ class Ul(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2476,6 +2808,7 @@ class Var(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2503,6 +2836,7 @@ class Video(Tag):
         preload: str | None = None,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -2516,6 +2850,7 @@ class Wbr(Tag):
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
