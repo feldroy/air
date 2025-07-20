@@ -1176,7 +1176,15 @@ class Data(Tag):
 
 
 class Datalist(Tag):
-    """Specifies a list of pre-defined options for input controls"""
+    """Specifies a list of pre-defined options for input controls
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1190,7 +1198,17 @@ class Datalist(Tag):
 
 
 class Dd(Tag):
-    """Defines a description/value of a term in a description list"""
+    """Defines a description/value of a term in a description list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        cite: Specifies the source of the quotation.
+        datetime: Specifies the date and time of the quotation.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1206,7 +1224,15 @@ class Dd(Tag):
 
 
 class Del(Tag):
-    """Defines text that has been deleted from a document"""
+    """Defines text that has been deleted from a document
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1220,7 +1246,16 @@ class Del(Tag):
 
 
 class Details(Tag):
-    """Defines additional details that the user can view or hide"""
+    """Defines additional details that the user can view or hide
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        open: Specifies that the details should be visible (open) to the user.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1235,7 +1270,15 @@ class Details(Tag):
 
 
 class Dfn(Tag):
-    """Specifies a term that is going to be defined within the content"""
+    """Specifies a term that is going to be defined within the content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1249,7 +1292,16 @@ class Dfn(Tag):
 
 
 class Dialog(Tag):
-    """Defines a dialog box or window"""
+    """Defines a dialog box or window
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        open: Specifies that the dialog box should be visible (open) to the user.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1264,7 +1316,15 @@ class Dialog(Tag):
 
 
 class Div(Tag):
-    """Defines a section in a document"""
+    """Defines a section in a document
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1278,7 +1338,15 @@ class Div(Tag):
 
 
 class Dl(Tag):
-    """Defines a description list"""
+    """Defines a description list
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1292,7 +1360,15 @@ class Dl(Tag):
 
 
 class Dt(Tag):
-    """Defines a term/name in a description list"""
+    """Defines a term/name in a description list
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1306,7 +1382,15 @@ class Dt(Tag):
 
 
 class Em(Tag):
-    """Defines emphasized text"""
+    """Defines emphasized text
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1320,7 +1404,19 @@ class Em(Tag):
 
 
 class Embed(Tag):
-    """Defines a container for an external application"""
+    """Defines a container for an external application
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        src: Specifies the address of the external file to embed.
+        type: Specifies the media type of the embedded content.
+        width: Specifies the width of the embedded content.
+        height: Specifies the height of the embedded content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
