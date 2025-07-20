@@ -669,9 +669,11 @@ class Abbr(Tag):
     """Defines an abbreviation or an acronym
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -689,9 +691,11 @@ class Address(Tag):
     """Defines contact information for the author/owner of a document
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -709,6 +713,7 @@ class Area(Tag):
     """Defines an area inside an image map
 
     Args:
+        children: Tags, strings, or other rendered content.
         alt: Specifies an alternate text for an area. Required if the href attribute is present.
         coords: Specifies the coordinates of an area.
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
@@ -721,6 +726,7 @@ class Area(Tag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -748,9 +754,11 @@ class Article(Tag):
     """Defines an article
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -768,9 +776,11 @@ class Aside(Tag):
     """Defines content aside from the page content
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -788,6 +798,7 @@ class Audio(Tag):
     """Defines embedded sound content
 
     Args:
+        children: Tags, strings, or other rendered content.
         autoplay: Specifies that the audio will start playing as soon as it is ready.
         controls: Specifies that audio controls should be displayed (such as a play/pause button etc).
         loop: Specifies that the audio will start over again, every time it is finished.
@@ -797,6 +808,7 @@ class Audio(Tag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -820,9 +832,11 @@ class B(Tag):
     """Defines bold text
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -840,9 +854,11 @@ class Base(Tag):
     """Specifies the base URL/target for all relative URLs in a document
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -863,9 +879,11 @@ class Bdi(Tag):
     """Isolates a part of text that might be formatted in a different direction from other text outside it
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -883,10 +901,12 @@ class Bdo(Tag):
     """Overrides the current text direction
 
     Args:
+        children: Tags, strings, or other rendered content.
         dir: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -905,10 +925,12 @@ class Blockquote(Tag):
     """Defines a section that is quoted from another source
 
     Args:
+        children: Tags, strings, or other rendered content.
         cite: Specifies the source of the quotation.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -927,17 +949,16 @@ class Body(Tag):
     """Defines the document's body
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children,
-        class_: str | None = None,
-        id: str | None = None,
-        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
@@ -947,9 +968,11 @@ class Br(Tag):
     """Defines a single line break
 
     Args:
+        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -968,6 +991,7 @@ class Button(Tag):
     """Defines a clickable button
 
     Args:
+        children: Tags, strings, or other rendered content.
         name: Specifies a name for the button.
         type: Specifies the type of button.
         value: Specifies an initial value for the button.
@@ -984,6 +1008,7 @@ class Button(Tag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1435,7 +1460,18 @@ class Embed(Tag):
 
 
 class Fieldset(Tag):
-    """Groups related elements in a form"""
+    """Groups related elements in a form
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        disabled: Specifies that a group of related form elements should be disabled.
+        form: Specifies which form the fieldset belongs to.
+        name: Specifies a name for the fieldset.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1452,7 +1488,15 @@ class Fieldset(Tag):
 
 
 class Figcaption(Tag):
-    """Defines a caption for a <figure> element"""
+    """Defines a caption for a <figure> element
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1466,7 +1510,15 @@ class Figcaption(Tag):
 
 
 class Figure(Tag):
-    """Specifies self-contained content"""
+    """Specifies self-contained content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """    
 
     def __init__(
         self,
@@ -1480,7 +1532,15 @@ class Figure(Tag):
 
 
 class Footer(Tag):
-    """Defines a footer for a document or section"""
+    """Defines a footer for a document or section
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """    
 
     def __init__(
         self,
@@ -1494,16 +1554,33 @@ class Footer(Tag):
 
 
 class Form(Tag):
-    """Defines an HTML form for user input"""
+    """Defines an HTML form for user input
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        action: Specifies where to send the form-data when a form is submitted.
+        method: Specifies the HTTP method to use when sending form-data.                
+        accept_charset: Specifies the character encodings that are to be used for the form submission.
+        autocomplete: Specifies whether a form should have autocomplete on or off.
+        enctype: Specifies how the form-data should be encoded when submitting it to the server.
+        name: Specifies the name of the form.
+        novalidate: Specifies that the form should not be validated when submitted.
+        rel: Specifies the relationship between a linked resource and the current document.
+        target: Specifies where to display the response that is received after submitting the form.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
+        action: str | None = None, 
+        method: str | None = None,               
         accept_charset: str | None = None,
-        action: str | None = None,
         autocomplete: str | None = None,
         enctype: str | None = None,
-        method: str | None = None,
         name: str | None = None,
         novalidate: str | None = None,
         rel: str | None = None,
@@ -1517,7 +1594,15 @@ class Form(Tag):
 
 
 class H1(Tag):
-    """H1 header"""
+    """H1 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """        
 
     def __init__(
         self,
@@ -1531,7 +1616,15 @@ class H1(Tag):
 
 
 class H2(Tag):
-    """H2 header"""
+    """H2 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """        
 
     def __init__(
         self,
@@ -1545,7 +1638,15 @@ class H2(Tag):
 
 
 class H3(Tag):
-    """H3 header"""
+    """H3 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """        
 
     def __init__(
         self,
@@ -1559,7 +1660,15 @@ class H3(Tag):
 
 
 class H4(Tag):
-    """H4 header"""
+    """H4 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """        
 
     def __init__(
         self,
@@ -1573,7 +1682,15 @@ class H4(Tag):
 
 
 class H5(Tag):
-    """H5 header"""
+    """H5 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """        
 
     def __init__(
         self,
@@ -1587,7 +1704,15 @@ class H5(Tag):
 
 
 class H6(Tag):
-    """H6 header"""
+    """H6 header
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """        
 
     def __init__(
         self,
@@ -1601,22 +1726,33 @@ class H6(Tag):
 
 
 class Head(Tag):
-    """Contains metadata/information for the document"""
+    """Contains metadata/information for the document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        profile: Specifies the URL of a document that contains a line-break-separated list of links.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         profile: str | None = None,
-        class_: str | None = None,
-        id: str | None = None,
-        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Header(Tag):
-    """Defines a header for a document or section"""
+    """Defines a header for a document or section
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """        
 
     def __init__(
         self,
