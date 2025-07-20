@@ -1518,7 +1518,7 @@ class Figure(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """    
+    """
 
     def __init__(
         self,
@@ -1540,7 +1540,7 @@ class Footer(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """    
+    """
 
     def __init__(
         self,
@@ -1559,7 +1559,7 @@ class Form(Tag):
     Args:
         children: Tags, strings, or other rendered content.
         action: Specifies where to send the form-data when a form is submitted.
-        method: Specifies the HTTP method to use when sending form-data.                
+        method: Specifies the HTTP method to use when sending form-data.
         accept_charset: Specifies the character encodings that are to be used for the form submission.
         autocomplete: Specifies whether a form should have autocomplete on or off.
         enctype: Specifies how the form-data should be encoded when submitting it to the server.
@@ -1576,8 +1576,8 @@ class Form(Tag):
     def __init__(
         self,
         *children,
-        action: str | None = None, 
-        method: str | None = None,               
+        action: str | None = None,
+        method: str | None = None,
         accept_charset: str | None = None,
         autocomplete: str | None = None,
         enctype: str | None = None,
@@ -1602,7 +1602,7 @@ class H1(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """        
+    """
 
     def __init__(
         self,
@@ -1624,7 +1624,7 @@ class H2(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """        
+    """
 
     def __init__(
         self,
@@ -1646,7 +1646,7 @@ class H3(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """        
+    """
 
     def __init__(
         self,
@@ -1668,7 +1668,7 @@ class H4(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """        
+    """
 
     def __init__(
         self,
@@ -1690,7 +1690,7 @@ class H5(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """        
+    """
 
     def __init__(
         self,
@@ -1712,7 +1712,7 @@ class H6(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """        
+    """
 
     def __init__(
         self,
@@ -1752,7 +1752,7 @@ class Header(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """        
+    """
 
     def __init__(
         self,
@@ -1766,7 +1766,15 @@ class Header(Tag):
 
 
 class Hgroup(Tag):
-    """Defines a header and related content"""
+    """Defines a header and related content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1780,7 +1788,15 @@ class Hgroup(Tag):
 
 
 class Hr(Tag):
-    """Defines a thematic change in the content"""
+    """Defines a thematic change in the content
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1795,7 +1811,15 @@ class Hr(Tag):
 
 
 class I(Tag):  # noqa: E742
-    """Defines a part of text in an alternate voice or mood"""
+    """Defines a part of text in an alternate voice or mood
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
