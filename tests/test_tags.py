@@ -300,3 +300,11 @@ def test_tag_generation():
         obj = getattr(tags, name)
         if isinstance(obj, type) and issubclass(obj, air.Tag):
             assert obj("test").render()
+
+
+def test_safestr():
+    assert tags.SafeStr("test").__repr__() == "'test'"
+
+
+def test_other_children_types():
+    assert tags.Tag(1).render() == "<tag>1</tag>"
