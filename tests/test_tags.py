@@ -1,4 +1,5 @@
 import air
+from air import tags
 
 
 def _r(tag):
@@ -288,3 +289,22 @@ def test_children_tag():
         _r(air.Children(air.P("Hello, world!"), air.P("Uma")))
         == "<p>Hello, world!</p><p>Uma</p>"
     )
+
+
+def test_tag_generation():
+    """This test exists because not all Tags are covered by other
+    tests in this file. It performs a render check on all tag subclasses
+    within the tags.py module.
+    """
+    for name in dir(tags):
+        obj = getattr(tags, name)
+        if isinstance(obj, type) and issubclass(obj, air.Tag):
+            assert obj("test").render()
+
+
+def test_safestr():
+    assert tags.SafeStr("test").__repr__() == "'test'"
+
+
+def test_other_children_types():
+    assert tags.Tag(1).render() == "<tag>1</tag>"
