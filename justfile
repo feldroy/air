@@ -1,5 +1,5 @@
 # Run all the formatting, linting, and testing commands
-clean:
+qa:
     ruff format .
     ruff check . --fix
     ruff check --select I --fix .
@@ -8,15 +8,15 @@ clean:
 
 # Run all the tests for all the supported Python versions
 testall:
-    uv run --python=3.10 --with pytest --with httpx pytest
-    uv run --python=3.11 --with pytest --with httpx pytest
-    uv run --python=3.12 --with pytest --with httpx pytest
-    uv run --python=3.13 --with pytest --with httpx pytest
+    uv run --python=3.10 --extra dev pytest
+    uv run --python=3.11 --extra dev pytest
+    uv run --python=3.12 --extra dev pytest
+    uv run --python=3.13 --extra dev pytest
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --with pytest --with httpx pytest {{ARGS}}
+    uv run --python=3.13 --extra dev pytest {{ARGS}}
 
 # Run all the tests, but on failure, drop into the debugger
 pdb *ARGS:

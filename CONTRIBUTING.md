@@ -44,7 +44,7 @@ uv sync --extra docs
 Run the tests:
 
 ```bash
-make testall
+just testall
 ```
 
 ## Linting and Formatting
@@ -52,7 +52,7 @@ make testall
 To lint and format the code to pass the linters:
 
 ```bash
-make clean
+just qa
 ```
 
 As needed, make your changes, write tests, and submit a pull request.
@@ -82,7 +82,7 @@ git commit -am "Release version x.y.z"
 Tag the release and push to github:
 
 ```sh
-make tag
+just tag
 ```
 
 This will deploy the new package to PyPI. Once confirmed the new package has been found on GitHub.
