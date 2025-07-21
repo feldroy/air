@@ -65,11 +65,7 @@ Try to implement features as plugins rather than adding them to the core codebas
 
 ## Releasing a New Version
 
-Change the version number in `src/air/__init__.py` and `pyproject.toml`:
-
-```sh
-uv version --bump patch
-```
+Change the version number in `src/air/__init__.py` and `pyproject.toml`.
 
 Regenerate the lockfile:
 
