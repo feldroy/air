@@ -25,6 +25,7 @@ dev = [
     { name = "ipdb" },
     { name = "pytest" },
     { name = "ruff" },
+    { name = "rust-just" },
     { name = "ty" },
     { name = "types-markdown" },
     { name = "uvicorn" },
@@ -47,6 +48,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.0" },
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.13" },
+    { name = "rust-just", marker = "extra == 'dev'", specifier = ">=1.42.3" },
     { name = "ty", marker = "extra == 'dev'", specifier = ">=0.0.1a14" },
     { name = "typer", specifier = ">=0.16.0" },
     { name = "types-markdown", marker = "extra == 'dev'", specifier = ">=3.8.0" },
@@ -1085,6 +1087,28 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/6a/ef/b960ab4818f90ff59e571d03c3f992828d4683561095e80f9ef31f3d58b7/ruff-0.12.0-py3-none-win32.whl", hash = "sha256:7162a4c816f8d1555eb195c46ae0bd819834d2a3f18f98cc63819a7b46f474fb", size = 10525289, upload-time = "2025-06-17T15:19:19.688Z" },
     { url = "https://files.pythonhosted.org/packages/34/93/8b16034d493ef958a500f17cda3496c63a537ce9d5a6479feec9558f1695/ruff-0.12.0-py3-none-win_amd64.whl", hash = "sha256:d00b7a157b8fb6d3827b49d3324da34a1e3f93492c1f97b08e222ad7e9b291e0", size = 11598311, upload-time = "2025-06-17T15:19:21.785Z" },
     { url = "https://files.pythonhosted.org/packages/d0/33/4d3e79e4a84533d6cd526bfb42c020a23256ae5e4265d858bd1287831f7d/ruff-0.12.0-py3-none-win_arm64.whl", hash = "sha256:8cd24580405ad8c1cc64d61725bca091d6b6da7eb3d36f72cc605467069d7e8b", size = 10724946, upload-time = "2025-06-17T15:19:23.952Z" },
+]
+
+[[package]]
+name = "rust-just"
+version = "1.42.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/71/fa/42de2fbcc51279933c469341f06707dd864408164af99e865a14ec6fafc5/rust_just-1.42.3.tar.gz", hash = "sha256:97af7cdd832f43cb822c1de8470f86963b79c2409f5fcca4bf427fe2e21f61af", size = 1418885, upload-time = "2025-07-20T04:33:12.22Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7a/d5/0fd7982bafb32cb10c235623bb8d14b063cf8517ce378a4777534530d14c/rust_just-1.42.3-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:9414445f85b9df3974e13d95267e7dd655d01b10f404b697b9d4c21e3cd30a09", size = 1696964, upload-time = "2025-07-20T04:32:35.856Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/87/499f3b043403242a7049cf20c34dae840f700913bb6d30662de84c8d7f73/rust_just-1.42.3-py3-none-macosx_11_0_arm64.whl", hash = "sha256:6fb9533f7120ba992147b834fdc39232c89a4643abb9019f9f79a12e0a78bfeb", size = 1559439, upload-time = "2025-07-20T04:32:38.555Z" },
+    { url = "https://files.pythonhosted.org/packages/52/0a/664b6ef203e82d1442730f79dd1404ed4888f098b712d0a1a66a78ddafe3/rust_just-1.42.3-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:46a95e0dfda123e8d96aad0cde6c7ebd4442a70a82706321d466d48f88e300a5", size = 1628743, upload-time = "2025-07-20T04:32:41.207Z" },
+    { url = "https://files.pythonhosted.org/packages/6b/c4/201433aa9d926ac47e2c25c6dc8bd04ad5395efb5883cbdce5dff761ff24/rust_just-1.42.3-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:559530821736c6d1d2c68ac67e3bb9f3a607f07cec264355b593378d36da196c", size = 1624161, upload-time = "2025-07-20T04:32:43.742Z" },
+    { url = "https://files.pythonhosted.org/packages/a2/b8/171f26dbae45f68104e973c0c17affae72a46b0556633a7bc81b4c9a31ee/rust_just-1.42.3-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:fba2c18c19e502fc0d856b3686b89324ca23284f449fc96017fcbf0ca7649025", size = 1792324, upload-time = "2025-07-20T04:32:46.541Z" },
+    { url = "https://files.pythonhosted.org/packages/a9/42/2adf1dca65309100f5398ceabddd29554fe4c664cdc3e7834119f056d78e/rust_just-1.42.3-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:764b82559c6bd7c2347c76b58328e8b059b6f31eb0c9325b05afe1fef2a6d3cd", size = 1867625, upload-time = "2025-07-20T04:32:49.19Z" },
+    { url = "https://files.pythonhosted.org/packages/cb/b9/6eadeb6bae61d33997e240da1597b6c4272db2beb8e856ce9b27c3dddd2e/rust_just-1.42.3-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:df9290f6581075f12f0b97312ec2f77200e1f22ae1d9aca80fc2e5d7cfb11523", size = 1969343, upload-time = "2025-07-20T04:32:51.85Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/5c/bb0643786a55184c8923a88912ec8cf8278c47bcc1dc0a5f85e2fd99a591/rust_just-1.42.3-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e067e36da93fce0ab4f44cb97c51cd3647f0e89d191298be0b12d69892e0decc", size = 1792945, upload-time = "2025-07-20T04:32:54.206Z" },
+    { url = "https://files.pythonhosted.org/packages/90/4d/6cdfbe75a2ace08afe9c565c257dcd1bd151cde75e56b8e6867f6c5279ea/rust_just-1.42.3-py3-none-musllinux_1_2_aarch64.whl", hash = "sha256:59bf1cd5c7b03062654abc30b498ebe532505da67c77b19145cf5dbcb321d35c", size = 1636642, upload-time = "2025-07-20T04:32:56.945Z" },
+    { url = "https://files.pythonhosted.org/packages/cb/2d/a47a77224b986b6919d44f44478fa3438b8495732c3ba9fef63451099b77/rust_just-1.42.3-py3-none-musllinux_1_2_armv7l.whl", hash = "sha256:ee7288f9e9ec11106880eabd8d2f388c6bc090162813859c96e1adb84b8c24c2", size = 1641723, upload-time = "2025-07-20T04:32:59.668Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/ef/3a38eb88ee2675ac1349afd40bf13900d3ad04c9d12c01834a81c817da0f/rust_just-1.42.3-py3-none-musllinux_1_2_i686.whl", hash = "sha256:2153b368a136e1e4b7eefca81b05c30910e0d0604cb9d0a99dab11db9eb421d6", size = 1781497, upload-time = "2025-07-20T04:33:01.98Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/06/dc3aa1e1eb8cc7f86f12e147cbd8c94f0b898712b125a4db731b63df4f06/rust_just-1.42.3-py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:d33b744d8ddd7a32db92467e0b4b856a1d1f99d460377ebe5351c2532efc38da", size = 1846279, upload-time = "2025-07-20T04:33:04.602Z" },
+    { url = "https://files.pythonhosted.org/packages/31/0b/8bc2d6cca183ec05829e1067f15bf66ea13c2ed9ae8bd858e7388c98374f/rust_just-1.42.3-py3-none-win32.whl", hash = "sha256:f1423e1438fa9432aa7bdcba377f4b69d9e75695b4947e739e8e05f8a86746f3", size = 1592674, upload-time = "2025-07-20T04:33:07.271Z" },
+    { url = "https://files.pythonhosted.org/packages/16/6c/050f58b3d5a17a4d4b1b5ab2e0e29ab1d9e0f5895de844c3bfab790ea8c7/rust_just-1.42.3-py3-none-win_amd64.whl", hash = "sha256:da7284ab06efd11a6bbdc236e3df881d44e0b7ba478c8cf71bde42a0b0c04707", size = 1735725, upload-time = "2025-07-20T04:33:09.873Z" },
 ]
 
 [[package]]
