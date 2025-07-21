@@ -51,6 +51,8 @@ dev = [
     "pytest>=8.4.0",
     # Linting and formatting
     "ruff>=0.11.13",
+    # Justfile tasks
+    "rust-just>=1.42.3",
     # for checking types
     "ty>=0.0.1a14",
     # Types for the markdown library
