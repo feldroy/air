@@ -7,9 +7,9 @@ authors = [
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
 dependencies = [
-    "fastapi>=0.115.12",
-    "Jinja2>=3.1.4",
-    "markdown>=3.6",
+    "fastapi>=0.116.1",
+    "Jinja2>=3.1.6",
+    "markdown>=3.8",
     "python-multipart>=0.0.20",
     "typer>=0.16.0",
 ]
