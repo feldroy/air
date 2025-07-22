@@ -8,7 +8,6 @@ resolution-markers = [
 
 [[package]]
 name = "air"
-version = "0.14.2"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -54,7 +53,7 @@ requires-dist = [
     { name = "types-markdown", marker = "extra == 'dev'", specifier = ">=3.8.0" },
     { name = "uvicorn", marker = "extra == 'dev'", specifier = ">=0.34.0" },
 ]
-provides-extras = ["dev", "docs", "all"]
+provides-extras = ["dev", "docs"]
 
 [[package]]
 name = "annotated-types"
