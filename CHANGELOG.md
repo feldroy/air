@@ -1,5 +1,40 @@
 # Changelog
 
+# 0.15.0 - 2025-07-22
+
+
+## What's Changed
+* Add type hints for tags with attributes by @Isaac-Flath in https://github.com/feldroy/air/pull/143
+* Replace Makefile with justfile by @audreyfeldroy in https://github.com/feldroy/air/pull/184
+* AirField args now include all of Pydantic Field args by @pydanny in https://github.com/feldroy/air/pull/167
+* Change RawHTML to Raw by @pydanny in https://github.com/feldroy/air/pull/169
+* Document Tag args to button by @pydanny in https://github.com/feldroy/air/pull/173
+* Tests for background task by @pydanny in https://github.com/feldroy/air/pull/175
+* Improve tests for forms by @pydanny in https://github.com/feldroy/air/pull/176
+* Document tags and clean up tag types by @pydanny in https://github.com/feldroy/air/pull/177
+* Undo Optional[str] by @pydanny in https://github.com/feldroy/air/pull/178
+* Switch to use uv run for python options in Make by @pydanny in https://github.com/feldroy/air/pull/179
+* Improve test coverage for tags.py by @pydanny in https://github.com/feldroy/air/pull/180
+* Document more tags by @pydanny in https://github.com/feldroy/air/pull/181
+* Single source of version by @pydanny in https://github.com/feldroy/air/pull/188
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.14.2...v0.15.0
+
+
+# 0.14.2 - 2025-07-18
+
+## What's Changed
+* Create AirField wrapper for Pydantic Field  by @pydanny in https://github.com/feldroy/air/pull/164
+* Update what is claimed for Python support by @pydanny in https://github.com/feldroy/air/pull/156
+* Add support for returning multiple children in Air Tags from views by @pydanny in https://github.com/feldroy/air/pull/158
+* Add types of contribution section to CONTRIBUTING.md by @pydanny in https://github.com/feldroy/air/pull/160
+* Add jinja to the alternatives page by @pydanny in https://github.com/feldroy/air/pull/161
+* Add default HTML page for 404 errors by @pydanny in https://github.com/feldroy/air/pull/162
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.13.0...v0.14.2
+
+
 # 0.13.0 - 2025-07-17
 
 ## What's Changed

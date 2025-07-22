@@ -35,16 +35,17 @@ build:
     rm -rf dist
     uv build
 
+VERSION := `python -c "import air; print(air.__version__)"`
+
 # Print the current version of the project
 version:
-    @echo "Current version is $(grep -m 1 version pyproject.toml | tr -s ' ' | tr -d '"' | tr -d "'" | cut -d' ' -f3)"
+    @echo "Current version is {{VERSION}}"
 
 # Tag the current version in git and put to github
 tag:
-    VERSION=$(grep -m 1 version pyproject.toml | tr -s ' ' | tr -d '"' | tr -d "'" | cut -d' ' -f3)
-    echo "Tagging version v$VERSION"
-    git tag -a v$VERSION -m "Creating version v$VERSION"
-    git push origin v$VERSION
+    echo "Tagging version v{{VERSION}}"
+    git tag -a v{{VERSION}} -m "Creating version v{{VERSION}}"
+    git push origin v{{VERSION}}
 
 # Serve docs locally
 doc:
