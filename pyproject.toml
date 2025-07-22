@@ -1,6 +1,6 @@
 [project]
 name = "air"
-version = "0.14.2"
+dynamic = ["version"]
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -64,9 +64,6 @@ docs = [
     "mkdocs-material",
     "mkdocstrings[python]",
 ]
-all = [
-
-]
 
 [project.urls]
 homepage = "https://github.com/feldroy/air"
@@ -84,3 +81,6 @@ omit = [
 
 [tool.uv]
 package = true
+
+[tool.setuptools.dynamic]
+version = { attr = "air.__version__" }
