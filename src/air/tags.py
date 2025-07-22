@@ -1833,7 +1833,26 @@ class I(Tag):  # noqa: E742
 
 
 class Iframe(Tag):
-    """Defines an inline frame"""
+    """Defines an inline frame
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        src: Specifies the URL of the page to embed.
+        srcdoc: Specifies the HTML content of the page to show in the <iframe>.
+        width: Specifies the width of an <iframe>.
+        height: Specifies the height of an <iframe>.
+        allow: Specifies a feature policy for the <iframe>.
+        allowfullscreen: Set to true if the <iframe> can activate fullscreen mode.
+        allowpaymentrequest: Set to true if a cross-origin <iframe> should be allowed to invoke the Payment Request API.
+        loading: Specifies the loading policy of the <iframe>.
+        name: Specifies the name of an <iframe>.
+        referrerpolicy: Specifies which referrer information to send when fetching the iframe's content.
+        sandbox: Enables an extra set of restrictions for the content in an <iframe>.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1858,7 +1877,27 @@ class Iframe(Tag):
 
 
 class Img(Tag):
-    """Defines an image"""
+    """Defines an image
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        src: Specifies the path to the image.
+        width: Specifies the width of an image.
+        height: Specifies the height of an image.
+        srcset: Specifies a list of image files to use in different situations.
+        alt: Specifies an alternate text for an image.
+        crossorigin: Allows images from third-party sites that allow cross-origin access to be used with canvas.
+        ismap: Specifies an image as a server-side image map.
+        loading: Specifies whether a browser should load an image immediately or to defer loading of off-screen images.
+        longdesc: Specifies a URL to a detailed description of an image.
+        referrerpolicy: Specifies which referrer information to use when fetching an image.
+        sizes: Specifies image sizes for different page layouts.
+        usemap: Specifies an image as a client-side image map.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1885,7 +1924,47 @@ class Img(Tag):
 
 
 class Input(Tag):
-    """Defines an input control"""
+    """Defines an input control
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        name: Specifies the name of an <input> element.
+        type: Specifies the type <input> element to display.
+        value: Specifies the value of an <input> element.
+        readonly: Specifies that an input field is read-only.
+        required: Specifies that an input field must be filled out before submitting the form.
+        accept: Specifies a filter for what file types the user can pick from the file input dialog box.
+        alt: Specifies an alternate text for images.
+        autocomplete: Specifies whether an <input> element should have autocomplete on or off.
+        autofocus: Specifies that an <input> element should automatically get focus when the page loads.
+        checked: Specifies that an <input> element should be pre-selected when the page loads.
+        dirname: Specifies that the text direction of the input field will be submitted.
+        disabled: Specifies that an <input> element should be disabled.
+        form: Specifies the form the <input> element belongs to.
+        formaction: Specifies the URL of the file that will process the input control when the form is submitted.
+        formenctype: Specifies how the form-data should be encoded when submitting it to the server.
+        formmethod: Defines the HTTP method for sending data to the action URL.
+        formnovalidate: Specifies that the form-data should not be validated on submission.
+        formtarget: Specifies where to display the response that is received after submitting the form.
+        height: Specifies the height of an <input> element.
+        list: Refers to a <datalist> element that contains pre-defined options for an <input> element.
+        max: Specifies the maximum value for an <input> element.
+        maxlength: Specifies the maximum number of characters allowed in an <input> element.
+        min: Specifies a minimum value for an <input> element.
+        minlength: Specifies the minimum number of characters required in an <input> element.
+        multiple: Specifies that a user can enter more than one value in an <input> element.
+        pattern: Specifies a regular expression that an <input> element's value is checked against.
+        placeholder: Specifies a short hint that describes the expected value of an <input> element.
+        popovertarget: Specifies which popover element to invoke.
+        popovertargetaction: Specifies what action to perform on the popover element.
+        size: Specifies the width, in characters, of an <input> element.
+        src: Specifies the URL of the image to use as a submit button.
+        step: Specifies the legal number intervals for an input field.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1932,7 +2011,17 @@ class Input(Tag):
 
 
 class Ins(Tag):
-    """Defines a text that has been inserted into a document"""
+    """Defines a text that has been inserted into a document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        cite: Specifies a URL to a document that explains the reason why the text was inserted/changed.
+        datetime: Specifies the date and time when the text was inserted/changed.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1962,7 +2051,16 @@ class Kbd(Tag):
 
 
 class Label(Tag):
-    """Defines a label for an <input> element"""
+    """Defines a label for an <input> element
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        for_: Specifies which form element a label is bound to.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
