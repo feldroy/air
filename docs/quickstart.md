@@ -1,5 +1,8 @@
 # Quickstart
 
+Eager to get started? This page gives a good introduction to Air. 
+
+
 ## A Minimal Application
 
 A minimal Air application:
@@ -53,9 +56,9 @@ A minimal Air application:
     4. We define a GET route using `@app.get`. Unlike normal FastAPI projects using Jinja we don't need to set the `response_class` to HtmlResponse. That's because the `air.Air` wrapper handles that for us
     5. Our return calls `render()`, which reads the specified Jinja2 template and then produces the result as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages
 
-## Running Applications
+## Running Apps
 
-To run your FastAPI application with uvicorn:
+To run your Air application with uvicorn:
 
 ```bash
 uvicorn main:app --reload
@@ -71,9 +74,29 @@ Once the server is running, open your browser and navigate to:
 
 - **[http://localhost:8000](http://localhost:8000)** - Your application
 
+## Running Apps with `fastapi`
+
+As Air is just a layer on top of FastAPI, you can use the `fastapi` command to run Air. In fact, this is how some of the core developers prefer to run Air.
+
+In any case, first make sure `fastapi[standard]` is installed:
+
+```sh
+# pip
+pip install "fastapi[standard]"
+# uv
+uv add "fastapi[standard]"
+```
+
+Then run the cli command:
+
+```sh
+fastapi dev
+```
+
 ## The `app.page` decorator
 
 For simple HTTP GET requests, Air provides the handy `@app.page` shortcut. 
+
 
 
 === "Air Tags"
@@ -111,6 +134,81 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
     ```jinja title="templates/dashboard.html"
     <h1>Dashboard</h1>
     ```
+
+## Charting with Air
+
+FastAPI is awesome at producing JSON for chart libraries, and Air Tags makes that even better. Here's a simple yet animated example of using Plotly+Air to provide charts.
+
+```python title="main.py"
+import json
+import random
+import air
+
+app = air.Air()
+
+def sorted_random_list():
+    return [0] + sorted(random.sample(range(1, 9), 4)) + [10]
+
+def generate_data():
+    return json.dumps(
+        {
+            "data": [
+                {
+                    "x": sorted_random_list(),
+                    "y": random.sample(range(10), 6),
+                    "type": "scatter",
+                },
+                {
+                    "x": sorted_random_list(),
+                    "y": random.sample(range(10), 6),
+                    "type": "scatter",
+                },
+            ],
+            "title": "Fun charts with Plotly and Air",
+            "description": "This is a demonstration of how to build a chart using Plotly and Air",
+            "type": "scatter",
+        }
+    )
+
+@app.page
+def index():
+    data = generate_data()
+    # Use picocss layout to make things pretty 
+    return air.layouts.picocss( 
+        air.Title("Chart Demo"),
+        air.Script(src="https://cdn.plot.ly/plotly-3.0.1.min.js"),
+        air.H1("Animated line chart by Air and Plotly"),
+        air.Div(id="randomChart"),
+        # We place Script inside children so it renders inside the page body
+        air.Children( 
+            # Call the Plotly library to plot the library
+            air.Script( 
+                f"var data = {data}; Plotly.newPlot('randomChart', data);",
+                # Used to help HTMX know where to replace data
+                id="dataSource",
+                # Trigger HTMX to call new data every 2 seconds
+                hx_trigger="every 2s",
+                # Use HTMX to fetch new info from the /data route
+                hx_get="/data",
+                # When the data is fetched, replace the whole tag
+                hx_swap='outerHTML'
+            )
+        ),
+    )
+
+@app.page
+def data():
+    data = generate_data()
+    # This replaces the script in the web page with new data, and triggers
+    # an animation of the transition
+    return air.Script(
+        f"var data = {data}; Plotly.animate('randomChart', data);",
+        id="dataSource",
+        hx_trigger="every 2s",
+        hx_get="/data",
+        hx_swap='outerHTML'
+    )
+```
 
 ## Form Validation with Air Forms
 
