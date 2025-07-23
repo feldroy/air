@@ -54,20 +54,16 @@ def home():
 
 Air transforms this into proper HTML structure automatically.
 
-## Built-in Layouts: Start Fast
+## Built-in Minimal Layouts
 
-Air provides two ready-to-use layouts for rapid prototyping:
-
-### PicoCSS Layout: Modern and Clean
-
-The `picocss()` layout provides a beautiful, modern interface with zero configuration:
+Air provides minimal ready-to-use layouts for rapid prototyping, `mvpcss` and `picocss` for MVP.css and PicoCSS respectively.  They both work and are used in the exact same way.
 
 ```python
 import air
 
 @app.get("/")
 def home():
-    return air.layouts.picocss(
+    return air.layouts.picocss( # or mvpcss
         air.Title("My App"),
         air.H1("Welcome"),
         air.P("This automatically looks great!"),
@@ -76,7 +72,7 @@ def home():
 ```
 
 **What you get:**
-- [PicoCSS](https://picocss.com/) styling
+- [PicoCSS](https://picocss.com/) or [MVP.css](https://andybrewer.github.io/mvp/) styling
 - HTMX included by default for interactivity
 - Container wrapper for proper spacing
 
@@ -86,13 +82,9 @@ def home():
 - Quick proofs of concept
 - Learning Air basics
 
-!!! note
+## Beyond Built-in Layouts
 
-    There is an additional built in layout `mvpcss` that works the exact same way but used MVP.css instead of Pico CSS
-
-## How to Move Beyond Built-in Layouts
-
-The included layouts are designed for **quick prototyping**, not production applications.  Custom layouts give you complete control while preserving Air's automatic tag filtering benefits.
+The included layouts are designed for **quick prototyping**, not production commercial applications.  Custom layouts give you complete control while preserving Air's automatic tag filtering benefits.
 
 Here's the foundational pattern for any Air layout:
 
@@ -125,4 +117,3 @@ def my_layout(*children, **kwargs):
 1. **Always filter tags** using Air's helper functions
 2. **Use `*head_tags` and `*body_tags`** to include user content
 3. **Return `.render()`** to get the final HTML string
-4. **Accept `**kwargs`** for HTML attributes
