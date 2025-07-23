@@ -10,6 +10,7 @@ nav:
     - concepts/escaping_html.md
     - concepts/forms.md
     - concepts/jinja.md
+    - concepts/layouts.md
   - Reference:
     - api/index.md
     - Applications: api/applications.md
