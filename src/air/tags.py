@@ -2037,7 +2037,15 @@ class Ins(Tag):
 
 
 class Kbd(Tag):
-    """Defines keyboard input"""
+    """Defines keyboard input
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2075,7 +2083,15 @@ class Label(Tag):
 
 
 class Legend(Tag):
-    """Defines a caption for a <fieldset> element"""
+    """Defines a caption for a <fieldset> element
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2089,12 +2105,21 @@ class Legend(Tag):
 
 
 class Li(Tag):
-    """Defines a list item"""
+    """Defines a list item
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        value: Only for OL lists, this is the starting number of the list item.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
-        value: str | None = None,
+        value: int | None = None,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2104,7 +2129,30 @@ class Li(Tag):
 
 
 class Link(Tag):
-    """Defines the relationship between a document and an external resource (most used to link to style sheets)"""
+    """Defines the relationship between a document and an external resource (most used to link to style sheets)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        href: Specifies the URL of the linked resource.
+        as_: Specifies the relationship between the linked resource and the document.
+        blocking: Specifies that the resource should be loaded before the rest of the page.
+        crossorigin: Specifies how the element handles cross-origin requests.
+        disabled: Specifies that the linked resource is disabled.
+        fetchpriority: Specifies the priority for fetching the resource.
+        hreflang: Specifies the language of the linked resource.
+        imagesizes: Specifies the sizes of the icons for visual media.
+        imagesrcset: Specifies the URLs of the icons for visual media.
+        integrity: Specifies a cryptographic hash of the resource to ensure its integrity.
+        media: Specifies the media type of the linked resource.
+        referrerpolicy: Specifies which referrer information to send when fetching the resource.
+        rel: Specifies the relationship between the current document and the linked resource.
+        sizes: Specifies the size of the linked resource.
+        title: Specifies the title of the linked resource.
+        type: Specifies the media type of the linked resource.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2134,7 +2182,15 @@ class Link(Tag):
 
 
 class Main(Tag):
-    """Specifies the main content of a document"""
+    """Specifies the main content of a document
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
