@@ -72,11 +72,13 @@ def home():
 ```
 
 **What you get:**
+
 - [PicoCSS](https://picocss.com/) or [MVP.css](https://andybrewer.github.io/mvp/) styling
 - HTMX included by default for interactivity
 - Container wrapper for proper spacing
 
 **Perfect for:**
+
 - Prototypes and demos
 - Internal tools and dashboards
 - Quick proofs of concept
@@ -114,6 +116,7 @@ def my_layout(*children, **kwargs):
 ```
 
 **Key principles:**
+
 1. **Always filter tags** using Air's helper functions
 2. **Use `*head_tags` and `*body_tags`** to include user content
 3. **Return `.render()`** to get the final HTML string
