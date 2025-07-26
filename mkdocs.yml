@@ -16,12 +16,18 @@ nav:
     - Applications: api/applications.md
     - Background Tasks: api/background.md    
     - CLI: api/cli.md
+    - Forms: api/forms.md    
     - Generator: api/generator.md
     - Layouts: api/layouts.md
     - Requests: api/requests.md
     - Responses: api/responses.md
     - SVG: api/svg.md
-    - Tags: api/tags.md
+    - Tags:
+      - api/tags/index.md
+      - api/tags/a-d.md
+      - api/tags/e-m.md
+      - api/tags/n-s.md
+      - api/tags/t-z.md
     - Templates: api/templates.md  
   - About:  
     - about/index.md
@@ -54,15 +60,15 @@ markdown_extensions:
       alternate_style: true  
 plugins:
   - search
+  - autorefs
   - mkdocstrings:
       handlers:
         python:
           paths: [.]
           options:
             show_source: true
-            unwrap_annotated: true
-            members_order: source
             separate_signature: true
-            # docstring_options:
-            #   ignore_init_summary: true            
+            unwrap_annotated: true
+            docstring_options:
+              ignore_init_summary: true            
             merge_init_into_class: true

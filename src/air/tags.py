@@ -1,4 +1,4 @@
-"""Adds s-expression HTML tags to air."""
+"""Easy to write and performant HTML content generation using Python classes to render HTML."""
 
 import html
 from functools import cached_property
@@ -68,14 +68,18 @@ def clean_html_attr_key(key: str) -> str:
 
 
 class Tag:
+    """Base tag for all other tags.
+
+    Sets four attributes, name, module, children, and attrs.
+    These are important for Starlette view responses, as nested objects
+    get auto-serialized to JSON and need to be rebuilt. With
+    the values of these attributes, the object reconstruction can occur.
+    """
+
     self_closing = False
 
     def __init__(self, *children: Any, **kwargs: str | int | float | bool):
-        """Sets four attributes, name, module, children, and attrs.
-        These are important for Starlette view responses, as nested objects
-        get auto-serialized to JSON and need to be rebuilt. With
-        the values of these attributes, the object reconstruction can occur.
-
+        """
         Args:
             children: Tags, strings, or other rendered content.
             kwargs: Keyword arguments transformed into tag attributes.
@@ -314,7 +318,7 @@ html_attributes = {
     "Dd": ["cite", "datetime"],
     "Details": ["open"],
     "Dialog": ["open"],
-    "Embded": [
+    "Embed": [
         "src",
         "typewidthheight",
     ],
