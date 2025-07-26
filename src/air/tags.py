@@ -168,7 +168,7 @@ class Raw(Tag):
     """Renders raw HTML content without escaping.
 
     Args:
-        raw_string: A single string containing raw text to render
+        args: A single string containing raw text to render
 
     Raises:
         TypeError: If non-string content is provided
@@ -197,7 +197,7 @@ class Raw(Tag):
         if len(args) > 1:
             raise ValueError("Raw accepts only one string argument")
 
-        raw_string = args[0] if args else ""
+        raw_string: str = args[0] if args else ""
 
         if not isinstance(raw_string, str):
             raise TypeError("Raw only accepts string content")
@@ -951,9 +951,6 @@ class Body(Tag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
-        style: Inline style attribute.
         kwargs: Keyword arguments transformed into tag attributes.
     """
 
