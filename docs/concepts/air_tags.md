@@ -1,10 +1,12 @@
+[](){ #air-tags }
+
 # Air Tags
 
-**Air Tags**, sometimes shortend to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool.
+**Air Tags**, sometimes shortend to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool. They are designed to be an easy to write and performant HTML content generation system using Python classes to render HTML.
 
 !!! note
 
-    This document covers how **Air Tags** work. The full reference for them is the [Tag API Reference](../api/tags.md).
+    This document covers how **Air Tags** work. The full reference for them is the [Tag API Reference][tags].
 
 ## How **Air Tags** work
 
