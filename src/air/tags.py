@@ -2274,7 +2274,20 @@ class Menu(Tag):
 
 
 class Meta(Tag):
-    """Defines metadata about an HTML document"""
+    """Defines metadata about an HTML document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        charset: Specifies the character encoding for the HTML document.
+        content: Specifies the value associated with the http-equiv or name attribute.
+        http_equiv: Provides an HTTP header for the information/value of the content attribute.
+        media: Specifies what media/device the linked document is optimized for.
+        name: Specifies a name for the metadata.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2293,7 +2306,21 @@ class Meta(Tag):
 
 
 class Meter(Tag):
-    """Defines a scalar measurement within a known range (a gauge)"""
+    """Defines a scalar measurement within a known range (a gauge)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        value: The current numeric value. Must be between the min and max values.
+        min: The lower bound of the measured range.
+        max: The upper bound of the measured range.
+        low: The upper numeric bound of the low end of the measured range.
+        high: The lower numeric bound of the high end of the measured range.
+        optimum: The optimal numeric value.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2313,7 +2340,15 @@ class Meter(Tag):
 
 
 class Nav(Tag):
-    """Defines navigation links"""
+    """Defines navigation links
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2327,20 +2362,50 @@ class Nav(Tag):
 
 
 class Noscript(Tag):
-    """Defines an alternate content for users that do not support client-side scripts"""
+    """Defines an alternate content for users that do not support client-side scripts
+
+    Args:
+     children: Tags, strings, or other rendered content.
+     class_: Substituted as the DOM `class` attribute.
+     id: DOM ID attribute.
+     style: Inline style attribute.
+     kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children,
         class_: str | None = None,
         id: str | None = None,
+        style: str | None = None,
         **kwargs,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
 
 
 class Object(Tag):
-    """Defines a container for an external application"""
+    """Defines an embedded object
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        archive: A space-separated list of URIs for archives of resources for the object.
+        border: The width of a border around the object.
+        classidcodebase: The codebase URL for the object.
+        codetype: The content type of the code.
+        data: The address of the object's data.
+        declare: Declares the object without instantiating it.
+        form: The form the object belongs to.
+        height: The height of the object.
+        name: The name of the object.
+        standby: A message to display while the object is loading.
+        type: The content type of the data.
+        usemap: The name of a client-side image map to be used with the object.
+        width: The width of the object.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2368,7 +2433,19 @@ class Object(Tag):
 
 
 class Ol(Tag):
-    """Defines an ordered list"""
+    """Defines an ordered list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        compact: Specifies that the list should be rendered in a compact style.
+        reversed: Specifies that the list order should be descending.
+        start: Specifies the start value of an ordered list.
+        type: Specifies the kind of marker to use in the list.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
