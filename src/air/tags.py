@@ -2348,7 +2348,7 @@ class Nav(Tag):
          id: DOM ID attribute.
          style: Inline style attribute.
          kwargs: Keyword arguments transformed into tag attributes.
-    """    
+    """
 
     def __init__(
         self,
@@ -2364,12 +2364,12 @@ class Nav(Tag):
 class Noscript(Tag):
     """Defines an alternate content for users that do not support client-side scripts
 
-        Args:
-         children: Tags, strings, or other rendered content.
-         class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
-         style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+    Args:
+     children: Tags, strings, or other rendered content.
+     class_: Substituted as the DOM `class` attribute.
+     id: DOM ID attribute.
+     style: Inline style attribute.
+     kwargs: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
