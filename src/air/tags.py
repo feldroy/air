@@ -2204,7 +2204,16 @@ class Main(Tag):
 
 
 class Map(Tag):
-    """Defines an image map"""
+    """Defines an image map
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        name: Specifies the name of the image map.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2219,7 +2228,15 @@ class Map(Tag):
 
 
 class Mark(Tag):
-    """Defines marked/highlighted text"""
+    """Defines marked/highlighted text
+
+    Args:
+         children: Tags, strings, or other rendered content.
+         class_: Substituted as the DOM `class` attribute.
+         id: DOM ID attribute.
+         style: Inline style attribute.
+         kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2233,7 +2250,16 @@ class Mark(Tag):
 
 
 class Menu(Tag):
-    """Defines an unordered list"""
+    """Defines a menu list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        compact: Specifies that the list should be displayed in a compact style.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
