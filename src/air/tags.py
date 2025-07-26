@@ -2,6 +2,7 @@
 
 import html
 from functools import cached_property
+from typing import Any, Literal
 from xml.etree import ElementTree as ET
 
 
@@ -69,7 +70,7 @@ def clean_html_attr_key(key: str) -> str:
 class Tag:
     self_closing = False
 
-    def __init__(self, *children, **kwargs):
+    def __init__(self, *children: Any, **kwargs: Literal["anonymous"]):
         """Sets four attributes, name, module, children, and attrs.
         These are important for Starlette view responses, as nested objects
         get auto-serialized to JSON and need to be rebuilt. With

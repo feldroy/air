@@ -54,7 +54,7 @@ dev = [
     # Justfile tasks
     "rust-just>=1.42.3",
     # for checking types
-    "ty>=0.0.1a14",
+    "ty>=0.0.1a16",
     # Types for the markdown library
     "types-Markdown>=3.8.0",
     # Lets you run full example apps
