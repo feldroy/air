@@ -1,12 +1,16 @@
 import air
 from airdocs.utils import get_readme_as_html
 from pathlib import Path
+from pydantic import BaseModel
+import xml
 
 renderer = air.JinjaRenderer('templates')
 
 app = air.Air()
 
 def layout(request: air.Request, *content):
+    if not isinstance(request, air.Request):
+        raise Exception('First arg of layout needs to be an air.Request')
     head_tags = air.layouts.filter_head_tags(content)
     body_tags = air.layouts.filter_body_tags(content)
     return renderer(request, 'page.html',
@@ -25,3 +29,53 @@ def index(request: air.Request):
         air.P("TODO: docs index")
     )
     
+
+@app.page
+def convert(request: air.Request):
+    title = 'Convert HTML to Air Tags'
+    return layout(
+        request,
+        air.Title(title),
+        air.H1(title),
+        air.Form(
+            air.Textarea(
+                rows=10, cols="80",
+                placeholder='HTML to be converted goes here...',
+                id="html",
+                name='html',
+                hx_trigger="input changed delay:500ms",
+                hx_post="/converter",
+            ),
+        ),
+        air.Hr(),
+        air.Div(
+            air.P('Nothing changed'),
+            id='result',
+            hx_swap_oob="true"
+        )
+    )
+
+
+class HtmlModel(BaseModel):
+    html: str
+
+
+class HtmlForm(air.AirForm):
+    model = HtmlModel
+
+@app.post('/converter')
+async def converter(request: air.Request):
+    form = await request.form()
+    html = form.get('html', '')
+    try:
+        text = air.html_to_airtags(html)
+        print(text)
+    except xml.etree.ElementTree.ParseError:
+        text = ''
+    return air.Div(
+        air.Pre(
+            air.Code(text)
+        ),
+        id='result',
+        hx_swap_oob="true",
+    )
