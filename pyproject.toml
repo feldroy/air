@@ -5,7 +5,7 @@ description = "Documentation for Air, the Python web framework."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "air>=0.15",
+    "air>=0.16",
     "fastapi[standard]>=0.116.0",
     "mkdocstrings[python]>=0.29.1",
 ]
