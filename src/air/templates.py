@@ -3,6 +3,7 @@ from typing import Any
 from fastapi.templating import Jinja2Templates
 
 from .requests import Request
+from .tags import Tag
 
 
 class JinjaRenderer:
@@ -43,11 +44,18 @@ class JinjaRenderer:
         context: dict[Any, Any] | None = None,
         **kwargs,
     ):
-        """Render template with request and context"""
+        """Render template with request and context. If an Air Tag
+        is found in the context, try to render it.
+        """
         if context is None:
             context = {}
         if kwargs:
             context = context | kwargs
+
+        # Attempt to render any Tags in the contect
+        for k, v in context.items():
+            if isinstance(v, Tag) and hasattr(v, "render"):
+                context[k] = v.render()
         return self.templates.TemplateResponse(
             request=request, name=name, context=context
         )
