@@ -1,5 +1,21 @@
 # Changelog
 
+# 0.15.0 - 2025-07-28
+
+## What's Changed
+* Rename Jinja2Renderer to JinjaRenderer by @pydanny in https://github.com/feldroy/air/pull/204
+* Autorender tags in JinjaRender by @pydanny in https://github.com/feldroy/air/pull/205
+* Document tags starting with I by @pydanny in https://github.com/feldroy/air/pull/189
+* Layouts concepts by @Isaac-Flath in https://github.com/feldroy/air/pull/192
+* Document the L tags by @pydanny in https://github.com/feldroy/air/pull/194
+* Add in chart example by @pydanny in https://github.com/feldroy/air/pull/197
+* Document Mark and Menu tags by @pydanny in https://github.com/feldroy/air/pull/198
+* More docs for tags by @pydanny in https://github.com/feldroy/air/pull/199
+* Type args and kwargs in tags and bump ty version by @pydanny in https://github.com/feldroy/air/pull/200
+* Refactor tag docs by @pydanny in https://github.com/feldroy/air/pull/201
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.15.0...v0.16.0
+
 # 0.15.0 - 2025-07-22
 
 
