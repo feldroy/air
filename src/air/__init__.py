@@ -1,7 +1,4 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
-
-__version__ = "0.15.0"
-
 from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
 
 from . import layouts as layouts

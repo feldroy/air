@@ -1,6 +1,6 @@
 [project]
 name = "air"
-dynamic = ["version"]
+version = "0.16.0"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -82,6 +82,3 @@ omit = [
 
 [tool.uv]
 package = true
-
-[tool.setuptools.dynamic]
-version = { attr = "air.__version__" }

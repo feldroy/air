@@ -35,7 +35,7 @@ build:
     rm -rf dist
     uv build
 
-VERSION := `python -c "import air; print(air.__version__)"`
+VERSION := `grep -m1 '^version' pyproject.toml | sed -E 's/version = "(.*)"/\1/'`
 
 # Print the current version of the project
 version:
