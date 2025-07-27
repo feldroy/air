@@ -23,11 +23,11 @@ nav:
     - Responses: api/responses.md
     - SVG: api/svg.md
     - Tags:
-      - api/tags/index.md
-      - api/tags/a-d.md
-      - api/tags/e-m.md
-      - api/tags/n-s.md
-      - api/tags/t-z.md
+      - Tags: api/tags/index.md
+      - "Tags A-D": api/tags/a-d.md
+      - "Tags E-M": api/tags/e-m.md
+      - "Tags N-S": api/tags/n-s.md
+      - "Tags T-Z": api/tags/t-z.md
     - Templates: api/templates.md  
   - About:  
     - about/index.md
