@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Docs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {{ head_tags }}
+</head>
+<body class="bg-gray-100">
+    <!-- Responsive Navbar -->
+    <nav class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="text-xl font-bold">Logo</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Home</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">About</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Services</a>
+                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Contact</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <label for="menu-toggle" class="cursor-pointer">
+                        <div class="space-y-1">
+                            <span class="block w-6 h-0.5 bg-white"></span>
+                            <span class="block w-6 h-0.5 bg-white"></span>
+                            <span class="block w-6 h-0.5 bg-white"></span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <input type="checkbox" id="menu-toggle" class="hidden peer">
+        <div class="md:hidden bg-gray-800 peer-checked:block hidden">
+            <div class="px-4 pb-3 space-y-1">
+                <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Home</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">About</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Services</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content with Placeholder Text -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold mb-4">Welcome to Our Site</h1>
+        <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p class="mb-4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <h2 class="text-2xl font-semibold mb-2">Section Title</h2>
+        <p class="mb-4">Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Nulla quis lorem ut libero malesuada feugiat.</p>
+
+        {{ body_tags|safe }}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 Feldroy. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

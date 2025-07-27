@@ -4,8 +4,8 @@ requires-python = ">=3.13"
 
 [[package]]
 name = "air"
-version = "0.11.0"
-source = { editable = "../air" }
+version = "0.15.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
     { name = "jinja2" },
@@ -13,26 +13,10 @@ dependencies = [
     { name = "python-multipart" },
     { name = "typer" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.8.2" },
-    { name = "fastapi", specifier = ">=0.115.12" },
-    { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.28.1" },
-    { name = "ipdb", marker = "extra == 'dev'", specifier = ">=0.13.13" },
-    { name = "jinja2", specifier = ">=3.1.4" },
-    { name = "markdown", specifier = ">=3.6" },
-    { name = "mkdocs-material", marker = "extra == 'docs'" },
-    { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.16.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.0" },
-    { name = "python-multipart", specifier = ">=0.0.20" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.13" },
-    { name = "typer", specifier = ">=0.16.0" },
-    { name = "types-markdown", marker = "extra == 'dev'", specifier = ">=3.8.0" },
-    { name = "uvicorn", marker = "extra == 'dev'", specifier = ">=0.34.0" },
+sdist = { url = "https://files.pythonhosted.org/packages/11/46/5dc0708730ccccce8cda9d72abaf581d9221668c29d822571584afcc2014/air-0.15.0.tar.gz", hash = "sha256:1f48dd21cf0bab2a43c222cda0f132f5da4388202bdce9afbdd1f05dcc18879c", size = 33983, upload-time = "2025-07-22T03:37:31.621Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ca/29/f9a687b46fafb41b42308df415aec62c9c159319d17b46e1e6fce909ee60/air-0.15.0-py3-none-any.whl", hash = "sha256:87288d0c784d26058b0932a166db52f963c0257b4285200f1a2f323526c539bc", size = 27792, upload-time = "2025-07-22T03:37:30.376Z" },
 ]
-provides-extras = ["dev", "docs"]
 
 [[package]]
 name = "airdocs"
@@ -40,7 +24,6 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "air" },
-    { name = "eidosui" },
     { name = "fastapi", extra = ["standard"] },
     { name = "mkdocstrings", extra = ["python"] },
 ]
@@ -53,8 +36,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "air", editable = "../air" },
-    { name = "eidosui", editable = "../EidosUI" },
+    { name = "air", specifier = ">=0.15" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.0" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.29.1" },
 ]
@@ -133,39 +115,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ae/ed/aefcc8cd0ba62a0560c3c18c33925362d46c6075480bfa4df87b28e169a9/docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f", size = 2204444, upload-time = "2024-04-23T18:57:18.24Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8f/d7/9322c609343d929e75e7e5e6255e614fcc67572cfd083959cdef3b7aad79/docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2", size = 587408, upload-time = "2024-04-23T18:57:14.835Z" },
-]
-
-[[package]]
-name = "eidosui"
-version = "0.1.0"
-source = { editable = "../EidosUI" }
-dependencies = [
-    { name = "air" },
-    { name = "fastapi" },
-    { name = "uvicorn" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "air" },
-    { name = "black", marker = "extra == 'dev'" },
-    { name = "fastapi" },
-    { name = "isort", marker = "extra == 'dev'" },
-    { name = "mypy", marker = "extra == 'dev'" },
-    { name = "pytest", marker = "extra == 'dev'" },
-    { name = "ruff", marker = "extra == 'dev'" },
-    { name = "uvicorn" },
-]
-provides-extras = ["dev"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "black", specifier = ">=23.0.0" },
-    { name = "isort", specifier = ">=5.0.0" },
-    { name = "mypy", specifier = ">=1.0.0" },
-    { name = "pytest", specifier = ">=7.0.0" },
-    { name = "pytest-cov", specifier = ">=4.0.0" },
-    { name = "ruff", specifier = ">=0.1.0" },
 ]
 
 [[package]]
