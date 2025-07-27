@@ -34,7 +34,7 @@ A minimal Air application:
     from air import Request
 
     app = Air()
-    jinja = air.Jinja2Renderer(directory="templates")
+    jinja = air.JinjaRenderer(directory="templates")
 
     @app.get('/')
     async def index(request: Request):
@@ -52,7 +52,7 @@ A minimal Air application:
 
     1. First we import the air project and a few select things from FastAPI.
     2. Next we instantiate the Air app. `air.Air` is just a convenience wrapper around `fastapi.FastAPI` that sets the `default_response_class` to be `air.AirResponse`
-    3. We use `Jinja2Renderer` factory to configure a `render()` shortcut. This is easier to remember and faster to type than `template.TemplateResponse`
+    3. We use `JinjaRenderer` factory to configure a `render()` shortcut. This is easier to remember and faster to type than `template.TemplateResponse`
     4. We define a GET route using `@app.get`. Unlike normal FastAPI projects using Jinja we don't need to set the `response_class` to HtmlResponse. That's because the `air.Air` wrapper handles that for us
     5. Our return calls `render()`, which reads the specified Jinja2 template and then produces the result as an `<h1></h1>` tag. The response type is `text/html`, so browsers display web pages
 
@@ -121,7 +121,7 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
     from air import Request
 
     app = air.Air()
-    jinja = air.Jinja2Renderer(directory="templates")
+    jinja = air.JinjaRenderer(directory="templates")
 
     @app.page
     async def dashboard(request: Request):
@@ -272,7 +272,7 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 
 
     app = air.Air()
-    jinja = air.Jinja2Renderer(directory="templates")
+    jinja = air.JinjaRenderer(directory="templates")
 
 
     class CheeseModel(BaseModel):
@@ -373,7 +373,7 @@ It is possible to use AirForms through FastAPI's dependency injection mechanism.
 
 
     app = air.Air()
-    jinja = air.Jinja2Renderer(directory="templates")
+    jinja = air.JinjaRenderer(directory="templates")
 
 
     class CheeseModel(BaseModel):

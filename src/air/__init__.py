@@ -358,4 +358,5 @@ from .tags import (
     Wbr as Wbr,
 )
 from .tags import html_to_airtags as html_to_airtags
+from .templates import JinjaRenderer as JinjaRenderer
 from .templates import Jinja2Renderer as Jinja2Renderer

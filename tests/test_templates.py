@@ -1,15 +1,16 @@
+import pytest
 from fastapi import FastAPI, Request
 from fastapi.testclient import TestClient
 
 import air
-from air import Air, Jinja2Renderer
+from air import Air, JinjaRenderer
 
 
-def test_Jinja2Renderer():
-    """Test the Jinja2Renderer class."""
+def test_JinjaRenderer():
+    """Test the JinjaRenderer class."""
     app = FastAPI()
 
-    jinja = Jinja2Renderer(directory="tests/templates")
+    jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
@@ -30,11 +31,11 @@ def test_Jinja2Renderer():
     )
 
 
-def test_Jinja2Renderer_no_context():
-    """Test the Jinja2Renderer class."""
+def test_JinjaRenderer_no_context():
+    """Test the JinjaRenderer class."""
     app = FastAPI()
 
-    jinja = Jinja2Renderer(directory="tests/templates")
+    jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
@@ -48,11 +49,11 @@ def test_Jinja2Renderer_no_context():
     assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
 
 
-def test_Jinja2Renderer_with_Air():
-    """Test the Jinja2Renderer class with air.Air."""
+def test_JinjaRenderer_with_Air():
+    """Test the JinjaRenderer class with air.Air."""
     app = Air()
 
-    jinja = Jinja2Renderer(directory="tests/templates")
+    jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
@@ -66,10 +67,10 @@ def test_Jinja2Renderer_with_Air():
     assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
 
 
-def test_Jinja2Renderer_with_kwargs():
+def test_JinjaRenderer_with_kwargs():
     app = FastAPI()
 
-    jinja = Jinja2Renderer(directory="tests/templates")
+    jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
     def test_endpoint(request: Request):
@@ -94,7 +95,7 @@ def test_Jinja2Renderer_with_kwargs():
 def test_jinja_plus_airtags():
     app = Air()
 
-    jinja = Jinja2Renderer(directory="tests/templates")
+    jinja = JinjaRenderer(directory="tests/templates")
 
     @app.page
     def index(request: Request):
@@ -112,3 +113,10 @@ def test_jinja_plus_airtags():
         response.text
         == """<html>\n    <head>\n        <title>Jinja+Air Tags</title>\n    </head>\n    <body>\n        <h1>Jinja+Air Tags</h1>\n        <main><p>Air Tags work great with Jinja</p></main>\n    </body>\n</html>"""
     )
+
+
+def test_jinja2_deprecated():
+    with pytest.raises(DeprecationWarning) as exc:
+        air.Jinja2Renderer(directory="tests/templates")
+
+    assert "Use air.templates.JinjaRenderer instead" in str(exc.value)

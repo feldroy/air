@@ -116,8 +116,8 @@ from fastapi import FastAPI
 app = air.Air()
 api = FastAPI()
 
-# Air's Jinja2Renderer is a shortcut for using Jinja templates
-jinja = air.Jinja2Renderer(directory="templates")
+# Air's JinjaRenderer is a shortcut for using Jinja templates
+jinja = air.JinjaRenderer(directory="templates")
 
 @app.get("/")
 def index(request: Request):

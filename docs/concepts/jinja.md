@@ -55,7 +55,7 @@ import air
 app = Air()
 
 # Set the Jinja render function
-jinja = air.Jinja2Renderer(directory="tests/templates")
+jinja = air.JinjaRenderer(directory="tests/templates")
 
 @app.get('/')
 def index(request: Request):
