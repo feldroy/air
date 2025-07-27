@@ -5,17 +5,17 @@ from fastapi.templating import Jinja2Templates
 from .requests import Request
 
 
-class Jinja2Renderer:
-    """Template renderer to make Jinja2 easier in Air.
+class JinjaRenderer:
+    """Template renderer to make Jinja easier in Air.
 
     Args:
         directory: Template directory
 
     Example:
         # Instantiate the render callable
-        jinja = TemplateRenderer('templates')
+        jinja = JinjaRenderer('templates')
 
-        # Use for returning Jinja2 from views
+        # Use for returning Jinja from views
         @app.get('/')
         async def home(request: Request):
             return jinja(
@@ -51,3 +51,10 @@ class Jinja2Renderer:
         return self.templates.TemplateResponse(
             request=request, name=name, context=context
         )
+
+
+class Jinja2Renderer:
+    "Deprecated: Use air.templates.JinjaRenderer instead"
+
+    def __init__(self, directory: str):
+        raise DeprecationWarning("Use air.templates.JinjaRenderer instead")
