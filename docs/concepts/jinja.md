@@ -67,7 +67,7 @@ def index(request: Request):
         request,
         name="base.html",
         title="FAQ",
-        content=content.render(),
+        content=content,
     )
 ```
 
@@ -78,14 +78,3 @@ TODO: ADD SCREEN CAPTURE
 !!! note "Why don't we call the `jinja()` function `render()`?"
 
     Because Air uses `.render()` as a method name in a lot of places, especially with Air Tags. So even though `render()` instead of `jinja()` is more semantically correct, to avoid confusion and collision, we use `jinja2()` instead.
-
-    When several different things on the same page are called "render":
-
-    ```python
-    return render(
-        request,
-        name="base.html",
-        title="FAQ",
-        content=content.render(),
-    )
-    ```

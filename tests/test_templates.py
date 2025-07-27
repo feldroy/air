@@ -115,6 +115,29 @@ def test_jinja_plus_airtags():
     )
 
 
+def test_jinja_plus_airtags_autorender():
+    app = Air()
+
+    jinja = JinjaRenderer(directory="tests/templates")
+
+    @app.page
+    def index(request: Request):
+        return jinja(
+            request,
+            name="jinja_airtags.html",
+            title="Jinja+Air Tags",
+            content=air.Main(air.P("Air Tags work great with Jinja")),
+        )
+
+    client = TestClient(app)
+    response = client.get("/")
+    assert response.status_code == 200
+    assert (
+        response.text
+        == """<html>\n    <head>\n        <title>Jinja+Air Tags</title>\n    </head>\n    <body>\n        <h1>Jinja+Air Tags</h1>\n        <main><p>Air Tags work great with Jinja</p></main>\n    </body>\n</html>"""
+    )
+
+
 def test_jinja2_deprecated():
     with pytest.raises(DeprecationWarning) as exc:
         air.Jinja2Renderer(directory="tests/templates")
