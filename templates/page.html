@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Air Docs</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@tailwindcss/typography@0.1.2/dist/typography.min.css">
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script>
     {{ head_tags|safe }}
 </head>
@@ -14,13 +15,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <a href="#" class="text-xl font-bold">Logo</a>
+                    <a href="#" class="text-xl font-bold">AIR</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Home</a>
-                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">About</a>
-                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Services</a>
-                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Contact</a>
+                    <a href="/" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Home</a>
+                    <a href="/about" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">About</a>
+                    <a href="/services" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Services</a>
+                    <a href="/contact" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Contact</a>
                 </div>
                 <div class="md:hidden flex items-center">
                     <label for="menu-toggle" class="cursor-pointer">
@@ -46,11 +47,11 @@
 
     <!-- Main Content with Placeholder Text -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 class="text-3xl font-bold mb-4">Welcome to Our Site</h1>
+        <!-- <h1 class="text-3xl font-bold mb-4">Welcome to Our Site</h1>
         <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
         <p class="mb-4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         <h2 class="text-2xl font-semibold mb-2">Section Title</h2>
-        <p class="mb-4">Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Nulla quis lorem ut libero malesuada feugiat.</p>
+        <p class="mb-4">Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Nulla quis lorem ut libero malesuada feugiat.</p> -->
 
         {{ body_tags|safe }}
     </main>

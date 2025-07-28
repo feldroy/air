@@ -8,6 +8,7 @@ dependencies = [
     "air>=0.16",
     "beautifulsoup4>=4.13.4",
     "fastapi[standard]>=0.116.0",
+    "mistletoe>=1.4.0",
     "mkdocstrings[python]>=0.29.1",
     "ruff>=0.12.5", # Formatting of Air Tags in conversion
 ]

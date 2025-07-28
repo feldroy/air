@@ -1,13 +1,41 @@
 import air
 from airdocs.utils import get_readme_as_html
+from fastapi import HTTPException
 from pathlib import Path
 from pydantic import BaseModel
-import xml
 from html2tags import html_to_air_tags
+import mistletoe
 
 renderer = air.JinjaRenderer('templates')
 
 app = air.Air()
+
+class AirDocHTMLRenderer(mistletoe.HTMLRenderer):
+    pass
+
+class Markdown(air.Tag):
+    def __init__(self, *args, **kwargs):
+        """Convert a Markdown string to HTML using mistletoe
+
+        Args:
+            *args: Should be exactly one string argument
+            **kwargs: Ignored (for consistency with Tag interface)
+        """
+        if len(args) > 1:
+            raise ValueError("Markdown tag accepts only one string argument")
+
+        raw_string = args[0] if args else ""
+
+        if not isinstance(raw_string, str):
+            raise TypeError("Markdown tag only accepts string content")
+
+        super().__init__(raw_string)
+
+    def render(self) -> str:
+        """Render the string with the Markdown library."""
+        content = self._children[0] if self._children else ""
+        return f'<article class="prose">{mistletoe.markdown(content, AirDocHTMLRenderer)}</article>'
+                
 
 def layout(request: air.Request, *content):
     if not isinstance(request, air.Request):
@@ -25,10 +53,20 @@ def index(request: air.Request):
     return layout(
         request,
         air.Title('Air: The New FastAPI-Powered Python Web Framework (2025)'),
-        air.H1('Air Documentation'),
-        air.Raw(get_readme_as_html(Path('README.md'))),
+        Markdown(get_readme_as_html(Path('README.md'))),
         air.P("TODO: docs index")
     )
+
+@app.get('/{slug}')
+def markdown_page(request: air.Request, slug: str):
+    path = Path(f"pages/{slug}.md")
+    if path.exists():
+        text = path.read_text()
+        # TODO add fetching of page title from first H1 tag
+        return layout(
+            request, Markdown(text)
+        )
+    raise HTTPException(status_code=404)
     
 
 @app.page
