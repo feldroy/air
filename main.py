@@ -3,6 +3,7 @@ from airdocs.utils import get_readme_as_html
 from pathlib import Path
 from pydantic import BaseModel
 import xml
+from html2tags import html_to_air_tags
 
 renderer = air.JinjaRenderer('templates')
 
@@ -67,14 +68,9 @@ class HtmlForm(air.AirForm):
 async def converter(request: air.Request):
     form = await request.form()
     html = form.get('html', '')
-    try:
-        text = air.html_to_airtags(html)
-        print(text)
-    except xml.etree.ElementTree.ParseError:
-        text = ''
     return air.Div(
         air.Pre(
-            air.Code(text)
+            air.Code(html_to_air_tags(html))
         ),
         id='result',
         hx_swap_oob="true",
