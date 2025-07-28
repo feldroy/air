@@ -88,3 +88,49 @@ if __name__ == '__main__':
     converted = html_to_air_tags(input)
     print(converted)
     assert converted == output
+
+
+# @app.page
+# def convert(request: air.Request):
+#     title = 'Convert HTML to Air Tags'
+#     return layout(
+#         request,
+#         air.Title(title),
+#         air.H1(title),
+#         air.Form(
+#             air.Textarea(
+#                 rows=10, cols="80",
+#                 placeholder='HTML to be converted goes here...',
+#                 id="html",
+#                 name='html',
+#                 hx_trigger="input changed delay:500ms",
+#                 hx_post="/converter",
+#             ),
+#         ),
+#         air.Hr(),
+#         air.Div(
+#             air.P('Nothing changed'),
+#             id='result',
+#             hx_swap_oob="true"
+#         )
+#     )
+
+
+# class HtmlModel(BaseModel):
+#     html: str
+
+
+# class HtmlForm(air.AirForm):
+#     model = HtmlModel
+
+# @app.post('/converter')
+# async def converter(request: air.Request):
+#     form = await request.form()
+#     html = form.get('html', '')
+#     return air.Div(
+#         air.Pre(
+#             air.Code(html_to_air_tags(html))
+#         ),
+#         id='result',
+#         hx_swap_oob="true",
+#     )
