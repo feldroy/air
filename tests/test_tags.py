@@ -307,4 +307,9 @@ def test_safestr():
 
 
 def test_other_children_types():
-    assert tags.Tag(1).render() == "<tag>1</tag>"
+    assert tags.A(1).render() == "<a>1</a>"
+
+
+def test_tag_for_tag_subclass_wrapper():
+    html = _r(air.Tag(air.P("Hello, world!")))
+    assert html == "<p>Hello, world!</p>"
