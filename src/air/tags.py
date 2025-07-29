@@ -127,6 +127,8 @@ class Tag:
         return "".join(elements)
 
     def render(self) -> str:
+        if self.name == "tag":
+            return self.children
         if self.self_closing:
             return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
@@ -245,6 +247,11 @@ class Style(NoEscapeTag):
 
 
 class Children(Tag):
+    def render(self) -> str:
+        return self.children
+
+
+class Tags(Tag):
     def render(self) -> str:
         return self.children
 

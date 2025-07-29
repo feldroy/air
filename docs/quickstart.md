@@ -179,8 +179,9 @@ def index():
         air.Script(src="https://cdn.plot.ly/plotly-3.0.1.min.js"),
         air.H1("Animated line chart by Air and Plotly"),
         air.Div(id="randomChart"),
-        # We place Script inside children so it renders inside the page body
-        air.Children( 
+        # We place Script inside air.Tags, which simply passes it through. 
+        # We do this so it renders inside the page body instead of the page header
+        air.Tags( 
             # Call the Plotly library to plot the library
             air.Script( 
                 f"var data = {data}; Plotly.newPlot('randomChart', data);",
