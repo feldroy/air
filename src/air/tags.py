@@ -3,51 +3,99 @@
 import html
 from functools import cached_property
 from typing import Any
-from xml.etree import ElementTree as ET
+import shutil
+import subprocess
+import tempfile
+import os
 
 
-def html_to_airtags(html_text: str, air_prefix: bool = True) -> str:
-    def convert_attrs(attrs):
-        parts = []
-        for key, value in attrs.items():
-            if key in {"class", "for", "id_"}:
-                key += "_"
-            parts.append(f"{key}='{html.escape(value, quote=True)}'")
-        return parts
+import re
+from bs4 import BeautifulSoup, Comment
 
-    def convert_node(el, indent=0, air_prefix: bool = True):
-        ind = "    " * indent
-        if air_prefix:
-            tag = f"air.{el.tag.capitalize()}"
-        else:
-            tag = el.tag.capitalize()
 
-        args = []
-        # Add text before children if any
-        if el.text and el.text.strip():
-            args.append(repr(el.text.strip()))
+def html_to_airtags(html, air_prefix: bool = True) -> str:
+    """Converts HTML to Air Tags."""
+    prefix = "air." if air_prefix else ""
 
-        # Add children recursively
-        for child in el:
-            args.append(convert_node(child, indent + 1, air_prefix=air_prefix))
-            if child.tail and child.tail.strip():
-                args.append(repr(child.tail.strip()))
-
-        # Add attributes
-        attr_args = convert_attrs(el.attrib)
-        all_args = args + attr_args
-
-        if all_args:
-            if len(all_args) == 1:
-                return f"{ind}{tag}(\n{all_args[0]})\n"
+    def parse(element, level=0):
+        if isinstance(element, str):
+            return repr(element.strip()) if element.strip() else ""
+        if isinstance(element, list):
+            return "\n".join(parse(o, level) for o in element)
+        tag_name = element.name.capitalize().replace("-", "_")
+        if tag_name == "[document]":
+            return parse(list(element.children), level)
+        children = []
+        for c in element.contents:
+            if str(c).strip():
+                if isinstance(c, str):
+                    children.append(repr(c.strip()))
+                else:
+                    children.append(parse(c, level + 1))
+        attrs, exotic_attrs = [], {}
+        for key, value in sorted(element.attrs.items(), key=lambda x: x[0] == "class"):
+            if value is None or value == True:
+                value = True  # handle boolean attributes
+            elif isinstance(value, (tuple, list)):
+                value = " ".join(value)
+            key = clean_html_attr_key(key)
+            if re.match(r"^[A-Za-z_-][\w-]*$", key):
+                attrs.append(f"{key.replace('-', '_')}={value!r}")
             else:
-                joined = ",\n".join("    " * (indent + 1) + arg for arg in all_args)
-                return f"{ind}{tag}(\n{joined}\n{ind})"
+                exotic_attrs[key] = value
+        if exotic_attrs:
+            attrs.append(f"**{exotic_attrs!r}")
+        spc = " " * level * 4
+        if not element.contents:
+            onlychild = True
+        elif len(element.contents) == 1 and isinstance(element.contents[0], str):
+            onlychild = True
         else:
-            return f"{ind}{tag}()"
+            onlychild = False        
+        j = ", " if onlychild else f",\n{spc}"
+        inner = j.join(filter(None, children + attrs))
+        if onlychild:
+            return f"{prefix}{tag_name}({inner})"
+        if not attrs:
+            return f'{prefix}{tag_name}(\n{spc}{inner}\n{" " * (level - 1) * 4})'
+        inner_children = j.join(filter(None, children))
+        inner_attrs = ", ".join(filter(None, attrs))
+        return f'{prefix}{tag_name}({inner_attrs})(\n{spc}{inner_children}\n{" " * (level - 1) * 4})'
 
-    root = ET.fromstring(html_text)
-    return convert_node(root, air_prefix=air_prefix)
+    # prep the html by removing comments
+    soup = BeautifulSoup(html.strip(), "html.parser")
+    for comment in soup.find_all(string=lambda text: isinstance(text, Comment)):
+        comment.extract()
+
+    # Convert the text
+    parsed = parse(soup, 1)
+
+
+    # Attempt to use ruff to reformat the string
+    return format_with_ruff(parsed)
+
+
+def format_with_ruff(code: str) -> str:
+    if not shutil.which('ruff'):
+        return code
+    formatted_code = code   
+    # Create a temporary file
+    with tempfile.NamedTemporaryFile(suffix=".py", mode="w+", delete=False) as tmp:
+        tmp.write(code)
+        tmp.flush()
+        tmp_path = tmp.name
+
+        try:
+            # Run ruff to format the file
+            subprocess.run(["ruff", "format", tmp_path], check=True)
+
+            # Read the formatted content
+            with open(tmp_path, "r") as f:
+                formatted_code = f.read()  
+        finally:
+            os.unlink(tmp_path)
+
+    return formatted_code
 
 
 def clean_html_attr_key(key: str) -> str:
