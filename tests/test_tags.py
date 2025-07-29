@@ -236,18 +236,12 @@ def test_html_to_tags_multi_attrs():
         </label>
     </form>
 """
+    tags = air.html_to_airtags(sample)
+
     assert (
-        air.html_to_airtags(sample)
-        == """
-air.Form(
-    air.Label(
-        'Search:',
-        air.Input(type='search', name='search'),
-        for='search'
-    ),
-    action='.',
-    method='post',
-    class='searcho'
+        tags == """
+air.Form(action=".", method="post", class_="searcho")(
+    air.Label(for_="search")("Search:", air.Input(type="search", name="search"))
 )
 """.strip()
     )

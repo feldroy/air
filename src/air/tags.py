@@ -13,6 +13,23 @@ import re
 from bs4 import BeautifulSoup, Comment
 
 
+def migrate_html_key_to_air_tag(key: str) -> str:
+    """Clean up HTML attribute keys to match the standard W3C HTML spec.
+
+    Args:
+        key: An uncleaned HTML attribute key
+
+    Returns:
+
+        Cleaned HTML attribute key
+    """
+    # If a "_"-suffixed proxy for "class", "for", or "id" is used,
+    # convert it to its normal HTML equivalent.
+    key = {"class": 'class_', "for": 'for_', "as": 'as_'}.get(key, key)
+    # Remove leading underscores and replace underscores with dashes
+    return key.lstrip("_").replace("_", "-")
+
+
 def html_to_airtags(html, air_prefix: bool = True) -> str:
     """Converts HTML to Air Tags."""
     prefix = "air." if air_prefix else ""
@@ -38,7 +55,7 @@ def html_to_airtags(html, air_prefix: bool = True) -> str:
                 value = True  # handle boolean attributes
             elif isinstance(value, (tuple, list)):
                 value = " ".join(value)
-            key = clean_html_attr_key(key)
+            key = migrate_html_key_to_air_tag(key)
             if re.match(r"^[A-Za-z_-][\w-]*$", key):
                 attrs.append(f"{key.replace('-', '_')}={value!r}")
             else:
@@ -87,11 +104,17 @@ def format_with_ruff(code: str) -> str:
 
         try:
             # Run ruff to format the file
-            subprocess.run(["ruff", "format", tmp_path], check=True)
+            try:
+                subprocess.run(["ruff", "format", tmp_path], check=True, capture_output=True,text=True)
+                    
 
-            # Read the formatted content
-            with open(tmp_path, "r") as f:
-                formatted_code = f.read()  
+                # Read the formatted content
+                with open(tmp_path, "r") as f:
+                    formatted_code = f.read()  
+            except subprocess.CalledProcessError as cpe:
+                print("\nType of error:", type(cpe))
+                print(cpe.args)
+
         finally:
             os.unlink(tmp_path)
 
