@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from pathlib import Path
 from pydantic import BaseModel
 from air_markdown import TailwindTypographyMarkdown as Markdown
+import importlib
 
 renderer = air.JinjaRenderer('templates')
 
@@ -134,7 +135,7 @@ def data():
     )
 
 @app.get('/{slug:path}')
-def markdown_page(request: air.Request, slug: str):
+def airpage(request: air.Request, slug: str):
     path = Path(f"pages/{slug}.md")
     if path.exists():
         text = path.read_text()
@@ -142,6 +143,14 @@ def markdown_page(request: air.Request, slug: str):
         return layout(
             request, Markdown(text)
         )
+    path = Path(f"pages/{slug}.py")
+    if path.exists():
+        module_name = f'pages.{slug.replace('/', '.')}'     
+        mod = importlib.import_module(module_name)
+        return layout(
+            request, mod.render(request)
+        )
     raise HTTPException(status_code=404)
+
     
 
