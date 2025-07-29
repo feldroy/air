@@ -1,6 +1,5 @@
 from markdown import markdown
 from pathlib import Path
-import air
 
 def get_readme_content(path: Path):
     if path.exists():

@@ -1,8 +1,6 @@
 import air
-from airdocs.utils import get_readme_as_html
 from fastapi import HTTPException
 from pathlib import Path
-from pydantic import BaseModel
 from air_markdown import TailwindTypographyMarkdown as Markdown
 import importlib
 
