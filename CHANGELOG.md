@@ -1,6 +1,6 @@
 # Changelog
 
-# 0.15.0 - 2025-07-28
+# 0.16.0 - 2025-07-28
 
 ## What's Changed
 * Rename Jinja2Renderer to JinjaRenderer by @pydanny in https://github.com/feldroy/air/pull/204
