@@ -305,3 +305,6 @@ This will generate HTML that looks something like this, without any wrapping tex
      >Cart 2</a>
 ```
 
+## Converting HTML to Air Tags
+
+The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package. 
