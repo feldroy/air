@@ -1,17 +1,17 @@
 from .tags import Base, Body, Head, Html, Link, Main, Meta, Script, Style, Tag, Title
 
 # ruff: noqa F841
-HEAD_TAG_TYPES: tuple[Tag] = (Title, Style, Meta, Link, Script, Base)  # type: ignore [assignment]
+HEAD_TAG_TYPES: tuple[type[Tag], ...] = (Title, Style, Meta, Link, Script, Base)
 
 
 def filter_body_tags(tags) -> list:
     """Given a list of tags, only list the ones that belong in body."""
-    return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]  # type: ignore [arg-type]
+    return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]
 
 
 def filter_head_tags(tags) -> list:
     """Given a list of tags, only list the ones that belong in head."""
-    return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]  # type: ignore [arg-type]
+    return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]
 
 
 def picocss(*children, htmx: bool = True, **kwargs):
@@ -26,8 +26,8 @@ def picocss(*children, htmx: bool = True, **kwargs):
         For more advanced layouts like Eidos or a full-fledged PicoCSS implementation,
         you'll have to create your own layouts.
     """
-    body_tags = filter_body_tags(children)  # type: ignore [arg-type]
-    head_tags = filter_head_tags(children)  # type: ignore [arg-type]
+    body_tags = filter_body_tags(children)
+    head_tags = filter_head_tags(children)
     if htmx:
         head_tags.insert(
             0,
@@ -61,8 +61,8 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
         For more advanced layouts like Eidos or a full-fledged PicoCSS implementation,
         you'll have to create your own layouts.
     """
-    body_tags = filter_body_tags(children)  # type: ignore [arg-type]
-    head_tags = filter_head_tags(children)  # type: ignore [arg-type]
+    body_tags = filter_body_tags(children)
+    head_tags = filter_head_tags(children)
     if htmx:
         head_tags.insert(
             0,
