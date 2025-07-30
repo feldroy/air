@@ -214,60 +214,6 @@ Which produces the following HTML:
 </article>
 ```
 
-## Converting HTML to Air Tags
-
-When you have a block of HTML that needs to be converted to Air Tags, use the `air.html_to_airtags` function:
-
-```python
-html = """
-<html>
-    <body>
-        <main>
-            <h1 class="header">Hello, World</h1>
-        </main>
-    </body>
-</html>"""
-air.html_to_airtags(html)
-```
-
-This generates:
-
-```python
-air.Html(
-    air.Body(
-        air.Main(
-            air.H1('Hello, World', class_='header')
-        )
-    )
-)
-```
-
-Removal of the `air.` prefix is done with the `air_prefix` boolean:
-
-```python
-html = """
-<html>
-    <body>
-        <main>
-            <h1 class="header">Hello, World</h1>
-        </main>
-    </body>
-</html>"""
-print(air.html_to_airtags(html, air_prefix=False))
-```
-
-This will generate:
-
-```python
-Html(
-    Body(
-        Main(
-            H1('Hello, World', class_='header')
-        )
-    )
-)
-```
-
 ## Returning Multiple Children (used in HTMX)
 
 When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are heirchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
@@ -308,3 +254,61 @@ This will generate HTML that looks something like this, without any wrapping tex
 ## Converting HTML to Air Tags
 
 The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package. 
+
+## Converting HTML to Air Tags
+
+The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package. 
+
+```sh
+pip install air-convert
+```
+
+```python
+from air_convert import html_to_airtags
+html_to_airtags("""
+<html>
+    <body>
+        <main>
+            <h1 class="header">Hello, World</h1>
+        </main>
+    </body>
+</html>""")
+```
+
+This generates:
+
+```python
+air.Html(
+    air.Body(
+        air.Main(
+            air.H1('Hello, World', class_='header')
+        )
+    )
+)
+```
+
+Removal of the `air.` prefix is done with the `air_prefix` boolean:
+
+```python
+html = """
+<html>
+    <body>
+        <main>
+            <h1 class="header">Hello, World</h1>
+        </main>
+    </body>
+</html>"""
+print(air.html_to_airtags(html, air_prefix=False))
+```
+
+This will generate:
+
+```python
+Html(
+    Body(
+        Main(
+            H1('Hello, World', class_='header')
+        )
+    )
+)
+```
