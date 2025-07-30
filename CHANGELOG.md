@@ -1,5 +1,19 @@
 # Changelog
 
+# 0.17.0 - 2025-07-30
+
+## What's Changed
+* refactor: removing type ignore  by @kmehran1106 in https://github.com/feldroy/air/pull/213
+* Fix tag nav by @pydanny in https://github.com/feldroy/air/pull/207
+* Tags and Tag passes through other tags when called directly by @pydanny in https://github.com/feldroy/air/pull/210
+* Remove the HTML to Air Tag utility by @pydanny in https://github.com/feldroy/air/pull/215
+
+## New Contributors
+* @kmehran1106 made their first contribution in https://github.com/feldroy/air/pull/213
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.16.0...v0.17.0
+
+
 # 0.16.0 - 2025-07-28
 
 ## What's Changed
