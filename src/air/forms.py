@@ -1,6 +1,7 @@
-from typing import Any, Callable, get_args
+from typing import Any, Callable, Union, get_args, get_origin
 
 from pydantic import BaseModel, Field, ValidationError
+from pydantic_core import ErrorDetails
 from starlette.datastructures import FormData
 
 from . import tags
@@ -36,9 +37,9 @@ class AirForm:
 
     model: type[BaseModel] | None = None
     data: Any = None  # TODO change type to something more specific
-    initial_data = None
-    errors = None
-    is_valid = None
+    initial_data: dict | None = None
+    errors: list[ErrorDetails] | None = None
+    is_valid: bool = False
 
     def __init__(self, initial_data: dict | None = None):
         if self.model is None:
@@ -55,10 +56,9 @@ class AirForm:
             self.is_valid = True
         except ValidationError as e:
             self.errors = e.errors()
-            self.is_valid = False
 
     @classmethod
-    async def from_request(cls, request: Request) -> Self:  # ty:ignore [invalid-type-form]
+    async def from_request(cls, request: Request) -> Self:  # ty: ignore [invalid-type-form]
         form_data = await request.form()
         self = cls()
         await self(form_data=form_data)
@@ -125,10 +125,7 @@ def default_form_widget(
         field_type = field_info.annotation
 
         # Handle optional types (Union with None)
-        if (
-            hasattr(field_type, "__origin__")
-            and field_type.__origin__ is type(None | str).__origin__  # type: ignore
-        ):
+        if get_origin(field_type) is Union and type(None) in get_args(field_type):
             # This is a Union type, get the non-None type
             args = get_args(field_type)
             field_type = next((arg for arg in args if arg is not type(None)), str)

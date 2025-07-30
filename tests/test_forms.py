@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, cast
 
 import pytest
 from fastapi import Depends, Request
@@ -10,8 +10,8 @@ import air
 
 def test_form_sync_check():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]
+        name: str
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -32,8 +32,8 @@ def test_form_sync_check():
 
 def test_form_validation_dependency_injection():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]
+        name: str
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -45,8 +45,10 @@ def test_form_validation_dependency_injection():
         cheese: Annotated[CheeseForm, Depends(CheeseForm.from_request)],
     ):
         if cheese.is_valid:
-            return air.Html(air.H1(cheese.data.name))  # type: ignore [union-attr]
-        return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))  # type: ignore [arg-type]
+            data = cast(CheeseModel, cheese.data)
+            return air.Html(air.H1(data.name))
+        assert cheese.errors is not None
+        return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
 
     client = TestClient(app)
 
@@ -65,8 +67,8 @@ def test_form_validation_dependency_injection():
 
 def test_form_validation_in_view():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]
+        name: str
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -77,8 +79,10 @@ def test_form_validation_in_view():
     async def cheese_form(request: Request):
         cheese = await CheeseForm.from_request(request)
         if cheese.is_valid:
-            return air.Html(air.H1(cheese.data.name))
-        return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))  # type: ignore [arg-type]
+            data = cast(CheeseModel, cheese.data)
+            return air.Html(air.H1(data.name))
+        assert cheese.errors is not None
+        return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
 
     client = TestClient(app)
 
@@ -97,8 +101,8 @@ def test_form_validation_in_view():
 
 def test_form_render():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]
+        name: str
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -113,8 +117,8 @@ def test_form_render():
 
 def test_form_render_with_values():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]
+        name: str
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -129,8 +133,8 @@ def test_form_render_with_values():
 
 def test_form_render_in_view():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]
+        name: str
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -156,8 +160,8 @@ def test_form_render_in_view():
 
 def test_form_render_with_errors():
     class CheeseModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        age: int  # type: ignore [annotation-unchecked]
+        name: str
+        age: int
 
     class CheeseForm(air.AirForm):
         model = CheeseModel
@@ -182,9 +186,9 @@ def test_form_render_with_errors():
 
 def test_html_input_field_types():
     class ContactModel(BaseModel):
-        name: str  # type: ignore [annotation-unchecked]
-        email: str = Field(json_schema_extra={"email": True})  # type: ignore [annotation-unchecked]
-        date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})  # type: ignore [annotation-unchecked]
+        name: str
+        email: str = Field(json_schema_extra={"email": True})
+        date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})
 
     class ContactForm(air.AirForm):
         model = ContactModel
