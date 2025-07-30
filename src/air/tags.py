@@ -3,51 +3,6 @@
 import html
 from functools import cached_property
 from typing import Any
-from xml.etree import ElementTree as ET
-
-
-def html_to_airtags(html_text: str, air_prefix: bool = True) -> str:
-    def convert_attrs(attrs):
-        parts = []
-        for key, value in attrs.items():
-            if key in {"class", "for", "id_"}:
-                key += "_"
-            parts.append(f"{key}='{html.escape(value, quote=True)}'")
-        return parts
-
-    def convert_node(el, indent=0, air_prefix: bool = True):
-        ind = "    " * indent
-        if air_prefix:
-            tag = f"air.{el.tag.capitalize()}"
-        else:
-            tag = el.tag.capitalize()
-
-        args = []
-        # Add text before children if any
-        if el.text and el.text.strip():
-            args.append(repr(el.text.strip()))
-
-        # Add children recursively
-        for child in el:
-            args.append(convert_node(child, indent + 1, air_prefix=air_prefix))
-            if child.tail and child.tail.strip():
-                args.append(repr(child.tail.strip()))
-
-        # Add attributes
-        attr_args = convert_attrs(el.attrib)
-        all_args = args + attr_args
-
-        if all_args:
-            if len(all_args) == 1:
-                return f"{ind}{tag}(\n{all_args[0]})\n"
-            else:
-                joined = ",\n".join("    " * (indent + 1) + arg for arg in all_args)
-                return f"{ind}{tag}(\n{joined}\n{ind})"
-        else:
-            return f"{ind}{tag}()"
-
-    root = ET.fromstring(html_text)
-    return convert_node(root, air_prefix=air_prefix)
 
 
 def clean_html_attr_key(key: str) -> str:
