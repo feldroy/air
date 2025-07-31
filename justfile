@@ -8,20 +8,20 @@ qa:
 
 # Run all the tests for all the supported Python versions
 testall:
-    uv run --python=3.10 --extra dev pytest
-    uv run --python=3.11 --extra dev pytest
-    uv run --python=3.12 --extra dev pytest
-    uv run --python=3.13 --extra dev pytest
+    uv run --python=3.10 --extra test pytest
+    uv run --python=3.11 --extra test pytest
+    uv run --python=3.12 --extra test pytest
+    uv run --python=3.13 --extra test pytest
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --extra dev pytest {{ARGS}}
+    uv run --python=3.13 --extra test pytest {{ARGS}}
 
 # Run all the tests, but on failure, drop into the debugger
 pdb *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --with pytest --with httpx pytest --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb {{ARGS}}
+    uv run --python=3.13  --extra test --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb {{ARGS}}
 
 # Run coverage, and build to HTML
 coverage:

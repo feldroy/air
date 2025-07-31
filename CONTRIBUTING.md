@@ -33,11 +33,13 @@ This helps us keep the core of Air lean and focused. If you have an idea for a n
 
 The docs are temporarily in this repo in docs/ and are built with [MkDocs](https://www.mkdocs.org/). Soon they will be in https://github.com/feldroy/airdocs
 
-If you are contributing to the files in docs/ and want to build the MkDocs site, install those dependencies:
+If you are contributing to the files in docs/ and want to build the MkDocs site, run this command to run the docs:
 
 ```sh
-uv sync --extra docs
+just doc
 ```
+
+Explore them at http://localhost:3000
 
 ## Tests
 
