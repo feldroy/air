@@ -1,10 +1,10 @@
 # Run all the formatting, linting, and testing commands
 qa:
-    ruff format .
-    ruff check . --fix
-    ruff check --select I --fix .
-    ty check .
-    pytest .
+    uv run --python=3.13 --extra test ruff format .
+    uv run --python=3.13 --extra test ruff check . --fix
+    uv run --python=3.13 --extra test ruff check --select I --fix .
+    uv run --python=3.13 --extra test ty check .
+    uv run --python=3.13 --extra test pytest .
 
 # Run all the tests for all the supported Python versions
 testall:
@@ -25,9 +25,9 @@ pdb *ARGS:
 
 # Run coverage, and build to HTML
 coverage:
-    coverage run -m pytest .
-    coverage report -m
-    coverage html
+    uv run --python=3.13 --extra test coverage run -m pytest .
+    uv run --python=3.13 --extra test coverage report -m
+    uv run --python=3.13 --extra test coverage html
 
 # Build the project, useful for checking that packaging is correct
 build:
@@ -53,4 +53,4 @@ doc:
 
 # Build and deploy docs
 doc-build:
-    mkdocs gh-deploy --force
+    uv run --extra docs mkdocs gh-deploy --force

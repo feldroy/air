@@ -25,4 +25,5 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install air mkdocs-material mkdocstrings[python]
+      - run: pip install mkdocs-autorefs>=1.4.2
       - run: PYTHONPATH=src mkdocs gh-deploy --force
