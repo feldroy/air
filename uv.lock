@@ -18,6 +18,14 @@ dependencies = [
 
 [package.optional-dependencies]
 dev = [
+    { name = "rust-just" },
+]
+docs = [
+    { name = "mkdocs-autorefs" },
+    { name = "mkdocs-material" },
+    { name = "mkdocstrings", extra = ["python"] },
+]
+test = [
     { name = "coverage" },
     { name = "httpx" },
     { name = "ipdb" },
@@ -28,31 +36,27 @@ dev = [
     { name = "types-markdown" },
     { name = "uvicorn" },
 ]
-docs = [
-    { name = "mkdocs-autorefs" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extra = ["python"] },
-]
 
 [package.metadata]
 requires-dist = [
-    { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.8.2" },
+    { name = "coverage", marker = "extra == 'test'", specifier = ">=7.8.2" },
     { name = "fastapi", specifier = ">=0.116.1" },
-    { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.28.1" },
-    { name = "ipdb", marker = "extra == 'dev'", specifier = ">=0.13.13" },
+    { name = "httpx", marker = "extra == 'test'", specifier = ">=0.28.1" },
+    { name = "ipdb", marker = "extra == 'test'", specifier = ">=0.13.13" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "mkdocs-autorefs", marker = "extra == 'docs'", specifier = ">=1.4.2" },
     { name = "mkdocs-material", marker = "extra == 'docs'" },
     { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.0" },
+    { name = "pytest", marker = "extra == 'test'", specifier = ">=8.4.0" },
     { name = "python-multipart", specifier = ">=0.0.20" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.11.13" },
+    { name = "ruff", marker = "extra == 'test'", specifier = ">=0.11.13" },
     { name = "rust-just", marker = "extra == 'dev'", specifier = ">=1.42.3" },
-    { name = "ty", marker = "extra == 'dev'", specifier = ">=0.0.1a16" },
-    { name = "types-markdown", marker = "extra == 'dev'", specifier = ">=3.8.0" },
-    { name = "uvicorn", marker = "extra == 'dev'", specifier = ">=0.34.0" },
+    { name = "rust-just", marker = "extra == 'test'", specifier = ">=1.42.3" },
+    { name = "ty", marker = "extra == 'test'", specifier = ">=0.0.1a16" },
+    { name = "types-markdown", marker = "extra == 'test'", specifier = ">=3.8.0" },
+    { name = "uvicorn", marker = "extra == 'test'", specifier = ">=0.34.0" },
 ]
-provides-extras = ["dev", "docs"]
+provides-extras = ["dev", "test", "docs"]
 
 [[package]]
 name = "annotated-types"

@@ -39,6 +39,10 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = [
+    # Justfile tasks
+    "rust-just>=1.42.3",
+]
+test = [
     # Measure how much of the code is covered by tests
     "coverage>=7.8.2",
     # For the test client
