@@ -293,6 +293,36 @@ class Air(FastAPI):
                 """
             ),
         ] = None,
+        docs_url: Annotated[
+            Optional[str],
+            Doc(
+                """
+                The path at which to serve the Swagger UI documentation.
+
+                Set to `None` to disable it.
+                """
+            ),
+        ] = None,
+        redoc_url: Annotated[
+            Optional[str],
+            Doc(
+                """
+                The path at which to serve the ReDoc documentation.
+
+                Set to `None` to disable it.
+                """
+            ),
+        ] = None,
+        openapi_url: Annotated[
+            Optional[str],
+            Doc(
+                """
+                The URL where the OpenAPI schema will be served from.
+
+                Set to `None` to disable it.
+                """
+            ),
+        ] = None,
         **extra: Annotated[
             Any,
             Doc(
@@ -325,6 +355,9 @@ class Air(FastAPI):
             on_startup=on_startup,
             on_shutdown=on_shutdown,
             lifespan=lifespan,
+            docs_url=docs_url,
+            redoc_url=redoc_url,
+            openapi_url=openapi_url,
             webhooks=webhooks,
             deprecated=deprecated,
             **extra,
