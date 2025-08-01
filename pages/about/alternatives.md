@@ -32,18 +32,28 @@ Of note is that core Flask uses a flat namespace. Instead of having to learn lon
  2. Stay simple and easy to learn
  3. Have a good quickstart document that provides an overview of performing common tasks.
 
-### FastHTML
+### Dash
 
-FastHTML is designed to build out web pages quickly. It provides an intuitive API that allows developers to build dynamic web apps without having to ever leave Python. 
+Dash is designed to build out web pages quickly. Through its `html` package it provides an intuitive API that allows developers to build dynamic web apps without having to ever leave Python. 
 
-While it wasn't the first framework to abstract HTML tags as Python objects, FastHTML's method of integrating the generation of HTML with return values from views allows for rapid development of both full pages and snippets. This, in turn, lends itself to easy usage with HTMX, meaning the rendered HTML is much simpler and easier to interpret than other frameworks that lean on heavy frontend tools like React.
-
-This is in line with FastHTML's pattern of providing a lot of syntactical sugar for developers to lean on.
+While it wasn't the first framework to abstract HTML tags as Python objects, Dash's method of integrating the generation of HTML with return values from views allows for rapid development of full pages and snippets. While a fascinating project, we feel its reliance on React means there's an extra layer of abstraction for developers to debug and deploy.
 
 !!! note "Inspired Air to"
 
  1. Have an abstraction of HTML as Python objects, which in Air parlance is "Air Tags"
  2. Bundle Air's `AirResponse` to the `Air()` app factory for an easier, more intuitive design.
+
+### FastHTML
+
+FastHTML has some similarity with Dash, especially in its use of FT Components, its analogue of Dash HTML objects. Where FastHTML significantly differs from Dash is that it eschews React and other large frontend libraries in favor of using Python wherever possible. For reactivity it leans into the HTMX sphere. This means less abstraction, simpler HTML generation, and hence an easier debugging and deployment experience than Dash.
+
+FastHTML is also notable for the volume of synatical sugar it provides for developers to lean on. In particular it leans into HTMX, meaning the rendered HTML is much simpler and easier to interpret than other frameworks that lean on heavy frontend tools like React.
+
+Of note is that FastHTML follows the Fastcore coding standard which is substantially different from PEP8. 
+
+!!! note "Inspired Air to"
+
+ 1. Focus on syntactal sugar
 
 
 ## Used by Air
