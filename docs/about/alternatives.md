@@ -47,7 +47,7 @@ While it wasn't the first framework to abstract HTML tags as Python objects, Das
 
 FastHTML has some similarity with Dash, especially in its use of FT Components, its analogue of Dash HTML objects. Where FastHTML significantly differs from Dash is that it eschews React and other large frontend libraries in favor of using Python wherever possible. For reactivity it leans into the HTMX sphere. This means less abstraction, simpler HTML generation, and hence an easier debugging and deployment experience than Dash.
 
-FastHTML is also notable for the volume of synatical sugar it provides for developers to lean on. In particular it leans into HTMX, meaning the rendered HTML is much simpler and easier to interpret than other frameworks that lean on heavy frontend tools like React.
+FastHTML is also notable for the volume of synatical sugar it provides for developers to lean on.
 
 Of note is that FastHTML follows the Fastcore coding standard which is substantially different from PEP8. 
 
