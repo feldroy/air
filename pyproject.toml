@@ -19,11 +19,34 @@ airdocs = "airdocs:main"
 # air = { path = "../air", editable = true }
 # eidosui = { path = "../EidosUI", editable = true }
 
-[dependency-groups]
+[project.optional-dependencies]
 dev = [
-    "marimo>=0.14.10",
-    "pytest>=8.4.1",
+    # Justfile tasks
+    "rust-just>=1.42.3",
+]
+test = [
+    # Measure how much of the code is covered by tests
+    "coverage>=7.8.2",
+    # For the test client
+    "httpx>=0.28.1",
+    # Used with debugging
+    "ipdb>=0.13.13",   
+    # Test runner
+    "pytest>=8.4.0",
+    # Linting and formatting
+    "ruff>=0.11.13",
+    # Justfile tasks
+    "rust-just>=1.42.3",
+    # for checking types
+    "ty>=0.0.1a16",
+    # Types for the markdown library
+    "types-Markdown>=3.8.0",
+    # Lets you run full example apps
+    "uvicorn>=0.34.0",
 ]
 
 [tool.uv]
 package = true
+
+[tool.mypy]
+exclude = "^nbs/"

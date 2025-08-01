@@ -1,10 +1,12 @@
 from markdown import markdown
 from pathlib import Path
 
+
 def get_readme_content(path: Path):
     if path.exists():
         return path.read_text()
     return "README content not found."
+
 
 def get_readme_as_html(path: Path):
     readme_content = get_readme_content(path)

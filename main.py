@@ -1,31 +1,33 @@
-import air
-from fastapi import HTTPException
-from pathlib import Path
-from air_markdown import TailwindTypographyMarkdown as Markdown
 import importlib
+import json
+import random
+from pathlib import Path
 
-renderer = air.JinjaRenderer('templates')
+import air
+from air_markdown import TailwindTypographyMarkdown as Markdown
+from fastapi import HTTPException
+
+renderer = air.JinjaRenderer("templates")
 
 app = air.Air()
-                
+
 
 def layout(request: air.Request, *content):
     if not isinstance(request, air.Request):
-        raise Exception('First arg of layout needs to be an air.Request')
+        raise Exception("First arg of layout needs to be an air.Request")
     head_tags = air.layouts.filter_head_tags(content)
     body_tags = air.layouts.filter_body_tags(content)
-    return renderer(request, 'page.html',
-                    head_tags=air.Children(*head_tags),
-                    body_tags=air.Children(*body_tags)
+    return renderer(
+        request,
+        "page.html",
+        head_tags=air.Children(*head_tags),
+        body_tags=air.Children(*body_tags),
     )
-
-
-import json
-import random
 
 
 def sorted_random_list():
     return [0] + sorted(random.sample(range(1, 9), 4)) + [10]
+
 
 def generate_data():
     return json.dumps(
@@ -48,12 +50,13 @@ def generate_data():
         }
     )
 
+
 @app.page
 def index(request: air.Request):
     data = generate_data()
     return layout(
         request,
-        air.Title('Air: The New FastAPI-Powered Python Web Framework (2025)'),
+        air.Title("Air: The New FastAPI-Powered Python Web Framework (2025)"),
         air.Script(src="https://cdn.plot.ly/plotly-3.0.1.min.js"),
         Markdown("""
 # Why use Air?
@@ -102,9 +105,9 @@ async def index():
 """),
         Markdown("# Air loves charts!"),
         air.Div(id="randomChart"),
-        air.Children( 
+        air.Children(
             # Call the Plotly library to plot the library
-            air.Script( 
+            air.Script(
                 f"var data = {data}; Plotly.newPlot('randomChart', data);",
                 # Used to help HTMX know where to replace data
                 id="dataSource",
@@ -113,11 +116,11 @@ async def index():
                 # Use HTMX to fetch new info from the /data route
                 hx_get="/data",
                 # When the data is fetched, replace the whole tag
-                hx_swap='outerHTML'
+                hx_swap="outerHTML",
             )
         ),
-        
     )
+
 
 @app.page
 def data():
@@ -129,26 +132,20 @@ def data():
         id="dataSource",
         hx_trigger="every 2s",
         hx_get="/data",
-        hx_swap='outerHTML'
+        hx_swap="outerHTML",
     )
 
-@app.get('/{slug:path}')
+
+@app.get("/{slug:path}")
 def airpage(request: air.Request, slug: str):
     path = Path(f"pages/{slug}.md")
     if path.exists():
         text = path.read_text()
         # TODO add fetching of page title from first H1 tag
-        return layout(
-            request, Markdown(text)
-        )
+        return layout(request, Markdown(text))
     path = Path(f"pages/{slug}.py")
     if path.exists():
-        module_name = f'pages.{slug.replace('/', '.')}'     
+        module_name = f"pages.{slug.replace('/', '.')}"
         mod = importlib.import_module(module_name)
-        return layout(
-            request, mod.render(request)
-        )
+        return layout(request, mod.render(request))
     raise HTTPException(status_code=404)
-
-    
-

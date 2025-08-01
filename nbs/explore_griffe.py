@@ -7,6 +7,7 @@ app = marimo.App(width="medium")
 @app.cell
 def _():
     import griffe
+
     return (griffe,)
 
 
@@ -18,7 +19,7 @@ def _(griffe):
 
 @app.cell
 def _(loader):
-    mod= loader.load('air.forms')
+    mod = loader.load("air.forms")
     return (mod,)
 
 
