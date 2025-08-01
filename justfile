@@ -1,33 +1,33 @@
 # Run all the formatting, linting, and testing commands
 qa:
-    ruff format .
-    ruff check . --fix
-    ruff check --select I --fix .
-    ty check .
-    pytest .
+    uv run --python=3.13 --extra test ruff format .
+    uv run --python=3.13 --extra test ruff check . --fix
+    uv run --python=3.13 --extra test ruff check --select I --fix .
+    uv run --python=3.13 --extra test ty check .
+    uv run --python=3.13 --extra test pytest .
 
 # Run all the tests for all the supported Python versions
 testall:
-    uv run --python=3.10 --extra dev pytest
-    uv run --python=3.11 --extra dev pytest
-    uv run --python=3.12 --extra dev pytest
-    uv run --python=3.13 --extra dev pytest
+    uv run --python=3.10 --extra test pytest
+    uv run --python=3.11 --extra test pytest
+    uv run --python=3.12 --extra test pytest
+    uv run --python=3.13 --extra test pytest
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --extra dev pytest {{ARGS}}
+    uv run --python=3.13 --extra test pytest {{ARGS}}
 
 # Run all the tests, but on failure, drop into the debugger
 pdb *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --with pytest --with httpx pytest --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb {{ARGS}}
+    uv run --python=3.13  --extra test --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb {{ARGS}}
 
 # Run coverage, and build to HTML
 coverage:
-    coverage run -m pytest .
-    coverage report -m
-    coverage html
+    uv run --python=3.13 --extra test coverage run -m pytest .
+    uv run --python=3.13 --extra test coverage report -m
+    uv run --python=3.13 --extra test coverage html
 
 # Build the project, useful for checking that packaging is correct
 build:
@@ -53,4 +53,4 @@ doc:
 
 # Build and deploy docs
 doc-build:
-    mkdocs gh-deploy --force
+    uv run --extra docs mkdocs gh-deploy --force

@@ -214,20 +214,65 @@ Which produces the following HTML:
 </article>
 ```
 
-## Converting HTML to Air Tags
+## Returning Multiple Children (used in HTMX)
 
-When you have a block of HTML that needs to be converted to Air Tags, use the `air.html_to_airtags` function:
+When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are heirchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
+
 
 ```python
-html = """
+import
+
+@app.post('/cart/add/{product_id}/')
+def update_cart(request: air.Request, product_id: int):
+    "This is a simplified update cart view"
+    # air.Tags renders the child tags without adding anything of its own
+    return air.Tags(
+        # Mark that an item has been added to the cart
+        Button('Added!', hx_post='/cart/add/{{product.id}}', hx_swap_oob='true', id='add-button'),
+
+        # Cart icon quantity changed
+        A(f'Cart {count}', id='cart-icon', href='/cart', hx_trigger='polling 30s', hx_get='/cart-icon', hx_swap_oob='true'),
+    )
+```
+
+This will generate HTML that looks something like this, without any wrapping text around the elements we are passing to the user's browser:
+
+
+```html
+<!-- Mark that an item has been added to the cart -->
+<button
+    hx-post="/cart/add/35"
+    hx-swap-oob="true"
+    id="add-button"
+    >Added!</button>
+<!-- Cart icon quantity changed -->
+<a id="cart-icon" href="/cart"
+    hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true"
+     >Cart 2</a>
+```
+
+## Converting HTML to Air Tags
+
+The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package. 
+
+## Converting HTML to Air Tags
+
+The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package. 
+
+```sh
+pip install air-convert
+```
+
+```python
+from air_convert import html_to_airtags
+html_to_airtags("""
 <html>
     <body>
         <main>
             <h1 class="header">Hello, World</h1>
         </main>
     </body>
-</html>"""
-air.html_to_airtags(html)
+</html>""")
 ```
 
 This generates:
@@ -267,41 +312,3 @@ Html(
     )
 )
 ```
-
-## Returning Multiple Children (used in HTMX)
-
-When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are heirchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
-
-
-```python
-import
-
-@app.post('/cart/add/{product_id}/')
-def update_cart(request: air.Request, product_id: int):
-    "This is a simplified update cart view"
-    # air.Tags renders the child tags without adding anything of its own
-    return air.Tags(
-        # Mark that an item has been added to the cart
-        Button('Added!', hx_post='/cart/add/{{product.id}}', hx_swap_oob='true', id='add-button'),
-
-        # Cart icon quantity changed
-        A(f'Cart {count}', id='cart-icon', href='/cart', hx_trigger='polling 30s', hx_get='/cart-icon', hx_swap_oob='true'),
-    )
-```
-
-This will generate HTML that looks something like this, without any wrapping text around the elements we are passing to the user's browser:
-
-
-```html
-<!-- Mark that an item has been added to the cart -->
-<button
-    hx-post="/cart/add/35"
-    hx-swap-oob="true"
-    id="add-button"
-    >Added!</button>
-<!-- Cart icon quantity changed -->
-<a id="cart-icon" href="/cart"
-    hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true"
-     >Cart 2</a>
-```
-

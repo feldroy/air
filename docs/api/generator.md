@@ -1,3 +1,0 @@
-# Generator
-
-::: air.generator

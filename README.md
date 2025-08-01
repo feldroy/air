@@ -21,9 +21,10 @@
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
->
-> We ask that you hold off on contributing mostly for now, to give us space to focus on
-> getting our ideas down. If you happen to fix a bug, though, little PRs for that are welcome.
+
+
+> [!IMPORTANT]
+> If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
 
 ## Why use Air?
 
