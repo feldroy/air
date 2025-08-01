@@ -1,7 +1,9 @@
 import json
-import air
 import random
+
+import air
 from air_markdown import TailwindTypographyMarkdown as Markdown
+
 
 def sorted_random_list():
     return [0] + sorted(random.sample(range(1, 9), 4)) + [10]
@@ -31,7 +33,8 @@ def generate_data():
 
 def render(request: air.Request):
     data = generate_data()
-    return air.Children(air.Title("Air: The New FastAPI-Powered Python Web Framework (2025)"),
+    return air.Children(
+        air.Title("Air: The New FastAPI-Powered Python Web Framework (2025)"),
         Markdown("# Air loves charts!"),
         air.Div(id="randomChart"),
         air.Children(

@@ -3,7 +3,8 @@ from air_markdown import TailwindTypographyMarkdown as Markdown
 
 
 def render(request: air.Request):
-    return air.Children(air.Title("Air: The New FastAPI-Powered Python Web Framework (2025)"),
+    return air.Children(
+        air.Title("Air: The New FastAPI-Powered Python Web Framework (2025)"),
         Markdown("""
 # Why use Air?
 
@@ -48,5 +49,5 @@ app = air.Air()
 async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
-""")
-)
+"""),
+    )

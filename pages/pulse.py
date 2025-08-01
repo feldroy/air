@@ -1,10 +1,12 @@
-import air
-import httpx
-from datetime import datetime, timedelta, timezone
-from collections import Counter
 import json
+from collections import Counter
+from datetime import datetime, timedelta, timezone
 from functools import cache
 from os import getenv
+
+import air
+import httpx
+
 
 @cache
 def get_commit_frequency(repo: str) -> dict:
@@ -23,7 +25,7 @@ def get_commit_frequency(repo: str) -> dict:
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {getenv('GITHUB_TOKEN')}",
-        "X-GitHub-Api-Version": "2022-11-28"  # optional but recommended
+        "X-GitHub-Api-Version": "2022-11-28",  # optional but recommended
     }
 
     commit_dates = []
@@ -32,14 +34,16 @@ def get_commit_frequency(repo: str) -> dict:
         while True:
             response = client.get(base_url, params=params, headers=headers)
             if response.status_code != 200:
-                raise Exception(f"GitHub API error: {response.status_code} - {response.json().get('message', '')}")
-            
+                raise Exception(
+                    f"GitHub API error: {response.status_code} - {response.json().get('message', '')}"
+                )
+
             commits = response.json()
             if not commits:
                 break
 
             for commit in commits:
-                date_str = commit['commit']['committer']['date'][:10]
+                date_str = commit["commit"]["committer"]["date"][:10]
                 commit_dates.append(date_str)
 
             params["page"] += 1
@@ -47,44 +51,47 @@ def get_commit_frequency(repo: str) -> dict:
     # Count and sort dates ascending
     return dict(sorted(Counter(commit_dates).items()))
 
+
 def chart_setup(data):
-    return json.dumps({
+    return json.dumps(
+        {
             "data": [
                 {
                     "x": list(data.keys())[0],
                     "y": list(data.values())[0],
                     "type": "scatter",
-                    'fill': 'tozeroy',
+                    "fill": "tozeroy",
                 },
             ],
             "title": "Fun charts with Plotly and Air",
             "description": "This is a demonstration of how to build a chart using Plotly and Air",
             "type": "scatter",
-        })
+        }
+    )
+
 
 def get_frames(data):
     frames = []
-    for key,value in data.items():
-        frames.append(
-            dict(name=key, data=[dict(y=value)])
-        )
+    for key, value in data.items():
+        frames.append(dict(name=key, data=[dict(y=value)]))
     return json.dumps(frames)
+
 
 layout = json.dumps(
     {
-        'title': 'Animated Scatter Plot',
-        'xaxis': { 'range': [0, 31], 'autorange': False },
-        'yaxis': { 'range': [0, 50], 'autorange': False }
-    }    
+        "title": "Animated Scatter Plot",
+        "xaxis": {"range": [0, 31], "autorange": False},
+        "yaxis": {"range": [0, 50], "autorange": False},
+    }
 )
 
 
 def render(request: air.Request):
-    initial_data = chart_setup(get_commit_frequency('feldroy/air'))
-    frames = get_frames(get_commit_frequency('feldroy/air'))
+    initial_data = chart_setup(get_commit_frequency("feldroy/air"))
+    frames = get_frames(get_commit_frequency("feldroy/air"))
     return air.Children(
         air.Article(air.P(initial_data)),
-        air.Article(air.P(frames)), 
+        air.Article(air.P(frames)),
         air.Div(id="scatterChart"),
         air.Children(
             # Call the Plotly library to plot the library
@@ -103,5 +110,5 @@ def render(request: air.Request):
                 }});
                 """,
             )
-        ),            
+        ),
     )

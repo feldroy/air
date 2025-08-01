@@ -3,8 +3,9 @@ from pathlib import Path
 
 import air
 from air_markdown import TailwindTypographyMarkdown as Markdown
-from pages import home, charts
 from fastapi import HTTPException
+
+from pages import charts, home
 
 renderer = air.JinjaRenderer("templates")
 
@@ -26,10 +27,7 @@ def layout(request: air.Request, *content):
 
 @app.page
 def index(request: air.Request):
-    return layout(
-        request,
-        home.render(request)
-    )
+    return layout(request, home.render(request))
 
 
 @app.page
