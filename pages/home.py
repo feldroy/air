@@ -32,7 +32,6 @@ def generate_data():
 def render(request: air.Request):
     data = generate_data()
     return air.Children(air.Title("Air: The New FastAPI-Powered Python Web Framework (2025)"),
-        air.Script(src="https://cdn.plot.ly/plotly-3.0.1.min.js"),
         Markdown("""
 # Why use Air?
 
