@@ -53,7 +53,8 @@ Of note is that FastHTML follows the Fastcore coding standard which is substanti
 
 !!! note "Inspired Air to"
 
- 1. Focus on syntactal sugar
+ 1. Eschew external JS frameworks like React in favor of HTMX
+ 2. Focus on syntactal sugar
 
 
 ## Used by Air
