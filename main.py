@@ -3,7 +3,7 @@ from pathlib import Path
 
 import air
 from air_markdown import TailwindTypographyMarkdown as Markdown
-from pages import home
+from pages import home, charts
 from fastapi import HTTPException
 
 renderer = air.JinjaRenderer("templates")
@@ -34,7 +34,7 @@ def index(request: air.Request):
 
 @app.page
 def data():
-    data = home.generate_data()
+    data = charts.generate_data()
     # This replaces the script in the web page with new data, and triggers
     # an animation of the transition
     return air.Script(
