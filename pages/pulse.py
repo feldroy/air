@@ -3,7 +3,10 @@ import httpx
 from datetime import datetime, timedelta, timezone
 from collections import Counter
 import json
+from functools import cache
+from os import getenv
 
+@cache
 def get_commit_frequency(repo: str) -> dict:
     """
     Fetches the frequency of commits for the past 30 days for a GitHub repository using HTTPX.
@@ -17,7 +20,11 @@ def get_commit_frequency(repo: str) -> dict:
     base_url = f"https://api.github.com/repos/{repo}/commits"
     since = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat() + "Z"
     params = {"since": since, "per_page": 100, "page": 1}
-    headers = {"Accept": "application/vnd.github+json"}
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {getenv('GITHUB_TOKEN')}",
+        "X-GitHub-Api-Version": "2022-11-28"  # optional but recommended
+    }
 
     commit_dates = []
 
@@ -40,12 +47,12 @@ def get_commit_frequency(repo: str) -> dict:
     # Count and sort dates ascending
     return dict(sorted(Counter(commit_dates).items()))
 
-def format_data(data):
-    return {
+def chart_setup(data):
+    return json.dumps({
             "data": [
                 {
-                    "x": list(data.keys()),
-                    "y": list(data.values()),
+                    "x": list(data.keys())[0],
+                    "y": list(data.values())[0],
                     "type": "scatter",
                     'fill': 'tozeroy',
                 },
@@ -53,28 +60,48 @@ def format_data(data):
             "title": "Fun charts with Plotly and Air",
             "description": "This is a demonstration of how to build a chart using Plotly and Air",
             "type": "scatter",
-        }
+        })
 
-data_cached = json.dumps(format_data(get_commit_frequency('feldroy/air')))
+def get_frames(data):
+    frames = []
+    for key,value in data.items():
+        frames.append(
+            dict(name=key, data=[dict(y=value)])
+        )
+    return json.dumps(frames)
+
+layout = json.dumps(
+    {
+        'title': 'Animated Scatter Plot',
+        'xaxis': { 'range': [0, 31], 'autorange': False },
+        'yaxis': { 'range': [0, 50], 'autorange': False }
+    }    
+)
 
 
 def render(request: air.Request):
-
+    initial_data = chart_setup(get_commit_frequency('feldroy/air'))
+    frames = get_frames(get_commit_frequency('feldroy/air'))
     return air.Children(
-        air.Article(air.P(data_cached)),
-        air.Div(id="pulseChart"),
+        air.Article(air.P(initial_data)),
+        air.Article(air.P(frames)), 
+        air.Div(id="scatterChart"),
         air.Children(
             # Call the Plotly library to plot the library
             air.Script(
-                f"var data = {data_cached}; Plotly.newPlot('pulseChart', data);",
-                # Used to help HTMX know where to replace data
-                id="dataSource",
-                # Trigger HTMX to call new data every 2 seconds
-                hx_trigger="every 2s",
-                # Use HTMX to fetch new info from the /data route
-                hx_get="/data",
-                # When the data is fetched, replace the whole tag
-                hx_swap="outerHTML",
+                f"""const data = {initial_data};
+                Plotly.newPlot('scatterChart', data, {layout})
+                .then(() => {{
+                    Plotly.addFrames('scatterChart', {frames});
+
+                    // Animate all frames automatically
+                    Plotly.animate('scatterChart', null, {{
+                        frame: {{ duration: 500, redraw: true }},
+                        transition: {{ duration: 300 }},
+                        mode: 'immediate'
+                    }});
+                }});
+                """,
             )
         ),            
     )
