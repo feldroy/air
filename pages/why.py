@@ -8,7 +8,7 @@ def render(request: air.Request):
         Markdown("""
 # Why use Air?
 
-- **Powered by FastAPI** - Designed to work with FastAPI so you can server your API and web pages from one app
+- **Powered by FastAPI** - Designed to work with FastAPI so you can serve your API and web pages from one app
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
 - **Air Tags** - Easy to write and performant HTML content generation using Python classes to render HTML
 - **Jinja Friendly** - No need to write `response_class=HtmlResponse` and `templates.TemplateResponse` for every HTML view
