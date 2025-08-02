@@ -1,8 +1,51 @@
 # Forms
 
-Forms, or AirForms in Air parlance, are powered by pydantic. That includes both their display and validation of data. If you have any experience with pydantic, that will go a long way towards helping your understanding of Air Forms.
+Forms are how data is collected from users on web pages.
 
-## A Sample Contact Form
+## A simple form example
+
+This contact form is in the classic Starlette way, with no validation of data. However, it does show a method to build forms quickly.
+
+```python
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.Title("Contact Form"),
+        air.H1("Contact Form"),
+        air.Article(
+            air.Form(
+                air.Label("Email", air.Input(name="email", type="email"), for_="Email"),
+                air.Label(
+                    "Name",
+                    air.Input(name="name"),
+                ),
+                air.Button("submit", type="submit"),
+                action="/add-contact",
+                method="post",
+            )
+        ),
+    )
+
+@app.post("/add-contact")
+async def add(request: air.Request):
+    form = await request.body()
+    return air.layouts.mvpcss(
+        air.Title("Contact Form Result"),
+        air.H1("Contact Form Result"),
+        air.Pre(air.Code(form)),
+    )
+```
+
+
+## Air Forms
+
+Air Forms are powered by pydantic. That includes both their display and validation of data. If you have any experience with pydantic, that will go a long way towards helping your understanding of Air Forms.
+
+### A Sample Contact Air Form 
 
 ```python
 from pydantic import BaseModel, Field
@@ -19,7 +62,7 @@ class ContactForm(AirForm):
 contact_form = ContactForm()
 ```
 
-## Displaying a form
+### Displaying an Air Form
 
 ```python
 
