@@ -5,7 +5,7 @@ def render(request: air.Request):
     return air.Children(
         air.Div(
             air.Img(
-                src="https://air-svgs.fastapicloud.dev/static/air-3color.svg",
+                src="https://air-svgs.fastapicloud.dev/static/air-neon.svg",
                 width="400",
                 alt="Air logo",
                 class_="mx-auto mb-6",
