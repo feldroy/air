@@ -2,7 +2,9 @@
 
 [Read about alternatives and inspirations](/about/alternatives)
 
-## The History of Air
+## Stories
+
+### Daniel's Story
 
 I first encountered FastAPI in late 2019. I immediately liked how it used types to define behavior.
 
