@@ -22,12 +22,8 @@ We are actively looking for contributions in the following areas:
 *   **Refactoring:** We welcome improvements to the existing codebase for clarity, performance, and maintainability.
 *   **Documentation:** Enhancements to our documentation, including docstrings, are always appreciated.
 
-While we are grateful for all interest, we are more hesitant to accept contributions that:
-
-*   Add new features
-*   Introduce new dependencies
-
-This helps us keep the core of Air lean and focused. If you have an idea for a new feature, we recommend discussing it with us by opening an issue first. Do understand that in a lot of cases for new features we will suggest that you create your own package that extends or uses Air rather than adding a new feature to core Air itself.
+> [!IMPORTANT]
+> If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
 
 ## Docs
 
