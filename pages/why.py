@@ -15,7 +15,7 @@ def render(request: air.Request):
 - **Mix Jinja and Air Tags** - Jinja and Air Tags both are first class citizens. Use either or both in the same view!
 - **HTMX friendly** - We love HTMX and provide utilities to use it with Air
 - **HTML form validation powered by pydantic** - We love using pydantic to validate incoming data. Air Forms provide two ways to use pydantic with HTML forms (dependency injection or from within views)
-- **Code formatting and linting (PEP8)** - To maintain code quality and consistency, Air enforces Ruff formatting and linting across its entire codebase. This commitment to standardized look and feel for the code base promotes readability and reduces technical debt
+- **Code formatting and linting (PEP8)** - To maintain code quality and consistency, Air enforces Ruff formatting and linting across its entire codebase
 - **Easy to learn yet well documented** - Hopefully Air is so intuitive and well-typed you'll barely need to use the documentation. In case you do need to look something up we're taking our experience writing technical books and using it to make documentation worth boasting about
 
 **Documentation**: <a href="https://feldroy.github.io/air/" target="_blank">https://feldroy.github.io/air/</a>
