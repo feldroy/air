@@ -10,10 +10,10 @@ from starlette.responses import RedirectResponse as RedirectResponse  # noqa
 from starlette.responses import StreamingResponse as StreamingResponse  # noqa
 
 
-def dict_to_ft_component(d):
+def dict_to_airtag(d):
     children_raw = d.get("_children", ())
     children = tuple(
-        dict_to_ft_component(c) if isinstance(c, dict) else c for c in children_raw
+        dict_to_airtag(c) if isinstance(c, dict) else c for c in children_raw
     )
     module = importlib.import_module(d["_module"])
     obj = getattr(module, d["_name"])
@@ -28,7 +28,7 @@ class TagResponse(Response):
     def render(self, content: Any) -> bytes:
         """Render Tag elements to bytes of HTML."""
         if isinstance(content, dict):
-            content = dict_to_ft_component(content)
+            content = dict_to_airtag(content)
         return content.render().encode("utf-8")
 
 
@@ -42,5 +42,5 @@ class AirResponse(Response):
         if isinstance(content, str):
             return content.encode("utf-8")
         if isinstance(content, dict):
-            content = dict_to_ft_component(content)
+            content = dict_to_airtag(content)
         return content.render().encode("utf-8")
