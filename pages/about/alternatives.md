@@ -32,6 +32,14 @@ Of note is that core Flask uses a flat namespace. Instead of having to learn lon
     2. Stay simple and easy to learn
     3. Have a good quickstart document that provides an overview of performing common tasks.
 
+### [htpy](https://htpy.dev/)
+
+A standalone library for rendering Python objects as HTML, we considered using htpy instead of creating Air Tags. However, we prefer the parenthesis approach of Air Tags is more sound. In any case, htpy has a fantastic HTML to htpy CLI utility. 
+
+!!! note "Inpires air-convert to"
+
+    Improve air-convert to support pipes better.
+
 ### [Dash](https://dash.plotly.com/)
 
 Dash is designed to build out web pages quickly. Through its `html` package it provides an intuitive API that allows developers to build dynamic web apps without having to ever leave Python. 
