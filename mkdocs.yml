@@ -4,13 +4,6 @@ repo_url: https://github.com/feldroy/air
 nav:
   - Home: index.md
   - Quickstart: quickstart.md
-  - Concepts:
-    - concepts/index.md
-    - concepts/air_tags.md
-    - concepts/escaping_html.md
-    - concepts/forms.md
-    - concepts/jinja.md
-    - concepts/layouts.md
   - Reference:
     - api/index.md
     - Applications: api/applications.md
@@ -27,10 +20,6 @@ nav:
       - "Tags N-S": api/tags/n-s.md
       - "Tags T-Z": api/tags/t-z.md
     - Templates: api/templates.md  
-  - About:  
-    - about/index.md
-    - about/history.md    
-    - about/alternatives.md    
 theme:
   name: material
   features:
