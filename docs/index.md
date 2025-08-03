@@ -1,3 +1,7 @@
+!!! note
+
+    The official air documentation is now located at [airdocs.fastapicloud.dev](https://airdocs.fastapicloud.dev/). This documentation remains for now to host the API reference.
+
 <p align="center">
   <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>
 </p>
@@ -17,13 +21,6 @@
     <img src="https://img.shields.io/pypi/pyversions/air.svg?color=%2334D058" alt="Supported Python versions">
 </a>
 </p>
-
-!!! warning
-
-    Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
-
-    We ask that you hold off on contributing mostly for now, to give us space to focus on
-    getting our ideas down. If you happen to fix a bug, though, little PRs for that are welcome.
 
 ## Why use Air?
 
