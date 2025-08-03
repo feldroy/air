@@ -1,4 +1,4 @@
-# blank_issues_enabled: true
+blank_issues_enabled: true
 contact_links:
   - name: Question or Problem
     about: Ask a question or ask about a problem in GitHub Discussions.
@@ -6,9 +6,6 @@ contact_links:
   - name: Feature Request
     about: Most feature requests for air core are problably best executed as a new package. In case that is not possible, to suggest an idea or ask about a feature, please start with a question saying what you would like to achieve. There might be a way to do it already.
     url: https://github.com/feldroy/air/discussions/categories/questions
-  - name: Bug report
-    about: You found a bug and want to report it!
-    url: https://github.com/feldroy/air/issues/new
   - name: Show and tell
     about: Show what you built with Air or to be used with Air.
     url: https://github.com/feldroy/air/discussions/categories/show-and-tell
