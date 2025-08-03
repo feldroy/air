@@ -1,6 +1,7 @@
 # About
 
-[Read about alternatives and inspirations](/about/alternatives)
+- [Read about alternatives and inspirations](/about/alternatives)
+- [Helping Air and getting help about Air](/about/help_air)
 
 ## Stories
 
