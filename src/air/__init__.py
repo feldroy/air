@@ -356,4 +356,3 @@ from .tags import (
     Wbr as Wbr,
 )
 from .templates import JinjaRenderer as JinjaRenderer
-from .templates import Jinja2Renderer as Jinja2Renderer

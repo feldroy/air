@@ -59,10 +59,3 @@ class JinjaRenderer:
         return self.templates.TemplateResponse(
             request=request, name=name, context=context
         )
-
-
-class Jinja2Renderer:
-    "Deprecated: Use air.templates.JinjaRenderer instead"
-
-    def __init__(self, directory: str):
-        raise DeprecationWarning("Use air.templates.JinjaRenderer instead")
