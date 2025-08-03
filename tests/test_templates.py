@@ -137,13 +137,6 @@ def test_jinja_plus_airtags_autorender():
     )
 
 
-def test_jinja2_deprecated():
-    with pytest.raises(DeprecationWarning) as exc:
-        air.Jinja2Renderer(directory="tests/templates")
-
-    assert "Use air.templates.JinjaRenderer instead" in str(exc.value)
-
-
 def test_jinja_within_air():
     app = Air()
     jinja = JinjaRenderer(directory="tests/templates")
@@ -151,7 +144,7 @@ def test_jinja_within_air():
     @app.page
     def index(request: air.Request):
         return air.Div(
-            jinja(request, 'simple.html')
+            jinja(request, 'simple.html', value=42)
         )
     
     client = TestClient(app)

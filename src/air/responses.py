@@ -44,3 +44,13 @@ class AirResponse(Response):
         if isinstance(content, dict):
             content = dict_to_ft_component(content)
         return content.render().encode("utf-8")
+
+
+class StringResponse(Response):
+    """Response class to handle air.tags.Tags or HTML (from Jinja2)."""
+
+    media_type = "text/html; charset=utf-8"
+
+    def render(self, content: str) -> bytes:
+        """Render Tag elements to bytes of HTML."""
+        return content.encode("utf-8")
