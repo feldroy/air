@@ -135,3 +135,19 @@ def test_jinja_plus_airtags_autorender():
         response.text
         == """<html>\n    <head>\n        <title>Jinja+Air Tags</title>\n    </head>\n    <body>\n        <h1>Jinja+Air Tags</h1>\n        <main><p>Air Tags work great with Jinja</p></main>\n    </body>\n</html>"""
     )
+
+
+def test_jinja_within_air():
+    app = Air()
+    jinja = JinjaRenderer(directory="tests/templates")
+
+    @app.page
+    def index(request: air.Request):
+        return air.Div(
+            jinja(request, 'simple.html', value=42)
+        )
+    
+    client = TestClient(app)
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.text == '<div><p>Very simple Jinja tag 42</p></div>'    
