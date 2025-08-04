@@ -1,5 +1,6 @@
 # Run all the formatting, linting, and testing commands
 qa:
+    markdownlint-cli2 "**/*.md"
     uv run --python=3.13 --extra test ruff format .
     uv run --python=3.13 --extra test ruff check . --fix
     uv run --python=3.13 --extra test ruff check --select I --fix .
