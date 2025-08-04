@@ -2,10 +2,12 @@ from pathlib import Path
 
 import air
 
+
 def make_link_from_pyfile(path: Path):
     # Remove .py extension and use as link name and href
     name = path.name[:-3]
-    return air.A(name.replace('_', ' ').title(), href=f"learn/{name}")
+    return air.A(name.replace("_", " ").title(), href=f"learn/{name}")
+
 
 def render(request: air.Request):
     files = Path("pages/learn").glob("*.py")

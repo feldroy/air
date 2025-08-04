@@ -34,25 +34,23 @@ def index(request: air.Request):
 @app.page
 def dontuseair():
     reasons = [
-        'unless you like living on the edge',
-        'unless you believe in unicorns',
-        'you like early stage projects',
-        'you want to try an early stage project',
-        'if you are building something where lives depend on stability',
+        "unless you like living on the edge",
+        "unless you believe in unicorns",
+        "you like early stage projects",
+        "you want to try an early stage project",
+        "if you are building something where lives depend on stability",
         "because there's no paid support",
         "as it is just another Python web framework",
-        'when you could be using COBOL',
+        "when you could be using COBOL",
         "if you have a problem with dairy-themed documentation (although we do like spicy vegan cheese dips)",
-        "it's better to stay under water"
-        "we're running out",
-        
-
+        "it's better to stay under waterwe're running out",
     ]
-    return air.I(f'... {sample(reasons, 1)[0]}',
-                  hx_trigger='every 2s',
-                  hx_get='/dontuseair',
-                  hx_swap='outerHTML'
-            )
+    return air.I(
+        f"... {sample(reasons, 1)[0]}",
+        hx_trigger="every 4s",
+        hx_get="/dontuseair",
+        hx_swap="outerHTML",
+    )
 
 
 @app.page

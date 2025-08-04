@@ -3,7 +3,6 @@ from pathlib import Path
 import air
 
 
-
 def render(request: air.Request):
     files = Path("pages/concepts").glob("*.md")
     links = [air.Li(make_link_from_mdpath(x)) for x in files]
