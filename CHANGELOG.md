@@ -1,5 +1,36 @@
 # Changelog
 
+# 0.19.0 - 2025-08-04
+
+## What's Changed
+* Support for SSE by @pydanny and @audreyfeldroy in https://github.com/feldroy/air/pull/240
+* refactor: consolidate tag imports in __init__.py by @tallerasaf in https://github.com/feldroy/air/pull/239
+* Fix justfile pdb option by @pydanny in https://github.com/feldroy/air/pull/233
+* Remove deprecated Jinja2Renderer by @pydanny in https://github.com/feldroy/air/pull/234
+* Begin phasing out content in docs by @pydanny in https://github.com/feldroy/air/pull/235
+* Better types for width and height tag attrs by @pydanny in https://github.com/feldroy/air/pull/236
+* Clarification of internal tag control name by @pydanny in https://github.com/feldroy/air/pull/237
+* Add issue templates for bugs, features, discussions, etc by @pydanny in https://github.com/feldroy/air/pull/238
+* Document how to use forms Starlette style by @pydanny in https://github.com/feldroy/air/pull/228
+
+## New Contributors
+* @tallerasaf made their first contribution in https://github.com/feldroy/air/pull/239
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.18.0...v0.19.0
+
+# 0.18.0 - 2025-08-02
+
+## What's Changed
+* Clarify about minimalist core by @audreyfeldroy in https://github.com/feldroy/air/pull/222
+* feat: disable docs by default by @kmehran1106 in https://github.com/feldroy/air/pull/221
+* Remove CLI and static site generator by @pydanny in https://github.com/feldroy/air/pull/216
+* Remove unused dependencies by @pydanny in https://github.com/feldroy/air/pull/217
+* Change dependency groups by @pydanny in https://github.com/feldroy/air/pull/218
+* Add .vscode to gitignore by @pydanny in https://github.com/feldroy/air/pull/219
+* Fine tune justfile by @pydanny in https://github.com/feldroy/air/pull/220
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.17.0...v0.18.0
+
 # 0.17.0 - 2025-07-30
 
 ## What's Changed
