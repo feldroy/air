@@ -67,7 +67,7 @@ Okay, here's why you might want to use Air:
 
 Actually, there are a lot more reasons, but we got tired of editing this page and wanted to get back to coding.
 
-**Link: [Alternatives, Inspiration, and Comparisons to Air]((https://airdocs.fastapicloud.dev/about/alternatives))**
+**Link: [Alternatives, Inspiration, and Comparisons to Air](https://airdocs.fastapicloud.dev/about/alternatives)**
 
 **Documentation**: <a href="https://airdocs.fastapicloud.dev/" target="_blank">airdocs.fastapicloud.dev</a>
 
