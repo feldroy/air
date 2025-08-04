@@ -7,7 +7,12 @@ from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .forms import AirField as AirField, AirForm as AirForm
 from .requests import is_htmx_request as is_htmx_request
-from .responses import AirResponse as AirResponse, TagResponse as TagResponse
+from .responses import (
+    AirResponse as AirResponse,
+    EventStreamResponse as EventStreamResponse,
+    TagResponse as TagResponse,
+    format_sse_message_from_tag as format_sse_message_from_tag,
+)
 from .tags import (
     A as A,
     Abbr as Abbr,
