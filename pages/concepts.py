@@ -1,10 +1,7 @@
+from airdocs.utils import make_link_from_mdpath
 from pathlib import Path
-
 import air
 
-
-def make_link_from_mdpath(path: Path):
-    return air.A(path.name[:-3], href=str(path)[6:-3])
 
 
 def render(request: air.Request):
