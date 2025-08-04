@@ -98,10 +98,9 @@ Renders as:
 <p class="plain" @data="6">Hello</p>
 ```
 
-
 ### Single word attributes
 
-To set or hide single word attributes like `@selected`, set the tag to `True` or `False` respectively. 
+To set or hide single word attributes like `@selected`, set the tag to `True` or `False` respectively.
 
 ```python
 air.Select(
@@ -157,7 +156,6 @@ This will render the following SVG:
 
 The best way to define your own **Air Tags** is to subclass the `air.Tag` class. Here's a simple example:
 
-
 ```python
 from air import Tag
 
@@ -177,7 +175,7 @@ This will produce the following HTML:
 <awesome class="desert">Ice Cream</awesome>
 ```
 
-## Functions as Custom **Air Tags** 
+## Functions as Custom **Air Tags**
 
 Subclasses are not the only way to create custom Air Tags. You can also use functions to create Air Tags. This is particularly useful for putting together components quickly without needing to define a class. Here's an example of a function that creates a custom Air Tag for a [picocss card](https://picocss.com/docs/card):
 
@@ -216,7 +214,6 @@ Which produces the following HTML:
 
 When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are heirchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
 
-
 ```python
 import
 
@@ -235,7 +232,6 @@ def update_cart(request: air.Request, product_id: int):
 
 This will generate HTML that looks something like this, without any wrapping text around the elements we are passing to the user's browser:
 
-
 ```html
 <!-- Mark that an item has been added to the cart -->
 <button
@@ -251,11 +247,11 @@ This will generate HTML that looks something like this, without any wrapping tex
 
 ## Converting HTML to Air Tags
 
-The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package. 
+The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package.
 
 ## Converting HTML to Air Tags
 
-The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package. 
+The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package.
 
 ```sh
 pip install air-convert

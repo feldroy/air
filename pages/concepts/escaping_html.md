@@ -18,7 +18,7 @@ This is useful for preventing security issues like code injection by malignant u
 
 ## Jinja2 doesn't play it safe
 
-By default, Jinja2 escapes nothing. It puts the burden of safety on the developer. To make Jinja2 escape text, use the `e` filter. 
+By default, Jinja2 escapes nothing. It puts the burden of safety on the developer. To make Jinja2 escape text, use the `e` filter.
 
 ```jinja
 {% set h1 = '<h1>Hello, World!</h1>' %}
@@ -97,7 +97,7 @@ function capitalize(str) {
   return str[0].toUpperCase() + str.slice(1);
 }
 </script> 
-```   
+```
 
 ### `Raw`: Unescaped text
 

@@ -29,8 +29,3 @@ We also will be using [Discussions](https://github.com/feldroy/air/discussions) 
 For non-code GitHub issues, we'll ask those to be moved to either the Discord and GH Discissions.
 
 See you there!
-
-
-
-
-
