@@ -1,4 +1,4 @@
-# Tutorial 1: Combining FastAPI and Air
+# Tutorial: Combining FastAPI and Air
 
 Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app. 
 
