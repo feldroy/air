@@ -65,9 +65,11 @@ Okay, here's why you might want to use Air:
 - **Easy to learn yet well documented** - Hopefully Air is so intuitive and well-typed you'll barely need to use the documentation. In case you do need to look something up we're taking our experience writing technical books and using it to make the best documentation we can.
 - **Ecosystem-Focused** - Air is developed with an ecosystem-first approach. Django achieved its success largely because of its Django package ecosystem. Contributing to Air means contributing not just to the core package but to any Air package.
 
-Actually, there are a lot more reasons, but we got tired of editing this page and wanted to get back to coding. TODO update this page before our official public launch
+Actually, there are a lot more reasons, but we got tired of editing this page and wanted to get back to coding.
 
-**Documentation**: <a href="https://airdocs.fastapicloud.dev/" target="_blank">https://airdocs.fastapicloud.dev/</a>
+**Link: [Alternatives, Inspiration, and Comparisons to Air]((https://airdocs.fastapicloud.dev/about/alternatives))**
 
-**Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>"""),
+**Documentation**: <a href="https://airdocs.fastapicloud.dev/" target="_blank">airdocs.fastapicloud.dev</a>
+
+**Source Code**: <a href="https://github.com/feldroy/air" target="_blank">github.com/feldroy/air</a>"""),
     )
