@@ -23,7 +23,8 @@ def reasons_not_to_use_air():
         "because we're off to see the wizard",
         "if you dislike PEP8 and type annotations",
         "if you don't like HTMX",
-        "when you need a stable, mature project"
+        "when you need a stable, mature project",
+        "if you want React to be your frontend instead of HTML"
     ]
     return f"... {sample(reasons, 1)[0]}"
 
