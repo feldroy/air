@@ -1,6 +1,5 @@
 import importlib
 from pathlib import Path
-from random import sample
 
 import air
 from air_markdown import TailwindTypographyMarkdown as Markdown

@@ -1,21 +1,22 @@
+from random import sample
+
 import air
 from air_markdown import TailwindTypographyMarkdown as Markdown
-from random import sample
 
 
 def reasons_not_to_use_air():
     reasons = [
         "unless you like living on the edge",
         "unless you believe in unicorns",
-        "you like early stage projects",
-        "you want to try an early stage project",
+        "unless you like early stage projects",
+        "unless you want to try an early stage project",
         "if you are building something where lives depend on stability",
         "because there's no paid support",
         "as it is just another Python web framework",
         "when you could be using COBOL",
         "if you have a problem with dairy-themed documentation (although we do like spicy vegan cheese dips)",
         "it's better to stay under water",
-        "we're running out",
+        "because we're running out",
     ]
     return f"... {sample(reasons, 1)[0]}"
 

@@ -1,6 +1,7 @@
-from markdown import markdown
 from pathlib import Path
+
 import air
+from markdown import markdown
 
 
 def make_link_from_mdpath(path: Path):
