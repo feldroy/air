@@ -1,0 +1,10 @@
+import air
+from air_markdown import TailwindTypographyMarkdown as Markdown
+
+def render(request: air.Request):
+    with open("/Users/arg/foss/air-repos/airdocs/pages/learn/tutorial.md", "r") as f:
+        md_content = f.read()
+    return air.Children(
+        air.Title("Learn > Tutorial 1: Combining FastAPI and Air"),
+        Markdown(md_content),
+    )
