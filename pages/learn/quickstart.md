@@ -1,10 +1,4 @@
-import air
-from air_markdown import TailwindTypographyMarkdown as Markdown
-
-def render(request: air.Request):
-    return air.Children(
-        air.Title("Learn > Quickstart"),
-        Markdown("""# Quickstart
+# Quickstart
 
 The TL;DR for getting started with Air.
 
@@ -43,6 +37,3 @@ Serve your app with:
 ```sh
 fastapi dev
 ```
-<br>
-"""),
-    )

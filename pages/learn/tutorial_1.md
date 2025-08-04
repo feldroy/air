@@ -1,10 +1,4 @@
-import air
-from air_markdown import TailwindTypographyMarkdown as Markdown
-
-def render(request: air.Request):
-    return air.Children(
-        air.Title("Learn > Tutorial 1: Combining FastAPI and Air"),
-        Markdown("""# Tutorial 1: Combining FastAPI and Air
+# Tutorial 1: Combining FastAPI and Air
 
 Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app. 
 
@@ -33,8 +27,8 @@ def api_root():
 app.mount("/api", api)
 ```
 <br>
-"""),
-        Markdown("""## Using Jinja2 with Air
+
+## Using Jinja2 with Air
 
 Want to use Jinja2 instead of Air Tags? We've got you covered.
 
@@ -76,5 +70,3 @@ Don't forget the Jinja template!
     </body>
 </html>
 ```
-"""),
-    )
