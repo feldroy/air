@@ -17,6 +17,13 @@ def reasons_not_to_use_air():
         "if you have a problem with dairy-themed documentation (although we do like spicy vegan cheese dips)",
         "it's better to stay under water",
         "because we're running out",
+        "if you want a full stack framework",
+        "if you want something not in alpha",
+        "if you prefer semantic versioning",
+        "because we're off to see the wizard",
+        "if you dislike PEP8 and type annotations",
+        "if you don't like HTMX",
+        "when you need a stable, mature project"
     ]
     return f"... {sample(reasons, 1)[0]}"
 
