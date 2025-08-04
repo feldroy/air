@@ -184,3 +184,11 @@ def test_AirResponse():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
+
+
+def test_format_sse_message_from_tag():
+    tag = air.P("I am a paragraph")
+    assert (
+        air.format_sse_message_from_tag(tag)
+        == "event: message\ndata: <p>I am a paragraph</p>\n\n"
+    )
