@@ -1,10 +1,10 @@
+from markdown import markdown
 from pathlib import Path
 import air
 
 def make_link_from_mdpath(path: Path):
     return air.A(path.name[:-3], href=str(path)[6:-3])
-from markdown import markdown
-from pathlib import Path
+
 
 
 def get_readme_content(path: Path):
