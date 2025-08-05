@@ -1,6 +1,10 @@
 # Quickstart
 
-Eager to get started? This page gives a good introduction to Air. 
+Eager to get started? This page gives a good introduction to Air and covers some basic web tasks. 
+
+!!! note
+
+    This page is being replace by the material on [this page on airdocs](https://airdocs.fastapicloud.dev/learn/quickstart). It's probably better to use that reference rather than this one.
 
 
 ## A Minimal Application
