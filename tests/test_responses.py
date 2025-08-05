@@ -188,7 +188,4 @@ def test_AirResponse():
 
 def test_format_sse_message_from_tag():
     tag = air.P("I am a paragraph")
-    assert (
-        air.format_sse_message_from_tag(tag)
-        == "event: message\ndata: <p>I am a paragraph</p>\n\n"
-    )
+    assert tag.encode("utf-8") == b"event: message\ndata: <p>I am a paragraph</p>\n\n"
