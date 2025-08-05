@@ -69,6 +69,8 @@ Actually, there are a lot more reasons, but we got tired of editing this page an
 
 **Link: [Alternatives, Inspiration, and Comparisons to Air](https://airdocs.fastapicloud.dev/about/alternatives)**
 
+**Link: [How to help Air or get help](https://airdocs.fastapicloud.dev/about/help_air)**
+
 **Documentation**: <a href="https://airdocs.fastapicloud.dev/" target="_blank">airdocs.fastapicloud.dev</a>
 
 **Source Code**: <a href="https://github.com/feldroy/air" target="_blank">github.com/feldroy/air</a>"""),

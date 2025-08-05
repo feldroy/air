@@ -20,7 +20,7 @@ air.Html(
 )
 
 # Air Layouts
-air.layouts.picocss(
+air.layouts.mvpcss(
     air.Title("My App"),           # Automatically goes to <head>
     air.Link(rel="stylesheet", href="style.css"),  # Also goes to <head>
     air.H1("Welcome"),             # Goes to <body>
@@ -42,7 +42,7 @@ This automatic separation means you can focus on your content and let Air handle
 ```python
 @app.get("/")
 def home():
-    return air.layouts.picocss(
+    return air.layouts.mvpcss(
         # Mix head and body tags freely - Air sorts them
         air.Title("Dashboard"),
         air.H1("Welcome to the Dashboard"),
@@ -73,7 +73,7 @@ def home():
 
 **What you get:**
 
-- [PicoCSS](https://picocss.com/) or [MVP.css](https://andybrewer.github.io/mvp/) styling
+- [MVP.css](https://andybrewer.github.io/mvp/) styling or [PicoCSS](https://picocss.com/)
 - HTMX included by default for interactivity
 - Container wrapper for proper spacing
 

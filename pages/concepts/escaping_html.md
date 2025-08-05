@@ -25,9 +25,8 @@ By default, Jinja2 escapes nothing. It puts the burden of safety on the develope
 {{ h1|e }}
 ```
 
-!!! note "Jinja2 not playing it safe  isn't a bad thing"
-
-    We want to make it clear that Jinja2 not playing it safe isn't wrong. It can expedite development. However, it is important to note that the default can open the door to trouble. The design of Jinja2 accomodates this by making the `e` filter be so short - so it is easy and quick to use.
+> ## "Jinja2 not playing it safe  isn't a bad thing"
+> We want to make it clear that Jinja2 not playing it safe isn't wrong. It can expedite development. However, it is important to note that the default can open the door to trouble. The design of Jinja2 accomodates this by making the `e` filter be so short - so it is easy and quick to use.
 
 ## Air Tags plays it safe
 
