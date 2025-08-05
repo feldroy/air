@@ -51,17 +51,17 @@ app = air.Air()
 @app.page 
 def index():
     # Same as route app.get('/')
-    return H1('Welcome to our site!')
+    return air.H1('Welcome to our site!')
 
 @app.page
 def dashboard():
     # Same as route app.get('/dashboard')
-    return H1('Dashboard')
+    return air.H1('Dashboard')
 
 @app.page
 def show_item():
     # same as app.get('/get-item')
-    return H1('Showing an item')
+    return air.H1('Showing an item')
 ```
 
 ## Form validation with Air Forms
@@ -87,12 +87,12 @@ class CheeseForm(air.AirForm):
     model = CheeseModel
 
 @app.page
-async def cheese():
-    return air.Html(
+async def index():
+    return air.layouts.mvpcss(
         air.H1("Cheese Form"),
         air.Form(
-            air.Input(name="name"),
-            air.Input(name="age", type="number"),
+            air.Input(name="name", placeholder='name of cheese'),
+            air.Input(name="age", type="number", placeholder='age'),
             air.Button("Submit", type="submit"),
             method="post",
             action="/cheese-info",
@@ -101,9 +101,9 @@ async def cheese():
 
 @app.post("/cheese-info")
 async def cheese_info(request: Request):
-    cheese = await CheeseForm.validate(request)
+    cheese = await CheeseForm.from_request(request)
     if cheese.is_valid:
-        return air.Html(air.H1(cheese.data.name))
+        return air.Html(air.H1(f'{cheese.data.name} age {cheese.data.age}'))
     return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
 ```
 
@@ -149,5 +149,4 @@ async def cheese_info(cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)
     if cheese.is_valid:
         return air.Html(air.H1(cheese.data.name))
     return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
-
 ```
