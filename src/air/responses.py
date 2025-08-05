@@ -9,8 +9,6 @@ from starlette.responses import PlainTextResponse as PlainTextResponse  # noqa
 from starlette.responses import RedirectResponse as RedirectResponse  # noqa
 from starlette.responses import StreamingResponse as StreamingResponse  # noqa
 
-from .tags import Tag
-
 
 def dict_to_airtag(d):
     children_raw = d.get("_children", ())
@@ -48,14 +46,7 @@ class TagResponse(Response):
         return content.render().encode("utf-8")
 
 
-def format_sse_message_from_tag(tag: Tag, event: str = "message") -> str:
-    lines = [t for t in tag.render().splitlines()]
-    formatted = [f"data: {t}" for t in lines]
-    data = "\n".join(formatted)
-    return f"event: {event}\n{data}\n\n"
-
-
-class EventStreamResponse(StreamingResponse):
+class SSEResponse(StreamingResponse):
     """Response class for Server Sent Events
 
     Example:
@@ -86,14 +77,13 @@ class EventStreamResponse(StreamingResponse):
         async def lottery_generator():
             while True:
                 lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
-                data = air.Aside(lottery_numbers)
-                yield air.format_sse_message_from_tag(data)
+                yield air.Aside(lottery_numbers)
                 await sleep(1)
 
 
         @app.get("/lottery-numbers")
         async def get():
-            return air.EventStreamResponse(lottery_generator())
+            return air.SSEResponse(lottery_generator())
     """
 
     media_type = "text/event-stream"
