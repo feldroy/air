@@ -107,9 +107,20 @@ For simple HTTP GET requests, Air provides the handy `@app.page` shortcut.
     app = air.Air()
 
 
+    @app.page 
+    def index():
+        # Same as route app.get('/')
+        return air.H1('Welcome to our site!')
+
     @app.page
     def dashboard():
-        return H1('Dashboard')
+        # Same as route app.get('/dashboard')
+        return air.H1('Dashboard')
+
+    @app.page
+    def show_item():
+        # same as app.get('/get-item')
+        return air.H1('Showing an item')
     ```
 
 
@@ -237,26 +248,24 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
     class CheeseForm(air.AirForm):
         model = CheeseModel
 
-
     @app.page
-    async def cheese():
-        return air.Html(
+    async def index():
+        return air.layouts.mvpcss(
             air.H1("Cheese Form"),
             air.Form(
-                air.Input(name="name"),
-                air.Input(name="age", type="number"),
+                air.Input(name="name", placeholder='name of cheese'),
+                air.Input(name="age", type="number", placeholder='age'),
                 air.Button("Submit", type="submit"),
                 method="post",
                 action="/cheese-info",
             ),
         )
 
-
     @app.post("/cheese-info")
     async def cheese_info(request: Request):
-        cheese = await CheeseForm.validate(request)
+        cheese = await CheeseForm.from_request(request)
         if cheese.is_valid:
-            return air.Html(air.H1(cheese.data.name))
+            return air.Html(air.H1(f'{cheese.data.name} age {cheese.data.age}'))
         return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
     ```
 
@@ -292,15 +301,15 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 
     @app.post("/cheese-info")
     async def cheese_info(request: Request):
-        cheese = await CheeseForm.validate(request)
+        cheese = await CheeseForm.from_request(request)
         return jinja(request, name="cheese_info.html", cheese=cheese)
     ```
 
     ```jinja title="templates/cheese_form.html"
     <h1>Cheese Form</h1>
     <form method="post" action="/cheese-info">
-      <input name="name">
-      <input name="age" type="number">
+      <input name="name" placeholder="name of cheese">
+      <input name="age" type="number" placeholder="age of cheese">
       <button type="submit">Submit</button>
     </form>
     ```
@@ -317,6 +326,10 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 ### Form handling using dependency injection
 
 It is possible to use AirForms through FastAPI's dependency injection mechanism.
+
+
+
+NOTE: This feature is currently in development and does not work yet.
 
 === "Air Tags"
 
