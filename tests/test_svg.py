@@ -6,7 +6,7 @@ def test_atag_no_attrs_no_children():
 
 
 def test_atag_with_all_attributes():
-    link = sg.A(
+    link = air.svg.A(
         "Link text",
         href="https://example.com",
         target="_blank",
@@ -19,6 +19,8 @@ def test_atag_with_all_attributes():
     )
     expected = '<a href="https://example.com" target="_blank" download="file.pdf" hreflang="en-US" ping="https://tracker.example.com" referrerpolicy="no-referrer" rel="noopener" type="application/pdf">Link text</a>'
     assert link.render() == expected
+
+
 
 
 def test_cased_tag_no_children():
@@ -34,38 +36,38 @@ def test_cased_tags_with_children():
 
 # Test basic shapes with attributes
 def test_circle_with_attributes():
-    circle = sg.Circle(cx=50, cy=50, r=25, class_="my-circle")
+    circle = air.svg.Circle(cx=50, cy=50, r=25, class_="my-circle")
     expected = '<circle cx="50" cy="50" r="25" class="my-circle"></circle>'
     assert circle.render() == expected
 
 
 def test_rect_with_all_attributes():
-    rect = sg.Rect(x=10, y=20, width=100, height=50, rx=5, ry=3, pathLength=300)
+    rect = air.svg.Rect(x=10, y=20, width=100, height=50, rx=5, ry=3, pathLength=300)
     expected = '<rect x="10" y="20" width="100" height="50" rx="5" ry="3" pathLength="300"></rect>'
     assert rect.render() == expected
 
 
 def test_ellipse_coordinates():
-    ellipse = sg.Ellipse(cx=100, cy=75, rx=40, ry=20)
+    ellipse = air.svg.Ellipse(cx=100, cy=75, rx=40, ry=20)
     expected = '<ellipse cx="100" cy="75" rx="40" ry="20"></ellipse>'
     assert ellipse.render() == expected
 
 
 def test_line_coordinates():
-    line = sg.Line(x1=0, y1=0, x2=100, y2=100, style="stroke: black;")
+    line = air.svg.Line(x1=0, y1=0, x2=100, y2=100, style="stroke: black;")
     expected = '<line x1="0" y1="0" x2="100" y2="100" style="stroke: black;"></line>'
     assert line.render() == expected
 
 
 def test_path_with_data():
-    path = sg.Path(d="M10 10 L90 90 Z", pathLength=113)
+    path = air.svg.Path(d="M10 10 L90 90 Z", pathLength=113)
     expected = '<path d="M10 10 L90 90 Z" pathLength="113"></path>'
     assert path.render() == expected
 
 
 # Test SVG container elements
 def test_svg_with_viewbox():
-    svg = sg.Svg(width=200, height=200, viewBox="0 0 200 200", id="main-svg")
+    svg = air.svg.Svg(width=200, height=200, viewBox="0 0 200 200", id="main-svg")
     expected = (
         '<svg width="200" height="200" viewBox="0 0 200 200" id="main-svg"></svg>'
     )
@@ -73,8 +75,8 @@ def test_svg_with_viewbox():
 
 
 def test_group_with_children():
-    group = sg.G(
-        sg.Circle(r=10), sg.Rect(width=20, height=20), class_="shape-group", id="group1"
+    group = air.svg.G(
+        air.svg.Circle(r=10), air.svg.Rect(width=20, height=20), class_="shape-group", id="group1"
     )
     expected = '<g class="shape-group" id="group1"><circle r="10"></circle><rect width="20" height="20"></rect></g>'
     assert group.render() == expected
@@ -82,23 +84,23 @@ def test_group_with_children():
 
 # Test text elements
 def test_text_with_positioning():
-    text = sg.Text("Hello SVG", x=50, y=100, dx=5, dy=-10, textLength=80)
+    text = air.svg.Text("Hello SVG", x=50, y=100, dx=5, dy=-10, textLength=80)
     expected = '<text x="50" y="100" dx="5" dy="-10" textLength="80">Hello SVG</text>'
     assert text.render() == expected
 
 
 def test_tspan_in_text():
-    tspan = sg.Tspan("emphasized", dy=5, class_="emphasis")
-    text = sg.Text("Normal ", tspan, " text", x=10, y=20)
+    tspan = air.svg.Tspan("emphasized", dy=5, class_="emphasis")
+    text = air.svg.Text("Normal ", tspan, " text", x=10, y=20)
     expected = '<text x="10" y="20">Normal <tspan dy="5" class="emphasis">emphasized</tspan> text</text>'
     assert text.render() == expected
 
 
 # Test gradients
 def test_linear_gradient_with_stops():
-    stop1 = sg.Stop(offset="0%", stop_color="red")
-    stop2 = sg.Stop(offset="100%", stop_color="blue", stop_opacity=0.8)
-    gradient = sg.LinearGradient(
+    stop1 = air.svg.Stop(offset="0%", stop_color="red")
+    stop2 = air.svg.Stop(offset="100%", stop_color="blue", stop_opacity=0.8)
+    gradient = air.svg.LinearGradient(
         stop1, stop2, x1="0%", y1="0%", x2="100%", y2="0%", id="myGradient"
     )
     expected = '<linearGradient x1="0%" y1="0%" x2="100%" y2="0%" id="myGradient"><stop offset="0%" stop-color="red"></stop><stop offset="100%" stop-color="blue" stop-opacity="0.8"></stop></linearGradient>'
@@ -106,7 +108,7 @@ def test_linear_gradient_with_stops():
 
 
 def test_radial_gradient():
-    gradient = sg.RadialGradient(
+    gradient = air.svg.RadialGradient(
         cx="50%",
         cy="50%",
         r="50%",
@@ -120,9 +122,9 @@ def test_radial_gradient():
 
 # Test filter elements
 def test_filter_with_effects():
-    blur = sg.FeGaussianBlur(in_="SourceGraphic", stdDeviation=2, result="blur")
-    offset = sg.FeOffset(in_="blur", dx=3, dy=3, result="offset")
-    filter_elem = sg.Filter(
+    blur = air.svg.FeGaussianBlur(in_="SourceGraphic", stdDeviation=2, result="blur")
+    offset = air.svg.FeOffset(in_="blur", dx=3, dy=3, result="offset")
+    filter_elem = air.svg.Filter(
         blur, offset, x="-20%", y="-20%", width="140%", height="140%", id="drop-shadow"
     )
     expected = '<filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow"><feGaussianBlur in-="SourceGraphic" stdDeviation="2" result="blur"></feGaussianBlur><feOffset in-="blur" dx="3" dy="3" result="offset"></feOffset></filter>'
@@ -130,13 +132,13 @@ def test_filter_with_effects():
 
 
 def test_fe_distant_light():
-    light = sg.FeDistantLight(azimuth=45, elevation=60)
+    light = air.svg.FeDistantLight(azimuth=45, elevation=60)
     expected = '<feDistantLight azimuth="45" elevation="60"></feDistantLight>'
     assert light.render() == expected
 
 
 def test_fe_drop_shadow():
-    shadow = sg.FeDropShadow(
+    shadow = air.svg.FeDropShadow(
         dx=2, dy=2, stdDeviation=1, flood_color="black", flood_opacity=0.3
     )
     expected = '<feDropShadow dx="2" dy="2" stdDeviation="1" flood-color="black" flood-opacity="0.3"></feDropShadow>'
@@ -145,7 +147,7 @@ def test_fe_drop_shadow():
 
 # Test animation elements
 def test_animate_with_values():
-    animate = sg.Animate(
+    animate = air.svg.Animate(
         attributeName="opacity", values="0;1;0", dur="2s", repeatCount="indefinite"
     )
     expected = '<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"></animate>'
@@ -153,7 +155,7 @@ def test_animate_with_values():
 
 
 def test_animate_motion_with_path():
-    motion = sg.AnimateMotion(path="M10,10 L90,90", dur="3s", rotate="auto")
+    motion = air.svg.AnimateMotion(path="M10,10 L90,90", dur="3s", rotate="auto")
     expected = (
         '<animateMotion path="M10,10 L90,90" rotate="auto" dur="3s"></animateMotion>'
     )
@@ -162,8 +164,8 @@ def test_animate_motion_with_path():
 
 # Test marker and mask elements
 def test_marker_definition():
-    marker = sg.Marker(
-        sg.Path(d="M0,0 L10,5 L0,10 Z"),
+    marker = air.svg.Marker(
+        air.svg.Path(d="M0,0 L10,5 L0,10 Z"),
         markerWidth=10,
         markerHeight=10,
         refX=0,
@@ -176,9 +178,9 @@ def test_marker_definition():
 
 
 def test_mask_with_content():
-    mask = sg.Mask(
-        sg.Rect(width="100%", height="100%", style="fill: white;"),
-        sg.Circle(cx=50, cy=50, r=30, style="fill: black;"),
+    mask = air.svg.Mask(
+        air.svg.Rect(width="100%", height="100%", style="fill: white;"),
+        air.svg.Circle(cx=50, cy=50, r=30, style="fill: black;"),
         id="hole-mask",
     )
     expected = '<mask id="hole-mask"><rect width="100%" height="100%" style="fill: white;"></rect><circle cx="50" cy="50" r="30" style="fill: black;"></circle></mask>'
@@ -188,21 +190,21 @@ def test_mask_with_content():
 # Test complex SVG structure
 def test_complex_svg_structure():
     # Create a complete SVG with multiple elements
-    defs = sg.Defs(
-        sg.LinearGradient(
-            sg.Stop(offset="0%", stop_color="red"),
-            sg.Stop(offset="100%", stop_color="blue"),
+    defs = air.svg.Defs(
+        air.svg.LinearGradient(
+            air.svg.Stop(offset="0%", stop_color="red"),
+            air.svg.Stop(offset="100%", stop_color="blue"),
             id="grad1",
         )
     )
 
-    content = sg.G(
-        sg.Circle(cx=50, cy=50, r=40, style="fill: url(#grad1);"),
-        sg.Text("SVG", x=35, y=55, style="font-family: Arial;"),
+    content = air.svg.G(
+        air.svg.Circle(cx=50, cy=50, r=40, style="fill: url(#grad1);"),
+        air.svg.Text("SVG", x=35, y=55, style="font-family: Arial;"),
         class_="main-content",
     )
 
-    svg = sg.Svg(
+    svg = air.svg.Svg(
         defs,
         content,
         width=100,
@@ -218,7 +220,7 @@ def test_complex_svg_structure():
 # Test attribute handling with None values
 def test_none_attributes_filtered():
     # None values should not appear in rendered output
-    circle = sg.Circle(cx=50, cy=50, r=25, pathLength=None, class_=None)
+    circle = air.svg.Circle(cx=50, cy=50, r=25, pathLength=None, class_=None)
     expected = '<circle cx="50" cy="50" r="25"></circle>'
     assert circle.render() == expected
 
@@ -226,7 +228,7 @@ def test_none_attributes_filtered():
 # Test mixed type attributes
 def test_mixed_type_attributes():
     # Test that both string and numeric values work
-    rect = sg.Rect(x="10px", y=20, width="50%", height=30.5)
+    rect = air.svg.Rect(x="10px", y=20, width="50%", height=30.5)
     expected = '<rect x="10px" y="20" width="50%" height="30.5"></rect>'
     assert rect.render() == expected
 
@@ -234,7 +236,7 @@ def test_mixed_type_attributes():
 # Test experimental attributes
 def test_image_with_experimental_attributes():
     # Test fetchpriority experimental attribute
-    image = sg.Image(
+    image = air.svg.Image(
         x=10,
         y=20,
         width=100,
@@ -249,7 +251,7 @@ def test_image_with_experimental_attributes():
 
 def test_script_with_experimental_attributes():
     # Test fetchpriority experimental attribute
-    script = sg.Script(
+    script = air.svg.Script(
         type="application/javascript",
         href="script.js",
         fetchpriority="low",
@@ -261,7 +263,7 @@ def test_script_with_experimental_attributes():
 
 def test_animate_with_extended_attributes():
     # Test the additional animation attributes
-    animate = sg.Animate(
+    animate = air.svg.Animate(
         attributeName="opacity",
         attributeType="CSS",
         from_="0",
