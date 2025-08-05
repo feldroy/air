@@ -78,8 +78,6 @@ docs = [
 homepage = "https://github.com/feldroy/air"
 bugs = "https://github.com/feldroy/air/issues"
 
-
-
 [tool.mypy]
 exclude = "^build/"
 
