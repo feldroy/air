@@ -89,7 +89,7 @@ class Tag:
             return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
-    def encode(self, charset) -> bytes:
+    def encode(self, charset: str = "utf-8") -> bytes:
         """Renders the Tag for use in SSEResponse to support server sent responses.
 
         As the Tag is intended to be called from within a generator, this logic needs

@@ -186,6 +186,24 @@ def test_AirResponse():
     assert response.text == "<h1>Hello, World!</h1>"
 
 
-def test_format_sse_message_from_tag():
-    tag = air.P("I am a paragraph")
-    assert tag.encode("utf-8") == b"event: message\ndata: <p>I am a paragraph</p>\n\n"
+def test_SSEResponse():
+    """Test the SSEResponse class."""
+    app = FastAPI()
+
+    async def event_generator():
+        yield air.P("Hello")
+        yield air.P("World")
+
+    @app.get("/test")
+    async def test_endpoint():
+        return air.SSEResponse(event_generator())
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
+    assert (
+        response.text
+        == "event: message\ndata: <p>Hello</p>\n\nevent: message\ndata: <p>World</p>\n\n"
+    )
