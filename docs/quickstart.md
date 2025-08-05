@@ -28,6 +28,8 @@ A minimal Air application:
 
 === "Jinja2"
 
+    Here's the Python code:
+
 
     ```python title="main.py"
     import air    
@@ -43,6 +45,8 @@ A minimal Air application:
             name="home.html"
         )       
     ```
+
+    Now create a directory in your project called `templates`, that's where Air projects put Jinja files like the one we list below. 
 
     ```jinja title="templates/home.html"
     <h1>Hello, world</h1>
@@ -258,8 +262,8 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
                 air.Button("Submit", type="submit"),
                 method="post",
                 action="/cheese-info",
-            ),
-        )
+                ),
+            )
 
     @app.post("/cheese-info")
     async def cheese_info(request: Request):
@@ -325,7 +329,7 @@ Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 
 ### Form handling using dependency injection
 
-It is possible to use AirForms through FastAPI's dependency injection mechanism.
+Buggy, but we are working to make AirForms work through FastAPI's dependency injection mechanism.
 
 
 
