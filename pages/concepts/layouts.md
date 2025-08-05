@@ -2,6 +2,9 @@
 
 Layouts in Air provide a way to structure complete HTML documents without the repetitive boilerplate. Air's layout system automatically handles the separation of head and body content and makes it easy to create your own custom layouts.
 
+> ## Note
+> This document covers how **Layouts** work. The full reference for them is the [Layouts reference](https://feldroy.github.io/air/api/layouts/).
+
 ## Understanding Air's Layout Philosophy
 
 Air's layout functions automatically sort your tags into the right places using intelligent filtering.  This allows you eliminate repetitive `air.Html`, `air.Body`, and `air.Head` boilerplate.

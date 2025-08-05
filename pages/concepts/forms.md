@@ -2,6 +2,9 @@
 
 Forms are how data is collected from users on web pages.
 
+> ## Note
+> This document covers how **Forms** work. The full reference for them is the [Forms reference](https://feldroy.github.io/air/api/forms/).
+
 ## A simple form example
 
 This contact form is in the classic Starlette way, with no validation of data. However, it does show a method to build forms quickly.
