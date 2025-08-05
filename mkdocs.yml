@@ -3,7 +3,6 @@ site_url: http://feldroy.github.io/air/
 repo_url: https://github.com/feldroy/air
 nav:
   - Home: index.md
-  - Quickstart: quickstart.md
   - Reference:
     - api/index.md
     - Applications: api/applications.md

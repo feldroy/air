@@ -2,7 +2,7 @@
 name: Feature Request
 about: Most feature requests for air core are problably best executed as a new package. 
 title: 'FEAT: '
-labels: bugfeature
+labels: feature
 assignees: ''
 ---
 
