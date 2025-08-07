@@ -89,17 +89,6 @@ class Tag:
             return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
-    def encode(self, charset: str = "utf-8") -> bytes:
-        """Renders the Tag for use in SSEResponse to support server sent responses.
-
-        As the Tag is intended to be called from within a generator, this logic needs
-        to be defined here in the base Tag class.
-        """
-        lines = [t for t in self.render().splitlines()]
-        formatted = [f"data: {t}" for t in lines]
-        data = "\n".join(formatted)
-        return f"event: message\n{data}\n\n".encode(charset)
-
 
 class CaseTag(Tag):
     """This is for case-sensitive tags like those used in SVG generation."""
