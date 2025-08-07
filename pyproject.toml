@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "air>=0.16",
-    "air-markdown>=0.2.1",
+    "air-markdown>=0.3.0",
     "fastapi[standard]>=0.116.0",
     "mistletoe>=1.4.0",
     "mkdocstrings[python]>=0.29.1",

@@ -2,7 +2,7 @@ import json
 import random
 
 import air
-from air_markdown import TailwindTypographyMarkdown as Markdown
+from air_markdown.tags import AirMarkdown
 
 
 def sorted_random_list():
@@ -35,7 +35,7 @@ def render(request: air.Request):
     data = generate_data()
     return air.Children(
         air.Title("Air: The New FastAPI-Powered Python Web Framework (2025)"),
-        Markdown("# Air loves charts!"),
+        AirMarkdown("# Air loves charts!"),
         air.Div(id="randomChart"),
         air.Children(
             # Call the Plotly library to plot the library
