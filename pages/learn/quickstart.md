@@ -66,7 +66,7 @@ def show_item():
 
 ## Form validation with Air Forms
 
-Built on pydantic's `BaseModel`, the `air.AirForm` class is used to validate data coming from HTML forms.
+Built on Pydantic's `BaseModel`, the `air.AirForm` class is used to validate data coming from HTML forms.
 
 ```python
 from typing import Annotated

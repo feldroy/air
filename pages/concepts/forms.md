@@ -45,7 +45,7 @@ async def add(request: air.Request):
 
 ## Air Forms
 
-Air Forms are powered by pydantic. That includes both their display and validation of data. If you have any experience with pydantic, that will go a long way towards helping your understanding of Air Forms.
+Air Forms are powered by Pydantic. That includes both their display and validation of data. If you have any experience with Pydantic, that will go a long way towards helping your understanding of Air Forms.
 
 ### A Sample Contact Air Form
 
