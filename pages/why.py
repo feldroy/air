@@ -42,7 +42,5 @@ def rotating_reasons():
 
 def render(request: air.Request):
     return air.Children(
-        # Markdown("# Don't use Air<br><br>"),
-
         AirMarkdown(open("pages/why.md").read()),
     )
