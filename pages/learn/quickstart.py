@@ -1,5 +1,5 @@
 import air
-from air_markdown import TailwindTypographyMarkdown as Markdown
+from air_markdown.tags import AirMarkdown
 
 
 def render(request: air.Request):
@@ -7,5 +7,5 @@ def render(request: air.Request):
         md_content = f.read()
     return air.Children(
         air.Title("Learn > Quickstart"),
-        Markdown(md_content),
+        AirMarkdown(md_content),
     )

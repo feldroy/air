@@ -2,7 +2,7 @@ import importlib
 from pathlib import Path
 
 import air
-from air_markdown import TailwindTypographyMarkdown as Markdown
+from air_markdown.tags import AirMarkdown
 from fastapi import HTTPException
 
 from pages import charts, home, why
@@ -60,7 +60,7 @@ def airpage(request: air.Request, slug: str):
     if path.exists():
         text = path.read_text()
         # TODO add fetching of page title from first H1 tag
-        return layout(request, Markdown(text))
+        return layout(request, AirMarkdown(text))
     path = Path(f"pages/{slug}.py")
     if path.exists():
         module_name = f"pages.{slug.replace('/', '.')}"
