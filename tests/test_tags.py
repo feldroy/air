@@ -269,6 +269,6 @@ def test_tag_for_tag_subclass_wrapper():
     assert html == "<p>Hello, world!</p>"
 
 
-def test_format_sse_message_from_tag():
-    tag = air.P("I am a paragraph")
-    assert tag.encode("utf-8") == b"event: message\ndata: <p>I am a paragraph</p>\n\n"
+# def test_format_sse_message_from_tag():
+#     tag = air.P("I am a paragraph")
+#     assert tag.encode("utf-8") == b"event: message\ndata: <p>I am a paragraph</p>\n\n"

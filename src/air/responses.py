@@ -10,6 +10,9 @@ from starlette.responses import (
     RedirectResponse as RedirectResponse,  # noqa
     StreamingResponse as StreamingResponse,  # noqa
 )
+from starlette.types import Send
+
+from air.tags import Tag
 
 
 def dict_to_airtag(d):
@@ -53,6 +56,7 @@ class SSEResponse(StreamingResponse):
 
     Example:
 
+        # For tags
         import random
         from asyncio import sleep
 
@@ -89,3 +93,27 @@ class SSEResponse(StreamingResponse):
     """
 
     media_type = "text/event-stream"
+
+    async def stream_response(self, send: Send) -> None:
+        await send(
+            {
+                "type": "http.response.start",
+                "status": self.status_code,
+                "headers": self.raw_headers,
+            }
+        )
+        async for chunk in self.body_iterator:
+            if not isinstance(chunk, (bytes, memoryview)):
+                if isinstance(chunk, Tag) or hasattr(chunk, "render"):
+                    # If a tag or has a "render" method, call that and create lines
+                    lines = [t for t in chunk.render().splitlines()]
+                else:
+                    # Anything else, cast to str and run splitlines
+                    lines = [t for t in str(chunk).splitlines()]
+                formatted = [f"data: {t}" for t in lines]
+                data = "\n".join(formatted)
+                chunk = f"event: message\n{data}\n\n"
+                chunk = chunk.encode(self.charset)
+            await send({"type": "http.response.body", "body": chunk, "more_body": True})
+
+        await send({"type": "http.response.body", "body": b"", "more_body": False})
