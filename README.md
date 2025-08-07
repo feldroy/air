@@ -17,7 +17,11 @@
     <img src="https://img.shields.io/pypi/pyversions/air.svg?color=%2334D058" alt="Supported Python versions">
 </a>
 </p>
-
+<p align="center">
+        <a href="https://discord.gg/SmgcCBBh">
+        <img src="https://img.shields.io/discord/1388403469505007696?logo=discord"
+            alt="Chat on Discord"></a>
+</p>
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
