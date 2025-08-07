@@ -14,7 +14,7 @@ Django pioneered high-quality, accessible documentation. That and its pluggable 
 
 > #### Django inspires Air to
 >
-> 1. Incorporate an HTML form validation system powered by pydantic
+> 1. Incorporate an HTML form validation system powered by Pydantic
 > 2. Add a pluggable system for supporting an ecosystem of third-party packages
 > 3. Include user management as an early pluggable package.
 
