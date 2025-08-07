@@ -38,9 +38,3 @@ def rotating_reasons():
             hx_swap="outerHTML",
         )
     )
-
-
-def render(request: air.Request):
-    return air.Children(
-        AirMarkdown(open("pages/why.md").read()),
-    )
