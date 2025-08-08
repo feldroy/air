@@ -4,10 +4,22 @@ from pathlib import Path
 import air
 from air_markdown.tags import AirMarkdown
 from fastapi import HTTPException
+import sentry_sdk
+from os import getenv
 
 from pages import charts, home, why
 
 renderer = air.JinjaRenderer("templates")
+
+SENTRY_DSN = getenv('SENTRY_DSN')
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        # Add data like request headers and IP for users,
+        # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+        send_default_pii=True,
+    )
 
 app = air.Air()
 

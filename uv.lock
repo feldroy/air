@@ -39,6 +39,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "mistletoe" },
     { name = "mkdocstrings", extra = ["python"] },
+    { name = "sentry-sdk", extra = ["fastapi"] },
 ]
 
 [package.optional-dependencies]
@@ -71,6 +72,7 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'test'", specifier = ">=0.11.13" },
     { name = "rust-just", marker = "extra == 'dev'", specifier = ">=1.42.3" },
     { name = "rust-just", marker = "extra == 'test'", specifier = ">=1.42.3" },
+    { name = "sentry-sdk", extras = ["fastapi"], specifier = ">=2.34.1" },
     { name = "ty", marker = "extra == 'test'", specifier = ">=0.0.1a16" },
     { name = "types-markdown", marker = "extra == 'test'", specifier = ">=3.8.0" },
     { name = "uvicorn", marker = "extra == 'test'", specifier = ">=0.34.0" },
@@ -982,6 +984,11 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/3a/38/10d6bfe23df1bfc65ac2262ed10b45823f47f810b0057d3feeea1ca5c7ed/sentry_sdk-2.34.1.tar.gz", hash = "sha256:69274eb8c5c38562a544c3e9f68b5be0a43be4b697f5fd385bf98e4fbe672687", size = 336969, upload-time = "2025-07-30T11:13:37.93Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/2d/3e/bb34de65a5787f76848a533afbb6610e01fbcdd59e76d8679c254e02255c/sentry_sdk-2.34.1-py2.py3-none-any.whl", hash = "sha256:b7a072e1cdc5abc48101d5146e1ae680fa81fe886d8d95aaa25a0b450c818d32", size = 357743, upload-time = "2025-07-30T11:13:36.145Z" },
+]
+
+[package.optional-dependencies]
+fastapi = [
+    { name = "fastapi" },
 ]
 
 [[package]]
