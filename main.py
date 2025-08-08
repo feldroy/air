@@ -66,11 +66,6 @@ def data():
     )
 
 
-@app.get("/sentry-debug")
-async def trigger_error():
-    division_by_zero = 1 / 0
-
-
 @app.get("/{slug:path}")
 def airpage(request: air.Request, slug: str):
     path = Path(f"pages/{slug}.md")
