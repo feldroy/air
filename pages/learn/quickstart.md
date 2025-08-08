@@ -29,7 +29,10 @@ app = air.Air()
 
 @app.get("/")
 async def index():
-    return air.layouts.mvpcss(air.H1("Hello, Air!", style="color: blue;"))
+    return air.layouts.mvpcss(
+        air.H1("Hello, Air!"),
+        air.P("Breathe it in.")
+    )
 ```
 
 Serve your app with:
@@ -38,117 +41,13 @@ Serve your app with:
 fastapi dev
 ```
 
-## The app.page decorator
+Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>
 
-For simple HTTP GET requests, Air provides the handy @app.page shortcut. It converts the name of the function to a URL, where underscores are replaced with dashes and `index` is replaced with '/'.
+Here's a few interesting things about this page:
 
-```python
-import air
+1. The page has an attractive layout and typography
+2. The Python for this app is similar in design to how FastAPI code is written
+3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
 
-app = air.Air()
-
-
-@app.page 
-def index():
-    # Same as route app.get('/')
-    return air.H1('Welcome to our site!')
-
-@app.page
-def dashboard():
-    # Same as route app.get('/dashboard')
-    return air.H1('Dashboard')
-
-@app.page
-def show_item():
-    # same as app.get('/get-item')
-    return air.H1('Showing an item')
-```
-
-## Form validation with Air Forms
-
-Built on Pydantic's `BaseModel`, the `air.AirForm` class is used to validate data coming from HTML forms.
-
-```python
-from typing import Annotated
-
-from fastapi import Depends, Request
-from pydantic import BaseModel
-import air
-
-app = air.Air()
-
-
-class CheeseModel(BaseModel):
-    name: str
-    age: int
-
-
-class CheeseForm(air.AirForm):
-    model = CheeseModel
-
-@app.page
-async def index():
-    return air.layouts.mvpcss(
-        air.H1("Cheese Form"),
-        air.Form(
-            air.Input(name="name", placeholder='name of cheese'),
-            air.Input(name="age", type="number", placeholder='age'),
-            air.Button("Submit", type="submit"),
-            method="post",
-            action="/cheese-info",
-        ),
-    )
-
-@app.post("/cheese-info")
-async def cheese_info(request: Request):
-    cheese = await CheeseForm.from_request(request)
-    if cheese.is_valid:
-        return air.Html(air.H1(f'{cheese.data.name} age {cheese.data.age}'))
-    return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
-```
-
-## Form handling using dependency injection
-
-It is possible to use dependency injection to manage form validation
-
-NOTE: This functionality is currently in development and this feature currently does not work
-
-```python
-from typing import Annotated
-
-from fastapi import Depends
-from pydantic import BaseModel
-import air
-
-app = air.Air()
-
-
-class CheeseModel(BaseModel):
-    name: str
-    age: int
-
-
-class CheeseForm(air.AirForm):
-    model = CheeseModel
-
-
-@app.page
-async def cheese():
-    return air.Html(
-        air.H1("Cheese Form"),
-        air.Form(
-            air.Input(name="name"),
-            air.Input(name="age", type="number"),
-            air.Button("Submit", type="submit"),
-            method="post",
-            action="/cheese-info",
-        ),
-    )
-
-
-@app.post("/cheese-info")
-async def cheese_info(cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)]):
-    if cheese.is_valid:
-        return air.Html(air.H1(cheese.data.name))
-    return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
-```
+Want to learn more? Want to see how Air combines with FastAPI? [Try out the tutorial!](/learn/tutorial)
+ 
