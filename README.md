@@ -17,7 +17,11 @@
     <img src="https://img.shields.io/pypi/pyversions/air.svg?color=%2334D058" alt="Supported Python versions">
 </a>
 </p>
-
+<p align="center">
+        <a href="https://discord.gg/aTzWBVrtEs">
+        <img src="https://img.shields.io/discord/1388403469505007696?logo=discord"
+            alt="Chat on Discord"></a>
+</p>
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
@@ -55,7 +59,7 @@ For `uv` users, just create a virtualenv and install the air package, like:
 uv venv
 source .venv/bin/activate
 uv add air
-uv add fastapi[standard]
+uv add "fastapi[standard]"
 ```
 
 ## A Simple Example
@@ -73,8 +77,17 @@ async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
+Run the app with:
+
+```sh
+fastapi dev
+```
+
 > [!NOTE]
 > This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
+> You can also run this with `uv run uvicorn main:app --reload` if you prefer using Uvicorn directly.
+
+Then open your browser to <http://127.0.0.1:8000> to see the result.
 
 ## Combining FastAPI and Air
 
@@ -112,6 +125,7 @@ Want to use Jinja2 instead of Air Tags? We've got you covered.
 
 ```python
 import air
+from air.requests import Request
 from fastapi import FastAPI
 
 app = air.Air()

@@ -1,6 +1,6 @@
 [project]
 name = "air"
-version = "0.19.0"
+version = "0.20.0"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -11,6 +11,7 @@ dependencies = [
     "Jinja2>=3.1.6",
     "python-multipart>=0.0.20",
 ]
+
 readme = "README.md"
 requires-python = ">= 3.10"
 classifiers = [
@@ -38,6 +39,11 @@ classifiers = [
 "air" = "air.cli:app"
 
 [project.optional-dependencies]
+# Make `air[standard]` install FastAPI’s own “standard” extras, available with: uv pip install "air[standard]".
+standard = [
+    # Re-install FastAPI with its “standard” extra.
+    "fastapi[standard]>=0.116.1",
+]
 dev = [
     # Justfile tasks
     "rust-just>=1.42.3",
@@ -48,7 +54,7 @@ test = [
     # For the test client
     "httpx>=0.28.1",
     # Used with debugging
-    "ipdb>=0.13.13",   
+    "ipdb>=0.13.13",
     # Test runner
     "pytest>=8.4.0",
     # Linting and formatting
@@ -65,14 +71,12 @@ test = [
 docs = [
     "mkdocs-material",
     "mkdocstrings[python]",
-    "mkdocs-autorefs>=1.4.2",    
+    "mkdocs-autorefs>=1.4.2",
 ]
 
 [project.urls]
 homepage = "https://github.com/feldroy/air"
 bugs = "https://github.com/feldroy/air/issues"
-
-
 
 [tool.mypy]
 exclude = "^build/"
@@ -84,3 +88,10 @@ omit = [
 
 [tool.uv]
 package = true
+
+[tool.ruff]                  # enable import-sorting in the linter
+lint.select = ["I"]          # I-rules = isort compatibility
+
+[tool.ruff.lint.isort]
+combine-as-imports = true    # group aliases coming from the same module
+force-wrap-aliases = true    # keep the multi-line, parenthesised layout

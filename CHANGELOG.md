@@ -1,5 +1,16 @@
 # Changelog
 
+# 0.20.0 - 2025-08-07
+
+## What's Changed
+* pyproject.toml to expose a new optional-extras group called standard by @tallerasaf in https://github.com/feldroy/air/pull/252
+* Refactor EventStreamResponse to SSEResponse by @pydanny in https://github.com/feldroy/air/pull/249
+* Readme improvements by @audreyfeldroy in https://github.com/feldroy/air/pull/245
+* Update justfile by @tallerasaf in https://github.com/feldroy/air/pull/244
+* Add missing starlette.requests.Request passthrough by @pydanny in https://github.com/feldroy/air/pull/254
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.19.0...v0.20.0
+
 # 0.19.0 - 2025-08-04
 
 ## What's Changed

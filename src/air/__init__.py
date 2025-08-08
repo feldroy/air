@@ -6,12 +6,11 @@ from . import layouts as layouts, responses as responses
 from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .forms import AirField as AirField, AirForm as AirForm
-from .requests import is_htmx_request as is_htmx_request
+from .requests import is_htmx_request as is_htmx_request, Request as Request
 from .responses import (
     AirResponse as AirResponse,
-    EventStreamResponse as EventStreamResponse,
+    SSEResponse as SSEResponse,
     TagResponse as TagResponse,
-    format_sse_message_from_tag as format_sse_message_from_tag,
 )
 from .tags import (
     A as A,

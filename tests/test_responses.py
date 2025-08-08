@@ -1,6 +1,5 @@
 from typing import Any
 
-from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 import air
@@ -8,7 +7,7 @@ import air
 
 def test_TagResponse_obj():
     """Test the TagResponse class."""
-    app = FastAPI()
+    app = air.Air()
 
     @app.get("/test")
     def test_endpoint():
@@ -25,7 +24,7 @@ def test_TagResponse_obj():
 def test_TagResponse_type():
     """Test the TagResponse class."""
 
-    app = FastAPI()
+    app = air.Air()
 
     @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
@@ -48,7 +47,7 @@ def test_TagResponse_type():
 def test_TagResponse_html():
     """Test the TagResponse class."""
 
-    app = FastAPI()
+    app = air.Air()
 
     @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
@@ -74,7 +73,7 @@ def test_TagResponse_html():
 
 
 def test_strings_and_tag_children():
-    app = FastAPI()
+    app = air.Air()
 
     @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
@@ -93,7 +92,7 @@ def test_strings_and_tag_children():
 
 
 def test_custom_name_in_response():
-    app = FastAPI()
+    app = air.Air()
 
     def Card(sentence):
         return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
@@ -120,7 +119,7 @@ def test_TagResponse_with_layout_strings():
                 "utf-8"
             )
 
-    app = FastAPI()
+    app = air.Air()
 
     @app.get("/test", response_class=CustomLayoutResponse)
     def test_endpoint():
@@ -143,7 +142,7 @@ def test_TagResponse_with_layout_names():
             content = super().render(content).decode("utf-8")
             return air.Html(air.Raw(content)).render().encode("utf-8")
 
-    app = FastAPI()
+    app = air.Air()
 
     @app.get("/test", response_class=CustomLayoutResponse)
     def test_endpoint():
@@ -162,7 +161,7 @@ def test_TagResponse_with_layout_names():
 
 def test_AirResponse():
     """Test the AirResponse class."""
-    app = FastAPI()
+    app = air.Air()
 
     @app.get("/test_tag", response_class=air.AirResponse)
     def test_tag_endpoint():
@@ -186,9 +185,69 @@ def test_AirResponse():
     assert response.text == "<h1>Hello, World!</h1>"
 
 
-def test_format_sse_message_from_tag():
-    tag = air.P("I am a paragraph")
+def test_SSEResponse():
+    """Test the SSEResponse class."""
+    app = air.Air()
+
+    async def event_generator():
+        yield air.P("Hello")
+        yield air.P("World")
+
+    @app.get("/test")
+    async def test_endpoint():
+        return air.SSEResponse(event_generator())
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
     assert (
-        air.format_sse_message_from_tag(tag)
-        == "event: message\ndata: <p>I am a paragraph</p>\n\n"
+        response.text
+        == "event: message\ndata: <p>Hello</p>\n\nevent: message\ndata: <p>World</p>\n\n"
+    )
+
+
+def test_SSEResponse_multiline_tag_content():
+    """Test the SSEResponse class."""
+    app = air.Air()
+
+    async def event_generator():
+        yield air.P("Hello\nWorld")
+        yield air.P("World\nHello")
+
+    @app.get("/test")
+    async def test_endpoint():
+        return air.SSEResponse(event_generator())
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
+    assert (
+        response.text
+        == "event: message\ndata: <p>Hello\ndata: World</p>\n\nevent: message\ndata: <p>World\ndata: Hello</p>\n\n"
+    )
+
+
+def test_SSEResponse_string_content():
+    app = air.Air()
+
+    async def event_generator():
+        yield "Hello\nWorld"
+        yield "Air is cool\nTry it out!"
+
+    @app.get("/test")
+    async def test_endpoint():
+        return air.SSEResponse(event_generator())
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
+    assert (
+        response.text
+        == "event: message\ndata: Hello\ndata: World\n\nevent: message\ndata: Air is cool\ndata: Try it out!\n\n"
     )
