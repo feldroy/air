@@ -100,42 +100,142 @@ bump = true
 air = { workspace = true }
 
 [tool.ruff]
+src = ["src"]
 line-length = 120
-target-version = "py313"
 indent-width = 4
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".git",
+    ".github",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    ".cursor",
+    ".idea",
+    "__pypackages__",
+    "build",
+    "dist",
+    "site-packages",
+]
 
 [tool.ruff.format]
 indent-style = "space"   # match EditorConfig
 line-ending = "lf"       # enforce LF newlines
 quote-style = "double"   # keep quotes in sync with flake8-quotes
+# Docstring code formatting
+docstring-code-format = true # format Python code blocks in docstrings
+docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
+# Trailing-comma behavior (Black's “magic comma”)
+skip-magic-trailing-comma = false # leave multi-line when trailing comma present
+# Formatter-only file excludes (extra to top-level exclude/extend-exclude)
+exclude = []
+# Opt into preview (experimental) formatting style
+preview = false
 
 [tool.ruff.lint]
-# E/W = pycodestyle; F = pyflakes; Q = flake8-quotes; UP = pyupgrade
-# I = isort; N = pep8-naming; B = bugbear; T201/T203 = flake8-print
-select = ["E", "F", "W", "Q", "UP", "I", "N", "B", "T201", "T203"]
-extend-select = ["RUF100", "C90", "D"]  # RUF100=unused-noqa, C90=McCabe, D=pydocstyle
+select = [
+    # prefix
+    "ERA",    # https://docs.astral.sh/ruff/rules/#eradicate-era
+    "FAST",   # https://docs.astral.sh/ruff/rules/#fastapi-fast
+    "I",      # https://docs.astral.sh/ruff/rules/#isort-i
+    "ANN",    # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
+    "ASYNC",  # https://docs.astral.sh/ruff/rules/#flake8-async-async
+    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+    "BLE",    # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
+    "FBT",    # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
+    "B",      # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+    "A",      # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+    "C",      # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "EM",     # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
+    "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
+    "ISC",    # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+    "INP",    # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+    "PIE",    # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+    "T",      # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "PT",     # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+    "RSE",    # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
+    "RET",    # https://docs.astral.sh/ruff/rules/#flake8-return-ret
+    "SIM",    # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+    "SLOT",   # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
+    "ARG",    # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+    "PTH",    # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+    "FLY",    # https://docs.astral.sh/ruff/rules/#flynt-fly
+    "I",      # https://docs.astral.sh/ruff/rules/#isort-i
+    "C",      # https://docs.astral.sh/ruff/rules/#mccabe-c90
+    "N",      # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "PERF",   # https://docs.astral.sh/ruff/rules/#perflint-perf
+    "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
+    "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
+    "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+    "PGH",    # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+    "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
+    "UP",     # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+    "FURB",   # https://docs.astral.sh/ruff/rules/#refurb-furb
+    "RUF",    # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+    "TRY",    # https://docs.astral.sh/ruff/rules/#tryceratops-try
+    # Full rule code
+    "ICN003", # https://docs.astral.sh/ruff/rules/banned-import-from
+    "TC004",  # https://docs.astral.sh/ruff/rules/runtime-import-in-type-checking-block
+    "TC005",  # https://docs.astral.sh/ruff/rules/empty-type-checking-block
+    "TC008",  # https://docs.astral.sh/ruff/rules/quoted-type-alias
+    "TC010",  # https://docs.astral.sh/ruff/rules/runtime-string-union
+]
+
+extend-select = ["RUF100", ]  # RUF100=unused-noqa,
 ignore = [
     "D100", # ignore missing docstring in module
     "D102", # ignore missing docstring in public method
     "D104", # ignore missing docstring in public package
     "D105", # ignore missing docstring in magic methods
     "D107", # ignore missing docstring in __init__ methods
+    "D206", # docstring-tab-indentation (formatter handles indentation)
+    "D300", # triple-single-quotes (formatter enforces double quotes)
+    "ANN101", "ANN102", # skip self/cls annotation rules
 ]
+
+[tool.ruff.lint.flake8-import-conventions]
+# Declare the banned `from` imports.
+banned-from = ["air"]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true     # group aliases coming from the same module
 force-wrap-aliases = true     # keep the multi-line, parenthesised layout
+# Help Ruff classify your own package as first-party (very important for stable sorting)
+known-first-party = ["air"]
+# Extra safety: mark imports from the same package as first-party when inside it
+detect-same-package = true
+# Keep the standard section order; set explicitly for clarity
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+# Keep type-based ordering (default, but set explicitly)
+order-by-type = true
+# Do NOT set these (formatter conflicts):
+# force-single-line, lines-after-imports, lines-between-types, split-on-trailing-comma
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ruff.lint.flake8-quotes]
-inline-quotes = "double"
-multiline-quotes = "double"
-docstring-quotes = "double"
-
 [tool.ruff.lint.mccabe]
 max-complexity = 10  # set the C901 threshold explicitly
+
+[tool.ruff.lint.flake8-type-checking]
+# Do NOT auto-quote annotations; prefer normal annotations.
+quote-annotations = false
+# These must exist at runtime (annotations are read/used), so don't gate their imports
+runtime-evaluated-base-classes = [
+    "pydantic.BaseModel",
+]
+runtime-evaluated-decorators = [
+    "dataclasses.dataclass",
+    "pydantic.validate_call",
+    "fastapi.FastAPI.get",
+]
+# Modules that are always safe to import (never gate)
+exempt-modules = ["typing", "typing_extensions"]
 
 [tool.codespell]
 # Ref: https://github.com/codespell-project/codespell#using-a-config-file
