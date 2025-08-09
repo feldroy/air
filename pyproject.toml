@@ -220,7 +220,7 @@ select = [
     "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
     "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
     "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
-    "D",      # https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "F",      # https://docs.astral.sh/ruff/rules/#pyflakes-f
     "PGH",    # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
     "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
     "UP",     # https://docs.astral.sh/ruff/rules/#pyupgrade-up
