@@ -39,11 +39,10 @@ Issues = "https://github.com/feldroy/air/issues"
 "air" = "air.cli:app"
 
 # region dependencies
-project.dependencies = [
-    "fastapi>=0.116.1",
-    "Jinja2>=3.1.6",
-    "python-multipart>=0.0.20",
-]
+[project.dependencies]
+fastapi = ">=0.116.1"
+jinja2 = ">=3.1.6"
+python-multipart = ">=0.0.20"
 
 # Runtime extras you want users to install from PyPI
 [project.optional-dependencies]
@@ -90,7 +89,7 @@ docs = [
     "mkdocstrings[python]",
     "mkdocs-autorefs>=1.4.2",
 ]
-# endregion
+# endregion dependencies
 
 [tool.mypy]
 exclude = "^build/"
@@ -142,7 +141,7 @@ bump = true
 [tool.uv.sources]
 # Tells uv to use the local workspace air instead of PyPI.
 air = { workspace = true }
-# endregion
+# endregion uv
 
 # region ruff
 [tool.ruff]
@@ -279,7 +278,7 @@ runtime-evaluated-decorators = [
 ]
 # Modules that are always safe to import (never gate)
 exempt-modules = ["typing", "typing_extensions"]
-# endregion
+# endregion ruff
 
 [tool.codespell]
 # Ref: https://github.com/codespell-project/codespell#using-a-config-file
