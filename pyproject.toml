@@ -145,6 +145,10 @@ air = { workspace = true }
 
 # region ruff
 [tool.ruff]
+# Keep file discovery identical whether you pass "." or not
+respect-gitignore = true  # default, shown for clarity
+force-exclude = true      # apply excludes even for explicit paths like "."
+
 src = ["src"]
 line-length = 120
 indent-width = 4
@@ -216,6 +220,7 @@ select = [
     "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
     "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
     "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+    "D",      # https://docs.astral.sh/ruff/rules/#pyflakes-f
     "PGH",    # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
     "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
     "UP",     # https://docs.astral.sh/ruff/rules/#pyupgrade-up
@@ -279,6 +284,47 @@ runtime-evaluated-decorators = [
 # Modules that are always safe to import (never gate)
 exempt-modules = ["typing", "typing_extensions"]
 # endregion ruff
+
+# region ty
+[tool.ty.src]
+# Lock what gets checked so "ty check" and "ty check ." act the same
+include = ["src", "tests"] # keep discovery stable
+# Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
+respect-ignore-files = true
+
+[tool.ty.environment]
+# Optional: make first-party resolution stable
+root = ["./src", "."]
+
+[tool.ty.terminal]
+# Fail the run on any warning.
+error-on-warning = true
+# Short, readable output; switch to "full" when debugging.
+output-format = "concise"
+
+# Promote every non-error rule to error (strict).
+[tool.ty.rules]
+deprecated = "error"
+invalid-ignore-comment = "error"
+possibly-unbound-attribute = "error"
+possibly-unbound-implicit-call = "error"
+possibly-unbound-import = "error"
+redundant-cast = "error"
+undefined-reveal = "error"
+unknown-rule = "error"
+unresolved-global = "error"
+unsupported-base = "error"
+division-by-zero = "error"
+possibly-unresolved-reference = "error"
+unused-ignore-comment = "error"
+
+# Tests often import optional dev deps or use dynamic patterns.
+[[tool.ty.overrides]]
+include = ["tests/**", "**/test_*.py", "**/*_test.py"]
+[tool.ty.overrides.rules]
+unresolved-import               = "warn"
+possibly-unresolved-reference   = "warn"
+# endregion ty
 
 [tool.codespell]
 # Ref: https://github.com/codespell-project/codespell#using-a-config-file
