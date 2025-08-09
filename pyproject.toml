@@ -6,13 +6,8 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
-dependencies = [
-    "fastapi>=0.116.1",
-    "Jinja2>=3.1.6",
-    "python-multipart>=0.0.20",
-]
-
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">= 3.10"
 classifiers = [
     "Operating System :: OS Independent",
@@ -35,15 +30,35 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
 ]
 
+[project.urls]
+Homepage = "https://github.com/feldroy/air"
+Docs = "https://airdocs.fastapicloud.dev"
+bugs = "https://github.com/feldroy/air/issues"
+
 [project.scripts]
 "air" = "air.cli:app"
 
+# region dependencies
+project.dependencies = [
+    "fastapi>=0.116.1",
+    "Jinja2>=3.1.6",
+    "python-multipart>=0.0.20",
+]
+
+# Runtime extras you want users to install from PyPI
 [project.optional-dependencies]
-# Make `air[standard]` install FastAPI’s own “standard” extras, available with: uv pip install "air[standard]".
+# Make `air[standard]` install FastAPI’s own “standard” extras,
+# so *users* can do: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.116.1",
 ]
+
+[dependency-groups]
+# Groups are for contributors; install with: uv sync --group NAME
+# Developer-only deps (dev/test/docs) under [dependency-groups],
+# so uv sync can install them for contributors.
+# (Groups are not published to PyPI (meaning: they’re not visible to end users).)
 dev = [
     # Justfile tasks
     "rust-just>=1.42.3",
@@ -75,21 +90,49 @@ docs = [
     "mkdocstrings[python]",
     "mkdocs-autorefs>=1.4.2",
 ]
-
-[project.urls]
-homepage = "https://github.com/feldroy/air"
-bugs = "https://github.com/feldroy/air/issues"
+# endregion
 
 [tool.mypy]
 exclude = "^build/"
+
+# -------- pytest: make tests import from src/ --------
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 
 [tool.coverage.run]
 omit = [
     "tests/*",
 ]
 
+# region uv
 [tool.uv]
 package = true
+# Keep defaults explicit; dev, test groups installs on `uv sync`
+default-groups = ["dev", "test"]
+# Dev tools require modern Python while the library supports older (meaning: earlier) versions
+
+[tool.uv.dependency-groups]
+dev = { requires-python = ">=3.10" }
+# Speed up rebuilds of the editable install
+cache-keys = [
+  { file = "pyproject.toml" },
+  { file = "uv.lock" },
+  { dir = "src" },
+  { dir = "tests" },
+  { file = "README.md" },
+]
+
+# -------- uv build backend (fast and strict) --------
+[build-system]
+requires = ["uv_build>=0.8.7,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+# src is default, but we state it for clarity
+module-root = "src"
+# Your single top-level package under src
+module-name = "air"
 
 [tool.uv-dynamic-versioning]
 vcs = "git"
@@ -97,8 +140,11 @@ style = "pep440"
 bump = true
 
 [tool.uv.sources]
+# Tells uv to use the local workspace air instead of PyPI.
 air = { workspace = true }
+# endregion
 
+# region ruff
 [tool.ruff]
 src = ["src"]
 line-length = 120
@@ -184,7 +230,6 @@ select = [
     "TC008",  # https://docs.astral.sh/ruff/rules/quoted-type-alias
     "TC010",  # https://docs.astral.sh/ruff/rules/runtime-string-union
 ]
-
 ignore = [
     "D100", # ignore missing docstring in module
     "D102", # ignore missing docstring in public method
@@ -234,6 +279,7 @@ runtime-evaluated-decorators = [
 ]
 # Modules that are always safe to import (never gate)
 exempt-modules = ["typing", "typing_extensions"]
+# endregion
 
 [tool.codespell]
 # Ref: https://github.com/codespell-project/codespell#using-a-config-file
