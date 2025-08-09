@@ -2,9 +2,8 @@
 qa:
     uv run --python=3.13 --extra test ruff format .
     uv run --python=3.13 --extra test ruff check . --fix
-    uv run --python=3.13 --extra test ruff check --select I --fix .
     uv run --python=3.13 --extra test ty check .
-    uv run --python=3.13 --extra test pytest .
+    uv run --python=3.13 --extra test pytest
 
 # Run all the tests for all the supported Python versions
 testall:
