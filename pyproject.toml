@@ -33,7 +33,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/feldroy/air"
 Docs = "https://airdocs.fastapicloud.dev"
-bugs = "https://github.com/feldroy/air/issues"
+Issues = "https://github.com/feldroy/air/issues"
 
 [project.scripts]
 "air" = "air.cli:app"
@@ -110,10 +110,10 @@ omit = [
 package = true
 # Keep defaults explicit; dev, test groups installs on `uv sync`
 default-groups = ["dev", "test"]
-# Dev tools require modern Python while the library supports older (meaning: earlier) versions
 
 [tool.uv.dependency-groups]
-dev = { requires-python = ">=3.10" }
+# Dev tools require modern Python while the library supports older versions
+dev = { requires-python = ">=3.13" }
 # Speed up rebuilds of the editable install
 cache-keys = [
   { file = "pyproject.toml" },
