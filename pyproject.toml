@@ -142,7 +142,6 @@ select = [
     # prefix
     "ERA",    # https://docs.astral.sh/ruff/rules/#eradicate-era
     "FAST",   # https://docs.astral.sh/ruff/rules/#fastapi-fast
-    "I",      # https://docs.astral.sh/ruff/rules/#isort-i
     "ANN",    # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
     "ASYNC",  # https://docs.astral.sh/ruff/rules/#flake8-async-async
     "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
@@ -150,13 +149,13 @@ select = [
     "FBT",    # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
     "B",      # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
     "A",      # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
-    "C",      # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "C4",     # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
     "EM",     # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
     "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
     "ISC",    # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
     "INP",    # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
     "PIE",    # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
-    "T",      # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "T20",    # https://docs.astral.sh/ruff/rules/#flake8-print-t20
     "PT",     # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
     "RSE",    # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
     "RET",    # https://docs.astral.sh/ruff/rules/#flake8-return-ret
@@ -166,7 +165,7 @@ select = [
     "PTH",    # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
     "FLY",    # https://docs.astral.sh/ruff/rules/#flynt-fly
     "I",      # https://docs.astral.sh/ruff/rules/#isort-i
-    "C",      # https://docs.astral.sh/ruff/rules/#mccabe-c90
+    "C90",    # https://docs.astral.sh/ruff/rules/#mccabe-c90
     "N",      # https://docs.astral.sh/ruff/rules/#pep8-naming-n
     "PERF",   # https://docs.astral.sh/ruff/rules/#perflint-perf
     "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
@@ -186,7 +185,6 @@ select = [
     "TC010",  # https://docs.astral.sh/ruff/rules/runtime-string-union
 ]
 
-extend-select = ["RUF100", ]  # RUF100=unused-noqa,
 ignore = [
     "D100", # ignore missing docstring in module
     "D102", # ignore missing docstring in public method
