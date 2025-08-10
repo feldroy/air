@@ -9,7 +9,7 @@ git clone https://github.com/feldroy/air.git
 cd air
 uv venv
 source .venv/bin/activate
-uv sync --extra dev
+uv sync --group dev
 ```
 
 Now you're ready to run Air from your local clone of your fork. Play with it, fix bugs, document, have fun!
