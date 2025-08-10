@@ -1,4 +1,12 @@
-from .tags import CaseTag
+from .base import Tag
+
+
+class CaseTag(Tag):
+    """This is for case-sensitive tags like those used in SVG generation."""
+
+    @property
+    def name(self) -> str:
+        return self._name[0].lower() + self._name[1:]
 
 
 class A(CaseTag):

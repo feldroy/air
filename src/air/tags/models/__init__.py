@@ -1,18 +1,18 @@
-"""A FastAPI-powered breath of fresh air in Python web development."""
-
-from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
-
-from . import layouts as layouts, responses as responses
-from .applications import Air as Air
-from .background import BackgroundTasks as BackgroundTasks
-from .forms import AirField as AirField, AirForm as AirForm
-from .requests import is_htmx_request as is_htmx_request, Request as Request
-from .responses import (
-    AirResponse as AirResponse,
-    SSEResponse as SSEResponse,
-    TagResponse as TagResponse,
+from . import svg as svg
+from .special import (
+    Children as Children,
+    Html as Html,
+    Raw as Raw,
+    Script as Script,
+    Style as Style,
 )
-from .tags import (
+from .stock import (
+    H1 as H1,
+    H2 as H2,
+    H3 as H3,
+    H4 as H4,
+    H5 as H5,
+    H6 as H6,
     A as A,
     Abbr as Abbr,
     Address as Address,
@@ -30,7 +30,6 @@ from .tags import (
     Button as Button,
     Canvas as Canvas,
     Caption as Caption,
-    Children as Children,
     Cite as Cite,
     Code as Code,
     Col as Col,
@@ -52,17 +51,10 @@ from .tags import (
     Figure as Figure,
     Footer as Footer,
     Form as Form,
-    H1 as H1,
-    H2 as H2,
-    H3 as H3,
-    H4 as H4,
-    H5 as H5,
-    H6 as H6,
     Head as Head,
     Header as Header,
     Hgroup as Hgroup,
     Hr as Hr,
-    Html as Html,
     I as I,
     Iframe as Iframe,
     Img as Img,
@@ -92,13 +84,11 @@ from .tags import (
     Pre as Pre,
     Progress as Progress,
     Q as Q,
-    Raw as Raw,
     Rp as Rp,
     Rt as Rt,
     Ruby as Ruby,
     S as S,
     Samp as Samp,
-    Script as Script,
     Search as Search,
     Section as Section,
     Select as Select,
@@ -106,11 +96,9 @@ from .tags import (
     Source as Source,
     Span as Span,
     Strong as Strong,
-    Style as Style,
     Sub as Sub,
     Summary as Summary,
     Sup as Sup,
-    svg as svg,
     Table as Table,
     Tag as Tag,
     Tbody as Tbody,
@@ -130,4 +118,3 @@ from .tags import (
     Video as Video,
     Wbr as Wbr,
 )
-from .templates import JinjaRenderer as JinjaRenderer

@@ -12,7 +12,7 @@ from starlette.responses import (
 )
 from starlette.types import Send
 
-from air.tags import Tag
+from .tags import Tag
 
 
 def dict_to_airtag(d):

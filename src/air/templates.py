@@ -50,7 +50,7 @@ class JinjaRenderer:
         if context is None:
             context = {}
         if kwargs:
-            context = context | kwargs
+            context |= kwargs
 
         # Attempt to render any Tags in the contect
         for k, v in context.items():

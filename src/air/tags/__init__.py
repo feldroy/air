@@ -1,18 +1,12 @@
-"""A FastAPI-powered breath of fresh air in Python web development."""
+__doc__ = """Easy to write and performant HTML content generation using Python classes to render HTML."""
 
-from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
-
-from . import layouts as layouts, responses as responses
-from .applications import Air as Air
-from .background import BackgroundTasks as BackgroundTasks
-from .forms import AirField as AirField, AirForm as AirForm
-from .requests import is_htmx_request as is_htmx_request, Request as Request
-from .responses import (
-    AirResponse as AirResponse,
-    SSEResponse as SSEResponse,
-    TagResponse as TagResponse,
-)
-from .tags import (
+from .models import (
+    H1 as H1,
+    H2 as H2,
+    H3 as H3,
+    H4 as H4,
+    H5 as H5,
+    H6 as H6,
     A as A,
     Abbr as Abbr,
     Address as Address,
@@ -52,12 +46,6 @@ from .tags import (
     Figure as Figure,
     Footer as Footer,
     Form as Form,
-    H1 as H1,
-    H2 as H2,
-    H3 as H3,
-    H4 as H4,
-    H5 as H5,
-    H6 as H6,
     Head as Head,
     Header as Header,
     Hgroup as Hgroup,
@@ -110,7 +98,6 @@ from .tags import (
     Sub as Sub,
     Summary as Summary,
     Sup as Sup,
-    svg as svg,
     Table as Table,
     Tag as Tag,
     Tbody as Tbody,
@@ -129,5 +116,6 @@ from .tags import (
     Var as Var,
     Video as Video,
     Wbr as Wbr,
+    svg as svg,
 )
-from .templates import JinjaRenderer as JinjaRenderer
+from .utils import SafeStr as SafeStr
