@@ -20,7 +20,7 @@ test *ARGS:
 # Run all the tests, but on failure, drop into the debugger
 pdb *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --isolated --group test -- pytest --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb {{ARGS}}
+    uv run --python=3.13 --isolated --group test -- pytest --ipdb --maxfail=10 {{ARGS}}
 
 # Run coverage, and build to HTML
 coverage:

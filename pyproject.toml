@@ -61,7 +61,6 @@ dev = [
 devtools = [
     "rust-just>=1.42.3",  # Justfile tasks
     "uvicorn>=0.34.0",    # run full example apps
-    "ipdb>=0.13.13",      # debugging
 ]
 lint = [
     "ruff>=0.11.13",         # Linting and formatting
@@ -69,9 +68,10 @@ lint = [
     "types-Markdown>=3.8.0", # Types for the markdown library
 ]
 test = [
-    "coverage>=7.8.2", # Measure how much of the code is covered by tests
-    "httpx>=0.28.1",   # For the test client
-    "pytest>=8.4.0",   # Test runner
+    "coverage>=7.8.2",     # Measure how much of the code is covered by tests
+    "httpx>=0.28.1",       # For the test client
+    "pytest>=8.4.0",       # Test runner
+    "pytest-ipdb>=0.2.4",  # enables --ipdb
 ]
 docs = [
     "mkdocs-material",          # MkDocs theme
