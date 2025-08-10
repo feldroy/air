@@ -71,7 +71,7 @@ test = [
     "coverage>=7.8.2",     # Measure how much of the code is covered by tests
     "httpx>=0.28.1",       # For the test client
     "pytest>=8.4.0",       # Test runner
-    "pytest-ipdb>=0.2.4",  # enables --ipdb
+    "pdbpp>=0.11.7",       # enables pdb++, a drop-in replacement for pdb
 ]
 docs = [
     "mkdocs-material",          # MkDocs theme
