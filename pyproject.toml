@@ -6,13 +6,8 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
-dependencies = [
-    "fastapi>=0.116.1",
-    "Jinja2>=3.1.6",
-    "python-multipart>=0.0.20",
-]
-
 readme = "README.md"
+license = { file = "LICENSE" }
 requires-python = ">= 3.10"
 classifiers = [
     "Operating System :: OS Independent",
@@ -34,6 +29,17 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
+
+dependencies = [
+    "fastapi>=0.116.1",
+    "Jinja2>=3.1.6",
+    "python-multipart>=0.0.20",
+]
+
+[project.urls]
+Homepage = "https://github.com/feldroy/air"
+Docs = "https://airdocs.fastapicloud.dev"
+Issues = "https://github.com/feldroy/air/issues"
 
 [project.scripts]
 "air" = "air.cli:app"
@@ -73,10 +79,6 @@ docs = [
     "mkdocstrings[python]",
     "mkdocs-autorefs>=1.4.2",
 ]
-
-[project.urls]
-homepage = "https://github.com/feldroy/air"
-bugs = "https://github.com/feldroy/air/issues"
 
 [tool.mypy]
 exclude = "^build/"
