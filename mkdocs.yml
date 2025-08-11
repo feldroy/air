@@ -11,7 +11,12 @@ nav:
     - Layouts: api/layouts.md
     - Requests: api/requests.md
     - Responses: api/responses.md
-    - SVG: api/svg.md
+    - SVG: 
+      - SVG: api/svg/index.md
+      - "SVG A-D": api/svg/a-d.md
+      - "SVG E-M": api/svg/e-m.md
+      - "SVG N-S": api/svg/n-s.md
+      - "SVG T-Z": api/svg/t-z.md
     - Tags:
       - Tags: api/tags/index.md
       - "Tags A-D": api/tags/a-d.md
