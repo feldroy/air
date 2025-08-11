@@ -265,14 +265,14 @@ def test_animate_with_extended_attributes():
         attributeName="opacity",
         attributeType="CSS",
         from_="0",
-        to="1", 
+        to="1",
         by="0.5",
         dur="2s",
         begin="1s",
         end="5s",
         repeatCount="3",
         repeatDur="10s",
-        calcMode="linear"
+        calcMode="linear",
     )
     expected = '<animate attributeName="opacity" attributeType="CSS" dur="2s" repeatCount="3" repeatDur="10s" from-="0" to="1" by="0.5" begin="1s" end="5s" calcMode="linear"></animate>'
     assert animate.render() == expected
