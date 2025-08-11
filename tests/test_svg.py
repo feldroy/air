@@ -74,7 +74,10 @@ def test_svg_with_viewbox():
 
 def test_group_with_children():
     group = air.svg.G(
-        air.svg.Circle(r=10), air.svg.Rect(width=20, height=20), class_="shape-group", id="group1"
+        air.svg.Circle(r=10),
+        air.svg.Rect(width=20, height=20),
+        class_="shape-group",
+        id="group1",
     )
     expected = '<g class="shape-group" id="group1"><circle r="10"></circle><rect width="20" height="20"></rect></g>'
     assert group.render() == expected
