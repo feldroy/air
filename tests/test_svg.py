@@ -21,8 +21,6 @@ def test_atag_with_all_attributes():
     assert link.render() == expected
 
 
-
-
 def test_cased_tag_no_children():
     assert air.svg.AnimateMotion().render() == "<animateMotion></animateMotion>"
 
