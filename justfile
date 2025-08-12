@@ -1,3 +1,7 @@
+# Load .env automatically (for colors, etc.)
+set dotenv-load := true
+set dotenv-filename := ".env"
+
 # Run all the formatting, linting, and testing commands
 qa:
     uv run --python=3.13 --isolated --group lint -- ruff format .

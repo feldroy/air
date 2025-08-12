@@ -1,4 +1,5 @@
 # .github/workflows/python-package.yml
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # CI using uv + just, with minimal/noise-free logs:
 # - Colors forced inside a tiny wrapper script (not via step `env:`), so they don’t appear in the log header.
 # - No echo/group commands shown.
@@ -13,73 +14,19 @@ on:
     branches: [main]
 
 jobs:
-  # Define shared bootstrap once (this job never runs).
-  _shared:
-    if: ${{ false }}
+  build:
     runs-on: ubuntu-latest
     steps:
-      - &checkout
-        name: Checkout
-        uses: actions/checkout@v5
-
+      - &checkout {uses: actions/checkout@v5}
       - &setup_uv
         name: Install uv (with cache)
         uses: astral-sh/setup-uv@v6
         with:
-          # Keep uv cache, but avoid python-version to prevent UV_PYTHON noise in logs.
           enable-cache: true
           cache-dependency-glob: uv.lock
-
-      - &install_just
-        name: Install just
-        uses: taiki-e/install-action@just
-
-      - &write_wrapper
-        name: Prepare quiet, colored runner
-        run: |
-          mkdir -p .github/scripts
-          cat > .github/scripts/just-run.sh <<'EOF'
-          #!/usr/bin/env bash
-          set -euo pipefail
-
-          # Force rich/pytest/ruff and friends to colorize without leaking to the step `env:` section:
-          export TERM=xterm-256color
-          export COLORTERM=truecolor
-          export PY_COLORS=1
-          export FORCE_COLOR=3
-          export CLICOLOR=1
-          export CLICOLOR_FORCE=1
-          export RICH_FORCE_TERMINAL=1
-          export PYTEST_ADDOPTS="--color=yes -rA"
-
-          # Make `just` itself always color (documented: JUST_COLOR / --color). 
-          # Ref: man just(1) --color / JUST_COLOR.
-          export JUST_COLOR=always
-
-          # Pretty header, then exec so the child’s output is the step’s output:
-          printf "> just %s\n" "$*"
-          exec just --color=always "$@"
-          EOF
-          chmod +x .github/scripts/just-run.sh
-
-  qa:
-    name: QA (format, lint, types, tests)
-    runs-on: ubuntu-latest
-    steps:
-      - *checkout
-      - *setup_uv
-      - *install_just
-      - *write_wrapper
-      - name: just qa
-        run: .github/scripts/just-run.sh qa
-
-  test-all:
-    name: Test on 3.10–3.13 (via just)
-    runs-on: ubuntu-latest
-    steps:
-      - *checkout
-      - *setup_uv
-      - *install_just
-      - *write_wrapper
-      - name: just testall
-        run: .github/scripts/just-run.sh testall
+      - name: Install the project
+        run: uv sync --group dev
+      - name: QA (format, lint, types) (via just, uv, ruff and ty)
+        run: just qa
+      - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
+        run: just testall
