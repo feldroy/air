@@ -72,7 +72,7 @@ test = [
     "httpx>=0.28.1",   # For the test client
     "pytest>=8.4.0",   # Test runner
     "pdbpp>=0.11.7",   # enables pdb++, a drop-in replacement for pdb
-    "pytest-modern",     # Leverage rich for richer test session output.
+    "pytest-modern",     # Provides richer test session output.
 ]
 docs = [
     "mkdocs-material",          # MkDocs theme
