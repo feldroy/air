@@ -339,7 +339,8 @@ class Air(FastAPI):
         AirResponse as the default response class.
         """
         DEFAULT_EXCEPTION_HANDLERS: dict[int, BuiltinFunctionType] = {
-            404: default_404_exception_handler
+            404: default_404_exception_handler,
+            500: default_500_exception_handler,
         }
         if exception_handlers is None:
             exception_handlers = {}
@@ -405,4 +406,27 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
             ),
         ),
         status_code=404,
+    )
+
+
+def default_500_exception_handler(request: Request, exc: Exception) -> AirResponse:
+    return AirResponse(
+        Html(
+            Head(
+                Link(
+                    rel="stylesheet",
+                    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css",
+                ),
+                Title("500 Internal Server Error"),
+            ),
+            Body(
+                Main(
+                    H1("500 Internal Server Error"),
+                    P("An internal server error occurred."),
+                    P(f"URL: {request.url}"),
+                    class_="container",
+                )
+            ),
+        ),
+        status_code=500,
     )
