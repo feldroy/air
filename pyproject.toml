@@ -101,12 +101,110 @@ omit = [
     "tests/*",
 ]
 
+# region ----> uv - Project Configuration <----
+
+# uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
+# Treat this repo as an installable *package*, not just a “virtual” project.
+# Result: `uv sync` / `uv run` will install *this library itself* into the venv in
+# editable (meaning: linked to your working tree) mode, not only its dependencies.
+# This enables entry points (meaning: auto-created CLI scripts), plugin discovery,
+# and proper distribution metadata (meaning: standard package info used by tools).
 package = true
 # Disable uv’s implicit dev default (otherwise default-groups=["dev"]).
 # Ensure 'uv run' won’t auto-install dev, and will only use groups you pass.
 # While, 'uv sync' can add dev via --group dev.
 default-groups = []
+# Cache “hints” you (or CI) can hash to decide when to rebuild an editable install
+# or reuse a cached environment. uv doesn’t read these at runtime; they’re for automation
+# (meaning: your own scripts/CI pipelines).
+cache-keys = [
+  { file = "pyproject.toml" },  # Rebuild if project config changes.
+  { file = "uv.lock" },         # Rebuild if exact dependency versions change.
+  { dir  = "src" },             # Rebuild on library source edits.
+  { dir  = "tests" },           # Rebuild on test edits (keeps test env fresh).
+  { file = "README.md" },       # Rebuild if docs used in build change.
+]
+
+# ---- named dependency groups ----
+[tool.uv.dependency-groups]  # Define optional groups (dev/test/docs, etc.).
+# Dev tools may require modern Python, while the library itself can support older versions.
+# This avoids installing heavy modern tooling on older interpreters used only to *consume*
+# the library.
+dev = { requires-python = ">=3.13" }
+
+# Control where uv resolves packages from.
+[tool.uv.sources]
+# Always use the local workspace copy of "air" instead of a PyPI release.
+# In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
+# uv uses your checked-out code.
+air = { workspace = true }
+
+# -------- uv build backend (fast and strict) --------
+# ======================================================================
+# Why this build-backend section exists (the big picture for newcomers)
+#
+# Short version:
+# For a library, installing the library itself into the virtual environment
+# (not just its dependencies) is how modern Python packaging is meant to work.
+# Many features only “exist” after install because they’re defined by packaging
+# standards, not by simply having files on disk.
+#
+# Official Python basis:
+# • PEP 517/518 build systems: Projects declare a build backend in pyproject.toml.
+#   Front-ends (meaning: installers like pip/uv) build+install through that backend.
+#   That produces an installed distribution,
+#   with metadata (meaning: version, entry points, requirements).
+# • PEP 660 editable installs: In development, you install *editable* so code
+#   changes take effect without reinstalling, still producing a proper installed
+#   distribution with .dist-info.
+# • Entry points & console scripts: Commands and plugin hooks are created at
+#   *install time* from entry points. Without install, the commands/hooks do not exist.
+# • Distribution metadata: Tools read version and entry points via importlib.metadata
+#   from the installed .dist-info. No install → nothing to read.
+# • src/ layout: With “src/”, tests and tools should import the *installed* package
+#   (editable), not in-tree files. This matches how users import from PyPI.
+#
+# uv’s behavior:
+# • Package vs “virtual” project: Packages are installed into the venv (editable by
+#   default) and therefore need a build backend. “Virtual” projects only install deps.
+# • Auto-sync: `uv run` checks the lockfile/env before every run and, for packages,
+#   ensures your library is installed so commands run against the installed distribution.
+# • Editable by default: uv installs your project editable unless you pass --no-editable.
+# • No [build-system]? By default uv won’t install your project (only deps). You can
+#   force install with `tool.uv.package = true` (uv falls back to a legacy backend),
+#   but declaring a proper backend is the recommended path.
+#
+# Real-world effects you will notice:
+# 1) CLI commands appear only after install (via entry points), e.g. `air` on PATH.
+# 2) pytest/flake8 plugins are discovered only when installed (via entry points).
+# 3) `importlib.metadata.version("air")` works only for an installed distribution.
+# 4) src/ layout behaves correctly (imports mirror what end users get from PyPI).
+#
+# Takeaway:
+# For a Python 3.13+ library, an editable install is the spec-aligned (meaning:
+# follows the standard) workflow. It enables scripts, plugins, metadata, compiled
+# code, and correct src/ behavior. uv follows these standards and installs your
+# package by default so everything “just works”.
+# ======================================================================
+# PEP 517/518: tells installers (pip/uv) how to build/install this project.
+[build-system]
+# Ensure the chosen backend is present. A version range keeps CI reproducible
+# (meaning: stable over time) while allowing safe updates.
+requires = ["uv_build>=0.8.7,<0.9.0"]
+# Use uv’s build backend. It is fast and strict, supports PEP 660 editable installs,
+# and produces correct distribution metadata for tooling.
+build-backend = "uv_build"
+# Settings specific to uv_build.
+[tool.uv.build-backend]
+# Declare the “src/” layout so imports come from the installed package, not the repo root.
+# Prevents path leaks (meaning: accidental local imports) and matches end-user installs.
+module-root = "src"
+# The single top-level package name under ./src. The backend validates this structure
+# to catch layout mistakes early.
+module-name = "air"
+
+# endregion uv
 
 [tool.ruff]                  # enable import-sorting in the linter
 lint.select = ["I"]          # I-rules = isort compatibility

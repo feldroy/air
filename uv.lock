@@ -2,7 +2,8 @@ version = 1
 revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
-    "python_full_version >= '3.11'",
+    "python_full_version >= '3.13'",
+    "python_full_version >= '3.11' and python_full_version < '3.13'",
     "python_full_version < '3.11'",
 ]
 
@@ -23,18 +24,18 @@ standard = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "coverage" },
-    { name = "httpx" },
-    { name = "mkdocs-autorefs" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extra = ["python"] },
-    { name = "pdbpp" },
-    { name = "pytest" },
-    { name = "ruff" },
-    { name = "rust-just" },
-    { name = "ty" },
-    { name = "types-markdown" },
-    { name = "uvicorn" },
+    { name = "coverage", marker = "python_full_version >= '3.13'" },
+    { name = "httpx", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocs-autorefs", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocs-material", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocstrings", extra = ["python"], marker = "python_full_version >= '3.13'" },
+    { name = "pdbpp", marker = "python_full_version >= '3.13'" },
+    { name = "pytest", marker = "python_full_version >= '3.13'" },
+    { name = "ruff", marker = "python_full_version >= '3.13'" },
+    { name = "rust-just", marker = "python_full_version >= '3.13'" },
+    { name = "ty", marker = "python_full_version >= '3.13'" },
+    { name = "types-markdown", marker = "python_full_version >= '3.13'" },
+    { name = "uvicorn", marker = "python_full_version >= '3.13'" },
 ]
 devtools = [
     { name = "rust-just" },
@@ -68,18 +69,18 @@ provides-extras = ["standard"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "coverage", specifier = ">=7.8.2" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "mkdocs-autorefs", specifier = ">=1.4.2" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extras = ["python"] },
-    { name = "pdbpp", specifier = ">=0.11.7" },
-    { name = "pytest", specifier = ">=8.4.0" },
-    { name = "ruff", specifier = ">=0.11.13" },
-    { name = "rust-just", specifier = ">=1.42.3" },
-    { name = "ty", specifier = ">=0.0.1a16" },
-    { name = "types-markdown", specifier = ">=3.8.0" },
-    { name = "uvicorn", specifier = ">=0.34.0" },
+    { name = "coverage", marker = "python_full_version >= '3.13'", specifier = ">=7.8.2" },
+    { name = "httpx", marker = "python_full_version >= '3.13'", specifier = ">=0.28.1" },
+    { name = "mkdocs-autorefs", marker = "python_full_version >= '3.13'", specifier = ">=1.4.2" },
+    { name = "mkdocs-material", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocstrings", extras = ["python"], marker = "python_full_version >= '3.13'" },
+    { name = "pdbpp", marker = "python_full_version >= '3.13'", specifier = ">=0.11.7" },
+    { name = "pytest", marker = "python_full_version >= '3.13'", specifier = ">=8.4.0" },
+    { name = "ruff", marker = "python_full_version >= '3.13'", specifier = ">=0.11.13" },
+    { name = "rust-just", marker = "python_full_version >= '3.13'", specifier = ">=1.42.3" },
+    { name = "ty", marker = "python_full_version >= '3.13'", specifier = ">=0.0.1a16" },
+    { name = "types-markdown", marker = "python_full_version >= '3.13'", specifier = ">=3.8.0" },
+    { name = "uvicorn", marker = "python_full_version >= '3.13'", specifier = ">=0.34.0" },
 ]
 devtools = [
     { name = "rust-just", specifier = ">=1.42.3" },
