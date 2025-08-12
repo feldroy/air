@@ -21,8 +21,9 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Annotated, Doc, deprecated
 
+from .layouts import mvpcss
 from .responses import AirResponse
-from .tags import H1, Body, Head, Html, Link, Main, P, Title
+from .tags import H1, P, Title
 
 AppType = TypeVar("AppType", bound="FastAPI")
 
@@ -388,22 +389,12 @@ class Air(FastAPI):
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
     return AirResponse(
-        Html(
-            Head(
-                Link(
-                    rel="stylesheet",
-                    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css",
-                ),
-                Title("404 Not Found"),
-            ),
-            Body(
-                Main(
-                    H1("404 Not Found"),
-                    P("The requested resource was not found on this server."),
-                    P(f"URL: {request.url}"),
-                    class_="container",
-                )
-            ),
+        mvpcss(
+            Title("404 Not Found"),
+            H1("404 Not Found"),
+            P("The requested resource was not found on this server."),
+            P(f"URL: {request.url}"),
+            htmx=False,
         ),
         status_code=404,
     )
@@ -411,22 +402,11 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
 
 def default_500_exception_handler(request: Request, exc: Exception) -> AirResponse:
     return AirResponse(
-        Html(
-            Head(
-                Link(
-                    rel="stylesheet",
-                    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css",
-                ),
-                Title("500 Internal Server Error"),
-            ),
-            Body(
-                Main(
-                    H1("500 Internal Server Error"),
-                    P("An internal server error occurred."),
-                    P(f"URL: {request.url}"),
-                    class_="container",
-                )
-            ),
+        mvpcss(
+            Title("500 Internal Server Error"),
+            H1("500 Internal Server Error"),
+            P("An internal server error occurred."),
+            htmx=False,
         ),
         status_code=500,
     )
