@@ -14,7 +14,9 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  # Define shared bootstrap once (never runs; used for anchors).
+  _shared:
+    if: ${{ false }}
     name: CI [QA(format, lint, types) + Test on 3.10–>3.13]
     runs-on: ubuntu-latest
     steps:
@@ -25,9 +27,25 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
-      - name: Install just
+      - &install_just
+        name: Install just
         uses: taiki-e/install-action@just
+
+  qa:
+    name: QA (format, lint, types) (via just, uv, ruff and ty)
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout
+      - *setup_uv
+      - *install_just
       - name: QA (format, lint, types) (via just, uv, ruff and ty)
         run: just qa
+ test-all:
+    name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout
+      - *setup_uv
+      - *install_just
       - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
         run: just testall
