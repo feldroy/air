@@ -21,9 +21,9 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
     2. Otherwise everything is put in the `<body>`
     3. HTMX is the default, change with the `htmx` keyword argument
 
-    Note: `MVP.css` is a quick prototyping tool. It isn't designed to be extensible.
+    Note: The `mvpcss` function is a quick prototyping tool. It isn't designed to be extensible.
         Rather the `mvpcss` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
-        For more advanced layouts like Eidos or a full-fledged PicoCSS implementation,
+        For more advanced layouts like Eidos or a full-fledged MVP.css implementation,
         you'll have to create your own layouts.
     """
     body_tags = filter_body_tags(children)
