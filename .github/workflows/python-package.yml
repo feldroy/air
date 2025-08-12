@@ -15,6 +15,7 @@ on:
 
 jobs:
   build:
+    name: CI [QA(format, lint, types) + Test on 3.10–>3.13]
     runs-on: ubuntu-latest
     steps:
       - &checkout {uses: actions/checkout@v5}
