@@ -24,8 +24,8 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
-      - name: Install the project
-        run: uv sync --group dev
+      - name: Install just
+        uses: taiki-e/install-action@just
       - name: QA (format, lint, types) (via just, uv, ruff and ty)
         run: just qa
       - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
