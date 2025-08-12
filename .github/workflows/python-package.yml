@@ -40,7 +40,7 @@ jobs:
       - *install_just
       - name: QA (format, lint, types) (via just, uv, ruff and ty)
         run: just qa
- test-all:
+  test-all:
     name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
     runs-on: ubuntu-latest
     steps:
