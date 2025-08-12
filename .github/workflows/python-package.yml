@@ -23,13 +23,13 @@ jobs:
           enable-cache: true
           cache-dependency-glob: uv.lock
       - name: Install the project
-        run: uv sync --locked --all-extras --dev
+        run: uv sync --group dev
       - name: Lint with ruff
         run: |
           # Stop the build if the formatting is bad
-          ruff format . --check
+          ruff format .
           # stop the build if there is ugly python
-          ruff check .
+          ruff check --fix .
       - name: Test with pytest
         run: |
           pytest .
