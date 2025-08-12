@@ -68,11 +68,12 @@ lint = [
     "types-Markdown>=3.8.0", # Types for the markdown library
 ]
 test = [
-    "coverage>=7.8.2", # Measure how much of the code is covered by tests
-    "httpx>=0.28.1",   # For the test client
-    "pytest>=8.4.0",   # Test runner
-    "pdbpp>=0.11.7",   # enables pdb++, a drop-in replacement for pdb
-    "pytest-rich",     # Leverage rich for richer test session output.
+    "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
+    "httpx>=0.28.1",         # For the test client
+    "pytest>=8.4.0",         # Test runner
+    "pdbpp>=0.11.7",         # enables pdb++, a drop-in replacement for pdb
+    "pytest-rich",           # Leverage rich for richer test session output.
+    "pytest-cov>=6.2.1",     # Pytest plugin for measuring coverage.
 ]
 docs = [
     "mkdocs-material",          # MkDocs theme
@@ -92,15 +93,37 @@ Issues = "https://github.com/feldroy/air/issues"
 [tool.mypy]
 exclude = "^build/"
 
-# -------- pytest: make tests import from src/ --------
+# region ----> pytest - Project Configuration <----
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+filterwarnings = ["error"]  # equals: -W error
+addopts = [
+    "--maxfail=1",
+    "--color=yes",
+    "--cov-context=test",
+]
 
 [tool.coverage.run]
-omit = [
-    "tests/*",
-]
+source = ["src"]
+branch = true
+#concurrency = ["multiprocessing"]
+parallel = true
+sigterm = true
+omit = ["tests/*", ".venv/*", "venv/*"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+skip_covered = true
+precision = 0
+sort = "miss"
+
+[tool.coverage.html]
+directory = ".cov_html"
+title = "Tests - Coverage"
+# endregion pytest
+
 
 # region ----> uv - Project Configuration <----
 

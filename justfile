@@ -2,19 +2,30 @@
 set dotenv-load := true
 set dotenv-filename := ".env"
 
-# Run all the formatting, linting, and testing commands
+# Run all the formatting, linting, and type checking commands
 qa:
     uv run --python=3.13 --isolated --group lint -- ruff format .
     uv run --python=3.13 --isolated --group lint -- ruff check --fix .
     uv run --python=3.13 --isolated --group lint --group test -- ty check .
-    uv run --python=3.13 --isolated --group test -- pytest
 
 # Run all the tests for all the supported Python versions
-testall:
-    uv run --python=3.10 --isolated --group test -- pytest
-    uv run --python=3.11 --isolated --group test -- pytest
-    uv run --python=3.12 --isolated --group test -- pytest
-    uv run --python=3.13 --isolated --group test -- pytest
+test-all:
+    uv run --python=3.10 --isolated --group test -- pytest --rich
+    uv run --python=3.11 --isolated --group test -- pytest --rich
+    uv run --python=3.12 --isolated --group test -- pytest --rich
+    uv run --python=3.13 --isolated --group test -- pytest --rich
+
+# Run coverage, and build to HTML
+test-coverage:
+    uv run --python=3.13 --isolated --group test -- pytest --cov=src -q
+
+# Show the 10 slowest tests (timings)
+test-durations:
+    uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vv --no-header
+
+# Build only the HTML coverage report
+coverage-html:
+    uv run --python=3.13 --isolated --group test -- pytest --cov=src --cov-report=html:./.cov_html
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
@@ -25,12 +36,6 @@ test *ARGS:
 pdb *ARGS:
     @echo "Running with arg: {{ARGS}}"
     uv run --python=3.13 --isolated --group test -- pytest --pdb --maxfail=10 {{ARGS}}
-
-# Run coverage, and build to HTML
-coverage:
-    uv run --python=3.13 --isolated --group test -- coverage run -m pytest .
-    uv run --python=3.13 --isolated --group test -- coverage report -m
-    uv run --python=3.13 --isolated --group test -- coverage html
 
 # Build the project, useful for checking that packaging is correct
 build:

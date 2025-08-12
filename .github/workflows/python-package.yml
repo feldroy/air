@@ -48,4 +48,13 @@ jobs:
       - *setup_uv
       - *install_just
       - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
-        run: just testall
+        run: just test-all
+  test-coverage:
+    name: Measuring Coverage (via just, uv, pytest, pytest-cov and coverage[toml])
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout
+      - *setup_uv
+      - *install_just
+      - name: Measuring Coverage (via just, uv, pytest, pytest-cov and coverage[toml])
+        run: just test-coverage
