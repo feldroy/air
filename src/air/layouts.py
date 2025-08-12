@@ -1,17 +1,38 @@
-from .tags import Base, Body, Head, Html, Link, Main, Meta, Script, Style, Tag, Title
+from .tags import (
+    Base,
+    Body,
+    Head,
+    Html,
+    Link,
+    Main,
+    Meta,
+    Script,
+    Style,
+    Tag,
+    Title,
+    Header,
+)
 
 # ruff: noqa F841
 HEAD_TAG_TYPES: tuple[type[Tag], ...] = (Title, Style, Meta, Link, Script, Base)
 
 
 def filter_body_tags(tags) -> list:
-    """Given a list of tags, only list the ones that belong in body."""
+    """Given a list of tags, only list the ones that belong in body of an HTML document."""
     return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]
 
 
 def filter_head_tags(tags) -> list:
-    """Given a list of tags, only list the ones that belong in head."""
+    """Given a list of tags, only list the ones that belong in head of an HTML document."""
     return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]
+
+
+def _header(tags) -> Header | str:
+    """Extracts the air.Header tag from a set of tags."""
+    for tag in tags:
+        if isinstance(tag, Header):
+            return tag
+    return ""
 
 
 def mvpcss(*children, htmx: bool = True, **kwargs):
@@ -19,7 +40,8 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
 
     1. At the top level HTML head tags are put in the `<head>` tag
     2. Otherwise everything is put in the `<body>`
-    3. HTMX is the default, change with the `htmx` keyword argument
+    3. Header and Nav tags are placed in the top of the body above the Main tag
+    4. HTMX is the default, change with the `htmx` keyword argument
 
     Note: The `mvpcss` function is a quick prototyping tool. It isn't designed to be extensible.
         Rather the `mvpcss` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
@@ -28,6 +50,7 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
     """
     body_tags = filter_body_tags(children)
     head_tags = filter_head_tags(children)
+
     if htmx:
         head_tags.insert(
             0,
@@ -42,7 +65,10 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
             Link(rel="stylesheet", href="https://unpkg.com/mvp.css"),
             *head_tags,
         ),
-        Body(Main(*body_tags)),
+        Body(
+            _header(body_tags),
+            Main(*[x for x in body_tags if not isinstance(x, Header)]),
+        ),
     ).render()
 
 
