@@ -2,7 +2,8 @@ version = 1
 revision = 2
 requires-python = ">=3.10"
 resolution-markers = [
-    "python_full_version >= '3.11'",
+    "python_full_version >= '3.13'",
+    "python_full_version >= '3.11' and python_full_version < '3.13'",
     "python_full_version < '3.11'",
 ]
 
@@ -23,18 +24,19 @@ standard = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "coverage" },
-    { name = "httpx" },
-    { name = "mkdocs-autorefs" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extra = ["python"] },
-    { name = "pdbpp" },
-    { name = "pytest" },
-    { name = "ruff" },
-    { name = "rust-just" },
-    { name = "ty" },
-    { name = "types-markdown" },
-    { name = "uvicorn" },
+    { name = "coverage", marker = "python_full_version >= '3.13'" },
+    { name = "httpx", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocs-autorefs", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocs-material", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocstrings", extra = ["python"], marker = "python_full_version >= '3.13'" },
+    { name = "pdbpp", marker = "python_full_version >= '3.13'" },
+    { name = "pytest", marker = "python_full_version >= '3.13'" },
+    { name = "pytest-rich", marker = "python_full_version >= '3.13'" },
+    { name = "ruff", marker = "python_full_version >= '3.13'" },
+    { name = "rust-just", marker = "python_full_version >= '3.13'" },
+    { name = "ty", marker = "python_full_version >= '3.13'" },
+    { name = "types-markdown", marker = "python_full_version >= '3.13'" },
+    { name = "uvicorn", marker = "python_full_version >= '3.13'" },
 ]
 devtools = [
     { name = "rust-just" },
@@ -55,6 +57,7 @@ test = [
     { name = "httpx" },
     { name = "pdbpp" },
     { name = "pytest" },
+    { name = "pytest-rich" },
 ]
 
 [package.metadata]
@@ -68,18 +71,19 @@ provides-extras = ["standard"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "coverage", specifier = ">=7.8.2" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "mkdocs-autorefs", specifier = ">=1.4.2" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extras = ["python"] },
-    { name = "pdbpp", specifier = ">=0.11.7" },
-    { name = "pytest", specifier = ">=8.4.0" },
-    { name = "ruff", specifier = ">=0.11.13" },
-    { name = "rust-just", specifier = ">=1.42.3" },
-    { name = "ty", specifier = ">=0.0.1a16" },
-    { name = "types-markdown", specifier = ">=3.8.0" },
-    { name = "uvicorn", specifier = ">=0.34.0" },
+    { name = "coverage", marker = "python_full_version >= '3.13'", specifier = ">=7.8.2" },
+    { name = "httpx", marker = "python_full_version >= '3.13'", specifier = ">=0.28.1" },
+    { name = "mkdocs-autorefs", marker = "python_full_version >= '3.13'", specifier = ">=1.4.2" },
+    { name = "mkdocs-material", marker = "python_full_version >= '3.13'" },
+    { name = "mkdocstrings", extras = ["python"], marker = "python_full_version >= '3.13'" },
+    { name = "pdbpp", marker = "python_full_version >= '3.13'", specifier = ">=0.11.7" },
+    { name = "pytest", marker = "python_full_version >= '3.13'", specifier = ">=8.4.0" },
+    { name = "pytest-rich", marker = "python_full_version >= '3.13'", git = "https://github.com/nicoddemus/pytest-rich?rev=main" },
+    { name = "ruff", marker = "python_full_version >= '3.13'", specifier = ">=0.11.13" },
+    { name = "rust-just", marker = "python_full_version >= '3.13'", specifier = ">=1.42.3" },
+    { name = "ty", marker = "python_full_version >= '3.13'", specifier = ">=0.0.1a16" },
+    { name = "types-markdown", marker = "python_full_version >= '3.13'", specifier = ">=3.8.0" },
+    { name = "uvicorn", marker = "python_full_version >= '3.13'", specifier = ">=0.34.0" },
 ]
 devtools = [
     { name = "rust-just", specifier = ">=1.42.3" },
@@ -100,6 +104,7 @@ test = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "pdbpp", specifier = ">=0.11.7" },
     { name = "pytest", specifier = ">=8.4.0" },
+    { name = "pytest-rich", git = "https://github.com/nicoddemus/pytest-rich?rev=main" },
 ]
 
 [[package]]
@@ -124,6 +129,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/95/7d/4c1bd541d4dffa1b52bd83fb8527089e097a106fc90b467a7313b105f840/anyio-4.9.0.tar.gz", hash = "sha256:673c0c244e15788651a4ff38710fea9675823028a6f08a5eda409e0c9840a028", size = 190949, upload-time = "2025-03-17T00:02:54.77Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a1/ee/48ca1a7c89ffec8b6a0c5d02b89c305671d5ffd8d3c94acf8b8c408575bb/anyio-4.9.0-py3-none-any.whl", hash = "sha256:9f76d541cad6e36af7beb62e978876f3b41e3e04f2c1fbf0884604c0a9c4d93c", size = 100916, upload-time = "2025-03-17T00:02:52.713Z" },
+]
+
+[[package]]
+name = "attrs"
+version = "25.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/b0/1367933a8532ee6ff8d63537de4f1177af4bff9f3e829baf7331f595bb24/attrs-25.3.0.tar.gz", hash = "sha256:75d7cefc7fb576747b2c81b4442d4d4a1ce0900973527c011d1030fd3bf4af1b", size = 812032, upload-time = "2025-03-13T11:10:22.779Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl", hash = "sha256:427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3", size = 63815, upload-time = "2025-03-13T11:10:21.14Z" },
 ]
 
 [[package]]
@@ -978,6 +992,16 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/08/ba/45911d754e8eba3d5a841a5ce61a65a685ff1798421ac054f85aa8747dfb/pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c", size = 1517714, upload-time = "2025-06-18T05:48:06.109Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/29/16/c8a903f4c4dffe7a12843191437d7cd8e32751d5de349d45d3fe69544e87/pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7", size = 365474, upload-time = "2025-06-18T05:48:03.955Z" },
+]
+
+[[package]]
+name = "pytest-rich"
+version = "0.2.1.dev27+g597f195d7"
+source = { git = "https://github.com/nicoddemus/pytest-rich?rev=main#597f195d71042722b87db645f0a98ecce27e511d" }
+dependencies = [
+    { name = "attrs" },
+    { name = "pytest" },
+    { name = "rich" },
 ]
 
 [[package]]
