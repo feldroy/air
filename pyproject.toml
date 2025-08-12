@@ -72,7 +72,7 @@ test = [
     "httpx>=0.28.1",   # For the test client
     "pytest>=8.4.0",   # Test runner
     "pdbpp>=0.11.7",   # enables pdb++, a drop-in replacement for pdb
-    "pytest-rich",     # Leverage rich for richer test session output.
+    "pytest-modern",     # Leverage rich for richer test session output.
 ]
 docs = [
     "mkdocs-material",          # MkDocs theme
@@ -140,7 +140,6 @@ dev = { requires-python = ">=3.13" }
 # In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
 # uv uses your checked-out code.
 air = { workspace = true }
-pytest-rich = { git = "https://github.com/nicoddemus/pytest-rich", rev = "main" }
 
 # -------- uv build backend (fast and strict) --------
 # ======================================================================
