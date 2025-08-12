@@ -1,38 +1,51 @@
----
+# .github/workflows/python-package.yml
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# CI using uv + just, with minimal/noise-free logs:
+# - Colors forced inside a tiny wrapper script (not via step `env:`), so they don’t appear in the log header.
+# - No echo/group commands shown.
+# - Shared bootstrap steps are DRY via YAML anchors.
+
 name: Python package
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
 jobs:
-  build:
+  # Define shared bootstrap once (never runs; used for anchors).
+  _shared:
+    if: ${{ false }}
+    name: skipped
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13']
     steps:
-      - uses: actions/checkout@v4
-      - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5
+      - &checkout {uses: actions/checkout@v5}
+      - &setup_uv
+        name: Install uv (with cache)
+        uses: astral-sh/setup-uv@v6
         with:
-          python-version: ${{ matrix.python-version }}
           enable-cache: true
           cache-dependency-glob: uv.lock
-      - name: Install the project
-        run: uv sync --locked --all-extras --dev
-      - name: Lint with ruff
-        run: |
-          # Stop the build if the formatting is bad
-          ruff format . --check
-          # stop the build if there is ugly python
-          ruff check .
-      - name: Test with pytest
-        run: |
-          pytest .
-      - name: Check types with mypy
-        run: |-
-          ty check .
+      - &install_just
+        name: Install just
+        uses: taiki-e/install-action@just
+
+  qa:
+    name: QA (format, lint, types) (via just, uv, ruff and ty)
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout
+      - *setup_uv
+      - *install_just
+      - name: QA (format, lint, types) (via just, uv, ruff and ty)
+        run: just qa
+  test-all:
+    name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout
+      - *setup_uv
+      - *install_just
+      - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
+        run: just testall

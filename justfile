@@ -1,32 +1,36 @@
+# Load .env automatically (for colors, etc.)
+set dotenv-load := true
+set dotenv-filename := ".env"
+
 # Run all the formatting, linting, and testing commands
 qa:
-    uv run --python=3.13 --extra test ruff format .
-    uv run --python=3.13 --extra test ruff check --fix .
-    uv run --python=3.13 --extra test ty check .
-    uv run --python=3.13 --extra test pytest
+    uv run --python=3.13 --isolated --group lint -- ruff format .
+    uv run --python=3.13 --isolated --group lint -- ruff check --fix .
+    uv run --python=3.13 --isolated --group lint --group test -- ty check .
+    uv run --python=3.13 --isolated --group test -- pytest
 
 # Run all the tests for all the supported Python versions
 testall:
-    uv run --python=3.10 --isolated --extra test pytest
-    uv run --python=3.11 --isolated --extra test pytest
-    uv run --python=3.12 --isolated --extra test pytest
-    uv run --python=3.13 --extra test pytest
+    uv run --python=3.10 --isolated --group test -- pytest
+    uv run --python=3.11 --isolated --group test -- pytest
+    uv run --python=3.12 --isolated --group test -- pytest
+    uv run --python=3.13 --isolated --group test -- pytest
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --extra test pytest {{ARGS}}
+    uv run --python=3.13 --isolated --group test -- pytest {{ARGS}}
 
 # Run all the tests, but on failure, drop into the debugger
 pdb *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13  --extra test pytest --pdb --maxfail=10 --pdbcls=IPython.terminal.debugger:TerminalPdb {{ARGS}}
+    uv run --python=3.13 --isolated --group test -- pytest --pdb --maxfail=10 {{ARGS}}
 
 # Run coverage, and build to HTML
 coverage:
-    uv run --python=3.13 --extra test coverage run -m pytest .
-    uv run --python=3.13 --extra test coverage report -m
-    uv run --python=3.13 --extra test coverage html
+    uv run --python=3.13 --isolated --group test -- coverage run -m pytest .
+    uv run --python=3.13 --isolated --group test -- coverage report -m
+    uv run --python=3.13 --isolated --group test -- coverage html
 
 # Build the project, useful for checking that packaging is correct
 build:
@@ -48,8 +52,8 @@ tag:
 
 # Serve docs locally
 doc:
-    uv run --extra docs mkdocs serve -a localhost:3000
+    uv run --python=3.13 --isolated --group docs -- mkdocs serve -a localhost:3000
 
 # Build and deploy docs
 doc-build:
-    uv run --extra docs mkdocs gh-deploy --force
+    uv run --python=3.13 --isolated --group docs -- mkdocs gh-deploy --force

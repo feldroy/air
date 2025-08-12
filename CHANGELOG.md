@@ -1,5 +1,22 @@
 # Changelog
 
+# 0.21.0 - 2025-08-12
+
+## What's Changed
+
+* Use HTML page for 500 errors by @pydanny in https://github.com/feldroy/air/pull/265
+* SSEResponse now handles str, Tag, and Any types, with linebreaks handled cleanly by @pydanny in https://github.com/feldroy/air/pull/257
+* Improvements to pyproject.toml - by @tallerasaf in https://github.com/feldroy/air/pull/261 and https://github.com/feldroy/air/pull/262
+* Refactor tags module into a modular package structure by @tallerasaf in https://github.com/feldroy/air/pull/260
+* Convert default exception handlers to use mvpcss for layout by @pydanny in https://github.com/feldroy/air/pull/266
+* Set up an "Air" Discord badge by @tallerasaf in https://github.com/feldroy/air/pull/256 and https://github.com/feldroy/air/pull/258
+* Add missing env and context processors to JinjaRenderer by @pydanny in https://github.com/feldroy/air/pull/263
+
+* ⬆ Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/feldroy/air/pull/264
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.20.0...v0.21.0
+
 # 0.20.0 - 2025-08-07
 
 ## What's Changed
