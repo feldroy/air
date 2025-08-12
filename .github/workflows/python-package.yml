@@ -17,7 +17,7 @@ jobs:
   # Define shared bootstrap once (never runs; used for anchors).
   _shared:
     if: ${{ false }}
-    name: CI [QA(format, lint, types) + Test on 3.10–>3.13]
+    name: skipped
     runs-on: ubuntu-latest
     steps:
       - &checkout {uses: actions/checkout@v5}
