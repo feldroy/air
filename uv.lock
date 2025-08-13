@@ -33,7 +33,6 @@ dev = [
     { name = "pytest", marker = "python_full_version >= '3.13'" },
     { name = "pytest-cov", marker = "python_full_version >= '3.13'" },
     { name = "pytest-pretty", marker = "python_full_version >= '3.13'" },
-    { name = "pytest-rich", marker = "python_full_version >= '3.13'" },
     { name = "ruff", marker = "python_full_version >= '3.13'" },
     { name = "rust-just", marker = "python_full_version >= '3.13'" },
     { name = "ty", marker = "python_full_version >= '3.13'" },
@@ -61,7 +60,6 @@ test = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-pretty" },
-    { name = "pytest-rich" },
 ]
 
 [package.metadata]
@@ -84,7 +82,6 @@ dev = [
     { name = "pytest", marker = "python_full_version >= '3.13'", specifier = ">=8.4.0" },
     { name = "pytest-cov", marker = "python_full_version >= '3.13'", specifier = ">=6.2.1" },
     { name = "pytest-pretty", marker = "python_full_version >= '3.13'", specifier = ">=1.3.0" },
-    { name = "pytest-rich", marker = "python_full_version >= '3.13'", git = "https://github.com/nicoddemus/pytest-rich?rev=main" },
     { name = "ruff", marker = "python_full_version >= '3.13'", specifier = ">=0.11.13" },
     { name = "rust-just", marker = "python_full_version >= '3.13'", specifier = ">=1.42.3" },
     { name = "ty", marker = "python_full_version >= '3.13'", specifier = ">=0.0.1a16" },
@@ -112,7 +109,6 @@ test = [
     { name = "pytest", specifier = ">=8.4.0" },
     { name = "pytest-cov", specifier = ">=6.2.1" },
     { name = "pytest-pretty", specifier = ">=1.3.0" },
-    { name = "pytest-rich", git = "https://github.com/nicoddemus/pytest-rich?rev=main" },
 ]
 
 [[package]]
@@ -137,15 +133,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/95/7d/4c1bd541d4dffa1b52bd83fb8527089e097a106fc90b467a7313b105f840/anyio-4.9.0.tar.gz", hash = "sha256:673c0c244e15788651a4ff38710fea9675823028a6f08a5eda409e0c9840a028", size = 190949, upload-time = "2025-03-17T00:02:54.77Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a1/ee/48ca1a7c89ffec8b6a0c5d02b89c305671d5ffd8d3c94acf8b8c408575bb/anyio-4.9.0-py3-none-any.whl", hash = "sha256:9f76d541cad6e36af7beb62e978876f3b41e3e04f2c1fbf0884604c0a9c4d93c", size = 100916, upload-time = "2025-03-17T00:02:52.713Z" },
-]
-
-[[package]]
-name = "attrs"
-version = "25.3.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/5a/b0/1367933a8532ee6ff8d63537de4f1177af4bff9f3e829baf7331f595bb24/attrs-25.3.0.tar.gz", hash = "sha256:75d7cefc7fb576747b2c81b4442d4d4a1ce0900973527c011d1030fd3bf4af1b", size = 812032, upload-time = "2025-03-13T11:10:22.779Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl", hash = "sha256:427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3", size = 63815, upload-time = "2025-03-13T11:10:21.14Z" },
 ]
 
 [[package]]
@@ -1032,16 +1019,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ba/d7/c699e0be5401fe9ccad484562f0af9350b4e48c05acf39fb3dab1932128f/pytest_pretty-1.3.0.tar.gz", hash = "sha256:97e9921be40f003e40ae78db078d4a0c1ea42bf73418097b5077970c2cc43bf3", size = 219297, upload-time = "2025-06-04T12:54:37.322Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ab/85/2f97a1b65178b0f11c9c77c35417a4cc5b99a80db90dad4734a129844ea5/pytest_pretty-1.3.0-py3-none-any.whl", hash = "sha256:074b9d5783cef9571494543de07e768a4dda92a3e85118d6c7458c67297159b7", size = 5620, upload-time = "2025-06-04T12:54:36.229Z" },
-]
-
-[[package]]
-name = "pytest-rich"
-version = "0.2.1.dev27+g597f195d7"
-source = { git = "https://github.com/nicoddemus/pytest-rich?rev=main#597f195d71042722b87db645f0a98ecce27e511d" }
-dependencies = [
-    { name = "attrs" },
-    { name = "pytest" },
-    { name = "rich" },
 ]
 
 [[package]]

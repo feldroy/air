@@ -21,11 +21,11 @@ test-coverage:
 
 # Show the 10 slowest tests (timings)
 test-durations:
-    uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vv --no-header
+    uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vvv --no-header
 
 # Build only the HTML coverage report
 coverage-html:
-    uv run --python=3.13 --isolated --group test -- pytest --cov=src --cov-report=html:./.cov_html
+    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov=src --cov-report=html:./.cov_html
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
