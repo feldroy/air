@@ -1,57 +1,8 @@
-<!-- Pyramid of logos: base row = 15, each row above has one fewer -->
 <p align="center">
-  <!-- Row 1 -->
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="75" width="155"/>
-</p>
-<p align="center">
-  <!-- Row 2 -->
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-</p>
-<p align="center">
-  <!-- Row 3 -->
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-</p>
-<p align="center">
-  <!-- Row 4 -->
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-</p>
-<p align="center">
-  <!-- Row 5 -->
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-</p>
-<p align="center">
-  <!-- Row 6 -->
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-</p>
-<p align="center">
-  <!-- Row 7 -->
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="175" width="645"/>
 </p>
 
-
-
->>>>>> #### <span style="color:#000000">Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.</span>
+## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
 
 [![CI](https://img.shields.io/github/actions/workflow/status/feldroy/air/python-package.yml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main)
 [![Coverage](https://coverage-badge.samuelcolvin.workers.dev/feldroy/air.svg)](https://coverage-badge.samuelcolvin.workers.dev/redirect/feldroy/air)
