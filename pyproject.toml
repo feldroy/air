@@ -45,6 +45,11 @@ standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.116.1",
 ]
+# Make `air[mcp]` install FastAPI-MCP for exposing endpoints as MCP tools.
+# See install guide: https://fastapi-mcp.tadata.com/getting-started/installation
+mcp = [
+    "fastapi-mcp>=0.4.0",
+]
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],

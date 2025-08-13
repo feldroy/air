@@ -6,10 +6,13 @@ from typing import (
     Dict,
     List,
     Optional,
-    Sequence,
+    Self, Sequence,
     Type,
     TypeVar,
-    Union,
+    Literal,
+    Protocol,
+    TYPE_CHECKING,
+    runtime_checkable,
 )
 
 from fastapi import FastAPI, routing
@@ -31,27 +34,17 @@ AppType = TypeVar("AppType", bound="FastAPI")
 class Air(FastAPI):
     """FastAPI wrapper class with AirResponse as the default response class.
 
-    Args:
-        debug: Enables additional logging or diagnostic output.
-        dependencies: A list of global dependencies, they will be applied to each *path operation*,
-                including in sub-routers.
-        middleware: List of middleware to be added when creating the application.
-        default_response_class: The default response class to be used.
-        redirect_slashes: Whether to detect and redirect slashes in URLs when the client doesn't
-                use the same format.
-        on_startup: A list of startup event handler functions.
-        on_shutdown: A list of shutdown event handler functions.
-        lifespan: A `Lifespan` context manager handler. This replaces `startup` and
-                `shutdown` functions with a single context manager.
-    Example:
+    Extra (optional) MCP integration (requires `air[mcp]` which installs fastapi-mcp):
+      - Pass `mcp=True` to auto-mount MCP over HTTP at "/mcp".
+      - Or pass a dict with options, e.g.:
+            mcp={"name": "Air MCP", "description": "Tools", "transport": "http", "mount_path": "/mcp"}
+      - Or call `app.enable_mcp(...)` later.
 
-        import air
-
-        app = air.Air()
+    Docs: quickstart (how to mount), customization (name/filters), deploy separate app, refresh.  # noqa: E501
     """
 
     def __init__(
-        self: AppType,
+        self: Self,
         *,
         debug: Annotated[
             bool,
@@ -88,48 +81,8 @@ class Air(FastAPI):
             ),
         ] = None,
         servers: Annotated[
-            Optional[List[Dict[str, Union[str, Any]]]],
-            Doc(
-                """
-                A `list` of `dict`s with connectivity information to a target server.
-
-                You would use it, for example, if your application is served from
-                different domains and you want to use the same Swagger UI in the
-                browser to interact with each of them (instead of having multiple
-                browser tabs open). Or if you want to leave fixed the possible URLs.
-
-                If the servers `list` is not provided, or is an empty `list`, the
-                default value would be a `dict` with a `url` value of `/`.
-
-                Each item in the `list` is a `dict` containing:
-
-                * `url`: A URL to the target host. This URL supports Server Variables
-                and MAY be relative, to indicate that the host location is relative
-                to the location where the OpenAPI document is being served. Variable
-                substitutions will be made when a variable is named in `{`brackets`}`.
-                * `description`: An optional string describing the host designated by
-                the URL. [CommonMark syntax](https://commonmark.org/) MAY be used for
-                rich text representation.
-                * `variables`: A `dict` between a variable name and its value. The value
-                    is used for substitution in the server's URL template.
-
-                Read more in the
-                [FastAPI docs for Behind a Proxy](https://fastapi.tiangolo.com/advanced/behind-a-proxy/#additional-servers).
-
-                **Example**
-
-                ```python
-                from fastapi import FastAPI
-
-                app = FastAPI(
-                    servers=[
-                        {"url": "https://stag.example.com", "description": "Staging environment"},
-                        {"url": "https://prod.example.com", "description": "Production environment"},
-                    ]
-                )
-                ```
-                """
-            ),
+            Optional[List[Dict[str, str | Any]]],
+            Doc("A list of dicts with connectivity information to a target server."),
         ] = None,
         dependencies: Annotated[
             Optional[Sequence[Depends]],
@@ -137,19 +90,6 @@ class Air(FastAPI):
                 """
                 A list of global dependencies, they will be applied to each
                 *path operation*, including in sub-routers.
-
-                Read more about it in the
-                [FastAPI docs for Global Dependencies](https://fastapi.tiangolo.com/tutorial/dependencies/global-dependencies/).
-
-                **Example**
-
-                ```python
-                from fastapi import Depends, FastAPI
-
-                from .dependencies import func_dep_1, func_dep_2
-
-                app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])
-                ```
                 """
             ),
         ] = None,
@@ -159,13 +99,7 @@ class Air(FastAPI):
                 """
                 The default response class to be used.
                 Read more in the
-                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
-                **Analogy**
-                ```python
-                from fastapi import FastAPI
-                from air import AirResponse
-                app = FastAPI(default_response_class=AirResponse)
-                ```
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).  # noqa: E501
                 """
             ),
         ] = AirResponse,
@@ -175,170 +109,72 @@ class Air(FastAPI):
                 """
                 Whether to detect and redirect slashes in URLs when the client doesn't
                 use the same format.
-
-                **Example**
-
-                ```python
-                from fastapi import FastAPI
-
-                app = FastAPI(redirect_slashes=True)  # the default
-
-                @app.get("/items/")
-                async def read_items():
-                    return [{"item_id": "Foo"}]
-                ```
-
-                With this app, if a client goes to `/items` (without a trailing slash),
-                they will be automatically redirected with an HTTP status code of 307
-                to `/items/`.
                 """
             ),
         ] = True,
         middleware: Annotated[
             Optional[Sequence[Middleware]],
-            Doc(
-                """
-                List of middleware to be added when creating the application.
-
-                In FastAPI you would normally do this with `app.add_middleware()`
-                instead.
-
-                Read more in the
-                [FastAPI docs for Middleware](https://fastapi.tiangolo.com/tutorial/middleware/).
-                """
-            ),
+            Doc("List of middleware to be added when creating the application."),
         ] = None,
         exception_handlers: Annotated[
             Optional[
-                Dict[
-                    Union[int, Type[Exception]],
-                    Callable[[Request, Any], Coroutine[Any, Any, Response]],
-                ]
+                Dict[int | Type[Exception], Callable[[Request, Any], Coroutine[Any, Any, Response]]]
             ],
-            Doc(
-                """
-                A dictionary with handlers for exceptions.
-
-                In FastAPI, you would normally use the decorator
-                `@app.exception_handler()`.
-
-                Read more in the
-                [FastAPI docs for Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/).
-                """
-            ),
+            Doc("A dictionary with handlers for exceptions."),
         ] = None,
         on_startup: Annotated[
             Optional[Sequence[Callable[[], Any]]],
-            Doc(
-                """
-                A list of startup event handler functions.
-
-                You should instead use the `lifespan` handlers.
-
-                Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
-            ),
+            Doc("A list of startup event handler functions."),
         ] = None,
         on_shutdown: Annotated[
             Optional[Sequence[Callable[[], Any]]],
-            Doc(
-                """
-                A list of shutdown event handler functions.
-
-                You should instead use the `lifespan` handlers.
-
-                Read more in the
-                [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
-            ),
+            Doc("A list of shutdown event handler functions."),
         ] = None,
         lifespan: Annotated[
             Optional[Lifespan[AppType]],
-            Doc(
-                """
-                A `Lifespan` context manager handler. This replaces `startup` and
-                `shutdown` functions with a single context manager.
-
-                Read more in the
-                [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
-            ),
+            Doc("A `Lifespan` context manager handler."),
         ] = None,
         webhooks: Annotated[
             Optional[routing.APIRouter],
-            Doc(
-                """
-                Add OpenAPI webhooks. This is similar to `callbacks` but it doesn't
-                depend on specific *path operations*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                **Note**: This is available since OpenAPI 3.1.0, FastAPI 0.99.0.
-
-                Read more about it in the
-                [FastAPI docs for OpenAPI Webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/).
-                """
-            ),
+            Doc("Add OpenAPI webhooks."),
         ] = None,
         deprecated: Annotated[
             Optional[bool],
-            Doc(
-                """
-                Mark all *path operations* as deprecated. You probably don't need it,
-                but it's available.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Mark all *path operations* as deprecated."),
         ] = None,
         docs_url: Annotated[
             Optional[str],
-            Doc(
-                """
-                The path at which to serve the Swagger UI documentation.
-
-                Set to `None` to disable it.
-                """
-            ),
+            Doc("Path at which to serve the Swagger UI documentation."),
         ] = None,
         redoc_url: Annotated[
             Optional[str],
-            Doc(
-                """
-                The path at which to serve the ReDoc documentation.
-
-                Set to `None` to disable it.
-                """
-            ),
+            Doc("Path at which to serve the ReDoc documentation."),
         ] = None,
         openapi_url: Annotated[
             Optional[str],
-            Doc(
-                """
-                The URL where the OpenAPI schema will be served from.
-
-                Set to `None` to disable it.
-                """
-            ),
+            Doc("URL where the OpenAPI schema will be served from."),
         ] = None,
-        **extra: Annotated[
-            Any,
+        # ---- New: optional MCP autoconfig ------------------------------------
+        mcp: Annotated[
+            Optional[bool | Dict[str, Any]],
             Doc(
                 """
-                Extra keyword arguments to be stored in the app, not used by FastAPI
-                anywhere.
+                Enable built-in MCP server (requires fastapi-mcp).
+
+                - True → mount with defaults (HTTP at "/mcp")
+                - dict → FastApiMCP kwargs and Air helpers:
+                    name, description, include_operations, exclude_operations,
+                    include_tags, exclude_tags, describe_all_responses,
+                    describe_full_response_schema, http_client
+                  plus:
+                    transport ("http" or "sse"), mount_path (default "/mcp")
                 """
             ),
-        ],
+        ] = False,
+        # ----------------------------------------------------------------------
+        **extra: Annotated[Any, Doc("Extra keyword arguments stored in the app.")],
     ) -> None:
-        """Initialize Air app with AirResponse as default response class.
-
-        This preserves all FastAPI initialization parameters while setting
-        AirResponse as the default response class.
-        """
+        """Initialize Air app with AirResponse as default response class."""
         DEFAULT_EXCEPTION_HANDLERS: dict[int, BuiltinFunctionType] = {
             404: default_404_exception_handler,
             500: default_500_exception_handler,
@@ -346,7 +182,7 @@ class Air(FastAPI):
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers = DEFAULT_EXCEPTION_HANDLERS | exception_handlers
-        super().__init__(  # ty: ignore [invalid-super-argument]
+        super().__init__(  # ty: ignore[invalid-super-argument]
             debug=debug,
             routes=routes,
             servers=servers,
@@ -365,25 +201,79 @@ class Air(FastAPI):
             **extra,
         )
 
-    def page(self, func):
+        # Internal MCP state
+        self._mcp: Optional["FastApiMCP"] = None
+        self._mcp_mount_path: str = "/mcp"
+        self._mcp_transport: Literal["http", "sse"] = "http"
+
+        # Auto-enable MCP if requested and available
+        if mcp:
+            try:
+                from fastapi_mcp import FastApiMCP
+            except ImportError:
+                raise ImportError(
+                    "MCP requested, but 'fastapi-mcp' is not installed. "
+                    "Install with: uv pip install 'air[mcp]' or uv add 'air[mcp]'."
+                )
+            # Create an MCP server based on this app
+            self._mcp = FastApiMCP(self)
+            # Mount the MCP server directly to your app
+            self._mcp.mount_http()
+
+    # ------------------ MCP helpers ------------------
+    @property
+    def mcp_enabled(self) -> bool:
+        """True if the MCP server is set up and mounted."""
+        return self._mcp is not None
+
+    def mcp_mount(self,
+                  *,
+                  transport: Literal["http", "sse"] = "http",
+                  mount_path: str = "/mcp",
+                  ) -> None:
+        """Rescan app routes and update MCP tools after new endpoints are added."""
+        if not self._mcp:
+            raise RuntimeError("MCP is not enabled.")
+        self._mcp
+        self._mcp_transport = transport
+        self._mcp_mount_path = mount_path
+        # Mount using selected transport and path.
+        if transport == "http":
+            # Recommended by the docs (Streamable HTTP).  # recommended = preferred
+            self._mcp.mount_http(mount_path=mount_path)  # uses the app passed to FastApiMCP(...)
+        else:
+            self._mcp.mount_sse(mount_path=mount_path)
+
+    def mcp_refresh(self) -> None:
+        """Rescan app routes and update MCP tools after new endpoints are added."""
+        if not self._mcp:
+            raise RuntimeError("MCP is not enabled.")
+        # Refresh the MCP server to include the new endpoint
+        self._mcp.setup_server()
+
+    def mcp_client_config(self, *, url: Optional[str] = None) -> Dict[str, Any]:
+        """Return a minimal client config JSON for common MCP clients.
+
+        If `url` is not provided, defaults to "http://localhost:8000{mount_path}".
+        """
+        if not self._mcp:
+            raise RuntimeError("MCP is not enabled.")
+        return {
+            "mcpServers": {
+                "air": {
+                    "url": url or f"http://localhost:8000{self._mcp_mount_path}",
+                }
+            }
+        }
+
+    # -------------------------------------------------
+
+    def page(self, func: Callable[..., Any]) -> Callable[..., Any]:
         """Decorator that creates a GET route using the function name as the path.
 
-        If the name of the function is "index", then the route is "/".
-
-        Examples:
-
-            import air
-
-            app = Air()
-
-            @app.page
-            def index():
-                return H1("I am the home page")
+        If the name of the function is "index", the route is "/".
         """
-        if func.__name__ == "index":
-            route_name = "/"
-        else:
-            route_name = f"/{func.__name__}"
+        route_name: str = "/" if func.__name__ == "index" else f"/{func.__name__}"
         return self.get(route_name)(func)
 
 
