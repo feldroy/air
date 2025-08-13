@@ -1,39 +1,76 @@
+<!-- Pyramid of logos: base row = 15, each row above has one fewer -->
 <p align="center">
-  <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" alt="Air: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."></a>
+  <!-- Row 1 -->
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="75" width="155"/>
+</p>
+<p align="center">
+  <!-- Row 2 -->
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+</p>
+<p align="center">
+  <!-- Row 3 -->
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+</p>
+<p align="center">
+  <!-- Row 4 -->
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+</p>
+<p align="center">
+  <!-- Row 5 -->
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+</p>
+<p align="center">
+  <!-- Row 6 -->
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+</p>
+<p align="center">
+  <!-- Row 7 -->
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="45" width="45"/>
 </p>
 
-<p align="center">
-    <em>Air: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.</em>
-</p>
 
-<p align="center">
-<a href="https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main" target="_blank">
-    <img src="https://github.com/feldroy/air/actions/workflows/python-package.yml/badge.svg?event=push&branch=main" alt="Test">
-</a>
-<a href="https://pypi.org/project/air" target="_blank">
-    <img src="https://img.shields.io/pypi/v/air?color=%2334D058&label=pypi%20package" alt="Package version">
-</a>
-<a href="https://pypi.org/project/air" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/air.svg?color=%2334D058" alt="Supported Python versions">
-</a>
-</p>
-<p align="center">
-        <a href="https://discord.gg/aTzWBVrtEs">
-        <img src="https://img.shields.io/discord/1388403469505007696?logo=discord"
-            alt="Chat on Discord"></a>
-</p>
-<p align="center">
-  <!-- OS support: ubuntu-latest, windows-latest, macos-latest -->
-  <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain" target="_blank">
-    <img src="https://img.shields.io/badge/Runs%20on-ubuntu--latest-E95420?logo=ubuntu&logoColor=white" alt="Runs on ubuntu-latest">
-  </a>
-  <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain" target="_blank">
-    <img src="https://img.shields.io/badge/Runs%20on-windows--latest-0078D6?logo=windows&logoColor=white" alt="Runs on windows-latest">
-  </a>
-  <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain" target="_blank">
-    <img src="https://img.shields.io/badge/Runs%20on-macos--latest-000000?logo=apple&logoColor=white" alt="Runs on macos-latest">
-  </a>
-</p>
+
+>>>>>> #### <span style="color:#000000">Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.</span>
+
+[![CI](https://img.shields.io/github/actions/workflow/status/feldroy/air/python-package.yml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main)
+[![Coverage](https://coverage-badge.samuelcolvin.workers.dev/feldroy/air.svg)](https://coverage-badge.samuelcolvin.workers.dev/redirect/feldroy/air)
+[![PyPI - Version](https://img.shields.io/pypi/v/air?logo=pypi)](https://pypi.org/project/air)
+[![Python Versions](https://img.shields.io/pypi/pyversions/air?logo=python)](https://pypi.org/project/air)
+[![GitHub License](https://img.shields.io/github/license/feldroy/air?logo=github)](https://github.com/feldroy/air/blob/main/LICENSE)
+
+[![PyPI Total Downloads](https://static.pepy.tech/badge/air)](https://pepy.tech/projects/air)
+[![PyPI Monthly Downloads](https://static.pepy.tech/badge/air/month)](https://pepy.tech/projects/air)
+[![PyPI Weekly Downloads](https://static.pepy.tech/badge/air/week)](https://pepy.tech/projects/air)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github)
+[![GitHub last commit](https://img.shields.io/github/last-commit/feldroy/air?logo=github)](https://github.com/feldroy/air/commit/main)
+[![GitHub Release Date](https://img.shields.io/github/release-date/feldroy/air?logo=github)](https://github.com/feldroy/air/releases/latest)
+![GitHub tag check runs](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/feldroy/air?logo=github)](https://github.com/feldroy/air/graphs/contributors)
+[![Discord](https://img.shields.io/discord/1388403469505007696?logo=discord)](https://discord.gg/aTzWBVrtEs)
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
