@@ -69,11 +69,13 @@ lint = [
 ]
 test = [
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
-    "httpx>=0.28.1",         # For the test client
-    "pytest>=8.4.0",         # Test runner
-    "pdbpp>=0.11.7",         # enables pdb++, a drop-in replacement for pdb
-    "pytest-rich",           # Leverage rich for richer test session output.
-    "pytest-cov>=6.2.1",     # Pytest plugin for measuring coverage.
+    "httpx>=0.28.1", # For the test client
+    "pytest>=8.4.0", # Test runner
+    "pdbpp>=0.11.7", # enables pdb++, a drop-in replacement for pdb
+#    "pytest-rich", # Leverage rich for richer test session output.
+    "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
+    "pytest-modern>=0.7.3",  # Provides richer test session output.
+#    "pytest-pretty>=1.3.0",
 ]
 docs = [
     "mkdocs-material",          # MkDocs theme
