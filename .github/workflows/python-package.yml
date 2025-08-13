@@ -5,7 +5,7 @@
 # - No echo/group commands shown.
 # - Shared bootstrap steps are DRY via YAML anchors.
 
-name: Python package
+name: Python Package - CI
 
 on:
   push:
@@ -15,6 +15,22 @@ on:
 
 env:
   COLUMNS: 120
+
+# Cancel older runs for the same branch/PR (concurrency = run one at a time).
+# When you push several commits in a row, only the newest run continues; older ones are cancelled.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Least-privilege token by default.
+permissions:
+  contents: read
+
+# Consistent shell across OSes; override per-step if you need PowerShell/cmd.
+# Only `run.shell` / `run.working-directory` are supported here.
+defaults:
+  run:
+    shell: bash
 
 jobs:
   # Define shared bootstrap once (never runs; used for anchors).
@@ -35,29 +51,36 @@ jobs:
         uses: taiki-e/install-action@just
 
   qa:
-    name: QA (format, lint, types) (via just, uv, ruff and ty)
-    runs-on: ubuntu-latest
+    name: QA (format, lint, types) • macOS (via just, uv, ruff and ty)
+    runs-on: macos-latest
+    timeout-minutes: 15
     steps:
       - *checkout
       - *setup_uv
       - *install_just
-      - name: QA (format, lint, types) (via just, uv, ruff and ty)
+      - name: QA (format, lint, types) • macOS
         run: just qa
   test-all:
-    name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-pretty)
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    name: Tests on Python versions 3.10–>3.13 • "${{ matrix.os }}" (via just, uv, pytest, pytest-pretty)
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
     steps:
       - *checkout
       - *setup_uv
       - *install_just
-      - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-pretty)
+      - name: "Tests on Python versions 3.10–>3.13 • ${{ matrix.os }}"
         run: just test-all
   test-coverage:
-    name: Measuring Coverage (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
-    runs-on: ubuntu-latest
+    name: Measuring Coverage • macOS (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
+    runs-on: macos-latest
+    timeout-minutes: 25
     steps:
       - *checkout
       - *setup_uv
       - *install_just
-      - name: Measuring Coverage (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
+      - name: Measuring Coverage • macOS
         run: just test-coverage

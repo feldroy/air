@@ -1,27 +1,27 @@
 <p align="center">
-  <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" alt="Air: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."></a>
+  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" height="175" width="645"/>
 </p>
 
-<p align="center">
-    <em>Air: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.</em>
-</p>
+## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
 
-<p align="center">
-<a href="https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main" target="_blank">
-    <img src="https://github.com/feldroy/air/actions/workflows/python-package.yml/badge.svg?event=push&branch=main" alt="Test">
-</a>
-<a href="https://pypi.org/project/air" target="_blank">
-    <img src="https://img.shields.io/pypi/v/air?color=%2334D058&label=pypi%20package" alt="Package version">
-</a>
-<a href="https://pypi.org/project/air" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/air.svg?color=%2334D058" alt="Supported Python versions">
-</a>
-</p>
-<p align="center">
-        <a href="https://discord.gg/aTzWBVrtEs">
-        <img src="https://img.shields.io/discord/1388403469505007696?logo=discord"
-            alt="Chat on Discord"></a>
-</p>
+[![CI](https://img.shields.io/github/actions/workflow/status/feldroy/air/python-package.yml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main)
+[![Coverage](https://coverage-badge.samuelcolvin.workers.dev/feldroy/air.svg)](https://coverage-badge.samuelcolvin.workers.dev/redirect/feldroy/air)
+[![PyPI - Version](https://img.shields.io/pypi/v/air?logo=pypi)](https://pypi.org/project/air)
+[![Python Versions](https://img.shields.io/pypi/pyversions/air?logo=python)](https://pypi.org/project/air)
+[![GitHub License](https://img.shields.io/github/license/feldroy/air?logo=github)](https://github.com/feldroy/air/blob/main/LICENSE)
+
+[![PyPI Total Downloads](https://static.pepy.tech/badge/air)](https://pepy.tech/projects/air)
+[![PyPI Monthly Downloads](https://static.pepy.tech/badge/air/month)](https://pepy.tech/projects/air)
+[![PyPI Weekly Downloads](https://static.pepy.tech/badge/air/week)](https://pepy.tech/projects/air)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github)
+[![GitHub last commit](https://img.shields.io/github/last-commit/feldroy/air?logo=github)](https://github.com/feldroy/air/commit/main)
+[![GitHub Release Date](https://img.shields.io/github/release-date/feldroy/air?logo=github)](https://github.com/feldroy/air/releases/latest)
+![GitHub tag check runs](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/feldroy/air?logo=github)](https://github.com/feldroy/air/graphs/contributors)
+[![Discord](https://img.shields.io/discord/1388403469505007696?logo=discord)](https://discord.gg/aTzWBVrtEs)
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
@@ -91,7 +91,7 @@ Then open your browser to <http://127.0.0.1:8000> to see the result.
 
 ## Combining FastAPI and Air
 
-Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app. 
+Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
 
 ```python
 import air
@@ -143,7 +143,7 @@ def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
 # Combining the Air and and FastAPI apps into one
-app.mount("/api", api)    
+app.mount("/api", api)
 ```
 
 Don't forget the Jinja template!

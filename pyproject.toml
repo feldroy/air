@@ -69,11 +69,12 @@ lint = [
 ]
 test = [
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
-    "httpx>=0.28.1",         # For the test client
-    "pytest>=8.4.0",         # Test runner
-    "pdbpp>=0.11.7",         # enables pdb++, a drop-in replacement for pdb
-    "pytest-cov>=6.2.1",     # Pytest plugin for measuring coverage.
-    "pytest-pretty>=1.3.0",  # Provides richer test session output.
+    "httpx>=0.28.1", # For the test client
+    "pytest>=8.4.0", # Test runner
+    "pdbpp>=0.11.7", # enables pdb++, a drop-in replacement for pdb
+    "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
+    "pytest-pretty>=1.3.0", # Provides richer test session output.
+    "pytest-github-actions-annotate-failures>=0.3.0", # Pytest plugin to annotate failed tests with a workflow command for GitHub Actions
 ]
 docs = [
     "mkdocs-material",        # MkDocs theme
