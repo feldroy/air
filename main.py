@@ -65,6 +65,10 @@ def data():
         hx_swap="outerHTML",
     )
 
+@app.page
+def error_check():
+    three = 1/0
+    return air.H1('This will never be seen')
 
 @app.get("/{slug:path}")
 def airpage(request: air.Request, slug: str):
