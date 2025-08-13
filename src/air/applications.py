@@ -240,7 +240,6 @@ class Air(FastAPI):
         """
         if not self._mcp:
             raise RuntimeError("MCP is not enabled.")
-        self._mcp
         self._mcp_transport = transport
         self._mcp_mount_path = mount_path
         # Mount using selected transport and path.
