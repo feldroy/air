@@ -107,7 +107,6 @@ addopts = [
 [tool.coverage.run]
 source = ["src"]
 branch = true
-#concurrency = ["multiprocessing"]
 parallel = true
 sigterm = true
 omit = ["tests/*", ".venv/*", "venv/*"]
