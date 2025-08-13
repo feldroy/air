@@ -163,7 +163,6 @@ dev = { requires-python = ">=3.13" }
 # In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
 # uv uses your checked-out code.
 air = { workspace = true }
-pytest-rich = { git = "https://github.com/nicoddemus/pytest-rich", rev = "main" }
 
 # -------- uv build backend (fast and strict) --------
 # ======================================================================
