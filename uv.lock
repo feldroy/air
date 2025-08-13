@@ -32,6 +32,7 @@ dev = [
     { name = "pdbpp", marker = "python_full_version >= '3.13'" },
     { name = "pytest", marker = "python_full_version >= '3.13'" },
     { name = "pytest-cov", marker = "python_full_version >= '3.13'" },
+    { name = "pytest-pretty", marker = "python_full_version >= '3.13'" },
     { name = "pytest-rich", marker = "python_full_version >= '3.13'" },
     { name = "ruff", marker = "python_full_version >= '3.13'" },
     { name = "rust-just", marker = "python_full_version >= '3.13'" },
@@ -59,6 +60,7 @@ test = [
     { name = "pdbpp" },
     { name = "pytest" },
     { name = "pytest-cov" },
+    { name = "pytest-pretty" },
     { name = "pytest-rich" },
 ]
 
@@ -81,6 +83,7 @@ dev = [
     { name = "pdbpp", marker = "python_full_version >= '3.13'", specifier = ">=0.11.7" },
     { name = "pytest", marker = "python_full_version >= '3.13'", specifier = ">=8.4.0" },
     { name = "pytest-cov", marker = "python_full_version >= '3.13'", specifier = ">=6.2.1" },
+    { name = "pytest-pretty", marker = "python_full_version >= '3.13'", specifier = ">=1.3.0" },
     { name = "pytest-rich", marker = "python_full_version >= '3.13'", git = "https://github.com/nicoddemus/pytest-rich?rev=main" },
     { name = "ruff", marker = "python_full_version >= '3.13'", specifier = ">=0.11.13" },
     { name = "rust-just", marker = "python_full_version >= '3.13'", specifier = ">=1.42.3" },
@@ -108,6 +111,7 @@ test = [
     { name = "pdbpp", specifier = ">=0.11.7" },
     { name = "pytest", specifier = ">=8.4.0" },
     { name = "pytest-cov", specifier = ">=6.2.1" },
+    { name = "pytest-pretty", specifier = ">=1.3.0" },
     { name = "pytest-rich", git = "https://github.com/nicoddemus/pytest-rich?rev=main" },
 ]
 
@@ -1015,6 +1019,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/18/99/668cade231f434aaa59bbfbf49469068d2ddd945000621d3d165d2e7dd7b/pytest_cov-6.2.1.tar.gz", hash = "sha256:25cc6cc0a5358204b8108ecedc51a9b57b34cc6b8c967cc2c01a4e00d8a67da2", size = 69432, upload-time = "2025-06-12T10:47:47.684Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bc/16/4ea354101abb1287856baa4af2732be351c7bee728065aed451b678153fd/pytest_cov-6.2.1-py3-none-any.whl", hash = "sha256:f5bc4c23f42f1cdd23c70b1dab1bbaef4fc505ba950d53e0081d0730dd7e86d5", size = 24644, upload-time = "2025-06-12T10:47:45.932Z" },
+]
+
+[[package]]
+name = "pytest-pretty"
+version = "1.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ba/d7/c699e0be5401fe9ccad484562f0af9350b4e48c05acf39fb3dab1932128f/pytest_pretty-1.3.0.tar.gz", hash = "sha256:97e9921be40f003e40ae78db078d4a0c1ea42bf73418097b5077970c2cc43bf3", size = 219297, upload-time = "2025-06-04T12:54:37.322Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/85/2f97a1b65178b0f11c9c77c35417a4cc5b99a80db90dad4734a129844ea5/pytest_pretty-1.3.0-py3-none-any.whl", hash = "sha256:074b9d5783cef9571494543de07e768a4dda92a3e85118d6c7458c67297159b7", size = 5620, upload-time = "2025-06-04T12:54:36.229Z" },
 ]
 
 [[package]]
