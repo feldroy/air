@@ -15,18 +15,18 @@ test-all:
     uv run --python=3.12 --isolated --group test -- pytest
     uv run --python=3.13 --isolated --group test -- pytest
 
-# Run coverage, and build to HTML saved at .cov_html/index.html
+# Run Test Coverage
 test-coverage:
     uv run --python=3.13 --isolated --group test -- pytest --cov=src -q
-    open .cov_html/index.html
 
 # Show the 10 slowest tests (timings)
 test-durations:
     uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vvv --no-header
 
-# Build only the HTML coverage report
+# Build and open only the HTML coverage report
 coverage-html:
-    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov=src --cov-report=html:./.cov_html
+    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov=src --cov-fail-under=0 --cov-report=html:./.cov_html
+    open ./.cov_html/index.html
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
