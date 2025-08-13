@@ -6,7 +6,7 @@ import air
 
 def test_air_app_factory():
     app = air.Air()
-    assert 1==2
+
     @app.get("/test")
     def test_endpoint():
         return air.H1("Hello, World!")
