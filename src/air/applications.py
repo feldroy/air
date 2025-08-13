@@ -41,7 +41,6 @@ class Air(FastAPI):
             mcp={"name": "Air MCP", "description": "Tools", "transport": "http", "mount_path": "/mcp"}
       - Or call `app.enable_mcp(...)` later.
 
-    Docs: quickstart (how to mount), customization (name/filters), deploy separate app, refresh.  # noqa: E501
     """
 
     def __init__(
