@@ -155,21 +155,9 @@ class Air(FastAPI):
             Doc("URL where the OpenAPI schema will be served from."),
         ] = None,
         # ---- New: optional MCP autoconfig ------------------------------------
-        mcp: Annotated[
-            Optional[bool | Dict[str, Any]],
-            Doc(
-                """
-                Enable built-in MCP server (requires fastapi-mcp).
-
-                - True → mount with defaults (HTTP at "/mcp")
-                - dict → FastApiMCP kwargs and Air helpers:
-                    name, description, include_operations, exclude_operations,
-                    include_tags, exclude_tags, describe_all_responses,
-                    describe_full_response_schema, http_client
-                  plus:
-                    transport ("http" or "sse"), mount_path (default "/mcp")
-                """
-            ),
+        with_mcp: Annotated[
+            bool,
+            Doc("Enable built-in MCP server (requires fastapi-mcp)."),
         ] = False,
         # ----------------------------------------------------------------------
         **extra: Annotated[Any, Doc("Extra keyword arguments stored in the app.")],
@@ -207,7 +195,7 @@ class Air(FastAPI):
         self._mcp_transport: Literal["http", "sse"] = "http"
 
         # Auto-enable MCP if requested and available
-        if mcp:
+        if with_mcp:
             try:
                 from fastapi_mcp import FastApiMCP
             except ImportError:
