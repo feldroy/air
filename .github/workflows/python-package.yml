@@ -44,20 +44,20 @@ jobs:
       - name: QA (format, lint, types) (via just, uv, ruff and ty)
         run: just qa
   test-all:
-    name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
+    name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-pretty)
     runs-on: ubuntu-latest
     steps:
       - *checkout
       - *setup_uv
       - *install_just
-      - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-rich)
+      - name: Test on 3.10–>3.13 (via just, uv, pytest and pytest-pretty)
         run: just test-all
   test-coverage:
-    name: Measuring Coverage (via just, uv, pytest, pytest-cov and coverage[toml])
+    name: Measuring Coverage (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
     runs-on: ubuntu-latest
     steps:
       - *checkout
       - *setup_uv
       - *install_just
-      - name: Measuring Coverage (via just, uv, pytest, pytest-cov and coverage[toml])
+      - name: Measuring Coverage (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
         run: just test-coverage
