@@ -231,7 +231,13 @@ class Air(FastAPI):
                   transport: Literal["http", "sse"] = "http",
                   mount_path: str = "/mcp",
                   ) -> None:
-        """Rescan app routes and update MCP tools after new endpoints are added."""
+        """
+        Mount the MCP server to this application using the specified transport and mount path.
+
+        Args:
+            transport: The transport protocol to use for mounting ("http" or "sse"). Defaults to "http".
+            mount_path: The path at which to mount the MCP server. Defaults to "/mcp".
+        """
         if not self._mcp:
             raise RuntimeError("MCP is not enabled.")
         self._mcp
