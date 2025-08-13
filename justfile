@@ -15,10 +15,9 @@ test-all:
     uv run --python=3.12 --isolated --group test -- pytest
     uv run --python=3.13 --isolated --group test -- pytest
 
-# Run coverage, and build to HTML saved at .cov_html/index.html
+# Run coverage, and build to HTML
 test-coverage:
     uv run --python=3.13 --isolated --group test -- pytest --cov=src -q
-    open .cov_html/index.html
 
 # Show the 10 slowest tests (timings)
 test-durations:
