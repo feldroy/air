@@ -1,5 +1,24 @@
 # Changelog
 
+# 0.22.0 - 2025-08-14
+
+## What's Changed
+
+This is mostly a CI release, which doesn't affect users of Air itself. Many thanks to @tallerasaf who put most of these together.
+
+* Feat Improved development environment setup by @tallerasaf in https://github.com/feldroy/air/pull/267
+* Switch from pytest-rich to pytest-modern by @pydanny in https://github.com/feldroy/air/pull/275
+* Full - CI Test Coverage by @tallerasaf in https://github.com/feldroy/air/pull/272
+* Improve CI workflows, annotations in the GitHub using GitHub Actions and CI for ubuntu-latest, windows-latest, macos-latest  by @tallerasaf in https://github.com/feldroy/air/pull/279
+* BUG: Fix logo in README by @pydanny in https://github.com/feldroy/air/pull/281
+* Refine test coverage tasks and commands in Justfile by @tallerasaf in https://github.com/feldroy/air/pull/283
+
+We did get in one feature to Air itself:
+
+* Support MVP.css air.Header tag not being in body by @pydanny in https://github.com/feldroy/air/pull/273
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.21.0...v0.22.0
+
 # 0.21.0 - 2025-08-12
 
 ## What's Changed
