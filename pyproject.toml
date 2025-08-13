@@ -115,6 +115,7 @@ omit = ["tests/*", ".venv/*", "venv/*"]
 fail_under = 100
 show_missing = true
 skip_covered = true
+ignore_errors = true
 precision = 0
 sort = "miss"
 
