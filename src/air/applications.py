@@ -6,7 +6,8 @@ from typing import (
     Dict,
     List,
     Optional,
-    Self, Sequence,
+    Self,
+    Sequence,
     Type,
     TypeVar,
     Literal,
@@ -40,7 +41,6 @@ class Air(FastAPI):
             mcp={"name": "Air MCP", "description": "Tools", "transport": "http", "mount_path": "/mcp"}
       - Or call `app.enable_mcp(...)` later.
 
-    Docs: quickstart (how to mount), customization (name/filters), deploy separate app, refresh.  # noqa: E501
     """
 
     def __init__(
@@ -219,10 +219,15 @@ class Air(FastAPI):
                   transport: Literal["http", "sse"] = "http",
                   mount_path: str = "/mcp",
                   ) -> None:
-        """Rescan app routes and update MCP tools after new endpoints are added."""
+        """
+        Mount the MCP server to this application using the specified transport and mount path.
+
+        Args:
+            transport: The transport protocol to use for mounting ("http" or "sse"). Defaults to "http".
+            mount_path: The path at which to mount the MCP server. Defaults to "/mcp".
+        """
         if not self._mcp:
             raise RuntimeError("MCP is not enabled.")
-        self._mcp
         self._mcp_transport = transport
         self._mcp_mount_path = mount_path
         # Mount using selected transport and path.
