@@ -22,6 +22,18 @@
         <img src="https://img.shields.io/discord/1388403469505007696?logo=discord"
             alt="Chat on Discord"></a>
 </p>
+<p align="center">
+  <!-- OS support: ubuntu-latest, windows-latest, macos-latest -->
+  <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain" target="_blank">
+    <img src="https://img.shields.io/badge/Runs%20on-ubuntu--latest-E95420?logo=ubuntu&logoColor=white" alt="Runs on ubuntu-latest">
+  </a>
+  <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain" target="_blank">
+    <img src="https://img.shields.io/badge/Runs%20on-windows--latest-0078D6?logo=windows&logoColor=white" alt="Runs on windows-latest">
+  </a>
+  <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain" target="_blank">
+    <img src="https://img.shields.io/badge/Runs%20on-macos--latest-000000?logo=apple&logoColor=white" alt="Runs on macos-latest">
+  </a>
+</p>
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
@@ -91,7 +103,7 @@ Then open your browser to <http://127.0.0.1:8000> to see the result.
 
 ## Combining FastAPI and Air
 
-Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app. 
+Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
 
 ```python
 import air
@@ -143,7 +155,7 @@ def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
 # Combining the Air and and FastAPI apps into one
-app.mount("/api", api)    
+app.mount("/api", api)
 ```
 
 Don't forget the Jinja template!
