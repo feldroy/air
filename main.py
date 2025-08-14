@@ -1,11 +1,12 @@
 import importlib
 from pathlib import Path
+from os import getenv
 
 import air
 from air_markdown.tags import AirMarkdown
 from fastapi import HTTPException
 import sentry_sdk
-from os import getenv
+
 
 from pages import charts, home, why
 
@@ -69,6 +70,10 @@ def data():
 def error_check():
     three = 1/0
     return air.H1('This will never be seen')
+
+@app.get('/llms.txt')
+async def llms_txt():
+    return air.responses.FileResponse('llms.txt')
 
 @app.get("/{slug:path}")
 def airpage(request: air.Request, slug: str):
