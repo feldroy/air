@@ -1,5 +1,13 @@
 # Changelog
 
+# 0.22.1 - 2025-08-14
+
+## What's Changed
+* BUG: Repair the svg import path by @pydanny in https://github.com/feldroy/air/pull/284
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.22.0...v0.22.1
+
 # 0.22.0 - 2025-08-14
 
 ## What's Changed
