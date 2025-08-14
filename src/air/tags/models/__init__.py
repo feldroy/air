@@ -118,4 +118,3 @@ from .stock import (
     Video as Video,
     Wbr as Wbr,
 )
-from . import svg as svg
