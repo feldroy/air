@@ -8,10 +8,11 @@ from . import tags
 from .requests import Request
 
 try:  # pragma: no cover
+    # Remove this try/except statement once support for Python 3.10 is dropped
+    # Then we can do just this immediate line below
     from typing import Self  # type: ignore [attr-defined]
 except ImportError:  # pragma: no cover
-    # NOTE: Remove once Python 3.10 support is dropped
-    Self = "AirForm"  # type: ignore [assignment]
+    from typing_extensions import Self
 
 
 class AirForm:
