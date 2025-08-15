@@ -2,6 +2,10 @@
 set dotenv-load := true
 set dotenv-filename := ".env"
 
+# List all the justfile recipes
+list:
+    just -l
+
 # Run all the formatting, linting, and type checking commands
 qa:
     uv run --python=3.13 --isolated --group lint -- ruff format .
