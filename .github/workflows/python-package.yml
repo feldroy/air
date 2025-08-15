@@ -89,17 +89,18 @@ jobs:
       - name: Measuring Coverage • macOS
         run: just test-coverage
   coverage-xml:
-    name: Upload coverage to Codecov
+    name: Coverage with Codecov
     runs-on: macos-latest
     timeout-minutes: 25
     steps:
       - *checkout
       - *setup_uv
       - *install_just
-      - name: Measuring Coverage • macOS
+      - name: Generating an XML Coverage Report
         run: just coverage-xml
-      - name: Upload coverage to Codecov
+      - name: Upload Coverage Report to Codecov
         uses: codecov/codecov-action@v5
         with:
           files: coverage.xml
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}

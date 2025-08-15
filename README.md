@@ -6,7 +6,7 @@
 
 [![CI - main](https://img.shields.io/github/actions/workflow/status/feldroy/air/python-package.yml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain+event%3Apush)
 [![CI - Latest Tag](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions&label=CI%20Tag)](https://github.com/feldroy/air/actions/workflows/python-package.yml?query=tag%3Alatest+event%3Apush)
-[![Coverage](https://coverage-badge.samuelcolvin.workers.dev/feldroy/air.svg)](https://coverage-badge.samuelcolvin.workers.dev/redirect/feldroy/air)
+[![codecov](https://codecov.io/gh/feldroy/air/graph/badge.svg?token=928SXPA1SU)](https://codecov.io/gh/feldroy/air)
 [![GitHub License](https://img.shields.io/github/license/feldroy/air?logo=github&label=License)](https://github.com/feldroy/air/blob/main/LICENSE)
 
 [![PyPI - Version](https://img.shields.io/pypi/v/air?logo=pypi&label=Pypi&logoColor=fff)](https://pypi.org/project/air)
