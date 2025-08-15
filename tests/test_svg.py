@@ -279,3 +279,248 @@ def test_animate_with_extended_attributes():
     )
     expected = '<animate attributeName="opacity" attributeType="CSS" dur="2s" repeatCount="3" repeatDur="10s" from-="0" to="1" by="0.5" begin="1s" end="5s" calcMode="linear"></animate>'
     assert animate.render() == expected
+
+
+# Test missing classes for coverage
+def test_animate_transform():
+    transform = air.svg.AnimateTransform(
+        type="rotate", from_="0", to="360", dur="2s", repeatCount="indefinite"
+    )
+    expected = '<animateTransform type="rotate" from-="0" to="360" dur="2s" repeatCount="indefinite"></animateTransform>'
+    assert transform.render() == expected
+
+
+def test_desc():
+    desc = air.svg.Desc("This is a description")
+    expected = "<desc>This is a description</desc>"
+    assert desc.render() == expected
+
+
+def test_fe_blend():
+    blend = air.svg.FeBlend(in_="SourceGraphic", in2="SourceAlpha", mode="multiply")
+    expected = (
+        '<feBlend in-="SourceGraphic" in2="SourceAlpha" mode="multiply"></feBlend>'
+    )
+    assert blend.render() == expected
+
+
+def test_fe_color_matrix():
+    matrix = air.svg.FeColorMatrix(
+        type="matrix", values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"
+    )
+    expected = '<feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>'
+    assert matrix.render() == expected
+
+
+def test_fe_component_transfer():
+    transfer = air.svg.FeComponentTransfer(in_="SourceGraphic")
+    expected = '<feComponentTransfer in-="SourceGraphic"></feComponentTransfer>'
+    assert transfer.render() == expected
+
+
+def test_fe_composite():
+    composite = air.svg.FeComposite(
+        in_="SourceGraphic", in2="SourceAlpha", operator="over"
+    )
+    expected = '<feComposite in-="SourceGraphic" in2="SourceAlpha" operator="over"></feComposite>'
+    assert composite.render() == expected
+
+
+def test_fe_convolve_matrix():
+    convolve = air.svg.FeConvolveMatrix(order="3", kernelMatrix="0 -1 0 -1 5 -1 0 -1 0")
+    expected = '<feConvolveMatrix order="3" kernelMatrix="0 -1 0 -1 5 -1 0 -1 0"></feConvolveMatrix>'
+    assert convolve.render() == expected
+
+
+def test_fe_diffuse_lighting():
+    lighting = air.svg.FeDiffuseLighting(in_="SourceGraphic", surfaceScale=1)
+    expected = (
+        '<feDiffuseLighting in-="SourceGraphic" surfaceScale="1"></feDiffuseLighting>'
+    )
+    assert lighting.render() == expected
+
+
+def test_fe_displacement_map():
+    displacement = air.svg.FeDisplacementMap(
+        in_="SourceGraphic", in2="displacement", scale=10, xChannelSelector="R"
+    )
+    expected = '<feDisplacementMap in-="SourceGraphic" in2="displacement" scale="10" xChannelSelector="R"></feDisplacementMap>'
+    assert displacement.render() == expected
+
+
+def test_fe_flood():
+    flood = air.svg.FeFlood(flood_color="red", flood_opacity=0.5)
+    expected = '<feFlood flood-color="red" flood-opacity="0.5"></feFlood>'
+    assert flood.render() == expected
+
+
+def test_fe_func_a():
+    func_a = air.svg.FeFuncA(type="linear", slope=0.5)
+    expected = '<feFuncA type="linear" slope="0.5"></feFuncA>'
+    assert func_a.render() == expected
+
+
+def test_fe_func_b():
+    func_b = air.svg.FeFuncB(type="discrete", tableValues="0 0.5 1")
+    expected = '<feFuncB type="discrete" tableValues="0 0.5 1"></feFuncB>'
+    assert func_b.render() == expected
+
+
+def test_fe_func_g():
+    func_g = air.svg.FeFuncG(type="gamma", amplitude=2, exponent=3)
+    expected = '<feFuncG type="gamma" amplitude="2" exponent="3"></feFuncG>'
+    assert func_g.render() == expected
+
+
+def test_fe_func_r():
+    func_r = air.svg.FeFuncR(type="identity")
+    expected = '<feFuncR type="identity"></feFuncR>'
+    assert func_r.render() == expected
+
+
+def test_fe_image():
+    image = air.svg.FeImage(href="image.jpg", preserveAspectRatio="xMidYMid meet")
+    expected = (
+        '<feImage href="image.jpg" preserveAspectRatio="xMidYMid meet"></feImage>'
+    )
+    assert image.render() == expected
+
+
+def test_fe_merge():
+    merge = air.svg.FeMerge(result="merge1")
+    expected = '<feMerge result="merge1"></feMerge>'
+    assert merge.render() == expected
+
+
+def test_fe_merge_node():
+    merge_node = air.svg.FeMergeNode(in_="SourceGraphic")
+    expected = '<feMergeNode in-="SourceGraphic"></feMergeNode>'
+    assert merge_node.render() == expected
+
+
+def test_fe_morphology():
+    morphology = air.svg.FeMorphology(operator="dilate", radius=2)
+    expected = '<feMorphology operator="dilate" radius="2"></feMorphology>'
+    assert morphology.render() == expected
+
+
+def test_fe_point_light():
+    point_light = air.svg.FePointLight(x=100, y=100, z=50)
+    expected = '<fePointLight x="100" y="100" z="50"></fePointLight>'
+    assert point_light.render() == expected
+
+
+def test_fe_specular_lighting():
+    specular = air.svg.FeSpecularLighting(
+        in_="SourceGraphic", surfaceScale=1, specularConstant=1.5
+    )
+    expected = '<feSpecularLighting in-="SourceGraphic" surfaceScale="1" specularConstant="1.5"></feSpecularLighting>'
+    assert specular.render() == expected
+
+
+def test_fe_spot_light():
+    spot_light = air.svg.FeSpotLight(
+        x=100, y=100, z=50, pointsAtX=0, pointsAtY=0, pointsAtZ=0
+    )
+    expected = '<feSpotLight x="100" y="100" z="50" pointsAtX="0" pointsAtY="0" pointsAtZ="0"></feSpotLight>'
+    assert spot_light.render() == expected
+
+
+def test_fe_tile():
+    tile = air.svg.FeTile(in_="SourceGraphic", result="tile1")
+    expected = '<feTile in-="SourceGraphic" result="tile1"></feTile>'
+    assert tile.render() == expected
+
+
+def test_fe_turbulence():
+    turbulence = air.svg.FeTurbulence(
+        baseFrequency="0.9", numOctaves=4, type="fractalNoise"
+    )
+    expected = '<feTurbulence baseFrequency="0.9" numOctaves="4" type="fractalNoise"></feTurbulence>'
+    assert turbulence.render() == expected
+
+
+def test_foreign_object():
+    foreign = air.svg.ForeignObject(x=20, y=20, width=160, height=160)
+    expected = '<foreignObject x="20" y="20" width="160" height="160"></foreignObject>'
+    assert foreign.render() == expected
+
+
+def test_metadata():
+    metadata = air.svg.Metadata("Dublin Core metadata")
+    expected = "<metadata>Dublin Core metadata</metadata>"
+    assert metadata.render() == expected
+
+
+def test_mpath():
+    mpath = air.svg.Mpath(href="#path1")
+    expected = '<mpath href="#path1"></mpath>'
+    assert mpath.render() == expected
+
+
+def test_pattern():
+    pattern = air.svg.Pattern(
+        x=0, y=0, width=20, height=20, patternUnits="userSpaceOnUse", id="pattern1"
+    )
+    expected = '<pattern x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" id="pattern1"></pattern>'
+    assert pattern.render() == expected
+
+
+def test_polygon():
+    polygon = air.svg.Polygon(points="200,10 250,190 160,210")
+    expected = '<polygon points="200,10 250,190 160,210"></polygon>'
+    assert polygon.render() == expected
+
+
+def test_polyline():
+    polyline = air.svg.Polyline(points="20,20 40,25 60,40 80,120 120,140 200,180")
+    expected = '<polyline points="20,20 40,25 60,40 80,120 120,140 200,180"></polyline>'
+    assert polyline.render() == expected
+
+
+def test_set():
+    set_elem = air.svg.Set(attributeName="fill", to="red", begin="2s", dur="1s")
+    expected = '<set to="red" attributeName="fill" begin="2s" dur="1s"></set>'
+    assert set_elem.render() == expected
+
+
+def test_style():
+    style = air.svg.Style("circle { fill: red; }", type="text/css")
+    expected = '<style type="text/css">circle { fill: red; }</style>'
+    assert style.render() == expected
+
+
+def test_switch():
+    switch = air.svg.Switch(id="switch1")
+    expected = '<switch id="switch1"></switch>'
+    assert switch.render() == expected
+
+
+def test_symbol():
+    symbol = air.svg.Symbol(viewBox="0 0 150 110", id="symbol1")
+    expected = '<symbol viewBox="0 0 150 110" id="symbol1"></symbol>'
+    assert symbol.render() == expected
+
+
+def test_text_path():
+    text_path = air.svg.TextPath("Text along path", href="#path1", startOffset="20%")
+    expected = '<textPath href="#path1" startOffset="20%">Text along path</textPath>'
+    assert text_path.render() == expected
+
+
+def test_title():
+    title = air.svg.Title("SVG Title")
+    expected = "<title>SVG Title</title>"
+    assert title.render() == expected
+
+
+def test_use():
+    use = air.svg.Use(href="#rect1", x=10, y=10)
+    expected = '<use href="#rect1" x="10" y="10"></use>'
+    assert use.render() == expected
+
+
+def test_view():
+    view = air.svg.View(viewBox="0 0 100 100", id="view1")
+    expected = '<view viewBox="0 0 100 100" id="view1"></view>'
+    assert view.render() == expected

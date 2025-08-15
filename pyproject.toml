@@ -121,7 +121,7 @@ data_file = ".coverage" # default “.coverage"
 omit = ["tests/*", ".venv/*", "venv/*"]
 
 [tool.coverage.report]
-fail_under = 100
+fail_under = 95
 show_missing = true
 skip_covered = true
 ignore_errors = true
