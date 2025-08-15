@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/logo-blue-369x369.png" />
+  <img src="img/air-neon.svg" />
 </p>
 
 ## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
