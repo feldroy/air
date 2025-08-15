@@ -17,16 +17,20 @@ test-all:
 
 # Run Test Coverage
 test-coverage:
-    uv run --python=3.13 --isolated --group test -- pytest --cov=src -q
+    uv run --python=3.13 --isolated --group test -- pytest --cov -q
 
 # Show the 10 slowest tests (timings)
 test-durations:
     uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vvv --no-header
 
-# Build and open only the HTML coverage report
+# Build, store and open the HTML coverage report
 coverage-html:
-    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov=src --cov-fail-under=0 --cov-report=html:./.cov_html
+    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
     open ./.cov_html/index.html
+
+# Build and store the XML coverage report
+coverage-xml:
+    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
@@ -34,9 +38,13 @@ test *ARGS:
     uv run --python=3.13 --isolated --group test -- pytest {{ARGS}}
 
 # Run all the tests, but on failure, drop into the debugger
-pdb *ARGS:
+pdb MAXFAIL="10" *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --isolated --group test -- pytest --pdb --maxfail=10 {{ARGS}}
+    uv run --python=3.13 --isolated --group test -- pytest --pdb --maxfail={{MAXFAIL}} {{ARGS}}
+
+# TDD mode: stop at the first test failure
+tdd: (pdb "1")
+    @echo "TDD mode (stop at first failure).
 
 # Build the project, useful for checking that packaging is correct
 build:

@@ -74,8 +74,8 @@ test = [
     "pdbpp>=0.11.7", # enables pdb++, a drop-in replacement for pdb
     "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
     "pytest-pretty>=1.3.0", # Provides richer test session output.
-    "pytest-github-actions-annotate-failures>=0.3.0", # Pytest plugin to annotate failed tests with a workflow command for GitHub Actions
-    "codecov-cli>=11.1.0", # https://github.com/getsentry/prevent-cli/blob/main/codecov-cli/README.md
+    "pytest-github-actions-annotate-failures>=0.3.0", # https://github.com/getsentry/prevent-cli/blob/main/codecov-cli/README.md
+    "pytest-asyncio>=1.1.0",
 ]
 docs = [
     "mkdocs-material",        # MkDocs theme
@@ -97,13 +97,18 @@ exclude = "^build/"
 
 # region ----> pytest - Project Configuration <----
 [tool.pytest.ini_options]
+# Keep imports simple (src/ layout)
 pythonpath = ["src"]
+# Only look here for tests
 testpaths = ["tests"]
+# Fail on any warning
 filterwarnings = ["error"]  # equals: -W error
+# pytest-asyncio
+asyncio_mode = "auto"
 addopts = [
-    "--maxfail=1",
     "--color=yes",
-    "--cov-context=test",
+    "--cov-context=test",            # record per-test contexts
+    "--cov-config=pyproject.toml",   # be explicit about the config source
 ]
 
 [tool.coverage.run]
@@ -111,6 +116,8 @@ source = ["src"]
 branch = true
 parallel = true
 sigterm = true
+relative_files = true
+data_file = ".coverage" # default “.coverage
 omit = ["tests/*", ".venv/*", "venv/*"]
 
 [tool.coverage.report]
@@ -122,8 +129,14 @@ precision = 0
 sort = "miss"
 
 [tool.coverage.html]
-directory = ".cov_html"
-title = "Tests - Coverage"
+directory = ".cov_html" # default “htmlcov”
+
+[tool.coverage.xml]
+output = "coverage.xml" # default “coverage.xml”
+
+# Helpful for path normalization across OS/CI workers
+[tool.coverage.paths]
+source = ["src"]
 # endregion pytest
 
 

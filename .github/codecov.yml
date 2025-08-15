@@ -1,0 +1,8 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 100        # Require full coverage
+        threshold: 0%      # No drop allowed
+        informational: false
+        only_pulls: true   # Apply check only to PRs
