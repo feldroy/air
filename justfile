@@ -30,7 +30,7 @@ test-durations:
 # Build, store and open the HTML coverage report
 coverage-html:
     uv run --python=3.13 --isolated --group test -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
-    open ./.cov_html/index.html
+    open ./htmlcov/index.html
 
 # Build and store the XML coverage report
 coverage-xml:
@@ -48,7 +48,7 @@ pdb MAXFAIL="10" *ARGS:
 
 # TDD mode: stop at the first test failure
 tdd: (pdb "1")
-    @echo "TDD mode (stop at first failure).
+    @echo "TDD mode (stop at first failure)."
 
 # Build the project, useful for checking that packaging is correct
 build:
