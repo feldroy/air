@@ -1,5 +1,26 @@
 # Changelog
 
+# 0.23.0 - 2025-08-18
+
+## Summary
+
+For users, the function signatures on Air SVG tags by @dfundako will make building SVGs much easier for both humans and LLMs. @tallerasaf vastly improves our code coverage build and turns Air poetic with this statement about the wall of badges they have created for us:
+
+> "Each badge gleams like a prayer stitched in code, blessing the dawn of an open-source journey."
+
+## What's Changed
+
+* Add function signatures to Air SVG Tags by @dfundako in https://github.com/feldroy/air/pull/246
+* Enhance test coverage enforcement and README badges by @tallerasaf in https://github.com/feldroy/air/pull/288
+* Add justfile list recipe by @pydanny in https://github.com/feldroy/air/pull/285
+* Improve SVG testing by @pydanny in https://github.com/feldroy/air/pull/286
+* Lower coverage threshold to 95% by @pydanny in https://github.com/feldroy/air/pull/287
+
+## New Contributors
+* @dfundako made their first contribution in https://github.com/feldroy/air/pull/246
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.22.1...v0.23.0
+
 # 0.22.1 - 2025-08-14
 
 ## What's Changed
