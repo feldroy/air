@@ -10,11 +10,15 @@ name: Python Package - CI
 on:
   push:
     branches: [main]
+    tags:
+      - '*'   # matches any tag name
   pull_request:
     branches: [main]
 
 env:
-  COLUMNS: 120
+  COLUMNS: 150
+  UV_FROZEN: true
+  FORCE_COLOR: 1
 
 # Cancel older runs for the same branch/PR (concurrency = run one at a time).
 # When you push several commits in a row, only the newest run continues; older ones are cancelled.
@@ -84,3 +88,19 @@ jobs:
       - *install_just
       - name: Measuring Coverage • macOS
         run: just test-coverage
+  coverage-xml:
+    name: Coverage with Codecov
+    runs-on: macos-latest
+    timeout-minutes: 25
+    steps:
+      - *checkout
+      - *setup_uv
+      - *install_just
+      - name: Generating an XML Coverage Report
+        run: just coverage-xml
+      - name: Upload Coverage Report to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage.xml
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}

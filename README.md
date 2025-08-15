@@ -4,24 +4,38 @@
 
 ## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
 
-[![CI](https://img.shields.io/github/actions/workflow/status/feldroy/air/python-package.yml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions?query=workflow%3Apython-package+event%3Apush+branch%main)
-[![Coverage](https://coverage-badge.samuelcolvin.workers.dev/feldroy/air.svg)](https://coverage-badge.samuelcolvin.workers.dev/redirect/feldroy/air)
-[![PyPI - Version](https://img.shields.io/pypi/v/air?logo=pypi)](https://pypi.org/project/air)
-[![Python Versions](https://img.shields.io/pypi/pyversions/air?logo=python)](https://pypi.org/project/air)
-[![GitHub License](https://img.shields.io/github/license/feldroy/air?logo=github)](https://github.com/feldroy/air/blob/main/LICENSE)
+[![CI - main](https://img.shields.io/github/actions/workflow/status/feldroy/air/python-package.yml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions/workflows/python-package.yml?query=branch%3Amain+event%3Apush)
+[![CI - Latest Tag](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions&label=CI%20Tag)](https://github.com/feldroy/air/actions/workflows/python-package.yml?query=tag%3Alatest+event%3Apush)
+[![codecov](https://codecov.io/gh/feldroy/air/graph/badge.svg?token=928SXPA1SU)](https://codecov.io/gh/feldroy/air)
+[![GitHub License](https://img.shields.io/github/license/feldroy/air?logo=github&label=License)](https://github.com/feldroy/air/blob/main/LICENSE)
 
+[![PyPI - Version](https://img.shields.io/pypi/v/air?logo=pypi&label=Pypi&logoColor=fff)](https://pypi.org/project/air)
 [![PyPI Total Downloads](https://static.pepy.tech/badge/air)](https://pepy.tech/projects/air)
 [![PyPI Monthly Downloads](https://static.pepy.tech/badge/air/month)](https://pepy.tech/projects/air)
 [![PyPI Weekly Downloads](https://static.pepy.tech/badge/air/week)](https://pepy.tech/projects/air)
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github)
-[![GitHub last commit](https://img.shields.io/github/last-commit/feldroy/air?logo=github)](https://github.com/feldroy/air/commit/main)
-[![GitHub Release Date](https://img.shields.io/github/release-date/feldroy/air?logo=github)](https://github.com/feldroy/air/releases/latest)
-![GitHub tag check runs](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions)
+![Running on](https://img.shields.io/badge/Running%20on:-magenta?labelColor=black&logo=hotwire&logoColor=yellow)
+![Windows](https://custom-icon-badges.demolab.com/badge/Windows%2011-%230079d5?logo=windows11&logoColor=white)
+![macOS](https://img.shields.io/badge/MacOS-000000?logo=apple&logoColor=white&color=2e2e2e)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&color=orange)
+[![Python Versions](https://img.shields.io/pypi/pyversions/air?logo=python&logoColor=fff&label=Python)](https://pypi.org/project/air)
 
-[![GitHub contributors](https://img.shields.io/github/contributors/feldroy/air?logo=github)](https://github.com/feldroy/air/graphs/contributors)
-[![Discord](https://img.shields.io/discord/1388403469505007696?logo=discord)](https://discord.gg/aTzWBVrtEs)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github&label=Commits)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github)
+[![GitHub last commit](https://img.shields.io/github/last-commit/feldroy/air?logo=github&label=Last%20Commit)](https://github.com/feldroy/air/commit/main)
+[![GitHub Release Date](https://img.shields.io/github/release-date/feldroy/air?logo=github&label=Release%20Date)](https://github.com/feldroy/air/releases/latest)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/feldroy/air?logo=github&label=Contributors)](https://github.com/feldroy/air/graphs/contributors)
+[![Discord](https://img.shields.io/discord/1388403469505007696?logo=discord&label=Discord)](https://discord.gg/aTzWBVrtEs)
+[![X](https://img.shields.io/badge/Air%20💨-%23000000.svg?logo=X&logoColor=white)](https://x.com/AirWebFramework)
+[![Bluesky](https://img.shields.io/badge/Air%20💨-0285FF?logo=bluesky&logoColor=fff)](https://bsky.app/profile/airwebframework.bsky.social)
+[![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](https://feldroy.github.io/air)
+
+![Frameworks](https://img.shields.io/badge/Frameworks:-magenta?labelColor=black&logo=framework&logoColor=yellow)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Pydantic](https://img.shields.io/badge/Pydantic-1B0613.svg?logo=pydantic&logoColor=E35AF3)](https://docs.pydantic.dev/latest)
+[![Jinja](https://img.shields.io/badge/jinja-white.svg?&logo=Jinja&logoColor=black)](https://jinja.palletsprojects.com/en/latest)
+[![Astral](https://img.shields.io/badge/uv|ruff|ty-black.svg?logo=astral&logoColor=D1FF4F)](https://docs.astral.sh)
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
