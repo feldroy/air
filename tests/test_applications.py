@@ -68,7 +68,7 @@ def test_page_decorator():
         return air.H1("Home page")
 
     @page
-    def about():
+    def about_us():
         return "<h1>About page</h1>"
 
     client = TestClient(app)
@@ -77,7 +77,7 @@ def test_page_decorator():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Home page</h1>"
 
-    response = client.get("/about")
+    response = client.get("/about-us")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About page</h1>"
