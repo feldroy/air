@@ -108,6 +108,14 @@ def get_air_objects() -> List[Any]:
     return list(air_objects)
 
 
+reference_warning = air.Section(
+                air.Aside(
+                    air.Strong("WARNING:", style="color: red"),
+                    " This API reference is very new and there are unsolved formatting challenges.",
+                )
+            )
+
+
 @app.page
 async def reference(request: air.Request):
     modules = [
@@ -115,7 +123,7 @@ async def reference(request: air.Request):
         for x in sorted(list(set([x.__module__ for x in get_air_objects()])))
     ]
     return layout(
-        request, air.Article(air.H1("API Reference"), air.Ul(*modules), class_="prose")
+        request, air.Article(air.H1("API Reference"), reference_warning, air.Ul(*modules), class_="prose")
     )
 
 
@@ -148,13 +156,8 @@ def reference_module(request: air.Request, module: str):
     return layout(
         request,
         air.Article(
-            air.H1(f"API Reference: {module}"),
-            air.Section(
-                air.Aside(
-                    air.Strong("WARNING:", style="color: red"),
-                    " This API reference is very new and there are unsolved formatting challenges.",
-                )
-            ),
+            air.H1(air.A("API Reference:", href="/reference"), " ", module),
+            reference_warning,
             air.Ul(*objects),
             class_="prose",
         ),
