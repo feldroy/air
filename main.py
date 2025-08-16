@@ -5,7 +5,7 @@ from functools import cache
 import importlib
 import inspect
 import pkgutil
-from typing import Any, List, ParamSpec
+from typing import Any, List, ParamSpec,TypeVar
 import html
 
 import air
@@ -150,7 +150,7 @@ def reference_module(request: air.Request, module: str):
     objects = [
         x
         for x in get_air_objects()
-        if x.__module__ == module and not isinstance(x, ParamSpec)
+        if x.__module__ == module and not isinstance(x, (ParamSpec, TypeVar))
     ]
     objects = [doc_obj(x) for x in sorted(objects, key=lambda x: x.__name__)]
     return layout(
