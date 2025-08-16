@@ -18,13 +18,14 @@ def reasons_not_to_use_air():
         "it's better to stay under water",
         "because we're running out",
         "if you want a full stack framework",
-        "if you want something not in alpha",
+        "unless you like pre-pre-alpha software",
         "if you prefer semantic versioning",
         "because we're off to see the wizard",
         "if you dislike PEP8 and type annotations",
         "if you don't like HTMX",
         "when you need a stable, mature project",
-        "if you want React to be your frontend instead of HTML"
+        "if you want React to be your frontend instead of HTML",
+        "because the GitHub repo for Air has a wall of badges"
     ]
     return f"... {sample(reasons, 1)[0]}"
 
