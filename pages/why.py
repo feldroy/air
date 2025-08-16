@@ -25,7 +25,7 @@ def reasons_not_to_use_air():
         "if you don't like HTMX",
         "when you need a stable, mature project",
         "if you want React to be your frontend instead of HTML",
-        "because the GitHub repo for Air has a wall of badges"
+        "because the GitHub repo for Air has a wall of badges",
     ]
     return f"... {sample(reasons, 1)[0]}"
 
