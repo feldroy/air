@@ -383,7 +383,7 @@ class Air(FastAPI):
         if func.__name__ == "index":
             route_name = "/"
         else:
-            route_name = f"/{func.__name__}"
+            route_name = f"/{func.__name__}".replace('_', '-')
         return self.get(route_name)(func)
 
 
