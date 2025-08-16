@@ -86,7 +86,7 @@ class SSEResponse(StreamingResponse):
                 # Tags work seamlessly
                 yield air.Aside(lottery_numbers)
                 # As do strings. Non-strings are cast to strings via the str built-in
-                yieled "Hello\nworld"
+                yield "Hello, world"
                 await sleep(1)
 
 
