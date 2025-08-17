@@ -26,7 +26,6 @@ jobs:
     steps:
       # 1) Wait until PR checks settle; fail if anything is failing/pending
       - name: Wait for checks
-        id: wait
         uses: wechuli/allcheckspassed@e22f45a4f25f4cf821d1273705ac233355400db1 # v1.2.0
         with:
           delay: '1'                # minutes before first poll
@@ -36,15 +35,3 @@ jobs:
           # Comma-separated names or regex (meaning: regular expression) patterns:
           checks_exclude: 'skipped,CI Overview, Coverage with Codecov, codecov/patch'
           show_job_summary: 'true'  # nice table in the job Summary tab
-
-      # 2) Always post/update a sticky PR comment with one-line per check
-      - name: CI overview (sticky PR comment)
-        if: ${{ always() && steps.wait.outcome != '' }}  # explicit dependency on step 1 finishing
-        uses: ipdxco/sorted-pr-checks@e93469d12abf23967b6346a76599e1a087161c82 # v2.0.0
-        with:
-          repository: ${{ github.repository }}
-          pull_number: ${{ github.event.pull_request.number }}
-          # Built-in templates: sorted_by_result | grouped_by_result | unsuccessful_only
-          template: sorted_by_result
-          identifier: '${{ github.workflow }}-${{ github.job }}'
-          token: ${{ secrets.GITHUB_TOKEN }}
