@@ -33,29 +33,31 @@ jobs:
           polling_interval: '1'
           fail_fast: false
           checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch'
-          show_job_summary: 'true'
+          show_job_summary: 'true'   # writes to $GITHUB_STEP_SUMMARY
 
-      # 2) Read THIS job’s summary (same content as the /summary_raw page)
+      # 2) Read THIS job’s summary file (same content the UI exposes as .../summary_raw)
       - name: Read job summary (raw)
         if: always()
         id: read-summary
-        uses: juliangruber/read-file-action@v1
+        uses: juliangruber/read-file-action@b549046febe0fe86f8cb4f93c24e284433f9ab58 # v1
         with:
+          # IMPORTANT: provide the path (absolute path works)
           path: ${{ env.GITHUB_STEP_SUMMARY }}
+          trim: 'false'
 
       # 3a) Post the raw HTML/Markdown as a sticky PR comment (code block)
       - name: Comment summary_raw (content)
         if: ${{ always() && steps.read-summary.outputs.content != '' }}
-        uses: mshick/add-pr-comment@v2
+        uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2.8.2
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
           message: ${{ steps.read-summary.outputs.content }}
 
-      # 3b) Fallback note when the summary is empty (rare)
+      # 3b) Fallback when the summary file is empty (rare)
       - name: Comment summary_raw (fallback)
         if: ${{ always() && steps.read-summary.outputs.content == '' }}
-        uses: mshick/add-pr-comment@v2
+        uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2.8.2
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
