@@ -1,3 +1,8 @@
+"""Air loves Jinja! 
+
+A common pattern is to use a Jinja template as the project base and then use Air Tags for individual content.
+"""
+
 from collections.abc import Mapping, Sequence
 from os import PathLike
 from typing import Any, Callable, cast, overload
@@ -18,6 +23,7 @@ class JinjaRenderer:
         env: The env is the central Jinja object that holds configuration, filters, globals, and template loading settings, and is responsible for compiling and rendering templates.
 
     Example:
+    
         # Instantiate the render callable
         jinja = JinjaRenderer('templates')
 
@@ -36,6 +42,14 @@ class JinjaRenderer:
                 'home.html',
                 name='Parmesan'
             )
+
+        # Will render Air Tags sent into Jinja context
+            return jinja(
+                request,
+                'home.html',
+                content=air.Article(air.P('Cheddar'))
+            )        
+
     """
 
     def __init__(
