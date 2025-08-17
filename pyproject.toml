@@ -277,37 +277,21 @@ output-format = "full"
 
 # Promote every non-error rule to error (strict).
 [tool.ty.rules]
-# Strict set
-deprecated = "error"
-invalid-ignore-comment = "error"
-possibly-unbound-attribute = "error"
-possibly-unbound-implicit-call = "error"
-possibly-unbound-import = "error"
-redundant-cast = "error"
-undefined-reveal = "error"
-unknown-rule = "error"
-unresolved-global = "error"
-unsupported-base = "error"
-division-by-zero = "error"
-possibly-unresolved-reference = "error"
-unused-ignore-comment = "error"
-
-# Add the “big three” resolution errors explicitly for src code
-unresolved-import = "error"
-unresolved-reference = "error"
-unresolved-attribute = "error"
-
-# Core type-safety errors (often default error, made explicit)
-invalid-argument-type = "error"
-invalid-assignment = "error"
-invalid-return-type = "error"
-no-matching-overload = "error"
-missing-argument = "error"
-unknown-argument = "error"
-type-assertion-failure = "error"
-static-assert-error = "error"
-invalid-parameter-default = "error"
-invalid-overload = "error"
+# Defaults = warn:
+deprecated                       = "error" # https://docs.astral.sh/ty/reference/rules/#deprecated
+invalid-ignore-comment           = "error" # https://docs.astral.sh/ty/reference/rules/#invalid-ignore-comment
+possibly-unbound-attribute       = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-attribute
+possibly-unbound-implicit-call   = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-implicit-call
+possibly-unbound-import          = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-import
+redundant-cast                   = "error" # https://docs.astral.sh/ty/reference/rules/#redundant-cast
+undefined-reveal                 = "error" # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
+unknown-rule                     = "error" # https://docs.astral.sh/ty/reference/rules/#unknown-rule
+unresolved-global                = "error" # https://docs.astral.sh/ty/reference/rules/#unresolved-global
+unsupported-base                 = "error" # https://docs.astral.sh/ty/reference/rules/#unsupported-base
+# Defaults = ignore:
+division-by-zero                 = "error" # https://docs.astral.sh/ty/reference/rules/#division-by-zero
+possibly-unresolved-reference    = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
+unused-ignore-comment            = "error" # https://docs.astral.sh/ty/reference/rules/#unused-ignore-comment
 
 # Tests often import optional dev deps or use dynamic patterns.
 [[tool.ty.overrides]]
