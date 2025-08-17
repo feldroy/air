@@ -51,63 +51,88 @@ jobs:
           retries: 3
           result-encoding: string
           script: |
-            const {owner, repo} = context.repo;
+            const { owner, repo } = context.repo;
+
+            // Guard for non-PR invocations (e.g., workflow_dispatch)
             const pr = context.payload.pull_request;
+            if (!pr) {
+              const md = [
+                '<!-- ci-overview:stable-anchor -->',
+                '# CI overview',
+                '',
+                '**Bottom line:** unavailable (meaning: cannot be shown) outside a PR context.',
+              ].join('\n');
+              await core.summary.addRaw(md).write();
+              core.setOutput('markdown', md);
+              core.setOutput('has_failures', 'true'); // force red outside PRs
+              return;
+            }
+
             const number = pr.number;
             const headSha = pr.head.sha;
-
             const thisJobName = 'CI overview';
 
-            // Helpers
-            const statusOf = r => (r.conclusion ?? r.status ?? 'unknown');
+            // Helpers (safe (meaning: protected) access + defaults)
+            const statusOf = r => (r?.conclusion ?? r?.status ?? 'unknown');
             const icon = s => ({success:'✅', failure:'❌', cancelled:'🚫', timed_out:'⏲️', neutral:'⚪', skipped:'⏭️'}[s] || '⚠️');
+            const safeName = r => {
+              const n = (r && typeof r.name === 'string') ? r.name.trim() : '';
+              return n || '(unnamed check)';
+            };
 
             let markdown = '';
             let hasFailures = false;
 
             try {
-              // 1) All check runs for this commit (correct paginate mapper)
+              // 1) All check runs for the commit (mapper required for paginate)
               const runs = await github.paginate(
                 github.rest.checks.listForRef,
                 { owner, repo, ref: headSha, per_page: 100 },
                 (response) => response.data.check_runs
               );
 
-              const filtered = runs.filter(r => r.name !== thisJobName);
+              // Normalize (attach safe fields so we never touch undefined.name)
+              const normed = (runs || []).map(r => ({
+                _name: safeName(r),
+                _status: statusOf(r),
+                raw: r,
+              }));
 
-              // Tally + lines
+              // Exclude this overview job itself by display name
+              const others = normed.filter(x => x._name !== thisJobName);
+
+              // Tally + lines (all safe now)
               const tally = {};
-              for (const r of filtered) {
-                const s = statusOf(r);
-                tally[s] = (tally[s] || 0) + 1;
+              for (const x of others) {
+                tally[x._status] = (tally[x._status] || 0) + 1;
               }
               const bottom = Object.entries(tally)
-                .map(([k,v]) => `${v} ${k}`)
+                .map(([k, v]) => `${v} ${k}`)
                 .join(', ') || 'no checks found';
 
-              const lines = filtered
-                .sort((a,b)=>a.name.localeCompare(b.name))
-                .map(r => `- ${icon(statusOf(r))} ${r.name}: ${statusOf(r)}`);
+              const lines = others
+                .sort((a, b) => a._name.localeCompare(b._name))
+                .map(x => `- ${icon(x._status)} ${x._name}: ${x._status}`);
 
-              hasFailures = filtered.some(r => ['failure','cancelled','timed_out'].includes(statusOf(r)));
+              hasFailures = others.some(x => ['failure','cancelled','timed_out'].includes(x._status));
 
-              // 2) Deep link: ?check_run_id=<id> for this job (correct paginate mapper)
+              // 2) Deep link to preselect THIS job in the Checks tab
               const jobs = await github.paginate(
                 github.rest.actions.listJobsForWorkflowRun,
                 { owner, repo, run_id: context.runId, per_page: 100 },
                 (response) => response.data.jobs
               );
-              const me = jobs.find(j => j.name === thisJobName);
+              const me = (jobs || []).find(j => j?.name === thisJobName);
 
-              // Primary deep link to preselect our job in Checks
               let deeplink = '';
+              // Prefer check_run_id preselection if present
               if (me?.check_run_url) {
-                const id = String(me.check_run_url.split('/').pop());
-                if (id && /^\d+$/.test(id)) {
+                const id = String(me.check_run_url.split('/').pop() || '');
+                if (/^\d+$/.test(id)) {
                   deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?check_run_id=${id}`;
                 }
               }
-              // Fallback (meaning: backup) deep link if we couldn't resolve the ID
+              // Fallback (meaning: backup)
               if (!deeplink) {
                 deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?sha=${headSha}`;
               }
@@ -116,28 +141,27 @@ jobs:
                 '<!-- ci-overview:stable-anchor -->',
                 '# CI overview',
                 '',
-                `**Bottom line:** ${filtered.length} checks — ${bottom}.`,
+                `**Bottom line:** ${others.length} checks — ${bottom}.`,
                 '',
                 '## By check',
                 ...lines,
                 '',
-                `[Open Checks → ${thisJobName}](${deeplink})`
+                `[Open Checks → ${thisJobName}](${deeplink})`,
               ].join('\n');
 
             } catch (err) {
-              // Guaranteed output so next step always has a body
+              // Guaranteed body on error
               markdown = [
                 '<!-- ci-overview:stable-anchor -->',
                 '# CI overview',
                 '',
                 '**Bottom line:** unavailable (meaning: cannot be shown) due to an internal error.',
                 '',
-                `> Error: ${String(err && err.message || err)}`,
+                `> Error: ${String(err && (err.message || err))}`,
                 '',
-                `Open Checks for details: https://github.com/${owner}/${repo}/pull/${number}/checks?sha=${headSha}`
+                `Open Checks for details: https://github.com/${owner}/${repo}/pull/${pr.number}/checks?sha=${headSha}`,
               ].join('\n');
-              // In error case, keep hasFailures true so the job ends red
-              hasFailures = true;
+              hasFailures = true; // keep job red if we errored
             }
 
             await core.summary.addRaw(markdown).write();
