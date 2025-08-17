@@ -259,7 +259,6 @@ module-name = "air"
 # Keep file discovery identical whether you pass "." or not
 respect-gitignore = true  # default, shown for clarity
 force-exclude = true      # apply excludes even for explicit paths like "."
-
 src = ["src"]
 line-length = 120
 indent-width = 4
