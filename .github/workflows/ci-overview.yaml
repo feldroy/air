@@ -2,9 +2,7 @@
 name: CI Overview
 
 on:
-  # Use pull_request_target so the bot can comment on PRs from forks safely,
-  # while we DO NOT check out or run untrusted code.
-  pull_request_target:
+  pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
 
 # Keep one live run per PR; cancel stale ones
