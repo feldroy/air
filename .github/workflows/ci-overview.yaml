@@ -33,12 +33,11 @@ jobs:
           polling_interval: '1'     # minutes between polls
           fail_fast: false          # wait for all to complete before reporting
           # Comma-separated names or regex (meaning: regular expression) patterns:
-          checks_exclude: 'CI Overview, Coverage with Codecov, codecov/patch'
+          checks_exclude: 'skipped,CI Overview, Coverage with Codecov, codecov/patch'
           show_job_summary: 'true'  # nice table in the job Summary tab
 
       # 2) Always post/update a sticky PR comment with one-line per check
       - name: CI overview (sticky PR comment)
-        if: always()
         uses: ipdxco/sorted-pr-checks@e93469d12abf23967b6346a76599e1a087161c82 # v2.0.0
         with:
           repository: ${{ github.repository }}
