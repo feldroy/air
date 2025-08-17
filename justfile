@@ -6,11 +6,18 @@ set dotenv-filename := ".env"
 list:
     just -l
 
-# Run all the formatting, linting, and type checking commands
-qa:
+format:
     uv run --python=3.13 --isolated --group lint -- ruff format .
     uv run --python=3.13 --isolated --group lint -- ruff check --fix .
+
+lint:
+    uv run --python=3.13 --isolated --group lint -- ruff check --no-fix .
+
+type-check:
     uv run --python=3.13 --isolated --group lint --group test -- ty check .
+
+# Run all the formatting, linting, and type checking commands
+qa: format lint type-check
 
 # Run all the tests for all the supported Python versions
 test-all:

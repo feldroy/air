@@ -76,7 +76,7 @@ test = [
     "pytest-pretty>=1.3.0", # Provides richer test session output.
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
-    "pytest-memray>=1.7.0;platform_system!='Windows'", # Memory profiler plugin for pytest
+    "pytest-memray>=1.7.0;sys_platform!='win32'", # Memory profiler plugin for pytest
     "pytest-mypy>=1.0.1", # Runs mypy type checks inside pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
 ]
@@ -281,9 +281,9 @@ exclude = [
 ]
 
 [tool.ruff.format]
-indent-style = "space"   # match EditorConfig
-line-ending = "lf"       # enforce LF newlines
-quote-style = "double"   # keep quotes in sync with flake8-quotes
+#indent-style = "space"   # match EditorConfig
+#line-ending = "lf"       # enforce LF newlines
+#quote-style = "double"   # keep quotes in sync with flake8-quotes
 # Docstring code formatting
 docstring-code-format = true # format Python code blocks in docstrings
 docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
