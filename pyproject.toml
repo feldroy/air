@@ -251,3 +251,68 @@ lint.select = ["I"]          # I-rules = isort compatibility
 [tool.ruff.lint.isort]
 combine-as-imports = true    # group aliases coming from the same module
 force-wrap-aliases = true    # keep the multi-line, parenthesised layout
+
+# region ty
+[tool.ty.src]
+# Lock what gets checked so "ty check" and "ty check ." act the same
+include = ["src", "tests"] # keep discovery stable
+# Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
+respect-ignore-files = true
+
+[tool.ty.environment]
+# Make first-party resolution stable and priority-ordered.
+root = ["./src", "."]
+# Freeze analysis semantics across dev/CI.
+# If your project table already has `requires-python`, Ty will infer the min;
+# setting explicitly keeps things deterministic.
+python-version = "3.13"
+# For cross-platform libraries, analyze as if code may run anywhere.
+python-platform = "all"
+
+[tool.ty.terminal]
+# Fail the run on any warning.
+error-on-warning = true
+# Verbose output; switch to "concise" when you want minimal output.
+output-format = "full"
+
+# Promote every non-error rule to error (strict).
+[tool.ty.rules]
+# Strict set
+deprecated = "error"
+invalid-ignore-comment = "error"
+possibly-unbound-attribute = "error"
+possibly-unbound-implicit-call = "error"
+possibly-unbound-import = "error"
+redundant-cast = "error"
+undefined-reveal = "error"
+unknown-rule = "error"
+unresolved-global = "error"
+unsupported-base = "error"
+division-by-zero = "error"
+possibly-unresolved-reference = "error"
+unused-ignore-comment = "error"
+
+# Add the “big three” resolution errors explicitly for src code
+unresolved-import = "error"
+unresolved-reference = "error"
+unresolved-attribute = "error"
+
+# Core type-safety errors (often default error, made explicit)
+invalid-argument-type = "error"
+invalid-assignment = "error"
+invalid-return-type = "error"
+no-matching-overload = "error"
+missing-argument = "error"
+unknown-argument = "error"
+type-assertion-failure = "error"
+static-assert-error = "error"
+invalid-parameter-default = "error"
+invalid-overload = "error"
+
+# Tests often import optional dev deps or use dynamic patterns.
+[[tool.ty.overrides]]
+include = ["tests/**", "**/test_*.py", "**/*_test.py"]
+[tool.ty.overrides.rules]
+unresolved-import               = "warn"
+possibly-unresolved-reference   = "warn"
+# endregion ty
