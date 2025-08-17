@@ -54,17 +54,23 @@ We are actively looking for contributions in the following areas:
 > [!IMPORTANT]
 > If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
 
-## Docs
+## Documentation: Docstrings and API Reference
 
-The docs are temporarily in this repo in `docs/` and are built with [MkDocs](https://www.mkdocs.org/). Soon they will be in https://github.com/feldroy/airdocs
+The API reference is generated from docstrings in this code, and the docs are built by the [github.com/feldroy/airdocs](https://github.com/feldroy/airdocs) project. All public functions, classes, and methods require complete docstrings. This will help us maintain a high-quality documentation site. Rules for writing docstrings:
 
-If you are contributing to the files in `docs/` and want to build the MkDocs site, run this command to run the docs:
+- Every function, class, and method should have a docstring
+- Docstrings should be clear, concise, and informative
+- Docstrings are written in Markdown format
+- HTML tags are not allowed in docstrings unless surrounded by backticks (e.g., `<tag>` should be written as `` `<tag>` ``) or inside code blocks (e.g., ```` ```html <tag> ``` ````)
+- Use [Google style docstrings](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) for all public functions, classes, and methods.
+  - Use the `Args:` and `Return:` (or `Yields:` for generators) directives to document parameters and return values
+  - Use the `Example:` directive to document how to use the function, class, or method being documented.
 
-```sh
-just doc
-```
 
-Explore them at http://localhost:3000
+## Documentation: Concepts, Tutorials, and Guides
+
+These are managed in the <a href="https://github.com/feldroy/airdocs" target="_blank">github.com/feldroy/airdocs</a> repository which is hosted at [airdocs.fastapicloud.dev/](https://airdocs.fastapicloud.dev/). If you want to contribute to the documentation, please fork that repository and submit a pull request there.
+
 
 ## Tests
 
