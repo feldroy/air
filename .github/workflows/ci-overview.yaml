@@ -4,13 +4,14 @@ name: CI Overview
 on:
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch:
 
-# Keep one live run per PR; cancel stale ones
+# One live run per PR
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}
   cancel-in-progress: true
 
-# Least privilege for the whole workflow
+# Least privilege
 permissions:
   contents: read
   checks: read
@@ -19,33 +20,33 @@ permissions:
 
 jobs:
   overview:
-    name: CI Overview
+    name: CI Overview        # <-- MUST match exactly
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      # 1) Wait until PR checks settle; fail if anything is failing/pending
+      # 1) Wait until PR checks settle; FAIL if anything is failing/pending
       - name: Wait for checks
         id: wait
-        uses: wechuli/allcheckspassed@e22f45a4f25f4cf821d1273705ac233355400db1 # v1.2.0
+        uses: wechuli/allcheckspassed@v1.2.0
         with:
-          delay: '1'                # minutes before first poll
-          retries: '15'             # 15 polls
-          polling_interval: '1'     # minutes between polls
-          fail_fast: false          # wait for all to complete before reporting
-          # Comma-separated names or regex (meaning: regular expression) patterns:
-          checks_exclude: 'skipped,CI Overview, Coverage with Codecov, codecov/patch'
-          show_job_summary: 'true'  # nice table in the job Summary tab
-      # 2) Resolve THIS job's numeric job_id (by job NAME)
+          delay: '1'
+          retries: '15'
+          polling_interval: '1'
+          fail_fast: false
+          checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch'
+          show_job_summary: 'true'   # table appears in this job's Summary
+
+      # 2) Resolve THIS job’s numeric job_id by job NAME (not job id)
       - name: Get current job id
         if: always()
         id: jobid
-        uses: Tiryoh/gha-jobid-action@be260d8e4f4b6b5dd9d2a2f24f578e8c5b0ca7e6 # v1.4.0
+        uses: Tiryoh/gha-jobid-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          job_name: CI Overview
+          job_name: CI Overview     # must equal jobs.<job>.name
 
-      # 3) Fetch raw HTML summary for THIS job
+      # 3) Fetch raw HTML for THIS job’s summary
       - name: Fetch summary_raw
         if: always()
         id: fetch
@@ -53,30 +54,30 @@ jobs:
         with:
           method: GET
           # https://github.com/<owner>/<repo>/actions/runs/<run_id>/jobs/<job_id>/summary_raw
-          url: ${{ format('{0}/{1}/actions/runs/{2}/jobs/{3}/summary_raw', github.server_url, github.repository, github.run_id, steps.jobid.outputs.job_id) }}
+          url: ${{ format('{0}/{1}/actions/runs/{2}/jobs/{3}/summary_raw',
+            github.server_url, github.repository, github.run_id, steps.jobid.outputs.job_id) }}
           timeout: '15000'
-          # MUST be JSON
-          customHeaders: '{"Accept":"text/html"}'
-          # Don’t hard-fail the job on auth/not-found cases
-          ignoreStatusCodes: '401,403,404'
+          customHeaders: '{"Accept":"text/html"}'   # must be valid JSON
+          ignoreStatusCodes: '401,403,404'         # don’t hard fail if private/inaccessible
 
-      # 4a) Comment when we HAVE content
+      # 4a) Post sticky PR comment with the raw HTML (code block) when we have content
       - name: Comment summary_raw (content)
         if: ${{ always() && steps.fetch.outputs.response != '' }}
-        uses: mshick/add-pr-comment@b8f338c9b3d2a69f2b3f8b7b2a3c5f3e1c1c0f44 # v2.8.2
+        uses: mshick/add-pr-comment@v2
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
           message: ${{ steps.fetch.outputs.response }}
 
-      # 4b) Fallback comment when content is missing
+      # 4b) Fallback sticky comment when content is missing
       - name: Comment summary_raw (fallback)
         if: ${{ always() && steps.fetch.outputs.response == '' }}
-        uses: mshick/add-pr-comment@b8f338c9b3d2a69f2b3f8b7b2a3c5f3e1c1c0f44 # v2.8.2
+        uses: mshick/add-pr-comment@v2
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
           message: |
             Bottom line: unavailable (meaning: cannot be shown). Could not fetch summary_raw.
             Tried URL:
-            ${{ format('{0}/{1}/actions/runs/{2}/jobs/{3}/summary_raw', github.server_url, github.repository, github.run_id, steps.jobid.outputs.job_id) }}
+            ${{ format('{0}/{1}/actions/runs/{2}/jobs/{3}/summary_raw',
+                       github.server_url, github.repository, github.run_id, steps.jobid.outputs.job_id) }}
