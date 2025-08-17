@@ -6,13 +6,12 @@ updates:
   - package-ecosystem: "uv"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     open-pull-requests-limit: 5
-    labels: [ "deps", "uv" ]
+    labels: ["deps", "uv"]
     commit-message:
       prefix: "⬆"
       include: "scope"
-    # Group related updates to reduce PR count while keeping risk reasonable
     groups:
       test-deps:
         patterns:
@@ -20,12 +19,12 @@ updates:
           - "pytest-*"
           - "coverage*"
           - "pytest-cov"
-        update-types: [ "minor", "patch" ]
+        update-types: ["minor", "patch"]
       lint-type:
         patterns:
           - "ruff*"
           - "types-*"
-        update-types: [ "minor", "patch" ]
+        update-types: ["minor", "patch"]
       docs:
         patterns:
           - "mkdocs*"
@@ -34,18 +33,21 @@ updates:
           - "mkdocs-autorefs"
           - "mkdocs-exclude"
           - "mkdocs-llmstxt"
-        update-types: [ "minor", "patch" ]
+        update-types: ["minor", "patch"]
 
-  # 2) GitHub Actions (digest/patch/minor grouped; majors separate)
+  # 2) GitHub Actions (patch/minor grouped; majors separate)
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
-    labels: [ "deps", "actions" ]
+    labels: ["deps", "actions"]
     commit-message:
       prefix: "⬆"
       include: "scope"
     groups:
       gha-minor-patch:
-        patterns: [ "*" ]
-        update-types: [ "digest", "patch", "minor" ]
+        patterns: ["*"]
+        update-types: ["patch", "minor"]
+      gha-major:
+        patterns: ["*"]
+        update-types: ["major"]
