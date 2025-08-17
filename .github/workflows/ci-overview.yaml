@@ -35,3 +35,19 @@ jobs:
           # Comma-separated names or regex (meaning: regular expression) patterns:
           checks_exclude: 'skipped,CI Overview, Coverage with Codecov, codecov/patch'
           show_job_summary: 'true'  # nice table in the job Summary tab
+      - name: Fetch CI Overview summary_raw
+        id: fetch-summary
+        uses: fjogeleit/http-request-action@v1.16.4
+        with:
+          method: GET
+          url: ${{ steps.build-url.outputs.summary_url }} # your full summary_raw URL here
+          timeout: 15000
+          ignoreStatusCodes: '401,403,404'
+      # Example: post it with add-pr-comment (render as code block)
+      - name: Comment summary_raw
+        if: always()
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-id: ci-overview:summary-raw
+          preformatted: true
+          message: ${{ steps.fetch-summary.outputs.response }}
