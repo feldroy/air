@@ -1,3 +1,7 @@
+"""Display and Validation of HTML forms. Powered by pydantic.
+
+Pro-tip: Always validate incoming data."""
+
 from typing import Any, Callable, Union, get_args, get_origin
 
 from pydantic import BaseModel, Field, ValidationError

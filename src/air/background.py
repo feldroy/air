@@ -1,3 +1,5 @@
+"""Background tasks in Air, for those times a long-running process is needed that doesn't force the user to wait."""
+
 from fastapi.background import BackgroundTasks as FastAPIBackgroundTasks
 from typing_extensions import Annotated, Any, Callable, Doc, ParamSpec
 

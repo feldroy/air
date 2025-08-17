@@ -1,3 +1,5 @@
+"""Tools for building layouts and several simple layouts for quick prototyping."""
+
 from .tags import (
     Base,
     Body,

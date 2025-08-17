@@ -1,3 +1,5 @@
+"""Utilities for the Air Tag system."""
+
 from .config import HTML_ATTRIBUTES
 
 

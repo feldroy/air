@@ -1,3 +1,5 @@
+"""Tools for handling requests, for things like handling incoming data from client libraries like HTMX."""
+
 from fastapi import Header
 from starlette.requests import Request as Request  # noqa: F401
 
