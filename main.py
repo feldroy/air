@@ -109,9 +109,10 @@ def get_air_objects() -> List[Any]:
 
 
 reference_warning = air.Section(
-                air.Aside(
+                air.P(
                     air.Strong("WARNING:", style="color: red"),
-                    " This API reference is very new and there are unsolved formatting challenges.",
+                    " This API reference is very new and there may be formatting challenges.",
+                    style="color: red"
                 )
             )
 
@@ -138,19 +139,21 @@ def doc_obj(obj):
     )
 
 
-@app.get("/reference/{module:path}")
-def reference_module(request: air.Request, module: str):
+@app.get("/reference/{module_name:path}")
+def reference_module(request: air.Request, module_name: str):
+    module = importlib.import_module(module_name)
     objects = [
         x
         for x in get_air_objects()
-        if x.__module__ == module and not isinstance(x, (ParamSpec, TypeVar))
+        if x.__module__ == module_name and not isinstance(x, (ParamSpec, TypeVar))
     ]
     objects = [doc_obj(x) for x in sorted(objects, key=lambda x: x.__name__)]
     return layout(
         request,
         air.Article(
-            air.H1(air.A("API Reference:", href="/reference"), " ", module),
+            air.H1(air.A("API Reference:", href="/reference"), " ", module_name),
             reference_warning,
+            AirMarkdown(module.__doc__ if module.__doc__ is not None else ''),
             air.Ul(*objects),
             class_="prose",
         ),
