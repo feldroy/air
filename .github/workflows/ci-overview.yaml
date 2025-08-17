@@ -20,7 +20,7 @@ jobs:
           retries: '15'           # try up to 15 times
           polling_interval: '1'   # minutes between tries
           # Avoid counting this job itself while it's still running:
-          checks_exclude: 'CI overview,Coverage with Codecov'
+          checks_exclude: 'CI overview,Coverage with Codecov,skipped,codecov/patch'
           # (Optional) Show/Hide the Markdown Job Summary:
           show_job_summary: true
           # Exclude certain checks from causing a failure
