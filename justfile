@@ -34,10 +34,6 @@ test-coverage:
 test-memory:
     uv run --python=3.13 --isolated --group test -- pytest --memray -q --no-header
 
-# Runs the mypy static type checker on your source files as part of your pytest test runs.
-test-mypy:
-    uv run --python=3.13 --isolated --group test -- pytest --mypy -q --no-header
-
 # Show the 10 slowest tests (timings)
 test-durations:
     uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vvv --no-header

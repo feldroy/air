@@ -76,8 +76,7 @@ test = [
     "pytest-pretty>=1.3.0", # Provides richer test session output.
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
-    "pytest-memray>=1.7.0;sys_platform!='win32'", # Memory profiler plugin for pytest
-    "pytest-mypy>=1.0.1", # Runs mypy type checks inside pytest
+    "pytest-memray>=1.7.0;sys_platform!='win32'", # pytest memray memory profiler plugin
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
 ]
 docs = [
@@ -100,9 +99,6 @@ Issues = "https://github.com/feldroy/air/issues"
 
 [project.scripts]
 "air" = "air.cli:app"
-
-[tool.mypy]
-exclude = "^build/"
 
 # region ----> pytest - Project Configuration <----
 [tool.pytest.ini_options]
@@ -266,7 +262,6 @@ indent-width = 4
 exclude = [
     ".git",
     ".github",
-    ".mypy_cache",
     ".pytest_cache",
     ".ruff_cache",
     ".venv",
