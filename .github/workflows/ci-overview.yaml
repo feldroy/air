@@ -39,7 +39,7 @@ jobs:
         run: echo "SUMMARY_PATH=$GITHUB_STEP_SUMMARY" >> "$GITHUB_ENV"
       # 3) Post the raw HTML/Markdown as a sticky PR comment (code block)
       - name: Comment summary_raw (content)
-        if: ${{ always() && env.SUMMARY_PATH != '' }}
+        if: ${{ env.SUMMARY_PATH != '' }}
         uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2.8.2
         with:
           message-id: ci-overview:summary-raw
