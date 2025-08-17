@@ -1,17 +1,18 @@
 site_name: Air
 site_url: http://feldroy.github.io/air/
 repo_url: https://github.com/feldroy/air
+
 nav:
   - Home: index.md
   - Reference:
     - api/index.md
     - Applications: api/applications.md
-    - Background Tasks: api/background.md    
-    - Forms: api/forms.md    
+    - Background Tasks: api/background.md
+    - Forms: api/forms.md
     - Layouts: api/layouts.md
     - Requests: api/requests.md
     - Responses: api/responses.md
-    - SVG: 
+    - SVG:
       - SVG: api/svg/index.md
       - "SVG A-D": api/svg/a-d.md
       - "SVG E-M": api/svg/e-m.md
@@ -23,7 +24,8 @@ nav:
       - "Tags E-M": api/tags/e-m.md
       - "Tags N-S": api/tags/n-s.md
       - "Tags T-Z": api/tags/t-z.md
-    - Templates: api/templates.md  
+    - Templates: api/templates.md
+
 theme:
   name: material
   features:
@@ -32,13 +34,14 @@ theme:
     - navigation.indexes
     - navigation.instant
     - navigation.instant.prefetch
-    - navigation.tracking    
+    - navigation.tracking
     - search.suggest
     - search.highlight
     - search.share
-    - navigation.tabs    
+    - navigation.tabs
   icon:
     repo: fontawesome/brands/github
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -48,10 +51,9 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed:
-      alternate_style: true  
+      alternate_style: true
+
 plugins:
-  - search
-  - autorefs
   - mkdocstrings:
       handlers:
         python:
@@ -61,5 +63,11 @@ plugins:
             separate_signature: true
             unwrap_annotated: true
             docstring_options:
-              ignore_init_summary: true            
+              ignore_init_summary: true
             merge_init_into_class: true
+  - search: {}
+  - autorefs: {}
+  - exclude: {}        # https://github.com/apenwarr/mkdocs-exclude
+  - redirects: {}      # https://github.com/mkdocs/mkdocs-redirects
+  - llmstxt: {}        # https://pawamoy.github.io/mkdocs-llmstxt/#usage
+  - mkdocs-jupyter: {} # https://github.com/danielfrg/mkdocs-jupyter

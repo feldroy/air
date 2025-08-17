@@ -23,6 +23,14 @@ test-all:
 test-coverage:
     uv run --python=3.13 --isolated --group test -- pytest --cov -q
 
+# pytest plugin for easy integration of memray memory profiler
+test-memory:
+    uv run --python=3.13 --isolated --group test -- pytest --memray -q --no-header
+
+# Runs the mypy static type checker on your source files as part of your pytest test runs.
+test-mypy:
+    uv run --python=3.13 --isolated --group test -- pytest --mypy -q --no-header
+
 # Show the 10 slowest tests (timings)
 test-durations:
     uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vvv --no-header
@@ -35,6 +43,11 @@ coverage-html:
 # Build and store the XML coverage report
 coverage-xml:
     uv run --python=3.13 --isolated --group test -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
+
+# Build and store the MD coverage report - Automatically find diff lines that need test coverage.
+coverage-md: coverage-xml
+    diff-cover coverage.xml --format markdown:report.md
+    open report.md
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:

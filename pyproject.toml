@@ -74,13 +74,22 @@ test = [
     "pdbpp>=0.11.7", # enables pdb++, a drop-in replacement for pdb
     "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
     "pytest-pretty>=1.3.0", # Provides richer test session output.
-    "pytest-github-actions-annotate-failures>=0.3.0",
-    "pytest-asyncio>=1.1.0",
+    "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
+    "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
+    "pytest-memray>=1.7.0", # Memory profiler plugin for pytest
+    "pytest-mypy>=1.0.1", # Runs mypy type checks inside pytest
+    "diff-cover>=9.6.0",
 ]
 docs = [
-    "mkdocs-material",        # MkDocs theme
-    "mkdocstrings[python]",   # generate API docs from docstrings automatically
+    "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
+    "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
+    "mkdocs>=1.6.1", # Static site generator for project documentation
+    "mkdocs-exclude>=1.0.2", # Plugin to exclude files from MkDocs build
+    "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
+    "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
+    "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
+    "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
 ]
 # endregion dependencies
 
