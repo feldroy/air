@@ -288,7 +288,7 @@ exclude = [
 docstring-code-format = true # format Python code blocks in docstrings
 docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
 # Trailing-comma behavior (Black's “magic comma”)
-skip-magic-trailing-comma = false # leave multi-line when trailing comma present
+#skip-magic-trailing-comma = false # leave multi-line when trailing comma present
 # Formatter-only file excludes (extra to top-level exclude/extend-exclude)
 exclude = []
 # Opt into preview (experimental) formatting style
