@@ -35,7 +35,6 @@ jobs:
           show_job_summary: true
           # Exclude certain checks from causing a failure
       # New ---->
-      # 2) Look for an existing sticky comment (to update it instead of spamming)
       - name: Find existing CI overview comment
         id: fc
         uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
@@ -44,7 +43,6 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: '<!-- ci-overview:stable-anchor -->'
 
-      # 3) Build one-line bottom line + per-check lines + deep link
       - name: Build PR summary & deep link
         id: build
         if: always()
@@ -58,55 +56,94 @@ jobs:
             const number = pr.number;
             const headSha = pr.head.sha;
 
-            // Get ALL check runs for the commit (paginate (meaning: fetch many pages))
-            const runs = await github.paginate(github.rest.checks.listForRef, {
-              owner, repo, ref: headSha, per_page: 100
-            }).then(pages => pages.flatMap(p => p.data.check_runs ?? []));
-
             const thisJobName = 'CI overview';
-            const filtered = runs.filter(r => r.name !== thisJobName);
 
+            // Helpers
             const statusOf = r => (r.conclusion ?? r.status ?? 'unknown');
             const icon = s => ({success:'✅', failure:'❌', cancelled:'🚫', timed_out:'⏲️', neutral:'⚪', skipped:'⏭️'}[s] || '⚠️');
 
-            // Tally + lines
-            const tally = {};
-            for (const r of filtered) tally[statusOf(r)] = (tally[statusOf(r)] || 0) + 1;
-            const bottom = Object.entries(tally).map(([k,v]) => `${v} ${k}`).join(', ') || 'no checks found';
-            const lines = filtered
-              .sort((a,b)=>a.name.localeCompare(b.name))
-              .map(r => `- ${icon(statusOf(r))} ${r.name}: ${statusOf(r)}`);
+            let markdown = '';
+            let hasFailures = false;
 
-            const hasFailures = filtered.some(r => ['failure','cancelled','timed_out'].includes(statusOf(r)));
+            try {
+              // 1) All check runs for this commit (correct paginate mapper)
+              const runs = await github.paginate(
+                github.rest.checks.listForRef,
+                { owner, repo, ref: headSha, per_page: 100 },
+                (response) => response.data.check_runs
+              );
 
-            // Compute ?check_run_id= deep link (opens Checks with this job selected)
-            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
-              owner, repo, run_id: context.runId, per_page: 100
-            });
-            const me = jobs.find(j => j.name === thisJobName);
-            let deeplink = '';
-            if (me?.check_run_url) {
-              const id = me.check_run_url.split('/').pop();
-              deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?check_run_id=${id}`;
+              const filtered = runs.filter(r => r.name !== thisJobName);
+
+              // Tally + lines
+              const tally = {};
+              for (const r of filtered) {
+                const s = statusOf(r);
+                tally[s] = (tally[s] || 0) + 1;
+              }
+              const bottom = Object.entries(tally)
+                .map(([k,v]) => `${v} ${k}`)
+                .join(', ') || 'no checks found';
+
+              const lines = filtered
+                .sort((a,b)=>a.name.localeCompare(b.name))
+                .map(r => `- ${icon(statusOf(r))} ${r.name}: ${statusOf(r)}`);
+
+              hasFailures = filtered.some(r => ['failure','cancelled','timed_out'].includes(statusOf(r)));
+
+              // 2) Deep link: ?check_run_id=<id> for this job (correct paginate mapper)
+              const jobs = await github.paginate(
+                github.rest.actions.listJobsForWorkflowRun,
+                { owner, repo, run_id: context.runId, per_page: 100 },
+                (response) => response.data.jobs
+              );
+              const me = jobs.find(j => j.name === thisJobName);
+
+              // Primary deep link to preselect our job in Checks
+              let deeplink = '';
+              if (me?.check_run_url) {
+                const id = String(me.check_run_url.split('/').pop());
+                if (id && /^\d+$/.test(id)) {
+                  deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?check_run_id=${id}`;
+                }
+              }
+              // Fallback (meaning: backup) deep link if we couldn't resolve the ID
+              if (!deeplink) {
+                deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?sha=${headSha}`;
+              }
+
+              markdown = [
+                '<!-- ci-overview:stable-anchor -->',
+                '# CI overview',
+                '',
+                `**Bottom line:** ${filtered.length} checks — ${bottom}.`,
+                '',
+                '## By check',
+                ...lines,
+                '',
+                `[Open Checks → ${thisJobName}](${deeplink})`
+              ].join('\n');
+
+            } catch (err) {
+              // Guaranteed output so next step always has a body
+              markdown = [
+                '<!-- ci-overview:stable-anchor -->',
+                '# CI overview',
+                '',
+                '**Bottom line:** unavailable (meaning: cannot be shown) due to an internal error.',
+                '',
+                `> Error: ${String(err && err.message || err)}`,
+                '',
+                `Open Checks for details: https://github.com/${owner}/${repo}/pull/${number}/checks?sha=${headSha}`
+              ].join('\n');
+              // In error case, keep hasFailures true so the job ends red
+              hasFailures = true;
             }
 
-            const md = [
-              '<!-- ci-overview:stable-anchor -->',
-              '# CI overview',
-              '',
-              `**Bottom line:** ${filtered.length} checks — ${bottom}.`,
-              '',
-              '## By check',
-              ...lines,
-              '',
-              deeplink ? `[Open Checks → ${thisJobName}](${deeplink})` : ''
-            ].join('\n');
-
-            await core.summary.addRaw(md).write();
-            core.setOutput('markdown', md);
+            await core.summary.addRaw(markdown).write();
+            core.setOutput('markdown', markdown);
             core.setOutput('has_failures', String(hasFailures));
 
-      # 4) Create or update the sticky PR comment
       - name: Create comment (first run)
         if: always() && steps.fc.outputs.comment-id == ''
         uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
@@ -123,7 +160,6 @@ jobs:
           body: ${{ steps.build.outputs.markdown }}
           edit-mode: replace
 
-      # 5) Make this job reflect the overall result after we’ve posted the comment
       - name: Fail if any check failed
         if: steps.build.outputs.has_failures == 'true'
         run: exit 1
