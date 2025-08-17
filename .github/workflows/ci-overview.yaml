@@ -1,0 +1,26 @@
+name: CI overview
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+permissions:
+  contents: read
+  checks: read
+
+jobs:
+  overview:
+    name: CI overview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wechuli/allcheckspassed@v1
+        with:
+          # Wait a bit so other jobs/apps can report:
+          delay: '2'              # minutes before first check
+          retries: '15'           # try up to 15 times
+          polling_interval: '1'   # minutes between tries
+          # Avoid counting this job itself while it's still running:
+          checks_exclude: 'CI overview,Coverage with Codecov'
+          # (Optional) Show/Hide the Markdown Job Summary:
+          show_job_summary: true
+          # Exclude certain checks from causing a failure
