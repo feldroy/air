@@ -1,3 +1,5 @@
+"""Special Air Tags that don't find in any other category."""
+
 from typing import Any
 
 from .base import Tag

@@ -1,3 +1,5 @@
+"""Air uses custom response classes to improve the developer experience."""
+
 import importlib
 from typing import Any
 
@@ -86,7 +88,7 @@ class SSEResponse(StreamingResponse):
                 # Tags work seamlessly
                 yield air.Aside(lottery_numbers)
                 # As do strings. Non-strings are cast to strings via the str built-in
-                yieled "Hello\nworld"
+                yield "Hello, world"
                 await sleep(1)
 
 

@@ -1,3 +1,7 @@
+"""Air is proud to provide first class SVG support. The entire SVG specification
+is supported.
+"""
+
 from typing import Any
 
 from .base import Tag

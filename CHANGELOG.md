@@ -1,6 +1,18 @@
 # Changelog
 
-# 0.23.0 - 2025-08-18
+# 0.24.0 - 2025-08-17
+
+## What's Changed
+* Convert underscores to dashes in app.page method by @pydanny in https://github.com/feldroy/air/pull/293
+* Remove last unnecessary type: ignore by @pydanny in https://github.com/feldroy/air/pull/291
+* Bring in the new logo to the README by @pydanny in https://github.com/feldroy/air/pull/289
+* Docstring improvements by @pydanny in https://github.com/feldroy/air/pull/296
+* Document docstring management in CONTRIBUTING.md by @pydanny in https://github.com/feldroy/air/pull/297
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.23.0...v0.24.0
+
+# 0.23.0 - 2025-08-15
 
 ## Summary
 

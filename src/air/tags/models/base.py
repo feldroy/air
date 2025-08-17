@@ -1,3 +1,5 @@
+"""Root module for the Air Tags system."""
+
 import html
 from functools import cached_property
 from typing import Any

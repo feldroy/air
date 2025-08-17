@@ -1,3 +1,7 @@
+"""
+Instantiating Air applications.
+"""
+
 from types import BuiltinFunctionType
 from typing import (
     Any,
@@ -370,24 +374,33 @@ class Air(FastAPI):
 
         If the name of the function is "index", then the route is "/".
 
-        Examples:
+        Example:
 
             import air
 
             app = Air()
 
             @app.page
-            def index():
+            def index(): # routes is "/"
                 return H1("I am the home page")
+
+            @app.page
+            def data(): # route is "/data"
+                return H1("I am the home page")
+
+            @app.page
+            def about_us(): # routes is "/about-us"
+                return H1("I am the about page")
         """
         if func.__name__ == "index":
             route_name = "/"
         else:
-            route_name = f"/{func.__name__}".replace('_', '-')
+            route_name = f"/{func.__name__}".replace("_", "-")
         return self.get(route_name)(func)
 
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
+    """Default 404 exception handler. Can be overloaded."""
     return AirResponse(
         mvpcss(
             Title("404 Not Found"),
@@ -401,6 +414,7 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
 
 
 def default_500_exception_handler(request: Request, exc: Exception) -> AirResponse:
+    """Default 500 exception handler. Can be overloaded."""
     return AirResponse(
         mvpcss(
             Title("500 Internal Server Error"),
