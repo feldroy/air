@@ -390,7 +390,7 @@ class Air(FastAPI):
 
             @app.page
             def about_us(): # routes is "/about-us"
-                return H1("I am the about page") 
+                return H1("I am the about page")
         """
         if func.__name__ == "index":
             route_name = "/"

@@ -1,6 +1,6 @@
 """Special Air Tags that don't find in any other category.
 
-Script and Style tags can be found in the [air.tags.models.special](/reference/air.tags.models.special) page. """
+Script and Style tags can be found in the [air.tags.models.special](/reference/air.tags.models.special) page."""
 
 from typing import Any
 
