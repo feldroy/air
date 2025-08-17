@@ -1,16 +1,18 @@
+# .github/workflows/ci-overview.yml
 name: CI Overview
 
 on:
-  pull_request:
+  # Use pull_request_target so the bot can comment on PRs from forks safely,
+  # while we DO NOT check out or run untrusted code.
+  pull_request_target:
     types: [ opened, synchronize, reopened, ready_for_review ]
-  workflow_dispatch:
 
 # Keep one live run per PR; cancel stale ones
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}
   cancel-in-progress: true
 
-# Least privilege
+# Least privilege for the whole workflow
 permissions:
   contents: read
   checks: read
@@ -22,168 +24,28 @@ jobs:
     name: CI Overview
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
     steps:
-      - uses: wechuli/allcheckspassed@v1
+      # 1) Wait until PR checks settle; fail if anything is failing/pending
+      - name: Wait for checks
+        uses: wechuli/allcheckspassed@e22f45a4f25f4cf821d1273705ac233355400db1 # v1.2.0
         with:
-          # Wait a bit so other jobs/apps can report:
-          delay: '1'              # minutes before first check
-          retries: '15'           # try up to 15 times
-          polling_interval: '1'   # minutes between tries
-          # Avoid counting this job itself while it's still running:
-          checks_exclude: 'CI overview,Coverage with Codecov,skipped,codecov/patch'
-          # (Optional) Show/Hide the Markdown Job Summary:
-          show_job_summary: true
-          # Exclude certain checks from causing a failure
-      # New ---->
-      - name: Find existing CI overview comment
-        id: fc
-        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '<!-- ci-overview:stable-anchor -->'
+          delay: '1'                # minutes before first poll
+          retries: '15'             # 15 polls
+          polling_interval: '1'     # minutes between polls
+          fail_fast: false          # wait for all to complete before reporting
+          # Comma-separated names or regex (meaning: regular expression) patterns:
+          checks_exclude: 'CI Overview, Coverage with Codecov, codecov/patch'
+          show_job_summary: 'true'  # nice table in the job Summary tab
 
-      - name: Build PR summary & deep link
-        id: build
+      # 2) Always post/update a sticky PR comment with one-line per check
+      - name: CI overview (sticky PR comment)
         if: always()
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: ipdxco/sorted-pr-checks@e93469d12abf23967b6346a76599e1a087161c82 # v2.0.0
         with:
-          retries: 3
-          result-encoding: string
-          script: |
-            const { owner, repo } = context.repo;
-
-            // Guard for non-PR invocations (e.g., workflow_dispatch)
-            const pr = context.payload.pull_request;
-            if (!pr) {
-              const md = [
-                '<!-- ci-overview:stable-anchor -->',
-                '# CI overview',
-                '',
-                '**Bottom line:** unavailable (meaning: cannot be shown) outside a PR context.',
-              ].join('\n');
-              await core.summary.addRaw(md).write();
-              core.setOutput('markdown', md);
-              core.setOutput('has_failures', 'true'); // force red outside PRs
-              return;
-            }
-
-            const number = pr.number;
-            const headSha = pr.head.sha;
-            const thisJobName = 'CI overview';
-
-            // Helpers (safe (meaning: protected) access + defaults)
-            const statusOf = r => (r?.conclusion ?? r?.status ?? 'unknown');
-            const icon = s => ({success:'✅', failure:'❌', cancelled:'🚫', timed_out:'⏲️', neutral:'⚪', skipped:'⏭️'}[s] || '⚠️');
-            const safeName = r => {
-              const n = (r && typeof r.name === 'string') ? r.name.trim() : '';
-              return n || '(unnamed check)';
-            };
-
-            let markdown = '';
-            let hasFailures = false;
-
-            try {
-              // 1) All check runs for the commit (mapper required for paginate)
-              const runs = await github.paginate(
-                github.rest.checks.listForRef,
-                { owner, repo, ref: headSha, per_page: 100 },
-                (response) => response.data.check_runs
-              );
-
-              // Normalize (attach safe fields so we never touch undefined.name)
-              const normed = (runs || []).map(r => ({
-                _name: safeName(r),
-                _status: statusOf(r),
-                raw: r,
-              }));
-
-              // Exclude this overview job itself by display name
-              const others = normed.filter(x => x._name !== thisJobName);
-
-              // Tally + lines (all safe now)
-              const tally = {};
-              for (const x of others) {
-                tally[x._status] = (tally[x._status] || 0) + 1;
-              }
-              const bottom = Object.entries(tally)
-                .map(([k, v]) => `${v} ${k}`)
-                .join(', ') || 'no checks found';
-
-              const lines = others
-                .sort((a, b) => a._name.localeCompare(b._name))
-                .map(x => `- ${icon(x._status)} ${x._name}: ${x._status}`);
-
-              hasFailures = others.some(x => ['failure','cancelled','timed_out'].includes(x._status));
-
-              // 2) Deep link to preselect THIS job in the Checks tab
-              const jobs = await github.paginate(
-                github.rest.actions.listJobsForWorkflowRun,
-                { owner, repo, run_id: context.runId, per_page: 100 },
-                (response) => response.data.jobs
-              );
-              const me = (jobs || []).find(j => j?.name === thisJobName);
-
-              let deeplink = '';
-              // Prefer check_run_id preselection if present
-              if (me?.check_run_url) {
-                const id = String(me.check_run_url.split('/').pop() || '');
-                if (/^\d+$/.test(id)) {
-                  deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?check_run_id=${id}`;
-                }
-              }
-              // Fallback (meaning: backup)
-              if (!deeplink) {
-                deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?sha=${headSha}`;
-              }
-
-              markdown = [
-                '<!-- ci-overview:stable-anchor -->',
-                '# CI overview',
-                '',
-                `**Bottom line:** ${others.length} checks — ${bottom}.`,
-                '',
-                '## By check',
-                ...lines,
-                '',
-                `[Open Checks → ${thisJobName}](${deeplink})`,
-              ].join('\n');
-
-            } catch (err) {
-              // Guaranteed body on error
-              markdown = [
-                '<!-- ci-overview:stable-anchor -->',
-                '# CI overview',
-                '',
-                '**Bottom line:** unavailable (meaning: cannot be shown) due to an internal error.',
-                '',
-                `> Error: ${String(err && (err.message || err))}`,
-                '',
-                `Open Checks for details: https://github.com/${owner}/${repo}/pull/${pr.number}/checks?sha=${headSha}`,
-              ].join('\n');
-              hasFailures = true; // keep job red if we errored
-            }
-
-            await core.summary.addRaw(markdown).write();
-            core.setOutput('markdown', markdown);
-            core.setOutput('has_failures', String(hasFailures));
-
-      - name: Create comment (first run)
-        if: always() && steps.fc.outputs.comment-id == ''
-        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: ${{ steps.build.outputs.markdown }}
-          edit-mode: replace
-
-      - name: Update comment (subsequent runs)
-        if: always() && steps.fc.outputs.comment-id != ''
-        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
-        with:
-          comment-id: ${{ steps.fc.outputs.comment-id }}
-          body: ${{ steps.build.outputs.markdown }}
-          edit-mode: replace
-
-      - name: Fail if any check failed
-        if: steps.build.outputs.has_failures == 'true'
-        run: exit 1
+          repository: ${{ github.repository }}
+          pull_number: ${{ github.event.pull_request.number }}
+          # Built-in templates: sorted_by_result | grouped_by_result | unsuccessful_only
+          template: grouped_by_result
+          identifier: 'CI Overview'      # sticky (updates same comment)
+          token: ${{ secrets.GITHUB_TOKEN }}
