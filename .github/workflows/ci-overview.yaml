@@ -36,19 +36,26 @@ jobs:
           # Comma-separated names or regex (meaning: regular expression) patterns:
           checks_exclude: 'skipped,CI Overview, Coverage with Codecov, codecov/patch'
           show_job_summary: 'true'  # nice table in the job Summary tab
+      # 2) Compute *this job's* summary URLs (includes .../summary_raw)
+      - name: Get job summary URLs
+        id: summary
+        uses: ipdxco/job-summary-url-action@v1
+      # 3) Fetch the raw HTML from the job summary
       - name: Fetch CI Overview summary_raw
-        id: fetch-summary
+        id: fetch
+        if: always()
         uses: fjogeleit/http-request-action@v1.16.4
         with:
           method: GET
-          url: ${{ steps.wait.outputs.summary_url }} # your full summary_raw URL here
+          url: ${{ steps.summary.outputs.job_summary_raw_url }}
           timeout: 15000
-          ignoreStatusCodes: '401,403,404'
-      # Example: post it with add-pr-comment (render as code block)
+          customHeaders: |
+            Accept: text/html
+      # 4) Post/update a sticky PR comment with the raw HTML (as a code block)
       - name: Comment summary_raw
         if: always()
         uses: mshick/add-pr-comment@v2
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
-          message: ${{ steps.fetch-summary.outputs.response }}
+          message: ${{ steps.fetch.outputs.response }}
