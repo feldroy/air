@@ -26,6 +26,7 @@ jobs:
     steps:
       # 1) Wait until PR checks settle; fail if anything is failing/pending
       - name: Wait for checks
+        id: wait
         uses: wechuli/allcheckspassed@e22f45a4f25f4cf821d1273705ac233355400db1 # v1.2.0
         with:
           delay: '1'                # minutes before first poll
@@ -40,7 +41,7 @@ jobs:
         uses: fjogeleit/http-request-action@v1.16.4
         with:
           method: GET
-          url: ${{ steps.build-url.outputs.summary_url }} # your full summary_raw URL here
+          url: ${{ steps.wait.outputs.summary_url }} # your full summary_raw URL here
           timeout: 15000
           ignoreStatusCodes: '401,403,404'
       # Example: post it with add-pr-comment (render as code block)
