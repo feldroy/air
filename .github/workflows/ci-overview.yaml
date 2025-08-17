@@ -1,22 +1,32 @@
-name: CI overview
+name: CI Overview
 
 on:
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch:
 
+# Keep one live run per PR; cancel stale ones
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+# Least privilege
 permissions:
   contents: read
   checks: read
+  actions: read
+  pull-requests: write
 
 jobs:
   overview:
-    name: CI overview
+    name: CI Overview
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: wechuli/allcheckspassed@v1
         with:
           # Wait a bit so other jobs/apps can report:
-          delay: '2'              # minutes before first check
+          delay: '1'              # minutes before first check
           retries: '15'           # try up to 15 times
           polling_interval: '1'   # minutes between tries
           # Avoid counting this job itself while it's still running:
@@ -24,3 +34,96 @@ jobs:
           # (Optional) Show/Hide the Markdown Job Summary:
           show_job_summary: true
           # Exclude certain checks from causing a failure
+      # New ---->
+      # 2) Look for an existing sticky comment (to update it instead of spamming)
+      - name: Find existing CI overview comment
+        id: fc
+        uses: peter-evans/find-comment@3eae4d37986fb5a8592848f6a574fdf654e61f9e # v3.1.0
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '<!-- ci-overview:stable-anchor -->'
+
+      # 3) Build one-line bottom line + per-check lines + deep link
+      - name: Build PR summary & deep link
+        id: build
+        if: always()
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          retries: 3
+          result-encoding: string
+          script: |
+            const {owner, repo} = context.repo;
+            const pr = context.payload.pull_request;
+            const number = pr.number;
+            const headSha = pr.head.sha;
+
+            // Get ALL check runs for the commit (paginate (meaning: fetch many pages))
+            const runs = await github.paginate(github.rest.checks.listForRef, {
+              owner, repo, ref: headSha, per_page: 100
+            }).then(pages => pages.flatMap(p => p.data.check_runs ?? []));
+
+            const thisJobName = 'CI overview';
+            const filtered = runs.filter(r => r.name !== thisJobName);
+
+            const statusOf = r => (r.conclusion ?? r.status ?? 'unknown');
+            const icon = s => ({success:'✅', failure:'❌', cancelled:'🚫', timed_out:'⏲️', neutral:'⚪', skipped:'⏭️'}[s] || '⚠️');
+
+            // Tally + lines
+            const tally = {};
+            for (const r of filtered) tally[statusOf(r)] = (tally[statusOf(r)] || 0) + 1;
+            const bottom = Object.entries(tally).map(([k,v]) => `${v} ${k}`).join(', ') || 'no checks found';
+            const lines = filtered
+              .sort((a,b)=>a.name.localeCompare(b.name))
+              .map(r => `- ${icon(statusOf(r))} ${r.name}: ${statusOf(r)}`);
+
+            const hasFailures = filtered.some(r => ['failure','cancelled','timed_out'].includes(statusOf(r)));
+
+            // Compute ?check_run_id= deep link (opens Checks with this job selected)
+            const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+              owner, repo, run_id: context.runId, per_page: 100
+            });
+            const me = jobs.find(j => j.name === thisJobName);
+            let deeplink = '';
+            if (me?.check_run_url) {
+              const id = me.check_run_url.split('/').pop();
+              deeplink = `https://github.com/${owner}/${repo}/pull/${number}/checks?check_run_id=${id}`;
+            }
+
+            const md = [
+              '<!-- ci-overview:stable-anchor -->',
+              '# CI overview',
+              '',
+              `**Bottom line:** ${filtered.length} checks — ${bottom}.`,
+              '',
+              '## By check',
+              ...lines,
+              '',
+              deeplink ? `[Open Checks → ${thisJobName}](${deeplink})` : ''
+            ].join('\n');
+
+            await core.summary.addRaw(md).write();
+            core.setOutput('markdown', md);
+            core.setOutput('has_failures', String(hasFailures));
+
+      # 4) Create or update the sticky PR comment
+      - name: Create comment (first run)
+        if: always() && steps.fc.outputs.comment-id == ''
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.build.outputs.markdown }}
+          edit-mode: replace
+
+      - name: Update comment (subsequent runs)
+        if: always() && steps.fc.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4.0.0
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          body: ${{ steps.build.outputs.markdown }}
+          edit-mode: replace
+
+      # 5) Make this job reflect the overall result after we’ve posted the comment
+      - name: Fail if any check failed
+        if: steps.build.outputs.has_failures == 'true'
+        run: exit 1
