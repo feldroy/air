@@ -6,12 +6,10 @@ on:
     types: [ opened, synchronize, reopened, ready_for_review ]
   workflow_dispatch:
 
-# One live run per PR
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}
   cancel-in-progress: true
 
-# Least privilege
 permissions:
   contents: read
   checks: read
@@ -20,7 +18,7 @@ permissions:
 
 jobs:
   overview:
-    name: CI Overview        # <-- MUST match exactly
+    name: CI Overview
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -35,49 +33,31 @@ jobs:
           polling_interval: '1'
           fail_fast: false
           checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch'
-          show_job_summary: 'true'   # table appears in this job's Summary
+          show_job_summary: 'true'
 
-      # 2) Resolve THIS job’s numeric job_id by job NAME (not job id)
-      - name: Get current job id
+      # 2) Read THIS job’s summary (same content as the /summary_raw page)
+      - name: Read job summary (raw)
         if: always()
-        id: jobid
-        uses: Tiryoh/gha-jobid-action@v1
+        id: read-summary
+        uses: juliangruber/read-file-action@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          job_name: CI Overview     # must equal jobs.<job>.name
+          path: ${{ env.GITHUB_STEP_SUMMARY }}
 
-      # 3) Fetch raw HTML for THIS job’s summary
-      - name: Fetch summary_raw
-        if: always()
-        id: fetch
-        uses: fjogeleit/http-request-action@v1.16.4
-        with:
-          method: GET
-          # https://github.com/<owner>/<repo>/actions/runs/<run_id>/jobs/<job_id>/summary_raw
-          url: ${{ format('{0}/{1}/actions/runs/{2}/jobs/{3}/summary_raw',
-            github.server_url, github.repository, github.run_id, steps.jobid.outputs.job_id) }}
-          timeout: '15000'
-          customHeaders: '{"Accept":"text/html"}'   # must be valid JSON
-          ignoreStatusCodes: '401,403,404'         # don’t hard fail if private/inaccessible
-
-      # 4a) Post sticky PR comment with the raw HTML (code block) when we have content
+      # 3a) Post the raw HTML/Markdown as a sticky PR comment (code block)
       - name: Comment summary_raw (content)
-        if: ${{ always() && steps.fetch.outputs.response != '' }}
+        if: ${{ always() && steps.read-summary.outputs.content != '' }}
         uses: mshick/add-pr-comment@v2
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
-          message: ${{ steps.fetch.outputs.response }}
+          message: ${{ steps.read-summary.outputs.content }}
 
-      # 4b) Fallback sticky comment when content is missing
+      # 3b) Fallback note when the summary is empty (rare)
       - name: Comment summary_raw (fallback)
-        if: ${{ always() && steps.fetch.outputs.response == '' }}
+        if: ${{ always() && steps.read-summary.outputs.content == '' }}
         uses: mshick/add-pr-comment@v2
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
           message: |
-            Bottom line: unavailable (meaning: cannot be shown). Could not fetch summary_raw.
-            Tried URL:
-            ${{ format('{0}/{1}/actions/runs/{2}/jobs/{3}/summary_raw',
-                       github.server_url, github.repository, github.run_id, steps.jobid.outputs.job_id) }}
+            Bottom line: unavailable (meaning: cannot be shown). The job summary file was empty for this run.
