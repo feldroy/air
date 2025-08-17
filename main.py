@@ -128,18 +128,11 @@ async def reference(request: air.Request):
 
 
 def doc_obj(obj):
-    if obj.__module__ in ("air.tags.models.stock",):
-        doc = (
-            AirMarkdown(html.escape(obj.__doc__))
-            if (hasattr(obj, "__doc__") and isinstance(obj.__doc__, str))
-            else ""
-        )
-    else:
-        doc = (
-            AirMarkdown(obj.__doc__)
-            if (hasattr(obj, "__doc__") and isinstance(obj.__doc__, str))
-            else ""
-        )
+    doc = (
+        AirMarkdown(obj.__doc__)
+        if (hasattr(obj, "__doc__") and isinstance(obj.__doc__, str))
+        else ""
+    )
     return air.Section(
         air.H2(obj.__name__, air.Small(f"  ({obj.__module__}.{obj.__name__})")), doc
     )

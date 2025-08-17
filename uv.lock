@@ -4,16 +4,16 @@ requires-python = ">=3.13"
 
 [[package]]
 name = "air"
-version = "0.23.0"
+version = "0.24.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
     { name = "jinja2" },
     { name = "python-multipart" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/31/f5/2b30e15c578cd4d1327d546093f87a728799e546a8c7603287c3011041e9/air-0.23.0.tar.gz", hash = "sha256:982b24b74c159ecd350f7619591a6bc0c6e7af1efe52bd4c42e87eb27d31cb93", size = 35388, upload-time = "2025-08-15T04:09:48.836Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/26/3e/aaae961d98931a76e8fbba24568994621898d132feacdb016bc42819654c/air-0.24.0.tar.gz", hash = "sha256:8182eed27bea6e62598e048fecbff1d264aca0751d1ff8c688d3a4595f3855d9", size = 35401, upload-time = "2025-08-17T00:32:57.087Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/a3/231f95e8a70c67fb6b03d5bb1b66a94dfebf32323a91dfe7e7f5d1a29a3f/air-0.23.0-py3-none-any.whl", hash = "sha256:457f13c0bf1442e3eb9099425eb789831d5df2d68736b990eb86cad0e1db3735", size = 37200, upload-time = "2025-08-15T04:09:47.629Z" },
+    { url = "https://files.pythonhosted.org/packages/41/2e/43823a4d168aabe383d781f9e0a0d985e15d6d7bd7120225ec25f76bab8e/air-0.24.0-py3-none-any.whl", hash = "sha256:ddaca4cefc231631f4bad624531c53a1326359386d9b449482912771200d303a", size = 37214, upload-time = "2025-08-17T00:32:55.882Z" },
 ]
 
 [[package]]
@@ -60,7 +60,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "air", specifier = ">=0.22" },
+    { name = "air", specifier = ">=0.24" },
     { name = "air-markdown", specifier = ">=0.3.0" },
     { name = "coverage", marker = "extra == 'test'", specifier = ">=7.8.2" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.0" },
