@@ -39,10 +39,10 @@ jobs:
       # 2) Always post/update a sticky PR comment with one-line per check
       - name: CI overview (sticky PR comment)
         uses: ipdxco/sorted-pr-checks@e93469d12abf23967b6346a76599e1a087161c82 # v2.0.0
-#        with:
-#          repository: ${{ github.repository }}
-#          pull_number: ${{ github.event.pull_request.number }}
-#          # Built-in templates: sorted_by_result | grouped_by_result | unsuccessful_only
-#          template: grouped_by_result
-#          identifier: 'CI Overview'      # sticky (updates same comment)
-#          token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repository: ${{ github.repository }}
+          pull_number: ${{ github.event.pull_request.number }}
+          # Built-in templates: sorted_by_result | grouped_by_result | unsuccessful_only
+          template: sorted_by_result
+          identifier: '${{ github.workflow }}-${{ github.job }}'
+          token: ${{ secrets.GITHUB_TOKEN }}
