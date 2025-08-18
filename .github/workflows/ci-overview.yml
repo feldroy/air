@@ -31,5 +31,5 @@ jobs:
           retries: '15'
           polling_interval: '1'
           fail_fast: false
-          checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch'
+          checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch,.github/dependabot.yml'
           show_job_summary: 'true'
