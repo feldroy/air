@@ -246,11 +246,32 @@ You can mix and match Air Tags or Jinja2 to suit your style. A common workflow i
 
 The goal is to help you build apps that are both delightful and powerful—with as little friction as possible. If you have questions or want to explore more, check out the API docs or dive into the Concepts section.
 
+## Serving static files (CSS, JS, images, etc.)
+
+Assuming you have a directory called `static` in your project root, you can serve static files like CSS, JavaScript, and images using Air's built-in static file serving capabilities.
+
+```python
+import air
+
+app = air.Air()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.H1("Welcome to My Site!"),
+        air.Link(rel="stylesheet", href="/static/styles.css"),
+        air.Script(src="/static/scripts.js"),
+        air.Img(src="/static/images/logo.png", alt="Logo"),
+    )
+```
+
 
 ## Checklist
 
 All the things that may go into this page:
 
+- [ ] Mounting static files
 - [ ] Mounting with a FastAPI app
 - [ ] File uploads
 - [ ] SSE
