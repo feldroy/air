@@ -43,7 +43,8 @@ jobs:
           echo "$GITHUB_STEP_SUMMARY" >> "$GITHUB_PATH"
           echo "SUMMARY=" >> "$GITHUB_OUTPUT"
           cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
-          echo ${{ steps.wait.outputs }}
+          cat "$GITHUB_STEP_SUMMARY"
+          echo "${{ steps.wait.outputs }}" | jq .
       #        run: |
       #          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
       #          cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
