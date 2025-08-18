@@ -10,5 +10,6 @@ This section contains short recipes. See the topic pages for details:
 - [Forms & validation](/cookbook/forms)
 - [Jinja templates](/cookbook/jinja)
 - [Static files](/cookbook/static)
+- [Bigger applications](/cookbook/bigger-applications)
 
 If you'd like to contribute a recipe, open a PR with a new file under `pages/cookbook/`.
