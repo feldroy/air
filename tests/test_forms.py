@@ -203,9 +203,7 @@ def test_air_field():
     class ContactModel(BaseModel):
         name: str
         email: str = air.AirField(type="email", label="Email")
-        date_and_time: str = air.AirField(
-            type="datedatetime-local", label="Date and Time"
-        )
+        date_and_time: str = air.AirField(type="datedatetime-local", label="Date and Time")
 
     class ContactForm(air.AirForm):
         model = ContactModel
