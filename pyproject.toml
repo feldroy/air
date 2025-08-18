@@ -74,13 +74,21 @@ test = [
     "pdbpp>=0.11.7", # enables pdb++, a drop-in replacement for pdb
     "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
     "pytest-pretty>=1.3.0", # Provides richer test session output.
-    "pytest-github-actions-annotate-failures>=0.3.0",
-    "pytest-asyncio>=1.1.0",
+    "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
+    "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
+    "pytest-memray>=1.7.0;sys_platform!='win32'", # pytest memray memory profiler plugin
+    "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
 ]
 docs = [
-    "mkdocs-material",        # MkDocs theme
-    "mkdocstrings[python]",   # generate API docs from docstrings automatically
+    "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
+    "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
+    "mkdocs>=1.6.1", # Static site generator for project documentation
+    "mkdocs-exclude>=1.0.2", # Plugin to exclude files from MkDocs build
+    "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
+    "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
+    "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
+    "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
 ]
 # endregion dependencies
 
@@ -91,9 +99,6 @@ Issues = "https://github.com/feldroy/air/issues"
 
 [project.scripts]
 "air" = "air.cli:app"
-
-[tool.mypy]
-exclude = "^build/"
 
 # region ----> pytest - Project Configuration <----
 [tool.pytest.ini_options]
@@ -245,9 +250,192 @@ module-name = "air"
 
 # endregion uv
 
-[tool.ruff]                  # enable import-sorting in the linter
-lint.select = ["I"]          # I-rules = isort compatibility
+# region ruff
+[tool.ruff]
+# Keep file discovery identical whether you pass "." or not
+respect-gitignore = true  # default, shown for clarity
+force-exclude = true      # apply excludes even for explicit paths like "."
+src = ["src"]
+line-length = 120
+indent-width = 4
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".git",
+    ".github",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    ".cursor",
+    ".idea",
+    "__pypackages__",
+    "build",
+    "dist",
+    "site-packages",
+]
+
+[tool.ruff.format]
+#indent-style = "space"   # match EditorConfig
+#line-ending = "lf"       # enforce LF newlines
+#quote-style = "double"   # keep quotes in sync with flake8-quotes
+# Docstring code formatting
+docstring-code-format = true # format Python code blocks in docstrings
+docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
+# Trailing-comma behavior (Black's “magic comma”)
+#skip-magic-trailing-comma = false # leave multi-line when trailing comma present
+# Formatter-only file excludes (extra to top-level exclude/extend-exclude)
+exclude = []
+# Opt into preview (experimental) formatting style
+preview = true
+
+[tool.ruff.lint]
+# Opt into preview (experimental) linting style
+preview = true
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+select = [
+    # prefix
+#    "ERA",    # https://docs.astral.sh/ruff/rules/#eradicate-era
+#    "FAST",   # https://docs.astral.sh/ruff/rules/#fastapi-fast
+#    "ANN",    # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
+#    "ASYNC",  # https://docs.astral.sh/ruff/rules/#flake8-async-async
+#    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+#    "BLE",    # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
+#    "FBT",    # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
+#    "B",      # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+#    "A",      # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+#    "C4",     # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+#    "EM",     # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
+#    "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
+#    "ISC",    # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+#    "INP",    # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+#    "PIE",    # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+#    "T20",    # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+#    "PT",     # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+#    "RSE",    # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
+#    "RET",    # https://docs.astral.sh/ruff/rules/#flake8-return-ret
+#    "SIM",    # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+#    "SLOT",   # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
+#    "ARG",    # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+#    "PTH",    # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+#    "FLY",    # https://docs.astral.sh/ruff/rules/#flynt-fly
+    "I",      # https://docs.astral.sh/ruff/rules/#isort-i
+#    "C90",    # https://docs.astral.sh/ruff/rules/#mccabe-c90
+#    "N",      # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+#    "PERF",   # https://docs.astral.sh/ruff/rules/#perflint-perf
+#    "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
+#    "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
+#    "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+#    "F",      # https://docs.astral.sh/ruff/rules/#pyflakes-f
+#    "PGH",    # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+#    "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
+#    "UP",     # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+#    "FURB",   # https://docs.astral.sh/ruff/rules/#refurb-furb
+#    "RUF",    # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+#    "TRY",    # https://docs.astral.sh/ruff/rules/#tryceratops-try
+    # Full rule code
+#    "ICN003", # https://docs.astral.sh/ruff/rules/banned-import-from
+#    "TC004",  # https://docs.astral.sh/ruff/rules/runtime-import-in-type-checking-block
+#    "TC005",  # https://docs.astral.sh/ruff/rules/empty-type-checking-block
+#    "TC008",  # https://docs.astral.sh/ruff/rules/quoted-type-alias
+#    "TC010",  # https://docs.astral.sh/ruff/rules/runtime-string-union
+]
+ignore = [
+    "D100", # ignore missing docstring in module
+    "D102", # ignore missing docstring in public method
+    "D104", # ignore missing docstring in public package
+    "D105", # ignore missing docstring in magic methods
+    "D107", # ignore missing docstring in __init__ methods
+    "D206", # docstring-tab-indentation (formatter handles indentation)
+    "D300", # triple-single-quotes (formatter enforces double quotes)
+]
+
+[tool.ruff.lint.flake8-import-conventions]
+# Declare the banned `from` imports.
+banned-from = []
 
 [tool.ruff.lint.isort]
-combine-as-imports = true    # group aliases coming from the same module
-force-wrap-aliases = true    # keep the multi-line, parenthesised layout
+combine-as-imports = true     # group aliases coming from the same module
+force-wrap-aliases = true     # keep the multi-line, parenthesised layout
+# Help Ruff classify your own package as first-party (very important for stable sorting)
+known-first-party = ["air"]
+# Extra safety: mark imports from the same package as first-party when inside it
+detect-same-package = true
+# Keep the standard section order; set explicitly for clarity
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+# Keep type-based ordering (default, but set explicitly)
+order-by-type = true
+# Do NOT set these (formatter conflicts):
+# force-single-line, lines-after-imports, lines-between-types, split-on-trailing-comma
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10  # set the C901 threshold explicitly
+
+[tool.ruff.lint.flake8-type-checking]
+# Do NOT auto-quote annotations; prefer normal annotations.
+quote-annotations = false
+# These must exist at runtime (annotations are read/used), so don't gate their imports
+runtime-evaluated-base-classes = [
+    "pydantic.BaseModel",
+]
+runtime-evaluated-decorators = [
+    "dataclasses.dataclass",
+    "pydantic.validate_call",
+    "fastapi.FastAPI.get",
+]
+# Modules that are always safe to import (never gate)
+exempt-modules = ["typing", "typing_extensions"]
+# endregion ruff
+
+# region ty
+[tool.ty.src]
+# Lock what gets checked so "ty check" and "ty check ." act the same
+include = ["src", "tests"] # keep discovery stable
+# Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
+respect-ignore-files = true
+
+[tool.ty.environment]
+# Make first-party resolution stable and priority-ordered.
+root = ["./src", "."]
+# Freeze analysis semantics across dev/CI.
+# If your project table already has `requires-python`, Ty will infer the min;
+# setting explicitly keeps things deterministic.
+python-version = "3.13"
+# For cross-platform libraries, analyze as if code may run anywhere.
+python-platform = "all"
+
+[tool.ty.terminal]
+# Fail the run on any warning.
+error-on-warning = true
+# Verbose output; switch to "concise" when you want minimal output.
+output-format = "full"
+
+# Promote every non-error rule to error (strict).
+[tool.ty.rules]
+# Defaults = warn:
+deprecated                       = "error" # https://docs.astral.sh/ty/reference/rules/#deprecated
+invalid-ignore-comment           = "error" # https://docs.astral.sh/ty/reference/rules/#invalid-ignore-comment
+possibly-unbound-attribute       = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-attribute
+possibly-unbound-implicit-call   = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-implicit-call
+possibly-unbound-import          = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-import
+redundant-cast                   = "error" # https://docs.astral.sh/ty/reference/rules/#redundant-cast
+undefined-reveal                 = "error" # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
+unknown-rule                     = "error" # https://docs.astral.sh/ty/reference/rules/#unknown-rule
+unresolved-global                = "error" # https://docs.astral.sh/ty/reference/rules/#unresolved-global
+unsupported-base                 = "error" # https://docs.astral.sh/ty/reference/rules/#unsupported-base
+# Defaults = ignore:
+division-by-zero                 = "error" # https://docs.astral.sh/ty/reference/rules/#division-by-zero
+possibly-unresolved-reference    = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
+unused-ignore-comment            = "error" # https://docs.astral.sh/ty/reference/rules/#unused-ignore-comment
+
+# Tests often import optional dev deps or use dynamic patterns.
+[[tool.ty.overrides]]
+include = ["tests/**", "**/test_*.py", "**/*_test.py"]
+[tool.ty.overrides.rules]
+unresolved-import               = "warn"
+possibly-unresolved-reference   = "warn"
+# endregion ty

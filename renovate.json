@@ -1,6 +1,25 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:best-practices",
+    "schedule:automergeDaily",
+    ":dependencyDashboard",
+    ":enablePreCommit",
+    ":rebaseStalePrs",
+    ":semanticCommitType(build)",
+    ":semanticCommitScope(deps)"
+  ],
+  "semanticCommitScope": "deps",
+  "automergeType": "pr",
+  "prCreation": "immediate",
+  "labels": [
+    "deps",
+    "renovate"
+  ],
+  "enabledManagers": [
+    "pep621",
+    "pre-commit",
+    "github-actions",
+    "renovate-config-presets"
   ]
 }

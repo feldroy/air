@@ -1,16 +1,53 @@
+# .github/dependabot.yml
 version: 2
+
 updates:
-  # GitHub Actions
+  # 1) Python deps managed by uv (updates pyproject.toml + uv.lock)
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    labels: ["deps", "uv"]
+    commit-message:
+      prefix: "⬆"
+      include: "scope"
+    groups:
+      test-deps:
+        patterns:
+          - "pytest"
+          - "pytest-*"
+          - "coverage*"
+          - "pytest-cov"
+        update-types: ["minor", "patch"]
+      lint-type:
+        patterns:
+          - "ruff*"
+          - "types-*"
+        update-types: ["minor", "patch"]
+      docs:
+        patterns:
+          - "mkdocs*"
+          - "mkdocstrings*"
+          - "mkdocs-redirects"
+          - "mkdocs-autorefs"
+          - "mkdocs-exclude"
+          - "mkdocs-llmstxt"
+        update-types: ["minor", "patch"]
+
+  # 2) GitHub Actions (patch/minor grouped; majors separate)
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    labels: ["deps", "actions"]
     commit-message:
-      prefix: ⬆
-  # Python
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "monthly"
-    commit-message:
-      prefix: ⬆
+      prefix: "⬆"
+      include: "scope"
+    groups:
+      gha-minor-patch:
+        patterns: ["*"]
+        update-types: ["patch", "minor"]
+      gha-major:
+        patterns: ["*"]
+        update-types: ["major"]

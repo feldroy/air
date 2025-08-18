@@ -6,11 +6,18 @@ set dotenv-filename := ".env"
 list:
     just -l
 
-# Run all the formatting, linting, and type checking commands
-qa:
+format:
     uv run --python=3.13 --isolated --group lint -- ruff format .
     uv run --python=3.13 --isolated --group lint -- ruff check --fix .
+
+lint:
+    uv run --python=3.13 --isolated --group lint -- ruff check --no-fix .
+
+type-check:
     uv run --python=3.13 --isolated --group lint --group test -- ty check .
+
+# Run all the formatting, linting, and type checking commands
+qa: format lint type-check
 
 # Run all the tests for all the supported Python versions
 test-all:
@@ -22,6 +29,10 @@ test-all:
 # Run Test Coverage
 test-coverage:
     uv run --python=3.13 --isolated --group test -- pytest --cov -q
+
+# pytest plugin for easy integration of memray memory profiler
+test-memory:
+    uv run --python=3.13 --isolated --group test -- pytest --memray -q --no-header
 
 # Show the 10 slowest tests (timings)
 test-durations:
@@ -35,6 +46,11 @@ coverage-html:
 # Build and store the XML coverage report
 coverage-xml:
     uv run --python=3.13 --isolated --group test -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
+
+# Build and store the MD coverage report - Automatically find diff lines that need test coverage.
+coverage-md: coverage-xml
+    diff-cover coverage.xml --format markdown:report.md
+    open report.md
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
