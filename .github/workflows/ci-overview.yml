@@ -44,7 +44,7 @@ jobs:
           echo "SUMMARY=" >> "$GITHUB_OUTPUT"
           cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
           cat "$GITHUB_STEP_SUMMARY"
-          echo "${{ steps.wait.outputs }}" | jq .
+          echo "${{ steps.wait.outputs.checks }}"
       #        run: |
       #          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
       #          cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
