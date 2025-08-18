@@ -65,9 +65,3 @@ plugins:
             docstring_options:
               ignore_init_summary: true
             merge_init_into_class: true
-  - search: {}
-  - autorefs: {}
-  - exclude: {}        # https://github.com/apenwarr/mkdocs-exclude
-  - redirects: {}      # https://github.com/mkdocs/mkdocs-redirects
-  - llmstxt: {}        # https://pawamoy.github.io/mkdocs-llmstxt/#usage
-  - mkdocs-jupyter: {} # https://github.com/danielfrg/mkdocs-jupyter
