@@ -36,11 +36,20 @@ jobs:
           show_job_summary: 'true'   # writes to $GITHUB_STEP_SUMMARY
       # 2) Export $GITHUB_STEP_SUMMARY
       - name: Expose summary path for later steps
-        run: echo "SUMMARY_PATH=$GITHUB_STEP_SUMMARY" >> "$GITHUB_ENV"
+        id: summary-output
+        #        run: echo "SUMMARY_PATH=$GITHUB_STEP_SUMMARY" >> "$GITHUB_ENV"
+        run: |
+          echo "SUMMARY_PATH=$GITHUB_STEP_SUMMARY" >> "$GITHUB_ENV"
+          echo "$GITHUB_STEP_SUMMARY" >> "$GITHUB_PATH"
+      #        run: |
+      #          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
+      #          cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
       # 3) Post the raw HTML/Markdown as a sticky PR comment (code block)
       - name: Comment summary_raw (content)
-        if: ${{ env.SUMMARY_PATH != '' }}
+        # if: ${{ env.SUMMARY_PATH != '' }}
+        if: always()
         uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2.8.2
         with:
           message-id: ci-overview:summary-raw
+          preformatted: true
           message-path: ${{ env.SUMMARY_PATH }}
