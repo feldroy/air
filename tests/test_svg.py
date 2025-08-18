@@ -26,10 +26,7 @@ def test_cased_tag_no_children():
 
 
 def test_cased_tags_with_children():
-    assert (
-        air.svg.AnimateMotion(air.svg.ClipPath()).render()
-        == "<animateMotion><clipPath></clipPath></animateMotion>"
-    )
+    assert air.svg.AnimateMotion(air.svg.ClipPath()).render() == "<animateMotion><clipPath></clipPath></animateMotion>"
 
 
 # Test basic shapes with attributes
@@ -66,9 +63,7 @@ def test_path_with_data():
 # Test SVG container elements
 def test_svg_with_viewbox():
     svg = air.svg.Svg(width=200, height=200, viewBox="0 0 200 200", id="main-svg")
-    expected = (
-        '<svg width="200" height="200" viewBox="0 0 200 200" id="main-svg"></svg>'
-    )
+    expected = '<svg width="200" height="200" viewBox="0 0 200 200" id="main-svg"></svg>'
     assert svg.render() == expected
 
 
@@ -101,9 +96,7 @@ def test_tspan_in_text():
 def test_linear_gradient_with_stops():
     stop1 = air.svg.Stop(offset="0%", stop_color="red")
     stop2 = air.svg.Stop(offset="100%", stop_color="blue", stop_opacity=0.8)
-    gradient = air.svg.LinearGradient(
-        stop1, stop2, x1="0%", y1="0%", x2="100%", y2="0%", id="myGradient"
-    )
+    gradient = air.svg.LinearGradient(stop1, stop2, x1="0%", y1="0%", x2="100%", y2="0%", id="myGradient")
     expected = '<linearGradient x1="0%" y1="0%" x2="100%" y2="0%" id="myGradient"><stop offset="0%" stop-color="red"></stop><stop offset="100%" stop-color="blue" stop-opacity="0.8"></stop></linearGradient>'
     assert gradient.render() == expected
 
@@ -125,9 +118,7 @@ def test_radial_gradient():
 def test_filter_with_effects():
     blur = air.svg.FeGaussianBlur(in_="SourceGraphic", stdDeviation=2, result="blur")
     offset = air.svg.FeOffset(in_="blur", dx=3, dy=3, result="offset")
-    filter_elem = air.svg.Filter(
-        blur, offset, x="-20%", y="-20%", width="140%", height="140%", id="drop-shadow"
-    )
+    filter_elem = air.svg.Filter(blur, offset, x="-20%", y="-20%", width="140%", height="140%", id="drop-shadow")
     expected = '<filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow"><feGaussianBlur in-="SourceGraphic" stdDeviation="2" result="blur"></feGaussianBlur><feOffset in-="blur" dx="3" dy="3" result="offset"></feOffset></filter>'
     assert filter_elem.render() == expected
 
@@ -139,27 +130,21 @@ def test_fe_distant_light():
 
 
 def test_fe_drop_shadow():
-    shadow = air.svg.FeDropShadow(
-        dx=2, dy=2, stdDeviation=1, flood_color="black", flood_opacity=0.3
-    )
+    shadow = air.svg.FeDropShadow(dx=2, dy=2, stdDeviation=1, flood_color="black", flood_opacity=0.3)
     expected = '<feDropShadow dx="2" dy="2" stdDeviation="1" flood-color="black" flood-opacity="0.3"></feDropShadow>'
     assert shadow.render() == expected
 
 
 # Test animation elements
 def test_animate_with_values():
-    animate = air.svg.Animate(
-        attributeName="opacity", values="0;1;0", dur="2s", repeatCount="indefinite"
-    )
+    animate = air.svg.Animate(attributeName="opacity", values="0;1;0", dur="2s", repeatCount="indefinite")
     expected = '<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"></animate>'
     assert animate.render() == expected
 
 
 def test_animate_motion_with_path():
     motion = air.svg.AnimateMotion(path="M10,10 L90,90", dur="3s", rotate="auto")
-    expected = (
-        '<animateMotion path="M10,10 L90,90" rotate="auto" dur="3s"></animateMotion>'
-    )
+    expected = '<animateMotion path="M10,10 L90,90" rotate="auto" dur="3s"></animateMotion>'
     assert motion.render() == expected
 
 
@@ -283,10 +268,10 @@ def test_animate_with_extended_attributes():
 
 # Test missing classes for coverage
 def test_animate_transform():
-    transform = air.svg.AnimateTransform(
-        type="rotate", from_="0", to="360", dur="2s", repeatCount="indefinite"
+    transform = air.svg.AnimateTransform(type="rotate", from_="0", to="360", dur="2s", repeatCount="indefinite")
+    expected = (
+        '<animateTransform type="rotate" from-="0" to="360" dur="2s" repeatCount="indefinite"></animateTransform>'
     )
-    expected = '<animateTransform type="rotate" from-="0" to="360" dur="2s" repeatCount="indefinite"></animateTransform>'
     assert transform.render() == expected
 
 
@@ -298,16 +283,12 @@ def test_desc():
 
 def test_fe_blend():
     blend = air.svg.FeBlend(in_="SourceGraphic", in2="SourceAlpha", mode="multiply")
-    expected = (
-        '<feBlend in-="SourceGraphic" in2="SourceAlpha" mode="multiply"></feBlend>'
-    )
+    expected = '<feBlend in-="SourceGraphic" in2="SourceAlpha" mode="multiply"></feBlend>'
     assert blend.render() == expected
 
 
 def test_fe_color_matrix():
-    matrix = air.svg.FeColorMatrix(
-        type="matrix", values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"
-    )
+    matrix = air.svg.FeColorMatrix(type="matrix", values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0")
     expected = '<feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>'
     assert matrix.render() == expected
 
@@ -319,9 +300,7 @@ def test_fe_component_transfer():
 
 
 def test_fe_composite():
-    composite = air.svg.FeComposite(
-        in_="SourceGraphic", in2="SourceAlpha", operator="over"
-    )
+    composite = air.svg.FeComposite(in_="SourceGraphic", in2="SourceAlpha", operator="over")
     expected = '<feComposite in-="SourceGraphic" in2="SourceAlpha" operator="over"></feComposite>'
     assert composite.render() == expected
 
@@ -334,17 +313,15 @@ def test_fe_convolve_matrix():
 
 def test_fe_diffuse_lighting():
     lighting = air.svg.FeDiffuseLighting(in_="SourceGraphic", surfaceScale=1)
-    expected = (
-        '<feDiffuseLighting in-="SourceGraphic" surfaceScale="1"></feDiffuseLighting>'
-    )
+    expected = '<feDiffuseLighting in-="SourceGraphic" surfaceScale="1"></feDiffuseLighting>'
     assert lighting.render() == expected
 
 
 def test_fe_displacement_map():
-    displacement = air.svg.FeDisplacementMap(
-        in_="SourceGraphic", in2="displacement", scale=10, xChannelSelector="R"
+    displacement = air.svg.FeDisplacementMap(in_="SourceGraphic", in2="displacement", scale=10, xChannelSelector="R")
+    expected = (
+        '<feDisplacementMap in-="SourceGraphic" in2="displacement" scale="10" xChannelSelector="R"></feDisplacementMap>'
     )
-    expected = '<feDisplacementMap in-="SourceGraphic" in2="displacement" scale="10" xChannelSelector="R"></feDisplacementMap>'
     assert displacement.render() == expected
 
 
@@ -380,9 +357,7 @@ def test_fe_func_r():
 
 def test_fe_image():
     image = air.svg.FeImage(href="image.jpg", preserveAspectRatio="xMidYMid meet")
-    expected = (
-        '<feImage href="image.jpg" preserveAspectRatio="xMidYMid meet"></feImage>'
-    )
+    expected = '<feImage href="image.jpg" preserveAspectRatio="xMidYMid meet"></feImage>'
     assert image.render() == expected
 
 
@@ -411,17 +386,13 @@ def test_fe_point_light():
 
 
 def test_fe_specular_lighting():
-    specular = air.svg.FeSpecularLighting(
-        in_="SourceGraphic", surfaceScale=1, specularConstant=1.5
-    )
+    specular = air.svg.FeSpecularLighting(in_="SourceGraphic", surfaceScale=1, specularConstant=1.5)
     expected = '<feSpecularLighting in-="SourceGraphic" surfaceScale="1" specularConstant="1.5"></feSpecularLighting>'
     assert specular.render() == expected
 
 
 def test_fe_spot_light():
-    spot_light = air.svg.FeSpotLight(
-        x=100, y=100, z=50, pointsAtX=0, pointsAtY=0, pointsAtZ=0
-    )
+    spot_light = air.svg.FeSpotLight(x=100, y=100, z=50, pointsAtX=0, pointsAtY=0, pointsAtZ=0)
     expected = '<feSpotLight x="100" y="100" z="50" pointsAtX="0" pointsAtY="0" pointsAtZ="0"></feSpotLight>'
     assert spot_light.render() == expected
 
@@ -433,9 +404,7 @@ def test_fe_tile():
 
 
 def test_fe_turbulence():
-    turbulence = air.svg.FeTurbulence(
-        baseFrequency="0.9", numOctaves=4, type="fractalNoise"
-    )
+    turbulence = air.svg.FeTurbulence(baseFrequency="0.9", numOctaves=4, type="fractalNoise")
     expected = '<feTurbulence baseFrequency="0.9" numOctaves="4" type="fractalNoise"></feTurbulence>'
     assert turbulence.render() == expected
 
@@ -459,9 +428,7 @@ def test_mpath():
 
 
 def test_pattern():
-    pattern = air.svg.Pattern(
-        x=0, y=0, width=20, height=20, patternUnits="userSpaceOnUse", id="pattern1"
-    )
+    pattern = air.svg.Pattern(x=0, y=0, width=20, height=20, patternUnits="userSpaceOnUse", id="pattern1")
     expected = '<pattern x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" id="pattern1"></pattern>'
     assert pattern.render() == expected
 

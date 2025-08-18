@@ -59,9 +59,7 @@ class JinjaRenderer:
         env: jinja2.Environment | None = None,
     ):
         """Initialize with template directory path"""
-        self.templates = Jinja2Templates(
-            directory=directory, context_processors=context_processors, env=env
-        )
+        self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
 
     def __call__(
         self,
@@ -82,6 +80,4 @@ class JinjaRenderer:
         for k, v in context.items():
             if isinstance(v, Tag) and hasattr(v, "render"):
                 context[k] = v.render()
-        return self.templates.TemplateResponse(
-            request=request, name=name, context=context
-        )
+        return self.templates.TemplateResponse(request=request, name=name, context=context)

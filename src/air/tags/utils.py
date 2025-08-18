@@ -39,7 +39,7 @@ def locals_cleanup(local_data, obj):
     """Converts arguments to kwargs per the html_attributes structure"""
     data = {}
     attrs = HTML_ATTRIBUTES.get(obj.__class__.__name__, [])
-    attrs += ["class_", "id", "style"]
+    attrs += ["class_", "for_", "as_", "id", "style"]
     for attr in attrs:
         if local_data.get(attr) is not None:
             data[attr] = local_data[attr]
