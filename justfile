@@ -1,3 +1,8 @@
+# Run in development mode with reload
+dev: 
+    @lsof -ti tcp:8000 | xargs kill -9 || true
+    uv run fastapi dev main.py --reload
+
 # Run all the formatting, linting, and testing commands
 qa:
     markdownlint-cli2 "**/*.md"
