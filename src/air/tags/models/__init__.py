@@ -5,6 +5,7 @@ from .special import (
     Raw as Raw,
     Script as Script,
     Style as Style,
+    Tags as Tags
 )
 from .stock import (
     H1 as H1,

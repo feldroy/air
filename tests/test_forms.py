@@ -109,9 +109,10 @@ def test_form_render():
 
     cheese = CheeseForm()
 
+    form = cheese.render()
     assert (
-        cheese.render()
-        == '<fieldset><label>name<input type="text" name="name" id="name" /></label><label>age<input type="number" name="age" id="age" /></label></fieldset>'
+        form
+        == '<fieldset><label for="name">name<input type="text" name="name" id="name" /></label><label for="age">age<input type="number" name="age" id="age" /></label></fieldset>'
     )
 
 
@@ -212,7 +213,7 @@ def test_air_field():
     html = contact_form.render()
     assert 'type="datedatetime-local"' in html
     assert 'type="email"' in html
-    assert "<label>Date and Time<input" in html
+    assert '<label for="date_and_time">Date and Time<input' in html
 
 
 def test_airform_notimplementederror():

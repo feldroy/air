@@ -100,6 +100,7 @@ from .models import (
     Sup as Sup,
     Table as Table,
     Tag as Tag,
+    Tags as Tags,
     Tbody as Tbody,
     Td as Td,
     Template as Template,
