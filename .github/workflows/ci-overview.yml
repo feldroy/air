@@ -52,4 +52,5 @@ jobs:
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
-          message-path: ${{ env.SUMMARY_PATH }}
+#          message-path: ${{ env.SUMMARY_PATH }}
+          message: ${{ env.SUMMARY_PATH }}
