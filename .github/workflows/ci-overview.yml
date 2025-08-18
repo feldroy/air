@@ -45,8 +45,10 @@ jobs:
           cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
           echo "::group::My Logs"
           echo $GITHUB_STEP_SUMMARY
-          cat "$GITHUB_STEP_SUMMARY"
-          echo "${{ steps.wait.outputs.checks }}"
+          echo $GITHUB_OUTPUT
+          echo $GITHUB_ENV
+#          cat "$GITHUB_STEP_SUMMARY"
+#          echo "${{ steps.wait.outputs.checks }}"
           echo "::endgroup::"
       #        run: |
       #          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
