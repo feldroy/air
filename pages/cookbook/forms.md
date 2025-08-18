@@ -41,11 +41,11 @@ async def cheese_info(request: Request):
     return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
 ```
 
-## Dependency-injection form handling (experimental)
+## Coming Soon: Dependency-Injection Form Handling
 
 It is possible to use dependency injection to manage form validation.
 
-NOTE: This functionality is currently in development and this feature currently does not work
+NOTE: This functionality is currently in development. This feature was working before but currently does not work.
 
 ```python
 from typing import Annotated
