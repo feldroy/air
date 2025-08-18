@@ -9,11 +9,11 @@ name: Python Package - CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     tags:
       - '*'   # matches any tag name
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 env:
   COLUMNS: 150
@@ -43,7 +43,7 @@ jobs:
     name: skipped
     runs-on: ubuntu-latest
     steps:
-      - &checkout {uses: actions/checkout@v5}
+      - &checkout { uses: actions/checkout@v5 }
       - &setup_uv
         name: Install uv (with cache)
         uses: astral-sh/setup-uv@v6
