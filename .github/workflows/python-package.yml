@@ -99,6 +99,7 @@ jobs:
       - name: Measuring Coverage • macOS
         run: just test-coverage
   coverage-xml:
+    if: github.actor != 'dependabot[bot]'
     name: Coverage with Codecov
     runs-on: macos-latest
     timeout-minutes: 25
