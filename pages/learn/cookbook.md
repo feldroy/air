@@ -254,7 +254,7 @@ You can serve static files like CSS, JavaScript, and images using Air's built-in
 import air
 
 app = air.Air()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", air.StaticFiles(directory="static"), name="static")
 
 @app.page
 def index():
