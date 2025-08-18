@@ -23,9 +23,8 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      # 1) Wait until PR checks settle; FAIL if anything is failing/pending
+      # Wait until PR checks settle; Write a markdown overview
       - name: Wait for checks
-        id: wait
         uses: wechuli/allcheckspassed@e22f45a4f25f4cf821d1273705ac233355400db1 # v1.2.0
         with:
           delay: '1'
@@ -33,9 +32,4 @@ jobs:
           polling_interval: '1'
           fail_fast: false
           checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch'
-          show_job_summary: 'true' # writes to $GITHUB_STEP_SUMMARY
-      - name: Print step summary to logs
-        shell: bash
-        run: |
-          echo "===== SUMMARY FILE ====="
-          cat "$GITHUB_STEP_SUMMARY"
+          show_job_summary: 'true'
