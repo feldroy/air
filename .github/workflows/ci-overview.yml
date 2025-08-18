@@ -33,36 +33,9 @@ jobs:
           polling_interval: '1'
           fail_fast: false
           checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch'
-          show_job_summary: 'true'   # writes to $GITHUB_STEP_SUMMARY
-      # 2) Export $GITHUB_STEP_SUMMARY
-      - name: Expose summary path for later steps
-        id: summary-output
-        #        run: echo "SUMMARY_PATH=$GITHUB_STEP_SUMMARY" >> "$GITHUB_ENV"
+          show_job_summary: 'true' # writes to $GITHUB_STEP_SUMMARY
+      - name: Print step summary to logs
+        shell: bash
         run: |
-          echo "SUMMARY_PATH=$GITHUB_STEP_SUMMARY" >> "$GITHUB_ENV"
-          echo "$GITHUB_STEP_SUMMARY" >> "$GITHUB_PATH"
-          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
-          cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
-          echo "::group::My Logs"
-          echo $GITHUB_STEP_SUMMARY
-          echo $GITHUB_OUTPUT
-          echo $GITHUB_ENV
-          echo "::endgroup::"
-      #          cat "$GITHUB_STEP_SUMMARY"
-      #          echo "${{ steps.wait.outputs.checks }}"
-      #        run: |
-      #          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
-      #          cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
-      # 3) Post the raw HTML/Markdown as a sticky PR comment (code block)
-      - name: Comment summary_raw (content)
-        # if: ${{ env.SUMMARY_PATH != '' }}
-        if: always()
-        uses: mshick/add-pr-comment@b8f338c590a895d50bcbfa6c5859251edc8952fc # v2.8.2
-        with:
-          message-id: ci-overview:summary-raw
-          preformatted: true
-          #          message-path: ${{ env.SUMMARY_PATH }}
-          message: ${{ steps.summary-output.outputs.SUMMARY }}
-          #message: ${{ steps.wait.outputs }}
-#          ${{ steps.color-selector.outputs.SELECTED_COLOR }}
-#          message: ${{ env.SUMMARY_PATH }}
+          echo "===== SUMMARY FILE ====="
+          cat "$GITHUB_STEP_SUMMARY"
