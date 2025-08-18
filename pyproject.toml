@@ -390,3 +390,52 @@ runtime-evaluated-decorators = [
 # Modules that are always safe to import (never gate)
 exempt-modules = ["typing", "typing_extensions"]
 # endregion ruff
+
+# region ty
+[tool.ty.src]
+# Lock what gets checked so "ty check" and "ty check ." act the same
+include = ["src", "tests"] # keep discovery stable
+# Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
+respect-ignore-files = true
+
+[tool.ty.environment]
+# Make first-party resolution stable and priority-ordered.
+root = ["./src", "."]
+# Freeze analysis semantics across dev/CI.
+# If your project table already has `requires-python`, Ty will infer the min;
+# setting explicitly keeps things deterministic.
+python-version = "3.13"
+# For cross-platform libraries, analyze as if code may run anywhere.
+python-platform = "all"
+
+[tool.ty.terminal]
+# Fail the run on any warning.
+error-on-warning = true
+# Verbose output; switch to "concise" when you want minimal output.
+output-format = "full"
+
+# Promote every non-error rule to error (strict).
+[tool.ty.rules]
+# Defaults = warn:
+deprecated                       = "error" # https://docs.astral.sh/ty/reference/rules/#deprecated
+invalid-ignore-comment           = "error" # https://docs.astral.sh/ty/reference/rules/#invalid-ignore-comment
+possibly-unbound-attribute       = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-attribute
+possibly-unbound-implicit-call   = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-implicit-call
+possibly-unbound-import          = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-import
+redundant-cast                   = "error" # https://docs.astral.sh/ty/reference/rules/#redundant-cast
+undefined-reveal                 = "error" # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
+unknown-rule                     = "error" # https://docs.astral.sh/ty/reference/rules/#unknown-rule
+unresolved-global                = "error" # https://docs.astral.sh/ty/reference/rules/#unresolved-global
+unsupported-base                 = "error" # https://docs.astral.sh/ty/reference/rules/#unsupported-base
+# Defaults = ignore:
+division-by-zero                 = "error" # https://docs.astral.sh/ty/reference/rules/#division-by-zero
+possibly-unresolved-reference    = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
+unused-ignore-comment            = "error" # https://docs.astral.sh/ty/reference/rules/#unused-ignore-comment
+
+# Tests often import optional dev deps or use dynamic patterns.
+[[tool.ty.overrides]]
+include = ["tests/**", "**/test_*.py", "**/*_test.py"]
+[tool.ty.overrides.rules]
+unresolved-import               = "warn"
+possibly-unresolved-reference   = "warn"
+# endregion ty
