@@ -32,7 +32,7 @@ api = FastAPI()
 jinja = air.JinjaRenderer(directory="templates")
 
 @app.get("/")
-def index(request: Request):
+def index(request: air.Request):
     return jinja(request, name="home.html")
 
 @api.get("/")
