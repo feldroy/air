@@ -10,11 +10,9 @@ import air
 
 app = air.Air()
 
-
 class FlightModel(BaseModel):
-    flight_number: str
-    destination: str
-
+    flight_number: str = Field(..., min_length=1)
+    destination: str = Field(..., min_length=1)
 
 class FlightForm(air.AirForm):
     model = FlightModel
@@ -37,7 +35,13 @@ async def flight_info(request: Request):
     flight = await FlightForm.from_request(request)
     if flight.is_valid:
         return air.Html(air.H1(f'{flight.data.flight_number} → {flight.data.destination}'))
-    return air.Html(air.H1(f"Errors {len(flight.errors)}"))
+    return air.Html(
+        air.H1("Errors"),
+        air.Ul(*[
+            air.Li(f"{err['loc'][0]}: {err['msg']}")
+            for err in flight.errors
+        ])
+    )
 ```
 
 ## Coming Soon: Dependency-Injection Form Handling
