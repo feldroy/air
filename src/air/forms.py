@@ -136,14 +136,17 @@ def default_form_widget(model: type[BaseModel], data: dict | None = None, errors
             kwargs["aria-invalid"] = "true"
         json_schema_extra = field_info.json_schema_extra or {}
         fields.append(
-            tags.Label(
-                json_schema_extra.get("label") or field_name,
+            tags.Tags(
+                tags.Label(
+                    json_schema_extra.get("label") or field_name,
+                    for_=field_name,
+                ),
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
                 tags.Small("Please correct this error.", id=f"{field_name}-error") if error else "",
             )
         )
 
-    return tags.Fieldset(*fields).render()
+    return tags.Tags(*fields).render()
 
 
 def AirField(

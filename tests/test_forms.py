@@ -109,9 +109,10 @@ def test_form_render():
 
     cheese = CheeseForm()
 
+    form = cheese.render()
     assert (
-        cheese.render()
-        == '<fieldset><label>name<input type="text" name="name" id="name" /></label><label>age<input type="number" name="age" id="age" /></label></fieldset>'
+        form
+        == '<label for="name">name</label><input type="text" name="name" id="name" /><label for="age">age</label><input type="number" name="age" id="age" />'
     )
 
 
@@ -127,7 +128,7 @@ def test_form_render_with_values():
 
     assert (
         cheese.render()
-        == '<fieldset><label>name<input type="text" value="Cheddar" name="name" id="name" /></label><label>age<input type="number" value="3" name="age" id="age" /></label></fieldset>'
+        == '<label for="name">name</label><input type="text" value="Cheddar" name="name" id="name" /><label for="age">age</label><input type="number" value="3" name="age" id="age" />'
     )
 
 
@@ -154,7 +155,7 @@ def test_form_render_in_view():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<form><fieldset><label>name<input type="text" name="name" id="name" /></label><label>age<input type="number" name="age" id="age" /></label></fieldset></form>'
+        == '<form><label for="name">name</label><input type="text" name="name" id="name" /><label for="age">age</label><input type="number" name="age" id="age" /></form>'
     )
 
 
@@ -180,7 +181,7 @@ def test_form_render_with_errors():
 
     assert (
         html
-        == '<fieldset><label>name<input aria-invalid="true" type="text" name="name" id="name" /><small id="name-error">Please correct this error.</small></label><label>age<input aria-invalid="true" type="number" name="age" id="age" /><small id="age-error">Please correct this error.</small></label></fieldset>'
+        == '<label for="name">name</label><input aria-invalid="true" type="text" name="name" id="name" /><small id="name-error">Please correct this error.</small><label for="age">age</label><input aria-invalid="true" type="number" name="age" id="age" /><small id="age-error">Please correct this error.</small>'
     )
 
 
@@ -212,7 +213,10 @@ def test_air_field():
     html = contact_form.render()
     assert 'type="datedatetime-local"' in html
     assert 'type="email"' in html
-    assert "<label>Date and Time<input" in html
+    assert (
+        '<label for="date_and_time">Date and Time</label><input type="datedatetime-local" name="date_and_time" id="date_and_time" />'
+        in html
+    )
 
 
 def test_airform_notimplementederror():
