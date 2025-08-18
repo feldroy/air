@@ -31,10 +31,7 @@ def test_divtag_yes_attrs_multiple_a_children():
         air.A("Link here", href="/", class_="link"),
         air.A("Another link", href="/", class_="timid"),
     ).render()
-    assert (
-        html
-        == '<div><a href="/" class="link">Link here</a><a href="/" class="timid">Another link</a></div>'
-    )
+    assert html == '<div><a href="/" class="link">Link here</a><a href="/" class="timid">Another link</a></div>'
 
 
 def test_divtag_yes_attrs_nested_children():
@@ -134,9 +131,7 @@ def test_functions_as_tags():
     """Test that functions can be used as tags."""
 
     def article_preview(title: str, slug: str, description: str):
-        return air.Article(
-            air.H2(air.A(title, href=f"/posts/{slug}")), air.P(description)
-        )
+        return air.Article(air.H2(air.A(title, href=f"/posts/{slug}")), air.P(description))
 
     articles = [
         article_preview("First Post", "first-post", "This is the first post."),
@@ -225,10 +220,7 @@ def test_bool_attributes():
         _r(air.Option("South America", value="SA", selected=True))
         == '<option selected value="SA">South America</option>'
     )
-    assert (
-        _r(air.Option("North America", value="NA", selected=False))
-        == '<option value="NA">North America</option>'
-    )
+    assert _r(air.Option("North America", value="NA", selected=False)) == '<option value="NA">North America</option>'
 
 
 def test_self_closing_tags():
@@ -239,10 +231,7 @@ def test_self_closing_tags():
 def test_children_tag():
     html = _r(air.Children(air.P("Hello, world!")))
     assert html == "<p>Hello, world!</p>"
-    assert (
-        _r(air.Children(air.P("Hello, world!"), air.P("Uma")))
-        == "<p>Hello, world!</p><p>Uma</p>"
-    )
+    assert _r(air.Children(air.P("Hello, world!"), air.P("Uma"))) == "<p>Hello, world!</p><p>Uma</p>"
 
 
 def test_tag_generation():

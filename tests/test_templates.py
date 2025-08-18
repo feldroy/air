@@ -24,10 +24,7 @@ def test_JinjaRenderer():
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text
-        == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
-    )
+    assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
 
 
 def test_JinjaRenderer_no_context():
@@ -85,10 +82,7 @@ def test_JinjaRenderer_with_kwargs():
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text
-        == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
-    )
+    assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
 
 
 def test_jinja_plus_airtags():
