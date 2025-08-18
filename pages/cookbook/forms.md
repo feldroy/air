@@ -4,7 +4,6 @@ Built on Pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 
 ```python
 from typing import Annotated
-
 from fastapi import Depends, Request
 from pydantic import BaseModel
 import air
@@ -12,33 +11,33 @@ import air
 app = air.Air()
 
 
-class CheeseModel(BaseModel):
-    name: str
-    age: int
+class FlightModel(BaseModel):
+    flight_number: str
+    destination: str
 
 
-class CheeseForm(air.AirForm):
-    model = CheeseModel
+class FlightForm(air.AirForm):
+    model = FlightModel
 
 @app.page
 async def index():
     return air.layouts.mvpcss(
-        air.H1("Cheese Form"),
+        air.H1("Flight Form"),
         air.Form(
-            air.Input(name="name", placeholder='name of cheese'),
-            air.Input(name="age", type="number", placeholder='age'),
+            air.Input(name="flight_number", placeholder='flight number'),
+            air.Input(name="destination", placeholder='destination'),
             air.Button("Submit", type="submit"),
             method="post",
-            action="/cheese-info",
+            action="/flight-info",
         ),
     )
 
-@app.post("/cheese-info")
-async def cheese_info(request: Request):
-    cheese = await CheeseForm.from_request(request)
-    if cheese.is_valid:
-        return air.Html(air.H1(f'{cheese.data.name} age {cheese.data.age}'))
-    return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
+@app.post("/flight-info")
+async def flight_info(request: Request):
+    flight = await FlightForm.from_request(request)
+    if flight.is_valid:
+        return air.Html(air.H1(f'{flight.data.flight_number} → {flight.data.destination}'))
+    return air.Html(air.H1(f"Errors {len(flight.errors)}"))
 ```
 
 ## Coming Soon: Dependency-Injection Form Handling
@@ -57,32 +56,32 @@ import air
 app = air.Air()
 
 
-class CheeseModel(BaseModel):
-    name: str
-    age: int
+class FlightModel(BaseModel):
+    flight_number: str
+    destination: str
 
 
-class CheeseForm(air.AirForm):
-    model = CheeseModel
+class FlightForm(air.AirForm):
+    model = FlightModel
 
 
 @app.page
-async def cheese():
+async def flight():
     return air.Html(
-        air.H1("Cheese Form"),
+        air.H1("Flight Form"),
         air.Form(
-            air.Input(name="name"),
-            air.Input(name="age", type="number"),
+            air.Input(name="flight_number"),
+            air.Input(name="destination"),
             air.Button("Submit", type="submit"),
             method="post",
-            action="/cheese-info",
+            action="/flight-info",
         ),
     )
 
 
-@app.post("/cheese-info")
-async def cheese_info(cheese: Annotated[CheeseForm, Depends(CheeseForm.validate)]):
-    if cheese.is_valid:
-        return air.Html(air.H1(cheese.data.name))
-    return air.Html(air.H1(f"Errors {len(cheese.errors)}"))
+@app.post("/flight-info")
+async def flight_info(flight: Annotated[FlightForm, Depends(FlightForm.validate)]):
+    if flight.is_valid:
+        return air.Html(air.H1(f'{flight.data.flight_number} → {flight.data.destination}'))
+    return air.Html(air.H1(f"Errors {len(flight.errors)}"))
 ```
