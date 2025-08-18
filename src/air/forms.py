@@ -14,7 +14,7 @@ from .requests import Request
 try:  # pragma: no cover
     # Remove this try/except statement once support for Python 3.10 is dropped
     # Then we can do just this immediate line below
-    from typing import Self  # type: ignore [attr-defined]
+    from typing import Self  # Python 3.11+
 except ImportError:  # pragma: no cover
     from typing_extensions import Self
 
@@ -51,7 +51,7 @@ class AirForm:
             raise NotImplementedError("model")
         self.initial_data = initial_data
 
-    async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:  # ty: ignore [invalid-type-form]
+    async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:
         self.validate(form_data)
         return self
 
@@ -63,7 +63,7 @@ class AirForm:
             self.errors = e.errors()
 
     @classmethod
-    async def from_request(cls, request: Request) -> Self:  # ty: ignore [invalid-type-form]
+    async def from_request(cls, request: Request) -> Self:
         form_data = await request.form()
         self = cls()
         await self(form_data=form_data)
@@ -115,7 +115,7 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
 
 
 def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
-    "Converts a pydantic error list to a dictionary for easier reference."
+    """Converts a pydantic error list to a dictionary for easier reference."""
     if errors is None:
         return {}
     return {error["loc"][0]: error for error in errors}
