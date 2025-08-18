@@ -82,9 +82,7 @@ class AirForm:
         return default_form_widget
 
     def render(self) -> tags.SafeStr:
-        return tags.SafeStr(
-            self.widget(model=self.model, data=self.initial_data, errors=self.errors)
-        )
+        return tags.SafeStr(self.widget(model=self.model, data=self.initial_data, errors=self.errors))
 
 
 def pydantic_type_to_html_type(field_info: Any) -> str:
@@ -104,14 +102,10 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
         "file",
     ]
     for field in special_fields:
-        if field_info.json_schema_extra and field_info.json_schema_extra.get(
-            field, False
-        ):
+        if field_info.json_schema_extra and field_info.json_schema_extra.get(field, False):
             return field
 
-    return {int: "number", float: "number", bool: "checkbox", str: "text"}.get(
-        field_info.annotation, "text"
-    )
+    return {int: "number", float: "number", bool: "checkbox", str: "text"}.get(field_info.annotation, "text")
 
 
 def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
@@ -121,9 +115,7 @@ def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
     return {error["loc"][0]: error for error in errors}
 
 
-def default_form_widget(
-    model: type[BaseModel], data: dict | None = None, errors: list | None = None
-) -> str:
+def default_form_widget(model: type[BaseModel], data: dict | None = None, errors: list | None = None) -> str:
     error_dict = errors_to_dict(errors)
     fields = []
     for field_name, field_info in model.model_fields.items():
@@ -147,9 +139,7 @@ def default_form_widget(
             tags.Label(
                 json_schema_extra.get("label") or field_name,
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
-                tags.Small("Please correct this error.", id=f"{field_name}-error")
-                if error
-                else "",
+                tags.Small("Please correct this error.", id=f"{field_name}-error") if error else "",
             )
         )
 

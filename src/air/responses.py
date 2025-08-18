@@ -19,9 +19,7 @@ from .tags import Tag
 
 def dict_to_airtag(d):
     children_raw = d.get("_children", ())
-    children = tuple(
-        dict_to_airtag(c) if isinstance(c, dict) else c for c in children_raw
-    )
+    children = tuple(dict_to_airtag(c) if isinstance(c, dict) else c for c in children_raw)
     module = importlib.import_module(d["_module"])
     obj = getattr(module, d["_name"])
     return obj(*children, **d.get("_attrs", {}))
@@ -100,13 +98,11 @@ class SSEResponse(StreamingResponse):
     media_type = "text/event-stream"
 
     async def stream_response(self, send: Send) -> None:
-        await send(
-            {
-                "type": "http.response.start",
-                "status": self.status_code,
-                "headers": self.raw_headers,
-            }
-        )
+        await send({
+            "type": "http.response.start",
+            "status": self.status_code,
+            "headers": self.raw_headers,
+        })
         async for chunk in self.body_iterator:
             if not isinstance(chunk, (bytes, memoryview)):
                 if isinstance(chunk, Tag) or hasattr(chunk, "render"):
