@@ -41,6 +41,9 @@ jobs:
         run: |
           echo "SUMMARY_PATH=$GITHUB_STEP_SUMMARY" >> "$GITHUB_ENV"
           echo "$GITHUB_STEP_SUMMARY" >> "$GITHUB_PATH"
+          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
+          echo ${{ steps.wait.outputs }}
       #        run: |
       #          echo "SUMMARY=" >> "$GITHUB_OUTPUT"
       #          cat "$GITHUB_STEP_SUMMARY" >> "$GITHUB_OUTPUT"
@@ -52,5 +55,8 @@ jobs:
         with:
           message-id: ci-overview:summary-raw
           preformatted: true
-          message-path: ${{ env.SUMMARY_PATH }}
+#          message-path: ${{ env.SUMMARY_PATH }}
+          message: ${{ steps.summary-output.outputs.SUMMARY }}
+          #message: ${{ steps.wait.outputs }}
+#          ${{ steps.color-selector.outputs.SELECTED_COLOR }}
 #          message: ${{ env.SUMMARY_PATH }}
