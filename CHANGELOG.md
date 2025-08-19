@@ -1,5 +1,21 @@
 # Changelog
 
+# 0.24.1 - 2025-08-18
+
+## What's Changed
+
+* BUG: Address for_ and as_ args for label and link tags by @pydanny in https://github.com/feldroy/air/pull/312
+* BUG: Change AirForm's default_form_widget to use mvp.css by @pydanny in https://github.com/feldroy/air/pull/314
+* DOC: Add module level docstrings by @pydanny in https://github.com/feldroy/air/pull/298
+* TOOL: Configure Renovate by @renovate[bot] in https://github.com/feldroy/air/pull/300
+* TOOL: CI Overview by @tallerasaf in https://github.com/feldroy/air/pull/303
+* TOOL: Ruff - 1 by @tallerasaf in https://github.com/feldroy/air/pull/299
+* TOOL: Ty by @tallerasaf in https://github.com/feldroy/air/pull/302
+* TOOL: Fix dependabot by @tallerasaf in https://github.com/feldroy/air/pull/310
+* TOOL: Lint with new rules by @pydanny in https://github.com/feldroy/air/pull/313
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.24.0...v0.24.1
+
 # 0.24.0 - 2025-08-17
 
 ## What's Changed

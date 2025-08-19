@@ -1,0 +1,35 @@
+# .github/workflows/ci-overview.yml
+name: CI Overview
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  checks: read
+  actions: read
+  pull-requests: write
+
+jobs:
+  overview:
+    name: CI Overview
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # Wait until PR checks settle; Write a markdown overview
+      - name: Wait for checks
+        uses: wechuli/allcheckspassed@e22f45a4f25f4cf821d1273705ac233355400db1 # v1.2.0
+        with:
+          delay: '1'
+          retries: '15'
+          polling_interval: '1'
+          fail_fast: false
+          checks_exclude: 'skipped,CI Overview,Coverage with Codecov,codecov/patch,.github/dependabot.yml'
+          show_job_summary: 'true'

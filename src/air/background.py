@@ -31,10 +31,7 @@ class BackgroundTasks(FastAPIBackgroundTasks):
         message = "some notification"
         background_tasks.add_task(write_notification, email, message=message)
         content = f"notification for {email}: {message}"
-        return picocss(
-            air.Title(content),
-            air.H1(content)
-        )
+        return picocss(air.Title(content), air.H1(content))
     ```
     """
 
