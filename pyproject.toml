@@ -35,16 +35,15 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-# endregion project
 
-# region ----> dependencies <----
-[project]
 dependencies = [
     "fastapi>=0.116.1",
     "Jinja2>=3.1.6",
     "python-multipart>=0.0.20",
 ]
+# endregion project
 
+# region ----> dependencies <----
 # Runtime extras you want users to install from PyPI
 [project.optional-dependencies]
 # Make `air[standard]` install FastAPI’s own “standard” extras,
@@ -80,7 +79,7 @@ test = [
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
     "httpx>=0.28.1", # For the test client
     "pytest>=8.4.0", # Test runner
-    "pdbpp>=0.11.7", # enables pdb++, a drop-in replacement for pdb
+    "pdbpp==0.11.7", # enables pdb++, a drop-in replacement for pdb
     "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
     "pytest-pretty>=1.3.0", # Provides richer test session output.
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
