@@ -22,7 +22,24 @@ except ImportError:  # pragma: no cover
 class AirForm:
     """
     A form handler that validates incoming form data against a Pydantic model.
-    To be used with FastAPI's dependency injection system.
+
+    Can be used with awaited form data:
+
+        class FlightModel(BaseModel):
+            flight_number: str
+            destination: str
+
+        class FlightForm(air.AirForm):
+            model = FlightModel
+
+        @app.post("/cheese")
+        async def flight_form(request: air.Request):
+            flight = await FlightForm.from_request(request)
+            if flight.is_valid:
+                return air.Html(air.H1(flight.data.flight_number))
+            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
+
+    Can be used with FastAPI's dependency injection system.
 
         class CheeseModel(pydantic.BaseModel):
             name: str
@@ -36,6 +53,7 @@ class AirForm:
             if cheese.is_valid:
                 return air.Html(air.H1(cheese.data.name))
             return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
+
 
     NOTE: This is named AirForm to avoid collisions with tags.Form
     """
@@ -55,12 +73,13 @@ class AirForm:
         self.validate(form_data)
         return self
 
-    def validate(self, form_data: dict[Any, Any] | FormData):
+    def validate(self, form_data: dict[Any, Any] | FormData) -> bool:
         try:
             self.data = self.model(**form_data)
             self.is_valid = True
         except ValidationError as e:
             self.errors = e.errors()
+        return self.is_valid
 
     @classmethod
     async def from_request(cls, request: Request) -> Self:
