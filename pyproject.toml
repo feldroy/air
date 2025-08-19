@@ -214,6 +214,10 @@ module-name = "air"
 
 # region ----> ruff <----
 [tool.ruff]
+# Enable preview features.
+preview = true
+# Enumerate all fixed violations.
+show-fixes = true
 # Keep file discovery identical whether you pass "." or not
 respect-gitignore = true  # default, shown for clarity
 force-exclude = true      # apply excludes even for explicit paths like "."
@@ -239,7 +243,7 @@ exclude = [
 [tool.ruff.format]
 #indent-style = "space"   # match EditorConfig
 #line-ending = "lf"       # enforce LF newlines
-#quote-style = "double"   # keep quotes in sync with flake8-quotes
+quote-style = "double"   # keep quotes in sync with flake8-quotes
 # Docstring code formatting
 docstring-code-format = true # format Python code blocks in docstrings
 docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)

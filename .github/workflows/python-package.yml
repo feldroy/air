@@ -19,6 +19,8 @@ env:
   COLUMNS: 150
   UV_FROZEN: true
   FORCE_COLOR: 1
+  RUFF_OUTPUT_FORMAT: github
+  RUFF_NO_CACHE: 1
 
 # Cancel older runs for the same branch/PR (concurrency = run one at a time).
 # When you push several commits in a row, only the newest run continues; older ones are cancelled.
