@@ -6,18 +6,51 @@ set dotenv-filename := ".env"
 list:
     just -l
 
+# Format code and auto-fix simple issues with Ruff
 format:
     uv run --python=3.13 --isolated --group lint -- ruff format .
     uv run --python=3.13 --isolated --group lint -- ruff check --fix .
 
+# Run Ruff checks without fixing to report issues
 lint:
     uv run --python=3.13 --isolated --group lint -- ruff check --no-fix .
 
+# Type check the project with Ty
 type-check:
     uv run --python=3.13 --isolated --group lint --group test -- ty check .
 
 # Run all the formatting, linting, and type checking commands
 qa: format lint type-check
+
+# Print a centered title with a magenta rule
+@title TEXT="":
+    rich "{{ TEXT }}" --rule --rule-style "red" --rule-char "=" --style "bold white on magenta"
+
+# Print text inside a double-line panel with optional title and caption
+@panel TEXT="" TITLE="" CAPTION="":
+    rich "{{ TEXT }}" --title "{{ TITLE }}" --caption "{{ CAPTION }}" \
+     --print --panel double --center --panel-style "magenta"
+
+# Show Ruff analyze graph as JSON via rich (reads from stdin)
+@ruff-graph: (title "Ruff - Graph")
+    ruff analyze graph -q | rich - --force-terminal --json
+
+# View a Markdown file with rich using the Dracula theme
+@readmd FILE_NAME: (title FILE_NAME)
+    rich "{{ FILE_NAME }}" --markdown --theme dracula --emoji --hyperlinks --pager
+
+# Open README.md with rich
+@readme: (readmd "README.md")
+
+# Open CONTRIBUTING.md with rich
+@contributing: (readmd "CONTRIBUTING.md")
+
+# Open CHANGELOG.md with rich
+@changelog: (readmd "CHANGELOG.md")
+
+# View a Python file with syntax highlight, line numbers, and guides
+@readpy FILE_PATH: (title FILE_PATH)
+    rich "{{ FILE_PATH }}" --syntax --line-numbers --guides --theme dracula --pager
 
 # Run all the tests for all the supported Python versions
 test-all:
@@ -29,10 +62,6 @@ test-all:
 # Run Test Coverage
 test-coverage:
     uv run --python=3.13 --isolated --group test -- pytest --cov -q
-
-# pytest plugin for easy integration of memray memory profiler
-test-memory:
-    uv run --python=3.13 --isolated --group test -- pytest --memray -q --no-header
 
 # Show the 10 slowest tests (timings)
 test-durations:

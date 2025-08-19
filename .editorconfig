@@ -1,4 +1,5 @@
 # https://editorconfig.org
+# https://github.com/editorconfig/editorconfig/wiki/editorconfig-properties
 root = true
 
 [*]
@@ -8,6 +9,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
+max_line_length = 120
 
 [*.{html,css,js,json,sh,yml,yaml}]
 indent_size = 2
