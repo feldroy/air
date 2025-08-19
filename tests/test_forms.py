@@ -224,3 +224,30 @@ def test_airform_notimplementederror():
         air.AirForm()
 
     assert "model" in str(exc.value)
+
+
+def test_airform_validate():
+    class CheeseModel(BaseModel):
+        name: str
+        age: int
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    cheese_form = CheeseForm()
+    assert cheese_form.is_valid == False
+    cheese_form.validate({})
+    assert cheese_form.is_valid == False
+    cheese_form.validate(dict(name="Cheddar"))
+    assert cheese_form.is_valid == False
+    cheese_form.validate(dict(name="Cheddar", age=5))
+    assert cheese_form.is_valid == True
+    assert cheese_form.errors == [
+        {
+            "type": "missing",
+            "loc": ("age",),
+            "msg": "Field required",
+            "input": {"name": "Cheddar"},
+            "url": "https://errors.pydantic.dev/2.11/v/missing",
+        }
+    ]
