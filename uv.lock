@@ -27,6 +27,11 @@ conflicts = [[
 name = "air"
 version = "0.24.1"
 source = { editable = "." }
+dependencies = [
+    { name = "fastapi" },
+    { name = "jinja2" },
+    { name = "python-multipart" },
+]
 
 [package.optional-dependencies]
 standard = [
@@ -94,7 +99,12 @@ test = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.116.1" }]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.116.1" },
+    { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.116.1" },
+    { name = "jinja2", specifier = ">=3.1.6" },
+    { name = "python-multipart", specifier = ">=0.0.20" },
+]
 provides-extras = ["standard"]
 
 [package.metadata.requires-dev]
@@ -111,7 +121,7 @@ dev = [
     { name = "mkdocs-redirects", marker = "python_full_version >= '3.13'", specifier = ">=1.2.2" },
     { name = "mkdocstrings", extras = ["python"], marker = "python_full_version >= '3.13'", specifier = ">=0.30.0" },
     { name = "mkdocstrings-python", marker = "python_full_version >= '3.13'", specifier = ">=1.16.12" },
-    { name = "pdbpp", marker = "python_full_version >= '3.13'", specifier = ">=0.11.7" },
+    { name = "pdbpp", marker = "python_full_version >= '3.13'", specifier = "==0.11.7" },
     { name = "pytest", marker = "python_full_version >= '3.13'", specifier = ">=8.4.0" },
     { name = "pytest-asyncio", marker = "python_full_version >= '3.13'", specifier = ">=1.1.0" },
     { name = "pytest-cov", marker = "python_full_version >= '3.13'", specifier = ">=6.2.1" },
@@ -149,7 +159,7 @@ test = [
     { name = "coverage", extras = ["toml"], specifier = ">=7.8.2" },
     { name = "diff-cover", specifier = ">=9.6.0" },
     { name = "httpx", specifier = ">=0.28.1" },
-    { name = "pdbpp", specifier = ">=0.11.7" },
+    { name = "pdbpp", specifier = "==0.11.7" },
     { name = "pytest", specifier = ">=8.4.0" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-cov", specifier = ">=6.2.1" },
@@ -2561,7 +2571,7 @@ version = "0.47.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/57/d062573f391d062710d4088fa1369428c38d51460ab6fedff920efef932e/starlette-0.47.2.tar.gz", hash = "sha256:6ae9aa5db235e4846decc1e7b79c4f346adf41e9777aebeb49dfd09bbd7023d8", size = 2583948, upload-time = "2025-07-20T17:31:58.522Z" }
 wheels = [
