@@ -26,7 +26,7 @@
 [![GitHub Release Date](https://img.shields.io/github/release-date/feldroy/air?logo=github&label=Release%20Date)](https://github.com/feldroy/air/releases/latest)
 
 [![GitHub contributors](https://img.shields.io/github/contributors/feldroy/air?logo=github&label=Contributors)](https://github.com/feldroy/air/graphs/contributors)
-[![Discord](https://img.shields.io/discord/1388403469505007696?logo=discord&label=Discord)](https://discord.gg/aTzWBVrtEs)
+[![Discord](https://img.shields.io/discord/1388403469505007696?logo=discord&label=Discord)](https://discord.gg/nhPNn4bw6R)
 [![X](https://img.shields.io/badge/Air%20💨-%23000000.svg?logo=X&logoColor=white)](https://x.com/AirWebFramework)
 [![Bluesky](https://img.shields.io/badge/Air%20💨-0285FF?logo=bluesky&logoColor=fff)](https://bsky.app/profile/airwebframework.bsky.social)
 [![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](https://feldroy.github.io/air)
