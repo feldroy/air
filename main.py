@@ -1,3 +1,4 @@
+import re
 import importlib
 from pathlib import Path
 from os import getenv
@@ -5,14 +6,13 @@ from functools import cache
 import importlib
 import inspect
 import pkgutil
-from typing import Any, List, ParamSpec,TypeVar
-import html
+from typing import Any, List, ParamSpec,TypeVar, Callable
 
 import air
 from air_markdown.tags import AirMarkdown
 from fastapi import HTTPException
 import sentry_sdk
-
+from reference import app as api_ref
 
 from pages import charts, home, why
 
@@ -29,6 +29,7 @@ if SENTRY_DSN:
     )
 
 app = air.Air()
+app.mount('/reference', api_ref)
 
 
 def layout(request: air.Request, *content):
@@ -84,81 +85,9 @@ async def llms_txt():
     return air.responses.FileResponse("llms.txt")
 
 
-@cache
-def get_air_objects() -> List[Any]:
-    """
-    Gets all the objects in the `air` package that are defined within air
-    (nothing imported into air from core python or other libraries).
-
-    Returns:
-        A list of these objects.
-    """
-    air_objects = set()
-    prefix = air.__name__ + "."
-    for _, module_name, _ in pkgutil.walk_packages(air.__path__, prefix):
-        try:
-            module = importlib.import_module(module_name)
-            for _, obj in inspect.getmembers(module):
-                if hasattr(obj, "__module__") and obj.__module__.startswith(
-                    air.__name__
-                ):
-                    air_objects.add(obj)
-        except Exception:
-            continue
-    return list(air_objects)
-
-
-reference_warning = air.Section(
-                air.P(
-                    air.Strong("WARNING:", style="color: red"),
-                    " This API reference is very new and there may be formatting challenges.",
-                    style="color: red"
-                )
-            )
-
-
 @app.page
-async def reference(request: air.Request):
-    modules = [
-        air.Li(air.A(x, href=f"/reference/{x}"))
-        for x in sorted(list(set([x.__module__ for x in get_air_objects()])))
-    ]
-    return layout(
-        request, air.Article(air.H1("API Reference"), reference_warning, air.Ul(*modules), class_="prose")
-    )
-
-
-def doc_obj(obj):
-    doc = (
-        AirMarkdown(obj.__doc__)
-        if (hasattr(obj, "__doc__") and isinstance(obj.__doc__, str))
-        else ""
-    )
-    return air.Section(
-        air.H2(obj.__name__, air.Small(f"  ({obj.__module__}.{obj.__name__})")), doc
-    )
-
-
-@app.get("/reference/{module_name:path}")
-def reference_module(request: air.Request, module_name: str):
-    module = importlib.import_module(module_name)
-    objects = [
-        x
-        for x in get_air_objects()
-        if x.__module__ == module_name and not isinstance(x, (ParamSpec, TypeVar))
-    ]
-    objects = [doc_obj(x) for x in sorted(objects, key=lambda x: x.__name__)]
-    return layout(
-        request,
-        air.Article(
-            air.H1(air.A("API Reference:", href="/reference"), " ", module_name),
-            reference_warning,
-            AirMarkdown(module.__doc__ if module.__doc__ is not None else ''),
-            air.Ul(*objects),
-            class_="prose",
-        ),
-    )
-
+async def reference():
+    return air.responses.RedirectResponse('/reference/')
 
 @app.get("/{slug:path}")
 def airpage(request: air.Request, slug: str):
