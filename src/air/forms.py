@@ -21,9 +21,9 @@ except ImportError:  # pragma: no cover
 
 class AirForm:
     """
-    A form handler that validates incoming form data against a Pydantic model.
+    A form handler that validates incoming form data against a Pydantic model. Can be used with awaited form data or with FastAPI's dependency injection system.
 
-    Can be used with awaited form data:
+    Example:
 
         class FlightModel(BaseModel):
             flight_number: str
@@ -32,27 +32,20 @@ class AirForm:
         class FlightForm(air.AirForm):
             model = FlightModel
 
-        @app.post("/cheese")
+        @app.post("/flight")
         async def flight_form(request: air.Request):
+            "Awaited form data"
             flight = await FlightForm.from_request(request)
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
             return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
 
-    Can be used with FastAPI's dependency injection system.
-
-        class CheeseModel(pydantic.BaseModel):
-            name: str
-            age: int
-
-        class CheeseForm(air.AirForm):
-            model = CheeseModel
-
-        @app.post("/cheese")
-        async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
-            if cheese.is_valid:
-                return air.Html(air.H1(cheese.data.name))
-            return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
+        @app.post("/flight-depends")
+        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm())]):
+            "Dependency injection"
+            if flight.is_valid:
+                return air.Html(air.H1(flight.data.flight_number))
+            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))            
 
 
     NOTE: This is named AirForm to avoid collisions with tags.Form
@@ -239,3 +232,19 @@ def AirField(
         kw_only=kw_only,
         **extra,
     )
+
+
+    # Can be used with FastAPI's dependency injection system.
+
+    #     class CheeseModel(pydantic.BaseModel):
+    #         name: str
+    #         age: int
+
+    #     class CheeseForm(air.AirForm):
+    #         model = CheeseModel
+
+    #     @app.post("/cheese")
+    #     async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
+    #         if cheese.is_valid:
+    #             return air.Html(air.H1(cheese.data.name))
+    #         return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
