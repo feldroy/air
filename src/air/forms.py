@@ -168,6 +168,7 @@ def AirField(
     label: str | None = None,
     default_factory: Callable[[], Any] | None = None,
     alias: str | None = None,
+    autofocus: bool = False,
     title: str | None = None,
     description: str | None = None,
     gt: float | None = None,
@@ -203,6 +204,8 @@ def AirField(
         json_schema_extra[type] = True
     if label:
         json_schema_extra["label"] = label
+    if autofocus:
+        json_schema_extra["autofocus"] = "true"
 
     return Field(
         default,
