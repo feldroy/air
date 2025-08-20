@@ -109,10 +109,20 @@ docs = [
 # This enables entry points (meaning: auto-created CLI scripts), plugin discovery,
 # and proper distribution metadata (meaning: standard package info used by tools).
 package = true
-# Disable uv’s implicit dev default (otherwise default-groups=["dev"]).
-# Ensure 'uv run' won’t auto-install dev, and will only use groups you pass.
-# While, 'uv sync' can add dev via --group dev.
-default-groups = []
+
+# Use uv’s default: include the "dev" group by default.
+# 'uv run' will auto-install and use dev (unless you choose groups yourself).
+# 'uv sync' also includes dev by default; change this by passing explicit --group flags.
+default-groups = ["dev"]
+# ---------------------------------------------------------------------------
+# OPTION FOR LATER (comments only; not active):
+# Disable uv's implicit dev default (the default is default-groups = ["dev"]).
+# Ensure 'uv run' will not auto-install dev; it will only use groups you pass.
+# 'uv sync' can still add dev with: --group dev
+# To enable this option, set:
+# default-groups = []
+# ---------------------------------------------------------------------------
+
 # Cache “hints” you (or CI) can hash to decide when to rebuild an editable install
 # or reuse a cached environment. uv doesn’t read these at runtime; they’re for automation
 # (meaning: your own scripts/CI pipelines).

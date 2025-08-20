@@ -32,11 +32,12 @@ concurrency:
 permissions:
   contents: read
 
-# Consistent shell across OSes; override per-step if you need PowerShell/cmd.
+# Consistent shell across OSes;
 # Only `run.shell` / `run.working-directory` are supported here.
 defaults:
   run:
     shell: bash
+    working-directory: ./scripts
 
 jobs:
   # Define shared bootstrap once (never runs; used for anchors).

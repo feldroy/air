@@ -1,29 +1,53 @@
-# Load .env automatically (for colors, etc.)
+# =============================================================================
+# justfile: A makefile like build script -- Command Runner
+# =============================================================================
+# USAGE:
+#   just --list
+#   just <RECIPE>
+#   just <RECIPE> <PARAM_VALUE1> ...
+#
+# Docs:
+#   * https://just.systems/man/en/
+# =============================================================================
+
+# -- Load environment-variables from "$HERE/.env" file (if exists)
 set dotenv-load := true
 set dotenv-filename := ".env"
+set export := true
+
+# -----------------------------------------------------------------------------
+# CONFIG:
+# -----------------------------------------------------------------------------
+HERE := justfile_directory()
+MARKER_DIR := HERE
+PYTHON_VERSION := read(".python-version")
+
+# -----------------------------------------------------------------------------
+# RECIPES:
+# -----------------------------------------------------------------------------
 
 # List all the justfile recipes
 list:
-    just -l
+    @just --list
 
 # region ----> QA <----
 
 # Format code and auto-fix simple issues with Ruff
 format:
-    uv run --python=3.13 --isolated --group lint -- ruff format .
-    uv run --python=3.13 --isolated --group lint -- ruff check --fix .
+    uv run -- ruff format .
+    uv run -- ruff check --fix .
 
 # Run Ruff checks without fixing to report issues
 lint:
     # Avoid writing any formatted files back; instead, exit with a non-zero
     # status code if any files would have been modified, and zero otherwise,
     # and the difference between the current file and how the formatted file would look like.
-    uv run --python=3.13 --isolated --group lint -- ruff format --diff .
-    uv run --python=3.13 --isolated --group lint -- ruff check --no-fix .
+    uv run -- ruff format --diff .
+    uv run -- ruff check --no-fix .
 
 # Type check the project with Ty
 type-check:
-    uv run --python=3.13 --isolated --group lint --group test -- ty check .
+    uv run -- ty check .
 
 # Run all the formatting, linting, and type checking commands,
 # for local development.
@@ -34,27 +58,27 @@ qa: format type-check
 # region ----> Test <----
 # Run all the tests for all the supported Python versions
 test-all:
-    uv run --python=3.10 --isolated --group test -- pytest
-    uv run --python=3.11 --isolated --group test -- pytest
-    uv run --python=3.12 --isolated --group test -- pytest
-    uv run --python=3.13 --isolated --group test -- pytest
+    uv run --python=3.10 --isolated -- pytest
+    uv run --python=3.11 --isolated -- pytest
+    uv run --python=3.12 --isolated -- pytest
+    uv run -- pytest
 
 # Run Test Coverage
 test-coverage:
-    uv run --python=3.13 --isolated --group test -- pytest --cov -q
+    uv run -- pytest --cov -q
 
 # Show the 10 slowest tests (timings)
 test-durations:
-    uv run --python=3.13 --isolated --group test -- pytest --durations=10 -vvv --no-header
+    uv run -- pytest --durations=10 -vvv --no-header
 
 # Build, store and open the HTML coverage report
 coverage-html:
-    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
+    uv run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
     open ./htmlcov/index.html
 
 # Build and store the XML coverage report
 coverage-xml:
-    uv run --python=3.13 --isolated --group test -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
+    uv run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
 
 # Build and store the MD coverage report - Automatically find diff lines that need test coverage.
 coverage-md: coverage-xml
@@ -64,12 +88,12 @@ coverage-md: coverage-xml
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --isolated --group test -- pytest {{ARGS}}
+    uv run -- pytest {{ARGS}}
 
 # Run all the tests, but on failure, drop into the debugger
 pdb MAXFAIL="10" *ARGS:
     @echo "Running with arg: {{ARGS}}"
-    uv run --python=3.13 --isolated --group test -- pytest --pdb --maxfail={{MAXFAIL}} {{ARGS}}
+    uv run -- pytest --pdb --maxfail={{MAXFAIL}} {{ARGS}}
 
 # TDD mode: stop at the first test failure
 tdd: (pdb "1")
@@ -129,8 +153,8 @@ tag:
 
 # Serve docs locally
 doc:
-    uv run --python=3.13 --isolated --group docs -- mkdocs serve -a localhost:3000
+    uv run -- mkdocs serve -a localhost:3000
 
 # Build and deploy docs
 doc-build:
-    uv run --python=3.13 --isolated --group docs -- mkdocs gh-deploy --force
+    uv run -- mkdocs gh-deploy --force
