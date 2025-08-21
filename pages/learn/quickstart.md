@@ -11,8 +11,8 @@ mkdir helloair
 cd helloair
 uv venv
 source .venv/bin/activate
-uv add air
-uv add fastapi[standard]
+uv init
+uv add "air[standard]"
 ```
 
 > [!TIP]
