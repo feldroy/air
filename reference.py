@@ -178,7 +178,7 @@ def reference_module(request: air.Request, module_name: str):
     objects = [
         x
         for x in _get_air_objects()
-        if x.__module__ == module_name and not isinstance(x, (ParamSpec, TypeVar))
+        if x.__module__ == module_name and not isinstance(x, (ParamSpec, TypeVar)) and not x.__name__.startswith('_')
     ]
     objects = [doc_obj(x) for x in sorted(objects, key=lambda x: x.__name__)]
     return layout(
