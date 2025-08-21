@@ -9,8 +9,8 @@
 # Docs:
 #   * https://just.systems/man/en/
 # =============================================================================
-
 # -- Load environment-variables from "$HERE/.env" file (if exists)
+
 set dotenv-load := true
 set dotenv-filename := ".env"
 set export := true
@@ -18,26 +18,56 @@ set export := true
 # -----------------------------------------------------------------------------
 # CONFIG:
 # -----------------------------------------------------------------------------
+
 HERE := justfile_directory()
 MARKER_DIR := HERE
-PYTHON_VERSION := read(".python-version")
+PYTHON_VERSION := trim(read(".python-version"))
+PYTHON_VERSIONS := `awk -F'[^0-9]+' '/^requires-python/{for(i=$3;i<$5;)printf(i>$3?", ":"")$2"."i++;print""}' pyproject.toml`
+VERSION := `awk -F\" '/^version/{print $2;exit}' pyproject.toml`
 
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
+# region ----> Just CLI helpers (meta) <----
 
 # List all the justfile recipes
-list:
-    @just --list
+[group('meta')]
+@list:
+    just --list
 
+# Show the development Python version and the package's supported versions
+[group('meta')]
+@python-versions:
+    echo "Development Python version: {{ PYTHON_VERSION }}"
+    echo "Supported Python versions: {{ PYTHON_VERSIONS }}"
+
+# List recipe groups
+[group('meta')]
+@groups:
+    just --groups
+
+# List variable names
+[group('meta')]
+@variables:
+    just --variables
+
+# just evaluate VARIABLE_NAME # show one
+[group('meta')]
+@evaluate *ARGS:
+    just --evaluate {{ ARGS }}
+
+# endregion Just CLI helpers (meta)
 # region ----> QA <----
 
 # Format code and auto-fix simple issues with Ruff
+[group('qa')]
 format:
     uv run -- ruff format .
     uv run -- ruff check --fix .
+    just --fmt --unstable
 
 # Run Ruff checks without fixing to report issues
+[group('qa')]
 lint:
     # Avoid writing any formatted files back; instead, exit with a non-zero
     # status code if any files would have been modified, and zero otherwise,
@@ -46,115 +76,142 @@ lint:
     uv run -- ruff check --no-fix .
 
 # Type check the project with Ty
+[group('qa')]
 type-check:
     uv run -- ty check .
 
-# Run all the formatting, linting, and type checking commands,
-# for local development.
+# Run all the formatting, linting, and type checking, for local development.
+[group('qa')]
 qa: format type-check
 
-# endregion QA
+# Visualize Ruff analyze graph as JSON (uses rich for display)
+[group('qa')]
+@ruff-graph: (title "Ruff - Graph")
+    ruff analyze graph -q | rich - --force-terminal --json
 
+# endregion QA
 # region ----> Test <----
+
 # Run all the tests for all the supported Python versions
-test-all:
-    uv run --python=3.10 --isolated -- pytest
-    uv run --python=3.11 --isolated -- pytest
-    uv run --python=3.12 --isolated -- pytest
+[group('test')]
+test-on-supported-py-versions: (test-on "3.10") (test-on "3.11") (test-on "3.12") (test-on "3.13")
+
+# Run all the tests
+[group('test')]
+test:
     uv run -- pytest
 
-# Run Test Coverage
-test-coverage:
-    uv run -- pytest --cov -q
+# Run all the tests on a specified Python version
+[group('test')]
+test-on PY_VERSION:
+    uv run --python={{ PY_VERSION }} --isolated -- pytest
+
+# Run all the tests, but on failure, drop into the debugger
+[group('test')]
+pdb MAXFAIL="10" *ARGS:
+    @echo "Running with arg: {{ ARGS }}"
+    uv run -- pytest --pdb --maxfail={{ MAXFAIL }} {{ ARGS }}
+
+# TDD mode: stop at the first test failure
+[group('test')]
+tdd: && (pdb "1")
 
 # Show the 10 slowest tests (timings)
+[group('test')]
 test-durations:
     uv run -- pytest --durations=10 -vvv --no-header
 
+# endregion Test
+# region ----> Coverage <----
+
+# Run Test Coverage
+[group('coverage')]
+test-coverage:
+    uv run -- pytest --cov -q
+
 # Build, store and open the HTML coverage report
+[group('coverage')]
 coverage-html:
     uv run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
     open ./htmlcov/index.html
 
 # Build and store the XML coverage report
+[group('coverage')]
 coverage-xml:
     uv run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
 
 # Build and store the MD coverage report - Automatically find diff lines that need test coverage.
+[group('coverage')]
 coverage-md: coverage-xml
     diff-cover coverage.xml --format markdown:report.md
     open report.md
 
-# Run all the tests, but allow for arguments to be passed
-test *ARGS:
-    @echo "Running with arg: {{ARGS}}"
-    uv run -- pytest {{ARGS}}
-
-# Run all the tests, but on failure, drop into the debugger
-pdb MAXFAIL="10" *ARGS:
-    @echo "Running with arg: {{ARGS}}"
-    uv run -- pytest --pdb --maxfail={{MAXFAIL}} {{ARGS}}
-
-# TDD mode: stop at the first test failure
-tdd: (pdb "1")
-    @echo "TDD mode (stop at first failure)."
-# endregion Test
-
+# endregion Coverage
 # region ----> Rich <----
+
 # Print a centered title with a magenta rule
+[group('rich')]
 @title TEXT="":
     rich "{{ TEXT }}" --rule --rule-style "red" --rule-char "=" --style "bold white on magenta"
 
 # Print text inside a double-line panel with optional title and caption
+[group('rich')]
 @panel TEXT="" TITLE="" CAPTION="":
     rich "{{ TEXT }}" --title "{{ TITLE }}" --caption "{{ CAPTION }}" \
      --print --panel double --center --panel-style "magenta"
 
-# Show Ruff analyze graph as JSON via rich (reads from stdin)
-@ruff-graph: (title "Ruff - Graph")
-    ruff analyze graph -q | rich - --force-terminal --json
-
-# View a Markdown file with rich using the Dracula theme
-@readmd FILE_NAME: (title FILE_NAME)
-    rich "{{ FILE_NAME }}" --markdown --theme dracula --emoji --hyperlinks --pager
-
-# Open README.md with rich
-@readme: (readmd "README.md")
-
-# Open CONTRIBUTING.md with rich
-@contributing: (readmd "CONTRIBUTING.md")
-
-# Open CHANGELOG.md with rich
-@changelog: (readmd "CHANGELOG.md")
-
 # View a Python file with syntax highlight, line numbers, and guides
+[group('rich')]
 @readpy FILE_PATH: (title FILE_PATH)
     rich "{{ FILE_PATH }}" --syntax --line-numbers --guides --theme dracula --pager
 
 # endregion Rich
+# region ----> Docs <----
+
+# View a Markdown file with rich using the Dracula theme
+[group('docs')]
+@readmd FILE_NAME: (title FILE_NAME)
+    rich "{{ FILE_NAME }}" --markdown --theme dracula --emoji --hyperlinks --pager
+
+# Open README.md with rich
+[group('docs')]
+@readme: (readmd "README.md")
+
+# Open CONTRIBUTING.md with rich
+[group('docs')]
+@contributing: (readmd "CONTRIBUTING.md")
+
+# Open CHANGELOG.md with rich
+[group('docs')]
+@changelog: (readmd "CHANGELOG.md")
+
+# Serve docs locally
+[group('docs')]
+doc:
+    uv run -- mkdocs serve -a localhost:3000
+
+# Build and deploy docs
+[group('docs')]
+doc-build:
+    uv run -- mkdocs gh-deploy --force
+
+# endregion Docs
 
 # Build the project, useful for checking that packaging is correct
+[group('build')]
 build:
     rm -rf build
     rm -rf dist
     uv build
 
-VERSION := `grep -m1 '^version' pyproject.toml | sed -E 's/version = "(.*)"/\1/'`
-
 # Print the current version of the project
+[group('release')]
 version:
-    @echo "Current version is {{VERSION}}"
+    @echo "Current version is {{ VERSION }}"
 
-# Tag the current version in git and put to github
+# Tag the current version in git and push to GitHub
+[group('release')]
 tag:
-    echo "Tagging version v{{VERSION}}"
-    git tag -a v{{VERSION}} -m "Creating version v{{VERSION}}"
-    git push origin v{{VERSION}}
-
-# Serve docs locally
-doc:
-    uv run -- mkdocs serve -a localhost:3000
-
-# Build and deploy docs
-doc-build:
-    uv run -- mkdocs gh-deploy --force
+    echo "Tagging version v{{ VERSION }}"
+    git tag -a v{{ VERSION }} -m "Creating version v{{ VERSION }}"
+    git push origin v{{ VERSION }}

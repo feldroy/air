@@ -21,6 +21,10 @@ env:
   FORCE_COLOR: 1
   RUFF_OUTPUT_FORMAT: github
   RUFF_NO_CACHE: true
+  JUST_COLOR: always
+  JUST_COMMAND_COLOR: purple
+  JUST_EXPLAIN: true
+  JUST_HIGHLIGHT: true
 
 # Cancel older runs for the same branch/PR (concurrency = run one at a time).
 # When you push several commits in a row, only the newest run continues; older ones are cancelled.
@@ -37,68 +41,53 @@ permissions:
 defaults:
   run:
     shell: bash
-    working-directory: ./scripts
 
 jobs:
-  # Define shared bootstrap once (never runs; used for anchors).
-  _shared:
-    if: ${{ false }}
-    name: skipped
-    runs-on: ubuntu-latest
-    steps:
-      - &checkout { uses: actions/checkout@v5 }
-      - &setup_uv
-        name: Install uv (with cache)
-        uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-          cache-dependency-glob: uv.lock
-      - &install_just
-        name: Install just
-        uses: taiki-e/install-action@just
-
   lint:
     name: Lint Checking • macOS (via just, uv, ruff)
     runs-on: macos-latest
     timeout-minutes: 15
     steps:
-      - *checkout
-      - *setup_uv
-      - *install_just
-      - name: Lint Checking • macOS (via just, uv, ruff)
+      - uses: actions/checkout@v5
+      - uses: taiki-e/install-action@just
+      - uses: astral-sh/setup-uv@v6
+      - name: Lint Checking
         run: just lint
   type-check:
     name: Type Checking • macOS (via just, uv, ty)
     runs-on: macos-latest
     timeout-minutes: 15
     steps:
-      - *checkout
-      - *setup_uv
-      - *install_just
-      - name: Type Checking • macOS (via just, uv, ty)
+      - uses: actions/checkout@v5
+      - uses: taiki-e/install-action@just
+      - uses: astral-sh/setup-uv@v6
+      - name: Type Checking
         run: just type-check
   test-all:
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
-    name: Tests on Python versions 3.10–>3.13 • "${{ matrix.os }}" (via just, uv, pytest, pytest-pretty)
+        python-version: [ "3.10","3.11","3.12","3.13" ]
+    name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }} (via just, uv, pytest, pytest-pretty)
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
-      - *checkout
-      - *setup_uv
-      - *install_just
-      - name: "Tests on Python versions 3.10–>3.13 • ${{ matrix.os }}"
-        run: just test-all
+      - uses: actions/checkout@v5
+      - uses: taiki-e/install-action@just
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run all the tests
+        run: just test
   test-coverage:
     name: Measuring Coverage • macOS (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
     runs-on: macos-latest
     timeout-minutes: 25
     steps:
-      - *checkout
-      - *setup_uv
-      - *install_just
+      - uses: actions/checkout@v5
+      - uses: taiki-e/install-action@just
+      - uses: astral-sh/setup-uv@v6
       - name: Measuring Coverage • macOS
         run: just test-coverage
   coverage-xml:
@@ -107,9 +96,9 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 25
     steps:
-      - *checkout
-      - *setup_uv
-      - *install_just
+      - uses: actions/checkout@v5
+      - uses: taiki-e/install-action@just
+      - uses: astral-sh/setup-uv@v6
       - name: Generating an XML Coverage Report
         run: just coverage-xml
       - name: Upload Coverage Report to Codecov

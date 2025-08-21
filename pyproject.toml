@@ -9,7 +9,7 @@ authors = [
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">= 3.10"
+requires-python = ">=3.10,<3.14"
 urls.Homepage = "https://github.com/feldroy/air"
 urls.Docs = "https://airdocs.fastapicloud.dev"
 urls.Issues = "https://github.com/feldroy/air/issues"
@@ -142,12 +142,12 @@ conflicts = [
     [{ extra = "standard" }, { group = "devtools" }],
 ]
 
-# ---- named dependency groups ----
-[tool.uv.dependency-groups]  # Define optional groups (dev/test/docs, etc.).
-# Dev tools may require modern Python, while the library itself can support older versions.
-# This avoids installing heavy modern tooling on older interpreters used only to *consume*
-# the library.
-dev = { requires-python = ">=3.13" }
+# uv group metadata (constraints, conflicts) — disabled for now
+# Dev tools may require modern Python, while the library itself can support older
+# versions. This avoids installing heavy tooling on older interpreters used only
+# to consume the library.
+#[tool.uv.dependency-groups]
+#dev = { requires-python = ">=3.13" }
 
 # Control where uv resolves packages from.
 [tool.uv.sources]
