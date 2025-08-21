@@ -1,5 +1,20 @@
 # Changelog
 
+# 0.24.2 - 2025-08-21
+
+## What's Changed
+* BUG: AirForm.validate method returns boolean instead of None by @pydanny in https://github.com/feldroy/air/pull/317
+* TOOL: New CI overview by @tallerasaf in https://github.com/feldroy/air/pull/304
+* DOC: Docstring improvements by @pydanny in https://github.com/feldroy/air/pull/322
+* DOC: Fix document grammar by @pydanny in https://github.com/feldroy/air/pull/328
+* ⬆(deps): bump ruff from 0.12.0 to 0.12.9 by @dependabot[bot] in https://github.com/feldroy/air/pull/321
+* ⬆(deps): Bump ty from 0.0.1a16 to 0.0.1a18 by @dependabot[bot] in https://github.com/feldroy/air/pull/306
+* ⬆(deps): Bump uvicorn from 0.34.3 to 0.35.0 by @dependabot[bot] in https://github.com/feldroy/air/pull/308
+* ⬆(deps): Bump types-markdown from 3.8.0.20250415 to 3.8.0.20250809 by @dependabot[bot] in https://github.com/feldroy/air/pull/309
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.24.1...v0.24.2
+
+
 # 0.24.1 - 2025-08-18
 
 ## What's Changed

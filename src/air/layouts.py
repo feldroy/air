@@ -49,6 +49,23 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
         Rather the `mvpcss` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
         For more advanced layouts like Eidos or a full-fledged MVP.css implementation,
         you'll have to create your own layouts.
+
+    Example:
+
+        import air
+
+        app = air.Air()
+
+        @app.page
+        async def index():
+            return air.layouts.mvpcss(
+                air.H1('Welcome to Air')
+            )
+
+    Args:
+
+        children: These typically inherit from air.Tag but can be anything
+        htmx: Whether or not HTMX is active for the layout
     """
     body_tags = filter_body_tags(children)
     head_tags = filter_head_tags(children)
