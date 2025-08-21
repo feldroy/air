@@ -1,4 +1,4 @@
-"""Special Air Tags that don't find in any other category.
+"""Default tags, mostly found within the official HTML specification.
 
 Script and Style tags can be found in the [air.tags.models.special](/reference/air.tags.models.special) page."""
 
