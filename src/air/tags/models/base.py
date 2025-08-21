@@ -40,7 +40,7 @@ class Tag:
         for k, v in self._attrs.items():
             if isinstance(v, bool) and v is True:
                 # Add single word attribute like "selected"
-                attrs.append(k)
+                attrs.append(clean_html_attr_key(k))
             elif isinstance(v, bool) and v is False:
                 # Skip single word attribute like "selected"
                 continue
