@@ -9,7 +9,7 @@ resolution-markers = [
 
 [[package]]
 name = "air"
-version = "0.24.1"
+version = "0.24.2"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -1927,15 +1927,15 @@ wheels = [
 
 [[package]]
 name = "pytest-memray"
-version = "1.7.0"
+version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "memray" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4b/33/31536fa35fae6b040f7bb31375c6b95d025eb38e16416c23c0daa36bcb1f/pytest_memray-1.7.0.tar.gz", hash = "sha256:c18fa907d2210b42f4096c093e2d3416dfc002dcaa450ef3f9ba819bc3dd8f5f", size = 240564, upload-time = "2024-07-25T13:18:09.081Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3d/28/f67963efed56d847d028d0bb939f26cdeb32c4de474b3befc9da43bf18f9/pytest_memray-1.8.0.tar.gz", hash = "sha256:c0c706ef81941a7aa7064f2b3b8b5cdc0cea72b5277c6a6a09b113ca9ab30bdb", size = 240608, upload-time = "2025-08-18T17:32:47.329Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/24/1b/fe19affdc41e522aabc4e5df78edb0cd8f59cb6ae2fb151dec1797593a42/pytest_memray-1.7.0-py3-none-any.whl", hash = "sha256:b896718c1adf6d0cd339dfaaaa5620f035c9919e1199a79b3453804a1254306f", size = 17679, upload-time = "2024-07-25T13:18:07.482Z" },
+    { url = "https://files.pythonhosted.org/packages/cc/52/b8b8e126c176c5f405b307354e1722025063ea104dbd7d286e8b18a76e9f/pytest_memray-1.8.0-py3-none-any.whl", hash = "sha256:44da9fe0d98541abf4cc76acea6e4a9c525b3c8e604655e5537705f336c9b875", size = 17688, upload-time = "2025-08-18T17:32:45.476Z" },
 ]
 
 [[package]]
