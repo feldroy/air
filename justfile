@@ -94,7 +94,28 @@ qa: format type-check
 
 # Run all the tests for all the supported Python versions
 [group('test')]
-test-on-supported-py-versions: (test-on "3.10") (test-on "3.11") (test-on "3.12") (test-on "3.13")
+test-on-supported-py-versions: (test-on "3.10") (test-on "3.11") \
+    (test-on "3.12") (test-on "3.13") (test-on "3.13t")
+
+@test-on-loop +PY_VERSIONS:
+    for PY_VERSION in {{ PY_VERSIONS }}; do echo $PY_VERSION; done
+
+@test-on-loop-1 : (test-on-2 "3.10, 3.11 3.12 3.13 3.13t")
+
+@test-on-loop-2 PY_VERSION:
+    echo {{PY_VERSION}}
+
+@test-on-loop-3: (run-each "test-on-2" "3.10 3.11 3.12 3.13 3.13t")
+
+# Run a 1-arg recipe for each arg (private)
+[group('meta')]
+[private]
+@run-each RECIPE *ARGS:
+    for ARG in {{ARGS}}; do just "{{RECIPE}}" "$ARG"; done
+
+#    for ARG in {{ARGS}}; do
+#        just "{{RECIPE}}" "$ARG"
+#    done
 
 # Run all the tests
 [group('test')]
@@ -105,6 +126,11 @@ test:
 [group('test')]
 test-on PY_VERSION:
     uv run --python={{ PY_VERSION }} --isolated -- pytest
+
+# Run all the tests on a specified Python version
+test-on-2 $UV_PYTHON:
+    @echo "Python: $UV_PYTHON"
+    uv run --isolated -- pytest
 
 # Run all the tests, but on failure, drop into the debugger
 [group('test')]
