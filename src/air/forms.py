@@ -45,7 +45,7 @@ class AirForm:
             "Dependency injection"
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))            
+            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
 
 
     NOTE: This is named AirForm to avoid collisions with tags.Form
@@ -232,7 +232,6 @@ def AirField(
         kw_only=kw_only,
         **extra,
     )
-
 
     # Can be used with FastAPI's dependency injection system.
 
