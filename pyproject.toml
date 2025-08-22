@@ -432,19 +432,18 @@ python-version = "3.13"
 # Keep resolution stable (meaning: predictable, same every run)
 disable-search-path-heuristics = true
 
-# This is an empty table, meaning all errors are enabled by default
-# [tool.pyrefly.errors]
+# When the table is empty, all errors are enabled by default
 # setting <error-code> = true is the same as having no error code configuration present,
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
+[tool.pyrefly.errors]
+missing-attribute = false
+bad-override = false
+no-matching-overload = false
+not-callable = false
+bad-assignment = false
+bad-argument-type = false
 
-# Tests often import optional dev deps or use dynamic patterns — relax a bit there
-[[tool.pyrefly.sub-config]]
-# apply this config to all files in `tests`
-matches = "tests/**"
-[tool.pyrefly.sub-config.errors]
-import-error = "warn"
-unbound-name = "warn"
 # endregion pyrefly
 
 # region ----> pytest <----

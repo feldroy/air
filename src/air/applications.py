@@ -2,13 +2,12 @@
 Instantiating Air applications.
 """
 
-from types import BuiltinFunctionType
 from typing import (
     Any,
     Callable,
     Coroutine,
     Dict,
-    List,
+    Final, List,
     Optional,
     Sequence,
     Type,
@@ -215,7 +214,7 @@ class Air(FastAPI):
         exception_handlers: Annotated[
             Optional[
                 Dict[
-                    Union[int, Type[Exception]],
+                    int | Type[Exception],
                     Callable[[Request, Any], Coroutine[Any, Any, Response]],
                 ]
             ],
@@ -343,13 +342,9 @@ class Air(FastAPI):
         This preserves all FastAPI initialization parameters while setting
         AirResponse as the default response class.
         """
-        DEFAULT_EXCEPTION_HANDLERS: dict[int, BuiltinFunctionType] = {
-            404: default_404_exception_handler,
-            500: default_500_exception_handler,
-        }
         if exception_handlers is None:
             exception_handlers = {}
-        exception_handlers = DEFAULT_EXCEPTION_HANDLERS | exception_handlers
+        exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
         super().__init__(  # ty: ignore [invalid-super-argument]
             debug=debug,
             routes=routes,
@@ -424,3 +419,9 @@ def default_500_exception_handler(request: Request, exc: Exception) -> AirRespon
         ),
         status_code=500,
     )
+
+
+DEFAULT_EXCEPTION_HANDLERS: Final[dict[int, Callable[[Request, Exception], AirResponse]]] = {
+    404: default_404_exception_handler,
+    500: default_500_exception_handler,
+}
