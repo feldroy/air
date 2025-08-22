@@ -74,7 +74,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
-      -
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@v6
