@@ -22,13 +22,17 @@ set export := true
 HERE := justfile_directory()
 MARKER_DIR := HERE
 PYTHON_VERSION := trim(read(".python-version"))
-# From pyproject.toml -> classifiers
-PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
-# From pyproject.toml -> requires-python
-PYTHON_VERSIONS_2 := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
+
 # From pyproject.toml -> version
+
 VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
 
+# From pyproject.toml -> requires-python
+
+PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
+
+# Alternative option: From pyproject.toml -> classifiers
+# PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -59,6 +63,12 @@ VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
 [group('meta')]
 @evaluate *ARGS:
     just --evaluate {{ ARGS }}
+
+[doc]
+[group('meta')]
+[private]
+@run-each RECIPE *ARGS:
+    for ARG in {{ ARGS }}; do just "{{ RECIPE }}" "$ARG"; done
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
@@ -107,58 +117,19 @@ qa: format type-check
 # endregion QA
 # region ----> Test <----
 
-# Run all the tests for all the supported Python versions
-[group('test')]
-test-on-supported-py-versions: (test-on "3.10") (test-on "3.11") \
-    (test-on "3.12") (test-on "3.13") (test-on "3.13t")
-
-@test-on-loop +PY_VERSIONS:
-    for PY_VERSION in {{ PY_VERSIONS }}; do echo $PY_VERSION; done
-
-@test-on-loop-1 : (test-on-2 "3.10, 3.11 3.12 3.13 3.13t")
-
-@test-on-loop-2 PY_VERSION:
-    echo {{PY_VERSION}}
-
-# Run all the tests for all the supported Python versions
-@test-on-all: && (run-each "test-on-2" "$PYTHON_VERSIONS")
-
-# Run a 1-arg recipe for each arg (private)
-[group('meta')]
-[private]
-@run-each RECIPE *ARGS:
-    for ARG in {{ARGS}}; do just "{{RECIPE}}" "$ARG"; done
-
-#    for ARG in {{ARGS}}; do
-#        just "{{RECIPE}}" "$ARG"
-#    done
-
 # Run all the tests
 [group('test')]
 test:
     uv run -- pytest
-
-test-1:
-    @echo "Python: {{ env_var_or_default("UV_PYTHON", PYTHON_VERSION) }}"
-    uv run --isolated -- pytest
 
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
     uv run --python={{ PY_VERSION }} --isolated -- pytest
 
-# Run all the tests on a specified Python version
-test-on-2  $UV_PYTHON $UV_ISOLATED="1":
-    @echo "Python: $UV_PYTHON"
-    uv run --isolated -- pytest
-
-# Run all the tests on a specified Python version
-test-on-4  $UV_PYTHON $UV_ISOLATED="1": test-1
-
-test-on-3 PY_VERSION:
-    UV_PYTHON := "$PY_VERSION"
-    @echo "Python: $PY_VERSION"
-    uv run --isolated -- pytest
+# Run all the tests for all the supported Python versions
+[group('test')]
+@test-on-supported-py-versions: && (run-each "test-on" "$PYTHON_VERSIONS")
 
 # Run all the tests, but on failure, drop into the debugger
 [group('test')]

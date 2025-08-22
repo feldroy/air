@@ -25,6 +25,7 @@ env:
   JUST_COMMAND_COLOR: purple
   JUST_EXPLAIN: true
   JUST_HIGHLIGHT: true
+  PYREFLY_COLOR: always
 
 # Cancel older runs for the same branch/PR (concurrency = run one at a time).
 # When you push several commits in a row, only the newest run continues; older ones are cancelled.
@@ -73,6 +74,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
+      -
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@v6

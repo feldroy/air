@@ -19,7 +19,7 @@
   automergeType: "pr",
   prCreation: "immediate",
   labels: [
-    "dependencies",
+    "deps",
     "renovate",
   ],
   // Limit Renovate to these managers only

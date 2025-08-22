@@ -417,13 +417,34 @@ unresolved-import = "warn"
 possibly-unresolved-reference = "warn"
 # endregion ty
 
+# region ----> pyrefly <----
 [tool.pyrefly]
-project-includes = ["**/*"]
+project-includes = ["src", "tests"] # keep discovery stable
 project-excludes = [
-    "**/node_modules",
     "**/__pycache__",
     "**/*venv/**/*",
 ]
+use-ignore-files = true
+#### configuring what to type check and where to import from
+search-path = ["src"]
+python-version = "3.13"
+# Keep resolution stable (meaning: predictable, same every run)
+disable-search-path-heuristics = true
+
+# This is an empty table, meaning all errors are enabled by default
+# [tool.pyrefly.errors]
+# setting <error-code> = true is the same as having no error code configuration present,
+# which means the error will be shown. Setting <error-code> = false,
+# will disable the error for type checking.
+
+# Tests often import optional dev deps or use dynamic patterns — relax a bit there
+[[tool.pyrefly.sub-config]]
+# apply this config to all files in `tests`
+matches = "tests/**"
+[tool.pyrefly.sub-config.errors]
+import-error = "warn"
+unbound-name = "warn"
+# endregion pyrefly
 
 # region ----> pytest <----
 [tool.pytest.ini_options]

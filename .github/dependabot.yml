@@ -9,7 +9,7 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 3
-    labels: [ "dependabot", "dependencies", "uv" ]
+    labels: [ "dependabot", "deps", "uv" ]
     commit-message:
       prefix: "⬆"
       include: "scope"
@@ -22,7 +22,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    labels: [ "dependabot", "dependencies", "actions" ]
+    labels: [ "dependabot", "deps", "actions" ]
     commit-message:
       prefix: "⬆"
       include: "scope"
