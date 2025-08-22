@@ -45,10 +45,14 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
     3. Header and Nav tags are placed in the top of the body above the Main tag
     4. HTMX is the default, change with the `htmx` keyword argument
 
-    Note: The `mvpcss` function is a quick prototyping tool. It isn't designed to be extensible.
+    The `mvpcss` function is a quick prototyping tool. It isn't designed to be extensible.
         Rather the `mvpcss` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
         For more advanced layouts like Eidos or a full-fledged MVP.css implementation,
         you'll have to create your own layouts.
+
+    Args:
+        children: These typically inherit from air.Tag but can be anything
+        htmx: Whether or not HTMX is active for the layout
 
     Example:
 
@@ -61,11 +65,6 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
             return air.layouts.mvpcss(
                 air.H1('Welcome to Air')
             )
-
-    Args:
-
-        children: These typically inherit from air.Tag but can be anything
-        htmx: Whether or not HTMX is active for the layout
     """
     body_tags = filter_body_tags(children)
     head_tags = filter_head_tags(children)

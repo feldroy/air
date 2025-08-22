@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.24.1"
+version = "0.25.0"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -38,6 +38,7 @@ classifiers = [
 
 dependencies = [
     "fastapi>=0.116.1",
+    "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
     "python-multipart>=0.0.20",
 ]
