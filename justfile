@@ -22,17 +22,13 @@ set export := true
 HERE := justfile_directory()
 MARKER_DIR := HERE
 PYTHON_VERSION := trim(read(".python-version"))
-
 # From pyproject.toml -> version
-
 VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
-
 # From pyproject.toml -> requires-python
-
 PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
-
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
+
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -59,7 +55,7 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 @variables:
     just --variables
 
-# just evaluate VARIABLE_NAME # show one
+# just evaluate VARIABLE_NAME
 [group('meta')]
 @evaluate *ARGS:
     just --evaluate {{ ARGS }}
@@ -67,8 +63,17 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 [doc]
 [group('meta')]
 [private]
-@run-each RECIPE *ARGS:
+@run-each RECIPE +ARGS:
     for ARG in {{ ARGS }}; do just "{{ RECIPE }}" "$ARG"; done
+
+[doc]
+[group('meta')]
+[no-exit-message]
+[private]
+trim-relative-path +CMD:
+    #!/usr/bin/env bash
+    set -euxo pipefail
+    {{ CMD }} |& sed "s|$HERE||g"
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
@@ -77,12 +82,10 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 [group('qa')]
 format:
     # Format Python files using Ruff's formatter (writes changes to disk).
-    uv run -- ruff format .
+    uv run -q -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
     # show an enumeration of all fixed lint violations.
-    uv run -- ruff check --fix --show-fixes .
-    # Format justfile (uses Just's formatter).
-    just --fmt --unstable
+    uv run -q -- ruff check --fix --show-fixes .
 
 # Run Ruff checks without fixing to report issues
 [group('qa')]
@@ -90,20 +93,26 @@ lint:
     # Avoid writing any formatted files back; instead, exit with a non-zero
     # status code if any files would have been modified, and zero otherwise,
     # and the difference between the current file and how the formatted file would look like.
-    uv run -- ruff format --diff .
+    uv run -q -- ruff format --diff .
     # Check for lint violations
-    uv run -- ruff check .
+    uv run -q -- ruff check .
 
 # Type check the project with Ty and pyrefly
 [group('qa')]
 type-check:
-    uv run -- ty check .
-    uv run -- pyrefly check .
+    uv run -q -- ty check .
+    just trim-relative-path uv run -q -- pyrefly check .
+
+# Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
+[group('qa')]
+type-check-concise TARGET=".":
+    uv run -q -- ty check --output-format=concise "{{TARGET}}"
+    just trim-relative-path uv run -q -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]
 type-annotate TARGET="src":
-    uv run -- pyrefly infer "{{ TARGET }}"
+    uv run -q -- pyrefly infer "{{ TARGET }}"
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
@@ -112,7 +121,7 @@ qa: format type-check
 # Visualize Ruff analyze graph as JSON (uses rich for display)
 [group('qa')]
 @ruff-graph: (title "Ruff - Graph")
-    ruff analyze graph -q | rich - --force-terminal --json
+    uv run -q -- ruff analyze graph -q | rich - --force-terminal --json
 
 # endregion QA
 # region ----> Test <----
@@ -120,22 +129,23 @@ qa: format type-check
 # Run all the tests
 [group('test')]
 test:
-    uv run -- pytest
+    uv run -q -- pytest
 
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
-    uv run --python={{ PY_VERSION }} --isolated -- pytest
+    uv run -q --python={{ PY_VERSION }} --isolated -- pytest
 
 # Run all the tests for all the supported Python versions
 [group('test')]
-@test-on-supported-py-versions: && (run-each "test-on" "$PYTHON_VERSIONS")
+@test-on-supported-py-versions:
+    just run-each test-on $PYTHON_VERSIONS
 
 # Run all the tests, but on failure, drop into the debugger
 [group('test')]
 pdb MAXFAIL="10" *ARGS:
     @echo "Running with arg: {{ ARGS }}"
-    uv run -- pytest --pdb --maxfail={{ MAXFAIL }} {{ ARGS }}
+    uv run -q -- pytest --pdb --maxfail={{ MAXFAIL }} {{ ARGS }}
 
 # TDD mode: stop at the first test failure
 [group('test')]
@@ -144,7 +154,7 @@ tdd: && (pdb "1")
 # Show the 10 slowest tests (timings)
 [group('test')]
 test-durations:
-    uv run -- pytest --durations=10 -vvv --no-header
+    uv run -q -- pytest --durations=10 -vvv --no-header
 
 # endregion Test
 # region ----> Coverage <----
@@ -152,34 +162,36 @@ test-durations:
 # Run Test Coverage
 [group('coverage')]
 test-coverage:
-    uv run -- pytest --cov -q
+    uv run -q -- pytest --cov -q
 
 # Build, store and open the HTML coverage report
 [group('coverage')]
 coverage-html:
-    uv run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
+    uv run -q -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
     open ./htmlcov/index.html
 
 # Build and store the XML coverage report
 [group('coverage')]
 coverage-xml:
-    uv run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
+    uv run -q -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
 
 # Build and store the MD coverage report - Automatically find diff lines that need test coverage.
 [group('coverage')]
 coverage-md: coverage-xml
-    diff-cover coverage.xml --format markdown:report.md
-    open report.md
+    diff-cover coverage.xml --format "markdown:report.md"
+    just readmd "report.md"
 
 # endregion Coverage
 # region ----> Rich <----
 
 # Print a centered title with a magenta rule
+[doc]
 [group('rich')]
 @title TEXT="":
     rich "{{ TEXT }}" --rule --rule-style "red" --rule-char "=" --style "bold white on magenta"
 
 # Print text inside a double-line panel with optional title and caption
+[doc]
 [group('rich')]
 @panel TEXT="" TITLE="" CAPTION="":
     rich "{{ TEXT }}" --title "{{ TITLE }}" --caption "{{ CAPTION }}" \
@@ -194,6 +206,7 @@ coverage-md: coverage-xml
 # region ----> Docs <----
 
 # View a Markdown file with rich using the Dracula theme
+[doc]
 [group('docs')]
 @readmd FILE_NAME: (title FILE_NAME)
     rich "{{ FILE_NAME }}" --markdown --theme dracula --emoji --hyperlinks --pager
@@ -213,12 +226,12 @@ coverage-md: coverage-xml
 # Serve docs locally
 [group('docs')]
 doc:
-    uv run -- mkdocs serve -a localhost:3000
+    uv run -q -- mkdocs serve -a localhost:3000
 
 # Build and deploy docs
 [group('docs')]
 doc-build:
-    uv run -- mkdocs gh-deploy --force
+    uv run -q -- mkdocs gh-deploy --force
 
 # endregion Docs
 
