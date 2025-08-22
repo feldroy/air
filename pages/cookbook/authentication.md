@@ -9,12 +9,10 @@ This first example shows how to create a password-less authentication flow using
 
 ```python
 import air
-import air
-from starlette.middleware.sessions import SessionMiddleware
 from time import time
 
 app = air.Air()
-app.add_middleware(SessionMiddleware, secret_key="change-me")
+app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 
 
 @app.page
