@@ -45,17 +45,17 @@ defaults:
 
 jobs:
   lint:
-    name: Lint Checking • macOS (via just, uv, ruff)
+    name: Check for formatting and linting violations (via just, uv, ruff)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@v6
-      - name: Lint Checking
+      - name: Check for formatting and linting violations
         run: just lint
   type-check:
-    name: Type Checking • macOS (via just, uv, ty)
+    name: Type Checking (via just, uv, ty, pyrefly)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -82,14 +82,14 @@ jobs:
       - name: Run all the tests
         run: just test
   test-coverage:
-    name: Measuring Coverage • macOS (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
+    name: Measuring Coverage (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@v6
-      - name: Measuring Coverage • macOS
+      - name: Measuring Coverage
         run: just test-coverage
   coverage-xml:
     if: github.actor != 'dependabot[bot]'
