@@ -1,5 +1,19 @@
 # Changelog
 
+# 0.25.0 - 2025-08-22
+
+## What's Changed
+* FEAT: Add SessionMiddleware class by @pydanny in https://github.com/feldroy/air/pull/334
+* BUG: `attribute_set_to_true=True` converts underscores to dashes by @WatanabeChika in https://github.com/feldroy/air/pull/327
+* DOC: Rearrange MVPCSS docs by @pydanny in https://github.com/feldroy/air/pull/330
+* ⬆(deps): bump mkdocstrings-python from 1.16.12 to 1.17.0 by @dependabot[bot] in https://github.com/feldroy/air/pull/320
+* ⬆(deps): bump pytest-memray from 1.7.0 to 1.8.0 by @dependabot[bot] in https://github.com/feldroy/air/pull/319
+
+## New Contributors
+* @WatanabeChika made their first contribution in https://github.com/feldroy/air/pull/327
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.24.2...v0.25.0
+
 # 0.24.2 - 2025-08-21
 
 ## What's Changed
