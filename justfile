@@ -89,7 +89,7 @@ format:
     # show an enumeration of all fixed lint violations.
     uv run -q -- ruff check --fix --show-fixes .
 
-# Run Ruff checks without fixing to report issues
+# Check for formatting, lint violations
 [group('qa')]
 lint:
     # Avoid writing any formatted files back; instead, exit with a non-zero

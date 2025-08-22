@@ -12,12 +12,15 @@
     ":semanticCommitScope(deps)",
     ":maintainLockFilesWeekly",
     ":prHourlyLimitNone",
+    "helpers:pinGitHubActionDigests",
   ],
   // Keep semantic commits explicit even though the preset already sets the scope
   semanticCommitScope: "deps",
   // Create PRs immediately; allow Renovate to merge PRs itself
   automergeType: "pr",
   prCreation: "immediate",
+  // Rebase PRs when they fall behind the base branch
+  "rebaseWhen": "behind-base-branch",
   labels: [
     "deps",
     "renovate",
