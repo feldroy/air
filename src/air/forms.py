@@ -45,7 +45,7 @@ class AirForm:
             "Dependency injection"
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))            
+            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
 
 
     NOTE: This is named AirForm to avoid collisions with tags.Form
@@ -147,6 +147,8 @@ def default_form_widget(model: type[BaseModel], data: dict | None = None, errors
         if error := error_dict.get(field_name, False):
             kwargs["aria-invalid"] = "true"
         json_schema_extra = field_info.json_schema_extra or {}
+        if json_schema_extra.get("autofocus"):
+            kwargs["autofocus"] = True
         fields.append(
             tags.Tags(
                 tags.Label(
@@ -168,6 +170,7 @@ def AirField(
     label: str | None = None,
     default_factory: Callable[[], Any] | None = None,
     alias: str | None = None,
+    autofocus: bool = False,
     title: str | None = None,
     description: str | None = None,
     gt: float | None = None,
@@ -196,6 +199,15 @@ def AirField(
     special input types and labels in air forms.
 
     NOTE: This is named AirField to adhere to the same naming convention as AirForm.
+
+    Example:
+
+        class CheeseModel(BaseModel):
+            name: str = air.AirField(label="Name", autofocus=True)
+            age: int
+
+        class CheeseForm(air.AirForm):
+            model = CheeseModel
     """
     if json_schema_extra is None:
         json_schema_extra = {}
@@ -203,6 +215,8 @@ def AirField(
         json_schema_extra[type] = True
     if label:
         json_schema_extra["label"] = label
+    if autofocus:
+        json_schema_extra["autofocus"] = True
 
     return Field(
         default,
@@ -232,7 +246,6 @@ def AirField(
         kw_only=kw_only,
         **extra,
     )
-
 
     # Can be used with FastAPI's dependency injection system.
 

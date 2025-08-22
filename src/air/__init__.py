@@ -6,6 +6,7 @@ from . import layouts as layouts, responses as responses
 from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .forms import AirField as AirField, AirForm as AirForm
+from .middleware import SessionMiddleware as SessionMiddleware
 from .requests import is_htmx_request as is_htmx_request, Request as Request
 from .responses import (
     AirResponse as AirResponse,

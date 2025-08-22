@@ -1,4 +1,4 @@
-"""Special Air Tags that don't find in any other category."""
+"""Special Air Tags that aren't find in any other category."""
 
 from typing import Any
 

@@ -266,3 +266,10 @@ def test_tag_label_for():
 def test_tag_label_as():
     html = _r(air.Link(as_="fred"))
     assert html == '<link as="fred" />'
+
+
+def test_tag_bool_tag():
+    html = _r(air.A("Air", data_fresh_air=True))
+    assert html == "<a data-fresh-air>Air</a>"
+    html = _r(air.P(air.A("Air", data_cloud=True, data_earth="true")))
+    assert html == '<p><a data-cloud data-earth="true">Air</a></p>'
