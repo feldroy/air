@@ -22,8 +22,12 @@ set export := true
 HERE := justfile_directory()
 MARKER_DIR := HERE
 PYTHON_VERSION := trim(read(".python-version"))
-PYTHON_VERSIONS := `awk -F'[^0-9]+' '/^requires-python/{for(i=$3;i<$5;)printf(i>$3?", ":"")$2"."i++;print""}' pyproject.toml`
-VERSION := `awk -F\" '/^version/{print $2;exit}' pyproject.toml`
+# From pyproject.toml -> classifiers
+PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
+# From pyproject.toml -> requires-python
+PYTHON_VERSIONS_2 := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
+# From pyproject.toml -> version
+VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
 
 # -----------------------------------------------------------------------------
 # RECIPES:
@@ -62,8 +66,12 @@ VERSION := `awk -F\" '/^version/{print $2;exit}' pyproject.toml`
 # Format code and auto-fix simple issues with Ruff
 [group('qa')]
 format:
+    # Format Python files using Ruff's formatter (writes changes to disk).
     uv run -- ruff format .
-    uv run -- ruff check --fix .
+    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
+    # show an enumeration of all fixed lint violations.
+    uv run -- ruff check --fix --show-fixes .
+    # Format justfile (uses Just's formatter).
     just --fmt --unstable
 
 # Run Ruff checks without fixing to report issues
@@ -73,12 +81,19 @@ lint:
     # status code if any files would have been modified, and zero otherwise,
     # and the difference between the current file and how the formatted file would look like.
     uv run -- ruff format --diff .
-    uv run -- ruff check --no-fix .
+    # Check for lint violations
+    uv run -- ruff check .
 
-# Type check the project with Ty
+# Type check the project with Ty and pyrefly
 [group('qa')]
 type-check:
     uv run -- ty check .
+    uv run -- pyrefly check .
+
+# Annotate types using pyrefly infer
+[group('qa')]
+type-annotate TARGET="src":
+    uv run -- pyrefly infer "{{ TARGET }}"
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
@@ -105,7 +120,8 @@ test-on-supported-py-versions: (test-on "3.10") (test-on "3.11") \
 @test-on-loop-2 PY_VERSION:
     echo {{PY_VERSION}}
 
-@test-on-loop-3: (run-each "test-on-2" "3.10 3.11 3.12 3.13 3.13t")
+# Run all the tests for all the supported Python versions
+@test-on-all: && (run-each "test-on-2" "$PYTHON_VERSIONS")
 
 # Run a 1-arg recipe for each arg (private)
 [group('meta')]
@@ -122,14 +138,26 @@ test-on-supported-py-versions: (test-on "3.10") (test-on "3.11") \
 test:
     uv run -- pytest
 
+test-1:
+    @echo "Python: {{ env_var_or_default("UV_PYTHON", PYTHON_VERSION) }}"
+    uv run --isolated -- pytest
+
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
     uv run --python={{ PY_VERSION }} --isolated -- pytest
 
 # Run all the tests on a specified Python version
-test-on-2 $UV_PYTHON:
+test-on-2  $UV_PYTHON $UV_ISOLATED="1":
     @echo "Python: $UV_PYTHON"
+    uv run --isolated -- pytest
+
+# Run all the tests on a specified Python version
+test-on-4  $UV_PYTHON $UV_ISOLATED="1": test-1
+
+test-on-3 PY_VERSION:
+    UV_PYTHON := "$PY_VERSION"
+    @echo "Python: $PY_VERSION"
     uv run --isolated -- pytest
 
 # Run all the tests, but on failure, drop into the debugger
