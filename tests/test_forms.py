@@ -251,3 +251,15 @@ def test_airform_validate():
             "url": "https://errors.pydantic.dev/2.11/v/missing",
         }
     ]
+
+
+def test_airform_autofocus():
+    class CheeseModel(BaseModel):
+        name: str = air.AirField(label="Name", autofocus=True)
+        age: int
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    html = CheeseForm().render()
+    assert "autofocus" in html
