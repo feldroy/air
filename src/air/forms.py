@@ -147,6 +147,8 @@ def default_form_widget(model: type[BaseModel], data: dict | None = None, errors
         if error := error_dict.get(field_name, False):
             kwargs["aria-invalid"] = "true"
         json_schema_extra = field_info.json_schema_extra or {}
+        if json_schema_extra.get("autofocus"):
+            kwargs["autofocus"] = True
         fields.append(
             tags.Tags(
                 tags.Label(
@@ -205,7 +207,7 @@ def AirField(
     if label:
         json_schema_extra["label"] = label
     if autofocus:
-        json_schema_extra["autofocus"] = "true"
+        json_schema_extra["autofocus"] = True
 
     return Field(
         default,
