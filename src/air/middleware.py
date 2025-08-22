@@ -9,7 +9,8 @@
 
 Background tasks run _after_ middleware.
 """
-from  starlette.middleware.sessions import SessionMiddleware as StarletteSessionMiddleware
+
+from starlette.middleware.sessions import SessionMiddleware as StarletteSessionMiddleware
 
 
 class SessionMiddleware(StarletteSessionMiddleware):
@@ -38,6 +39,5 @@ class SessionMiddleware(StarletteSessionMiddleware):
             request.session.pop("first-visited")
             return air.responses.RedirectResponse("/")
     """
+
     pass
-
-
