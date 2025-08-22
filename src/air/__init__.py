@@ -11,6 +11,12 @@ from .responses import (
     AirResponse as AirResponse,
     SSEResponse as SSEResponse,
     TagResponse as TagResponse,
+    FileResponse as FileResponse,  # noqa
+    HTMLResponse as HTMLResponse,  # noqa
+    JSONResponse as JSONResponse,  # noqa
+    PlainTextResponse as PlainTextResponse,  # noqa
+    RedirectResponse as RedirectResponse,  # noqa
+    StreamingResponse as StreamingResponse,  # noqa
 )
 from .tags import (
     A as A,
