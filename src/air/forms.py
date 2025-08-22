@@ -199,6 +199,15 @@ def AirField(
     special input types and labels in air forms.
 
     NOTE: This is named AirField to adhere to the same naming convention as AirForm.
+
+    Example:
+
+        class CheeseModel(BaseModel):
+            name: str = air.AirField(label="Name", autofocus=True)
+            age: int
+
+        class CheeseForm(air.AirForm):
+            model = CheeseModel
     """
     if json_schema_extra is None:
         json_schema_extra = {}
