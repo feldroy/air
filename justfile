@@ -60,19 +60,21 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 @evaluate *ARGS:
     just --evaluate {{ ARGS }}
 
+# Run a recipe for each argument value in ARGS (calls RECIPE once per ARG)
 [doc]
 [group('meta')]
 [private]
 @run-each RECIPE +ARGS:
     for ARG in {{ ARGS }}; do just "{{ RECIPE }}" "$ARG"; done
 
+# Run a command and turn absolute paths into relative paths everywhere in its output
 [doc]
 [group('meta')]
 [no-exit-message]
 [private]
-trim-relative-path +CMD:
+run-with-relative-paths +CMD:
     #!/usr/bin/env bash
-    set -euxo pipefail
+    set -euo pipefail
     {{ CMD }} |& sed "s|$HERE||g"
 
 # endregion Just CLI helpers (meta)
@@ -101,13 +103,13 @@ lint:
 [group('qa')]
 type-check:
     uv run -q -- ty check .
-    just trim-relative-path uv run -q -- pyrefly check .
+    just run-with-relative-paths uv run -q -- pyrefly check .
 
 # Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
 [group('qa')]
 type-check-concise TARGET=".":
     uv run -q -- ty check --output-format=concise "{{TARGET}}"
-    just trim-relative-path uv run -q -- pyrefly check --output-format=min-text "{{TARGET}}"
+    just run-with-relative-paths uv run -q -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]

@@ -41,12 +41,12 @@ permissions:
 # Only `run.shell` / `run.working-directory` are supported here.
 defaults:
   run:
-    shell: bash --noprofile --norc -euxo pipefail {0}
+    shell: bash --noprofile --norc -euo pipefail {0}
 
 jobs:
   lint:
     name: Lint Checking • macOS (via just, uv, ruff)
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
@@ -56,7 +56,7 @@ jobs:
         run: just lint
   type-check:
     name: Type Checking • macOS (via just, uv, ty)
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
@@ -83,7 +83,7 @@ jobs:
         run: just test
   test-coverage:
     name: Measuring Coverage • macOS (via just, uv, pytest, pytest-pretty, pytest-cov and coverage[toml])
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
@@ -94,7 +94,7 @@ jobs:
   coverage-xml:
     if: github.actor != 'dependabot[bot]'
     name: Coverage with Codecov
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v5
