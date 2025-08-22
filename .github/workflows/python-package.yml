@@ -41,7 +41,7 @@ permissions:
 # Only `run.shell` / `run.working-directory` are supported here.
 defaults:
   run:
-    shell: bash
+    shell: bash --noprofile --norc -euxo pipefail {0}
 
 jobs:
   lint:
