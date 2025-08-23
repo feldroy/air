@@ -1,5 +1,16 @@
 # Changelog
 
+# 0.25.1 - 2025-08-23
+
+## What's Changed
+* TOOL: PyRefly by @tallerasaf in https://github.com/feldroy/air/pull/318
+* BUG: Performance optimisations by @pydanny in https://github.com/feldroy/air/pull/342
+* BUG: Add missing autofocus option to AirField by @pydanny in https://github.com/feldroy/air/pull/324
+* ⬆(deps): bump ty from 0.0.1a18 to 0.0.1a19 by @dependabot[bot] in https://github.com/feldroy/air/pull/323
+* ⬆(deps): bump rust-just from 1.42.3 to 1.42.4 by @dependabot[bot] in https://github.com/feldroy/air/pull/331
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.25.0...v0.25.1
+
 # 0.25.0 - 2025-08-22
 
 ## What's Changed
