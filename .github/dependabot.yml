@@ -1,4 +1,5 @@
 # .github/dependabot.yml
+# https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 version: 2
 
 updates:
@@ -8,23 +9,27 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 3
-    labels: ["deps", "uv"]
+    labels: [ "dependabot", "deps", "uv" ]
     commit-message:
       prefix: "⬆"
       include: "scope"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
   # 2) GitHub Actions (patch/minor grouped; majors separate)
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
-    labels: ["deps", "actions"]
+    labels: [ "dependabot", "deps", "actions" ]
     commit-message:
       prefix: "⬆"
       include: "scope"
     groups:
       gha-minor-patch:
-        patterns: ["*"]
-        update-types: ["patch", "minor"]
+        patterns: [ "*" ]
+        update-types: [ "patch", "minor" ]
       gha-major:
-        patterns: ["*"]
-        update-types: ["major"]
+        patterns: [ "*" ]
+        update-types: [ "major" ]
