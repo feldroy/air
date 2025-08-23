@@ -32,7 +32,7 @@ class Tag:
     def name(self) -> str:
         return self._name.lower()
 
-    @property
+    @cached_property
     def attrs(self) -> str:
         if not self._attrs:
             return ""
