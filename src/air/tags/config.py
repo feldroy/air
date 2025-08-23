@@ -11,8 +11,6 @@ HTML_ATTRIBUTES: Final[dict[str, list[str]]] = {
         "typereferrerpolicy",
         "media",
         "ping",
-        "class_",
-        "id",
     ],
     "Area": [
         "alt",
@@ -160,7 +158,6 @@ HTML_ATTRIBUTES: Final[dict[str, list[str]]] = {
     ],
     "Link": [
         "href",
-        "as_",
         "blocking",
         "crossorigin",
         "disabled",
@@ -240,7 +237,6 @@ HTML_ATTRIBUTES: Final[dict[str, list[str]]] = {
         "value",
     ],
     "Output": [
-        "for_",
         "form",
         "name",
     ],
