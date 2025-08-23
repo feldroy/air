@@ -1,5 +1,13 @@
 # Changelog
 
+# 0.25.2 - 2025-08-23
+
+## What's Changed
+* Fix memory leak by @pydanny in https://github.com/feldroy/air/pull/343
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.25.1...v0.25.2
+
 # 0.25.1 - 2025-08-23
 
 ## What's Changed
