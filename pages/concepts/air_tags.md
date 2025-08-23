@@ -1,6 +1,6 @@
 # Air Tags
 
-**Air Tags**, sometimes shortend to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool. They are designed to be an easy to write and performant HTML content generation system using Python classes to render HTML.
+**Air Tags**, sometimes shortened to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool. They are designed to be an easy to write and performant HTML content generation system using Python classes to render HTML.
 
 > ## Note
 > This document covers how **Air Tags** work. The full reference for them is the [Tags reference](https://feldroy.github.io/air/api/tags/).
@@ -117,7 +117,7 @@ Renders as:
 </select>
 ```
 
-If you need an value set to `true`, use `"true"` in Python. For example:
+If you need a value set to `true`, use `"true"` in Python. For example:
 
 ```python
 air.P("Air makes FastAPI web pages easy", draggable="true")
@@ -171,7 +171,7 @@ Tasty('Ice Cream', class_='dessert').render()
 This will produce the following HTML:
 
 ```html
-<awesome class="desert">Ice Cream</awesome>
+<tasty class="desert">Ice Cream</tasty>
 ```
 
 ## Functions as Custom **Air Tags**
@@ -211,7 +211,7 @@ Which produces the following HTML:
 
 ## Returning Multiple Children (used in HTMX)
 
-When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are heirchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
+When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are hierarchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
 
 ```python
 import
