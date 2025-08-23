@@ -20,7 +20,7 @@ def svg_locals_cleanup(local_data):
     # Remove special variables
     data = {}
     for key, value in local_data.items():
-        if key in ["self", "children", "kwargs"] or key.startswith("_"):
+        if key in {"self", "children", "kwargs"} or key.startswith("_"):
             continue
         if value is not None:
             data[key] = value

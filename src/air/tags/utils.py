@@ -1,5 +1,7 @@
 """Utilities for the Air Tag system."""
 
+from collections import UserString
+
 from .config import HTML_ATTRIBUTES
 
 
@@ -15,12 +17,12 @@ def clean_html_attr_key(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = dict(class_="class", for_="for", id_="id", as_="as").get(key, key)
+    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as"}.get(key, key)
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
 
 
-class SafeStr(str):
+class SafeStr(UserString):
     """A string subclass that doesn't trigger html.escape() when called by Tag.render()
 
     Example:
@@ -28,8 +30,7 @@ class SafeStr(str):
     """
 
     def __new__(cls, value):
-        obj = super().__new__(cls, value)
-        return obj
+        return super().__new__(cls, value)
 
     def __repr__(self):
         return super().__repr__()

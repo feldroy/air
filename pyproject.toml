@@ -105,6 +105,8 @@ docs = [
 
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
+# Whether to enable experimental, preview features.
+preview = true
 # Treat this repo as an installable *package*, not just a “virtual” project.
 # Result: `uv sync` / `uv run` will install *this library itself* into the venv in
 # editable (meaning: linked to your working tree) mode, not only its dependencies.
@@ -230,6 +232,10 @@ module-name = "air"
 preview = true
 # Enumerate all fixed violations.
 show-fixes = true
+# Enable application of unsafe fixes.
+# If excluded, a hint will be displayed when unsafe fixes are available.
+# If set to false, the hint will be hidden.
+unsafe-fixes = false
 # Keep file discovery identical whether you pass "." or not
 respect-gitignore = true  # default, shown for clarity
 force-exclude = true      # apply excludes even for explicit paths like "."
@@ -253,18 +259,18 @@ exclude = [
 ]
 
 [tool.ruff.format]
-#indent-style = "space"   # match EditorConfig
-#line-ending = "lf"       # enforce LF newlines
+indent-style = "space"   # match EditorConfig
+line-ending = "lf"       # enforce LF newlines
 quote-style = "double"   # keep quotes in sync with flake8-quotes
 # Docstring code formatting
-docstring-code-format = true # format Python code blocks in docstrings
-docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
+docstring-code-format = false # format Python code blocks in docstrings
+#docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
 # Trailing-comma behavior (Black's “magic comma”)
-#skip-magic-trailing-comma = false # leave multi-line when trailing comma present
+skip-magic-trailing-comma = false # leave multi-line when trailing comma present
 # Formatter-only file excludes (extra to top-level exclude/extend-exclude)
 exclude = []
 # Opt into preview (experimental) formatting style
-preview = true
+preview = false
 
 [tool.ruff.lint]
 # Opt into preview (experimental) linting style
@@ -273,51 +279,52 @@ preview = true
 fixable = ["ALL"]
 unfixable = []
 select = [
+    # TODO -> Uncomment all commented prefix
     # prefix
-    #    "ERA",    # https://docs.astral.sh/ruff/rules/#eradicate-era
-    #    "FAST",   # https://docs.astral.sh/ruff/rules/#fastapi-fast
+    "ERA", # https://docs.astral.sh/ruff/rules/#eradicate-era
+    "FAST", # https://docs.astral.sh/ruff/rules/#fastapi-fast
     #    "ANN",    # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
-    #    "ASYNC",  # https://docs.astral.sh/ruff/rules/#flake8-async-async
+    "ASYNC", # https://docs.astral.sh/ruff/rules/#flake8-async-async
     #    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
-    #    "BLE",    # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
-    #    "FBT",    # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
-    #    "B",      # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
+    "BLE", # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
+    "FBT", # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
+    "B", # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
     #    "A",      # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
-    #    "C4",     # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
-    #    "EM",     # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
+    "C4", # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+    "EM", # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
     #    "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
-    #    "ISC",    # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
-    #    "INP",    # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
-    #    "PIE",    # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
-    #    "T20",    # https://docs.astral.sh/ruff/rules/#flake8-print-t20
-    #    "PT",     # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
-    #    "RSE",    # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
-    #    "RET",    # https://docs.astral.sh/ruff/rules/#flake8-return-ret
-    #    "SIM",    # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
-    #    "SLOT",   # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
+    "ISC", # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
+    "INP", # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+    "PIE", # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
+    "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    #    "PT", # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
+    "RSE", # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
+    "RET", # https://docs.astral.sh/ruff/rules/#flake8-return-ret
+    "SIM", # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
+    #    "SLOT", # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
     #    "ARG",    # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
-    #    "PTH",    # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
-    #    "FLY",    # https://docs.astral.sh/ruff/rules/#flynt-fly
+    "PTH", # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
+    "FLY", # https://docs.astral.sh/ruff/rules/#flynt-fly
     "I", # https://docs.astral.sh/ruff/rules/#isort-i
-    #    "C90",    # https://docs.astral.sh/ruff/rules/#mccabe-c90
-    #    "N",      # https://docs.astral.sh/ruff/rules/#pep8-naming-n
-    #    "PERF",   # https://docs.astral.sh/ruff/rules/#perflint-perf
-    #    "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
+    "C90", # https://docs.astral.sh/ruff/rules/#mccabe-c90
+    #    "N", # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "PERF", # https://docs.astral.sh/ruff/rules/#perflint-perf
+    "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
     #    "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
     #    "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
-    #    "F",      # https://docs.astral.sh/ruff/rules/#pyflakes-f
-    #    "PGH",    # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+    "F", # https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "PGH", # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
     #    "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
-    #    "UP",     # https://docs.astral.sh/ruff/rules/#pyupgrade-up
-    #    "FURB",   # https://docs.astral.sh/ruff/rules/#refurb-furb
-    #    "RUF",    # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
-    #    "TRY",    # https://docs.astral.sh/ruff/rules/#tryceratops-try
+    "UP", # https://docs.astral.sh/ruff/rules/#pyupgrade-up
+    "FURB", # https://docs.astral.sh/ruff/rules/#refurb-furb
+    "RUF", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
+    "TRY", # https://docs.astral.sh/ruff/rules/#tryceratops-try
     # Full rule code
-    #    "ICN003", # https://docs.astral.sh/ruff/rules/banned-import-from
-    #    "TC004",  # https://docs.astral.sh/ruff/rules/runtime-import-in-type-checking-block
-    #    "TC005",  # https://docs.astral.sh/ruff/rules/empty-type-checking-block
-    #    "TC008",  # https://docs.astral.sh/ruff/rules/quoted-type-alias
-    #    "TC010",  # https://docs.astral.sh/ruff/rules/runtime-string-union
+    "ICN003", # https://docs.astral.sh/ruff/rules/banned-import-from
+    "TC004", # https://docs.astral.sh/ruff/rules/runtime-import-in-type-checking-block
+    "TC005", # https://docs.astral.sh/ruff/rules/empty-type-checking-block
+    "TC008", # https://docs.astral.sh/ruff/rules/quoted-type-alias
+    "TC010", # https://docs.astral.sh/ruff/rules/runtime-string-union
 ]
 ignore = [
     "D100", # ignore missing docstring in module
@@ -327,6 +334,12 @@ ignore = [
     "D107", # ignore missing docstring in __init__ methods
     "D206", # docstring-tab-indentation (formatter handles indentation)
     "D300", # triple-single-quotes (formatter enforces double quotes)
+    "ERA001", # commented-out code
+    # TODO -> Remove the rules below this line
+    "E501", # Line too long
+    "PGH004", # Use specific rule codes when using `noqa` or `ruff: noqa`
+    "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
+    "W505", # Doc line too lon
 ]
 
 [tool.ruff.lint.flake8-import-conventions]
@@ -346,6 +359,11 @@ section-order = ["future", "standard-library", "third-party", "first-party", "lo
 order-by-type = true
 # Do NOT set these (formatter conflicts):
 # force-single-line, lines-after-imports, lines-between-types, split-on-trailing-comma
+
+[tool.ruff.lint.pycodestyle]
+ignore-overlong-task-comments = true
+max-doc-length = 120
+max-line-length = 120
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

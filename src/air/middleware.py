@@ -39,5 +39,3 @@ class SessionMiddleware(StarletteSessionMiddleware):
             request.session.pop("first-visited")
             return air.responses.RedirectResponse("/")
     """
-
-    pass

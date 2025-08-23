@@ -82,22 +82,42 @@ run-with-relative-paths +CMD:
 
 # Format code and auto-fix simple issues with Ruff
 [group('qa')]
-format:
+format OUTPUT_FORMAT="full":
     # Format Python files using Ruff's formatter (writes changes to disk).
     uv run -q -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
     # show an enumeration of all fixed lint violations.
-    uv run -q -- ruff check --fix --show-fixes .
+    uv run -q -- ruff check --fix --output-format={{OUTPUT_FORMAT}} .
+
+# Format code and auto-fix simple issues with Ruff - Print diagnostics concisely, one per line
+[doc]
+[group('qa')]
+@format-concise: (format "concise")
+
+# Format code and auto-fix simple issues with Ruff - group messages by file
+[doc]
+[group('qa')]
+@format-grouped: (format "grouped")
 
 # Check for formatting, lint violations
 [group('qa')]
-lint:
+lint OUTPUT_FORMAT="full":
     # Avoid writing any formatted files back; instead, exit with a non-zero
     # status code if any files would have been modified, and zero otherwise,
     # and the difference between the current file and how the formatted file would look like.
     uv run -q -- ruff format --diff .
     # Check for lint violations
-    uv run -q -- ruff check .
+    uv run -q -- ruff check --output-format={{OUTPUT_FORMAT}} .
+
+# Check for formatting, lint violations - Print diagnostics concisely, one per line
+[doc]
+[group('qa')]
+@lint-concise: (lint "concise")
+
+# Check for formatting, lint violations - group messages by file
+[doc]
+[group('qa')]
+@lint-grouped: (lint "grouped")
 
 # Type check the project with Ty and pyrefly
 [group('qa')]

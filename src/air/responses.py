@@ -5,12 +5,12 @@ from typing import Any
 
 from fastapi import Response
 from starlette.responses import (
-    FileResponse as FileResponse,  # noqa
-    HTMLResponse as HTMLResponse,  # noqa
-    JSONResponse as JSONResponse,  # noqa
-    PlainTextResponse as PlainTextResponse,  # noqa
-    RedirectResponse as RedirectResponse,  # noqa
-    StreamingResponse as StreamingResponse,  # noqa
+    FileResponse as FileResponse,
+    HTMLResponse as HTMLResponse,
+    JSONResponse as JSONResponse,
+    PlainTextResponse as PlainTextResponse,
+    RedirectResponse as RedirectResponse,
+    StreamingResponse as StreamingResponse,
 )
 from starlette.types import Send
 
@@ -83,7 +83,7 @@ class SSEResponse(StreamingResponse):
         async def lottery_generator():
             while True:
                 lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
-                # Tags work seamlessly
+                Tags work seamlessly
                 yield air.Aside(lottery_numbers)
                 # As do strings. Non-strings are cast to strings via the str built-in
                 yield "Hello, world"
@@ -107,10 +107,10 @@ class SSEResponse(StreamingResponse):
             if not isinstance(chunk, (bytes, memoryview)):
                 if isinstance(chunk, Tag) or hasattr(chunk, "render"):
                     # If a tag or has a "render" method, call that and create lines
-                    lines = [t for t in chunk.render().splitlines()]
+                    lines = list(chunk.render().splitlines())
                 else:
                     # Anything else, cast to str and run splitlines
-                    lines = [t for t in str(chunk).splitlines()]
+                    lines = list(str(chunk).splitlines())
                 formatted = [f"data: {t}" for t in lines]
                 data = "\n".join(formatted)
                 chunk = f"event: message\n{data}\n\n"

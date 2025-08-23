@@ -43,12 +43,14 @@ class Raw(Tag):
             **kwargs: Ignored (for consistency with Tag interface)
         """
         if len(args) > 1:
-            raise ValueError("Raw accepts only one string argument")
+            msg = "Raw accepts only one string argument"
+            raise ValueError(msg)
 
         raw_string: str = args[0] if args else ""
 
         if not isinstance(raw_string, str):
-            raise TypeError("Raw only accepts string content")
+            msg = "Raw only accepts string content"
+            raise TypeError(msg)
 
         super().__init__(raw_string)
 
@@ -76,16 +78,12 @@ class Script(NoEscapeTag):
     Warning: Script tag does not protect against code injection.
     """
 
-    pass
-
 
 class Style(NoEscapeTag):
     """Defines style information for a document
 
     Warning: Style tag does not protect against code injection.
     """
-
-    pass
 
 
 class Children(Tag):
