@@ -1,7 +1,7 @@
 """Tests for the tags utilities.
 
 These tests focus on `locals_cleanup` which filters a mapping of local
-arguments down to only those allowed for a given tag object. 
+arguments down to only those allowed for a given tag object.
 """
 
 import air
@@ -57,6 +57,7 @@ def test_locals_cleanup_defaults_for_unknown_class():
     """For unknown/unsupported object classes, only default attribute
     keys (like ``class_``, ``for_``, ``style``, etc.) are retained.
     """
+
     class Custom:
         pass
 
