@@ -339,7 +339,8 @@ ignore = [
     "E501", # Line too long
     "PGH004", # Use specific rule codes when using `noqa` or `ruff: noqa`
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
-    "W505", # Doc line too lon
+    "W505", # Doc line too long
+    "W293", # Blank line contains whitespace
 ]
 
 [tool.ruff.lint.flake8-import-conventions]
