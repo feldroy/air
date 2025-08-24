@@ -263,8 +263,8 @@ indent-style = "space"   # match EditorConfig
 line-ending = "lf"       # enforce LF newlines
 quote-style = "double"   # keep quotes in sync with flake8-quotes
 # Docstring code formatting
-docstring-code-format = false # format Python code blocks in docstrings
-#docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
+docstring-code-format = true # format Python code blocks in docstrings
+docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
 # Trailing-comma behavior (Black's “magic comma”)
 skip-magic-trailing-comma = false # leave multi-line when trailing comma present
 # Formatter-only file excludes (extra to top-level exclude/extend-exclude)
@@ -340,7 +340,6 @@ ignore = [
     "PGH004", # Use specific rule codes when using `noqa` or `ruff: noqa`
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "W505", # Doc line too long
-    "W293", # Blank line contains whitespace
 ]
 
 [tool.ruff.lint.flake8-import-conventions]
