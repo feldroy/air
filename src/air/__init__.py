@@ -4,6 +4,7 @@ from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
 
 from . import layouts as layouts, responses as responses
 from .applications import Air as Air
+from .auth import AnonymousUser as AnonymousUser, BasicAuthBackend as BasicAuthBackend, User as User
 from .background import BackgroundTasks as BackgroundTasks
 from .forms import AirField as AirField, AirForm as AirForm
 from .middleware import SessionMiddleware as SessionMiddleware
