@@ -82,22 +82,24 @@ run-with-relative-paths +CMD:
 
 # Format code and auto-fix simple issues with Ruff
 [group('qa')]
-format OUTPUT_FORMAT="full":
+format OUTPUT_FORMAT="full" UNSAFE="":
     # Format Python files using Ruff's formatter (writes changes to disk).
     uv run -q -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
     # show an enumeration of all fixed lint violations.
-    uv run -q -- ruff check --fix --output-format={{OUTPUT_FORMAT}} .
+    uv run -q -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
 
-# Format code and auto-fix simple issues with Ruff - Print diagnostics concisely, one per line
-[doc]
+# [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
-@format-concise: (format "concise")
+format-unsafe: && (format "concise" "--unsafe-fixes")
 
-# Format code and auto-fix simple issues with Ruff - group messages by file
-[doc]
+# [print diagnostics concisely, one per line]
 [group('qa')]
-@format-grouped: (format "grouped")
+@format-concise: && (format "concise")
+
+# [group messages by file]
+[group('qa')]
+@format-grouped: && (format "grouped")
 
 # Check for formatting, lint violations
 [group('qa')]
@@ -109,15 +111,13 @@ lint OUTPUT_FORMAT="full":
     # Check for lint violations
     uv run -q -- ruff check --output-format={{OUTPUT_FORMAT}} .
 
-# Check for formatting, lint violations - Print diagnostics concisely, one per line
-[doc]
+# [print diagnostics concisely, one per line]
 [group('qa')]
-@lint-concise: (lint "concise")
+@lint-concise: && (lint "concise")
 
-# Check for formatting, lint violations - group messages by file
-[doc]
+# [group messages by file]
 [group('qa')]
-@lint-grouped: (lint "grouped")
+@lint-grouped: && (lint "grouped")
 
 # Type check the project with Ty and pyrefly
 [group('qa')]

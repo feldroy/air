@@ -236,7 +236,7 @@ show-fixes = true
 # Enable application of unsafe fixes.
 # If excluded, a hint will be displayed when unsafe fixes are available.
 # If set to false, the hint will be hidden.
-unsafe-fixes = true
+unsafe-fixes = false
 # Keep file discovery identical whether you pass "." or not
 respect-gitignore = true  # default, shown for clarity
 force-exclude = true      # apply excludes even for explicit paths like "."
