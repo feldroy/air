@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10, <3.14"
 resolution-markers = [
     "python_full_version >= '3.11'",
@@ -179,10 +179,10 @@ name = "anyio"
 version = "4.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "idna" },
     { name = "sniffio" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f1/b4/636b3b65173d3ce9a38ef5f0522789614e590dab6a8d505340a4efe4c567/anyio-4.10.0.tar.gz", hash = "sha256:3f3fae35c96039744587aa5b8371e7e8e603c0702999535961dd336026973ba6", size = 213252, upload-time = "2025-08-04T08:54:26.451Z" }
 wheels = [
@@ -438,7 +438,7 @@ name = "click"
 version = "8.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/60/6c/8ca2efa64cf75a977a0d7fac081354553ebe483345c734fb6b6515d96bbc/click-8.2.1.tar.gz", hash = "sha256:27c491cc05d968d271d5a1db13e3b5a184636d9d930f148c50b038f0d0646202", size = 286342, upload-time = "2025-05-20T23:19:49.832Z" }
 wheels = [
@@ -537,7 +537,7 @@ wheels = [
 
 [package.optional-dependencies]
 toml = [
-    { name = "tomli", marker = "python_full_version <= '3.11'" },
+    { name = "tomli", marker = "python_full_version <= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 
 [[package]]
@@ -647,7 +647,7 @@ name = "exceptiongroup"
 version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0b/9f/a65090624ecf468cdca03533906e7c69ed7588582240cfe7cc9e770b50eb/exceptiongroup-1.3.0.tar.gz", hash = "sha256:b241f5885f560bc56a59ee63ca4c6a8bfa46ae4ad651af316d4e81817bb9fd88", size = 29749, upload-time = "2025-05-10T17:42:51.123Z" }
 wheels = [
@@ -668,8 +668,8 @@ name = "fancycompleter"
 version = "0.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pyreadline3", marker = "python_full_version < '3.13' and sys_platform == 'win32'" },
-    { name = "pyrepl", marker = "python_full_version < '3.13'" },
+    { name = "pyreadline3", marker = "(python_full_version < '3.13' and sys_platform == 'win32') or (python_full_version >= '3.13' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (python_full_version >= '3.13' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "pyrepl", marker = "python_full_version < '3.13' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4e/4c/d11187dee93eff89d082afda79b63c79320ae1347e49485a38f05ad359d0/fancycompleter-0.11.1.tar.gz", hash = "sha256:5b4ad65d76b32b1259251516d0f1cb2d82832b1ff8506697a707284780757f69", size = 341776, upload-time = "2025-05-26T12:59:11.045Z" }
 wheels = [
@@ -867,7 +867,7 @@ name = "ipykernel"
 version = "6.30.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "sys_platform == 'darwin'" },
+    { name = "appnope", marker = "sys_platform == 'darwin' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "comm" },
     { name = "debugpy" },
     { name = "ipython", version = "8.37.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
@@ -895,17 +895,17 @@ resolution-markers = [
     "python_full_version < '3.11'",
 ]
 dependencies = [
-    { name = "colorama", marker = "python_full_version < '3.11' and sys_platform == 'win32'" },
-    { name = "decorator", marker = "python_full_version < '3.11'" },
-    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
-    { name = "jedi", marker = "python_full_version < '3.11'" },
-    { name = "matplotlib-inline", marker = "python_full_version < '3.11'" },
-    { name = "pexpect", marker = "python_full_version < '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32'" },
-    { name = "prompt-toolkit", marker = "python_full_version < '3.11'" },
-    { name = "pygments", marker = "python_full_version < '3.11'" },
-    { name = "stack-data", marker = "python_full_version < '3.11'" },
-    { name = "traitlets", marker = "python_full_version < '3.11'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "colorama", marker = "(python_full_version < '3.11' and sys_platform == 'win32') or (python_full_version >= '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (python_full_version >= '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "decorator", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "jedi", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "matplotlib-inline", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "pexpect", marker = "(python_full_version < '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (python_full_version >= '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform == 'emscripten' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform == 'emscripten' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform == 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform == 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "prompt-toolkit", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "pygments", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "stack-data", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "traitlets", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/85/31/10ac88f3357fc276dc8a64e8880c82e80e7459326ae1d0a211b40abf6665/ipython-8.37.0.tar.gz", hash = "sha256:ca815841e1a41a1e6b73a0b08f3038af9b2252564d01fc405356d34033012216", size = 5606088, upload-time = "2025-05-31T16:39:09.613Z" }
 wheels = [
@@ -920,17 +920,17 @@ resolution-markers = [
     "python_full_version >= '3.11'",
 ]
 dependencies = [
-    { name = "colorama", marker = "python_full_version >= '3.11' and sys_platform == 'win32'" },
-    { name = "decorator", marker = "python_full_version >= '3.11'" },
-    { name = "ipython-pygments-lexers", marker = "python_full_version >= '3.11'" },
-    { name = "jedi", marker = "python_full_version >= '3.11'" },
-    { name = "matplotlib-inline", marker = "python_full_version >= '3.11'" },
-    { name = "pexpect", marker = "python_full_version >= '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32'" },
-    { name = "prompt-toolkit", marker = "python_full_version >= '3.11'" },
-    { name = "pygments", marker = "python_full_version >= '3.11'" },
-    { name = "stack-data", marker = "python_full_version >= '3.11'" },
-    { name = "traitlets", marker = "python_full_version >= '3.11'" },
-    { name = "typing-extensions", marker = "python_full_version == '3.11.*'" },
+    { name = "colorama", marker = "(python_full_version >= '3.11' and sys_platform == 'win32') or (python_full_version < '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (python_full_version < '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "decorator", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "ipython-pygments-lexers", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "jedi", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "matplotlib-inline", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "pexpect", marker = "(python_full_version >= '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version < '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (python_full_version < '3.11' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform == 'emscripten' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform == 'emscripten' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform == 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform == 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "prompt-toolkit", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "stack-data", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "traitlets", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "typing-extensions", marker = "python_full_version == '3.11.*' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/54/80/406f9e3bde1c1fd9bf5a0be9d090f8ae623e401b7670d8f6fdf2ab679891/ipython-9.4.0.tar.gz", hash = "sha256:c033c6d4e7914c3d9768aabe76bbe87ba1dc66a92a05db6bfa1125d81f2ee270", size = 4385338, upload-time = "2025-07-01T11:11:30.606Z" }
 wheels = [
@@ -942,7 +942,7 @@ name = "ipython-pygments-lexers"
 version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pygments", marker = "python_full_version >= '3.11'" },
+    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ef/4c/5dd1d8af08107f88c7f741ead7a40854b8ac24ddf9ae850afbcf698aa552/ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81", size = 8393, upload-time = "2025-01-17T11:24:34.505Z" }
 wheels = [
@@ -1031,7 +1031,7 @@ version = "5.8.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "platformdirs" },
-    { name = "pywin32", marker = "platform_python_implementation != 'PyPy' and sys_platform == 'win32'" },
+    { name = "pywin32", marker = "(platform_python_implementation != 'PyPy' and sys_platform == 'win32') or (platform_python_implementation == 'PyPy' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (platform_python_implementation == 'PyPy' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (sys_platform != 'win32' and extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "traitlets" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/99/1b/72906d554acfeb588332eaaa6f61577705e9ec752ddb486f302dafa292d9/jupyter_core-5.8.1.tar.gz", hash = "sha256:0a5f9706f70e64786b75acba995988915ebd4601c8a52e534a40b51c95f59941", size = 88923, upload-time = "2025-05-27T07:38:16.655Z" }
@@ -1058,7 +1058,7 @@ dependencies = [
     { name = "nbformat" },
     { name = "packaging" },
     { name = "pyyaml" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/30/ce/0bd5290ca4978777154e2683413dca761781aacf57f7dc0146f5210df8b1/jupytext-1.17.2.tar.gz", hash = "sha256:772d92898ac1f2ded69106f897b34af48ce4a85c985fa043a378ff5a65455f02", size = 3748577, upload-time = "2025-06-01T21:31:48.231Z" }
 wheels = [
@@ -1175,7 +1175,7 @@ version = "0.7.22"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fc/eb/b5cbf2484411af039a3d4aeb53a5160fae25dd8c84af6a4243bc2f3fedb3/mdformat-0.7.22.tar.gz", hash = "sha256:eef84fa8f233d3162734683c2a8a6222227a229b9206872e6139658d99acb1ea", size = 34610, upload-time = "2025-01-30T18:00:51.418Z" }
 wheels = [
@@ -1230,7 +1230,7 @@ name = "mistune"
 version = "3.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/c4/79/bda47f7dd7c3c55770478d6d02c9960c430b0cf1773b72366ff89126ea31/mistune-3.1.3.tar.gz", hash = "sha256:a7035c21782b2becb6be62f8f25d3df81ccb4d6fa477a6525b15af06539f02a0", size = 94347, upload-time = "2025-03-19T14:27:24.955Z" }
 wheels = [
@@ -1243,7 +1243,7 @@ version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "ghp-import" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -1410,7 +1410,7 @@ dependencies = [
     { name = "griffe" },
     { name = "mkdocs-autorefs" },
     { name = "mkdocstrings" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/39/7c/6dfd8ad59c0eebae167168528ed6cad00116f58ef2327686149f7b25d175/mkdocstrings_python-1.17.0.tar.gz", hash = "sha256:c6295962b60542a9c7468a3b515ce8524616ca9f8c1a38c790db4286340ba501", size = 200408, upload-time = "2025-08-14T21:18:14.568Z" }
 wheels = [
@@ -1859,13 +1859,13 @@ name = "pytest"
 version = "8.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
-    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
     { name = "pygments" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/08/ba/45911d754e8eba3d5a841a5ce61a65a685ff1798421ac054f85aa8747dfb/pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c", size = 1517714, upload-time = "2025-06-18T05:48:06.109Z" }
 wheels = [
@@ -1877,7 +1877,7 @@ name = "pytest-asyncio"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "backports-asyncio-runner", marker = "python_full_version < '3.11'" },
+    { name = "backports-asyncio-runner", marker = "python_full_version < '3.11' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "pytest" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/4e/51/f8794af39eeb870e87a8c8068642fc07bce0c854d6865d7dd0f2a9d338c2/pytest_asyncio-1.1.0.tar.gz", hash = "sha256:796aa822981e01b68c12e4827b8697108f7205020f24b5793b3c41555dab68ea", size = 46652, upload-time = "2025-07-16T04:29:26.393Z" }
@@ -2048,7 +2048,7 @@ name = "pyzmq"
 version = "27.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "implementation_name == 'pypy'" },
+    { name = "cffi", marker = "implementation_name == 'pypy' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f8/66/159f38d184f08b5f971b467f87b1ab142ab1320d5200825c824b32b84b66/pyzmq-27.0.2.tar.gz", hash = "sha256:b398dd713b18de89730447347e96a0240225e154db56e35b6bb8447ffdb07798", size = 281440, upload-time = "2025-08-21T04:23:26.334Z" }
 wheels = [
@@ -2113,7 +2113,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
     { name = "rpds-py" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/2f/db/98b5c277be99dd18bfd91dd04e1b759cad18d1a338188c936e92f921c7e2/referencing-0.36.2.tar.gz", hash = "sha256:df2e89862cd09deabbdba16944cc3f10feb6b3e6f18e902f7cc25609a34775aa", size = 74744, upload-time = "2025-01-25T08:48:16.138Z" }
 wheels = [
@@ -2527,7 +2527,7 @@ version = "0.47.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-dev') or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/57/d062573f391d062710d4088fa1369428c38d51460ab6fedff920efef932e/starlette-0.47.2.tar.gz", hash = "sha256:6ae9aa5db235e4846decc1e7b79c4f346adf41e9777aebeb49dfd09bbd7023d8", size = 2583948, upload-time = "2025-07-20T17:31:58.522Z" }
 wheels = [

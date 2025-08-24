@@ -1,8 +1,7 @@
 """Benchmark comparing Air Tags vs Jinja2 template rendering performance.
 
-This benchmark measures the core value proposition of Air - comparing the
-performance of Air's tag-based HTML generation against traditional Jinja2
-template rendering for equivalent HTML output.
+This benchmark measures the performance of Air's tag-based HTML generation
+against traditional Jinja2 template rendering for equivalent HTML output.
 """
 
 import tempfile
@@ -73,8 +72,7 @@ def create_complex_page_with_jinja(jinja_renderer, mock_request):
 def test_air_tags_vs_jinja_rendering_benchmark(benchmark):
     """Benchmark Air Tags vs Jinja2 template rendering for equivalent HTML.
 
-    This tests Air's core value proposition by comparing the performance
-    of its tag-based approach against traditional template rendering.
+    This tests the performance of Air's tag-based approach against traditional template rendering.
     """
 
     # Create a temporary template for Jinja2
