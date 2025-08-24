@@ -235,7 +235,7 @@ show-fixes = true
 # Enable application of unsafe fixes.
 # If excluded, a hint will be displayed when unsafe fixes are available.
 # If set to false, the hint will be hidden.
-unsafe-fixes = false
+unsafe-fixes = true
 # Keep file discovery identical whether you pass "." or not
 respect-gitignore = true  # default, shown for clarity
 force-exclude = true      # apply excludes even for explicit paths like "."
@@ -270,7 +270,7 @@ skip-magic-trailing-comma = false # leave multi-line when trailing comma present
 # Formatter-only file excludes (extra to top-level exclude/extend-exclude)
 exclude = []
 # Opt into preview (experimental) formatting style
-preview = false
+preview = true
 
 [tool.ruff.lint]
 # Opt into preview (experimental) linting style

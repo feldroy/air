@@ -49,283 +49,283 @@ class Air(FastAPI):
     """
 
     def __init__(
-            self: AppType,
-            *,
-            debug: Annotated[
-                bool,
-                Doc(
-                    """
-                    Boolean indicating if debug tracebacks should be returned on server
-                    errors.
+        self: AppType,
+        *,
+        debug: Annotated[
+            bool,
+            Doc(
+                """
+                Boolean indicating if debug tracebacks should be returned on server
+                errors.
 
-                    Read more in the
-                    [Starlette docs for Applications](https://www.starlette.io/applications/#instantiating-the-application).
-                    """
-                ),
-            ] = False,
-            routes: Annotated[
-                list[BaseRoute] | None,
-                Doc(
-                    """
-                    **Note**: you probably shouldn't use this parameter, it is inherited
-                    from Starlette and supported for compatibility.
-    
-                    ---
-    
-                    A list of routes to serve incoming HTTP and WebSocket requests.
-                    """
-                ),
-                deprecated(
-                    """
-                    You normally wouldn't use this parameter with FastAPI, it is inherited
-                    from Starlette and supported for compatibility.
+                Read more in the
+                [Starlette docs for Applications](https://www.starlette.io/applications/#instantiating-the-application).
+                """
+            ),
+        ] = False,
+        routes: Annotated[
+            list[BaseRoute] | None,
+            Doc(
+                """
+                **Note**: you probably shouldn't use this parameter, it is inherited
+                from Starlette and supported for compatibility.
 
-                    In FastAPI, you normally would use the *path operation methods*,
-                    like `app.get()`, `app.post()`, etc.
-                    """
-                ),
-            ] = None,
-            servers: Annotated[
-                list[dict[str, str | Any]] | None,
-                Doc(
-                    """
-                    A `list` of `dict`s with connectivity information to a target server.
+                ---
 
-                    You would use it, for example, if your application is served from
-                    different domains and you want to use the same Swagger UI in the
-                    browser to interact with each of them (instead of having multiple
-                    browser tabs open). Or if you want to leave fixed the possible URLs.
+                A list of routes to serve incoming HTTP and WebSocket requests.
+                """
+            ),
+            deprecated(
+                """
+                You normally wouldn't use this parameter with FastAPI, it is inherited
+                from Starlette and supported for compatibility.
 
-                    If the servers `list` is not provided, or is an empty `list`, the
-                    default value would be a `dict` with a `url` value of `/`.
+                In FastAPI, you normally would use the *path operation methods*,
+                like `app.get()`, `app.post()`, etc.
+                """
+            ),
+        ] = None,
+        servers: Annotated[
+            list[dict[str, str | Any]] | None,
+            Doc(
+                """
+                A `list` of `dict`s with connectivity information to a target server.
 
-                    Each item in the `list` is a `dict` containing:
+                You would use it, for example, if your application is served from
+                different domains and you want to use the same Swagger UI in the
+                browser to interact with each of them (instead of having multiple
+                browser tabs open). Or if you want to leave fixed the possible URLs.
 
-                    * `url`: A URL to the target host. This URL supports Server Variables
-                    and MAY be relative, to indicate that the host location is relative
-                    to the location where the OpenAPI document is being served. Variable
-                    substitutions will be made when a variable is named in `{`brackets`}`.
-                    * `description`: An optional string describing the host designated by
-                    the URL. [CommonMark syntax](https://commonmark.org/) MAY be used for
-                    rich text representation.
-                    * `variables`: A `dict` between a variable name and its value. The value
-                        is used for substitution in the server's URL template.
+                If the servers `list` is not provided, or is an empty `list`, the
+                default value would be a `dict` with a `url` value of `/`.
 
-                    Read more in the
-                    [FastAPI docs for Behind a Proxy](https://fastapi.tiangolo.com/advanced/behind-a-proxy/#additional-servers).
+                Each item in the `list` is a `dict` containing:
 
-                    **Example**
+                * `url`: A URL to the target host. This URL supports Server Variables
+                and MAY be relative, to indicate that the host location is relative
+                to the location where the OpenAPI document is being served. Variable
+                substitutions will be made when a variable is named in `{`brackets`}`.
+                * `description`: An optional string describing the host designated by
+                the URL. [CommonMark syntax](https://commonmark.org/) MAY be used for
+                rich text representation.
+                * `variables`: A `dict` between a variable name and its value. The value
+                    is used for substitution in the server's URL template.
 
-                    ```python
-                    from fastapi import FastAPI
+                Read more in the
+                [FastAPI docs for Behind a Proxy](https://fastapi.tiangolo.com/advanced/behind-a-proxy/#additional-servers).
 
-                    app = FastAPI(
-                        servers=[
-                            {"url": "https://stag.example.com", "description": "Staging environment"},
-                            {"url": "https://prod.example.com", "description": "Production environment"},
-                        ]
-                    )
-                    ```
-                    """
-                ),
-            ] = None,
-            dependencies: Annotated[
-                Sequence[Depends] | None,
-                Doc(
-                    """
-                    A list of global dependencies, they will be applied to each
-                    *path operation*, including in sub-routers.
+                **Example**
 
-                    Read more about it in the
-                    [FastAPI docs for Global Dependencies](https://fastapi.tiangolo.com/tutorial/dependencies/global-dependencies/).
+                ```python
+                from fastapi import FastAPI
 
-                    **Example**
+                app = FastAPI(
+                    servers=[
+                        {"url": "https://stag.example.com", "description": "Staging environment"},
+                        {"url": "https://prod.example.com", "description": "Production environment"},
+                    ]
+                )
+                ```
+                """
+            ),
+        ] = None,
+        dependencies: Annotated[
+            Sequence[Depends] | None,
+            Doc(
+                """
+                A list of global dependencies, they will be applied to each
+                *path operation*, including in sub-routers.
 
-                    ```python
-                    from fastapi import Depends, FastAPI
+                Read more about it in the
+                [FastAPI docs for Global Dependencies](https://fastapi.tiangolo.com/tutorial/dependencies/global-dependencies/).
 
-                    from .dependencies import func_dep_1, func_dep_2
+                **Example**
 
-                    app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])
-                    ```
-                    """
-                ),
-            ] = None,
-            default_response_class: Annotated[
-                type[Response],
-                Doc(
-                    """
-                    The default response class to be used.
-                    Read more in the
-                    [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
-                    **Analogy**
-                    ```python
-                    from fastapi import FastAPI
-                    from air import AirResponse
-                    app = FastAPI(default_response_class=AirResponse)
-                    ```
-                    """
-                ),
-            ] = AirResponse,
-            redirect_slashes: Annotated[
-                bool,
-                Doc(
-                    """
-                    Whether to detect and redirect slashes in URLs when the client doesn't
-                    use the same format.
+                ```python
+                from fastapi import Depends, FastAPI
 
-                    **Example**
+                from .dependencies import func_dep_1, func_dep_2
 
-                    ```python
-                    from fastapi import FastAPI
+                app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])
+                ```
+                """
+            ),
+        ] = None,
+        default_response_class: Annotated[
+            type[Response],
+            Doc(
+                """
+                The default response class to be used.
+                Read more in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
+                **Analogy**
+                ```python
+                from fastapi import FastAPI
+                from air import AirResponse
+                app = FastAPI(default_response_class=AirResponse)
+                ```
+                """
+            ),
+        ] = AirResponse,
+        redirect_slashes: Annotated[
+            bool,
+            Doc(
+                """
+                Whether to detect and redirect slashes in URLs when the client doesn't
+                use the same format.
 
-                    app = FastAPI(redirect_slashes=True)  # the default
+                **Example**
 
-                    @app.get("/items/")
-                    async def read_items():
-                        return [{"item_id": "Foo"}]
-                    ```
+                ```python
+                from fastapi import FastAPI
 
-                    With this app, if a client goes to `/items` (without a trailing slash),
-                    they will be automatically redirected with an HTTP status code of 307
-                    to `/items/`.
-                    """
-                ),
-            ] = True,
-            middleware: Annotated[
-                Sequence[Middleware] | None,
-                Doc(
-                    """
-                    List of middleware to be added when creating the application.
+                app = FastAPI(redirect_slashes=True)  # the default
 
-                    In FastAPI you would normally do this with `app.add_middleware()`
-                    instead.
+                @app.get("/items/")
+                async def read_items():
+                    return [{"item_id": "Foo"}]
+                ```
 
-                    Read more in the
-                    [FastAPI docs for Middleware](https://fastapi.tiangolo.com/tutorial/middleware/).
-                    """
-                ),
-            ] = None,
-            exception_handlers: Annotated[
-                dict[int | type[Exception], Callable[[Request, Any], Coroutine[Any, Any, Response]]] | None,
-                Doc(
-                    """
-                    A dictionary with handlers for exceptions.
+                With this app, if a client goes to `/items` (without a trailing slash),
+                they will be automatically redirected with an HTTP status code of 307
+                to `/items/`.
+                """
+            ),
+        ] = True,
+        middleware: Annotated[
+            Sequence[Middleware] | None,
+            Doc(
+                """
+                List of middleware to be added when creating the application.
 
-                    In FastAPI, you would normally use the decorator
-                    `@app.exception_handler()`.
+                In FastAPI you would normally do this with `app.add_middleware()`
+                instead.
 
-                    Read more in the
-                    [FastAPI docs for Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/).
-                    """
-                ),
-            ] = None,
-            on_startup: Annotated[
-                Sequence[Callable[[], Any]] | None,
-                Doc(
-                    """
-                    A list of startup event handler functions.
+                Read more in the
+                [FastAPI docs for Middleware](https://fastapi.tiangolo.com/tutorial/middleware/).
+                """
+            ),
+        ] = None,
+        exception_handlers: Annotated[
+            dict[int | type[Exception], Callable[[Request, Any], Coroutine[Any, Any, Response]]] | None,
+            Doc(
+                """
+                A dictionary with handlers for exceptions.
 
-                    You should instead use the `lifespan` handlers.
+                In FastAPI, you would normally use the decorator
+                `@app.exception_handler()`.
 
-                    Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                    """
-                ),
-            ] = None,
-            on_shutdown: Annotated[
-                Sequence[Callable[[], Any]] | None,
-                Doc(
-                    """
-                    A list of shutdown event handler functions.
+                Read more in the
+                [FastAPI docs for Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/).
+                """
+            ),
+        ] = None,
+        on_startup: Annotated[
+            Sequence[Callable[[], Any]] | None,
+            Doc(
+                """
+                A list of startup event handler functions.
 
-                    You should instead use the `lifespan` handlers.
+                You should instead use the `lifespan` handlers.
 
-                    Read more in the
-                    [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                    """
-                ),
-            ] = None,
-            lifespan: Annotated[
-                Lifespan[AppType] | None,
-                Doc(
-                    """
-                    A `Lifespan` context manager handler. This replaces `startup` and
-                    `shutdown` functions with a single context manager.
+                Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
+                """
+            ),
+        ] = None,
+        on_shutdown: Annotated[
+            Sequence[Callable[[], Any]] | None,
+            Doc(
+                """
+                A list of shutdown event handler functions.
 
-                    Read more in the
-                    [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                    """
-                ),
-            ] = None,
-            webhooks: Annotated[
-                routing.APIRouter | None,
-                Doc(
-                    """
-                    Add OpenAPI webhooks. This is similar to `callbacks` but it doesn't
-                    depend on specific *path operations*.
+                You should instead use the `lifespan` handlers.
 
-                    It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                Read more in the
+                [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
+                """
+            ),
+        ] = None,
+        lifespan: Annotated[
+            Lifespan[AppType] | None,
+            Doc(
+                """
+                A `Lifespan` context manager handler. This replaces `startup` and
+                `shutdown` functions with a single context manager.
 
-                    **Note**: This is available since OpenAPI 3.1.0, FastAPI 0.99.0.
+                Read more in the
+                [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
+                """
+            ),
+        ] = None,
+        webhooks: Annotated[
+            routing.APIRouter | None,
+            Doc(
+                """
+                Add OpenAPI webhooks. This is similar to `callbacks` but it doesn't
+                depend on specific *path operations*.
 
-                    Read more about it in the
-                    [FastAPI docs for OpenAPI Webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/).
-                    """
-                ),
-            ] = None,
-            deprecated: Annotated[
-                bool | None,
-                Doc(
-                    """
-                    Mark all *path operations* as deprecated. You probably don't need it,
-                    but it's available.
-                    
-                    It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                    
-                    Read more about it in the
-                    [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                    """
-                ),
-            ] = None,
-            docs_url: Annotated[
-                str | None,
-                Doc(
-                    """
-                    The path at which to serve the Swagger UI documentation.
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
 
-                    Set to `None` to disable it.
-                    """
-                ),
-            ] = None,
-            redoc_url: Annotated[
-                str | None,
-                Doc(
-                    """
-                    The path at which to serve the ReDoc documentation.
+                **Note**: This is available since OpenAPI 3.1.0, FastAPI 0.99.0.
 
-                    Set to `None` to disable it.
-                    """
-                ),
-            ] = None,
-            openapi_url: Annotated[
-                str | None,
-                Doc(
-                    """
-                    The URL where the OpenAPI schema will be served from.
+                Read more about it in the
+                [FastAPI docs for OpenAPI Webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/).
+                """
+            ),
+        ] = None,
+        deprecated: Annotated[
+            bool | None,
+            Doc(
+                """
+                Mark all *path operations* as deprecated. You probably don't need it,
+                but it's available.
 
-                    Set to `None` to disable it.
-                    """
-                ),
-            ] = None,
-            **extra: Annotated[
-                Any,
-                Doc(
-                    """
-                    Extra keyword arguments to be stored in the app, not used by FastAPI
-                    anywhere.
-                    """
-                ),
-            ],
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
+        ] = None,
+        docs_url: Annotated[
+            str | None,
+            Doc(
+                """
+                The path at which to serve the Swagger UI documentation.
+
+                Set to `None` to disable it.
+                """
+            ),
+        ] = None,
+        redoc_url: Annotated[
+            str | None,
+            Doc(
+                """
+                The path at which to serve the ReDoc documentation.
+
+                Set to `None` to disable it.
+                """
+            ),
+        ] = None,
+        openapi_url: Annotated[
+            str | None,
+            Doc(
+                """
+                The URL where the OpenAPI schema will be served from.
+
+                Set to `None` to disable it.
+                """
+            ),
+        ] = None,
+        **extra: Annotated[
+            Any,
+            Doc(
+                """
+                Extra keyword arguments to be stored in the app, not used by FastAPI
+                anywhere.
+                """
+            ),
+        ],
     ) -> None:
         """Initialize Air app with AirResponse as default response class.
 
