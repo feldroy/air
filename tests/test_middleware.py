@@ -1,5 +1,3 @@
-from time import time
-
 from fastapi.testclient import TestClient
 
 import air

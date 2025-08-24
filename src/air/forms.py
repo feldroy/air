@@ -2,7 +2,8 @@
 
 Pro-tip: Always validate incoming data."""
 
-from typing import Any, Callable, Union, get_args, get_origin
+from collections.abc import Callable
+from typing import Any, Union, get_args, get_origin
 
 from pydantic import BaseModel, Field, ValidationError
 from pydantic_core import ErrorDetails
@@ -59,7 +60,8 @@ class AirForm:
 
     def __init__(self, initial_data: dict | None = None):
         if self.model is None:
-            raise NotImplementedError("model")
+            msg = "model"
+            raise NotImplementedError(msg)
         self.initial_data = initial_data
 
     async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:

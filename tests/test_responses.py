@@ -109,7 +109,7 @@ def test_TagResponse_with_layout_strings():
     class CustomLayoutResponse(air.TagResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content)
-            return f"<html><body><h1>Custom Layout</h1>{content}</body></html>".encode("utf-8")
+            return f"<html><body><h1>Custom Layout</h1>{content}</body></html>".encode()
 
     app = air.Air()
 

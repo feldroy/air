@@ -2,18 +2,12 @@
 Instantiating Air applications.
 """
 
+from collections.abc import Callable, Coroutine, Sequence
 from typing import (
+    Annotated,
     Any,
-    Callable,
-    Coroutine,
-    Dict,
     Final,
-    List,
-    Optional,
-    Sequence,
-    Type,
     TypeVar,
-    Union,
 )
 
 from fastapi import FastAPI, routing
@@ -23,7 +17,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
-from typing_extensions import Annotated, Doc, deprecated
+from typing_extensions import Doc, deprecated
 
 from .layouts import mvpcss
 from .responses import AirResponse
@@ -70,7 +64,7 @@ class Air(FastAPI):
             ),
         ] = False,
         routes: Annotated[
-            Optional[List[BaseRoute]],
+            list[BaseRoute] | None,
             Doc(
                 """
                 **Note**: you probably shouldn't use this parameter, it is inherited
@@ -92,7 +86,7 @@ class Air(FastAPI):
             ),
         ] = None,
         servers: Annotated[
-            Optional[List[Dict[str, Union[str, Any]]]],
+            list[dict[str, str | Any]] | None,
             Doc(
                 """
                 A `list` of `dict`s with connectivity information to a target server.
@@ -136,7 +130,7 @@ class Air(FastAPI):
             ),
         ] = None,
         dependencies: Annotated[
-            Optional[Sequence[Depends]],
+            Sequence[Depends] | None,
             Doc(
                 """
                 A list of global dependencies, they will be applied to each
@@ -158,7 +152,7 @@ class Air(FastAPI):
             ),
         ] = None,
         default_response_class: Annotated[
-            Type[Response],
+            type[Response],
             Doc(
                 """
                 The default response class to be used.
@@ -199,7 +193,7 @@ class Air(FastAPI):
             ),
         ] = True,
         middleware: Annotated[
-            Optional[Sequence[Middleware]],
+            Sequence[Middleware] | None,
             Doc(
                 """
                 List of middleware to be added when creating the application.
@@ -213,12 +207,7 @@ class Air(FastAPI):
             ),
         ] = None,
         exception_handlers: Annotated[
-            Optional[
-                Dict[
-                    int | Type[Exception],
-                    Callable[[Request, Any], Coroutine[Any, Any, Response]],
-                ]
-            ],
+            dict[int | type[Exception], Callable[[Request, Any], Coroutine[Any, Any, Response]]] | None,
             Doc(
                 """
                 A dictionary with handlers for exceptions.
@@ -232,7 +221,7 @@ class Air(FastAPI):
             ),
         ] = None,
         on_startup: Annotated[
-            Optional[Sequence[Callable[[], Any]]],
+            Sequence[Callable[[], Any]] | None,
             Doc(
                 """
                 A list of startup event handler functions.
@@ -244,7 +233,7 @@ class Air(FastAPI):
             ),
         ] = None,
         on_shutdown: Annotated[
-            Optional[Sequence[Callable[[], Any]]],
+            Sequence[Callable[[], Any]] | None,
             Doc(
                 """
                 A list of shutdown event handler functions.
@@ -257,7 +246,7 @@ class Air(FastAPI):
             ),
         ] = None,
         lifespan: Annotated[
-            Optional[Lifespan[AppType]],
+            Lifespan[AppType] | None,
             Doc(
                 """
                 A `Lifespan` context manager handler. This replaces `startup` and
@@ -269,7 +258,7 @@ class Air(FastAPI):
             ),
         ] = None,
         webhooks: Annotated[
-            Optional[routing.APIRouter],
+            routing.APIRouter | None,
             Doc(
                 """
                 Add OpenAPI webhooks. This is similar to `callbacks` but it doesn't
@@ -285,7 +274,7 @@ class Air(FastAPI):
             ),
         ] = None,
         deprecated: Annotated[
-            Optional[bool],
+            bool | None,
             Doc(
                 """
                 Mark all *path operations* as deprecated. You probably don't need it,
@@ -299,7 +288,7 @@ class Air(FastAPI):
             ),
         ] = None,
         docs_url: Annotated[
-            Optional[str],
+            str | None,
             Doc(
                 """
                 The path at which to serve the Swagger UI documentation.
@@ -309,7 +298,7 @@ class Air(FastAPI):
             ),
         ] = None,
         redoc_url: Annotated[
-            Optional[str],
+            str | None,
             Doc(
                 """
                 The path at which to serve the ReDoc documentation.
@@ -319,7 +308,7 @@ class Air(FastAPI):
             ),
         ] = None,
         openapi_url: Annotated[
-            Optional[str],
+            str | None,
             Doc(
                 """
                 The URL where the OpenAPI schema will be served from.
@@ -388,10 +377,7 @@ class Air(FastAPI):
             def about_us(): # routes is "/about-us"
                 return H1("I am the about page")
         """
-        if func.__name__ == "index":
-            route_name = "/"
-        else:
-            route_name = f"/{func.__name__}".replace("_", "-")
+        route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
         return self.get(route_name)(func)
 
 

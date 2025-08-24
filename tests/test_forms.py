@@ -124,7 +124,7 @@ def test_form_render_with_values():
     class CheeseForm(air.AirForm):
         model = CheeseModel
 
-    cheese = CheeseForm(dict(name="Cheddar", age=3))
+    cheese = CheeseForm({"name": "Cheddar", "age": 3})
 
     assert (
         cheese.render()
@@ -235,13 +235,13 @@ def test_airform_validate():
         model = CheeseModel
 
     cheese_form = CheeseForm()
-    assert cheese_form.is_valid == False
+    assert not cheese_form.is_valid
     cheese_form.validate({})
-    assert cheese_form.is_valid == False
-    cheese_form.validate(dict(name="Cheddar"))
-    assert cheese_form.is_valid == False
-    cheese_form.validate(dict(name="Cheddar", age=5))
-    assert cheese_form.is_valid == True
+    assert not cheese_form.is_valid
+    cheese_form.validate({"name": "Cheddar"})
+    assert not cheese_form.is_valid
+    cheese_form.validate({"name": "Cheddar", "age": 5})
+    assert cheese_form.is_valid
     assert cheese_form.errors == [
         {
             "type": "missing",

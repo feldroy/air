@@ -13,10 +13,6 @@ max_line_length = 120
 indent_style = space
 indent_size = 4
 
-[*.{py,ini}]
-indent_style = space
-indent_size = 4
-
 [*.{html,css,js,json,sh,yml,yaml}]
 indent_size = 2
 
@@ -40,3 +36,46 @@ indent_size = unset
 trim_trailing_whitespace = unset
 insert_final_newline = unset
 max_line_length = unset
+
+[{*.py,*.pyw}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+ij_visual_guides = 120
+ij_continuation_indent_size = 4
+
+# Don’t vertically align multi-line items (Black doesn’t)
+ij_python_align_collections_and_comprehensions = false
+ij_python_align_multiline_imports = false
+ij_python_align_multiline_parameters = false
+ij_python_align_multiline_parameters_in_calls = false
+
+# Place params/closing parens like Black
+ij_python_call_parameters_new_line_after_left_paren = true
+ij_python_call_parameters_right_paren_on_new_line = true
+ij_python_method_parameters_new_line_after_left_paren = true
+ij_python_method_parameters_right_paren_on_new_line = true
+ij_python_hang_closing_brackets = false
+
+# Trailing-comma behavior (to match Black/Ruff “magic comma”)
+ij_python_use_trailing_comma_in_arguments_list = true
+ij_python_use_trailing_comma_in_collections = true
+ij_python_use_trailing_comma_in_parameter_list = true
+
+# Imports: mirror Ruff/isort “combine-as-imports” + “force-wrap-aliases” + “order-by-type”
+ij_python_optimize_imports_join_from_imports_with_same_source = true # combine from-imports
+ij_python_from_import_parentheses_force_if_multiline = true # keep parenthesized layout
+ij_python_from_import_new_line_after_left_parenthesis = true # one name per line (after '(')
+ij_python_from_import_new_line_before_right_parenthesis = true # ')' on its own line
+ij_python_optimize_imports_sort_by_type_first = true # order-by-type
+ij_python_optimize_imports_sort_imports = true
+ij_python_optimize_imports_sort_names_in_from_imports = true
+
+# Let Black/Ruff control wrapping and line breaks
+ij_python_wrap_long_lines = false
+ij_python_keep_line_breaks = true
+
+# Keep “continuation indent” simple (Black style)
+ij_python_use_continuation_indent_for_arguments = false
+ij_python_use_continuation_indent_for_collection_and_comprehensions = false
+ij_python_use_continuation_indent_for_parameters = false
