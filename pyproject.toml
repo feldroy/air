@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.25.0"
+version = "0.25.2"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -87,6 +87,13 @@ test = [
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
+]
+benchmarks = [
+    "httpx>=0.28.1", # For the test client    
+    "pytest>=8.4.0", # Test runner    
+    "pytest-benchmark[test]>=5.1.0",
+    "pytest-pretty>=1.3.0", # Provides richer test session output.
+    "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
 ]
 docs = [
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
@@ -475,6 +482,10 @@ testpaths = ["tests"]
 filterwarnings = ["error"]  # equals: -W error
 # pytest-asyncio
 asyncio_mode = "auto"
+# Custom markers
+markers = [
+    "memory: marks tests as memory-focused (deselect with '-m \"not memory\"')"
+]
 addopts = [
     "--color=yes",
     "--cov-context=test", # record per-test contexts

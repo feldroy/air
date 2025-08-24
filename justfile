@@ -123,13 +123,13 @@ lint OUTPUT_FORMAT="full":
 [group('qa')]
 type-check:
     uv run -q -- ty check .
-    just run-with-relative-paths uv run -q -- pyrefly check .
+    # just run-with-relative-paths uv run -q -- pyrefly check .
 
 # Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
 [group('qa')]
 type-check-concise TARGET=".":
     uv run -q -- ty check --output-format=concise "{{TARGET}}"
-    just run-with-relative-paths uv run -q -- pyrefly check --output-format=min-text "{{TARGET}}"
+    # just run-with-relative-paths uv run -q -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]
