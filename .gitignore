@@ -76,6 +76,7 @@ nbs
 .ruff_cache
 .venv
 .playground
+.benchmarks
 
 # User config and extension
 .specstory
