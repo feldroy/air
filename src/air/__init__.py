@@ -12,6 +12,7 @@ from .responses import (
     AirResponse as AirResponse,
     SSEResponse as SSEResponse,
     TagResponse as TagResponse,
+    RedirectResponse as RedirectResponse,
 )
 from .tags import (
     A as A,
