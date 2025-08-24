@@ -14,6 +14,17 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware as StarletteSessionMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
+from starlette.types import ASGIApp
+
+class User:
+
+    @property
+    def is_authenticated(self):
+        return False
+    
+    @property
+    def permissions(self):
+        return []
 
 
 class UserMiddleware(BaseHTTPMiddleware):
@@ -38,9 +49,13 @@ class UserMiddleware(BaseHTTPMiddleware):
             )
     """
 
+    def __init__(self, app: ASGIApp, user: User = User):
+        self.app = app
+        self.user = user
+
     async def dispatch(self, request: Request, call_next) -> Response:
-        # Load user dictionary from session or initialize empty
-        request.state.user = dict(request.session.get("user", {}))
+        # Load user object from session or initialize empty
+        request.state.user = request.session.get("user", User())
         
         # Call the next middleware or route handler
         response = await call_next(request)
