@@ -40,6 +40,7 @@ dependencies = [
     "fastapi>=0.116.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
+    "pytest-benchmark[test]>=5.1.0",
     "python-multipart>=0.0.20",
 ]
 # endregion project
@@ -456,6 +457,10 @@ testpaths = ["tests"]
 filterwarnings = ["error"]  # equals: -W error
 # pytest-asyncio
 asyncio_mode = "auto"
+# Custom markers
+markers = [
+    "memory: marks tests as memory-focused (deselect with '-m \"not memory\"')"
+]
 addopts = [
     "--color=yes",
     "--cov-context=test", # record per-test contexts
