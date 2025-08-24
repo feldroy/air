@@ -106,7 +106,10 @@ def _callable_kwargs_to_markdown(func: Callable) -> str:
         if name == 'kwargs': continue
         # Argument type
         if param.annotation is not inspect.Parameter.empty:
-            arg_type = getattr(param.annotation, "__name__", str(param.annotation))
+            joined_annotations = ", ".join(
+                [dtype.strip() for dtype in str(param.annotation).split("|")]
+            )
+            arg_type = getattr(param.annotation, "__name__", joined_annotations)
         else:
             arg_type = "Any"
 
