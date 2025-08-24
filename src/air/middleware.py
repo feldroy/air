@@ -10,7 +10,45 @@
 Background tasks run _after_ middleware.
 """
 
+from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware as StarletteSessionMiddleware
+from starlette.requests import Request
+from starlette.responses import Response
+
+
+class UserMiddleware(BaseHTTPMiddleware):
+    """Middleware that adds a user dictionary to request.state, preserved via session.
+
+    Example:
+
+        import air
+
+        app = air.Air()
+        app.add_middleware(air.UserMiddleware)
+        app.add_middleware(air.SessionMiddleware, secret_key="your-secret-key")
+
+        @app.page
+        async def index(request: air.Request):
+            # Access user data from request.state.user
+            request.state.user["last_visit"] = "now"
+            user_id = request.state.user.get("id", "anonymous")
+            return air.layouts.mvpcss(
+                air.H1(f"User ID: {user_id}"),
+                air.P("User data is preserved across requests via session"),
+            )
+    """
+
+    async def dispatch(self, request: Request, call_next) -> Response:
+        # Load user dictionary from session or initialize empty
+        request.state.user = dict(request.session.get("user", {}))
+        
+        # Call the next middleware or route handler
+        response = await call_next(request)
+        
+        # Save user dictionary back to session
+        request.session["user"] = request.state.user
+        
+        return response
 
 
 class SessionMiddleware(StarletteSessionMiddleware):

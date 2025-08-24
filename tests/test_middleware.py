@@ -50,3 +50,31 @@ def test_session_middleware():
     response = client.get("/check")
     assert response.status_code == 200
     assert "654321" in response.text
+
+
+def test_user_middleware():
+
+    app = air.Air()
+    app.add_middleware(air.UserMiddleware)    
+    app.add_middleware(air.SessionMiddleware, secret_key='change-me')    
+
+    @app.page
+    async def index(request: air.Request):
+        return air.H1(str(request.state.user))
+    
+    @app.get('/{login_time}')
+    async def add_user(request: air.Request, login_time:int):
+        request.state.user['login_time'] = login_time
+        return air.H1(f'Time: {login_time}')
+                
+
+    client = TestClient(app)
+
+    response = client.get("/123456")
+    assert response.status_code == 200
+    assert "123456" in response.text
+
+
+    response = client.get("/")    
+    assert response.status_code == 200
+    assert "123456" in response.text    
