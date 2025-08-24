@@ -52,7 +52,7 @@ def create_complex_page_with_tags():
                 ),
             ),
             air.Footer(
-                air.P("© 2024 Product Store", class_="copyright")
+                air.P("&copy; 2024 Product Store", class_="copyright")
             )
         )
     )
@@ -115,7 +115,7 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark):
         </section>
     </main>
     <footer>
-        <p class="copyright">© 2024 Product Store</p>
+        <p class="copyright">&copy; 2024 Product Store</p>
     </footer>
 </body>
 </html>"""

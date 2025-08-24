@@ -45,7 +45,7 @@ def test_jinja_complex_page_rendering_benchmark(benchmark):
         </section>
     </main>
     <footer>
-        <p class="copyright">© 2024 Product Store</p>
+        <p class="copyright">&copy; 2024 Product Store</p>
     </footer>
 </body>
 </html>"""
