@@ -60,7 +60,7 @@ def test_user_middleware():
 
     @app.page
     async def index(request: air.Request):
-        return air.H1(str(request.state.user.login_time))
+        return air.H1(str(getattr(request.state.user, 'login_time', 'None')))
     
     @app.get('/{login_time}')
     async def add_user(request: air.Request, login_time:int):

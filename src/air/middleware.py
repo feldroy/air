@@ -14,54 +14,111 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware as StarletteSessionMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-from starlette.types import ASGIApp
+
+
+class UserDict(dict):
+    """Dictionary subclass that allows attribute access."""
+    
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(f"'UserDict' object has no attribute '{name}'")
+    
+    def __setattr__(self, name, value):
+        self[name] = value
+
 
 class User:
-
-    @property
-    def is_authenticated(self):
-        return False
+    """User object that provides a clean API for user data and authentication."""
     
-    @property
-    def permissions(self):
-        return []
+    def __init__(self, **kwargs):
+        self._data = UserDict(kwargs)
+        # Set attributes from kwargs without triggering __setattr__ yet
+        super().__setattr__('_data', self._data)
+        for key, value in kwargs.items():
+            super().__setattr__(key, value)
+    
+    def __setattr__(self, name, value):
+        # Store in both instance and _data for session persistence
+        if name.startswith('_'):
+            super().__setattr__(name, value)
+        else:
+            super().__setattr__(name, value)
+            if hasattr(self, '_data'):
+                self._data[name] = value
+    
+    def __getattr__(self, name):
+        # Fall back to _data if attribute not found
+        if hasattr(self, '_data') and name in self._data:
+            return self._data[name]
+        raise AttributeError(f"'User' object has no attribute '{name}'")
+    
+    def is_authenticated(self):
+        """Check if the user is authenticated."""
+        return getattr(self, 'authenticated', False)
+    
+    def has_permission(self, permission):
+        """Check if the user has a specific permission."""
+        permissions = getattr(self, 'permissions', [])
+        return permission in permissions
+    
+    def update(self, **kwargs):
+        """Update user data."""
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+    
+    def to_dict(self):
+        """Convert user data to dictionary for session storage."""
+        return dict(self._data)
 
 
 class UserMiddleware(BaseHTTPMiddleware):
-    """Middleware that adds a user dictionary to request.state, preserved via session.
+    """Middleware that adds a user object to request.user, preserved via session.
+
+    Args:
+        use_session: Whether to persist user data via session. Defaults to True.
 
     Example:
 
         import air
 
         app = air.Air()
-        app.add_middleware(air.UserMiddleware)
         app.add_middleware(air.SessionMiddleware, secret_key="your-secret-key")
+        app.add_middleware(air.UserMiddleware)
 
         @app.page
         async def index(request: air.Request):
             # Access user data from request.state.user
-            request.state.user["last_visit"] = "now"
-            user_id = request.state.user.get("id", "anonymous")
+            request.state.user.login_time = 12345
+            request.state.user.authenticated = True
+            is_auth = request.state.user.is_authenticated()
             return air.layouts.mvpcss(
-                air.H1(f"User ID: {user_id}"),
+                air.H1(f"Authenticated: {is_auth}"),
+                air.P(f"Login time: {request.state.user.login_time}"),
                 air.P("User data is preserved across requests via session"),
             )
     """
 
-    def __init__(self, app: ASGIApp, user: User = User):
-        self.app = app
-        self.user = user
+    def __init__(self, app, use_session: bool = True):
+        super().__init__(app)
+        self.use_session = use_session
 
     async def dispatch(self, request: Request, call_next) -> Response:
-        # Load user object from session or initialize empty
-        request.state.user = request.session.get("user", User())
+        # Load user data from session or initialize empty
+        user_data = {}
+        if self.use_session and hasattr(request, 'session'):
+            user_data = request.session.get("user", {})
+        
+        # Create user object from session data
+        request.state.user = User(**user_data)
         
         # Call the next middleware or route handler
         response = await call_next(request)
         
-        # Save user dictionary back to session
-        request.session["user"] = request.state.user
+        # Save user data back to session if enabled and available
+        if self.use_session and hasattr(request, 'session'):
+            request.session["user"] = request.state.user.to_dict()
         
         return response
 
