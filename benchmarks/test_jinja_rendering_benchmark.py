@@ -9,7 +9,7 @@ from pathlib import Path
 
 from starlette.requests import Request
 
-from air.templates import JinjaRenderer
+from air.templating import JinjaRenderer
 
 
 def test_jinja_complex_page_rendering_benchmark(benchmark):
