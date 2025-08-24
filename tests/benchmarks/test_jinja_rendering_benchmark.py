@@ -7,12 +7,14 @@ equivalent HTML generation using Jinja2 templates.
 import tempfile
 from pathlib import Path
 
+from starlette.requests import Request
+
 from air.templates import JinjaRenderer
 
 
 def test_jinja_complex_page_rendering_benchmark(benchmark):
     """Benchmark Jinja2 template rendering for complex HTML structure."""
-    
+
     template_content = """<html>
 <head>
     <title>{{ title }}</title>
@@ -49,20 +51,21 @@ def test_jinja_complex_page_rendering_benchmark(benchmark):
     </footer>
 </body>
 </html>"""
-    
+
     with tempfile.TemporaryDirectory() as temp_dir:
         template_path = Path(temp_dir) / "complex_page.html"
         template_path.write_text(template_content)
-        
+
         jinja_renderer = JinjaRenderer(directory=temp_dir)
-        
-        # Mock request object for Jinja2
-        class MockRequest:
-            def __init__(self):
-                self.url = type('URL', (), {'path': '/test'})()
-        
-        mock_request = MockRequest()
-        
+
+        # Create minimal mock request object
+        from unittest.mock import Mock
+
+        from starlette.datastructures import URL
+
+        mock_request = Mock(spec=Request)
+        mock_request.url = URL("http://localhost/test")
+
         context = {
             "title": "Product Catalog",
             "products": [
@@ -70,13 +73,13 @@ def test_jinja_complex_page_rendering_benchmark(benchmark):
                     "id": i,
                     "name": f"Product {i}",
                     "description": f"Description for product {i}",
-                    "price": f"${i * 10}.99"
+                    "price": f"${i * 10}.99",
                 }
                 for i in range(1, 21)  # 20 products
-            ]
+            ],
         }
-        
+
         def render_jinja_page():
             return jinja_renderer(mock_request, "complex_page.html", context=context)
-        
+
         benchmark(render_jinja_page)

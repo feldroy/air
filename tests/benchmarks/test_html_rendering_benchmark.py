@@ -8,6 +8,8 @@ template rendering for equivalent HTML output.
 import tempfile
 from pathlib import Path
 
+from starlette.requests import Request
+
 import air
 from air.templates import JinjaRenderer
 
@@ -27,7 +29,7 @@ def create_complex_page_with_tags():
                         air.Li(air.A("Home", href="/")),
                         air.Li(air.A("Products", href="/products")),
                         air.Li(air.A("About", href="/about")),
-                        class_="nav-list"
+                        class_="nav-list",
                     )
                 )
             ),
@@ -41,20 +43,18 @@ def create_complex_page_with_tags():
                             air.Div(
                                 air.Span(f"${i * 10}.99", class_="price"),
                                 air.Button("Add to Cart", class_="btn btn-primary", data_product=str(i)),
-                                class_="product-actions"
+                                class_="product-actions",
                             ),
                             class_="product-card",
-                            id=f"product-{i}"
+                            id=f"product-{i}",
                         )
                         for i in range(1, 21)  # 20 products
                     ],
-                    class_="product-grid"
+                    class_="product-grid",
                 ),
             ),
-            air.Footer(
-                air.P("&copy; 2024 Product Store", class_="copyright")
-            )
-        )
+            air.Footer(air.P("&copy; 2024 Product Store", class_="copyright")),
+        ),
     )
 
 
@@ -63,25 +63,20 @@ def create_complex_page_with_jinja(jinja_renderer, mock_request):
     context = {
         "title": "Product Catalog",
         "products": [
-            {
-                "id": i,
-                "name": f"Product {i}",
-                "description": f"Description for product {i}",
-                "price": f"${i * 10}.99"
-            }
+            {"id": i, "name": f"Product {i}", "description": f"Description for product {i}", "price": f"${i * 10}.99"}
             for i in range(1, 21)  # 20 products
-        ]
+        ],
     }
     return jinja_renderer(mock_request, "complex_page.html", context=context)
 
 
 def test_air_tags_vs_jinja_rendering_benchmark(benchmark):
     """Benchmark Air Tags vs Jinja2 template rendering for equivalent HTML.
-    
+
     This tests Air's core value proposition by comparing the performance
     of its tag-based approach against traditional template rendering.
     """
-    
+
     # Create a temporary template for Jinja2
     template_content = """<html>
 <head>
@@ -119,49 +114,47 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark):
     </footer>
 </body>
 </html>"""
-    
+
     # Set up temporary template directory
     with tempfile.TemporaryDirectory() as temp_dir:
         template_path = Path(temp_dir) / "complex_page.html"
         template_path.write_text(template_content)
-        
+
         jinja_renderer = JinjaRenderer(directory=temp_dir)
-        
-        # Mock request object for Jinja2
-        class MockRequest:
-            def __init__(self):
-                self.url = type('URL', (), {'path': '/test'})()
-        
-        mock_request = MockRequest()
-        
+
+        # Create minimal mock request object
+        from unittest.mock import Mock
+
+        from starlette.datastructures import URL
+
+        mock_request = Mock(spec=Request)
+        mock_request.url = URL("http://localhost/test")
+
         # Benchmark Air Tags rendering
         def render_with_air_tags():
             page = create_complex_page_with_tags()
             return page.render()
-        
+
         # Benchmark Jinja2 rendering
         def render_with_jinja():
             return create_complex_page_with_jinja(jinja_renderer, mock_request)
-        
+
         # Benchmark Air Tags rendering
         benchmark(render_with_air_tags)
 
 
 def test_simple_air_tags_rendering_benchmark(benchmark):
     """Benchmark simple Air Tags rendering for baseline performance."""
-    
+
     def render_simple_page():
         page = air.Html(
             air.Head(air.Title("Simple Page")),
             air.Body(
                 air.H1("Welcome"),
                 air.P("This is a simple page"),
-                air.Div(
-                    air.A("Click here", href="/next"),
-                    class_="container"
-                )
-            )
+                air.Div(air.A("Click here", href="/next"), class_="container"),
+            ),
         )
         return page.render()
-    
+
     benchmark(render_simple_page)
