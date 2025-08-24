@@ -1,17 +1,25 @@
 """Tests for Air authentication functionality."""
 
 import base64
-from unittest.mock import AsyncMock
+from typing import Any, Dict
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from starlette.applications import Starlette
 from starlette.authentication import AuthCredentials, AuthenticationError
 from starlette.middleware.authentication import AuthenticationMiddleware
-from starlette.requests import Request
+from starlette.requests import HTTPConnection, Request
 from starlette.responses import JSONResponse
 from starlette.testclient import TestClient
 
 from air.auth import AnonymousUser, BasicAuthBackend, User
+
+
+def create_mock_connection(headers: Dict[str, str]) -> Any:
+    """Create a mock HTTPConnection for testing."""
+    mock = MagicMock()
+    mock.headers = headers
+    return mock
 
 
 class TestBasicAuthBackend:
@@ -23,10 +31,9 @@ class TestBasicAuthBackend:
         backend = BasicAuthBackend()
 
         # Mock connection without Authorization header
-        class MockConnection:
-            headers = {}
+        conn = create_mock_connection({})
 
-        result = await backend.authenticate(MockConnection())
+        result = await backend.authenticate(conn)
         assert result is None
 
     @pytest.mark.asyncio
@@ -34,10 +41,9 @@ class TestBasicAuthBackend:
         """Test that non-basic auth schemes return None."""
         backend = BasicAuthBackend()
 
-        class MockConnection:
-            headers = {"Authorization": "Bearer token123"}
+        conn = create_mock_connection({"Authorization": "Bearer token123"})
 
-        result = await backend.authenticate(MockConnection())
+        result = await backend.authenticate(conn)
         assert result is None
 
     @pytest.mark.asyncio
@@ -45,11 +51,10 @@ class TestBasicAuthBackend:
         """Test that malformed credentials raise AuthenticationError."""
         backend = BasicAuthBackend()
 
-        class MockConnection:
-            headers = {"Authorization": "Basic invalid-base64"}
+        conn = create_mock_connection({"Authorization": "Basic invalid-base64"})
 
         with pytest.raises(AuthenticationError):
-            await backend.authenticate(MockConnection())
+            await backend.authenticate(conn)
 
     @pytest.mark.asyncio
     async def test_valid_credentials_no_verifier(self):
@@ -59,10 +64,9 @@ class TestBasicAuthBackend:
         # Create valid basic auth header
         credentials = base64.b64encode(b"testuser:testpass").decode("ascii")
 
-        class MockConnection:
-            headers = {"Authorization": f"Basic {credentials}"}
+        conn = create_mock_connection({"Authorization": f"Basic {credentials}"})
 
-        result = await backend.authenticate(MockConnection())
+        result = await backend.authenticate(conn)
 
         assert result is not None
         auth_credentials, user = result
@@ -82,10 +86,9 @@ class TestBasicAuthBackend:
         # Valid credentials
         credentials = base64.b64encode(b"admin:secret").decode("ascii")
 
-        class MockConnection:
-            headers = {"Authorization": f"Basic {credentials}"}
+        conn = create_mock_connection({"Authorization": f"Basic {credentials}"})
 
-        result = await backend.authenticate(MockConnection())
+        result = await backend.authenticate(conn)
 
         assert result is not None
         auth_credentials, user = result
@@ -102,10 +105,9 @@ class TestBasicAuthBackend:
 
         credentials = base64.b64encode(b"user:pass").decode("ascii")
 
-        class MockConnection:
-            headers = {"Authorization": f"Basic {credentials}"}
+        conn = create_mock_connection({"Authorization": f"Basic {credentials}"})
 
-        result = await backend.authenticate(MockConnection())
+        result = await backend.authenticate(conn)
         assert result is None
 
     @pytest.mark.asyncio
@@ -119,10 +121,9 @@ class TestBasicAuthBackend:
 
         credentials = base64.b64encode(b"async_user:async_pass").decode("ascii")
 
-        class MockConnection:
-            headers = {"Authorization": f"Basic {credentials}"}
+        conn = create_mock_connection({"Authorization": f"Basic {credentials}"})
 
-        result = await backend.authenticate(MockConnection())
+        result = await backend.authenticate(conn)
 
         assert result is not None
         auth_credentials, user = result

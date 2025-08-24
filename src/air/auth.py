@@ -6,7 +6,7 @@ adapted for the Air framework's conventions and patterns.
 
 import base64
 import binascii
-from typing import Optional, Tuple
+from typing import Callable, Optional, Tuple
 
 from starlette.authentication import (
     AuthCredentials,
@@ -45,7 +45,7 @@ class BasicAuthBackend(AuthenticationBackend):
             return air.H1(f"Hello, {request.user.display_name}!")
     """
 
-    def __init__(self, verify_credentials: Optional[callable] = None):
+    def __init__(self, verify_credentials: Optional[Callable[[str, str], bool]] = None):
         """Initialize BasicAuthBackend.
 
         Args:
