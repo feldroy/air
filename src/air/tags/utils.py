@@ -1,6 +1,5 @@
 """Utilities for the Air Tag system."""
 
-from collections import UserString
 
 from .config import HTML_ATTRIBUTES
 
@@ -22,18 +21,12 @@ def clean_html_attr_key(key: str) -> str:
     return key.lstrip("_").replace("_", "-")
 
 
-class SafeStr(UserString):
+class SafeStr(str):
     """A string subclass that doesn't trigger html.escape() when called by Tag.render()
 
     Example:
         sample = SafeStr('Hello, world')
     """
-
-    def __new__(cls, value):
-        return super().__new__(cls, value)
-
-    def __repr__(self):
-        return super().__repr__()
 
 
 def locals_cleanup(local_data, obj):

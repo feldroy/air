@@ -340,6 +340,7 @@ ignore = [
     "PGH004", # Use specific rule codes when using `noqa` or `ruff: noqa`
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "W505", # Doc line too long
+    "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
 ]
 
 [tool.ruff.lint.flake8-import-conventions]
