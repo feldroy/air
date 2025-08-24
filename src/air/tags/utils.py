@@ -1,5 +1,7 @@
 """Utilities for the Air Tag system."""
 
+from functools import cache
+
 from .config import HTML_ATTRIBUTES
 
 
@@ -38,9 +40,9 @@ class SafeStr(str):
 def locals_cleanup(local_data, obj):
     """Converts arguments to kwargs per the html_attributes structure"""
     data = {}
-    attrs = HTML_ATTRIBUTES.get(obj.__class__.__name__, [])
-    attrs += ["class_", "for_", "as_", "id", "style"]
+    attrs = HTML_ATTRIBUTES.get(obj.__class__.__name__, []) + ["class_", "for_", "as_", "id", "style"]
     for attr in attrs:
-        if local_data.get(attr) is not None:
+        # For performance reasons we use key checks rather than local_data.get
+        if attr in local_data and local_data[attr] is not None:
             data[attr] = local_data[attr]
     return data

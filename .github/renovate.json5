@@ -1,0 +1,40 @@
+// .github/renovate.json5
+// https://docs.renovatebot.com
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:best-practices",
+    "schedule:automergeDaily",
+    ":dependencyDashboard",
+    ":enablePreCommit",
+    ":rebaseStalePrs",
+    ":semanticCommitType(build)",
+    ":semanticCommitScope(deps)",
+    ":maintainLockFilesWeekly",
+    ":prHourlyLimitNone",
+    "helpers:pinGitHubActionDigests",
+  ],
+  // Keep semantic commits explicit even though the preset already sets the scope
+  semanticCommitScope: "deps",
+  // Create PRs immediately; allow Renovate to merge PRs itself
+  automergeType: "pr",
+  prCreation: "immediate",
+  // Rebase PRs when they fall behind the base branch
+  "rebaseWhen": "behind-base-branch",
+  labels: [
+    "deps",
+    "renovate",
+  ],
+  // Limit Renovate to these managers only
+  enabledManagers: [
+    "pep621",
+    "pre-commit",
+    "github-actions",
+    "renovate-config-presets",
+  ],
+  prConcurrentLimit: 3,
+  // Weekly lockfile refreshes (e.g., uv.lock)
+  lockFileMaintenance: {
+    enabled: true
+  },
+}

@@ -1,13 +1,21 @@
 # https://editorconfig.org
+# https://github.com/editorconfig/editorconfig/wiki/editorconfig-properties
 root = true
 
 [*]
 charset = utf-8
 end_of_line = lf
-indent_style = space
-indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
+max_line_length = 120
+
+[*.{md,rst,txt}]
+indent_style = space
+indent_size = 4
+
+[*.{py,ini}]
+indent_style = space
+indent_size = 4
 
 [*.{html,css,js,json,sh,yml,yaml}]
 indent_size = 2
