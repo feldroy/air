@@ -457,6 +457,10 @@ testpaths = ["tests"]
 filterwarnings = ["error"]  # equals: -W error
 # pytest-asyncio
 asyncio_mode = "auto"
+# Custom markers
+markers = [
+    "memory: marks tests as memory-focused (deselect with '-m \"not memory\"')"
+]
 addopts = [
     "--color=yes",
     "--cov-context=test", # record per-test contexts
