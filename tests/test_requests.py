@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import Depends, FastAPI
 from fastapi.testclient import TestClient
 
@@ -10,7 +12,7 @@ def test_is_htmx():
     app = FastAPI()
 
     @app.get("/test", response_class=air.TagResponse)
-    def test_endpoint(is_htmx: bool = Depends(air.is_htmx_request)):
+    def test_endpoint(is_htmx: Annotated[bool, Depends(air.is_htmx_request)]):
         return air.H1(f"Is HTMX request: {is_htmx}")
 
     client = TestClient(app)

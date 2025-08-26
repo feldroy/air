@@ -1,6 +1,6 @@
 """Utilities for the Air Tag system."""
 
-from functools import cache
+from typing import Any
 
 from .config import HTML_ATTRIBUTES
 
@@ -17,7 +17,7 @@ def clean_html_attr_key(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = dict(class_="class", for_="for", id_="id", as_="as").get(key, key)
+    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as"}.get(key, key)
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
 
@@ -29,18 +29,11 @@ class SafeStr(str):
         sample = SafeStr('Hello, world')
     """
 
-    def __new__(cls, value):
-        obj = super().__new__(cls, value)
-        return obj
 
-    def __repr__(self):
-        return super().__repr__()
-
-
-def locals_cleanup(local_data, obj):
+def locals_cleanup(local_data: dict[str, Any], obj) -> dict[str, Any]:
     """Converts arguments to kwargs per the html_attributes structure"""
     data = {}
-    attrs = HTML_ATTRIBUTES.get(obj.__class__.__name__, []) + ["class_", "for_", "as_", "id", "style"]
+    attrs = [*HTML_ATTRIBUTES.get(obj.__class__.__name__, []), "class_", "for_", "as_", "id", "style"]
     for attr in attrs:
         # For performance reasons we use key checks rather than local_data.get
         if attr in local_data and local_data[attr] is not None:
