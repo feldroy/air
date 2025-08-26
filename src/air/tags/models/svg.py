@@ -15,16 +15,13 @@ class CaseTag(Tag):
         return self._name[0].lower() + self._name[1:]
 
 
-def svg_locals_cleanup(local_data):
+def svg_locals_cleanup(
+    data: dict[str, Any],
+    _skip: frozenset[str] = frozenset({"self", "children", "kwargs"}),
+) -> dict[str, Any]:
     """Extract non-None attributes from locals() for SVG elements"""
     # Remove special variables
-    data = {}
-    for key, value in local_data.items():
-        if key in ["self", "children", "kwargs"] or key.startswith("_"):
-            continue
-        if value is not None:
-            data[key] = value
-    return data
+    return {key: value for key, value in data.items() if value is not None and key[0] != "_" and key not in _skip}
 
 
 class A(CaseTag):

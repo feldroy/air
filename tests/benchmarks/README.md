@@ -2,30 +2,24 @@
 
 This directory contains benchmarks using pytest-benchmark and memory checks.
 
-Prerequisites
-- Ensure the `test` dependency group is installed (see `pyproject.toml`) which includes pytest.
-- Install `pytest-benchmark` to run the microbenchmarks:
-
-  uv sync --group benchmarks
-
 Running benchmarks
 
-- Run all benchmarks in this directory with pytest and the `benchmark` plugin enabled:
+- Run all benchmarks with pytest and the `benchmark` plugin enabled:
 
 ```bash
-pytest benchmarks -q
+uv run -q -- pytest tests/benchmarks -q
 ```
 
 - Save benchmark results to a JSON file for later comparison:
 
 ```bash
-pytest benchmarks --benchmark-save=baseline
+uv run -q -- pytest tests/benchmarks --benchmark-save=baseline
 ```
 
 - Compare the current run to a saved baseline:
 
 ```bash
-pytest benchmarks --benchmark-compare=baseline
+uv run -q -- pytest tests/benchmarks --benchmark-compare=baseline
 ```
 
 Memory checks
@@ -34,7 +28,7 @@ Memory checks
 - Example: run memory tests only:
 
 ```bash
-pytest -m memory
+uv run -q -- pytest tests/benchmarks -m memory
 ```
 
 CI recommendations

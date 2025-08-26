@@ -3,9 +3,9 @@
 A common pattern is to use a Jinja template as the project base and then use Air Tags for individual content.
 """
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Sequence
 from os import PathLike
-from typing import Any, Callable, cast, overload
+from typing import Any
 
 import jinja2
 from fastapi.templating import Jinja2Templates

@@ -30,18 +30,12 @@ class SafeStr(str):
         sample = SafeStr('Hello, world')
     """
 
-    def __new__(cls, value):
-        obj = super().__new__(cls, value)
-        return obj
-
-    def __repr__(self):
-        return super().__repr__()
 
 
 def locals_cleanup(local_data: dict[str, Any], obj) -> dict[str, Any]:
     """Converts arguments to kwargs per the html_attributes structure"""
     data = {}
-    attrs = [*HTML_ATTRIBUTES.get(obj.__class__.__name__, []), "class_", "for_", "as_", "id", "style"]
+    attrs = HTML_ATTRIBUTES.get(obj.__class__.__name__, []) + ["class_", "for_", "as_", "id", "style"]
     for attr in attrs:
         # For performance reasons we use key checks rather than local_data.get
         if attr in local_data and local_data[attr] is not None:
