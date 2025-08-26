@@ -4,7 +4,7 @@ Script and Style tags can be found in the [air.tags.models.special](/reference/a
 
 from typing import Any
 
-from ..utils import locals_cleanup
+from ..utils import clean_locals, locals_cleanup
 from .base import Tag
 
 
@@ -1943,7 +1943,7 @@ class P(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | clean_locals(locals()))
 
 
 class Param(Tag):
