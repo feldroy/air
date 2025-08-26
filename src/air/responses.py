@@ -83,7 +83,7 @@ class SSEResponse(StreamingResponse):
         async def lottery_generator():
             while True:
                 lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
-                Tags work seamlessly
+                # Tags work seamlessly
                 yield air.Aside(lottery_numbers)
                 # As do strings. Non-strings are cast to strings via the str built-in
                 yield "Hello, world"

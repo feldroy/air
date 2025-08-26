@@ -1,5 +1,7 @@
 """Utilities for the Air Tag system."""
 
+from typing import Any
+
 from .config import HTML_ATTRIBUTES
 
 
@@ -28,7 +30,7 @@ class SafeStr(str):
     """
 
 
-def locals_cleanup(local_data, obj):
+def locals_cleanup(local_data: dict[str, Any], obj) -> dict[str, Any]:
     """Converts arguments to kwargs per the html_attributes structure"""
     data = {}
     attrs = [*HTML_ATTRIBUTES.get(obj.__class__.__name__, []), "class_", "for_", "as_", "id", "style"]
