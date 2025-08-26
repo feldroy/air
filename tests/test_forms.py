@@ -26,7 +26,7 @@ def test_form_sync_check():
             "msg": "Input should be a valid integer, unable to parse string as an integer",
             "input": "Hello",
             "url": "https://errors.pydantic.dev/2.11/v/int_parsing",
-        }
+        },
     ]
 
 
@@ -111,8 +111,8 @@ def test_form_render():
 
     form = cheese.render()
     assert (
-        form
-        == '<label for="name">name</label><input type="text" name="name" id="name" /><label for="age">age</label><input type="number" name="age" id="age" />'
+        form == '<label for="name">name</label><input name="name" type="text" id="name" />'
+        '<label for="age">age</label><input name="age" type="number" id="age" />'
     )
 
 
@@ -127,8 +127,8 @@ def test_form_render_with_values():
     cheese = CheeseForm({"name": "Cheddar", "age": 3})
 
     assert (
-        cheese.render()
-        == '<label for="name">name</label><input type="text" value="Cheddar" name="name" id="name" /><label for="age">age</label><input type="number" value="3" name="age" id="age" />'
+        cheese.render() == '<label for="name">name</label><input name="name" type="text" value="Cheddar" id="name" />'
+        '<label for="age">age</label><input name="age" type="number" value="3" id="age" />'
     )
 
 
@@ -154,8 +154,8 @@ def test_form_render_in_view():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
-        response.text
-        == '<form><label for="name">name</label><input type="text" name="name" id="name" /><label for="age">age</label><input type="number" name="age" id="age" /></form>'
+        response.text == '<form><label for="name">name</label><input name="name" type="text" id="name" />'
+        '<label for="age">age</label><input name="age" type="number" id="age" /></form>'
     )
 
 
@@ -177,11 +177,11 @@ def test_form_render_with_errors():
     cheese.validate({})
     html = cheese.render()
 
-    assert "Please correct this error." in html
-
     assert (
-        html
-        == '<label for="name">name</label><input aria-invalid="true" type="text" name="name" id="name" /><small id="name-error">Please correct this error.</small><label for="age">age</label><input aria-invalid="true" type="number" name="age" id="age" /><small id="age-error">Please correct this error.</small>'
+        html == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" id="name" />'
+        '<small id="name-error">Please correct this error.</small><label for="age">age</label>'
+        '<input aria-invalid="true" name="age" type="number" id="age" />'
+        '<small id="age-error">Please correct this error.</small>'
     )
 
 
@@ -211,11 +211,11 @@ def test_air_field():
 
     contact_form = ContactForm()
     html = contact_form.render()
-    assert 'type="datedatetime-local"' in html
-    assert 'type="email"' in html
     assert (
-        '<label for="date_and_time">Date and Time</label><input type="datedatetime-local" name="date_and_time" id="date_and_time" />'
-        in html
+        html == '<label for="name">name</label><input name="name" type="text" id="name" />'
+        '<label for="email">Email</label><input name="email" type="email" id="email" />'
+        '<label for="date_and_time">Date and Time</label>'
+        '<input name="date_and_time" type="datedatetime-local" id="date_and_time" />'
     )
 
 
@@ -249,7 +249,7 @@ def test_airform_validate():
             "msg": "Field required",
             "input": {"name": "Cheddar"},
             "url": "https://errors.pydantic.dev/2.11/v/missing",
-        }
+        },
     ]
 
 

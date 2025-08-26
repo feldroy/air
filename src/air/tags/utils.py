@@ -1,9 +1,6 @@
 """Utilities for the Air Tag system."""
 
-from builtins import __dict__ as _bt
-from typing import Any, Callable, Final
-
-from .config import HTML_ATTRIBUTES
+from typing import Any
 
 
 def clean_html_attr_key(key: str) -> str:
@@ -18,7 +15,7 @@ def clean_html_attr_key(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = dict(class_="class", for_="for", id_="id", as_="as").get(key, key)
+    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as"}.get(key, key)
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
 
@@ -31,27 +28,9 @@ class SafeStr(str):
     """
 
 
-
-def locals_cleanup(local_data: dict[str, Any], obj) -> dict[str, Any]:
-    """Converts arguments to kwargs per the html_attributes structure"""
-    data = {}
-    attrs = HTML_ATTRIBUTES.get(obj.__class__.__name__, []) + ["class_", "for_", "as_", "id", "style"]
-    for attr in attrs:
-        # For performance reasons we use key checks rather than local_data.get
-        if attr in local_data and local_data[attr] is not None:
-            data[attr] = local_data[attr]
-    return data
-    return data
-
-
-def svg_locals_cleanup(
+def locals_cleanup(
     data: dict[str, Any],
     _skip: frozenset[str] = frozenset({"self", "children", "kwargs"}),
 ) -> dict[str, Any]:
-    """Extract non-None attributes from locals() for SVG elements"""
-    # Remove special variables
-    return {key: value for key, value in data if value is not None and key[0] != "_" and key not in _skip}
-
-
-def clean_locals(ns: dict[str, object], _skip: frozenset[str] = frozenset({"self", "children", "kwargs"})) -> dict[str, object]:
-    return {k: v for k, v in ns.items() if v is not None and k[0] != "_" and k not in _skip}
+    """Extract non-None attributes from locals() to merge with kwargs"""
+    return {key: value for key, value in data.items() if value is not None and key[0] != "_" and key not in _skip}
