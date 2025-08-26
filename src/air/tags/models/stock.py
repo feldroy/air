@@ -1841,7 +1841,17 @@ class Ol(Tag):
 
 
 class Optgroup(Tag):
-    """Defines a group of related options in a drop-down list"""
+    """Defines a group of related options in a drop-down list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        disabled: Indicates if items in the option group are not selectable.
+        label: Specifies a label for the group of options.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1857,7 +1867,19 @@ class Optgroup(Tag):
 
 
 class Option(Tag):
-    """Defines an option in a drop-down list"""
+    """Defines an option in a drop-down list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        disabled: Indicates if the option is not selectable.
+        label: Specifies a label for the option indicating the meaning of the option.
+        selected: Specifies that the option should be pre-selected.
+        value: Specifies the value to be sent with the form.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1875,7 +1897,18 @@ class Option(Tag):
 
 
 class Output(Tag):
-    """Defines the result of a calculation"""
+    """Defines the result of a calculation
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        for_: Lists the IDs of the elements that contributed to the calculation.
+        form: Associates the output with a form element.
+        name: Defines a name for the output element.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1892,7 +1925,15 @@ class Output(Tag):
 
 
 class P(Tag):
-    """Defines a paragraph"""
+    """Defines a paragraph
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1906,7 +1947,14 @@ class P(Tag):
 
 
 class Param(Tag):
-    """Defines a parameter for an object"""
+    """Defines a parameter for an object
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
