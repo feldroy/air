@@ -28,7 +28,7 @@ def test_tag_object_memory_cleanup():
     baseline_memory = sum(stat.size for stat in baseline_snapshot.statistics("filename"))
 
     # Create and destroy tags multiple times
-    for cycle in range(10):
+    for _cycle in range(10):
         # Create a large number of complex tag structures
         tags = []
         for i in range(1000):
@@ -69,11 +69,6 @@ def test_tag_object_memory_cleanup():
     # Allow for some memory growth but flag significant leaks
     # 1MB tolerance for interpreter overhead and caching
     max_allowed_growth = 1024 * 1024  # 1MB
-
-    print(f"Baseline memory: {baseline_memory:,} bytes")
-    print(f"Final memory: {final_memory:,} bytes")
-    print(f"Memory growth: {memory_growth:,} bytes")
-    print(f"Max allowed growth: {max_allowed_growth:,} bytes")
 
     assert memory_growth < max_allowed_growth, (
         f"Memory leak detected: {memory_growth:,} bytes growth exceeds threshold of {max_allowed_growth:,} bytes"
@@ -132,10 +127,6 @@ def test_nested_tag_memory_efficiency():
     memory_after_cleanup = end_memory - start_memory
     cleanup_efficiency = 1 - (memory_after_cleanup / memory_during_use) if memory_during_use > 0 else 1
 
-    print(f"Memory during use: {memory_during_use:,} bytes")
-    print(f"Memory after cleanup: {memory_after_cleanup:,} bytes")
-    print(f"Cleanup efficiency: {cleanup_efficiency:.2%}")
-
     # Expect at least 80% memory cleanup efficiency
     assert cleanup_efficiency > 0.8, f"Poor memory cleanup: only {cleanup_efficiency:.2%} of memory was freed"
 
@@ -187,10 +178,10 @@ def test_tag_creation_memory_scaling():
 
     tracemalloc.stop()
 
-    # Print memory scaling results
-    print("Memory scaling analysis:")
-    for scale, total_memory, per_tag_memory in memory_measurements:
-        print(f"Scale {scale:4d}: {total_memory:8,} bytes total, {per_tag_memory:6.1f} bytes/tag")
+    # TODO:
+    #   Print memory scaling results
+    #   for scale, _total_memory, _per_tag_memory in memory_measurements:
+    #       pass
 
     # Check that memory per tag is relatively consistent (within 50% variance)
     per_tag_memories = [measurement[2] for measurement in memory_measurements]

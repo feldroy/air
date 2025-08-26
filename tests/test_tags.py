@@ -104,19 +104,22 @@ def test_raw_html_invalid_args():
     """Test that Raw raises errors with invalid arguments."""
     try:
         air.Raw("first", "second")
-        assert False, "Expected ValueError"
+        msg = "Expected ValueError"
+        raise AssertionError(msg)
     except ValueError as e:
         assert "Raw accepts only one string argument" in str(e)
 
     try:
         air.Raw(123)
-        assert False, "Expected TypeError"
+        msg = "Expected TypeError"
+        raise AssertionError(msg)
     except TypeError as e:
         assert "Raw only accepts string content" in str(e)
 
     try:
         air.Raw(air.Div("test"))
-        assert False, "Expected TypeError"
+        msg = "Expected TypeError"
+        raise AssertionError(msg)
     except TypeError as e:
         assert "Raw only accepts string content" in str(e)
 
@@ -246,7 +249,7 @@ def test_tag_generation():
 
 
 def test_safestr():
-    assert tags.SafeStr("test").__repr__() == "'test'"
+    assert repr(tags.SafeStr("test")) == "'test'"
 
 
 def test_other_children_types():
