@@ -45,7 +45,7 @@ class A(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Abbr(Tag):
@@ -67,7 +67,7 @@ class Abbr(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Address(Tag):
@@ -89,7 +89,7 @@ class Address(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Area(Tag):
@@ -129,7 +129,7 @@ class Area(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -152,7 +152,7 @@ class Article(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Aside(Tag):
@@ -174,7 +174,7 @@ class Aside(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Audio(Tag):
@@ -208,7 +208,7 @@ class Audio(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class B(Tag):
@@ -230,7 +230,7 @@ class B(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Base(Tag):
@@ -254,7 +254,7 @@ class Base(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -277,7 +277,7 @@ class Bdi(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Bdo(Tag):
@@ -301,7 +301,7 @@ class Bdo(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Blockquote(Tag):
@@ -325,7 +325,7 @@ class Blockquote(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Body(Tag):
@@ -341,7 +341,7 @@ class Body(Tag):
         *children: Any,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Br(Tag):
@@ -363,7 +363,7 @@ class Br(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -412,7 +412,7 @@ class Button(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Canvas(Tag):
@@ -438,7 +438,7 @@ class Canvas(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Caption(Tag):
@@ -460,7 +460,7 @@ class Caption(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Cite(Tag):
@@ -482,7 +482,7 @@ class Cite(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Code(Tag):
@@ -504,7 +504,7 @@ class Code(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Col(Tag):
@@ -528,7 +528,7 @@ class Col(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -553,7 +553,7 @@ class Colgroup(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Data(Tag):
@@ -577,7 +577,7 @@ class Data(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Datalist(Tag):
@@ -599,7 +599,7 @@ class Datalist(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Dd(Tag):
@@ -625,7 +625,7 @@ class Dd(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Del(Tag):
@@ -647,7 +647,7 @@ class Del(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Details(Tag):
@@ -671,7 +671,7 @@ class Details(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Dfn(Tag):
@@ -693,7 +693,7 @@ class Dfn(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Dialog(Tag):
@@ -717,7 +717,7 @@ class Dialog(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Div(Tag):
@@ -739,7 +739,7 @@ class Div(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Dl(Tag):
@@ -761,7 +761,7 @@ class Dl(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Dt(Tag):
@@ -783,7 +783,7 @@ class Dt(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Em(Tag):
@@ -805,7 +805,7 @@ class Em(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Embed(Tag):
@@ -835,7 +835,7 @@ class Embed(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -864,7 +864,7 @@ class Fieldset(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Figcaption(Tag):
@@ -886,7 +886,7 @@ class Figcaption(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Figure(Tag):
@@ -908,7 +908,7 @@ class Figure(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Footer(Tag):
@@ -930,7 +930,7 @@ class Footer(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Form(Tag):
@@ -970,7 +970,7 @@ class Form(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class H1(Tag):
@@ -992,7 +992,7 @@ class H1(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class H2(Tag):
@@ -1014,7 +1014,7 @@ class H2(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class H3(Tag):
@@ -1036,7 +1036,7 @@ class H3(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class H4(Tag):
@@ -1058,7 +1058,7 @@ class H4(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class H5(Tag):
@@ -1080,7 +1080,7 @@ class H5(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class H6(Tag):
@@ -1102,7 +1102,7 @@ class H6(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Head(Tag):
@@ -1120,7 +1120,7 @@ class Head(Tag):
         profile: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Header(Tag):
@@ -1142,7 +1142,7 @@ class Header(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Hgroup(Tag):
@@ -1164,7 +1164,7 @@ class Hgroup(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Hr(Tag):
@@ -1186,7 +1186,7 @@ class Hr(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -1209,7 +1209,7 @@ class I(Tag):  # noqa: E742
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Iframe(Tag):
@@ -1253,7 +1253,7 @@ class Iframe(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Img(Tag):
@@ -1299,7 +1299,7 @@ class Img(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -1386,7 +1386,7 @@ class Input(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -1413,7 +1413,7 @@ class Ins(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Kbd(Tag):
@@ -1435,7 +1435,7 @@ class Kbd(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Label(Tag):
@@ -1459,7 +1459,7 @@ class Label(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Legend(Tag):
@@ -1481,7 +1481,7 @@ class Legend(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Li(Tag):
@@ -1505,7 +1505,7 @@ class Li(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Link(Tag):
@@ -1557,7 +1557,7 @@ class Link(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -1580,7 +1580,7 @@ class Main(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Map(Tag):
@@ -1604,7 +1604,7 @@ class Map(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Mark(Tag):
@@ -1626,7 +1626,7 @@ class Mark(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Menu(Tag):
@@ -1650,7 +1650,7 @@ class Menu(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Meta(Tag):
@@ -1681,7 +1681,7 @@ class Meta(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -1716,7 +1716,7 @@ class Meter(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Nav(Tag):
@@ -1738,7 +1738,7 @@ class Nav(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Noscript(Tag):
@@ -1758,7 +1758,7 @@ class Noscript(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Object(Tag):
@@ -1807,7 +1807,7 @@ class Object(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Ol(Tag):
@@ -1837,7 +1837,7 @@ class Ol(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Optgroup(Tag):
@@ -1863,7 +1863,7 @@ class Optgroup(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Option(Tag):
@@ -1893,7 +1893,7 @@ class Option(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Output(Tag):
@@ -1921,7 +1921,7 @@ class Output(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class P(Tag):
@@ -1943,7 +1943,7 @@ class P(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Param(Tag):
@@ -1963,7 +1963,7 @@ class Param(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -1978,7 +1978,7 @@ class Picture(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Pre(Tag):
@@ -1994,7 +1994,7 @@ class Pre(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Progress(Tag):
@@ -2010,7 +2010,7 @@ class Progress(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Q(Tag):
@@ -2025,7 +2025,7 @@ class Q(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Rp(Tag):
@@ -2038,7 +2038,7 @@ class Rp(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Rt(Tag):
@@ -2051,7 +2051,7 @@ class Rt(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Ruby(Tag):
@@ -2064,7 +2064,7 @@ class Ruby(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class S(Tag):
@@ -2078,7 +2078,7 @@ class S(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Samp(Tag):
@@ -2092,7 +2092,7 @@ class Samp(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Search(Tag):
@@ -2106,7 +2106,7 @@ class Search(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Section(Tag):
@@ -2120,7 +2120,7 @@ class Section(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Select(Tag):
@@ -2142,7 +2142,7 @@ class Select(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Small(Tag):
@@ -2156,7 +2156,7 @@ class Small(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Source(Tag):
@@ -2177,7 +2177,7 @@ class Source(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Span(Tag):
@@ -2191,7 +2191,7 @@ class Span(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Strong(Tag):
@@ -2205,7 +2205,7 @@ class Strong(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Sub(Tag):
@@ -2219,7 +2219,7 @@ class Sub(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Summary(Tag):
@@ -2233,7 +2233,7 @@ class Summary(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Sup(Tag):
@@ -2247,7 +2247,7 @@ class Sup(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Table(Tag):
@@ -2261,7 +2261,7 @@ class Table(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Tbody(Tag):
@@ -2275,7 +2275,7 @@ class Tbody(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Td(Tag):
@@ -2292,7 +2292,7 @@ class Td(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Template(Tag):
@@ -2309,7 +2309,7 @@ class Template(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Textarea(Tag):
@@ -2340,7 +2340,7 @@ class Textarea(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Tfoot(Tag):
@@ -2354,7 +2354,7 @@ class Tfoot(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Th(Tag):
@@ -2373,7 +2373,7 @@ class Th(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Thead(Tag):
@@ -2387,7 +2387,7 @@ class Thead(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Time(Tag):
@@ -2402,7 +2402,7 @@ class Time(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Title(Tag):
@@ -2416,7 +2416,7 @@ class Title(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Tr(Tag):
@@ -2430,7 +2430,7 @@ class Tr(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Track(Tag):
@@ -2449,7 +2449,7 @@ class Track(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True
 
 
@@ -2466,7 +2466,7 @@ class U(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Ul(Tag):
@@ -2480,7 +2480,7 @@ class Ul(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Var(Tag):
@@ -2494,7 +2494,7 @@ class Var(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Video(Tag):
@@ -2522,7 +2522,7 @@ class Video(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
 class Wbr(Tag):
@@ -2536,5 +2536,5 @@ class Wbr(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals(), self))
+        super().__init__(*children, **kwargs | locals_cleanup(locals()))
         self.self_closing = True

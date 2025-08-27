@@ -88,6 +88,7 @@ test = [
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
     "pytest-benchmark[test]>=5.1.0",
+    "pyinstrument>=5.1.1",
 ]
 docs = [
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
