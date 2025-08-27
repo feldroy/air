@@ -64,7 +64,6 @@ dev = [
     { include-group = "devtools" }, # core developer tools
     { include-group = "lint" }, # linting and type-checking toolchain
     { include-group = "test" }, # test runner and helpers
-    { include-group = "docs" }, # documentation build toolchain
 ]
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
@@ -89,17 +88,6 @@ test = [
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
     "pytest-benchmark[test]>=5.1.0",
     "pyinstrument>=5.1.1",
-]
-docs = [
-    "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
-    "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
-    "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
-    "mkdocs>=1.6.1", # Static site generator for project documentation
-    "mkdocs-exclude>=1.0.2", # Plugin to exclude files from MkDocs build
-    "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
-    "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
-    "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
-    "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
 ]
 # endregion dependencies
 
