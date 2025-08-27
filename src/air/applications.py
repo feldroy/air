@@ -389,7 +389,6 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
             H1("404 Not Found"),
             P("The requested resource was not found on this server."),
             P(f"URL: {request.url}"),
-            htmx=False,
         ),
         status_code=404,
     )
@@ -402,7 +401,6 @@ def default_500_exception_handler(request: Request, exc: Exception) -> AirRespon
             Title("500 Internal Server Error"),
             H1("500 Internal Server Error"),
             P("An internal server error occurred."),
-            htmx=False,
         ),
         status_code=500,
     )
