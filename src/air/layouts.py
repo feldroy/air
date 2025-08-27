@@ -81,7 +81,7 @@ def mvpcss(*children, htmx: bool = True, **kwargs):
     return Html(
         Head(
             Link(rel="stylesheet", href="https://unpkg.com/mvp.css"),
-            Style("footer, header, main { padding: 1rem; }"),
+            Style("footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}"),
             *head_tags,
         ),
         Body(
