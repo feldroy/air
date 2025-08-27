@@ -1,3 +1,0 @@
-# Responses
-
-::: air.responses
