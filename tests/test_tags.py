@@ -276,3 +276,6 @@ def test_tag_bool_tag():
     assert html == "<a data-fresh-air>Air</a>"
     html = _r(air.P(air.A("Air", data_cloud=True, data_earth="true")))
     assert html == '<p><a data-cloud data-earth="true">Air</a></p>'
+
+def test_adding_children_to_a_tag_using_get_item() -> None:
+    pass

@@ -1,8 +1,10 @@
 """Root module for the Air Tags system."""
 
+from __future__ import annotations
+
 import html
 from functools import cached_property
-from typing import Any
+from typing import Any, Sequence
 
 from ..utils import SafeStr, clean_html_attr_key
 
@@ -72,3 +74,7 @@ class Tag:
         if self.self_closing:
             return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
+
+    def __getitem__(self, children: Sequence[Tag]) -> Tag:
+        self._children = children
+        return self
