@@ -2,8 +2,6 @@
 
 from typing import Any
 
-from .config import HTML_ATTRIBUTES
-
 
 def clean_html_attr_key(key: str) -> str:
     """Clean up HTML attribute keys to match the standard W3C HTML spec.
@@ -30,12 +28,9 @@ class SafeStr(str):
     """
 
 
-def locals_cleanup(local_data: dict[str, Any], obj) -> dict[str, Any]:
-    """Converts arguments to kwargs per the html_attributes structure"""
-    data = {}
-    attrs = [*HTML_ATTRIBUTES.get(obj.__class__.__name__, []), "class_", "for_", "as_", "id", "style"]
-    for attr in attrs:
-        # For performance reasons we use key checks rather than local_data.get
-        if attr in local_data and local_data[attr] is not None:
-            data[attr] = local_data[attr]
-    return data
+def locals_cleanup(
+    data: dict[str, Any],
+    _skip: frozenset[str] = frozenset({"self", "children", "kwargs"}),
+) -> dict[str, Any]:
+    """Extract non-None attributes from locals() to merge with kwargs"""
+    return {key: value for key, value in data.items() if value is not None and key[0] != "_" and key not in _skip}
