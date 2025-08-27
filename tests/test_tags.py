@@ -1,3 +1,5 @@
+import pytest
+
 import air
 from air import Div, Link, Script, tags
 
@@ -301,10 +303,39 @@ def test_adding_children_to_a_tag_using_get_item() -> None:
     ]
     html = div.render()
     assert (
-        html ==
-        '<div kwarg1="kwarg1" kwarg2="kwarg2" kwarg3="kwarg3" class="class1" id="id1" style="style1">'
+        html == '<div kwarg1="kwarg1" kwarg2="kwarg2" kwarg3="kwarg3" class="class1" id="id1" style="style1">'
         '<link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet" />'
         '<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"'
         ' integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"'
         ' crossorigin="anonymous"></script></div>'
     )
+    div = Div(
+        class_="class1",
+        id="id1",
+        style="style1",
+        kwarg1="kwarg1",
+        kwarg2="kwarg2",
+        kwarg3="kwarg3",
+    )[link]
+    html = div.render()
+    assert (
+        html == '<div kwarg1="kwarg1" kwarg2="kwarg2" kwarg3="kwarg3" class="class1" id="id1" style="style1">'
+        '<link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet" /></div>'
+    )
+
+
+def test_adding_children_to_a_tag_using_get_item_type_error() -> None:
+    div = Div(
+        class_="class1",
+        id="id1",
+        style="style1",
+        kwarg3="kwarg3",
+    )
+    with pytest.raises(TypeError):
+        _ = div["test"]
+    with pytest.raises(TypeError):
+        _ = div[
+            1,
+            "2",
+            (1, 2),
+        ]

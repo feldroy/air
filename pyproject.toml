@@ -435,8 +435,9 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
-unresolved-import = "warn"
-possibly-unresolved-reference = "warn"
+unresolved-import = "ignore"
+possibly-unresolved-reference = "ignore"
+invalid-argument-type = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----
@@ -464,6 +465,7 @@ no-matching-overload = false
 not-callable = false
 bad-assignment = false
 bad-argument-type = false
+index-error = false
 
 # endregion pyrefly
 

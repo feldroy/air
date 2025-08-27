@@ -3,8 +3,13 @@
 from __future__ import annotations
 
 import html
-from functools import cached_property, partial
-from typing import Any, Sequence
+from functools import cached_property
+from typing import Any
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 from ..utils import SafeStr, clean_html_attr_key
 
@@ -75,8 +80,12 @@ class Tag:
             return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
-    def __getitem__(self, children: Sequence[Tag]) -> Tag:
-        if not children or not all(isinstance(child, Tag) for child in children):
-            raise TypeError(f'{self._name}[] got an unexpected argument')
+    def __getitem__(self, children: Tag | tuple[Tag, ...]) -> Self:
+        if not isinstance(children, tuple):
+            children = (children,)  # ty: ignore [invalid-assignment]
+        if not all(isinstance(child, Tag) for child in children):  # ty: ignore [not-iterable]
+            msg = f"{self._name}[] got an unexpected argument: {children!r}."
+            raise TypeError(msg)
+
         self._children = children
         return self
