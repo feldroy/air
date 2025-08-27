@@ -4,7 +4,6 @@ These tests focus on `locals_cleanup` which filters a mapping of local
 arguments down to only those allowed for a given tag object.
 """
 
-import air
 from air.tags.utils import locals_cleanup
 
 
@@ -18,11 +17,10 @@ def test_locals_cleanup_selects_allowed_attrs():
     local_data = {
         "href": "/home",
         "class_": "link",
-        "foo": "bar",
         "id": "elem",
     }
 
-    result = locals_cleanup(local_data, air.A())
+    result = locals_cleanup(local_data)
 
     # Only allowed HTML attributes and explicit defaults should be present
     assert result == {"href": "/home", "class_": "link", "id": "elem"}
@@ -35,7 +33,7 @@ def test_locals_cleanup_ignores_none_values():
     intentionally set to ``None``.
     """
     local_data = {"href": None, "class_": None, "target": "_self"}
-    result = locals_cleanup(local_data, air.A())
+    result = locals_cleanup(local_data)
     # None values are dropped
     assert result == {"target": "_self"}
 
@@ -47,7 +45,7 @@ def test_locals_cleanup_for_and_for_underscore():
     in the allowed attribute list for the tag.
     """
     local_data = {"for_": "email"}
-    result = locals_cleanup(local_data, air.Label())
+    result = locals_cleanup(local_data)
 
     # locals_cleanup should include the key as provided (no renaming)
     assert result == {"for_": "email"}
@@ -58,12 +56,8 @@ def test_locals_cleanup_defaults_for_unknown_class():
     keys (like ``class_``, ``for_``, ``style``, etc.) are retained.
     """
 
-    class Custom:
-        pass
-
-    obj = Custom()
-    local_data = {"class_": "c", "for_": "x", "style": "s", "unknown": "u"}
-    result = locals_cleanup(local_data, obj)
+    local_data = {"class_": "c", "for_": "x", "style": "s"}
+    result = locals_cleanup(local_data)
 
     # Only the default attribute keys are allowed for unknown classes
     assert result == {"class_": "c", "for_": "x", "style": "s"}
