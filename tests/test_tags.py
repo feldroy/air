@@ -1,5 +1,5 @@
 import air
-from air import tags
+from air import Div, Link, Script, tags
 
 
 def _r(tag):
@@ -40,7 +40,7 @@ def test_divtag_yes_attrs_nested_children():
             "Links are here",
             air.A("Link here", href="/", class_="link"),
             air.A("Another link", href="/", class_="timid"),
-        )
+        ),
     ).render()
     assert (
         html
@@ -277,5 +277,34 @@ def test_tag_bool_tag():
     html = _r(air.P(air.A("Air", data_cloud=True, data_earth="true")))
     assert html == '<p><a data-cloud data-earth="true">Air</a></p>'
 
+
 def test_adding_children_to_a_tag_using_get_item() -> None:
-    pass
+    link = Link(
+        rel="stylesheet",
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css",
+    )
+    script = Script(
+        src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js",
+        integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm",
+        crossorigin="anonymous",
+    )
+    div = Div(
+        class_="class1",
+        id="id1",
+        style="style1",
+        kwarg1="kwarg1",
+        kwarg2="kwarg2",
+        kwarg3="kwarg3",
+    )[
+        link,
+        script,
+    ]
+    html = div.render()
+    assert (
+        html ==
+        '<div kwarg1="kwarg1" kwarg2="kwarg2" kwarg3="kwarg3" class="class1" id="id1" style="style1">'
+        '<link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet" />'
+        '<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"'
+        ' integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"'
+        ' crossorigin="anonymous"></script></div>'
+    )

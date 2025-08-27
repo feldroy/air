@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import html
-from functools import cached_property
+from functools import cached_property, partial
 from typing import Any, Sequence
 
 from ..utils import SafeStr, clean_html_attr_key
@@ -76,5 +76,7 @@ class Tag:
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
     def __getitem__(self, children: Sequence[Tag]) -> Tag:
+        if not children or not all(isinstance(child, Tag) for child in children):
+            raise TypeError(f'{self._name}[] got an unexpected argument')
         self._children = children
         return self
