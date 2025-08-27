@@ -1,5 +1,33 @@
 # Changelog
 
+# 0.26.0 - 2025-08-27
+
+## Changes by New Contributors
+
+* DOCS: add args doctrings for rest of O, some P tags by @vanessapigwin in https://github.com/feldroy/air/pull/355
+* FEAT: Override mvpcss default layout padding by @mecit-san in https://github.com/feldroy/air/pull/358
+* REFACTOR: move is_htmx_request to dependencies by @mecit-san in https://github.com/feldroy/air/pull/357
+
+## What's Changed
+
+* FEAT: Benchmark suite with pytest-benchmark by @audreyfeldroy in https://github.com/feldroy/air/pull/345
+* FEAT: Implement hx boost in layout functions by @pydanny in https://github.com/feldroy/air/pull/361
+* FEAT: Implement RedirectResponse into Air namespace by @WatanabeChika in https://github.com/feldroy/air/pull/337
+* FEAT: Create examples directory by @pydanny in https://github.com/feldroy/air/pull/360
+* REFACTOR: Remove mkdocs by @pydanny in https://github.com/feldroy/air/pull/364
+* REFACTOR: locals cleanup utility and streamline attribute handling by @tallerasaf in https://github.com/feldroy/air/pull/359
+* REFACTOR: Move benchmarks to isolated directory by @pydanny in https://github.com/feldroy/air/pull/351
+* REFACTOR: Run ruff on code after enabling more rules by @tallerasaf in https://github.com/feldroy/air/pull/346
+* TESTS: Add tests for locals_cleanup in tags utils by @audreyfeldroy in https://github.com/feldroy/air/pull/344
+* ⬆(deps): Bump pyrefly from 0.29.2 to 0.30.0 in the python-dependencies group by @dependabot[bot] in https://github.com/feldroy/air/pull/362
+* ⬆(deps): bump the python-dependencies group with 4 updates by @dependabot[bot] in https://github.com/feldroy/air/pull/341
+
+## New Contributors
+* @vanessapigwin made their first contribution in https://github.com/feldroy/air/pull/355
+* @mecit-san made their first contribution in https://github.com/feldroy/air/pull/357
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.25.2...v0.26.0
+
 # 0.25.2 - 2025-08-23
 
 ## What's Changed
