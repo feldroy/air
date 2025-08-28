@@ -290,3 +290,29 @@ class AirRouter(APIRouter):
         self.route_class = route_class
         self.default_response_class = default_response_class
         self.generate_unique_id_function = generate_unique_id_function
+
+    def page(self, func):
+        """Decorator that creates a GET route using the function name as the path.
+
+        If the name of the function is "index", then the route is "/".
+
+        Example:
+
+            import air
+
+            router = air.AirRouter()
+
+            @router.page
+            def index(): # routes is "/"
+                return H1("I am the home page")
+
+            @router.page
+            def data(): # route is "/data"
+                return H1("I am the home page")
+
+            @router.page
+            def about_us(): # routes is "/about-us"
+                return H1("I am the about page")
+        """
+        route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
+        return self.get(route_name)(func)
