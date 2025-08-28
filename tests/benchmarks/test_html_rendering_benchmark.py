@@ -10,7 +10,7 @@ from pathlib import Path
 from starlette.requests import Request
 
 import air
-from air.templates import JinjaRenderer
+from air.templating import JinjaRenderer
 
 
 def create_complex_page_with_tags():

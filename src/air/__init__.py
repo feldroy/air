@@ -134,4 +134,4 @@ from .tags import (
     Video as Video,
     Wbr as Wbr,
 )
-from .templates import JinjaRenderer as JinjaRenderer
+from .templating import JinjaRenderer as JinjaRenderer
