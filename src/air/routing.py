@@ -300,6 +300,7 @@ class AirRouter(APIRouter):
 
             import air
 
+            app = air.Air()
             router = air.AirRouter()
 
             @router.page
@@ -313,6 +314,8 @@ class AirRouter(APIRouter):
             @router.page
             def about_us(): # routes is "/about-us"
                 return H1("I am the about page")
+
+            app.include_router(router)
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
         return self.get(route_name)(func)

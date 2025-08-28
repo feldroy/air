@@ -15,6 +15,7 @@ from .responses import (
     TagResponse as TagResponse,
     RedirectResponse as RedirectResponse,
 )
+from .routing import AirRouter as AirRouter
 from .tags import (
     A as A,
     Abbr as Abbr,
