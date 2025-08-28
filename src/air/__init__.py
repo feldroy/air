@@ -9,6 +9,7 @@ from .forms import AirField as AirField, AirForm as AirForm
 from .middleware import SessionMiddleware as SessionMiddleware
 from .requests import Request as Request
 from .dependencies import is_htmx_request as is_htmx_request
+from .login import LoginManager as LoginManager
 from .responses import (
     AirResponse as AirResponse,
     SSEResponse as SSEResponse,
