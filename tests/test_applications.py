@@ -123,3 +123,24 @@ def test_default_500_exception_handler():
         response.body
         == b'<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script><title>500 Internal Server Error</title></head><body><main><h1>500 Internal Server Error</h1><p>An internal server error occurred.</p></main></body></html>'
     )
+
+
+def test_injection_of_default_exception_handlers():
+    from air.applications import DEFAULT_EXCEPTION_HANDLERS
+
+    def handler(request: air.Request, exc: Exception) -> air.AirResponse:
+        return air.AirResponse()
+
+    CUSTOM_EXCEPTION_HANDLERS = {
+        405: handler,
+    }
+
+    app = air.Air(exception_handlers=CUSTOM_EXCEPTION_HANDLERS)
+
+    # Check injection of both custom and default exception handlers
+    expected_handlers = {
+        **DEFAULT_EXCEPTION_HANDLERS,
+        **CUSTOM_EXCEPTION_HANDLERS
+    }
+    assert set(expected_handlers) <= set(app.exception_handlers)
+    assert app.exception_handlers[405] is handler
