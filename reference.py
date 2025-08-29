@@ -81,7 +81,10 @@ def _callable_kwargs_to_markdown(func: Callable) -> str:
     - Default
     - Description (from docstring Args section if available)
     """
-    sig = inspect.signature(func)
+    try:
+        sig = inspect.signature(func)
+    except ValueError:
+        return ''
     headers = ["Name", "Type", "Default", "Description"]
     rows = []
 
