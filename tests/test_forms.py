@@ -1,4 +1,4 @@
-from typing import Annotated, Optional, cast
+from typing import Annotated, cast
 
 import pytest
 from fastapi import Depends, Request
@@ -188,7 +188,7 @@ def test_form_render_with_errors():
 def test_html_input_field_types():
     class ContactModel(BaseModel):
         name: str
-        email: Optional[str] = Field(json_schema_extra={"email": True})
+        email: str | None = Field(json_schema_extra={"email": True})
         date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})
 
     class ContactForm(air.AirForm):
