@@ -138,9 +138,6 @@ def test_injection_of_default_exception_handlers():
     app = air.Air(exception_handlers=CUSTOM_EXCEPTION_HANDLERS)
 
     # Check injection of both custom and default exception handlers
-    expected_handlers = {
-        **DEFAULT_EXCEPTION_HANDLERS,
-        **CUSTOM_EXCEPTION_HANDLERS
-    }
+    expected_handlers = {**DEFAULT_EXCEPTION_HANDLERS, **CUSTOM_EXCEPTION_HANDLERS}
     assert set(expected_handlers) <= set(app.exception_handlers)
     assert app.exception_handlers[405] is handler
