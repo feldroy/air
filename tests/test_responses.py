@@ -234,3 +234,21 @@ def test_SSEResponse_string_content():
         response.text
         == "event: message\ndata: Hello\ndata: World\n\nevent: message\ndata: Air is cool\ndata: Try it out!\n\n"
     )
+
+
+def test_SSEResponse_bytes_content():
+    app = air.Air()
+
+    async def event_generator():
+        yield b"already encoded"
+
+    @app.get("/test")
+    async def test_endpoint():
+        return air.SSEResponse(event_generator())
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
+    assert response.text == "already encoded"
