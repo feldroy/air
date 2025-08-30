@@ -105,7 +105,7 @@ class SSEResponse(StreamingResponse):
         })
         async for chunk in self.body_iterator:
             if not isinstance(chunk, (bytes, memoryview)):
-                if isinstance(chunk, Tag) or hasattr(chunk, "render"):
+                if not isinstance(chunk, str) and any([isinstance(chunk, Tag), hasattr(chunk, "render")]):
                     # If a tag or has a "render" method, call that and create lines
                     lines = list(chunk.render().splitlines())
                 else:
