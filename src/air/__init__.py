@@ -1,6 +1,6 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-from starlette.staticfiles import StaticFiles as StaticFiles  # noqa
+from starlette.staticfiles import StaticFiles as StaticFiles
 
 from . import layouts as layouts, responses as responses
 from .applications import Air as Air

@@ -16,7 +16,6 @@ from .tags import (
     Header,
 )
 
-# ruff: noqa F841
 HEAD_TAG_TYPES: tuple[type[Tag], ...] = (Title, Style, Meta, Link, Script, Base)
 
 
