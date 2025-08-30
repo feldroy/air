@@ -188,7 +188,7 @@ def test_form_render_with_errors():
 def test_html_input_field_types():
     class ContactModel(BaseModel):
         name: str
-        email: str = Field(json_schema_extra={"email": True})
+        email: str | None = Field(json_schema_extra={"email": True})
         date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})
 
     class ContactForm(air.AirForm):
@@ -263,3 +263,16 @@ def test_airform_autofocus():
 
     html = CheeseForm().render()
     assert "autofocus" in html
+
+
+def test_air_field_json_schema_extra():
+    class CheeseModel(BaseModel):
+        name: str = air.AirField(json_schema_extra={"autofocus": True})
+        age: int = air.AirField(json_schema_extra={"label": "my-age"})
+
+    class CheeseForm(air.AirForm):
+        model = CheeseModel
+
+    html = CheeseForm().render()
+    assert '<input name="name" type="text" autofocus id="name" />' in html
+    assert '<label for="age">my-age</label>' in html
