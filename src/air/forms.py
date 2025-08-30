@@ -3,6 +3,7 @@
 Pro-tip: Always validate incoming data."""
 
 from collections.abc import Callable
+from types import UnionType
 from typing import Any, Union, get_args, get_origin
 
 from pydantic import BaseModel, Field, ValidationError
@@ -134,9 +135,10 @@ def default_form_widget(model: type[BaseModel], data: dict | None = None, errors
     fields = []
     for field_name, field_info in model.model_fields.items():
         field_type = field_info.annotation
+        origin = get_origin(field_type)
 
         # Handle optional types (Union with None)
-        if get_origin(field_type) is Union and type(None) in get_args(field_type):
+        if (origin is Union or origin is UnionType) and type(None) in get_args(field_type):
             # This is a Union type, get the non-None type
             args = get_args(field_type)
             field_type = next((arg for arg in args if arg is not type(None)), str)
