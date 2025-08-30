@@ -7,6 +7,7 @@ from typing import Any, List, ParamSpec,TypeVar, Callable
 
 import air
 from air_markdown.tags import AirMarkdown
+from fastapi import HTTPException
 
 app = air.Air()
 
@@ -179,14 +180,11 @@ def doc_obj(obj):
 
 
 @app.get("/{module_name:path}")
-def reference_module(request: air.Request, module_name: str):
-    module = importlib.import_module(module_name)
-    objects = [
-        x
-        for x in _get_air_objects()
-        if x.__module__ == module_name and not isinstance(x, (ParamSpec, TypeVar)) and not x.__name__.startswith('_')
-    ]
-    objects = [doc_obj(x) for x in sorted(objects, key=lambda x: x.__name__)]
+def reference_module(request: air.Request, module_name: str):    
+    try:
+        module = importlib.import_module(module_name)
+    except ModuleNotFoundError:
+        raise HTTPException(status_code=404)
     return layout(
         request,
         air.Article(
