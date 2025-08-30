@@ -39,7 +39,7 @@ class AirRouter(APIRouter):
         import air
 
         app = air.Air()
-        router = air.Air.Router()
+        router = air.AirRouter()
 
 
         @router.get("/users/", tags=["users"])
@@ -278,7 +278,7 @@ class AirRouter(APIRouter):
         )
         if prefix:
             assert prefix.startswith("/"), "A path prefix must start with '/'"
-            assert not prefix.endswith("/"), "A path prefix must not end with '/', as the routes will start with '/'"
+            assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
         self.prefix = prefix
         self.tags: list[str | Enum] = tags or []
         self.dependencies = list(dependencies or [])
