@@ -77,7 +77,7 @@ These are managed in the <a href="https://github.com/feldroy/airdocs" target="_b
 Run the tests:
 
 ```bash
-just testall
+just test
 ```
 
 ## Linting and Formatting

@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.26.0"
+version = "0.27.0"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -86,7 +86,7 @@ test = [
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
-    "pytest-benchmark[test]>=5.1.0",
+    "pytest-benchmark>=5.1.0",
     "pyinstrument>=5.1.1",
 ]
 # endregion dependencies
