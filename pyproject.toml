@@ -446,7 +446,6 @@ disable-search-path-heuristics = true
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
-missing-attribute = false
 bad-override = false
 no-matching-overload = false
 not-callable = false

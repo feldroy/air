@@ -1,3 +1,3 @@
 """Tools for handling requests"""
 
-from starlette.requests import Request  # noqa: F401
+from starlette.requests import Request as Request

@@ -2,7 +2,7 @@
 
 Pro-tip: Always validate incoming data."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from types import UnionType
 from typing import Any, Union, get_args, get_origin
 
@@ -58,6 +58,7 @@ class AirForm:
     initial_data: dict | None = None
     errors: list[ErrorDetails] | None = None
     is_valid: bool = False
+    includes: Sequence[str] | None = None
 
     def __init__(self, initial_data: dict | None = None):
         if self.model is None:
@@ -97,7 +98,9 @@ class AirForm:
         return default_form_widget
 
     def render(self) -> tags.SafeStr:
-        return tags.SafeStr(self.widget(model=self.model, data=self.initial_data, errors=self.errors))
+        return tags.SafeStr(
+            self.widget(model=self.model, data=self.initial_data, errors=self.errors, includes=self.includes)
+        )
 
 
 def pydantic_type_to_html_type(field_info: Any) -> str:
@@ -130,10 +133,14 @@ def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
     return {error["loc"][0]: error for error in errors}
 
 
-def default_form_widget(model: type[BaseModel], data: dict | None = None, errors: list | None = None) -> str:
+def default_form_widget(
+    model: type[BaseModel], data: dict | None = None, errors: list | None = None, includes: Sequence[str] | None = None
+) -> str:
     error_dict = errors_to_dict(errors)
     fields = []
     for field_name, field_info in model.model_fields.items():
+        if includes is not None and field_name not in includes:
+            continue
         field_type = field_info.annotation
         origin = get_origin(field_type)
 
@@ -150,7 +157,7 @@ def default_form_widget(model: type[BaseModel], data: dict | None = None, errors
 
         if error := error_dict.get(field_name, False):
             kwargs["aria-invalid"] = "true"
-        json_schema_extra = field_info.json_schema_extra or {}
+        json_schema_extra: dict = field_info.json_schema_extra or {}
         if json_schema_extra.get("autofocus"):
             kwargs["autofocus"] = True
         fields.append(
