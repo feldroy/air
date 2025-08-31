@@ -134,7 +134,7 @@ def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
 
 
 def default_form_widget(
-    model: type[BaseModel], data: dict | None = None, errors: list | None = None, includes: list | None = None
+    model: type[BaseModel], data: dict | None = None, errors: list | None = None, includes: Sequence[str] | None = None
 ) -> str:
     error_dict = errors_to_dict(errors)
     fields = []
