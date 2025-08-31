@@ -2,6 +2,11 @@
 
 from typing import Any
 
+from lxml import (
+    etree,
+    html as lxml_html,
+)
+
 
 def clean_html_attr_key(key: str) -> str:
     """Clean up HTML attribute keys to match the standard W3C HTML spec.
@@ -26,6 +31,13 @@ class SafeStr(str):
     Example:
         sample = SafeStr('Hello, world')
     """
+
+
+def format_html(source: str) -> str:
+    # Parse to a tree, then serialize with pretty indentation.
+    root = lxml_html.fromstring(source)
+    etree.indent(root)
+    return lxml_html.tostring(root, pretty_print=True, encoding="unicode")
 
 
 def locals_cleanup(

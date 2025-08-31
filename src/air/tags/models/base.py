@@ -1,10 +1,9 @@
 """Root module for the Air Tags system."""
 
-import html
 from functools import cached_property
 from typing import Any
 
-from ..utils import SafeStr, clean_html_attr_key
+from ..utils import clean_html_attr_key, format_html
 
 
 class Tag:
@@ -36,39 +35,32 @@ class Tag:
     def attrs(self) -> str:
         if not self._attrs:
             return ""
-        attrs = []
-        for k, v in self._attrs.items():
-            if isinstance(v, bool) and v is True:
-                # Add single word attribute like "selected"
-                attrs.append(clean_html_attr_key(k))
-            elif isinstance(v, bool) and v is False:
-                # Skip single word attribute like "selected"
-                continue
-            else:
-                attrs.append(f'{clean_html_attr_key(k)}="{v}"')
-        return " " + " ".join(attrs)
+        return " ".join(self._format_attr(key) for key in self._attrs)
+
+    def _format_attr(self, key: str) -> str:
+        value = self._attrs[key]
+        clean_key = clean_html_attr_key(key)
+        if isinstance(value, bool):
+            return clean_key if value else ""
+        return f'{clean_key}="{value}"'
 
     @cached_property
     def children(self):
-        elements = []
-        for child in self._children:
-            if isinstance(child, Tag):
-                elements.append(child.render())
-            elif isinstance(child, SafeStr):
-                elements.append(child)
-            elif isinstance(child, str):
-                elements.append(html.escape(child))
-            else:
-                # If the type isn't supported, we just convert to `str`
-                # and then escape it for safety. This matches to what most
-                # template tools do, which prevents hard bugs in production
-                # from stopping users cold.
-                elements.append(html.escape(str(child)))
-        return "".join(elements)
+        if not self._children:
+            return ""
+        return "".join(str(child) for child in self._children)
 
     def render(self) -> str:
+        return str(self)
+
+    def __repr__(self) -> str:
+        return format_html(self._render())
+
+    __str__ = __repr__
+
+    def _render(self) -> str:
         if self.name == "tag":
             return self.children
         if self.self_closing:
-            return f"<{self.name}{self.attrs} />"
-        return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
+            return f"<{self.name} {self.attrs} />"
+        return f"<{self.name} {self.attrs}>{self.children}</{self.name}>"
