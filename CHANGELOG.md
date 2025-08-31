@@ -1,5 +1,21 @@
 # Changelog
 
+# 0.27.0 - 2025-08-31
+
+## What's Changed
+* REFACTOR: Rename templates.py to templating.py by @Akhilanandateja in https://github.com/feldroy/air/pull/352
+* REFACTOR: cleanup some noqa, missing-attribute from tools.pyrefly.errors by @vanessapigwin in https://github.com/feldroy/air/pull/375
+* CHORE: Remove docs GH workflow by @pydanny in https://github.com/feldroy/air/pull/365
+* TEST: increase test coverage by adding some tests by @mecit-san in https://github.com/feldroy/air/pull/371
+* FEAT: Add includes argument to AirForm rendering by @pydanny in https://github.com/feldroy/air/pull/378
+* FEAT: Add AirRouter for combining multiple Air apps into with shared middleware and dependencies by @pydanny in https://github.com/feldroy/air/pull/367
+* ⬆(deps): Bump ruff from 0.12.10 to 0.12.11 in the python-dependencies group by @dependabot[bot] in https://github.com/feldroy/air/pull/370
+
+## New Contributors
+* @Akhilanandateja made their first contribution in https://github.com/feldroy/air/pull/352
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.26.0...v0.27.0
+
 # 0.26.0 - 2025-08-27
 
 ## Changes by New Contributors
