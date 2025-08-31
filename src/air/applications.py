@@ -10,7 +10,7 @@ from typing import (
     TypeVar,
 )
 
-from fastapi import FastAPI, routing
+from fastapi import APIRouter, FastAPI, routing
 from fastapi.params import Depends
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -18,6 +18,8 @@ from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc, deprecated
+
+from air.links import RouteLink
 
 from .layouts import mvpcss
 from .responses import AirResponse
@@ -354,6 +356,9 @@ class Air(FastAPI):
             **extra,
         )
 
+        # bind .url to all endpoints once the app is fully wired
+        self.add_event_handler("startup", self._attach_route_links)
+
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path.
 
@@ -379,6 +384,27 @@ class Air(FastAPI):
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
         return self.get(route_name)(func)
+
+    # when including routers, also (re)bind .url so prefixes are respected
+    def include_router(self, router: APIRouter, *args, **kwargs) -> None:
+        super().include_router(router, *args, **kwargs)
+        self._attach_route_links()
+
+    # one-time binder used by startup/include_router/tests ---
+    def _attach_route_links(self) -> None:
+        for r in self.router.routes:
+            if isinstance(r, routing.APIRoute) and r.name and callable(r.endpoint):
+                ep = r.endpoint
+                # don't overwrite if user already attached something custom
+                if not hasattr(ep, "url"):
+                    try:
+                        ep.url = RouteLink(self, r.name)
+                    except Exception:
+                        pass
+
+    def bind_urls(self) -> None:
+        """Manually attach `.url` to endpoints (useful for unit tests)."""
+        self._attach_url_descriptors()
 
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
