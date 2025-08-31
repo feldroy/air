@@ -276,3 +276,26 @@ def test_air_field_json_schema_extra():
     html = CheeseForm().render()
     assert '<input name="name" type="text" autofocus id="name" />' in html
     assert '<label for="age">my-age</label>' in html
+
+
+def test_field_includes():
+    class PlaneModel(BaseModel):
+        id: int
+        name: str
+        year_released: int
+        max_airspeed: str
+
+    # Control test - make sure existing system still works
+    class PlaneForm(air.AirForm):
+        model = PlaneModel
+
+    html = PlaneForm().render()
+    assert '<label for="id">id</label><input name="id" type="number" id="id" />' in html
+
+    # Test with includes active, removing id field
+    class PlaneForm(air.AirForm):
+        model = PlaneModel
+        includes = ("name", "year_released", "max_airspeed")
+
+    html = PlaneForm().render()
+    assert '<label for="id">id</label><input name="id" type="number" id="id" />' not in html
