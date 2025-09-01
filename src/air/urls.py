@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from starlette.routing import BaseRoute, NoMatchFound
 
 
-class RouteLink:
+class UrlDescriptor:
     def __init__(self, app: FastAPI, route_name: str) -> None:
         self._app_ref = weakref.ref(app)
         self._route_name = route_name

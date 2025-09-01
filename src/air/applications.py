@@ -3,6 +3,7 @@ Instantiating Air applications.
 """
 
 from collections.abc import Callable, Coroutine, Sequence
+from enum import Enum
 from typing import (
     Annotated,
     Any,
@@ -10,8 +11,10 @@ from typing import (
     TypeVar,
 )
 
-from fastapi import APIRouter, FastAPI, routing
+from fastapi import FastAPI, routing
+from fastapi.datastructures import Default
 from fastapi.params import Depends
+from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
 from starlette.requests import Request
 from starlette.responses import Response
@@ -19,13 +22,15 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc, deprecated
 
-from air.links import RouteLink
+from air.urls import UrlDescriptor
 
 from .layouts import mvpcss
 from .responses import AirResponse
 from .tags import H1, P, Title
 
 AppType = TypeVar("AppType", bound="FastAPI")
+
+default_generate_unique_id = Default(generate_unique_id)
 
 
 class Air(FastAPI):
@@ -357,7 +362,7 @@ class Air(FastAPI):
         )
 
         # bind .url to all endpoints once the app is fully wired
-        self.add_event_handler("startup", self._attach_route_links)
+        self.add_event_handler("startup", self._attach_url_descriptors)
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path.
@@ -385,25 +390,252 @@ class Air(FastAPI):
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
         return self.get(route_name)(func)
 
-    # when including routers, also (re)bind .url so prefixes are respected
-    def include_router(self, router: APIRouter, *args, **kwargs) -> None:
-        super().include_router(router, *args, **kwargs)
-        self._attach_route_links()
+    def include_router(
+        self,
+        router: Annotated[routing.APIRouter, Doc("The `APIRouter` to include.")],
+        *,
+        prefix: Annotated[str, Doc("An optional path prefix for the router.")] = "",
+        tags: Annotated[
+            list[str | Enum] | None,
+            Doc(
+                """
+                A list of tags to be applied to all the *path operations* in this
+                router.
 
-    # one-time binder used by startup/include_router/tests ---
-    def _attach_route_links(self) -> None:
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
+        ] = None,
+        dependencies: Annotated[
+            Sequence[Depends] | None,
+            Doc(
+                """
+                A list of dependencies (using `Depends()`) to be applied to all the
+                *path operations* in this router.
+
+                Read more about it in the
+                [FastAPI docs for Bigger Applications - Multiple Files](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
+
+                **Example**
+
+                ```python
+                from fastapi import Depends, FastAPI
+
+                from .dependencies import get_token_header
+                from .internal import admin
+
+                app = FastAPI()
+
+                app.include_router(
+                    admin.router,
+                    dependencies=[Depends(get_token_header)],
+                )
+                ```
+                """
+            ),
+        ] = None,
+        responses: Annotated[
+            dict[int | str, dict[str, Any]] | None,
+            Doc(
+                """
+                Additional responses to be shown in OpenAPI.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Additional Responses in OpenAPI](https://fastapi.tiangolo.com/advanced/additional-responses/).
+
+                And in the
+                [FastAPI docs for Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
+                """
+            ),
+        ] = None,
+        deprecated: Annotated[
+            bool | None,
+            Doc(
+                """
+                Mark all the *path operations* in this router as deprecated.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                **Example**
+
+                ```python
+                from fastapi import FastAPI
+
+                from .internal import old_api
+
+                app = FastAPI()
+
+                app.include_router(
+                    old_api.router,
+                    deprecated=True,
+                )
+                ```
+                """
+            ),
+        ] = None,
+        include_in_schema: Annotated[
+            bool,
+            Doc(
+                """
+                Include (or not) all the *path operations* in this router in the
+                generated OpenAPI schema.
+
+                This affects the generated OpenAPI (e.g. visible at `/docs`).
+
+                **Example**
+
+                ```python
+                from fastapi import FastAPI
+
+                from .internal import old_api
+
+                app = FastAPI()
+
+                app.include_router(
+                    old_api.router,
+                    include_in_schema=False,
+                )
+                ```
+                """
+            ),
+        ] = True,
+        default_response_class: Annotated[
+            type[Response],
+            Doc(
+                """
+                Default response class to be used for the *path operations* in this
+                router.
+
+                Read more in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
+
+                **Example**
+
+                ```python
+                from fastapi import FastAPI
+                from fastapi.responses import ORJSONResponse
+
+                from .internal import old_api
+
+                app = FastAPI()
+
+                app.include_router(
+                    old_api.router,
+                    default_response_class=ORJSONResponse,
+                )
+                ```
+                """
+            ),
+        ] = AirResponse,
+        callbacks: Annotated[
+            list[BaseRoute] | None,
+            Doc(
+                """
+                List of *path operations* that will be used as OpenAPI callbacks.
+
+                This is only for OpenAPI documentation, the callbacks won't be used
+                directly.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
+                """
+            ),
+        ] = None,
+        generate_unique_id_function: Annotated[
+            Callable[[routing.APIRoute], str],
+            Doc(
+                """
+                Customize the function used to generate unique IDs for the *path
+                operations* shown in the generated OpenAPI.
+
+                This is particularly useful when automatically generating clients or
+                SDKs for your API.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
+        ] = default_generate_unique_id,
+    ) -> None:
+        """
+        Include an `APIRouter` in the same app.
+
+        Read more about it in the
+        [FastAPI docs for Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/).
+
+        ## Example
+
+        ```python
+        from fastapi import FastAPI
+
+        from .users import users_router
+
+        app = FastAPI()
+
+        app.include_router(users_router)
+        ```
+        """
+        super().include_router(
+            router,
+            prefix=prefix,
+            tags=tags,
+            dependencies=dependencies,
+            responses=responses,
+            deprecated=deprecated,
+            include_in_schema=include_in_schema,
+            default_response_class=default_response_class,
+            callbacks=callbacks,
+            generate_unique_id_function=generate_unique_id_function,
+        )
+
+        # when including routers, also (re)bind .url so prefixes are respected
+        self._attach_url_descriptors()
+
+    def _attach_url_descriptors(self) -> None:
+        """One-time binder used by startup event, include_router and tests."""
         for r in self.router.routes:
             if isinstance(r, routing.APIRoute) and r.name and callable(r.endpoint):
                 ep = r.endpoint
                 # don't overwrite if user already attached something custom
                 if not hasattr(ep, "url"):
                     try:
-                        ep.url = RouteLink(self, r.name)
+                        ep.url = UrlDescriptor(self, r.name)
                     except Exception:
                         pass
 
     def bind_urls(self) -> None:
-        """Manually attach `.url` to endpoints (useful for unit tests)."""
+        """
+        Manually attach `.url` to endpoints (useful for unit tests)
+
+        ## Example
+
+            ```python
+            def create_app():
+                import air
+
+                app = air.Air()
+
+                @app.get("/{id}", name="item")
+                def item(id: int): ...
+
+                return app
+
+
+            def test_urls():
+                app = create_app()
+                # no server startup here, so manually attach .url:
+                app.bind_urls()
+
+                assert item.url(id=123) == "/123"
+            ```
+        """
         self._attach_url_descriptors()
 
 

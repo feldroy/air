@@ -10,9 +10,6 @@ from typing import (
 from fastapi import params
 from fastapi.datastructures import Default
 from fastapi.routing import APIRoute, APIRouter
-from fastapi.utils import (
-    generate_unique_id,
-)
 from starlette.responses import JSONResponse, Response
 from starlette.routing import (
     BaseRoute,
@@ -21,10 +18,9 @@ from starlette.routing import (
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc, deprecated
 
-from .applications import Air
+from .applications import Air, default_generate_unique_id
 
 default_json_response = Default(JSONResponse)
-default_generate_unique_id = Default(generate_unique_id)
 
 
 class AirRouter(APIRouter):
