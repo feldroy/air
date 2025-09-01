@@ -9,6 +9,7 @@ from . import (
 from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
+from .exceptions import HTTPException as HTTPException
 from .forms import (
     AirField as AirField,
     AirForm as AirForm,
@@ -142,4 +143,3 @@ from .tags import (
     svg as svg,
 )
 from .templating import JinjaRenderer as JinjaRenderer
-from .exceptions import HTTPException as HTTPException
