@@ -362,7 +362,8 @@ class Air(FastAPI):
             **extra,
         )
 
-        # bind .url to all endpoints once the app is fully wired
+        # bind .url to all endpoints once the app is fully wired to cover plugins or third-party
+        # code that add routes by touching app.router directly and bypassing add_api_route.
         self.add_event_handler("startup", self._attach_url_descriptors)
 
     def page(self, func):
@@ -659,17 +660,23 @@ class Air(FastAPI):
 
     def _attach_url_descriptors(self) -> None:
         """
-        Attach reverse-URL helpers to registered endpoints.
+        Bind reverse-URL helpers to all registered HTTP endpoints.
 
-        Walks the app's router and, for each `APIRoute`, sets `endpoint.url` to a
-        `UrlDescriptor(self, route.name)` so handlers can build links like
-        `handler.url(id=123, ref="home")`.
+        Walks `self.router.routes` and, for each `APIRoute` that has a `name` and a
+        callable `endpoint`, ensures the endpoint has a `.url(**params) -> str`
+        attribute (via `UrlDescriptor`).
         """
         for route in self.router.routes:
             if isinstance(route, routing.APIRoute) and route.name and callable(route.endpoint):
                 self._attach_url_descriptor_to_route(route.name, route.endpoint)
 
     def _attach_url_descriptor_to_route(self, route_name: str, endpoint: Callable[..., Any]) -> None:
+        """
+        Attach a `.url` callable to a single endpoint, if possible.
+
+        Adds `endpoint.url = UrlDescriptor(self, route_name)` so handlers can build
+        links like `handler.url(id=123, ref="home")`. If `.url` already exists, returns immediately.
+        """
         attr = "url"
         if hasattr(endpoint, attr):
             return  # already attached

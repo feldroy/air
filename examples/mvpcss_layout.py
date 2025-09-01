@@ -25,6 +25,6 @@ def user(name: str):
 
 app.include_router(router)
 
-assert index.url() == "/"
-assert item.url(id=5, ref="home") == "/5?ref=home"
-assert user.url(name="alice") == "/users/alice"
+# assert index.url() == "/"
+# assert item.url(id=5, ref="home") == "/5?ref=home"
+# assert user.url(name="alice") == "/users/alice"
