@@ -142,3 +142,4 @@ from .tags import (
     svg as svg,
 )
 from .templating import JinjaRenderer as JinjaRenderer
+from .exceptions import HTTPException as HTTPException
