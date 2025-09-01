@@ -9,13 +9,13 @@ from typing import (
     Annotated,
     Any,
     Final,
-    TypeVar,
-    cast,
+    Self,
 )
 
 from fastapi import FastAPI, routing
-from fastapi.datastructures import Default
+from fastapi.datastructures import Default, DefaultPlaceholder
 from fastapi.params import Depends
+from fastapi.types import IncEx
 from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -30,9 +30,8 @@ from .layouts import mvpcss
 from .responses import AirResponse
 from .tags import H1, P, Title
 
-AppType = TypeVar("AppType", bound="FastAPI")
-
 default_generate_unique_id = Default(generate_unique_id)
+default_response_model = Default(None)
 
 
 class Air(FastAPI):
@@ -58,7 +57,7 @@ class Air(FastAPI):
     """
 
     def __init__(
-        self: AppType,
+        self: Self,
         *,
         debug: Annotated[
             bool,
@@ -255,7 +254,7 @@ class Air(FastAPI):
             ),
         ] = None,
         lifespan: Annotated[
-            Lifespan[AppType] | None,
+            Lifespan[Self] | None,
             Doc(
                 """
                 A `Lifespan` context manager handler. This replaces `startup` and
@@ -364,7 +363,7 @@ class Air(FastAPI):
         )
 
         # bind .url to all endpoints once the app is fully wired
-        self.add_event_handler("startup", cast("Air", self)._attach_url_descriptors)
+        self.add_event_handler("startup", self._attach_url_descriptors)
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path.
@@ -391,6 +390,64 @@ class Air(FastAPI):
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
         return self.get(route_name)(func)
+
+    def add_api_route(
+        self,
+        path: str,
+        endpoint: Callable[..., Any],
+        *,
+        response_model: Any = default_response_model,
+        status_code: int | None = None,
+        tags: list[str | Enum] | None = None,
+        dependencies: Sequence[Depends] | None = None,
+        summary: str | None = None,
+        description: str | None = None,
+        response_description: str = "Successful Response",
+        responses: dict[int | str, dict[str, Any]] | None = None,
+        deprecated: bool | None = None,
+        methods: list[str] | None = None,
+        operation_id: str | None = None,
+        response_model_include: IncEx | None = None,
+        response_model_exclude: IncEx | None = None,
+        response_model_by_alias: bool = True,
+        response_model_exclude_unset: bool = False,
+        response_model_exclude_defaults: bool = False,
+        response_model_exclude_none: bool = False,
+        include_in_schema: bool = True,
+        response_class: type[Response] | DefaultPlaceholder = AirResponse,
+        name: str | None = None,
+        openapi_extra: dict[str, Any] | None = None,
+        generate_unique_id_function: Callable[[routing.APIRoute], str] = default_generate_unique_id,
+    ) -> None:
+        route_name = name or getattr(endpoint, "__name__", None) or path
+        self._attach_url_descriptor_to_route(route_name, endpoint)
+
+        super().add_api_route(
+            path,
+            endpoint=endpoint,
+            response_model=response_model,
+            status_code=status_code,
+            tags=tags,
+            dependencies=dependencies,
+            summary=summary,
+            description=description,
+            response_description=response_description,
+            responses=responses,
+            deprecated=deprecated,
+            methods=methods,
+            operation_id=operation_id,
+            response_model_include=response_model_include,
+            response_model_exclude=response_model_exclude,
+            response_model_by_alias=response_model_by_alias,
+            response_model_exclude_unset=response_model_exclude_unset,
+            response_model_exclude_defaults=response_model_exclude_defaults,
+            response_model_exclude_none=response_model_exclude_none,
+            include_in_schema=include_in_schema,
+            response_class=response_class,
+            name=route_name,
+            openapi_extra=openapi_extra,
+            generate_unique_id_function=generate_unique_id_function,
+        )
 
     def include_router(
         self,
@@ -610,15 +667,18 @@ class Air(FastAPI):
         """
         for route in self.router.routes:
             if isinstance(route, routing.APIRoute) and route.name and callable(route.endpoint):
-                endpoint = route.endpoint
-                attr = "url"
-                if hasattr(endpoint, attr):
-                    continue  # already attached
-                if inspect.isfunction(endpoint) or inspect.ismethod(endpoint) or hasattr(endpoint, "__dict__"):
-                    setattr(endpoint, attr, UrlDescriptor(self, route.name))
-                else:
-                    # We can't attach an attribute (e.g. callable instance with __slots__)
-                    pass
+                self._attach_url_descriptor_to_route(route.name, route.endpoint)
+
+    def _attach_url_descriptor_to_route(self, route_name: str, endpoint: Callable[..., Any]) -> None:
+        attr = "url"
+        if hasattr(endpoint, attr):
+            return  # already attached
+        if inspect.isfunction(endpoint) or inspect.ismethod(endpoint) or hasattr(endpoint, "__dict__"):
+            setattr(endpoint, attr, UrlDescriptor(self, route_name))
+        else:
+            # We can't attach an attribute (e.g. callable instance with __slots__)
+            # better to have some warning logs here ...
+            pass
 
     def bind_urls(self) -> None:
         """
