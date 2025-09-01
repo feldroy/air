@@ -2,6 +2,7 @@
 Instantiating Air applications.
 """
 
+import inspect
 from collections.abc import Callable, Coroutine, Sequence
 from enum import Enum
 from typing import (
@@ -9,6 +10,7 @@ from typing import (
     Any,
     Final,
     TypeVar,
+    cast,
 )
 
 from fastapi import FastAPI, routing
@@ -362,7 +364,7 @@ class Air(FastAPI):
         )
 
         # bind .url to all endpoints once the app is fully wired
-        self.add_event_handler("startup", self._attach_url_descriptors)
+        self.add_event_handler("startup", cast("Air", self)._attach_url_descriptors)
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path.
@@ -599,16 +601,23 @@ class Air(FastAPI):
         self._attach_url_descriptors()
 
     def _attach_url_descriptors(self) -> None:
-        """One-time binder used by startup event, include_router and tests."""
-        for r in self.router.routes:
-            if isinstance(r, routing.APIRoute) and r.name and callable(r.endpoint):
-                ep = r.endpoint
-                # don't overwrite if user already attached something custom
-                if not hasattr(ep, "url"):
-                    try:
-                        ep.url = UrlDescriptor(self, r.name)
-                    except Exception:
-                        pass
+        """
+        Attach reverse-URL helpers to registered endpoints.
+
+        Walks the app's router and, for each `APIRoute`, sets `endpoint.url` to a
+        `UrlDescriptor(self, route.name)` so handlers can build links like
+        `handler.url(id=123, ref="home")`.
+        """
+        for route in self.router.routes:
+            if isinstance(route, routing.APIRoute) and route.name and callable(route.endpoint):
+                endpoint = route.endpoint
+                if hasattr(endpoint, "url"):
+                    continue  # already attached
+                if inspect.isfunction(endpoint) or inspect.ismethod(endpoint) or hasattr(endpoint, "__dict__"):
+                    endpoint.url = UrlDescriptor(self, route.name)
+                else:
+                    # We can't attach an attribute (e.g. callable instance with __slots__)
+                    pass
 
     def bind_urls(self) -> None:
         """
