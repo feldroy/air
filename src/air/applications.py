@@ -9,7 +9,6 @@ from typing import (
     Annotated,
     Any,
     Final,
-    Self,
 )
 
 from fastapi import FastAPI, routing
@@ -57,7 +56,7 @@ class Air(FastAPI):
     """
 
     def __init__(
-        self: Self,
+        self,
         *,
         debug: Annotated[
             bool,
@@ -254,7 +253,7 @@ class Air(FastAPI):
             ),
         ] = None,
         lifespan: Annotated[
-            Lifespan[Self] | None,
+            Lifespan["Air"] | None,
             Doc(
                 """
                 A `Lifespan` context manager handler. This replaces `startup` and
@@ -343,7 +342,7 @@ class Air(FastAPI):
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
-        super().__init__(  # ty: ignore [invalid-super-argument]
+        super().__init__(
             debug=debug,
             routes=routes,
             servers=servers,
