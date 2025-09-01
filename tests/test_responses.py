@@ -11,7 +11,7 @@ def test_TagResponse_obj():
 
     @app.get("/test")
     def test_endpoint():
-        return air.TagResponse(air.H1("Hello, World!"))
+        return air.AirResponse(air.H1("Hello, World!"))
 
     client = TestClient(app)
     response = client.get("/test")
@@ -20,18 +20,13 @@ def test_TagResponse_obj():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
 
-    # ensure air.TagResponse is AirResponse
-    from air.responses import AirResponse
-
-    assert air.TagResponse is AirResponse
-
 
 def test_TagResponse_type():
     """Test the TagResponse class."""
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.TagResponse)
+    @app.get("/test", response_class=air.AirResponse)
     def test_endpoint():
         return air.Main(
             air.H1("Hello, clean HTML response!"),
@@ -53,7 +48,7 @@ def test_TagResponse_html():
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.TagResponse)
+    @app.get("/test", response_class=air.AirResponse)
     def test_endpoint():
         return air.Html(
             air.Head(),
@@ -79,7 +74,7 @@ def test_TagResponse_html():
 def test_strings_and_tag_children():
     app = air.Air()
 
-    @app.get("/test", response_class=air.TagResponse)
+    @app.get("/test", response_class=air.AirResponse)
     def test_endpoint():
         return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
 
@@ -99,7 +94,7 @@ def test_custom_name_in_response():
     def Card(sentence):
         return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
 
-    @app.get("/test", response_class=air.TagResponse)
+    @app.get("/test", response_class=air.AirResponse)
     def test_endpoint():
         return Card("This is a sentence")
 
@@ -111,7 +106,7 @@ def test_custom_name_in_response():
 
 
 def test_TagResponse_with_layout_strings():
-    class CustomLayoutResponse(air.TagResponse):
+    class CustomLayoutResponse(air.AirResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content)
             return f"<html><body><h1>Custom Layout</h1>{content}</body></html>".encode()
@@ -131,7 +126,7 @@ def test_TagResponse_with_layout_strings():
 
 
 def test_TagResponse_with_layout_names():
-    class CustomLayoutResponse(air.TagResponse):
+    class CustomLayoutResponse(air.AirResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content).decode("utf-8")
             return air.Html(air.Raw(content)).render().encode("utf-8")

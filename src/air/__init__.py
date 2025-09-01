@@ -22,9 +22,6 @@ from .responses import (
     SSEResponse as SSEResponse,
     TagResponse as TagResponse,
 )
-
-# for backward compatibility, TagResponse supeseded by AirResponse
-TagResponse = AirResponse
 from .routing import AirRouter as AirRouter
 from .tags import (
     H1 as H1,
