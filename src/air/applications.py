@@ -423,19 +423,19 @@ class Air(FastAPI):
 
                 **Example**
 
-                ```python
-                from fastapi import Depends, FastAPI
+                    ```python
+                    from fastapi import Depends, FastAPI
 
-                from .dependencies import get_token_header
-                from .internal import admin
+                    from .dependencies import get_token_header
+                    from .internal import admin
 
-                app = FastAPI()
+                    app = FastAPI()
 
-                app.include_router(
-                    admin.router,
-                    dependencies=[Depends(get_token_header)],
-                )
-                ```
+                    app.include_router(
+                        admin.router,
+                        dependencies=[Depends(get_token_header)],
+                    )
+                    ```
                 """
             ),
         ] = None,
@@ -611,10 +611,11 @@ class Air(FastAPI):
         for route in self.router.routes:
             if isinstance(route, routing.APIRoute) and route.name and callable(route.endpoint):
                 endpoint = route.endpoint
-                if hasattr(endpoint, "url"):
+                attr = "url"
+                if hasattr(endpoint, attr):
                     continue  # already attached
                 if inspect.isfunction(endpoint) or inspect.ismethod(endpoint) or hasattr(endpoint, "__dict__"):
-                    endpoint.url = UrlDescriptor(self, route.name)
+                    setattr(endpoint, attr, UrlDescriptor(self, route.name))
                 else:
                     # We can't attach an attribute (e.g. callable instance with __slots__)
                     pass
