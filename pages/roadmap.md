@@ -6,15 +6,15 @@ Through our own experiences and feedback from users we can say the following is 
 - **AirResponse** makes writing views powered by Jinja or Air Tags easy and fast. Like Air Tags the API feature for this is complete
 - **Examples** in all the doc strings makes it much easier for both humans and LLMs. This is an ongoing effort
 - **Jinja + Air Tags** base templates for layout and Air Tags for content is a really sweet pattern we should talk about more. Unfortunately Jinja inside of Air Tags is a challenge not yet solved
-- **Ecosystem** Leaning into FastAPI-isms means its easy to plug into the large and vibrant FastAPI ecosystem. Deployment is also easy - Air deploys precisely the same way as FastAPI. Nevertheless we should discuss the ecosystem more in documentation
+- **Ecosystem** Leaning into FastAPI-isms means its easy to plug into the large and vibrant FastAPI ecosystem. Deployment is also easy - Air deploys precisely the same way as FastAPI
 
-For all of these accomplishments we've got a ways to go before I feel confident about taking Air from Alpha to Beta. It's not just a matter of stability, it is also features that I believe are core to the vision. I want the project to be easier and more powerful for app builders and end users alive.
+For all of these accomplishments we've got a ways to go before I feel confident about taking Air from Alpha to Beta. It's not just a matter of stability, it is also features that I believe are core to the vision. I want the project to be easier and more powerful for app builders and end users alike.
 
 ## Timeline to Beta
 
 TLDR: When we feel Air is ready
 
-While it would be nice to have Air be a Beta project there's something to be said about having the freedom to make breaking changes or to backtrack from designs when we must. It's easy to fix mistakes now then later when there are more projects that could be broken by us making breaking changes. By staying in alpha longer it gives us the opportunity to validate our ideas .
+While it would be nice to have Air be a Beta project today there's something to be said about having the freedom to make breaking changes or to backtrack from designs when we must. It's easier to fix mistakes now than later when there are more projects that could be broken by us making breaking changes. By staying in alpha longer it gives us the opportunity to validate our ideas .
 
 ## Headlines
 
@@ -37,7 +37,7 @@ The goal is Air ORM is include helper tools to make using SQLModel/SQLAlchemy ea
 
 ### Accessibility Improvements
 
-There are a number of accessibility improvements that we can make, mostly fir built-in layouts module. This includes:
+There are a number of accessibility improvements that we can make, mostly for built-in layouts module. This includes:
 
 - Light/Dark Modes - Air layouts should support both light and dark modes out of the box, as well as the ability to switch between them
 - Mobile and cross platform form support - Air layouts should resize tags to look perfect on any screen and will have a mobile version and a desktop version. We think this is already part of the MVPCSS framework but it needs to be tested and documented
@@ -45,7 +45,7 @@ There are a number of accessibility improvements that we can make, mostly fir bu
 
 ### Bringing AirMarkdown Into Air Core
 
-AirMarkdown is currently a separate package. While it works, it is extremely challenging to alter the configuration. In trying to fix it we discovered that the architecture of AirMarkdown is not quite right, and when combined with the extra layer of abstraction in having it as a seperate package makes it hard to correct. 
+AirMarkdown is currently a separate package. While it works, it is extremely challenging to alter the configuration. In trying to fix it we discovered that the architecture of AirMarkdown is not quite right, and when combined with the extra layer of abstraction in having it as a separate package makes it hard to correct. 
 
 Our plan is to bring AirMarkdown into Air core with an optional dependency group, and redesign the architecture to make it more flexible and easier to configure. Then we'll extract it again once we're happy with the result.
 
@@ -57,17 +57,12 @@ The goal is to finish the blog tutorial, as that forces us to have Air be more u
 
 ### Authentication and Authorization
 
-We want to make it easier to add authentication and authorization and user constructs to Air applications while preserving interoptability with the FastAPI dependency injection-based ecosystem. This includes:
+We want to make it easier to add authentication and authorization and user constructs to Air applications while preserving interoperability with the FastAPI dependency injection-based ecosystem. This includes:
 
 - User models - Provide a base user model that can be extended
 - Authentication - Provide helper tools to make authentication easier, including OAuth2. FastAPI is of great help here, at this point we think we just need to document how to use it with Air
 - Authorization - Provide helper tools to make authorization easier, including role-based access control
 - Integration with FastAPI's security utilities - Ensure compatibility with FastAPI's security features
-
-### Bugfixes
-
-
-
 
 ## What's already been done
 
