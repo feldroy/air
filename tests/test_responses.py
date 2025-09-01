@@ -20,6 +20,11 @@ def test_TagResponse_obj():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
 
+    # ensure air.TagResponse is AirResponse
+    from air.responses import AirResponse
+
+    assert air.TagResponse is AirResponse
+
 
 def test_TagResponse_type():
     """Test the TagResponse class."""
@@ -169,6 +174,26 @@ def test_AirResponse():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
+
+
+def test_TagResponse_compatibility():
+    """Test for non-proxied TagResponse that should still work if used directly."""
+    # import to check backward compatibility
+    from air.responses import TagResponse
+
+    app = air.Air()
+
+    @app.get("/test_tag", response_class=TagResponse)
+    def test_tag_endpoint():
+        return air.Div(air.H1("Hi from TagResponse!"), air.Br())
+
+    client = TestClient(app)
+
+    response = client.get("/test_tag")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<div><h1>Hi from TagResponse!</h1><br /></div>"
 
 
 def test_SSEResponse():
