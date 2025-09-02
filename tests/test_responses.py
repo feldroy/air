@@ -21,128 +21,24 @@ def test_TagResponse_obj():
     assert response.text == "<h1>Hello, World!</h1>"
 
 
-def test_TagResponse_type():
-    """Test the TagResponse class."""
+def test_TagResponse_compatibility():
+    """Test for non-proxied TagResponse that should still work if used directly."""
+    # import to check backward compatibility
+    from air.responses import TagResponse
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.TagResponse)
-    def test_endpoint():
-        return air.Main(
-            air.H1("Hello, clean HTML response!"),
-            air.P("This is a paragraph in the response."),
-        )
+    @app.get("/test_tag", response_class=TagResponse)
+    def test_tag_endpoint():
+        return air.Div(air.H1("Hi from TagResponse!"), air.Br())
 
     client = TestClient(app)
-    response = client.get("/test")
+
+    response = client.get("/test_tag")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text == "<main><h1>Hello, clean HTML response!</h1><p>This is a paragraph in the response.</p></main>"
-    )
-
-
-def test_TagResponse_html():
-    """Test the TagResponse class."""
-
-    app = air.Air()
-
-    @app.get("/test", response_class=air.TagResponse)
-    def test_endpoint():
-        return air.Html(
-            air.Head(),
-            air.Body(
-                air.Main(
-                    air.H1("Hello, clean HTML response!"),
-                    air.P("This is a paragraph in the response."),
-                )
-            ),
-        )
-
-    client = TestClient(app)
-    response = client.get("/test")
-
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text
-        == "<!doctype html><html><head></head><body><main><h1>Hello, clean HTML response!</h1><p>This is a paragraph in the response.</p></main></body></html>"
-    )
-
-
-def test_strings_and_tag_children():
-    app = air.Air()
-
-    @app.get("/test", response_class=air.TagResponse)
-    def test_endpoint():
-        return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
-
-    client = TestClient(app)
-    response = client.get("/test")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text
-        == "<!doctype html><html><body><p>This isn&#x27;t a <strong>cut off</strong> sentence</p></body></html>"
-    )
-
-
-def test_custom_name_in_response():
-    app = air.Air()
-
-    def Card(sentence):
-        return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
-
-    @app.get("/test", response_class=air.TagResponse)
-    def test_endpoint():
-        return Card("This is a sentence")
-
-    client = TestClient(app)
-    response = client.get("/test")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<article><header>Header</header>This is a sentence<footer>Footer</footer></article>"
-
-
-def test_TagResponse_with_layout_strings():
-    class CustomLayoutResponse(air.TagResponse):
-        def render(self, content: Any) -> bytes:
-            content = super().render(content)
-            return f"<html><body><h1>Custom Layout</h1>{content}</body></html>".encode()
-
-    app = air.Air()
-
-    @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint():
-        return air.Main(air.H2("Hello, World!"))
-
-    client = TestClient(app)
-    response = client.get("/test")
-
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html><body><h1>Custom Layout</h1>b'<main><h2>Hello, World!</h2></main>'</body></html>"
-
-
-def test_TagResponse_with_layout_names():
-    class CustomLayoutResponse(air.TagResponse):
-        def render(self, content: Any) -> bytes:
-            content = super().render(content).decode("utf-8")
-            return air.Html(air.Raw(content)).render().encode("utf-8")
-
-    app = air.Air()
-
-    @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint():
-        return air.Body(air.Main(air.H1("Hello, World!")))
-
-    client = TestClient(app)
-    response = client.get("/test")
-
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<!doctype html><html><body><main><h1>Hello, World!</h1></main></body></html>"
+    assert response.text == "<div><h1>Hi from TagResponse!</h1><br /></div>"
 
 
 def test_AirResponse():
@@ -169,6 +65,130 @@ def test_AirResponse():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
+
+
+def test_AirResponse_type():
+    """Test the AirResponse class."""
+
+    app = air.Air()
+
+    @app.get("/test", response_class=air.AirResponse)
+    def test_endpoint():
+        return air.Main(
+            air.H1("Hello, clean HTML response!"),
+            air.P("This is a paragraph in the response."),
+        )
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert (
+        response.text == "<main><h1>Hello, clean HTML response!</h1><p>This is a paragraph in the response.</p></main>"
+    )
+
+
+def test_AirResponse_html():
+    """Test the AirResponse class."""
+
+    app = air.Air()
+
+    @app.get("/test", response_class=air.AirResponse)
+    def test_endpoint():
+        return air.Html(
+            air.Head(),
+            air.Body(
+                air.Main(
+                    air.H1("Hello, clean HTML response!"),
+                    air.P("This is a paragraph in the response."),
+                )
+            ),
+        )
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert (
+        response.text
+        == "<!doctype html><html><head></head><body><main><h1>Hello, clean HTML response!</h1><p>This is a paragraph in the response.</p></main></body></html>"
+    )
+
+
+def test_strings_and_tag_children():
+    app = air.Air()
+
+    @app.get("/test", response_class=air.AirResponse)
+    def test_endpoint():
+        return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
+
+    client = TestClient(app)
+    response = client.get("/test")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert (
+        response.text
+        == "<!doctype html><html><body><p>This isn&#x27;t a <strong>cut off</strong> sentence</p></body></html>"
+    )
+
+
+def test_custom_name_in_response():
+    app = air.Air()
+
+    def Card(sentence):
+        return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
+
+    @app.get("/test", response_class=air.AirResponse)
+    def test_endpoint():
+        return Card("This is a sentence")
+
+    client = TestClient(app)
+    response = client.get("/test")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<article><header>Header</header>This is a sentence<footer>Footer</footer></article>"
+
+
+def test_AirResponse_with_layout_strings():
+    class CustomLayoutResponse(air.AirResponse):
+        def render(self, content: Any) -> bytes:
+            content = super().render(content)
+            return f"<html><body><h1>Custom Layout</h1>{content}</body></html>".encode()
+
+    app = air.Air()
+
+    @app.get("/test", response_class=CustomLayoutResponse)
+    def test_endpoint():
+        return air.Main(air.H2("Hello, World!"))
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<html><body><h1>Custom Layout</h1>b'<main><h2>Hello, World!</h2></main>'</body></html>"
+
+
+def test_AirResponse_with_layout_names():
+    class CustomLayoutResponse(air.AirResponse):
+        def render(self, content: Any) -> bytes:
+            content = super().render(content).decode("utf-8")
+            return air.Html(air.Raw(content)).render().encode("utf-8")
+
+    app = air.Air()
+
+    @app.get("/test", response_class=CustomLayoutResponse)
+    def test_endpoint():
+        return air.Body(air.Main(air.H1("Hello, World!")))
+
+    client = TestClient(app)
+    response = client.get("/test")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<!doctype html><html><body><main><h1>Hello, World!</h1></main></body></html>"
 
 
 def test_SSEResponse():
