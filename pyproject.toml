@@ -90,7 +90,7 @@ test = [
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
-    "pytest-benchmark[test]>=5.1.0",
+    "pytest-benchmark>=5.1.0",
     "pyinstrument>=5.1.1",
 ]
 # endregion dependencies
@@ -451,7 +451,6 @@ disable-search-path-heuristics = true
 # will disable the error for type checking.
 [tool.pyrefly.errors]
 # TODO -> Remove all error code bellow
-missing-attribute = false
 bad-override = false
 no-matching-overload = false
 not-callable = false

@@ -5,6 +5,7 @@ from .tags import (
     Body,
     Children,
     Head,
+    Header,
     Html,
     Link,
     Main,
@@ -13,10 +14,8 @@ from .tags import (
     Style,
     Tag,
     Title,
-    Header,
 )
 
-# ruff: noqa F841
 HEAD_TAG_TYPES: tuple[type[Tag], ...] = (Title, Style, Meta, Link, Script, Base)
 
 
