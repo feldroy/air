@@ -444,7 +444,9 @@ search-path = ["src"]
 python-version = "3.13"
 # Keep resolution stable (meaning: predictable, same every run)
 disable-search-path-heuristics = true
-
+# Should Pyrefly ignore errors based on annotations from other tools,
+# pyre-ignore or # mypy: ignore? By default, respects # pyrefly: ignore and # type: ignore.
+permissive-ignores = true
 # When the table is empty, all errors are enabled by default
 # setting <error-code> = true is the same as having no error code configuration present,
 # which means the error will be shown. Setting <error-code> = false,

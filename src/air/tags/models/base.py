@@ -74,6 +74,7 @@ class Tag:
         if self.name == "tag":
             return self.children
         attrs = " " + self.attrs if self.attrs else ""
+        # TODO -> HTML5 does not use self-closing slashes(We need to remove self-closing slash and the extra-space)
         if self.self_closing:
-            return f"<{self.name}{attrs}/>"
+            return f"<{self.name}{attrs} />"
         return f"<{self.name}{attrs}>{self.children}</{self.name}>"

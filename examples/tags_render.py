@@ -6,7 +6,9 @@ The script leverages various imported components to construct an HTML
 structure. It then utilizes a rendering function to display the generated
 HTML in a nicely formatted panel with syntax highlighting and stylized
 borders in the terminal.
-Run: `uv run -q examples/tags_render.py`
+Run:
+    `uv sync --all-extras --no-extra standard`
+    `uv run -q examples/tags_render.py`
 """
 
 from __future__ import annotations
