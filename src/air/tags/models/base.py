@@ -1,9 +1,10 @@
 """Root module for the Air Tags system."""
 
+import html
 from functools import cached_property
 from typing import Any
 
-from ..utils import clean_html_attr_key, format_html
+from ..utils import SafeStr, clean_html_attr_key, format_html
 
 
 class Tag:
@@ -45,10 +46,21 @@ class Tag:
         return f'{clean_key}="{value}"'
 
     @cached_property
-    def children(self):
+    def children(self) -> str:
         if not self._children:
             return ""
-        return "".join(str(child) for child in self._children)
+        return "".join(self._render_child(child) for child in self._children)
+
+    @staticmethod
+    def _render_child(child: Any) -> str:
+        child_str = str(child)
+        if isinstance(child, (Tag, SafeStr)):
+            return child_str
+        # If the type isn't supported, we just convert to `str`
+        # and then escape it for safety. This matches to what most
+        # template tools do, which prevents hard bugs in production
+        # from stopping users cold.
+        return html.escape(child_str)
 
     def render(self) -> str:
         return str(self)
@@ -61,6 +73,7 @@ class Tag:
     def _render(self) -> str:
         if self.name == "tag":
             return self.children
+        attrs = " " + self.attrs if self.attrs else ""
         if self.self_closing:
-            return f"<{self.name} {self.attrs} />"
-        return f"<{self.name} {self.attrs}>{self.children}</{self.name}>"
+            return f"<{self.name}{attrs}/>"
+        return f"<{self.name}{attrs}>{self.children}</{self.name}>"

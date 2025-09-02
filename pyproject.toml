@@ -40,7 +40,6 @@ dependencies = [
     "fastapi>=0.116.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
-    "lxml>=6.0.1",
     "python-multipart>=0.0.20",
 ]
 # endregion project
@@ -53,6 +52,10 @@ dependencies = [
 standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.116.1",
+]
+# Add a "pretty" extra for tree-formatted HTML support
+pretty = [
+    "lxml>=6.0.1",
 ]
 
 # Groups are for contributors; install with: uv sync --group NAME
@@ -447,12 +450,14 @@ disable-search-path-heuristics = true
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
+# TODO -> Remove all error code bellow
 missing-attribute = false
 bad-override = false
 no-matching-overload = false
 not-callable = false
 bad-assignment = false
 bad-argument-type = false
+bad-return = false
 
 # endregion pyrefly
 

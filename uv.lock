@@ -17,11 +17,13 @@ dependencies = [
     { name = "fastapi" },
     { name = "itsdangerous" },
     { name = "jinja2" },
-    { name = "lxml" },
     { name = "python-multipart" },
 ]
 
 [package.optional-dependencies]
+pretty = [
+    { name = "lxml" },
+]
 standard = [
     { name = "fastapi", extra = ["standard"], marker = "extra == 'extra-3-air-standard'" },
 ]
@@ -78,10 +80,10 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.116.1" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
-    { name = "lxml", specifier = ">=6.0.1" },
+    { name = "lxml", marker = "extra == 'pretty'", specifier = ">=6.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
 ]
-provides-extras = ["standard"]
+provides-extras = ["standard", "pretty"]
 
 [package.metadata.requires-dev]
 dev = [
