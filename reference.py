@@ -183,6 +183,13 @@ def doc_obj(obj):
 def reference_module(request: air.Request, module_name: str):    
     try:
         module = importlib.import_module(module_name)
+        objects = [
+            x 
+            for x in _get_air_objects() 
+            if x.__module__ == module_name and not isinstance(x, (ParamSpec, TypeVar)) and not x.__name__.startswith('_')
+        ]
+        objects = [doc_obj(x) for x in sorted(objects, key=lambda x: x.__name__)]
+
     except ModuleNotFoundError:
         raise HTTPException(status_code=404)
     return layout(
