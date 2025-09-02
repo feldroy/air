@@ -11,7 +11,7 @@ def test_TagResponse_obj():
 
     @app.get("/test")
     def test_endpoint():
-        return air.AirResponse(air.H1("Hello, World!"))
+        return air.TagResponse(air.H1("Hello, World!"))
 
     client = TestClient(app)
     response = client.get("/test")
@@ -26,7 +26,7 @@ def test_TagResponse_type():
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
         return air.Main(
             air.H1("Hello, clean HTML response!"),
@@ -48,7 +48,7 @@ def test_TagResponse_html():
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
         return air.Html(
             air.Head(),
@@ -74,7 +74,7 @@ def test_TagResponse_html():
 def test_strings_and_tag_children():
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
         return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
 
@@ -94,7 +94,7 @@ def test_custom_name_in_response():
     def Card(sentence):
         return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.TagResponse)
     def test_endpoint():
         return Card("This is a sentence")
 
@@ -126,7 +126,7 @@ def test_TagResponse_with_layout_strings():
 
 
 def test_TagResponse_with_layout_names():
-    class CustomLayoutResponse(air.AirResponse):
+    class CustomLayoutResponse(air.TagResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content).decode("utf-8")
             return air.Html(air.Raw(content)).render().encode("utf-8")
@@ -169,26 +169,6 @@ def test_AirResponse():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
-
-
-def test_TagResponse_compatibility():
-    """Test for non-proxied TagResponse that should still work if used directly."""
-    # import to check backward compatibility
-    from air.responses import TagResponse
-
-    app = air.Air()
-
-    @app.get("/test_tag", response_class=TagResponse)
-    def test_tag_endpoint():
-        return air.Div(air.H1("Hi from TagResponse!"), air.Br())
-
-    client = TestClient(app)
-
-    response = client.get("/test_tag")
-
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<div><h1>Hi from TagResponse!</h1><br /></div>"
 
 
 def test_SSEResponse():
