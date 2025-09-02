@@ -1,3 +1,5 @@
+# Roadmap: Road to the Beta Release
+
 We're really proud of what we've accomplished with Air. In a few short months we've taken a sketch of an idea and built out a new web framework that is both new and exciting, yet able to plug effortlessly into the FastAPI ecosystem.
 
 Through our own experiences and feedback from users we can say the following is working out quite well:
@@ -10,7 +12,7 @@ Through our own experiences and feedback from users we can say the following is 
 
 For all of these accomplishments we've got a ways to go before I feel confident about taking Air from Alpha to Beta. It's not just a matter of stability, it is also features that I believe are core to the vision. I want the project to be easier and more powerful for app builders and end users alike.
 
-## Timeline to Beta
+## Timeline
 
 TLDR: When we feel Air is ready
 
