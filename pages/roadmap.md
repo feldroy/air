@@ -1,5 +1,7 @@
 # Roadmap: Road to the Beta Release
 
+<a href="https://airdocs.fastapicloud.dev/roadmap" target="_blank">Air Beta Release Project Board</a>
+
 We're really proud of what we've accomplished with Air. In a few short months we've taken a sketch of an idea and built out a new web framework that is both new and exciting, yet able to plug effortlessly into the FastAPI ecosystem.
 
 Through our own experiences and feedback from users we can say the following is working out quite well:
@@ -20,7 +22,7 @@ While it would be nice to have Air be a Beta project today there's something to 
 
 ## Headlines
 
-Here is what is planned for the Beta release, which is tracked on the [Air Release GitHub Project board](https://github.com/orgs/feldroy/projects/2):
+Here is what is planned for the Beta release, which is tracked on the <a href="https://airdocs.fastapicloud.dev/roadmap" target="_blank">Air Beta Release Project board</a>:
 
 ### Air Forms
 
