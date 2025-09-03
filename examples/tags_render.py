@@ -70,6 +70,6 @@ if __name__ == "__main__":
         kwarg2="kwarg2",
         kwarg3="kwarg3",
     )
-
+    div.is_pretty = True
     # Render the generated HTML nicely in the terminal
     render_html_pretty(str(div))

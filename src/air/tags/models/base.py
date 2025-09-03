@@ -17,6 +17,7 @@ class Tag:
     """
 
     self_closing = False
+    is_pretty = False
 
     def __init__(self, *children: Any, **kwargs: str | int | float | bool):
         """
@@ -36,13 +37,13 @@ class Tag:
     def attrs(self) -> str:
         if not self._attrs:
             return ""
-        return " ".join(self._format_attr(key) for key in self._attrs)
+        return " " + " ".join(self._format_attr(key) for key, value in self._attrs.items() if value is not False)
 
     def _format_attr(self, key: str) -> str:
         value = self._attrs[key]
         clean_key = clean_html_attr_key(key)
-        if isinstance(value, bool):
-            return clean_key if value else ""
+        if value is True:
+            return clean_key
         return f'{clean_key}="{value}"'
 
     @cached_property
@@ -63,18 +64,18 @@ class Tag:
         return html.escape(child_str)
 
     def render(self) -> str:
-        return str(self)
+        return format_html(self._render()) if self.is_pretty else self._render()
 
     def __repr__(self) -> str:
-        return format_html(self._render())
+        return self.render()
 
-    __str__ = __repr__
+    def __str__(self) -> str:
+        return self.render()
 
     def _render(self) -> str:
         if self.name == "tag":
             return self.children
-        attrs = " " + self.attrs if self.attrs else ""
         # TODO -> HTML5 does not use self-closing slashes(We need to remove self-closing slash and the extra-space)
         if self.self_closing:
-            return f"<{self.name}{attrs} />"
-        return f"<{self.name}{attrs}>{self.children}</{self.name}>"
+            return f"<{self.name}{self.attrs} />"
+        return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
