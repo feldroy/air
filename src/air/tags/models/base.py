@@ -67,7 +67,9 @@ class Tag:
         return format_html(self._render()) if self.is_pretty else self._render()
 
     def __repr__(self) -> str:
-        return self.render()
+        attributes = self._attrs or ""
+        children = f", children={self._children}" if self._children else ""
+        return f"{self._name}({attributes=}{children})"
 
     def __str__(self) -> str:
         return self.render()

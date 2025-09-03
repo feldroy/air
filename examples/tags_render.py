@@ -13,7 +13,7 @@ Run:
 
 from __future__ import annotations
 
-from rich import box
+from rich import box, print
 from rich.console import Console
 from rich.padding import Padding
 from rich.panel import Panel
@@ -71,5 +71,7 @@ if __name__ == "__main__":
         kwarg3="kwarg3",
     )
     div.is_pretty = True
+    # Render the generated Tag nicely in the terminal
+    print(div.__repr__())
     # Render the generated HTML nicely in the terminal
     render_html_pretty(str(div))
