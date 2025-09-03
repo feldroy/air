@@ -39,16 +39,7 @@ class AirResponse(Response):
         return content.render().encode("utf-8")
 
 
-class TagResponse(Response):
-    """Response class to handle air.tags.Tags."""
-
-    media_type = "text/html; charset=utf-8"
-
-    def render(self, content: Any) -> bytes:
-        """Render Tag elements to bytes of HTML."""
-        if isinstance(content, dict):
-            content = dict_to_airtag(content)
-        return content.render().encode("utf-8")
+TagResponse = AirResponse  # Alias for clarity
 
 
 class SSEResponse(StreamingResponse):
