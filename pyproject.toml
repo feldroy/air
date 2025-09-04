@@ -459,6 +459,8 @@ not-callable = false
 bad-assignment = false
 bad-argument-type = false
 bad-return = false
+not-iterable = false
+bad-unpacking = false
 
 # endregion pyrefly
 

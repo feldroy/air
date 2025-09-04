@@ -1,10 +1,22 @@
 """Root module for the Air Tags system."""
 
 import html
+import json
 from functools import cached_property
-from typing import Any
+from typing import Any, TypedDict
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 from ..utils import SafeStr, clean_html_attr_key, format_html
+
+
+class TagDictType(TypedDict):
+    name: str
+    attributes: dict[str, str | int | float | bool]
+    children: tuple[Any]
 
 
 class Tag:
@@ -67,9 +79,12 @@ class Tag:
         return format_html(self._render()) if self.is_pretty else self._render()
 
     def __repr__(self) -> str:
-        attributes = self._attrs or ""
-        children = f", children={self._children}" if self._children else ""
-        return f"{self._name}({attributes=}{children})"
+        attributes = f"attribute={self._attrs}" if self._attrs else ""
+        children = f"{attributes and ', '}children={self._children}" if self._children else ""
+        return f"{self._name}({attributes}{children})"
+
+    def raw_repr(self) -> str:
+        return object.__repr__(self)
 
     def __str__(self) -> str:
         return self.render()
@@ -81,3 +96,24 @@ class Tag:
         if self.self_closing:
             return f"<{self.name}{self.attrs} />"
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
+
+    def to_dict(self) -> TagDictType:
+        return {
+            "name": self._name,
+            "attributes": self._attrs,
+            "children": self._children,
+        }
+
+    def to_json(self) -> str:
+        return json.dumps(self.to_dict())
+
+    @classmethod
+    def from_dict(cls, source_dict: TagDictType) -> Self:
+        name, attributes, children = source_dict.values()
+        tag = cls(*children, **attributes)
+        tag._name = name
+        return tag
+
+    @classmethod
+    def from_json(cls, source_json: str) -> Self:
+        return cls.from_dict(json.loads(source_json))

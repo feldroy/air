@@ -73,5 +73,9 @@ if __name__ == "__main__":
     div.is_pretty = True
     # Render the generated Tag nicely in the terminal
     print(div.__repr__())
+    # Raw tag representation
+    print(div.raw_repr())
+    # Dict tag representation
+    print(div.to_dict())
     # Render the generated HTML nicely in the terminal
     render_html_pretty(str(div))
