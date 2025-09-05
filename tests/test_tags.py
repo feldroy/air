@@ -322,31 +322,15 @@ def test_input_boolean_attributes_combinations():
     """Test combinations of boolean attributes on Input tag."""
 
     # Test multiple boolean attributes together
-    html = _r(air.Input(
-        name="email",
-        type="email",
-        required=True,
-        autofocus=True,
-        disabled=False
-    ))
+    html = _r(air.Input(name="email", type="email", required=True, autofocus=True, disabled=False))
     assert html == '<input name="email" type="email" required autofocus />'
 
     # Test with some True and some False
-    html = _r(air.Input(
-        name="q",
-        autofocus=True,
-        disabled=False,
-        required=True
-    ))
+    html = _r(air.Input(name="q", autofocus=True, disabled=False, required=True))
     assert html == '<input name="q" required autofocus />'
 
     # Test with checkbox and checked
-    html = _r(air.Input(
-        type="checkbox",
-        name="terms",
-        checked=True,
-        required=True
-    ))
+    html = _r(air.Input(type="checkbox", name="terms", checked=True, required=True))
     assert html == '<input name="terms" type="checkbox" required checked />'
 
 
@@ -354,21 +338,9 @@ def test_input_boolean_attributes_with_other_attrs():
     """Test boolean attributes work correctly with other attributes."""
 
     # Test autofocus with other attributes
-    html = _r(air.Input(
-        name="search",
-        type="text",
-        placeholder="Search...",
-        autofocus=True,
-        class_="search-input"
-    ))
+    html = _r(air.Input(name="search", type="text", placeholder="Search...", autofocus=True, class_="search-input"))
     assert html == '<input name="search" type="text" autofocus placeholder="Search..." class="search-input" />'
 
     # Test disabled with other attributes
-    html = _r(air.Input(
-        name="readonly",
-        type="text",
-        value="Can\'t change me",
-        disabled=True,
-        readonly=True
-    ))
+    html = _r(air.Input(name="readonly", type="text", value="Can't change me", disabled=True, readonly=True))
     assert html == '<input name="readonly" type="text" value="Can\'t change me" readonly disabled />'
