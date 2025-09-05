@@ -75,7 +75,7 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 run-with-relative-paths +CMD:
     #!/usr/bin/env bash
     set -euo pipefail
-    {{ CMD }} |& sed "s|$HERE||g"
+    {{ CMD }} 2>&1 | sed "s|$HERE||g"
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
