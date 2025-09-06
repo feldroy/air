@@ -8,7 +8,10 @@ from ..utils import SafeStr, clean_html_attr_key
 
 
 # Type hint for renderable content
-Renderable = Union[str, "Tag", SafeStr]
+# Excludes types like None (renders as "None"), bool ("True"/"False"),
+# complex ("(1+2j)"), bytes ("b'...'"), and others that produce
+# undesirable or unintended HTML output.
+Renderable = Union[str, "Tag", SafeStr, int, float]
 
 
 class Tag:
