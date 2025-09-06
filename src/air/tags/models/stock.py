@@ -2,10 +2,8 @@
 
 Script and Style tags can be found in the [air.tags.models.special](/reference/air.tags.models.special) page."""
 
-from typing import Any
-
 from ..utils import locals_cleanup
-from .base import Tag, Renderable
+from .base import Renderable, Tag
 
 
 class A(Tag):

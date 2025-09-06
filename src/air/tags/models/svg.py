@@ -2,10 +2,8 @@
 is supported.
 """
 
-from typing import Any
-
 from ..utils import locals_cleanup
-from .base import Tag, Renderable
+from .base import Renderable, Tag
 
 
 class CaseTag(Tag):

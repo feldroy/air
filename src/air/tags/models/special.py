@@ -56,7 +56,7 @@ class Raw(Tag):
 
     def render(self) -> str:
         """Render the string without escaping."""
-        return self._children[0] if self._children else ""
+        return str(self._children[0]) if self._children else ""
 
 
 class NoEscapeTag(Tag):

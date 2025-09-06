@@ -2,10 +2,9 @@
 
 import html
 from functools import cached_property
-from typing import Any, Union
+from typing import Union
 
 from ..utils import SafeStr, clean_html_attr_key
-
 
 # Type hint for renderable content
 # Excludes types like None (renders as "None"), bool ("True"/"False"),
