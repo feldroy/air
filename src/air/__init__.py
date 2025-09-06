@@ -24,7 +24,6 @@ from .responses import (
 )
 from .routing import AirRouter as AirRouter
 from .tags import (
-    Renderable as Renderable,
     H1 as H1,
     H2 as H2,
     H3 as H3,
@@ -105,6 +104,7 @@ from .tags import (
     Progress as Progress,
     Q as Q,
     Raw as Raw,
+    Renderable as Renderable,
     Rp as Rp,
     Rt as Rt,
     Ruby as Ruby,

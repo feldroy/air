@@ -1,7 +1,6 @@
 __doc__ = """Easy to write and performant HTML content generation using Python classes to render HTML."""
 
 from .models import (
-    Renderable as Renderable,
     H1 as H1,
     H2 as H2,
     H3 as H3,
@@ -82,6 +81,7 @@ from .models import (
     Progress as Progress,
     Q as Q,
     Raw as Raw,
+    Renderable as Renderable,
     Rp as Rp,
     Rt as Rt,
     Ruby as Ruby,

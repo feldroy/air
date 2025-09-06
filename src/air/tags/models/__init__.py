@@ -1,4 +1,5 @@
 from . import svg as svg
+from .base import Renderable as Renderable
 from .special import (
     Children as Children,
     Html as Html,
