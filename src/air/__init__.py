@@ -9,6 +9,7 @@ from . import (
 from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
+from .db import sql as sql
 from .exceptions import HTTPException as HTTPException
 from .forms import (
     AirField as AirField,
