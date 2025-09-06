@@ -15,6 +15,7 @@ from .tags import (
     Tag,
     Title,
 )
+from .tags.models.base import Renderable
 
 HEAD_TAG_TYPES: tuple[type[Tag], ...] = (Title, Style, Meta, Link, Script, Base)
 
@@ -37,7 +38,7 @@ def _header(tags) -> Header | str:
     return ""
 
 
-def mvpcss(*children, is_htmx: bool = False, **kwargs):
+def mvpcss(*children: Renderable, is_htmx: bool = False, **kwargs):
     """Renders the basic layout with MVP.css and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -106,7 +107,7 @@ def mvpcss(*children, is_htmx: bool = False, **kwargs):
     ).render()
 
 
-def picocss(*children, is_htmx: bool = False, **kwargs):
+def picocss(*children: Renderable, is_htmx: bool = False, **kwargs):
     """Renders the basic layout with PicoCSS and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
