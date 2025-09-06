@@ -5,7 +5,7 @@ Script and Style tags can be found in the [air.tags.models.special](/reference/a
 from typing import Any
 
 from ..utils import locals_cleanup
-from .base import Tag
+from .base import Tag, Renderable
 
 
 class A(Tag):
@@ -955,7 +955,7 @@ class Form(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         action: str | None = None,
         method: str | None = None,
         accept_charset: str | None = None,
