@@ -13,4 +13,4 @@ except ImportError:
         def __repr__(self):
             return msg
 
-    sql = NotImportable()
+    sql = NotImportable()  # type: ignore [invalid-assignment]
