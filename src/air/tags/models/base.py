@@ -2,9 +2,15 @@
 
 import html
 from functools import cached_property
-from typing import Any
+from typing import Union
 
 from ..utils import SafeStr, clean_html_attr_key
+
+# Type hint for renderable content
+# Excludes types like None (renders as "None"), bool ("True"/"False"),
+# complex ("(1+2j)"), bytes ("b'...'"), and others that produce
+# undesirable or unintended HTML output.
+Renderable = Union[str, "Tag", SafeStr, int, float]
 
 
 class Tag:
@@ -18,7 +24,7 @@ class Tag:
 
     self_closing = False
 
-    def __init__(self, *children: Any, **kwargs: str | int | float | bool):
+    def __init__(self, *children: Renderable, **kwargs: str | int | float | bool):
         """
         Args:
             children: Tags, strings, or other rendered content.
@@ -26,6 +32,8 @@ class Tag:
         """
         self._name = self.__class__.__name__
         self._module = self.__class__.__module__
+        self._children: tuple[Renderable, ...]
+        self._attrs: dict[str, str | int | float | bool]
         self._children, self._attrs = children, kwargs
 
     @property

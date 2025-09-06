@@ -81,6 +81,7 @@ from .models import (
     Progress as Progress,
     Q as Q,
     Raw as Raw,
+    Renderable as Renderable,
     Rp as Rp,
     Rt as Rt,
     Ruby as Ruby,
