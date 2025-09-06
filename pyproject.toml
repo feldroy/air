@@ -53,6 +53,11 @@ standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.116.1",
 ]
+# Used for interacting with sqlmodel and sqlalchemy
+sql = [
+    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
+    "sqlmodel[sql]>=0.0.24", # Bridge between SQLAlchemy and Pydantic
+]
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],
