@@ -28,6 +28,18 @@ class SafeStr(str):
     """
 
 
+def format_html(source: str) -> str:
+    # Parse to a tree, then serialize with pretty indentation.
+    try:
+        from lxml import etree, html  # ty: ignore[unresolved-import]
+
+        root = html.fromstring(source)
+        etree.indent(root)
+        return html.tostring(root, pretty_print=True, encoding="unicode")
+    except ImportError:
+        return source
+
+
 def locals_cleanup(
     data: dict[str, Any],
     _skip: frozenset[str] = frozenset({"self", "children", "kwargs"}),

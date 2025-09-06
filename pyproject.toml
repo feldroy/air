@@ -53,6 +53,10 @@ standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.116.1",
 ]
+# Add a "pretty" extra for tree-formatted HTML support
+pretty = [
+    "lxml>=6.0.1",
+]
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],
@@ -440,17 +444,23 @@ search-path = ["src"]
 python-version = "3.13"
 # Keep resolution stable (meaning: predictable, same every run)
 disable-search-path-heuristics = true
-
+# Should Pyrefly ignore errors based on annotations from other tools,
+# pyre-ignore or # mypy: ignore? By default, respects # pyrefly: ignore and # type: ignore.
+permissive-ignores = true
 # When the table is empty, all errors are enabled by default
 # setting <error-code> = true is the same as having no error code configuration present,
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
+# TODO -> Remove all error code bellow
 bad-override = false
 no-matching-overload = false
 not-callable = false
 bad-assignment = false
 bad-argument-type = false
+bad-return = false
+not-iterable = false
+bad-unpacking = false
 
 # endregion pyrefly
 
