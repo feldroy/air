@@ -30,7 +30,7 @@ class A(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         target: str | None = None,
         download: str | None = None,
@@ -61,7 +61,7 @@ class Abbr(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -83,7 +83,7 @@ class Address(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -114,7 +114,7 @@ class Area(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         alt: str | None = None,
         coords: str | None = None,
         download: str | None = None,
@@ -146,7 +146,7 @@ class Article(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -168,7 +168,7 @@ class Aside(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -196,7 +196,7 @@ class Audio(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         autoplay: str | None = None,
         controls: str | None = None,
         loop: str | None = None,
@@ -224,7 +224,7 @@ class B(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -246,7 +246,7 @@ class Base(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         target: str | None = None,
         class_: str | None = None,
@@ -271,7 +271,7 @@ class Bdi(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -294,7 +294,7 @@ class Bdo(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         dir: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -318,7 +318,7 @@ class Blockquote(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         cite: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -338,7 +338,7 @@ class Body(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         **kwargs: str | float | int | bool,
     ):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
@@ -357,7 +357,7 @@ class Br(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -393,7 +393,7 @@ class Button(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         name: str | None = None,
         type: str | None = None,
         value: str | None = None,
@@ -430,7 +430,7 @@ class Canvas(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         width: str | int | None = None,
         height: str | int | None = None,
         class_: str | None = None,
@@ -454,7 +454,7 @@ class Caption(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -476,7 +476,7 @@ class Cite(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -498,7 +498,7 @@ class Code(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -521,7 +521,7 @@ class Col(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         span: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -546,7 +546,7 @@ class Colgroup(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         span: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -570,7 +570,7 @@ class Data(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         value: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -593,7 +593,7 @@ class Datalist(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -617,7 +617,7 @@ class Dd(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
@@ -641,7 +641,7 @@ class Del(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -664,7 +664,7 @@ class Details(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         open: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -687,7 +687,7 @@ class Dfn(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -710,7 +710,7 @@ class Dialog(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         open: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -733,7 +733,7 @@ class Div(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -755,7 +755,7 @@ class Dl(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -777,7 +777,7 @@ class Dt(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -799,7 +799,7 @@ class Em(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -825,7 +825,7 @@ class Embed(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         src: str | None = None,
         type: str | None = None,
         width: str | int | None = None,
@@ -855,7 +855,7 @@ class Fieldset(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         disabled: str | None = None,
         form: str | None = None,
         name: str | None = None,
@@ -880,7 +880,7 @@ class Figcaption(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -902,7 +902,7 @@ class Figure(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -924,7 +924,7 @@ class Footer(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -986,7 +986,7 @@ class H1(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1008,7 +1008,7 @@ class H2(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1030,7 +1030,7 @@ class H3(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1052,7 +1052,7 @@ class H4(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1074,7 +1074,7 @@ class H5(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1096,7 +1096,7 @@ class H6(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1116,7 +1116,7 @@ class Head(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         profile: str | None = None,
         **kwargs: str | float | int | bool,
     ):
@@ -1136,7 +1136,7 @@ class Header(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1158,7 +1158,7 @@ class Hgroup(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1180,7 +1180,7 @@ class Hr(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1203,7 +1203,7 @@ class I(Tag):  # noqa: E742
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1236,7 +1236,7 @@ class Iframe(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         src: str | None = None,
         srcdoc: str | None = None,
         width: str | int | None = None,
@@ -1281,7 +1281,7 @@ class Img(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         src: str | None = None,
         width: str | int | None = None,
         height: str | int | None = None,
@@ -1348,7 +1348,7 @@ class Input(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         name: str | None = None,
         type: str | None = None,
         value: str | None = None,
@@ -1405,7 +1405,7 @@ class Ins(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
@@ -1429,7 +1429,7 @@ class Kbd(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1452,7 +1452,7 @@ class Label(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         for_: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -1475,7 +1475,7 @@ class Legend(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1498,7 +1498,7 @@ class Li(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         value: int | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -1536,7 +1536,7 @@ class Link(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         as_: str | None = None,
         blocking: str | None = None,
@@ -1574,7 +1574,7 @@ class Main(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1597,7 +1597,7 @@ class Map(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         name: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -1620,7 +1620,7 @@ class Mark(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1643,7 +1643,7 @@ class Menu(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         compact: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -1671,7 +1671,7 @@ class Meta(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         charset: str | None = None,
         content: str | None = None,
         http_equiv: str | None = None,
@@ -1704,7 +1704,7 @@ class Meter(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         value: str | None = None,
         min: str | None = None,
         max: str | None = None,
@@ -1732,7 +1732,7 @@ class Nav(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1753,7 +1753,7 @@ class Noscript(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         **kwargs: str | float | int | bool,
@@ -1787,7 +1787,7 @@ class Object(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         archive: str | None = None,
         border: str | None = None,
         classid: str | None = None,
@@ -1827,7 +1827,7 @@ class Ol(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         compact: str | None = None,
         reversed: str | None = None,
         start: str | None = None,
@@ -1855,7 +1855,7 @@ class Optgroup(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         disabled: str | None = None,
         label: str | None = None,
         class_: str | None = None,
@@ -1883,7 +1883,7 @@ class Option(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         disabled: str | None = None,
         label: str | None = None,
         selected: bool | None = None,
@@ -1912,7 +1912,7 @@ class Output(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         for_: str | None = None,
         form: str | None = None,
         name: str | None = None,
@@ -1937,7 +1937,7 @@ class P(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1958,7 +1958,7 @@ class Param(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         **kwargs: str | float | int | bool,
@@ -1972,7 +1972,7 @@ class Picture(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1986,7 +1986,7 @@ class Pre(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         width: str | int | None = None,
         wrap: str | None = None,
         class_: str | None = None,
@@ -2002,7 +2002,7 @@ class Progress(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         max: str | None = None,
         value: str | None = None,
         class_: str | None = None,
@@ -2018,7 +2018,7 @@ class Q(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         cite: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -2033,7 +2033,7 @@ class Rp(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         **kwargs: str | float | int | bool,
@@ -2046,7 +2046,7 @@ class Rt(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         **kwargs: str | float | int | bool,
@@ -2059,7 +2059,7 @@ class Ruby(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         **kwargs: str | float | int | bool,
@@ -2072,7 +2072,7 @@ class S(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2086,7 +2086,7 @@ class Samp(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2100,7 +2100,7 @@ class Search(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2114,7 +2114,7 @@ class Section(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2128,7 +2128,7 @@ class Select(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         autocomplete: str | None = None,
         autofocus: str | None = None,
         disabled: str | None = None,
@@ -2150,7 +2150,7 @@ class Small(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2164,7 +2164,7 @@ class Source(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         src: str | None = None,
         type: str | None = None,
         sizes: str | None = None,
@@ -2185,7 +2185,7 @@ class Span(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2199,7 +2199,7 @@ class Strong(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2213,7 +2213,7 @@ class Sub(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2227,7 +2227,7 @@ class Summary(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2241,7 +2241,7 @@ class Sup(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2255,7 +2255,7 @@ class Table(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2269,7 +2269,7 @@ class Tbody(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2283,7 +2283,7 @@ class Td(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         colspan: str | None = None,
         rowspan: str | None = None,
         headers: str | None = None,
@@ -2300,7 +2300,7 @@ class Template(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         shadowrootmode: str | None = None,
         shadowrootdelegatesfocus: str | None = None,
         shadowrootclonable: str | None = None,
@@ -2317,7 +2317,7 @@ class Textarea(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         autocapitalize: str | None = None,
         autocomplete: str | None = None,
         autocorrect: str | None = None,
@@ -2348,7 +2348,7 @@ class Tfoot(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2362,7 +2362,7 @@ class Th(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         abbr: str | None = None,
         colspan: str | None = None,
         headers: str | None = None,
@@ -2381,7 +2381,7 @@ class Thead(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2395,7 +2395,7 @@ class Time(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         datetime: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -2410,7 +2410,7 @@ class Title(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2424,7 +2424,7 @@ class Tr(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2438,7 +2438,7 @@ class Track(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         default: str | None = None,
         kind: str | None = None,
         label: str | None = None,
@@ -2458,7 +2458,7 @@ class U(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         compact: str | None = None,
         type: str | None = None,
         class_: str | None = None,
@@ -2474,7 +2474,7 @@ class Ul(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2488,7 +2488,7 @@ class Var(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -2502,7 +2502,7 @@ class Video(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         src: str | None = None,
         autoplay: str | None = None,
         controls: str | None = None,
@@ -2530,7 +2530,7 @@ class Wbr(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
