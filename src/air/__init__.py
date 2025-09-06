@@ -24,6 +24,7 @@ from .responses import (
 )
 from .routing import AirRouter as AirRouter
 from .tags import (
+    Renderable as Renderable,
     H1 as H1,
     H2 as H2,
     H3 as H3,
