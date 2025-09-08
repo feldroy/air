@@ -129,3 +129,29 @@ def test_jinja_plus_airtags_autorender():
         response.text
         == """<html>\n    <head>\n        <title>Jinja+Air Tags</title>\n    </head>\n    <body>\n        <h1>Jinja+Air Tags</h1>\n        <main><p>Air Tags work great with Jinja</p></main>\n    </body>\n</html>"""
     )
+
+
+def test_JinjaRenderer_with_context_processors():
+    """Test JinjaRenderer with context_processors parameter"""
+
+    def add_globals(request):
+        return {"global_var": "test_value"}
+
+    jinja = JinjaRenderer(directory="tests/templates", context_processors=[add_globals])
+
+    # Just test that it initializes correctly
+    assert jinja.templates is not None
+
+
+def test_JinjaRenderer_with_env():
+    """Test JinjaRenderer with custom env parameter"""
+    import jinja2
+
+    # Create environment with loader since we can't pass directory and env together
+    from jinja2 import FileSystemLoader
+
+    env = jinja2.Environment(loader=FileSystemLoader("tests/templates"))
+    jinja = JinjaRenderer(directory=None, env=env)  # type: ignore[invalid-argument-type]
+
+    # Just test that it initializes correctly
+    assert jinja.templates is not None

@@ -59,6 +59,8 @@ class JinjaRenderer:
         env: jinja2.Environment | None = None,
     ):
         """Initialize with template directory path"""
+        if context_processors is None:
+            context_processors = []
         self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
 
     def __call__(
