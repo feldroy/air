@@ -1,5 +1,13 @@
 # Changelog
 
+# 0.27.2 - 2025-09-08
+
+## What's Changed
+* BUG: Address JinjaRenderer conflicts with Sentry by @pydanny in https://github.com/feldroy/air/pull/404
+* TOOLS: Lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/403
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.27.1...v0.27.2
+
 # 0.27.1 - 2025-09-06
 
 ## What's Changed
