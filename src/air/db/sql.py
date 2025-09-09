@@ -28,7 +28,7 @@ def create_async_engine(
     url: str = ASYNC_DATABASE_URL,  # Async connection string
     echo: bool = DEBUG,
     future=True,
-    pool_pre_ping=True
+    pool_pre_ping=True,
 ):
     # TODO doc
     return _create_async_engine(url=url, echo=echo, future=future, pool_pre_ping=pool_pre_ping)
@@ -70,7 +70,7 @@ async def get_async_session(url: str = ASYNC_DATABASE_URL, echo: bool = DEBUG) -
         import air
         from fastapi import Depends
         # Session function
-        from .models import get_async_dbsession 
+        from .models import get_async_dbsession
         from .models import async_dbsession_dependency # Wrapped shortcut
 
         app = air.Air()

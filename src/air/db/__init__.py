@@ -1,6 +1,6 @@
 try:
     from . import sql
-except ImportError:
+except ImportError:  # pragma: no cover
     msg = "air.db.sql requires installing the sqlmodel and greenlet packages."
 
     class NotImportable:
