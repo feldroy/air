@@ -10,6 +10,9 @@ from pydantic import BaseModel, Field, ValidationError
 from pydantic_core import ErrorDetails
 from starlette.datastructures import FormData
 
+import air.tags.models.special
+import air.tags.utils
+
 from . import tags
 from .requests import Request
 
@@ -97,8 +100,8 @@ class AirForm:
         """
         return default_form_widget
 
-    def render(self) -> tags.SafeStr:
-        return tags.SafeStr(
+    def render(self) -> air.tags.utils.SafeStr:
+        return air.tags.utils.SafeStr(
             self.widget(model=self.model, data=self.initial_data, errors=self.errors, includes=self.includes)
         )
 

@@ -4,18 +4,13 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from air import Tag
-from air.tags import SafeStr
+from examples.html_sample import HTML_SAMPLE
+
+from air import SafeStr, Tag
 
 
 class MyTag(Tag):
     """Simple concrete Tag subclass used in tests."""
-
-    # Use defaults: self_closing=False, is_pretty=False
-
-
-class SelfClosingTag(Tag):
-    self_closing: bool = True
 
 
 def _strip_ws(s: str) -> str:
@@ -62,13 +57,6 @@ def test_render_escapes_plain_text_and_preserves_safestr_and_child_tag() -> None
     assert "<mytag>X</mytag>" in out
 
 
-def test_render_self_closing() -> None:
-    tag = SelfClosingTag()
-    out = tag.render()
-    # Current implementation uses a space before the slash
-    assert out == "<selfclosingtag />"
-
-
 def test_str_calls_render() -> None:
     tag = MyTag("Hi")
     assert str(tag) == tag.render() == "<mytag>Hi</mytag>"
@@ -83,21 +71,7 @@ def test_repr_no_attrs_no_children() -> None:
 def test_repr_with_attrs_and_children() -> None:
     tag = MyTag("A", id_=10)  # note: __repr__ shows original _attrs keys (id_), not cleaned keys
     r = repr(tag)
-    # Example: "MyTag(attribute={'id_': 10}, children=('A',))"
-    assert r.startswith("MyTag(")
-    assert "attribute=" in r
-    assert "children=(" in r
-    assert "id_" in r
-    assert "10" in r
-    assert "A" in r
-
-
-def test_raw_repr_shape() -> None:
-    tag = MyTag()
-    raw = tag.raw_repr()
-    # e.g., "<tests.test_tag.MyTag object at 0x...>"
-    assert raw.startswith("<") and raw.endswith(">")
-    assert "MyTag object at 0x" in raw
+    assert r == "MyTag(attributes={'id_': 10}, children=('A',))"
 
 
 def test_to_dict_and_to_json_roundtrip() -> None:
@@ -123,16 +97,17 @@ def test_to_dict_and_to_json_roundtrip() -> None:
 
 def test_from_dict_and_from_json_roundtrip() -> None:
     """This test encodes the intended behavior for from_dict/from_json."""
-    original = MyTag("A", "B", class_="btn", disabled=True)
+    original = HTML_SAMPLE
+    original_type = type(original)
     original_dict = original.to_dict()
     original_json = original.to_json()
 
-    rebuilt_from_dict = MyTag.from_dict(original_dict)
-    assert isinstance(rebuilt_from_dict, MyTag)
+    rebuilt_from_dict = original_type.from_dict(original_dict)
+    assert isinstance(rebuilt_from_dict, original_type)
     assert rebuilt_from_dict.to_dict() == original_dict
     assert rebuilt_from_dict.render() == original.render()
 
-    rebuilt_from_json = MyTag.from_json(original_json)
-    assert isinstance(rebuilt_from_json, MyTag)
+    rebuilt_from_json = original_type.from_json(original_json)
+    assert isinstance(rebuilt_from_json, original_type)
     assert rebuilt_from_json.to_dict() == original_dict
     assert rebuilt_from_json.render() == original.render()

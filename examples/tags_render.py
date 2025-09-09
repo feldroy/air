@@ -8,7 +8,7 @@ HTML in a nicely formatted panel with syntax highlighting and stylized
 borders in the terminal.
 Run:
     `uv sync --all-extras --no-extra standard`
-    `uv run -q examples/tags_render.py`
+    `just run examples.tags_render`
 """
 
 from __future__ import annotations
@@ -19,7 +19,8 @@ from rich.padding import Padding
 from rich.panel import Panel
 from rich.syntax import Syntax
 
-from air import A, Div, Img, Link, P, Script
+from air import H1, H2, H3, A, B, Div, Img, Link, P, SafeStr, Script
+from examples.html_sample import HTML_SAMPLE
 
 
 def render_html_pretty(html: str, *, theme: str = "dracula") -> None:
@@ -49,7 +50,15 @@ if __name__ == "__main__":
         integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm",
         crossorigin="anonymous",
     )
-    a = A("Air", data_cloud=True, data_earth="true")
+    a = A("A", data_cloud=True, data_earth="true")
+    b = B("B", data_cloud=True, data_earth="true")
+    h1 = H1("H1", data_cloud=True, data_earth="true")
+    h2 = H2("H1", data_cloud=True, data_earth="true")
+    h3 = H3("H1", data_cloud=True, data_earth="true")
+    s1 = A(SafeStr(":root & > < { --pico-font-size: 100%; }"), id="id1")
+    s2 = SafeStr("safe <> string")
+    s3 = A(":root & > < { --pico-font-size: 100%; }", id="id1")
+    script_safe = Script("safe <> Script", crossorigin="anonymous")
     img = Img(
         src="https://cdn.jsdelivr.net/dist/img.png",
         width=250,
@@ -62,7 +71,8 @@ if __name__ == "__main__":
     div = Div(
         link,
         script,
-        P(a, img),
+        P(a, b, b, img),
+        P(a, s1, s2, img, "<>", a, script_safe),
         class_="class1",
         id="id1",
         style="style1",
@@ -70,12 +80,11 @@ if __name__ == "__main__":
         kwarg2="kwarg2",
         kwarg3="kwarg3",
     )
-    div.is_pretty = True
-    # Render the generated Tag nicely in the terminal
-    print(div.__repr__())
     # Raw tag representation
-    print(div.raw_repr())
-    # Dict tag representation
-    print(div.to_dict())
+    print(div.__repr__())
     # Render the generated HTML nicely in the terminal
     render_html_pretty(str(div))
+
+    # Extra
+    print(HTML_SAMPLE.from_dict(HTML_SAMPLE.to_dict()).__repr__())
+    print(HTML_SAMPLE.from_json(HTML_SAMPLE.to_json()).__repr__())

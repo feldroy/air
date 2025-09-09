@@ -1,9 +1,13 @@
 """Root module for the Air Tags system."""
 
+from __future__ import annotations
+
 import html
 import json
+from collections.abc import Mapping
 from functools import cached_property
-from typing import Any, TypedDict
+from types import MappingProxyType
+from typing import Any, ClassVar, Final, TypedDict
 
 try:
     from typing import Self
@@ -16,10 +20,16 @@ from ..utils import SafeStr, clean_html_attr_key, format_html
 class TagDictType(TypedDict):
     name: str
     attributes: dict[str, str | int | float | bool]
-    children: tuple[Any]
+    children: tuple[Any, ...]
 
 
-class Tag:
+class TagKeys:
+    NAME: Final = "name"
+    ATTRIBUTES: Final = "attributes"
+    CHILDREN: Final = "children"
+
+
+class BaseTag:
     """Base tag for all other tags.
 
     Sets four attributes, name, module, children, and attrs.
@@ -28,8 +38,8 @@ class Tag:
     the values of these attributes, the object reconstruction can occur.
     """
 
-    self_closing = False
-    is_pretty = False
+    _registry: ClassVar[dict[str, type[BaseTag]]] = {}
+    registry: ClassVar[Mapping[str, type[BaseTag]]] = MappingProxyType(_registry)  # read-only view
 
     def __init__(self, *children: Any, **kwargs: str | int | float | bool):
         """
@@ -64,56 +74,101 @@ class Tag:
             return ""
         return "".join(self._render_child(child) for child in self._children)
 
-    @staticmethod
-    def _render_child(child: Any) -> str:
+    def _render_child(self, child: Any) -> str:
         child_str = str(child)
-        if isinstance(child, (Tag, SafeStr)):
+        if isinstance(child, (BaseTag, SafeStr)):
             return child_str
-        # If the type isn't supported, we just convert to `str`
-        # and then escape it for safety. This matches to what most
-        # template tools do, which prevents hard bugs in production
-        # from stopping users cold.
-        return html.escape(child_str)
+        return self._escape_text(child_str)
 
-    def render(self) -> str:
-        return format_html(self._render()) if self.is_pretty else self._render()
+    @staticmethod
+    def _escape_text(text: str) -> str:
+        return html.escape(text, quote=False)
 
-    def __repr__(self) -> str:
-        attributes = f"attribute={self._attrs}" if self._attrs else ""
-        children = f"{attributes and ', '}children={self._children}" if self._children else ""
-        return f"{self._name}({attributes}{children})"
+    def render(self, *, is_pretty: bool = False) -> str:
+        return format_html(self._render()) if is_pretty else self._render()
 
-    def raw_repr(self) -> str:
-        return object.__repr__(self)
-
-    def __str__(self) -> str:
-        return self.render()
+    def pretty_render(self) -> str:
+        return self.render(is_pretty=True)
 
     def _render(self) -> str:
-        if self.name == "tag":
-            return self.children
-        # TODO -> HTML5 does not use self-closing slashes(We need to remove self-closing slash and the extra-space)
-        if self.self_closing:
-            return f"<{self.name}{self.attrs} />"
+        return self._render_paired()
+
+    def _render_void(self) -> str:
+        """Render a self-closing (void) tag.
+
+        TODO: HTML5 does not require a trailing slash.
+              Consider returning f"<{self.name}{self.attrs}>" instead.
+        """
+        return f"<{self.name}{self.attrs} />"
+
+    def _render_paired(self) -> str:
+        """Render a normal open/close pair."""
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
+    def __str__(self) -> str:
+        return self.pretty_render()
+
+    def __repr__(self) -> str:
+        summary = f'("{self._doc_summary}")' if self._doc_summary else ""
+        return f"<air.{self._name}{summary}>"
+
+    @property
+    def _doc_summary(self) -> str:
+        return self.__doc__.splitlines()[0] if self.__doc__ else ""
+
+    def full_repr(self) -> str:
+        attributes = f"{TagKeys.ATTRIBUTES}={self._attrs}" if self._attrs else ""
+        children = ", ".join(child.full_repr() if isinstance(child, BaseTag) else child for child in self._children)
+        children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
+        return f"{self._name}({attributes}{children_str})"
+
+    def to_pretty_dict(self) -> str:
+        try:
+            from rich.pretty import pretty_repr
+
+            return pretty_repr(self.to_dict(), max_width=170, max_length=7, max_depth=4, max_string=25)
+        except ImportError:
+            return str(self.to_dict())
+
     def to_dict(self) -> TagDictType:
+        """
+        Convert this Tag into plain Python data that json.dumps can serialize.
+
+        - Children that are Tag instances are converted recursively.
+        """
         return {
-            "name": self._name,
-            "attributes": self._attrs,
-            "children": self._children,
+            TagKeys.NAME: self._name,
+            TagKeys.ATTRIBUTES: self._attrs,
+            TagKeys.CHILDREN: tuple(self.to_child_dict()),
         }
 
-    def to_json(self) -> str:
-        return json.dumps(self.to_dict())
+    def to_child_dict(self) -> list[TagDictType]:
+        return [child.to_dict() if isinstance(child, BaseTag) else child for child in self._children]
+
+    def to_json(self, indent: int | None = None) -> str:
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent)
+
+    def to_pretty_json(self) -> str:
+        return self.to_json(indent=4)
 
     @classmethod
     def from_dict(cls, source_dict: TagDictType) -> Self:
-        name, attributes, children = source_dict.values()
-        tag = cls(*children, **attributes)
+        name, attributes, children_dict = source_dict.values()
+        children: tuple[Self, ...] = tuple(cls._from_child_dict(children_dict))
+        tag = cls.registry[name](*children, **attributes)
         tag._name = name
         return tag
 
     @classmethod
+    def _from_child_dict(cls, children_dict: TagDictType) -> list[Self]:
+        return [
+            cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict for child_dict in children_dict
+        ]
+
+    @classmethod
     def from_json(cls, source_json: str) -> Self:
         return cls.from_dict(json.loads(source_json))
+
+    def __init_subclass__(cls) -> None:
+        super().__init_subclass__()
+        BaseTag._registry[cls.__name__] = cls

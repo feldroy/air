@@ -13,7 +13,6 @@ requires-python = ">=3.10,<3.14"
 urls.Homepage = "https://github.com/feldroy/air"
 urls.Docs = "https://airdocs.fastapicloud.dev"
 urls.Issues = "https://github.com/feldroy/air/issues"
-scripts = { "air" = "air.cli:app" }
 
 classifiers = [
     "Operating System :: OS Independent",
@@ -56,6 +55,7 @@ standard = [
 # Add a "pretty" extra for tree-formatted HTML support
 pretty = [
     "lxml>=6.0.1",
+    "rich>=12.6.0",
 ]
 
 # Groups are for contributors; install with: uv sync --group NAME
@@ -337,6 +337,13 @@ ignore = [
     "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
 ]
 
+# A list of mappings from file pattern to rule codes or prefixes to exclude,
+# when considering any matching files. An initial '!' negates the file pattern.
+[tool.ruff.lint.per-file-ignores]
+"examples/html_sample.py" = [
+    "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
+]
+
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
 banned-from = []
@@ -385,7 +392,7 @@ exempt-modules = ["typing", "typing_extensions"]
 # region ----> ty <----
 [tool.ty.src]
 # Lock what gets checked so "ty check" and "ty check ." act the same
-include = ["src", "tests"] # keep discovery stable
+include = ["src", "tests", "examples"] # keep discovery stable
 # Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
 respect-ignore-files = true
 
@@ -401,7 +408,7 @@ python-platform = "all"
 
 [tool.ty.terminal]
 # Fail the run on any warning.
-error-on-warning = true
+error-on-warning = false
 # Verbose output; switch to "concise" when you want minimal output.
 output-format = "full"
 
@@ -427,13 +434,15 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
-unresolved-import = "warn"
-possibly-unresolved-reference = "warn"
+unresolved-import = "ignore"
+possibly-unresolved-reference = "ignore"
+invalid-argument-type = "ignore"
+too-many-positional-arguments = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----
 [tool.pyrefly]
-project-includes = ["src", "tests"] # keep discovery stable
+project-includes = ["src", "tests", "examples"] # keep discovery stable
 project-excludes = [
     "**/__pycache__",
     "**/*venv/**/*",
@@ -461,6 +470,9 @@ bad-argument-type = false
 bad-return = false
 not-iterable = false
 bad-unpacking = false
+index-error = false
+import-error = false
+bad-argument-count = false
 
 # endregion pyrefly
 

@@ -1,4 +1,6 @@
 import air
+import air.tags.models.special
+import air.tags.utils
 from air import tags
 
 
@@ -249,7 +251,7 @@ def test_tag_generation():
 
 
 def test_safestr():
-    assert repr(tags.SafeStr("test")) == "'test'"
+    assert repr(air.tags.utils.SafeStr("test")) == "'test'"
 
 
 def test_other_children_types():

@@ -5,10 +5,10 @@ is supported.
 from typing import Any
 
 from ..utils import locals_cleanup
-from .base import Tag
+from .base import BaseTag
 
 
-class CaseTag(Tag):
+class CaseTag(BaseTag):
     """This is for case-sensitive tags like those used in SVG generation."""
 
     @property

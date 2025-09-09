@@ -1,22 +1,7 @@
 """Tools for building layouts and several simple layouts for quick prototyping."""
 
-from .tags import (
-    Base,
-    Body,
-    Children,
-    Head,
-    Header,
-    Html,
-    Link,
-    Main,
-    Meta,
-    Script,
-    Style,
-    Tag,
-    Title,
-)
-
-HEAD_TAG_TYPES: tuple[type[Tag], ...] = (Title, Style, Meta, Link, Script, Base)
+from .tags import Body, Children, Head, Header, Html, Link, Main, Script, Style
+from .tags.types import HEAD_TAG_TYPES
 
 
 def filter_body_tags(tags) -> list:

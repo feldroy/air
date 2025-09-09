@@ -69,6 +69,7 @@ from .tags import (
     Figure as Figure,
     Footer as Footer,
     Form as Form,
+    Fragment as Fragment,
     Head as Head,
     Header as Header,
     Hgroup as Hgroup,
@@ -123,6 +124,8 @@ from .tags import (
     Sup as Sup,
     Table as Table,
     Tag as Tag,
+    TagDictType as TagDictType,
+    TagKeys as TagKeys,
     Tags as Tags,
     Tbody as Tbody,
     Td as Td,
@@ -142,4 +145,5 @@ from .tags import (
     Wbr as Wbr,
     svg as svg,
 )
+from .tags.utils import SafeStr as SafeStr
 from .templating import JinjaRenderer as JinjaRenderer

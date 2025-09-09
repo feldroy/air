@@ -23,6 +23,8 @@ dependencies = [
 [package.optional-dependencies]
 pretty = [
     { name = "lxml" },
+    { name = "rich", version = "12.6.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-3-air-dev' or extra == 'group-3-air-devtools'" },
+    { name = "rich", version = "14.1.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'extra-3-air-standard' or (extra != 'group-3-air-dev' and extra != 'group-3-air-devtools')" },
 ]
 standard = [
     { name = "fastapi", extra = ["standard"], marker = "extra == 'extra-3-air-standard'" },
@@ -82,6 +84,7 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "lxml", marker = "extra == 'pretty'", specifier = ">=6.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
+    { name = "rich", marker = "extra == 'pretty'", specifier = ">=12.6.0" },
 ]
 provides-extras = ["standard", "pretty"]
 
