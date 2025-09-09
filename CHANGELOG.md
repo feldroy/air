@@ -1,5 +1,29 @@
 # Changelog
 
+# 0.27.2 - 2025-09-08
+
+## What's Changed
+* BUG: Address JinjaRenderer conflicts with Sentry by @pydanny in https://github.com/feldroy/air/pull/404
+* TOOLS: Lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/403
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.27.1...v0.27.2
+
+# 0.27.1 - 2025-09-06
+
+## What's Changed
+* REFACTOR: Proxy HTTPException from FastAPI by @XueSongTap in https://github.com/feldroy/air/pull/391
+* REFACTOR: make air.TagResponse represent AirResponse by @vanessapigwin in https://github.com/feldroy/air/pull/392
+* BUG: Input/Textarea tag boolean attributes to use bool type by @audreyfeldroy in https://github.com/feldroy/air/pull/396
+* TOOLS: command output redirection in run-with-relative-paths by @audreyfeldroy in https://github.com/feldroy/air/pull/397
+* ⬆(deps):Lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/390
+* ⬆(deps): Bump pyrefly from 0.30.0 to 0.31.0 in the python-dependencies group by @dependabot[bot] in https://github.com/feldroy/air/pull/393
+* ⬆(deps): Bump the python-dependencies group across 1 directory with 3 updates by @dependabot[bot] in https://github.com/feldroy/air/pull/395
+
+## New Contributors
+* @XueSongTap made their first contribution in https://github.com/feldroy/air/pull/391
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.27.0...v0.27.1
+
 # 0.27.0 - 2025-08-31
 
 ## What's Changed
