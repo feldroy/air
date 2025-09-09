@@ -38,8 +38,9 @@ def format_html(source: str) -> str:
     root = l_html.fromstring(source)
     etree.indent(root)  # pretty indentation
     pretty_source: str = l_html.tostring(root, pretty_print=True, encoding="unicode")
-
-    return pretty_source.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
+    return pretty_source
+    # TODO -> Remove
+    # return pretty_source.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
 
 
 def locals_cleanup(

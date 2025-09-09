@@ -66,15 +66,10 @@ class UnSafeTag(BaseTag):
     @override
     def __init__(self, text_child: str = "", /, **kwargs: str | float | int | bool) -> None:
         super().__init__(text_child, **kwargs)
-
+        self._should_escape_text = False
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
-
-    @override
-    @staticmethod
-    def _escape_text(text: str) -> str:
-        return text
 
 
 class Raw(UnSafeTag, Transparent):

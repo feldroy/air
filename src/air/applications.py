@@ -2,6 +2,7 @@
 Instantiating Air applications.
 """
 
+import inspect
 from collections.abc import Callable, Coroutine, Sequence
 from functools import wraps
 from typing import (
@@ -12,7 +13,7 @@ from typing import (
 )
 
 from fastapi import FastAPI, routing
-from fastapi.datastructures import Default
+from fastapi.datastructures import Default, DefaultPlaceholder
 from fastapi.params import Depends
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -382,15 +383,31 @@ class Air(FastAPI):
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
 
-        @wraps(func)
-        async def endpoint(*args, **kwargs):
-            result = func(*args, **kwargs)
-            if isinstance(result, Response):
-                return result
-            return AirResponse(result)  # force HTML, bypass jsonable_encoder
-
         # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(path=route_name, response_class=AirResponse)(endpoint)
+        return self.get(path=route_name)(func)
+
+    def get(
+        self,
+        path: str,
+        *,
+        response_class: type[Response] | DefaultPlaceholder = default_html_response,
+        **kwargs: Any,
+    ):
+        register = super().get
+
+        def decorator(func):
+            @wraps(func)
+            async def endpoint(*args, **kw):
+                result = func(*args, **kw)
+                if inspect.isawaitable(result):
+                    result = await result
+                if isinstance(result, Response):
+                    return result
+                return response_class(result)
+
+            return register(path, response_class=response_class, **kwargs)(endpoint)
+
+        return decorator
 
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:

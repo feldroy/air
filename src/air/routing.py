@@ -1,5 +1,6 @@
 """Use routing if you want a single cohesive app where all routes share middlewares and error handling."""
 
+import inspect
 from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
@@ -9,7 +10,7 @@ from typing import (
 )
 
 from fastapi import params
-from fastapi.datastructures import Default
+from fastapi.datastructures import Default, DefaultPlaceholder
 from fastapi.routing import APIRoute, APIRouter
 from fastapi.utils import (
     generate_unique_id,
@@ -322,12 +323,28 @@ class AirRouter(APIRouter):
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
 
-        @wraps(func)
-        async def endpoint(*args, **kwargs):
-            result = func(*args, **kwargs)
-            if isinstance(result, Response):
-                return result
-            return AirResponse(result)  # force HTML, bypass jsonable_encoder
-
         # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(path=route_name, response_class=AirResponse)(endpoint)
+        return self.get(path=route_name, response_class=self.default_response_class)(func)
+
+    def get(
+        self,
+        path: str,
+        *,
+        response_class: type[Response] | DefaultPlaceholder = default_html_response,
+        **kwargs: Any,
+    ):
+        register = super(Air, self).get
+
+        def decorator(func):
+            @wraps(func)
+            async def endpoint(*args, **kw):
+                result = func(*args, **kw)
+                if inspect.isawaitable(result):
+                    result = await result
+                if isinstance(result, Response):
+                    return result
+                return response_class(result)
+
+            return register(path, response_class=response_class, **kwargs)(endpoint)
+
+        return decorator

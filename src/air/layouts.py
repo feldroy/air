@@ -22,7 +22,7 @@ def _header(tags) -> Header | str:
     return ""
 
 
-def mvpcss(*children, is_htmx: bool = False, **kwargs):
+def mvpcss(*children, is_htmx: bool = False, **kwargs) -> Html:
     """Renders the basic layout with MVP.css and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -88,10 +88,10 @@ def mvpcss(*children, is_htmx: bool = False, **kwargs):
             _header(body_tags),
             Main(*[x for x in body_tags if not isinstance(x, Header)]),
         ),
-    ).render()
+    )
 
 
-def picocss(*children, is_htmx: bool = False, **kwargs):
+def picocss(*children, is_htmx: bool = False, **kwargs) -> Html:
     """Renders the basic layout with PicoCSS and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -129,4 +129,4 @@ def picocss(*children, is_htmx: bool = False, **kwargs):
             *head_tags,
         ),
         Body(Main(*body_tags, class_="container")),
-    ).render()
+    )

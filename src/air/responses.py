@@ -14,9 +14,9 @@ from .tags import BaseTag
 class AirResponse(HTMLResponse):
     """Response class to handle air.tags.Tags or HTML (from Jinja2)."""
 
-    def render(self, tag: BaseTag) -> bytes:
+    def render(self, tag: BaseTag | str) -> bytes:
         """Render Tag elements to bytes of HTML."""
-        return super().render(tag.render())
+        return super().render(str(tag))
 
 
 TagResponse = AirResponse  # Alias for clarity
