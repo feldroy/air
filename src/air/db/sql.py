@@ -9,40 +9,44 @@ from sqlalchemy.ext.asyncio import (  # type: ignore [import-error]
 from sqlmodel import create_engine as _create_engine
 from sqlmodel.ext.asyncio.session import AsyncSession  # type: ignore [import-error]
 
+DEBUG = getenv("DEBUG", "false").lower() in ("1", "true", "yes")
 DATABASE_URL = getenv("DATABASE_URL", "")
 base_async_url = DATABASE_URL.split("?")[0]
 ASYNC_DATABASE_URL = base_async_url.replace("postgresql", "postgresql+asyncpg")
+ASYNC_DATABASE_URL = base_async_url.replace("sqlite:", "sqlite+aiosqlite:")
 
 
-def create_engine(
-    url: str = DATABASE_URL,  # Async connection string
+def create_sync_engine(
+    url: str = DATABASE_URL,  # connection string
     echo: bool = True,
 ):
     # TODO doc
-    return _create_engine(url=url, echo=echo, future=future)
+    return _create_engine(url=url, echo=echo)
 
 
 def create_async_engine(
     url: str = ASYNC_DATABASE_URL,  # Async connection string
-    echo: bool = True,
+    echo: bool = DEBUG,
     future=True,
+    pool_pre_ping=True
 ):
     # TODO doc
-    return _create_async_engine(url=url, echo=echo, future=future)
+    return _create_async_engine(url=url, echo=echo, future=future, pool_pre_ping=pool_pre_ping)
 
 
 async def create_async_session(
     url: str = ASYNC_DATABASE_URL,  # Database URL
-    echo: bool = False,  # Optional: Set to False in production
+    echo: bool = DEBUG,
 ):
     """
+    Create an async SQLAlchemy session factory.
 
     Example:
 
         # With SQLite in memory
         async_session = create_async_session(':memory:')
         async with async_session() as session:
-            session.add()
+            session.add(database_object)
             await session.commit()
     """
     async_engine = create_async_engine(
@@ -57,7 +61,7 @@ async def create_async_session(
     )
 
 
-async def get_async_session(url: str = ASYNC_DATABASE_URL, echo: bool = True) -> AsyncGenerator[AsyncSession, None]:
+async def get_async_session(url: str = ASYNC_DATABASE_URL, echo: bool = DEBUG) -> AsyncGenerator[AsyncSession, None]:
     """Used with fastapi.Depends to instantiate db session in a view.
 
     Example:
@@ -65,7 +69,8 @@ async def get_async_session(url: str = ASYNC_DATABASE_URL, echo: bool = True) ->
         # Assumes environment variable DATABASE_URL has been set
         import air
         from fastapi import Depends
-        from .models import get_async_dbsession # Session function
+        # Session function
+        from .models import get_async_dbsession 
         from .models import async_dbsession_dependency # Wrapped shortcut
 
         app = air.Air()
@@ -82,5 +87,5 @@ async def get_async_session(url: str = ASYNC_DATABASE_URL, echo: bool = True) ->
         yield session
 
 
-# TODO pass arguments - this won't work
+# Shortcut that only works if DATABASE_URL env var is set
 async_session_dependency = Depends(get_async_session)
