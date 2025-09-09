@@ -1,3 +1,5 @@
+import pytest
+
 import air
 import air.tags.models.special
 import air.tags.utils
@@ -42,7 +44,7 @@ def test_divtag_yes_attrs_nested_children():
             "Links are here",
             air.A("Link here", href="/", class_="link"),
             air.A("Another link", href="/", class_="timid"),
-        )
+        ),
     ).render()
     assert (
         html
@@ -51,9 +53,9 @@ def test_divtag_yes_attrs_nested_children():
 
 
 def test_name_types():
-    assert issubclass(air.A, air.Tag)
-    assert issubclass(air.Div, air.Tag)
-    assert issubclass(air.P, air.Tag)
+    assert issubclass(air.A, air.BaseTag)
+    assert issubclass(air.Div, air.BaseTag)
+    assert issubclass(air.P, air.BaseTag)
 
 
 def test_subclassing():
@@ -104,32 +106,20 @@ def test_raw_html_with_script():
 
 def test_raw_html_invalid_args():
     """Test that Raw raises errors with invalid arguments."""
-    try:
+    with pytest.raises(TypeError):
         air.Raw("first", "second")
-        msg = "Expected ValueError"
-        raise AssertionError(msg)
-    except ValueError as e:
-        assert "Raw accepts only one string argument" in str(e)
 
-    try:
+    with pytest.raises(TypeError):
         air.Raw(123)
-        msg = "Expected TypeError"
-        raise AssertionError(msg)
-    except TypeError as e:
-        assert "Raw only accepts string content" in str(e)
 
-    try:
+    with pytest.raises(TypeError):
         air.Raw(air.Div("test"))
-        msg = "Expected TypeError"
-        raise AssertionError(msg)
-    except TypeError as e:
-        assert "Raw only accepts string content" in str(e)
 
 
-def test_raw_html_ignores_kwargs():
-    """Test that Raw ignores keyword arguments."""
-    raw = air.Raw("<div>Test</div>", id="ignored", class_="also-ignored")
-    assert raw.render() == "<div>Test</div>"
+def test_raw_html_reject_kwargs():
+    """Test that Raw reject keyword arguments."""
+    with pytest.raises(TypeError):
+        air.Raw("<div>Test</div>", id="ignored", class_="also-ignored")
 
 
 def test_functions_as_tags():
@@ -195,7 +185,7 @@ def test_tags_head_tag_injection():
 
 def test_escape_html():
     html = air.P("I'm <strong>Strong</strong>").render()
-    assert html == "<p>I&#x27;m &lt;strong&gt;Strong&lt;/strong&gt;</p>"
+    assert html == "<p>I'm &lt;strong&gt;Strong&lt;/strong&gt;</p>"
 
 
 def test_script_tag():

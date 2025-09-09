@@ -8,19 +8,15 @@ from starlette.responses import (
 )
 from starlette.types import Send
 
-from .tags import Tag
+from .tags import BaseTag
 
 
 class AirResponse(HTMLResponse):
     """Response class to handle air.tags.Tags or HTML (from Jinja2)."""
 
-    def render(self, content: str | dict) -> bytes:
+    def render(self, tag: BaseTag) -> bytes:
         """Render Tag elements to bytes of HTML."""
-        if isinstance(content, str):
-            content = Tag.from_json(content)
-        if isinstance(content, dict):
-            content = Tag.from_dict(content)
-        return super().render(str(content))
+        return super().render(tag.render())
 
 
 TagResponse = AirResponse  # Alias for clarity
@@ -82,7 +78,7 @@ class SSEResponse(StreamingResponse):
         )
         async for chunk in self.body_iterator:
             if not isinstance(chunk, (bytes, memoryview)):
-                if not isinstance(chunk, str) and any([isinstance(chunk, Tag), hasattr(chunk, "render")]):
+                if not isinstance(chunk, str) and any([isinstance(chunk, BaseTag), hasattr(chunk, "render")]):
                     # If a tag or has a "render" method, call that and create lines
                     lines = list(chunk.render().splitlines())
                 else:

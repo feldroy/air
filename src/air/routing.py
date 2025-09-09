@@ -2,6 +2,7 @@
 
 from collections.abc import Callable, Sequence
 from enum import Enum
+from functools import wraps
 from typing import (
     Annotated,
     Any,
@@ -22,9 +23,11 @@ from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc, deprecated
 
 from .applications import Air
+from .responses import AirResponse
 
 default_json_response = Default(JSONResponse)
 default_generate_unique_id = Default(generate_unique_id)
+default_html_response = Default(AirResponse)
 
 
 class AirRouter(APIRouter):
@@ -66,7 +69,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
+                """,
             ),
         ] = None,
         dependencies: Annotated[
@@ -78,7 +81,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Bigger Applications - Multiple Files](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
-                """
+                """,
             ),
         ] = None,
         default_response_class: Annotated[
@@ -89,9 +92,9 @@ class AirRouter(APIRouter):
 
                 Read more in the
                 [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
-                """
+                """,
             ),
-        ] = default_json_response,
+        ] = default_html_response,
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
             Doc(
@@ -105,7 +108,7 @@ class AirRouter(APIRouter):
 
                 And in the
                 [FastAPI docs for Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
-                """
+                """,
             ),
         ] = None,
         callbacks: Annotated[
@@ -119,7 +122,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """
+                """,
             ),
         ] = None,
         routes: Annotated[
@@ -132,7 +135,7 @@ class AirRouter(APIRouter):
                 ---
 
                 A list of routes to serve incoming HTTP and WebSocket requests.
-                """
+                """,
             ),
             deprecated(
                 """
@@ -141,7 +144,7 @@ class AirRouter(APIRouter):
 
                 In FastAPI, you normally would use the *path operation methods*,
                 like `router.get()`, `router.post()`, etc.
-                """
+                """,
             ),
         ] = None,
         redirect_slashes: Annotated[
@@ -150,7 +153,7 @@ class AirRouter(APIRouter):
                 """
                 Whether to detect and redirect slashes in URLs when the client doesn't
                 use the same format.
-                """
+                """,
             ),
         ] = True,
         default: Annotated[
@@ -159,7 +162,7 @@ class AirRouter(APIRouter):
                 """
                 Default function handler for this router. Used to handle
                 404 Not Found errors.
-                """
+                """,
             ),
         ] = None,
         dependency_overrides_provider: Annotated[
@@ -170,7 +173,7 @@ class AirRouter(APIRouter):
 
                 You shouldn't need to use it. It normally points to the `FastAPI` app
                 object.
-                """
+                """,
             ),
         ] = None,
         route_class: Annotated[
@@ -181,7 +184,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Custom Request and APIRoute class](https://fastapi.tiangolo.com/how-to/custom-request-and-route/#custom-apiroute-class-in-a-router).
-                """
+                """,
             ),
         ] = APIRoute,
         on_startup: Annotated[
@@ -193,7 +196,7 @@ class AirRouter(APIRouter):
                 You should instead use the `lifespan` handlers.
 
                 Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
+                """,
             ),
         ] = None,
         on_shutdown: Annotated[
@@ -206,7 +209,7 @@ class AirRouter(APIRouter):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
+                """,
             ),
         ] = None,
         # the generic to Lifespan[AppType] is the type of the top level application
@@ -220,7 +223,7 @@ class AirRouter(APIRouter):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
+                """,
             ),
         ] = None,
         deprecated: Annotated[
@@ -233,7 +236,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
+                """,
             ),
         ] = None,
         include_in_schema: Annotated[
@@ -247,7 +250,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """
+                """,
             ),
         ] = True,
         generate_unique_id_function: Annotated[
@@ -262,34 +265,34 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
+                """,
             ),
         ] = default_generate_unique_id,
     ) -> None:
         if default is None:
             default = Air
         super().__init__(
+            prefix=prefix,
+            tags=tags,
+            dependencies=dependencies,
+            default_response_class=default_response_class,
+            responses=responses,
+            callbacks=callbacks,
             routes=routes,
             redirect_slashes=redirect_slashes,
             default=default,
+            dependency_overrides_provider=dependency_overrides_provider,
+            route_class=route_class,
             on_startup=on_startup,
             on_shutdown=on_shutdown,
             lifespan=lifespan,
+            deprecated=deprecated,
+            include_in_schema=include_in_schema,
+            generate_unique_id_function=generate_unique_id_function,
         )
         if prefix:
             assert prefix.startswith("/"), "A path prefix must start with '/'"
             assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
-        self.prefix = prefix
-        self.tags: list[str | Enum] = tags or []
-        self.dependencies = list(dependencies or [])
-        self.deprecated = deprecated
-        self.include_in_schema = include_in_schema
-        self.responses = responses or {}
-        self.callbacks = callbacks or []
-        self.dependency_overrides_provider = dependency_overrides_provider
-        self.route_class = route_class
-        self.default_response_class = default_response_class
-        self.generate_unique_id_function = generate_unique_id_function
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path.
@@ -318,4 +321,13 @@ class AirRouter(APIRouter):
             app.include_router(router)
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
-        return self.get(route_name)(func)
+
+        @wraps(func)
+        async def endpoint(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if isinstance(result, Response):
+                return result
+            return AirResponse(result)  # force HTML, bypass jsonable_encoder
+
+        # Pin the route's response_class for belt-and-suspenders robustness
+        return self.get(path=route_name, response_class=AirResponse)(endpoint)

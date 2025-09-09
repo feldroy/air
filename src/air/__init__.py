@@ -39,6 +39,7 @@ from .tags import (
     Audio as Audio,
     B as B,
     Base as Base,
+    BaseTag as BaseTag,
     Bdi as Bdi,
     Bdo as Bdo,
     Blockquote as Blockquote,

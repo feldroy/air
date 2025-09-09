@@ -3,6 +3,7 @@ Instantiating Air applications.
 """
 
 from collections.abc import Callable, Coroutine, Sequence
+from functools import wraps
 from typing import (
     Annotated,
     Any,
@@ -11,6 +12,7 @@ from typing import (
 )
 
 from fastapi import FastAPI, routing
+from fastapi.datastructures import Default
 from fastapi.params import Depends
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -24,6 +26,7 @@ from .responses import AirResponse
 from .tags import H1, P, Title
 
 AppType = TypeVar("AppType", bound="FastAPI")
+default_html_response = Default(AirResponse)
 
 
 class Air(FastAPI):
@@ -60,7 +63,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [Starlette docs for Applications](https://www.starlette.io/applications/#instantiating-the-application).
-                """
+                """,
             ),
         ] = False,
         routes: Annotated[
@@ -73,7 +76,7 @@ class Air(FastAPI):
                 ---
 
                 A list of routes to serve incoming HTTP and WebSocket requests.
-                """
+                """,
             ),
             deprecated(
                 """
@@ -82,7 +85,7 @@ class Air(FastAPI):
 
                 In FastAPI, you normally would use the *path operation methods*,
                 like `app.get()`, `app.post()`, etc.
-                """
+                """,
             ),
         ] = None,
         servers: Annotated[
@@ -126,7 +129,7 @@ class Air(FastAPI):
                     ]
                 )
                 ```
-                """
+                """,
             ),
         ] = None,
         dependencies: Annotated[
@@ -148,7 +151,7 @@ class Air(FastAPI):
 
                 app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])
                 ```
-                """
+                """,
             ),
         ] = None,
         default_response_class: Annotated[
@@ -164,9 +167,9 @@ class Air(FastAPI):
                 from air import AirResponse
                 app = FastAPI(default_response_class=AirResponse)
                 ```
-                """
+                """,
             ),
-        ] = AirResponse,
+        ] = default_html_response,
         redirect_slashes: Annotated[
             bool,
             Doc(
@@ -189,7 +192,7 @@ class Air(FastAPI):
                 With this app, if a client goes to `/items` (without a trailing slash),
                 they will be automatically redirected with an HTTP status code of 307
                 to `/items/`.
-                """
+                """,
             ),
         ] = True,
         middleware: Annotated[
@@ -203,7 +206,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for Middleware](https://fastapi.tiangolo.com/tutorial/middleware/).
-                """
+                """,
             ),
         ] = None,
         exception_handlers: Annotated[
@@ -217,7 +220,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/).
-                """
+                """,
             ),
         ] = None,
         on_startup: Annotated[
@@ -229,7 +232,7 @@ class Air(FastAPI):
                 You should instead use the `lifespan` handlers.
 
                 Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
+                """,
             ),
         ] = None,
         on_shutdown: Annotated[
@@ -242,7 +245,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
+                """,
             ),
         ] = None,
         lifespan: Annotated[
@@ -254,7 +257,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
+                """,
             ),
         ] = None,
         webhooks: Annotated[
@@ -270,7 +273,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/).
-                """
+                """,
             ),
         ] = None,
         deprecated: Annotated[
@@ -284,7 +287,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
+                """,
             ),
         ] = None,
         docs_url: Annotated[
@@ -294,7 +297,7 @@ class Air(FastAPI):
                 The path at which to serve the Swagger UI documentation.
 
                 Set to `None` to disable it.
-                """
+                """,
             ),
         ] = None,
         redoc_url: Annotated[
@@ -304,7 +307,7 @@ class Air(FastAPI):
                 The path at which to serve the ReDoc documentation.
 
                 Set to `None` to disable it.
-                """
+                """,
             ),
         ] = None,
         openapi_url: Annotated[
@@ -314,7 +317,7 @@ class Air(FastAPI):
                 The URL where the OpenAPI schema will be served from.
 
                 Set to `None` to disable it.
-                """
+                """,
             ),
         ] = None,
         **extra: Annotated[
@@ -323,7 +326,7 @@ class Air(FastAPI):
                 """
                 Extra keyword arguments to be stored in the app, not used by FastAPI
                 anywhere.
-                """
+                """,
             ),
         ],
     ) -> None:
@@ -378,7 +381,16 @@ class Air(FastAPI):
                 return H1("I am the about page")
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
-        return self.get(route_name)(func)
+
+        @wraps(func)
+        async def endpoint(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if isinstance(result, Response):
+                return result
+            return AirResponse(result)  # force HTML, bypass jsonable_encoder
+
+        # Pin the route's response_class for belt-and-suspenders robustness
+        return self.get(path=route_name, response_class=AirResponse)(endpoint)
 
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:

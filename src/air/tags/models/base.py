@@ -51,6 +51,13 @@ class BaseTag:
         self._module = self.__class__.__module__
         self._children, self._attrs = children, kwargs
 
+    def __new__(cls, *args: object, **kwargs: object) -> Self:
+        """Non-instantiable base; all subclasses are instantiable."""
+        if cls is BaseTag:
+            msg = f"{cls.__name__} cannot be instantiated; use a subclass"
+            raise TypeError(msg)
+        return super().__new__(cls)
+
     @property
     def name(self) -> str:
         return self._name.lower()
@@ -106,7 +113,7 @@ class BaseTag:
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
     def __str__(self) -> str:
-        return self.pretty_render()
+        return self.render()
 
     def __repr__(self) -> str:
         summary = f'("{self._doc_summary}")' if self._doc_summary else ""

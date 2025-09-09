@@ -1,6 +1,6 @@
 """Special Air Tags that aren't find in any other category."""
 
-from typing import Literal
+from typing import Any, Literal
 
 from ..utils import locals_cleanup
 
@@ -22,6 +22,12 @@ class Html(BaseTag):
 
 class Transparent(BaseTag):
     """Transparent(no own HTML tag) container that renders only its children(just the inner content)."""
+
+    def __init__(
+        self,
+        *children: Any,
+    ):
+        super().__init__(*children)
 
     @override
     def _render(self) -> str:

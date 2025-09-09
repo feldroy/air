@@ -83,7 +83,7 @@ if __name__ == "__main__":
     # Raw tag representation
     print(div.__repr__())
     # Render the generated HTML nicely in the terminal
-    render_html_pretty(str(div))
+    render_html_pretty(div.pretty_render())
 
     # Extra
     print(HTML_SAMPLE.from_dict(HTML_SAMPLE.to_dict()).__repr__())
