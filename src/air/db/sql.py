@@ -12,9 +12,9 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 DEBUG = getenv("DEBUG", "false").lower() in ("1", "true", "yes")
 DATABASE_URL = getenv("DATABASE_URL", "")
-base_async_url = DATABASE_URL.split("?")[0]
-ASYNC_DATABASE_URL = base_async_url.replace("postgresql", "postgresql+asyncpg")
-ASYNC_DATABASE_URL = base_async_url.replace("sqlite:", "sqlite+aiosqlite:")
+ASYNC_DATABASE_URL = DATABASE_URL.split("?")[0]
+ASYNC_DATABASE_URL = ASYNC_DATABASE_URL.replace("postgresql:", "postgresql+asyncpg:")
+ASYNC_DATABASE_URL = ASYNC_DATABASE_URL.replace("sqlite:", "sqlite+aiosqlite:")
 
 
 class EchoEnum(IntEnum):
