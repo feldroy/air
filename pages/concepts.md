@@ -7,3 +7,4 @@ Why and how Air works.
 - [Forms](/concepts/forms)
 - [Jinja](/concepts/jinja)
 - [Layouts](/concepts/layouts)
+- [SQL](/concepts/sql)
