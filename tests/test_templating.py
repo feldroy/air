@@ -151,7 +151,7 @@ def test_JinjaRenderer_with_env():
     from jinja2 import FileSystemLoader
 
     env = jinja2.Environment(loader=FileSystemLoader("tests/templates"))
-    jinja = JinjaRenderer(directory=None, env=env)  # type: ignore[invalid-argument-type]
+    jinja = JinjaRenderer(directory=None, env=env)
 
     # Just test that it initializes correctly
     assert jinja.templates is not None
