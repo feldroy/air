@@ -33,10 +33,19 @@ class PoolPrePingEnum(IntEnum):
 
 
 def create_sync_engine(
-    url: str = DATABASE_URL,  # connection string
-    echo: EchoEnum = EchoEnum.TRUE,
+    url: str = DATABASE_URL,
+    echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
 ):
-    # TODO doc
+    """Convenience wrapper for SQLModel/SQLAlchemy's create_engine function. Useful for database scripts or synchronous views.
+
+    Args: 
+        url: Database URL connection string, defaults to DATABASE_URL environment variable
+        echo: Enables logging of all SQL statements executed by the engine, which can be useful for debugging.
+
+    Example:
+
+        TODO
+    """
     return _create_engine(url=url, echo=echo)
 
 
@@ -46,7 +55,29 @@ def create_async_engine(
     future: FutureEnum = FutureEnum.TRUE,
     pool_pre_ping: PoolPrePingEnum = PoolPrePingEnum.TRUE,
 ):
-    # TODO doc
+    """Convenience wrapper for SQLModel/SQLAlchemy's create_async_engine function. Usually set within an Air app's lifetime object.
+
+    Args: 
+        url: Database URL connection string, defaults to DATABASE_URL environment variable
+        echo: Enables logging of all SQL statements executed by the engine, which can be useful for debugging.
+        future: In SQLAlchemy, the future=True argument for create_async_engine enables 2.0-style behaviors and API conventions while still running under SQLAlchemy 1.4.
+        pool_pre_ping: Makes the engine test a connection with a lightweight SELECT 1 before using it, ensuring stale or dropped connections are detected and replaced automatically.
+
+    Example:
+
+        from contextlib import asynccontextmanager
+        import air
+
+        @asynccontextmanager
+        async def lifespan(app: air.Air):
+            async_engine = air.db.sql.create_async_engine()
+            async with async_engine.begin() as conn:
+                await conn.run_sync(lambda _: None)    
+            yield
+            await async_engine.dispose()
+
+        app = air.Air(lifespan=lifespan)
+    """
     return _create_async_engine(url=url, echo=echo, future=future, pool_pre_ping=pool_pre_ping)
 
 
