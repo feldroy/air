@@ -20,7 +20,7 @@ async def profile_request(request: air.Request, call_next):
         profiler.start()
         await call_next(request)
         profiler.stop()
-        return air.api.responses.HTMLResponse(profiler.output_html())
+        return air.responses.HTMLResponse(profiler.output_html())
     return await call_next(request)
 
 
