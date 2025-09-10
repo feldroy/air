@@ -38,7 +38,7 @@ def create_sync_engine(
 ):
     """Convenience wrapper for SQLModel/SQLAlchemy's create_engine function. Useful for database scripts or synchronous views.
 
-    Args: 
+    Args:
         url: Database URL connection string, defaults to DATABASE_URL environment variable
         echo: Enables logging of all SQL statements executed by the engine, which can be useful for debugging.
 
@@ -57,7 +57,7 @@ def create_async_engine(
 ):
     """Convenience wrapper for SQLModel/SQLAlchemy's create_async_engine function. Usually set within an Air app's lifetime object.
 
-    Args: 
+    Args:
         url: Database URL connection string, defaults to DATABASE_URL environment variable
         echo: Enables logging of all SQL statements executed by the engine, which can be useful for debugging.
         future: In SQLAlchemy, the future=True argument for create_async_engine enables 2.0-style behaviors and API conventions while still running under SQLAlchemy 1.4.
@@ -72,7 +72,7 @@ def create_async_engine(
         async def lifespan(app: air.Air):
             async_engine = air.db.sql.create_async_engine()
             async with async_engine.begin() as conn:
-                await conn.run_sync(lambda _: None)    
+                await conn.run_sync(lambda _: None)
             yield
             await async_engine.dispose()
 
