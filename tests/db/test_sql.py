@@ -3,7 +3,7 @@ from sqlalchemy import Engine
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from air.db import sql
+from air.db import sql  # ty: ignore[possibly-unbound-import]
 
 
 def test_create_sync_engine():

@@ -20,4 +20,4 @@ except ImportError:  # pragma: no cover
         def __repr__(self):
             return msg
 
-    sql = NotImportable()  # type: ignore [invalid-assignment]
+    sql = NotImportable()
