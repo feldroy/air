@@ -12,13 +12,16 @@ Using Air's SQL module requires an understanding of SQLModel. Fortunately, it's 
 
 ## Configuring Air for SQL
 
+To ensure the database remains connected to Air, we configure a `lifespan` function, and pass that to the Air app upon instantiation. If you don't do this, then the connection will eventually expire and your application will start throwing errors.
+
+So when instantiating your project's root 'app':
+
 ```python
 from contextlib import asynccontextmanager
 import air
 
 @asynccontextmanager
 async def lifespan(app: air.Air):
-    # Optionally test the connection here
     async_engine = air.db.sql.create_async_engine()
     async with async_engine.begin() as conn:
         await conn.run_sync(lambda _: None)    
