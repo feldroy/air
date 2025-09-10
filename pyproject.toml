@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.27.0"
+version = "0.27.2"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -57,6 +57,11 @@ pretty = [
     "lxml>=6.0.1",
     "rich>=12.6.0",
 ]
+# Used for interacting with sqlmodel and sqlalchemy
+sql = [
+    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
+    "sqlmodel[sql]>=0.0.24", # Bridge between SQLAlchemy and Pydantic
+]
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],
@@ -81,7 +86,9 @@ lint = [
     "types-Markdown>=3.8.0", # Types for the markdown library
 ]
 test = [
+    "aiosqlite>=0.21.0",
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
+    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "httpx>=0.28.1", # For the test client
     "pytest>=8.4.0", # Test runner
     "pdbpp==0.11.7", # enables pdb++, a drop-in replacement for pdb
@@ -91,7 +98,9 @@ test = [
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
     "pytest-benchmark>=5.1.0",
+    "pytest-env>=1.1.5", # for setting env vars in tests
     "pyinstrument>=5.1.1",
+    "sqlmodel[sql]>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
 # endregion dependencies
 
@@ -502,6 +511,10 @@ norecursedirs = [
     "tests/benchmarks",
     "tests/templates",
 ]
+
+[tool.pytest_env]
+# Test value for the SUPER_SECRET_KEY environment variable
+DATABASE_URL = "sqlite:///:memory:"
 
 [tool.coverage.run]
 source = ["src"]
