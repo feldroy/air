@@ -118,19 +118,16 @@ async def get_async_session(
         # Assumes environment variable DATABASE_URL has been set
         import air
         from fastapi import Depends
-        # Session function
-        from .models import get_async_dbsession
-        from .models import async_dbsession_dependency # Wrapped shortcut
 
         app = air.Air()
 
         @app.page
-        def index(session = Depends(get_async_dbsession)):
-            return air.H1(session.user['user'name'])
+        def index(session = Depends(air.db.sql.get_async_session)):
+            return air.H1(session.user['username'])
 
         @app.page
-        def home(session = async_dbsession_dependency):
-            return air.H1(session.user['user'name'])
+        def home(session = air.db.sql.async_session_dependency):
+            return air.H1(session.user['username'])
     """
     session_factory = await create_async_session(url, echo)
     session = session_factory()
