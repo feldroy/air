@@ -8,9 +8,11 @@ dependencies = [
     "air>=0.24.2",
     "air-markdown>=0.3.0",
     "fastapi[standard]>=0.116.0",
+    "greenlet>=3.2.4",
     "mistletoe>=1.4.0",
     "mkdocstrings[python]>=0.29.1",
     "sentry-sdk[fastapi]>=2.34.1",
+    "sqlmodel>=0.0.24",
 ]
 
 [project.scripts]
