@@ -1,12 +1,14 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-from starlette.staticfiles import StaticFiles as StaticFiles
-
 from . import (
     layouts as layouts,
+)
+from .api import (
+    Air as Air,
+    AirResponse as AirResponse,
+    AirRouter as AirRouter,
     responses as responses,
 )
-from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
 from .exceptions import HTTPException as HTTPException
@@ -16,13 +18,6 @@ from .forms import (
 )
 from .middleware import SessionMiddleware as SessionMiddleware
 from .requests import Request as Request
-from .responses import (
-    AirResponse as AirResponse,
-    RedirectResponse as RedirectResponse,
-    SSEResponse as SSEResponse,
-    TagResponse as TagResponse,
-)
-from .routing import AirRouter as AirRouter
 from .tags import (
     H1 as H1,
     H2 as H2,
@@ -110,6 +105,7 @@ from .tags import (
     Rt as Rt,
     Ruby as Ruby,
     S as S,
+    SafeStr as SafeStr,
     Samp as Samp,
     Script as Script,
     Search as Search,
@@ -146,5 +142,4 @@ from .tags import (
     Wbr as Wbr,
     svg as svg,
 )
-from .tags.utils import SafeStr as SafeStr
 from .templating import JinjaRenderer as JinjaRenderer

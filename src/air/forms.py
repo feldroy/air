@@ -10,11 +10,9 @@ from pydantic import BaseModel, Field, ValidationError
 from pydantic_core import ErrorDetails
 from starlette.datastructures import FormData
 
-import air.tags.models.special
-import air.tags.utils
-
 from . import tags
 from .requests import Request
+from .tags import SafeStr
 
 try:  # pragma: no cover
     # Remove this try/except statement once support for Python 3.10 is dropped
@@ -100,9 +98,9 @@ class AirForm:
         """
         return default_form_widget
 
-    def render(self) -> air.tags.utils.SafeStr:
-        return air.tags.utils.SafeStr(
-            self.widget(model=self.model, data=self.initial_data, errors=self.errors, includes=self.includes)
+    def render(self) -> SafeStr:
+        return SafeStr(
+            self.widget(model=self.model, data=self.initial_data, errors=self.errors, includes=self.includes),
         )
 
 
@@ -137,7 +135,10 @@ def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
 
 
 def default_form_widget(
-    model: type[BaseModel], data: dict | None = None, errors: list | None = None, includes: Sequence[str] | None = None
+    model: type[BaseModel],
+    data: dict | None = None,
+    errors: list | None = None,
+    includes: Sequence[str] | None = None,
 ) -> str:
     error_dict = errors_to_dict(errors)
     fields = []
@@ -171,7 +172,7 @@ def default_form_widget(
                 ),
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
                 tags.Small("Please correct this error.", id=f"{field_name}-error") if error else "",
-            )
+            ),
         )
 
     return tags.Tags(*fields).render()

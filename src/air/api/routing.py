@@ -1,34 +1,23 @@
 """Use routing if you want a single cohesive app where all routes share middlewares and error handling."""
 
-import inspect
 from collections.abc import Callable, Sequence
 from enum import Enum
-from functools import wraps
 from typing import (
     Annotated,
     Any,
 )
 
 from fastapi import params
-from fastapi.datastructures import Default, DefaultPlaceholder
 from fastapi.routing import APIRoute, APIRouter
-from fastapi.utils import (
-    generate_unique_id,
-)
-from starlette.responses import JSONResponse, Response
+from starlette.responses import Response
 from starlette.routing import (
     BaseRoute,
-    Mount as Mount,
 )
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc, deprecated
 
 from .applications import Air
-from .responses import AirResponse
-
-default_json_response = Default(JSONResponse)
-default_generate_unique_id = Default(generate_unique_id)
-default_html_response = Default(AirResponse)
+from .utils import compute_page_path, default_generate_unique_id, default_html_response, make_get_decorator
 
 
 class AirRouter(APIRouter):
@@ -321,30 +310,8 @@ class AirRouter(APIRouter):
 
             app.include_router(router)
         """
-        route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
+        page_path = compute_page_path(func)
 
         # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(path=route_name, response_class=self.default_response_class)(func)
-
-    def get(
-        self,
-        path: str,
-        *,
-        response_class: type[Response] | DefaultPlaceholder = default_html_response,
-        **kwargs: Any,
-    ):
-        register = super(Air, self).get
-
-        def decorator(func):
-            @wraps(func)
-            async def endpoint(*args, **kw):
-                result = func(*args, **kw)
-                if inspect.isawaitable(result):
-                    result = await result
-                if isinstance(result, Response):
-                    return result
-                return response_class(result)
-
-            return register(path, response_class=response_class, **kwargs)(endpoint)
-
-        return decorator
+        register = super().get
+        return make_get_decorator(register, page_path, response_class=self.default_response_class)(func)

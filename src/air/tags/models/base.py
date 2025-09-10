@@ -50,7 +50,6 @@ class BaseTag:
         self._name = self.__class__.__name__
         self._module = self.__class__.__module__
         self._children, self._attrs = children, kwargs
-        self._should_escape_text: bool = True
 
     def __new__(cls, *args: object, **kwargs: object) -> Self:
         """Non-instantiable base; all subclasses are instantiable."""
@@ -88,18 +87,16 @@ class BaseTag:
             return child_str
         return self._escape_text(child_str)
 
-    def _escape_text(self, text: str) -> str:
-        return html.escape(text) if self._should_escape_text else text
+    @staticmethod
+    def _escape_text(text: str) -> str:
+        return html.escape(text)
 
     def render(self) -> str:
         return self._render()
 
     def pretty_render(self) -> str:
         """Pretty-print without escaping."""
-        self._should_escape_text = False
-        rendered = format_html(self._render())
-        self._should_escape_text = True
-        return rendered
+        return format_html(self._render())
 
     def _render(self) -> str:
         return self._render_paired()

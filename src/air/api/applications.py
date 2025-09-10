@@ -2,18 +2,14 @@
 Instantiating Air applications.
 """
 
-import inspect
 from collections.abc import Callable, Coroutine, Sequence
-from functools import wraps
 from typing import (
     Annotated,
     Any,
-    Final,
     TypeVar,
 )
 
 from fastapi import FastAPI, routing
-from fastapi.datastructures import Default, DefaultPlaceholder
 from fastapi.params import Depends
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -22,12 +18,11 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc, deprecated
 
-from .layouts import mvpcss
+from .error_responses import DEFAULT_EXCEPTION_HANDLERS
 from .responses import AirResponse
-from .tags import H1, P, Title
+from .utils import compute_page_path, default_html_response, make_get_decorator
 
 AppType = TypeVar("AppType", bound="FastAPI")
-default_html_response = Default(AirResponse)
 
 
 class Air(FastAPI):
@@ -170,7 +165,7 @@ class Air(FastAPI):
                 ```
                 """,
             ),
-        ] = default_html_response,
+        ] = AirResponse,
         redirect_slashes: Annotated[
             bool,
             Doc(
@@ -381,61 +376,8 @@ class Air(FastAPI):
             def about_us(): # routes is "/about-us"
                 return H1("I am the about page")
         """
-        route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
+        page_path = compute_page_path(func)
 
         # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(path=route_name)(func)
-
-    def get(
-        self,
-        path: str,
-        *,
-        response_class: type[Response] | DefaultPlaceholder = default_html_response,
-        **kwargs: Any,
-    ):
         register = super().get
-
-        def decorator(func):
-            @wraps(func)
-            async def endpoint(*args, **kw):
-                result = func(*args, **kw)
-                if inspect.isawaitable(result):
-                    result = await result
-                if isinstance(result, Response):
-                    return result
-                return response_class(result)
-
-            return register(path, response_class=response_class, **kwargs)(endpoint)
-
-        return decorator
-
-
-def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
-    """Default 404 exception handler. Can be overloaded."""
-    return AirResponse(
-        mvpcss(
-            Title("404 Not Found"),
-            H1("404 Not Found"),
-            P("The requested resource was not found on this server."),
-            P(f"URL: {request.url}"),
-        ),
-        status_code=404,
-    )
-
-
-def default_500_exception_handler(request: Request, exc: Exception) -> AirResponse:
-    """Default 500 exception handler. Can be overloaded."""
-    return AirResponse(
-        mvpcss(
-            Title("500 Internal Server Error"),
-            H1("500 Internal Server Error"),
-            P("An internal server error occurred."),
-        ),
-        status_code=500,
-    )
-
-
-DEFAULT_EXCEPTION_HANDLERS: Final[dict[int, Callable[[Request, Exception], AirResponse]]] = {
-    404: default_404_exception_handler,
-    500: default_500_exception_handler,
-}
+        return make_get_decorator(register, page_path, response_class=default_html_response)(func)

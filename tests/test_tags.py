@@ -185,7 +185,7 @@ def test_tags_head_tag_injection():
 
 def test_escape_html():
     html = air.P("I'm <strong>Strong</strong>").render()
-    assert html == "<p>I'm &lt;strong&gt;Strong&lt;/strong&gt;</p>"
+    assert html == "<p>I&#x27;m &lt;strong&gt;Strong&lt;/strong&gt;</p>"
 
 
 def test_script_tag():

@@ -2,12 +2,13 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 import air
+from air import AirResponse
 
 
 def test_air_app_factory():
     app = air.Air()
 
-    @app.get("/test")
+    @app.get("/test", response_class=AirResponse)
     def test_endpoint():
         return air.H1("Hello, World!")
 
@@ -100,7 +101,7 @@ def test_air_404_response():
 def test_default_500_exception_handler():
     from starlette.requests import Request
 
-    from air.applications import default_500_exception_handler
+    from air.api.error_responses import default_500_exception_handler
 
     # Create a mock request and exception
     scope = {
@@ -126,7 +127,7 @@ def test_default_500_exception_handler():
 
 
 def test_injection_of_default_exception_handlers():
-    from air.applications import DEFAULT_EXCEPTION_HANDLERS
+    from air.api.error_responses import DEFAULT_EXCEPTION_HANDLERS
 
     def handler(request: air.Request, exc: Exception) -> air.AirResponse:
         return air.AirResponse()

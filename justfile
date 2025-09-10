@@ -22,17 +22,13 @@ set export := true
 HERE := justfile_directory()
 MARKER_DIR := HERE
 PYTHON_VERSION := trim(read(".python-version"))
-
 # From pyproject.toml -> version
-
 VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
-
 # From pyproject.toml -> requires-python
-
 PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
-
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
+
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -64,12 +60,14 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 @evaluate *ARGS:
     just --evaluate {{ ARGS }}
 
+# Run a recipe for each argument value in ARGS (calls RECIPE once per ARG)
 [doc]
 [group('meta')]
 [private]
 @run-each RECIPE +ARGS:
     for ARG in {{ ARGS }}; do just "{{ RECIPE }}" "$ARG"; done
 
+# Run a command and turn absolute paths into relative paths everywhere in its output
 [doc]
 [group('meta')]
 [no-exit-message]
@@ -77,7 +75,7 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 run-with-relative-paths +CMD:
     #!/usr/bin/env bash
     set -euo pipefail
-    {{ CMD }} |& sed "s|$HERE||g"
+    {{ CMD }} 2>&1 | sed "s|$HERE||g"
 
 # Run a python module
 [group('uv')]
@@ -94,7 +92,7 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     uv run -q -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
     # show an enumeration of all fixed lint violations.
-    uv run -q -- ruff check --fix --output-format={{ OUTPUT_FORMAT }} {{ UNSAFE }} .
+    uv run -q -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -116,7 +114,7 @@ lint OUTPUT_FORMAT="full":
     # and the difference between the current file and how the formatted file would look like.
     uv run -q -- ruff format --diff .
     # Check for lint violations
-    uv run -q -- ruff check --output-format={{ OUTPUT_FORMAT }} .
+    uv run -q -- ruff check --output-format={{OUTPUT_FORMAT}} .
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
@@ -135,8 +133,8 @@ type-check:
 # Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
 [group('qa')]
 type-check-concise TARGET=".":
-    uv run -q -- ty check --output-format=concise "{{ TARGET }}"
-    just run-with-relative-paths uv run -q -- pyrefly check --output-format=min-text "{{ TARGET }}"
+    uv run -q -- ty check --output-format=concise "{{TARGET}}"
+    just run-with-relative-paths uv run -q -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]
@@ -213,11 +211,13 @@ coverage-md: coverage-xml
 # endregion Coverage
 # region ----> Rich <----
 
+# Print a centered title with a magenta rule
 [doc]
 [group('rich')]
 @title TEXT="":
     rich "{{ TEXT }}" --rule --rule-style "red" --rule-char "=" --style "bold white on magenta"
 
+# Print text inside a double-line panel with optional title and caption
 [doc]
 [group('rich')]
 @panel TEXT="" TITLE="" CAPTION="":
@@ -232,6 +232,7 @@ coverage-md: coverage-xml
 # endregion Rich
 # region ----> Docs <----
 
+# View a Markdown file with rich using the Dracula theme
 [doc]
 [group('docs')]
 @readmd FILE_NAME: (title FILE_NAME)
