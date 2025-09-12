@@ -263,12 +263,14 @@ coverage-md: coverage-xml
 # Serve docs locally
 [group('docs')]
 doc:
-    just run -- mkdocs serve -a localhost:3000
+    just run -- uvicorn docs.main:app --reload
 
-# Build and deploy docs
+# Deploy docs
 [group('docs')]
-doc-build:
-    just run -- mkdocs gh-deploy --force
+doc-deploy:
+    cp docs/pyproject.tomlx docs/pyproject.toml
+    cd docs && fastapi deploy
+    rm docs/pyproject.toml
 
 # endregion Docs
 

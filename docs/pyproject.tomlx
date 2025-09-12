@@ -1,0 +1,55 @@
+[project]
+name = "airdocs"
+version = "0.1.0"
+description = "Documentation for Air, the Python web framework."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "air>=0.24.2",
+    "air-markdown>=0.3.0",
+    "fastapi[standard]>=0.116.0",
+    "greenlet>=3.2.4",
+    "mistletoe>=1.4.0",
+    "mkdocstrings[python]>=0.29.1",
+    "sentry-sdk[fastapi]>=2.34.1",
+    "sqlmodel>=0.0.24",
+]
+
+[project.scripts]
+airdocs = "airdocs:main"
+
+# [tool.uv.sources]
+# air = { path = "../air", editable = true }
+# eidosui = { path = "../EidosUI", editable = true }
+
+[project.optional-dependencies]
+dev = [
+    # Justfile tasks
+    "rust-just>=1.42.3",
+]
+test = [
+    # Measure how much of the code is covered by tests
+    "coverage>=7.8.2",
+    # For the test client
+    "httpx>=0.28.1",
+    # Used with debugging
+    "ipdb>=0.13.13",   
+    # Test runner
+    "pytest>=8.4.0",
+    # Linting and formatting
+    "ruff>=0.11.13",
+    # Justfile tasks
+    "rust-just>=1.42.3",
+    # for checking types
+    "ty>=0.0.1a16",
+    # Types for the markdown library
+    "types-Markdown>=3.8.0",
+    # Lets you run full example apps
+    "uvicorn>=0.34.0",
+]
+
+[tool.uv]
+package = true
+
+[tool.mypy]
+exclude = "^nbs/"
