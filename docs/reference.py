@@ -1,13 +1,14 @@
 import importlib
-from functools import cache
-import importlib
 import inspect
 import pkgutil
-from typing import Any, List, ParamSpec,TypeVar, Callable
+from collections.abc import Callable
+from functools import cache
+from typing import Any, ParamSpec, TypeVar
 
-import air
 from air_markdown.tags import AirMarkdown
 from fastapi import HTTPException
+
+import air
 
 app = air.Air()
 
@@ -27,9 +28,8 @@ def layout(request: air.Request, *content):
     )
 
 
-
 @cache
-def _get_air_objects() -> List[Any]:
+def _get_air_objects() -> list[Any]:
     """
     Gets all the objects in the `air` package that are defined within air
     (nothing imported into air from core python or other libraries).
@@ -43,9 +43,7 @@ def _get_air_objects() -> List[Any]:
         try:
             module = importlib.import_module(module_name)
             for _, obj in inspect.getmembers(module):
-                if hasattr(obj, "__module__") and obj.__module__.startswith(
-                    air.__name__
-                ):
+                if hasattr(obj, "__module__") and obj.__module__.startswith(air.__name__):
                     air_objects.add(obj)
         except Exception:
             continue
@@ -53,29 +51,26 @@ def _get_air_objects() -> List[Any]:
 
 
 reference_warning = air.Section(
-                air.P(
-                    air.Strong("WARNING:", style="color: red"),
-                    " This API reference is very new and there may be formatting challenges.",
-                    style="color: red"
-                )
-            )
+    air.P(
+        air.Strong("WARNING:", style="color: red"),
+        " This API reference is very new and there may be formatting challenges.",
+        style="color: red",
+    )
+)
 
 
 @app.page
 async def index(request: air.Request):
     modules = [
-        air.Li(air.A(x, href=f"/reference/{x}"))
-        for x in sorted(list(set([x.__module__ for x in _get_air_objects()])))
+        air.Li(air.A(x, href=f"/reference/{x}")) for x in sorted(list(set([x.__module__ for x in _get_air_objects()])))
     ]
-    return layout(
-        request, air.Article(air.H1("API Reference"), reference_warning, air.Ul(*modules), class_="prose")
-    )
+    return layout(request, air.Article(air.H1("API Reference"), reference_warning, air.Ul(*modules), class_="prose"))
 
 
 def _callable_kwargs_to_markdown(func: Callable) -> str:
     """
     Generate a Markdown table of a callable's arguments (positional + keyword).
-    
+
     Columns:
     - Name
     - Type
@@ -85,7 +80,7 @@ def _callable_kwargs_to_markdown(func: Callable) -> str:
     try:
         sig = inspect.signature(func)
     except ValueError:
-        return ''
+        return ""
     headers = ["Name", "Type", "Default", "Description"]
     rows = []
 
@@ -107,12 +102,11 @@ def _callable_kwargs_to_markdown(func: Callable) -> str:
 
     # --- Build table rows ---
     for name, param in sig.parameters.items():
-        if name == 'kwargs': continue
+        if name == "kwargs":
+            continue
         # Argument type
         if param.annotation is not inspect.Parameter.empty:
-            joined_annotations = ", ".join(
-                [dtype.strip() for dtype in str(param.annotation).split("|")]
-            )
+            joined_annotations = ", ".join([dtype.strip() for dtype in str(param.annotation).split("|")])
             arg_type = getattr(param.annotation, "__name__", joined_annotations)
         else:
             arg_type = "Any"
@@ -130,11 +124,12 @@ def _callable_kwargs_to_markdown(func: Callable) -> str:
 
     # --- Build markdown table ---
     md = f"| {' | '.join(headers)} |\n"
-    md += f"| {' | '.join(['---']*len(headers))} |\n"
+    md += f"| {' | '.join(['---'] * len(headers))} |\n"
     for row in rows:
         md += f"| {' | '.join(row)} |\n"
 
     return md
+
 
 def _remove_args_section(docstring: str) -> str:
     """
@@ -167,26 +162,24 @@ def _remove_args_section(docstring: str) -> str:
     return "\n".join(cleaned)
 
 
-
 def doc_obj(obj):
     doc = _callable_kwargs_to_markdown(obj)
-    doc += '\n\n'
-    raw_doc = obj.__doc__ if (hasattr(obj, "__doc__") and isinstance(obj.__doc__, str)) else ""    
+    doc += "\n\n"
+    raw_doc = obj.__doc__ if (hasattr(obj, "__doc__") and isinstance(obj.__doc__, str)) else ""
     doc += _remove_args_section(raw_doc)
-    return air.Section(
-        air.H2(obj.__name__, air.Small(f"  ({obj.__module__}.{obj.__name__})")),
-        AirMarkdown(doc)
-    )
+    return air.Section(air.H2(obj.__name__, air.Small(f"  ({obj.__module__}.{obj.__name__})")), AirMarkdown(doc))
 
 
 @app.get("/{module_name:path}")
-def reference_module(request: air.Request, module_name: str):    
+def reference_module(request: air.Request, module_name: str):
     try:
         module = importlib.import_module(module_name)
         objects = [
-            x 
-            for x in _get_air_objects() 
-            if x.__module__ == module_name and not isinstance(x, (ParamSpec, TypeVar)) and not x.__name__.startswith('_')
+            x
+            for x in _get_air_objects()
+            if x.__module__ == module_name
+            and not isinstance(x, (ParamSpec, TypeVar))
+            and not x.__name__.startswith("_")
         ]
         objects = [doc_obj(x) for x in sorted(objects, key=lambda x: x.__name__)]
 
@@ -197,7 +190,7 @@ def reference_module(request: air.Request, module_name: str):
         air.Article(
             air.H1(air.A("API Reference:", href="/reference"), " ", module_name),
             reference_warning,
-            AirMarkdown(module.__doc__ if module.__doc__ is not None else ''),
+            AirMarkdown(module.__doc__ if module.__doc__ is not None else ""),
             air.Ul(*objects),
             class_="prose",
         ),

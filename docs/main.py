@@ -1,20 +1,14 @@
-import re
 import importlib
-from pathlib import Path
 from os import getenv
-from functools import cache
-import importlib
-import inspect
-import pkgutil
-from typing import Any, List, ParamSpec,TypeVar, Callable
+from pathlib import Path
 
-import air
+import sentry_sdk
 from air_markdown.tags import AirMarkdown
 from fastapi import HTTPException
-import sentry_sdk
+from pages import charts, home, why
 from reference import app as api_ref
 
-from pages import charts, home, why
+import air
 
 renderer = air.JinjaRenderer("templates")
 
@@ -29,7 +23,7 @@ if SENTRY_DSN:
     )
 
 app = air.Air()
-app.mount('/reference', api_ref)
+app.mount("/reference", api_ref)
 
 
 def layout(request: air.Request, *content):
@@ -87,7 +81,8 @@ async def llms_txt():
 
 @app.page
 async def reference():
-    return air.responses.RedirectResponse('/reference/')
+    return air.responses.RedirectResponse("/reference/")
+
 
 @app.get("/{slug:path}")
 def airpage(request: air.Request, slug: str):

@@ -10,6 +10,4 @@ templates = Jinja2Templates("templates")
 
 @app.get("/items/{id}", response_class=HTMLResponse)
 async def index(request: Request, id: str):
-    return templates.TemplateResponse(
-        request=request, name="item.html", context={"id": id}
-    )
+    return templates.TemplateResponse(request=request, name="item.html", context={"id": id})

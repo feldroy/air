@@ -20,11 +20,11 @@ def render(request: air.Request):
                     href="https://github.com/feldroy/air",
                     class_="inline-block px-4 py-2 mr-3 rounded bg-blue-600 text-white hover:bg-blue-700 transition",
                 ),
-                air.A(
-                    "Air Docs on GitHub",
-                    href="https://github.com/feldroy/airdocs",
-                    class_="inline-block px-4 py-2 rounded bg-gray-800 text-white hover:bg-gray-900 transition",
-                ),
+                # air.A(
+                #     "Air Docs on GitHub",
+                #     href="https://github.com/feldroy/airdocs",
+                #     class_="inline-block px-4 py-2 rounded bg-gray-800 text-white hover:bg-gray-900 transition",
+                # ),
                 class_="mt-4 flex flex-row justify-center",
             ),
             class_="flex flex-col items-center justify-center min-h-[60vh]",

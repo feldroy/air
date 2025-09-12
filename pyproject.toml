@@ -69,6 +69,7 @@ dev = [
     { include-group = "devtools" }, # core developer tools
     { include-group = "lint" }, # linting and type-checking toolchain
     { include-group = "test" }, # test runner and helpers
+    { include-group = "docs" }, # test runner and helpers
 ]
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
@@ -97,6 +98,15 @@ test = [
     "pytest-env>=1.1.5", # for setting env vars in tests    
     "pyinstrument>=5.1.1",
     "sqlmodel[sql]>=0.0.24", # Bridge between SQLAlchemy and Pydantic    
+]
+docs = [
+    "air-markdown>=0.3.0",
+    "greenlet>=3.2.4",
+    "mistletoe>=1.4.0",
+    "mkdocstrings[python]>=0.29.1",
+    "sentry-sdk[fastapi]>=2.34.1",
+    "sqlmodel>=0.0.24",   
+    "uvicorn"
 ]
 # endregion dependencies
 
@@ -255,6 +265,7 @@ exclude = [
     "build",
     "dist",
     "site-packages",
+    "docs"
 ]
 
 [tool.ruff.format]
@@ -442,6 +453,7 @@ project-includes = ["src", "tests"] # keep discovery stable
 project-excludes = [
     "**/__pycache__",
     "**/*venv/**/*",
+    "docs"
 ]
 use-ignore-files = true
 #### configuring what to type check and where to import from
