@@ -253,9 +253,9 @@ doc:
 # Deploy docs
 [group('docs')]
 doc-deploy:
-    mv docs/pyproject.tomlx docs/pyproject.toml
+    cp docs/pyproject.tomlx docs/pyproject.toml
     cd docs && fastapi deploy
-    mv docs/pyproject.toml docs/pyproject.tomlx
+    rm docs/pyproject.toml
 
 # endregion Docs
 
