@@ -123,7 +123,7 @@ lint OUTPUT_FORMAT="full":
 [group('qa')]
 type-check:
     uv run -q -- ty check .
-    # just run-with-relative-paths uv run -q -- pyrefly check .
+    just run-with-relative-paths uv run -q -- pyrefly check .
 
 # Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
 [group('qa')]
