@@ -265,6 +265,7 @@ exclude = [
     "build",
     "dist",
     "site-packages",
+    "docs"
 ]
 
 [tool.ruff.format]
@@ -452,6 +453,7 @@ project-includes = ["src", "tests"] # keep discovery stable
 project-excludes = [
     "**/__pycache__",
     "**/*venv/**/*",
+    "docs"
 ]
 use-ignore-files = true
 #### configuring what to type check and where to import from

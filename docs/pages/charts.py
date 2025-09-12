@@ -1,8 +1,9 @@
 import json
 import random
 
-import air
 from air_markdown.tags import AirMarkdown
+
+import air
 
 
 def sorted_random_list():
@@ -10,25 +11,23 @@ def sorted_random_list():
 
 
 def generate_data():
-    return json.dumps(
-        {
-            "data": [
-                {
-                    "x": sorted_random_list(),
-                    "y": random.sample(range(10), 6),
-                    "type": "scatter",
-                },
-                {
-                    "x": sorted_random_list(),
-                    "y": random.sample(range(10), 6),
-                    "type": "scatter",
-                },
-            ],
-            "title": "Fun charts with Plotly and Air",
-            "description": "This is a demonstration of how to build a chart using Plotly and Air",
-            "type": "scatter",
-        }
-    )
+    return json.dumps({
+        "data": [
+            {
+                "x": sorted_random_list(),
+                "y": random.sample(range(10), 6),
+                "type": "scatter",
+            },
+            {
+                "x": sorted_random_list(),
+                "y": random.sample(range(10), 6),
+                "type": "scatter",
+            },
+        ],
+        "title": "Fun charts with Plotly and Air",
+        "description": "This is a demonstration of how to build a chart using Plotly and Air",
+        "type": "scatter",
+    })
 
 
 def render(request: air.Request):
