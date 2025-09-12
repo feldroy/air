@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.27.2"
+version = "0.28.0"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -56,7 +56,7 @@ standard = [
 # Used for interacting with sqlmodel and sqlalchemy
 sql = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
-    "sqlmodel[sql]>=0.0.24", # Bridge between SQLAlchemy and Pydantic
+    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
 
 # Groups are for contributors; install with: uv sync --group NAME
@@ -97,7 +97,7 @@ test = [
     "pytest-benchmark>=5.1.0",
     "pytest-env>=1.1.5", # for setting env vars in tests    
     "pyinstrument>=5.1.1",
-    "sqlmodel[sql]>=0.0.24", # Bridge between SQLAlchemy and Pydantic    
+    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic    
 ]
 docs = [
     "air-markdown>=0.3.0",

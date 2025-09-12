@@ -23,7 +23,7 @@ wheels = [
 
 [[package]]
 name = "air"
-version = "0.27.2"
+version = "0.28.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -65,7 +65,7 @@ dev = [
     { name = "ruff" },
     { name = "rust-just" },
     { name = "sentry-sdk", extra = ["fastapi"], marker = "extra == 'group-3-air-dev' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
-    { name = "sqlmodel", marker = "extra == 'group-3-air-dev' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
+    { name = "sqlmodel" },
     { name = "ty" },
     { name = "types-markdown" },
     { name = "uvicorn" },
@@ -116,7 +116,7 @@ requires-dist = [
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "python-multipart", specifier = ">=0.0.20" },
-    { name = "sqlmodel", extras = ["sql"], marker = "extra == 'sql'", specifier = ">=0.0.24" },
+    { name = "sqlmodel", marker = "extra == 'sql'", specifier = ">=0.0.24" },
 ]
 provides-extras = ["standard", "sql"]
 
@@ -145,7 +145,6 @@ dev = [
     { name = "rust-just", specifier = ">=1.42.3" },
     { name = "sentry-sdk", extras = ["fastapi"], specifier = ">=2.34.1" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
-    { name = "sqlmodel", extras = ["sql"], specifier = ">=0.0.24" },
     { name = "ty", specifier = ">=0.0.1a16" },
     { name = "types-markdown", specifier = ">=3.8.0" },
     { name = "uvicorn" },
@@ -186,7 +185,7 @@ test = [
     { name = "pytest-env", specifier = ">=1.1.5" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },
     { name = "pytest-pretty", specifier = ">=1.3.0" },
-    { name = "sqlmodel", extras = ["sql"], specifier = ">=0.0.24" },
+    { name = "sqlmodel", specifier = ">=0.0.24" },
 ]
 
 [[package]]
