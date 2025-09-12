@@ -5,6 +5,7 @@ from .error_responses import (
 )
 from .responses import (
     AirResponse as AirResponse,
+    FileResponse as FileResponse,
     HTMLResponse as HTMLResponse,
     JSONResponse as JSONResponse,
     PlainTextResponse as PlainTextResponse,

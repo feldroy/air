@@ -454,10 +454,18 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
+# TODO -> Remove all error code bellow
 unresolved-import = "ignore"
 possibly-unresolved-reference = "ignore"
 invalid-argument-type = "ignore"
 too-many-positional-arguments = "ignore"
+[[tool.ty.overrides]]
+include = ["docs/**"]
+[tool.ty.overrides.rules]
+# TODO -> Remove all error code bellow
+unresolved-import = "ignore"
+division-by-zero = "ignore"
+unresolved-attribute = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----

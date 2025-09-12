@@ -1,6 +1,7 @@
 """Air uses custom response classes to improve the developer experience."""
 
 from starlette.responses import (
+    FileResponse as FileResponse,
     HTMLResponse as HTMLResponse,
     JSONResponse as JSONResponse,
     PlainTextResponse as PlainTextResponse,

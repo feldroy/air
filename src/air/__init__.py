@@ -8,6 +8,7 @@ from .api import (
     Air as Air,
     AirResponse as AirResponse,
     AirRouter as AirRouter,
+    FileResponse as FileResponse,
     HTMLResponse as HTMLResponse,
     JSONResponse as JSONResponse,
     PlainTextResponse as PlainTextResponse,
