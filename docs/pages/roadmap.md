@@ -68,6 +68,14 @@ We want to make it easier to add authentication and authorization and user const
 - Authorization - Provide helper tools to make authorization easier, including role-based access control
 - Integration with FastAPI's security utilities - Ensure compatibility with FastAPI's security features
 
+### AirComponents
+
+This will be a layout library that provides elegant defaults for making awesome layouts.
+
+Tools like [shadcn](https://ui.shadcn.com/) and other Tailwind-powered projects are really powerful, but require an understanding of CSS (or tailwind) to be able to use. AirComponents will address this through intelligent defaults so those of us who don't know CSS can use it to make incredible looking sites. Yet AirComponents will be built so that it can be easily modified to support all kinds of usecases.
+
+AirComponents will be a separate repo and package, managed in its own [GitHub repo](https://github.com/feldroy/AirComponents). That will allow for faster velocity and provide room for playing with architecture and design. 
+
 ## What's already been done
 
 ### Air Tag API
