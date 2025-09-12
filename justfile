@@ -250,10 +250,12 @@ coverage-md: coverage-xml
 doc:
     cd docs && uv run --group dev uvicorn main:app --reload
 
-# Build and deploy docs
+# Deploy docs
 [group('docs')]
-doc-build:
-    uv run -q -- mkdocs gh-deploy --force
+doc-deploy:
+    cp docs/pyproject.tomlx docs/pyproject.toml
+    cd docs && fastapi deploy
+    rm docs/pyproject.toml
 
 # endregion Docs
 
