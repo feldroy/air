@@ -83,7 +83,7 @@ class BaseTag:
 
     def _render_child(self, child: Any) -> str:
         child_str = str(child)
-        if isinstance(child, (BaseTag, SafeStr)):
+        if isinstance(child, BaseTag | SafeStr):
             return child_str
         return self._escape_text(child_str)
 
