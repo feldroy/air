@@ -72,6 +72,7 @@ For `uv` users, just create a virtualenv and install the air package, like:
 ```sh
 uv venv
 source .venv/bin/activate
+uv init
 uv add air
 uv add "fastapi[standard]"
 ```
@@ -95,6 +96,17 @@ Run the app with:
 
 ```sh
 fastapi dev
+```
+
+If you have fastapi installed globally, you may see an error:
+```sh
+To use the fastapi command, please install "fastapi[standard]":
+
+	pip install "fastapi[standard]"
+```
+In that case, run the app with:
+```sh
+uv run fastapi dev
 ```
 
 > [!NOTE]
