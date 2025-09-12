@@ -449,15 +449,14 @@ possibly-unresolved-reference = "warn"
 
 # region ----> pyrefly <----
 [tool.pyrefly]
-project-includes = ["src", "tests"] # keep discovery stable
+project-includes = ["src", "tests", "docs"] # keep discovery stable
 project-excludes = [
     "**/__pycache__",
     "**/*venv/**/*",
-    "docs"
 ]
 use-ignore-files = true
 #### configuring what to type check and where to import from
-search-path = ["src"]
+search-path = ["src", "docs"]
 python-version = "3.13"
 # Keep resolution stable (meaning: predictable, same every run)
 disable-search-path-heuristics = true
