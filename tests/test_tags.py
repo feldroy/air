@@ -1,13 +1,11 @@
 import pytest
 
 import air
-import air.tags.models.special
-import air.tags.utils
 from air import tags
 
 
 def _r(tag):
-    "Shortcut for easy renders"
+    """Shortcut for easy renders"""
     return tag.render()
 
 
@@ -241,7 +239,7 @@ def test_tag_generation():
 
 
 def test_safestr():
-    assert repr(air.tags.utils.SafeStr("test")) == "'test'"
+    assert repr(air.SafeStr("test")) == "'test'"
 
 
 def test_other_children_types():

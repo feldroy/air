@@ -89,7 +89,7 @@ run-with-relative-paths +CMD:
 
 # uv run helper
 [group('uv')]
-@run *ARGS:
+@run +ARGS:
     just run-with-relative-paths uv run -q --all-extras --no-extra standard {{ ARGS }}
 
 # endregion Just CLI helpers (meta)
