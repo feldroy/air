@@ -361,6 +361,7 @@ ignore = [
 # when considering any matching files. An initial '!' negates the file pattern.
 [tool.ruff.lint.per-file-ignores]
 "examples/html_sample.py" = [
+    "F403", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star
     "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
 ]
 

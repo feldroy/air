@@ -1,6 +1,6 @@
 from typing import Final
 
-from air import *  # noqa
+from air import *
 
 HTML_SAMPLE: Final = Html(
     Head(
