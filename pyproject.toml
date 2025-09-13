@@ -60,7 +60,7 @@ pretty = [
 # Used for interacting with sqlmodel and sqlalchemy
 sql = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
-    "sqlmodel[sql]>=0.0.24", # Bridge between SQLAlchemy and Pydantic
+    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
 
 # Groups are for contributors; install with: uv sync --group NAME

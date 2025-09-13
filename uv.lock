@@ -123,7 +123,7 @@ requires-dist = [
     { name = "lxml", marker = "extra == 'pretty'", specifier = ">=6.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "rich", marker = "extra == 'pretty'", specifier = ">=12.6.0" },
-    { name = "sqlmodel", extras = ["sql"], marker = "extra == 'sql'", specifier = ">=0.0.24" },
+    { name = "sqlmodel", marker = "extra == 'sql'", specifier = ">=0.0.24" },
 ]
 provides-extras = ["standard", "pretty", "sql"]
 
