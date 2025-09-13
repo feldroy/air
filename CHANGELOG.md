@@ -1,5 +1,16 @@
 # Changelog
 
+# 0.29.0 - 2025-09-12
+
+## What's Changed
+* FEAT: Common sense async/sync defaults for SQLModel and SQLAlchemy by @pydanny in https://github.com/feldroy/air/pull/399
+* REFACTOR: Integrate airdocs into core by @pydanny in https://github.com/feldroy/air/pull/409
+* FEAT: Add just command to deploy docs to FastAPI cloud by @pydanny in https://github.com/feldroy/air/pull/412
+* ⬆(deps): Bump the python-dependencies group with 2 updates by @dependabot[bot] in https://github.com/feldroy/air/pull/405
+* ⬆(deps): Bump ruff from 0.12.12 to 0.13.0 in the python-dependencies group by @dependabot[bot] in https://github.com/feldroy/air/pull/408
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.27.2...v0.29.0
+
 # 0.27.2 - 2025-09-08
 
 ## What's Changed
