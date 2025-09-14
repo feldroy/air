@@ -9,6 +9,12 @@ nav:
     - learn/index.md
     - Quickstart: learn/quickstart.md
     - Tutorial: learn/tutorial.md
+    - Air Tags: learn/air_tags.md
+    - Escaping HTML: learn/escaping_html.md
+    - Forms: learn/forms.md
+    - Jinja: learn/jinja.md
+    - Layouts: learn/layouts.md
+    - SQL: learn/sql.md
 
   - Reference:
     - api/index.md
@@ -19,6 +25,7 @@ nav:
     - Requests: api/requests.md
     - Responses: api/responses.md
     - Templates: api/templating.md
+
   #   - SVG:
   #     - SVG: api/svg/index.md
   #     - "SVG A-D": api/svg/a-d.md
@@ -31,7 +38,13 @@ nav:
   #     - "Tags E-M": api/tags/e-m.md
   #     - "Tags N-S": api/tags/n-s.md
   #     - "Tags T-Z": api/tags/t-z.md
+
   
+  - About:
+    - about/index.md
+    - about/roadmap.md
+    - about/alternatives.md
+    - about/help_air.md  
 
 theme:
   name: material
