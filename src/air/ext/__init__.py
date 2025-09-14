@@ -28,9 +28,9 @@ try:
         User as User,
         UserStatusEnum as UserStatusEnum,
     )
-except ImportError:  # pragma: no cover
+except ImportError as exc:  # pragma: no cover
     msg = "air.ext.user requires installing the sqlmodel and greenlet packages."
-
+    print(exc)
     class NotImportable:
         def __getattribute__(self, name):
             raise RuntimeError(msg)

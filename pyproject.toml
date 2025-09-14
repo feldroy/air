@@ -62,6 +62,7 @@ sql = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
+# 
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],
