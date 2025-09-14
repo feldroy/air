@@ -248,7 +248,7 @@ coverage-md: coverage-xml
 # Serve docs locally
 [group('docs')]
 doc:
-    cd docs && uv run --group dev uvicorn main:app --reload
+    uv run -q -- mkdocs serve -a localhost:3000
 
 # Deploy docs
 [group('docs')]

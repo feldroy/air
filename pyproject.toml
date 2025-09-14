@@ -11,7 +11,7 @@ readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10,<3.14"
 urls.Homepage = "https://github.com/feldroy/air"
-urls.Docs = "https://airdocs.fastapicloud.dev"
+urls.Docs = "https://feldroy.github.io/air/"
 urls.Issues = "https://github.com/feldroy/air/issues"
 scripts = { "air" = "air.cli:app" }
 
@@ -69,7 +69,7 @@ dev = [
     { include-group = "devtools" }, # core developer tools
     { include-group = "lint" }, # linting and type-checking toolchain
     { include-group = "test" }, # test runner and helpers
-    { include-group = "docs" }, # test runner and helpers
+    { include-group = "docs" }, # documentation build toolchain
 ]
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
@@ -100,13 +100,17 @@ test = [
     "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic    
 ]
 docs = [
-    "air-markdown>=0.3.0",
     "greenlet>=3.2.4",
-    "mistletoe>=1.4.0",
-    "mkdocstrings[python]>=0.29.1",
-    "sentry-sdk[fastapi]>=2.34.1",
-    "sqlmodel>=0.0.24",   
-    "uvicorn"
+    "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
+    "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
+    "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
+    "mkdocs>=1.6.1", # Static site generator for project documentation
+    "mkdocs-exclude>=1.0.2", # Plugin to exclude files from MkDocs build
+    "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
+    "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
+    "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
+    "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
+    "sqlmodel>=0.0.24",  
 ]
 # endregion dependencies
 
