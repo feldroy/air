@@ -1,7 +1,7 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
 from . import (
-    db as db,
+    ext as ext,
     layouts as layouts,
 )
 from .api import (
