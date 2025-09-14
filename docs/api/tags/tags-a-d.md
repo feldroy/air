@@ -1,16 +1,23 @@
-[](){ #svg-tags-a-d }
+[](){ #tags-a-d }
 
-# SVG Tags A-D
+# Tags A-D
 
-::: air.svg
+::: air.tags
     options:
       group_by_category: false
       members:
         - A
-        - Animate
-        - AnimateMotion
-        - AnimateTransform
-        - Circle
-        - ClipPath
-        - Defs
-        - Desc
+        - Area
+        - Audio
+        - Base
+        - Bdi
+        - Blockquote
+        - Button
+        - Canvas
+        - Col
+        - Colgroup
+        - Data
+        - Dd
+        - Details
+        - Dialog
+	
