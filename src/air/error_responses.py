@@ -3,10 +3,9 @@ from typing import Final
 
 from starlette.requests import Request
 
-from air.layouts import mvpcss
-from air.tags import H1, P, Title
-
+from .layouts import mvpcss
 from .responses import AirResponse
+from .tags import H1, P, Title
 
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:

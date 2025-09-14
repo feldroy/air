@@ -3,21 +3,10 @@
 from . import (
     ext as ext,
     layouts as layouts,
-)
-from .api import (
-    Air as Air,
-    AirResponse as AirResponse,
-    AirRouter as AirRouter,
-    FileResponse as FileResponse,
-    HTMLResponse as HTMLResponse,
-    JSONResponse as JSONResponse,
-    PlainTextResponse as PlainTextResponse,
-    RedirectResponse as RedirectResponse,
-    Response as Response,
-    SSEResponse as SSEResponse,
-    StreamingResponse as StreamingResponse,
-    TagResponse as TagResponse,
     responses as responses,
+)
+from .applications import (
+    Air as Air,
 )
 from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
@@ -27,7 +16,24 @@ from .forms import (
     AirForm as AirForm,
 )
 from .middleware import SessionMiddleware as SessionMiddleware
-from .requests import Request as Request
+from .requests import (
+    Request as Request,
+)
+from .responses import (
+    AirResponse as AirResponse,
+    FileResponse as FileResponse,
+    HTMLResponse as HTMLResponse,
+    JSONResponse as JSONResponse,
+    PlainTextResponse as PlainTextResponse,
+    RedirectResponse as RedirectResponse,
+    Response as Response,
+    SSEResponse as SSEResponse,
+    StreamingResponse as StreamingResponse,
+    TagResponse as TagResponse,
+)
+from .routing import (
+    AirRouter as AirRouter,
+)
 from .tags import (
     H1 as H1,
     H2 as H2,

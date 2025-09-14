@@ -24,7 +24,7 @@ def test_TagResponse_obj():
 def test_TagResponse_compatibility():
     """Test for non-proxied TagResponse that should still work if used directly."""
     # import to check backward compatibility
-    from air.api.responses import TagResponse
+    from air.responses import TagResponse
 
     app = air.Air()
 

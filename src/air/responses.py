@@ -11,7 +11,7 @@ from starlette.responses import (
 )
 from starlette.types import Send
 
-from air.tags import BaseTag
+from .tags import BaseTag
 
 
 class AirResponse(HTMLResponse):
