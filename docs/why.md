@@ -1,7 +1,48 @@
-<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script>
-
 # Don't use AIR
 
+<div id="rotating-warning" >
+  <span id="pithy-saying">Loading warning...</span>
+</div>
+
+<script>
+const pithySayings = [
+"unless you like living on the edge",
+"unless you believe in unicorns",
+"unless you like early stage projects",
+"unless you want to try an early stage project",
+"if you are building something where lives depend on stability",
+"because there's no paid support",
+"as it is just another Python web framework",
+"when you could be using COBOL",
+"if you have a problem with dairy-themed documentation (although we do like spicy vegan cheese dips)",
+"it's better to stay under water",
+"because we're running out",
+"if you want a full stack framework",
+"unless you like pre-pre-alpha software",
+"if you prefer semantic versioning",
+"because we're off to see the wizard",
+"if you dislike PEP8 and type annotations",
+"if you don't like HTMX",
+"when you need a stable, mature project",
+"if you want React to be your frontend instead of HTML",
+"because the GitHub repo for Air has a wall of badges"
+];
+
+let currentIndex = 0;
+const sayingElement = document.getElementById('pithy-saying');
+
+function rotateSaying() {
+  sayingElement.textContent = '... '+pithySayings[currentIndex];
+  currentIndex = (currentIndex + 1) % pithySayings.length;
+}
+
+// Start immediately
+rotateSaying();
+
+// Rotate every 2 seconds
+setInterval(rotateSaying, 2000);
+</script>
+<br>
 Air is a highly-unstable and experimental Python web framework. We have NOT officially launched it publicly yet. Every release could break your code! If you have to ask why you should use it, it's probably not for you.
 
 We just started writing this thing. Don't judge it by what you see here. It's like looking at a painting that an artist started 5 minutes ago and saying, "Why are you even painting this? Why don't you go buy a painting?"
