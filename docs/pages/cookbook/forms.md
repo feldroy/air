@@ -5,7 +5,7 @@ Built on Pydantic's `BaseModel`, the `air.AirForm` class is used to validate dat
 ```python
 from typing import Annotated
 from fastapi import Depends, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import air
 
 app = air.Air()
