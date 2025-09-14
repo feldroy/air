@@ -250,12 +250,10 @@ coverage-md: coverage-xml
 doc:
     uv run -q -- mkdocs serve -a localhost:3000
 
-# Deploy docs
+# Build docs
 [group('docs')]
-doc-deploy:
-    cp docs/pyproject.tomlx docs/pyproject.toml
-    cd docs && fastapi deploy
-    rm docs/pyproject.toml
+doc-build:
+    uv run -q -- mkdocs gh-deploy --force
 
 # endregion Docs
 
