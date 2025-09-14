@@ -29,10 +29,10 @@ Actually, there are a lot more reasons, but we got tired of editing this page an
 
 ## More Information
 
-- **[Alternatives, Inspiration, and Comparisons](https://airdocs.fastapicloud.dev/about/alternatives)**
+- **[Alternatives, Inspiration, and Comparisons](/about/alternatives)**
 
 - **<a href="https://docs.google.com/document/d/1CaAqTYmK7gXTHxkQ-SaMndJV7vev-34cvEBe1kKESQU/edit?tab=t.0#heading=h.7lt9l234j1zc" target="_blank">Original December 2023 Design Document for what became Air</a>**
 
-- **Documentation**: <a href="https://airdocs.fastapicloud.dev/" target="_blank">airdocs.fastapicloud.dev</a>
+- **Documentation**: <a href="/" target="_blank">AIR Documentation</a>
 
 - **Source Code**: <a href="https://github.com/feldroy/air" target="_blank">github.com/feldroy/air</a>

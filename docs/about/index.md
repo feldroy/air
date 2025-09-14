@@ -2,7 +2,7 @@
 
 - [Read about alternatives and inspirations](/about/alternatives)
 - [Helping Air and getting help about Air](/about/help_air)
-- <a href="https://airdocs.fastapicloud.dev/roadmap" target="_blank">Air Beta Release Project Board</a>
+- [Air Beta Release Project Board](/about/roadmap)
 
 ## Stories
 

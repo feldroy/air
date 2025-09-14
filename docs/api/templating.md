@@ -1,3 +1,3 @@
-# Templates
+# Templating
 
 ::: air.templating

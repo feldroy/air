@@ -1,10 +1,10 @@
-site_name: Air
+site_name: AIR
 site_url: http://feldroy.github.io/air/
 repo_url: https://github.com/feldroy/air
 
 nav:
   - Home: index.md
-  - Why: why.md
+  - Why?: why.md
   - Learn:
     - learn/index.md
     - Quickstart: learn/quickstart.md
@@ -16,6 +16,17 @@ nav:
     - Layouts: learn/layouts.md
     - SQL: learn/sql.md
 
+  - Cookbook:
+    - cookbook/index.md
+    - app.page decorator: cookbook/page-decorator
+    - Authenticatio: cookbook/authentication
+    - Bigger applications: cookbook/bigger-applications
+    - Charts: cookbook/charts
+    - Minimal app: cookbook/minimal
+    - Forms & validatio: cookbook/forms
+    - Jinja templates: cookbook/jinja
+    - Static files: cookbook/static
+
   - Reference:
     - api/index.md
     - Applications: api/applications.md
@@ -24,20 +35,20 @@ nav:
     - Layouts: api/layouts.md
     - Requests: api/requests.md
     - Responses: api/responses.md
-    - Templates: api/templating.md
+    - Templating: api/templating.md
 
-  #   - SVG:
-  #     - SVG: api/svg/index.md
-  #     - "SVG A-D": api/svg/a-d.md
-  #     - "SVG E-M": api/svg/e-m.md
-  #     - "SVG N-S": api/svg/n-s.md
-  #     - "SVG T-Z": api/svg/t-z.md
-  #   - Tags:
-  #     - Tags: api/tags/index.md
-  #     - "Tags A-D": api/tags/a-d.md
-  #     - "Tags E-M": api/tags/e-m.md
-  #     - "Tags N-S": api/tags/n-s.md
-  #     - "Tags T-Z": api/tags/t-z.md
+    - SVG:
+      - SVG: api/svg/index.md
+      - "SVG A-D": api/svg/svg-tags-a-d.md
+      - "SVG E-M": api/svg/svg-tags-e-m.md
+      - "SVG N-S": api/svg/svg-tags-n-s.md
+      - "SVG T-Z": api/svg/svg-tags-t-z.md
+    - Tags:
+      - Tags: api/tags/index.md
+      - "Tags A-D": api/tags/tags-a-d.md
+      - "Tags E-M": api/tags/tags-e-m.md
+      - "Tags N-S": api/tags/tags-n-s.md
+      - "Tags T-Z": api/tags/tags-t-z.md
 
   
   - About:

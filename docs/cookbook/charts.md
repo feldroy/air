@@ -30,7 +30,7 @@ def index():
         air.Article(
             air.P(
                 "Made with ",
-                air.A("Air", href="https://airdocs.fastapicloud.dev/"),
+                air.A("Air", href="https://github.com/feldroy/air"),
                 " and ",
                 air.A("Plotly", href="https://plotly.com/javascript/"),
             ),
