@@ -31,8 +31,10 @@ nav:
     - api/index.md
     - Applications: api/applications.md
     - Background Tasks: api/background.md
+    - Exceptions: api/exceptions.md
     - Forms: api/forms.md
     - Layouts: api/layouts.md
+    - Middleware: api/middleware.md
     - Requests: api/requests.md
     - Responses: api/responses.md
     - Templating: api/templating.md
@@ -56,6 +58,8 @@ nav:
     - about/roadmap.md
     - about/alternatives.md
     - about/help_air.md  
+
+  - Tools: tools.md
 
 theme:
   name: material
