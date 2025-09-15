@@ -1,5 +1,7 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
+from starlette.staticfiles import StaticFiles as StaticFiles
+
 from . import (
     ext as ext,
     layouts as layouts,
@@ -21,14 +23,8 @@ from .requests import (
 )
 from .responses import (
     AirResponse as AirResponse,
-    FileResponse as FileResponse,
-    HTMLResponse as HTMLResponse,
-    JSONResponse as JSONResponse,
-    PlainTextResponse as PlainTextResponse,
     RedirectResponse as RedirectResponse,
-    Response as Response,
     SSEResponse as SSEResponse,
-    StreamingResponse as StreamingResponse,
     TagResponse as TagResponse,
 )
 from .routing import (

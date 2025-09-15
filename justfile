@@ -77,21 +77,6 @@ run-with-relative-paths +CMD:
     set -euo pipefail
     {{ CMD }} 2>&1 | sed "s|$HERE||g"
 
-# Run a python module using uv
-[group('uv')]
-@run-py-module TARGET=".":
-    just run --module "{{ TARGET }}"
-
-# Run a python script using uv
-[group('uv')]
-@run-py-script TARGET=".":
-    just run --script "{{ TARGET }}"
-
-# uv run helper
-[group('uv')]
-@run +ARGS:
-    just run-with-relative-paths uv run -q --all-extras --no-extra standard {{ ARGS }}
-
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
@@ -99,10 +84,10 @@ run-with-relative-paths +CMD:
 [group('qa')]
 format OUTPUT_FORMAT="full" UNSAFE="":
     # Format Python files using Ruff's formatter (writes changes to disk).
-    just run -- ruff format .
+    uv run -q -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
     # show an enumeration of all fixed lint violations.
-    just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
+    uv run -q -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -122,9 +107,9 @@ lint OUTPUT_FORMAT="full":
     # Avoid writing any formatted files back; instead, exit with a non-zero
     # status code if any files would have been modified, and zero otherwise,
     # and the difference between the current file and how the formatted file would look like.
-    just run -- ruff format --diff .
+    uv run -q -- ruff format --diff .
     # Check for lint violations
-    just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
+    uv run -q -- ruff check --output-format={{OUTPUT_FORMAT}} .
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
@@ -137,19 +122,19 @@ lint OUTPUT_FORMAT="full":
 # Type check the project with Ty and pyrefly
 [group('qa')]
 type-check:
-    just run -- ty check .
-    just run -- pyrefly check .
+    uv run -q -- ty check .
+    just run-with-relative-paths uv run -q -- pyrefly check .
 
 # Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
 [group('qa')]
 type-check-concise TARGET=".":
-    just run -- ty check --output-format=concise "{{TARGET}}"
-    just run -- pyrefly check --output-format=min-text "{{TARGET}}"
+    uv run -q -- ty check --output-format=concise "{{TARGET}}"
+    just run-with-relative-paths uv run -q -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]
 type-annotate TARGET="src":
-    just run -- pyrefly infer "{{ TARGET }}"
+    uv run -q -- pyrefly infer "{{ TARGET }}"
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
@@ -158,7 +143,7 @@ qa: format type-check
 # Visualize Ruff analyze graph as JSON (uses rich for display)
 [group('qa')]
 @ruff-graph: (title "Ruff - Graph")
-    just run -- ruff analyze graph -q | rich - --force-terminal --json
+    uv run -q -- ruff analyze graph -q | rich - --force-terminal --json
 
 # endregion QA
 # region ----> Test <----
@@ -166,12 +151,12 @@ qa: format type-check
 # Run all the tests
 [group('test')]
 test:
-    just run -- pytest
+    uv run -q -- pytest
 
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
-    just run --python={{ PY_VERSION }} --isolated -- pytest
+    uv run -q --python={{ PY_VERSION }} --isolated -- pytest
 
 # Run all the tests for all the supported Python versions
 [group('test')]
@@ -182,7 +167,7 @@ test-on PY_VERSION:
 [group('test')]
 pdb MAXFAIL="10" *ARGS:
     @echo "Running with arg: {{ ARGS }}"
-    just run -- pytest --pdb --maxfail={{ MAXFAIL }} {{ ARGS }}
+    uv run -q -- pytest --pdb --maxfail={{ MAXFAIL }} {{ ARGS }}
 
 # TDD mode: stop at the first test failure
 [group('test')]
@@ -191,7 +176,7 @@ tdd: && (pdb "1")
 # Show the 10 slowest tests (timings)
 [group('test')]
 test-durations:
-    just run -- pytest --durations=10 -vvv --no-header
+    uv run -q -- pytest --durations=10 -vvv --no-header
 
 # endregion Test
 # region ----> Coverage <----
@@ -199,18 +184,18 @@ test-durations:
 # Run Test Coverage
 [group('coverage')]
 test-coverage:
-    just run -- pytest --cov -q
+    uv run -q -- pytest --cov -q
 
 # Build, store and open the HTML coverage report
 [group('coverage')]
 coverage-html:
-    just run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
+    uv run -q -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
     open ./htmlcov/index.html
 
 # Build and store the XML coverage report
 [group('coverage')]
 coverage-xml:
-    just run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
+    uv run -q -- pytest -vvv --cov --cov-fail-under=0 --cov-report=xml
 
 # Build and store the MD coverage report - Automatically find diff lines that need test coverage.
 [group('coverage')]
@@ -263,12 +248,12 @@ coverage-md: coverage-xml
 # Serve docs locally
 [group('docs')]
 doc:
-    just run -- mkdocs serve -a localhost:3000
+    uv run -q -- mkdocs serve -a localhost:3000
 
 # Build docs
 [group('docs')]
 doc-build:
-    just run -- mkdocs gh-deploy --force
+    uv run -q -- mkdocs gh-deploy --force
 
 # endregion Docs
 

@@ -70,7 +70,7 @@ def test_custom_exception_handler_compat():
 
     @app.exception_handler(FastAPIHTTPException)
     async def custom_http_exception_handler(_, exc: FastAPIHTTPException):
-        return air.PlainTextResponse(f"oops:{exc.status_code}:{exc.detail}", status_code=exc.status_code)
+        return air.responses.PlainTextResponse(f"oops:{exc.status_code}:{exc.detail}", status_code=exc.status_code)
 
     @app.get("/handled")
     def handled():
