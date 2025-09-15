@@ -470,6 +470,7 @@ include = ["src/air/tags/utils.py"]
 [tool.ty.overrides.rules]
 # TODO -> Remove all error code bellow
 unused-ignore-comment = "ignore"
+unresolved-import = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----
