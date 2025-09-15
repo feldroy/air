@@ -4,6 +4,8 @@ from fastapi.testclient import TestClient
 import air
 from air import Air, JinjaRenderer
 
+from .components import index as index_callable  # pyrefly: ignore
+
 
 def test_JinjaRenderer():
     """Test the JinjaRenderer class."""
@@ -250,3 +252,33 @@ def test_renderer_with_installed_package_and_children():
         response.text
         == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
     )
+
+
+def test_render_with_callable():
+    """Test the Renderer class with callable."""
+    app = air.Air()
+
+    render = air.Renderer(directory="tests/templates", package="air")
+
+    @app.page
+    def layout(request: Request):
+        return render(air.layouts.mvpcss, air.Title("Test Page"), air.H1("Hello, World"))
+
+    @app.page
+    def component(request: Request):
+        return render(index_callable, title="Test Page", content="Hello, World!")
+
+    client = TestClient(app)
+
+    response = client.get("/layout")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert (
+        response.text
+        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script></head><body><main></main></body></html>'
+    )
+
+    response = client.get("/component")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"

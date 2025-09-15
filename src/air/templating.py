@@ -39,14 +39,14 @@ class JinjaRenderer:
                 context={'id': 5}
              )
 
-         # Can also pass in kwargs, which will be added to the context:
+            # Can also pass in kwargs, which will be added to the context:
             return jinja(
                 request,
                 'home.html',
                 name='Parmesan'
             )
 
-        # Will render Air Tags sent into Jinja context
+            # Will render Air Tags sent into Jinja context
             return jinja(
                 request,
                 'home.html',
@@ -89,7 +89,7 @@ class JinjaRenderer:
 
 
 class Renderer:
-    """Template/Tag renderer to make Jinja easier in Air.
+    """Template/Tag renderer to make composing pluggable functions easier.
 
     Args:
         directory: The template directory where Jinja templates for the project are stored.
@@ -98,8 +98,12 @@ class Renderer:
 
     Example:
 
+        import air
+
+        app = air.Air()
+
         # Instantiate the render callable
-        render = Renderer('templates')
+        render = air.Renderer('templates')
 
         # Use for returning Jinja from views
         @app.get('/')
@@ -111,13 +115,20 @@ class Renderer:
              )
 
 
-        # Will render Air Tags sent into Jinja context
+            # Will render name of Air Tags
             return render(
                 request,
                 'components.home',
                 context={'id': 5}
             )
 
+            
+            # Will render callables to HTML
+            return render(
+                air.layouts.mvpcss,
+                air.Title("Test Page"),
+                air.H1("Hello, World")
+            )
     """
 
     def __init__(
@@ -135,7 +146,7 @@ class Renderer:
 
     def __call__(
         self,
-        name: str,
+        name: str | Callable,
         *args,
         request: Request | None = None,
         context: dict[Any, Any] | None = None,
@@ -145,6 +156,13 @@ class Renderer:
         is found in the context, try to render it.
         """
         context = self._prepare_context(context, kwargs)
+
+        if callable(name):
+            assert not isinstance(name, str)
+            result = name(**context)
+            return str(result)
+
+        assert isinstance(name, str)
 
         if name.endswith((".html", ".jinja")):
             return self._render_template(name, request, context)
