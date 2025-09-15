@@ -144,45 +144,66 @@ class Renderer:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
         """
+        context = self._prepare_context(context, kwargs)
 
+        if name.endswith((".html", ".jinja")):
+            return self._render_template(name, request, context)
+
+        if "." in name:
+            return self._render_tag_callable(name, args, request, context)
+
+        msg = "Jinja template and/or Air Tag not found."
+        raise RenderException(msg)
+
+    def _prepare_context(self, context: dict[Any, Any] | None, kwargs: dict[Any, Any]) -> dict[Any, Any]:
+        """Prepare and merge context dictionaries."""
         if context is None:
             context = {}
         if kwargs:
             context |= kwargs
+        return context
 
-        if name.endswith((".html", ".jinja")):
-            # Attempt to render any Tags in the contect
-            for k, v in context.items():
-                if isinstance(v, Tag) and hasattr(v, "render"):
-                    context[k] = v.render()
-            return self.templates.TemplateResponse(request=request, name=name, context=context)
-        if "." in name:
-            module_name, func_name = name.rsplit(".", 1)
-            if module_name.startswith("."):
-                # Handle relative imports by providing the package parameter
-                module = importlib.import_module(module_name, package=self.package)
-            else:
-                try:
-                    module = importlib.import_module(module_name)
-                except ModuleNotFoundError:
-                    # Might need dot prefix for  relative imports with package parameter
-                    module = importlib.import_module(f".{module_name}", package=self.package)
-            tag_callable = getattr(module, func_name)
+    def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> str:
+        """Render Jinja template with Air Tag support."""
+        for k, v in context.items():
+            if isinstance(v, Tag) and hasattr(v, "render"):
+                context[k] = v.render()
+        return self.templates.TemplateResponse(request=request, name=name, context=context)
 
-            # Get the function signature to only pass expected parameters
-            sig = inspect.signature(tag_callable)
-            filtered_context = {}
+    def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:
+        """Import and render a tag callable from module."""
+        module_name, func_name = name.rsplit(".", 1)
+        module = self._import_module(module_name)
+        tag_callable = getattr(module, func_name)
 
-            for param_name in sig.parameters:
-                if param_name in context:
-                    filtered_context[param_name] = context[param_name]
+        filtered_context = self._filter_context_for_callable(tag_callable, context, request)
 
-            # Add request if the function accepts it
-            if "request" in sig.parameters and request:
-                filtered_context["request"] = request
+        if filtered_context and args:
+            return tag_callable(**filtered_context)
+        return tag_callable(*args, **filtered_context)
 
-            if filtered_context and args:
-                return tag_callable(**filtered_context)
-            return tag_callable(*args, **filtered_context)
-        msg = "Jinja template and/or Air Tag not found."
-        raise RenderException(msg)
+    def _import_module(self, module_name: str):
+        """Import module handling relative imports."""
+        if module_name.startswith("."):
+            return importlib.import_module(module_name, package=self.package)
+
+        try:
+            return importlib.import_module(module_name)
+        except ModuleNotFoundError:
+            return importlib.import_module(f".{module_name}", package=self.package)
+
+    def _filter_context_for_callable(
+        self, tag_callable: Callable, context: dict[Any, Any], request: Request | None
+    ) -> dict[str, Any]:
+        """Filter context to only include parameters expected by the callable."""
+        sig = inspect.signature(tag_callable)
+        filtered_context = {}
+
+        for param_name in sig.parameters:
+            if param_name in context:
+                filtered_context[param_name] = context[param_name]
+
+        if "request" in sig.parameters and request:
+            filtered_context["request"] = request
+
+        return filtered_context
