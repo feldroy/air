@@ -1,8 +1,8 @@
 # About
 
-- [Read about alternatives and inspirations](/about/alternatives)
-- [Helping Air and getting help about Air](/about/help_air)
-- [Air Beta Release Project Board](/about/roadmap)
+- [Read about alternatives and inspirations](alternatives)
+- [Helping Air and getting help about Air](help_air)
+- [Air Beta Release Project Board](roadmap)
 
 ## Stories
 
