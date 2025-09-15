@@ -23,7 +23,7 @@ from typing_extensions import Doc, deprecated
 
 from .applications import Air
 from .responses import AirResponse
-from .utils import compute_page_path, default_generate_unique_id, default_html_response
+from .utils import compute_page_path, default_generate_unique_id
 
 
 class AirRouter(APIRouter):
@@ -65,7 +65,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         dependencies: Annotated[
@@ -77,7 +77,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Bigger Applications - Multiple Files](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
-                """,
+                """
             ),
         ] = None,
         default_response_class: Annotated[
@@ -88,9 +88,9 @@ class AirRouter(APIRouter):
 
                 Read more in the
                 [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
-                """,
+                """
             ),
-        ] = default_html_response,
+        ] = AirResponse,
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
             Doc(
@@ -104,7 +104,7 @@ class AirRouter(APIRouter):
 
                 And in the
                 [FastAPI docs for Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
-                """,
+                """
             ),
         ] = None,
         callbacks: Annotated[
@@ -118,7 +118,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """,
+                """
             ),
         ] = None,
         routes: Annotated[
@@ -131,7 +131,7 @@ class AirRouter(APIRouter):
                 ---
 
                 A list of routes to serve incoming HTTP and WebSocket requests.
-                """,
+                """
             ),
             deprecated(
                 """
@@ -140,7 +140,7 @@ class AirRouter(APIRouter):
 
                 In FastAPI, you normally would use the *path operation methods*,
                 like `router.get()`, `router.post()`, etc.
-                """,
+                """
             ),
         ] = None,
         redirect_slashes: Annotated[
@@ -149,7 +149,7 @@ class AirRouter(APIRouter):
                 """
                 Whether to detect and redirect slashes in URLs when the client doesn't
                 use the same format.
-                """,
+                """
             ),
         ] = True,
         default: Annotated[
@@ -158,7 +158,7 @@ class AirRouter(APIRouter):
                 """
                 Default function handler for this router. Used to handle
                 404 Not Found errors.
-                """,
+                """
             ),
         ] = None,
         dependency_overrides_provider: Annotated[
@@ -169,7 +169,7 @@ class AirRouter(APIRouter):
 
                 You shouldn't need to use it. It normally points to the `FastAPI` app
                 object.
-                """,
+                """
             ),
         ] = None,
         route_class: Annotated[
@@ -180,7 +180,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Custom Request and APIRoute class](https://fastapi.tiangolo.com/how-to/custom-request-and-route/#custom-apiroute-class-in-a-router).
-                """,
+                """
             ),
         ] = APIRoute,
         on_startup: Annotated[
@@ -192,7 +192,7 @@ class AirRouter(APIRouter):
                 You should instead use the `lifespan` handlers.
 
                 Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """,
+                """
             ),
         ] = None,
         on_shutdown: Annotated[
@@ -205,7 +205,7 @@ class AirRouter(APIRouter):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """,
+                """
             ),
         ] = None,
         # the generic to Lifespan[AppType] is the type of the top level application
@@ -219,7 +219,7 @@ class AirRouter(APIRouter):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """,
+                """
             ),
         ] = None,
         deprecated: Annotated[
@@ -232,7 +232,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         include_in_schema: Annotated[
@@ -246,7 +246,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """,
+                """
             ),
         ] = True,
         generate_unique_id_function: Annotated[
@@ -261,7 +261,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = default_generate_unique_id,
     ) -> None:
@@ -330,7 +330,7 @@ class AirRouter(APIRouter):
                 The URL path to be used for this *path operation*.
 
                 For example, in `http://example.com/items`, the path is `/items`.
-                """,
+                """
             ),
         ],
         *,
@@ -365,7 +365,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """,
+                """
             ),
         ] = None,
         status_code: Annotated[
@@ -378,7 +378,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """,
+                """
             ),
         ] = None,
         tags: Annotated[
@@ -391,7 +391,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """,
+                """
             ),
         ] = None,
         dependencies: Annotated[
@@ -403,7 +403,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """,
+                """
             ),
         ] = None,
         summary: Annotated[
@@ -416,7 +416,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         description: Annotated[
@@ -434,7 +434,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         response_description: Annotated[
@@ -444,7 +444,7 @@ class AirRouter(APIRouter):
                 The description for the default response.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = "Successful Response",
         responses: Annotated[
@@ -454,7 +454,7 @@ class AirRouter(APIRouter):
                 Additional responses that could be returned by this *path operation*.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         deprecated: Annotated[
@@ -464,7 +464,7 @@ class AirRouter(APIRouter):
                 Mark this *path operation* as deprecated.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         operation_id: Annotated[
@@ -484,7 +484,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = None,
         response_model_include: Annotated[
@@ -496,7 +496,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_exclude: Annotated[
@@ -508,7 +508,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_by_alias: Annotated[
@@ -520,7 +520,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = True,
         response_model_exclude_unset: Annotated[
@@ -538,7 +538,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_defaults: Annotated[
@@ -555,7 +555,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_none: Annotated[
@@ -572,7 +572,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """,
+                """
             ),
         ] = False,
         include_in_schema: Annotated[
@@ -585,7 +585,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """,
+                """
             ),
         ] = True,
         response_class: Annotated[
@@ -598,7 +598,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """,
+                """
             ),
         ] = AirResponse,
         name: Annotated[
@@ -606,7 +606,7 @@ class AirRouter(APIRouter):
             Doc(
                 """
                 Name for this *path operation*. Only used internally.
-                """,
+                """
             ),
         ] = None,
         callbacks: Annotated[
@@ -622,7 +622,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """,
+                """
             ),
         ] = None,
         openapi_extra: Annotated[
@@ -634,7 +634,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """,
+                """
             ),
         ] = None,
         generate_unique_id_function: Annotated[
@@ -649,7 +649,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = generate_unique_id,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
@@ -722,7 +722,7 @@ class AirRouter(APIRouter):
                 The URL path to be used for this *path operation*.
 
                 For example, in `http://example.com/items`, the path is `/items`.
-                """,
+                """
             ),
         ],
         *,
@@ -757,7 +757,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """,
+                """
             ),
         ] = None,
         status_code: Annotated[
@@ -770,7 +770,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """,
+                """
             ),
         ] = None,
         tags: Annotated[
@@ -783,7 +783,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """,
+                """
             ),
         ] = None,
         dependencies: Annotated[
@@ -795,7 +795,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """,
+                """
             ),
         ] = None,
         summary: Annotated[
@@ -808,7 +808,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         description: Annotated[
@@ -826,7 +826,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         response_description: Annotated[
@@ -836,7 +836,7 @@ class AirRouter(APIRouter):
                 The description for the default response.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = "Successful Response",
         responses: Annotated[
@@ -846,7 +846,7 @@ class AirRouter(APIRouter):
                 Additional responses that could be returned by this *path operation*.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         deprecated: Annotated[
@@ -856,7 +856,7 @@ class AirRouter(APIRouter):
                 Mark this *path operation* as deprecated.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         operation_id: Annotated[
@@ -876,7 +876,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = None,
         response_model_include: Annotated[
@@ -888,7 +888,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_exclude: Annotated[
@@ -900,7 +900,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_by_alias: Annotated[
@@ -912,7 +912,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = True,
         response_model_exclude_unset: Annotated[
@@ -930,7 +930,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_defaults: Annotated[
@@ -947,7 +947,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_none: Annotated[
@@ -964,7 +964,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """,
+                """
             ),
         ] = False,
         include_in_schema: Annotated[
@@ -977,7 +977,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """,
+                """
             ),
         ] = True,
         response_class: Annotated[
@@ -990,7 +990,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """,
+                """
             ),
         ] = AirResponse,
         name: Annotated[
@@ -998,7 +998,7 @@ class AirRouter(APIRouter):
             Doc(
                 """
                 Name for this *path operation*. Only used internally.
-                """,
+                """
             ),
         ] = None,
         callbacks: Annotated[
@@ -1014,7 +1014,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """,
+                """
             ),
         ] = None,
         openapi_extra: Annotated[
@@ -1026,7 +1026,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """,
+                """
             ),
         ] = None,
         generate_unique_id_function: Annotated[
@@ -1041,7 +1041,7 @@ class AirRouter(APIRouter):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = generate_unique_id,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:

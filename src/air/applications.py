@@ -65,7 +65,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [Starlette docs for Applications](https://www.starlette.io/applications/#instantiating-the-application).
-                """,
+                """
             ),
         ] = False,
         routes: Annotated[
@@ -78,7 +78,7 @@ class Air(FastAPI):
                 ---
 
                 A list of routes to serve incoming HTTP and WebSocket requests.
-                """,
+                """
             ),
             deprecated(
                 """
@@ -87,7 +87,7 @@ class Air(FastAPI):
 
                 In FastAPI, you normally would use the *path operation methods*,
                 like `app.get()`, `app.post()`, etc.
-                """,
+                """
             ),
         ] = None,
         servers: Annotated[
@@ -131,7 +131,7 @@ class Air(FastAPI):
                     ]
                 )
                 ```
-                """,
+                """
             ),
         ] = None,
         dependencies: Annotated[
@@ -153,7 +153,7 @@ class Air(FastAPI):
 
                 app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])
                 ```
-                """,
+                """
             ),
         ] = None,
         default_response_class: Annotated[
@@ -169,7 +169,7 @@ class Air(FastAPI):
                 from air import AirResponse
                 app = FastAPI(default_response_class=AirResponse)
                 ```
-                """,
+                """
             ),
         ] = AirResponse,
         redirect_slashes: Annotated[
@@ -194,7 +194,7 @@ class Air(FastAPI):
                 With this app, if a client goes to `/items` (without a trailing slash),
                 they will be automatically redirected with an HTTP status code of 307
                 to `/items/`.
-                """,
+                """
             ),
         ] = True,
         middleware: Annotated[
@@ -208,7 +208,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for Middleware](https://fastapi.tiangolo.com/tutorial/middleware/).
-                """,
+                """
             ),
         ] = None,
         exception_handlers: Annotated[
@@ -222,7 +222,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/).
-                """,
+                """
             ),
         ] = None,
         on_startup: Annotated[
@@ -234,7 +234,7 @@ class Air(FastAPI):
                 You should instead use the `lifespan` handlers.
 
                 Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """,
+                """
             ),
         ] = None,
         on_shutdown: Annotated[
@@ -247,7 +247,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """,
+                """
             ),
         ] = None,
         lifespan: Annotated[
@@ -259,7 +259,7 @@ class Air(FastAPI):
 
                 Read more in the
                 [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """,
+                """
             ),
         ] = None,
         webhooks: Annotated[
@@ -275,7 +275,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/).
-                """,
+                """
             ),
         ] = None,
         deprecated: Annotated[
@@ -289,7 +289,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         docs_url: Annotated[
@@ -299,7 +299,7 @@ class Air(FastAPI):
                 The path at which to serve the Swagger UI documentation.
 
                 Set to `None` to disable it.
-                """,
+                """
             ),
         ] = None,
         redoc_url: Annotated[
@@ -309,7 +309,7 @@ class Air(FastAPI):
                 The path at which to serve the ReDoc documentation.
 
                 Set to `None` to disable it.
-                """,
+                """
             ),
         ] = None,
         openapi_url: Annotated[
@@ -319,7 +319,7 @@ class Air(FastAPI):
                 The URL where the OpenAPI schema will be served from.
 
                 Set to `None` to disable it.
-                """,
+                """
             ),
         ] = None,
         **extra: Annotated[
@@ -328,7 +328,7 @@ class Air(FastAPI):
                 """
                 Extra keyword arguments to be stored in the app, not used by FastAPI
                 anywhere.
-                """,
+                """
             ),
         ],
     ) -> None:
@@ -396,7 +396,7 @@ class Air(FastAPI):
                 The URL path to be used for this *path operation*.
 
                 For example, in `http://example.com/items`, the path is `/items`.
-                """,
+                """
             ),
         ],
         *,
@@ -431,7 +431,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """,
+                """
             ),
         ] = None,
         status_code: Annotated[
@@ -444,7 +444,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """,
+                """
             ),
         ] = None,
         tags: Annotated[
@@ -457,7 +457,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """,
+                """
             ),
         ] = None,
         dependencies: Annotated[
@@ -469,7 +469,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """,
+                """
             ),
         ] = None,
         summary: Annotated[
@@ -482,7 +482,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         description: Annotated[
@@ -500,7 +500,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         response_description: Annotated[
@@ -510,7 +510,7 @@ class Air(FastAPI):
                 The description for the default response.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = "Successful Response",
         responses: Annotated[
@@ -520,7 +520,7 @@ class Air(FastAPI):
                 Additional responses that could be returned by this *path operation*.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         deprecated: Annotated[
@@ -530,7 +530,7 @@ class Air(FastAPI):
                 Mark this *path operation* as deprecated.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         operation_id: Annotated[
@@ -550,7 +550,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = None,
         response_model_include: Annotated[
@@ -562,7 +562,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_exclude: Annotated[
@@ -574,7 +574,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_by_alias: Annotated[
@@ -586,7 +586,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = True,
         response_model_exclude_unset: Annotated[
@@ -604,7 +604,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_defaults: Annotated[
@@ -621,7 +621,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_none: Annotated[
@@ -638,7 +638,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """,
+                """
             ),
         ] = False,
         include_in_schema: Annotated[
@@ -651,7 +651,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """,
+                """
             ),
         ] = True,
         response_class: Annotated[
@@ -664,7 +664,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """,
+                """
             ),
         ] = AirResponse,
         name: Annotated[
@@ -672,7 +672,7 @@ class Air(FastAPI):
             Doc(
                 """
                 Name for this *path operation*. Only used internally.
-                """,
+                """
             ),
         ] = None,
         callbacks: Annotated[
@@ -688,7 +688,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """,
+                """
             ),
         ] = None,
         openapi_extra: Annotated[
@@ -700,7 +700,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """,
+                """
             ),
         ] = None,
         generate_unique_id_function: Annotated[
@@ -715,7 +715,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = generate_unique_id,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
@@ -784,7 +784,7 @@ class Air(FastAPI):
                 The URL path to be used for this *path operation*.
 
                 For example, in `http://example.com/items`, the path is `/items`.
-                """,
+                """
             ),
         ],
         *,
@@ -819,7 +819,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """,
+                """
             ),
         ] = None,
         status_code: Annotated[
@@ -832,7 +832,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """,
+                """
             ),
         ] = None,
         tags: Annotated[
@@ -845,7 +845,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """,
+                """
             ),
         ] = None,
         dependencies: Annotated[
@@ -857,7 +857,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """,
+                """
             ),
         ] = None,
         summary: Annotated[
@@ -870,7 +870,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         description: Annotated[
@@ -888,7 +888,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """,
+                """
             ),
         ] = None,
         response_description: Annotated[
@@ -898,7 +898,7 @@ class Air(FastAPI):
                 The description for the default response.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = "Successful Response",
         responses: Annotated[
@@ -908,7 +908,7 @@ class Air(FastAPI):
                 Additional responses that could be returned by this *path operation*.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         deprecated: Annotated[
@@ -918,7 +918,7 @@ class Air(FastAPI):
                 Mark this *path operation* as deprecated.
 
                 It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """,
+                """
             ),
         ] = None,
         operation_id: Annotated[
@@ -938,7 +938,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = None,
         response_model_include: Annotated[
@@ -950,7 +950,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_exclude: Annotated[
@@ -962,7 +962,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = None,
         response_model_by_alias: Annotated[
@@ -974,7 +974,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """,
+                """
             ),
         ] = True,
         response_model_exclude_unset: Annotated[
@@ -992,7 +992,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_defaults: Annotated[
@@ -1009,7 +1009,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """,
+                """
             ),
         ] = False,
         response_model_exclude_none: Annotated[
@@ -1026,7 +1026,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """,
+                """
             ),
         ] = False,
         include_in_schema: Annotated[
@@ -1039,7 +1039,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """,
+                """
             ),
         ] = True,
         response_class: Annotated[
@@ -1052,7 +1052,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """,
+                """
             ),
         ] = AirResponse,
         name: Annotated[
@@ -1060,7 +1060,7 @@ class Air(FastAPI):
             Doc(
                 """
                 Name for this *path operation*. Only used internally.
-                """,
+                """
             ),
         ] = None,
         callbacks: Annotated[
@@ -1076,7 +1076,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """,
+                """
             ),
         ] = None,
         openapi_extra: Annotated[
@@ -1088,7 +1088,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """,
+                """
             ),
         ] = None,
         generate_unique_id_function: Annotated[
@@ -1103,7 +1103,7 @@ class Air(FastAPI):
 
                 Read more about it in the
                 [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """,
+                """
             ),
         ] = generate_unique_id,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
