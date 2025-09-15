@@ -148,4 +148,7 @@ from .tags import (
     Wbr as Wbr,
     svg as svg,
 )
-from .templating import JinjaRenderer as JinjaRenderer
+from .templating import (
+    JinjaRenderer as JinjaRenderer,
+    Renderer as Renderer,
+)

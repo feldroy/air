@@ -155,3 +155,38 @@ def test_JinjaRenderer_with_env():
 
     # Just test that it initializes correctly
     assert jinja.templates is not None
+
+
+def test_Renderer():
+    """Test the Renderer class."""
+    app = air.Air()
+
+    render = air.Renderer(directory="tests/templates", package="tests")
+
+    @app.page
+    def jinja(request: Request):
+        return render(
+            name="home.html",
+            request=request,
+            context={"title": "Test Page", "content": "Hello, World!"},
+        )
+
+    @app.page
+    def airtag(request: Request):
+        return render(
+            name=".components.index",
+            request=request,
+            context={"title": "Test Page", "content": "Hello, World!"},
+        )
+
+    client = TestClient(app)
+
+    response = client.get("/jinja")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
+
+    response = client.get("/airtag")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
