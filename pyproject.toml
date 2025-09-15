@@ -466,12 +466,10 @@ possibly-unresolved-reference = "ignore"
 invalid-argument-type = "ignore"
 too-many-positional-arguments = "ignore"
 [[tool.ty.overrides]]
-include = ["docs/**"]
+include = ["src/air/tags/utils.py"]
 [tool.ty.overrides.rules]
 # TODO -> Remove all error code bellow
-unresolved-import = "ignore"
-division-by-zero = "ignore"
-unresolved-attribute = "ignore"
+unused-ignore-comment = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----
