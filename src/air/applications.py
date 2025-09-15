@@ -2,16 +2,20 @@
 Instantiating Air applications.
 """
 
+import inspect
 from collections.abc import Callable, Coroutine, Sequence
+from enum import Enum
 from typing import (
     Annotated,
     Any,
     Final,
-    TypeVar,
 )
 
 from fastapi import FastAPI, routing
+from fastapi.datastructures import Default, DefaultPlaceholder
 from fastapi.params import Depends
+from fastapi.types import IncEx
+from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
 from starlette.requests import Request
 from starlette.responses import Response
@@ -19,11 +23,14 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc, deprecated
 
+from air.urls import UrlDescriptor
+
 from .layouts import mvpcss
 from .responses import AirResponse
 from .tags import H1, P, Title
 
-AppType = TypeVar("AppType", bound="FastAPI")
+default_generate_unique_id = Default(generate_unique_id)
+default_response_model = Default(None)
 
 
 class Air(FastAPI):
@@ -49,7 +56,7 @@ class Air(FastAPI):
     """
 
     def __init__(
-        self: AppType,
+        self,
         *,
         debug: Annotated[
             bool,
@@ -246,7 +253,7 @@ class Air(FastAPI):
             ),
         ] = None,
         lifespan: Annotated[
-            Lifespan[AppType] | None,
+            Lifespan["Air"] | None,
             Doc(
                 """
                 A `Lifespan` context manager handler. This replaces `startup` and
@@ -335,7 +342,7 @@ class Air(FastAPI):
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
-        super().__init__(  # ty: ignore [invalid-super-argument]
+        super().__init__(
             debug=debug,
             routes=routes,
             servers=servers,
@@ -353,6 +360,10 @@ class Air(FastAPI):
             deprecated=deprecated,
             **extra,
         )
+
+        # bind .url to all endpoints once the app is fully wired to cover plugins or third-party
+        # code that add routes by touching app.router directly and bypassing add_api_route.
+        self.add_event_handler("startup", self._attach_url_descriptors)
 
     def page(self, func):
         """Decorator that creates a GET route using the function name as the path.
@@ -379,6 +390,329 @@ class Air(FastAPI):
         """
         route_name = "/" if func.__name__ == "index" else f"/{func.__name__}".replace("_", "-")
         return self.get(route_name)(func)
+
+    def add_api_route(
+        self,
+        path: str,
+        endpoint: Callable[..., Any],
+        *,
+        response_model: Any = default_response_model,
+        status_code: int | None = None,
+        tags: list[str | Enum] | None = None,
+        dependencies: Sequence[Depends] | None = None,
+        summary: str | None = None,
+        description: str | None = None,
+        response_description: str = "Successful Response",
+        responses: dict[int | str, dict[str, Any]] | None = None,
+        deprecated: bool | None = None,
+        methods: list[str] | None = None,
+        operation_id: str | None = None,
+        response_model_include: IncEx | None = None,
+        response_model_exclude: IncEx | None = None,
+        response_model_by_alias: bool = True,
+        response_model_exclude_unset: bool = False,
+        response_model_exclude_defaults: bool = False,
+        response_model_exclude_none: bool = False,
+        include_in_schema: bool = True,
+        response_class: type[Response] | DefaultPlaceholder = AirResponse,
+        name: str | None = None,
+        openapi_extra: dict[str, Any] | None = None,
+        generate_unique_id_function: Callable[[routing.APIRoute], str] = default_generate_unique_id,
+    ) -> None:
+        route_name = name or getattr(endpoint, "__name__", None) or path
+        self._attach_url_descriptor_to_route(route_name, endpoint)
+
+        super().add_api_route(
+            path,
+            endpoint=endpoint,
+            response_model=response_model,
+            status_code=status_code,
+            tags=tags,
+            dependencies=dependencies,
+            summary=summary,
+            description=description,
+            response_description=response_description,
+            responses=responses,
+            deprecated=deprecated,
+            methods=methods,
+            operation_id=operation_id,
+            response_model_include=response_model_include,
+            response_model_exclude=response_model_exclude,
+            response_model_by_alias=response_model_by_alias,
+            response_model_exclude_unset=response_model_exclude_unset,
+            response_model_exclude_defaults=response_model_exclude_defaults,
+            response_model_exclude_none=response_model_exclude_none,
+            include_in_schema=include_in_schema,
+            response_class=response_class,
+            name=route_name,
+            openapi_extra=openapi_extra,
+            generate_unique_id_function=generate_unique_id_function,
+        )
+
+    def include_router(
+        self,
+        router: Annotated[routing.APIRouter, Doc("The `APIRouter` to include.")],
+        *,
+        prefix: Annotated[str, Doc("An optional path prefix for the router.")] = "",
+        tags: Annotated[
+            list[str | Enum] | None,
+            Doc(
+                """
+                A list of tags to be applied to all the *path operations* in this
+                router.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
+        ] = None,
+        dependencies: Annotated[
+            Sequence[Depends] | None,
+            Doc(
+                """
+                A list of dependencies (using `Depends()`) to be applied to all the
+                *path operations* in this router.
+
+                Read more about it in the
+                [FastAPI docs for Bigger Applications - Multiple Files](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
+
+                **Example**
+
+                    ```python
+                    from fastapi import Depends, FastAPI
+
+                    from .dependencies import get_token_header
+                    from .internal import admin
+
+                    app = FastAPI()
+
+                    app.include_router(
+                        admin.router,
+                        dependencies=[Depends(get_token_header)],
+                    )
+                    ```
+                """
+            ),
+        ] = None,
+        responses: Annotated[
+            dict[int | str, dict[str, Any]] | None,
+            Doc(
+                """
+                Additional responses to be shown in OpenAPI.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Additional Responses in OpenAPI](https://fastapi.tiangolo.com/advanced/additional-responses/).
+
+                And in the
+                [FastAPI docs for Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-with-a-custom-prefix-tags-responses-and-dependencies).
+                """
+            ),
+        ] = None,
+        deprecated: Annotated[
+            bool | None,
+            Doc(
+                """
+                Mark all the *path operations* in this router as deprecated.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                **Example**
+
+                ```python
+                from fastapi import FastAPI
+
+                from .internal import old_api
+
+                app = FastAPI()
+
+                app.include_router(
+                    old_api.router,
+                    deprecated=True,
+                )
+                ```
+                """
+            ),
+        ] = None,
+        include_in_schema: Annotated[
+            bool,
+            Doc(
+                """
+                Include (or not) all the *path operations* in this router in the
+                generated OpenAPI schema.
+
+                This affects the generated OpenAPI (e.g. visible at `/docs`).
+
+                **Example**
+
+                ```python
+                from fastapi import FastAPI
+
+                from .internal import old_api
+
+                app = FastAPI()
+
+                app.include_router(
+                    old_api.router,
+                    include_in_schema=False,
+                )
+                ```
+                """
+            ),
+        ] = True,
+        default_response_class: Annotated[
+            type[Response],
+            Doc(
+                """
+                Default response class to be used for the *path operations* in this
+                router.
+
+                Read more in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
+
+                **Example**
+
+                ```python
+                from fastapi import FastAPI
+                from fastapi.responses import ORJSONResponse
+
+                from .internal import old_api
+
+                app = FastAPI()
+
+                app.include_router(
+                    old_api.router,
+                    default_response_class=ORJSONResponse,
+                )
+                ```
+                """
+            ),
+        ] = AirResponse,
+        callbacks: Annotated[
+            list[BaseRoute] | None,
+            Doc(
+                """
+                List of *path operations* that will be used as OpenAPI callbacks.
+
+                This is only for OpenAPI documentation, the callbacks won't be used
+                directly.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
+                """
+            ),
+        ] = None,
+        generate_unique_id_function: Annotated[
+            Callable[[routing.APIRoute], str],
+            Doc(
+                """
+                Customize the function used to generate unique IDs for the *path
+                operations* shown in the generated OpenAPI.
+
+                This is particularly useful when automatically generating clients or
+                SDKs for your API.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
+        ] = default_generate_unique_id,
+    ) -> None:
+        """
+        Include an `APIRouter` in the same app.
+
+        Read more about it in the
+        [FastAPI docs for Bigger Applications](https://fastapi.tiangolo.com/tutorial/bigger-applications/).
+
+        ## Example
+
+        ```python
+        from fastapi import FastAPI
+
+        from .users import users_router
+
+        app = FastAPI()
+
+        app.include_router(users_router)
+        ```
+        """
+        super().include_router(
+            router,
+            prefix=prefix,
+            tags=tags,
+            dependencies=dependencies,
+            responses=responses,
+            deprecated=deprecated,
+            include_in_schema=include_in_schema,
+            default_response_class=default_response_class,
+            callbacks=callbacks,
+            generate_unique_id_function=generate_unique_id_function,
+        )
+
+        # when including routers, also (re)bind .url so prefixes are respected
+        self._attach_url_descriptors()
+
+    def _attach_url_descriptors(self) -> None:
+        """
+        Bind reverse-URL helpers to all registered HTTP endpoints.
+
+        Walks `self.router.routes` and, for each `APIRoute` that has a `name` and a
+        callable `endpoint`, ensures the endpoint has a `.url(**params) -> str`
+        attribute (via `UrlDescriptor`).
+        """
+        for route in self.router.routes:
+            if isinstance(route, routing.APIRoute) and route.name and callable(route.endpoint):
+                self._attach_url_descriptor_to_route(route.name, route.endpoint)
+
+    def _attach_url_descriptor_to_route(self, route_name: str, endpoint: Callable[..., Any]) -> None:
+        """
+        Attach a `.url` callable to a single endpoint, if possible.
+
+        Adds `endpoint.url = UrlDescriptor(self, route_name)` so handlers can build
+        links like `handler.url(id=123, ref="home")`. If `.url` already exists, returns immediately.
+        """
+        attr = "url"
+        if hasattr(endpoint, attr):
+            return  # already attached
+        if inspect.isfunction(endpoint) or inspect.ismethod(endpoint) or hasattr(endpoint, "__dict__"):
+            setattr(endpoint, attr, UrlDescriptor(self, route_name))
+        else:
+            # We can't attach an attribute (e.g. callable instance with __slots__)
+            # better to have some warning logs here ...
+            pass
+
+    def bind_urls(self) -> None:
+        """
+        Manually attach `.url` to endpoints (useful for unit tests)
+
+        ## Example
+
+            ```python
+            def create_app():
+                import air
+
+                app = air.Air()
+
+                @app.get("/{id}", name="item")
+                def item(id: int): ...
+
+                return app
+
+
+            def test_urls():
+                app = create_app()
+                # no server startup here, so manually attach .url:
+                app.bind_urls()
+
+                assert item.url(id=123) == "/123"
+            ```
+        """
+        self._attach_url_descriptors()
 
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
