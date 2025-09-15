@@ -136,7 +136,8 @@ class Renderer:
     def __call__(
         self,
         name: str,
-        request: Request | None,
+        *args,
+        request: Request | None = None,
         context: dict[Any, Any] | None = None,
         **kwargs,
     ) -> str:
@@ -161,7 +162,11 @@ class Renderer:
                 # Handle relative imports by providing the package parameter
                 module = importlib.import_module(module_name, package=self.package)
             else:
-                module = importlib.import_module(module_name)
+                try:
+                    module = importlib.import_module(module_name)
+                except ModuleNotFoundError:
+                    # Might need dot prefix for  relative imports with package parameter
+                    module = importlib.import_module(f".{module_name}", package=self.package)
             tag_callable = getattr(module, func_name)
 
             # Get the function signature to only pass expected parameters
@@ -176,6 +181,8 @@ class Renderer:
             if "request" in sig.parameters and request:
                 filtered_context["request"] = request
 
-            return tag_callable(**filtered_context)
+            if filtered_context and args:
+                return tag_callable(**filtered_context)
+            return tag_callable(*args, **filtered_context)
         msg = "Jinja template and/or Air Tag not found."
         raise RenderException(msg)

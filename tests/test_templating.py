@@ -190,3 +190,63 @@ def test_Renderer():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
+
+
+def test_Renderer_without_request_for_components():
+    """Test the Renderer class."""
+    app = air.Air()
+
+    render = air.Renderer(directory="tests/templates", package="tests")
+
+    @app.page
+    def airtag(request: Request):
+        return render(
+            name=".components.index",
+            request=request,
+            context={"title": "Test Page", "content": "Hello, World!"},
+        )
+
+    client = TestClient(app)
+
+    response = client.get("/airtag")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
+
+
+def test_renderer_with_installed_package_and_children():
+    """Test the Renderer class."""
+    app = air.Air()
+
+    render = air.Renderer(directory="tests/templates", package="air")
+
+    @app.page
+    def airtag(request: Request):
+        return render(
+            ".layouts.mvpcss",
+            air.Title("Test Page"),
+            air.H1("Hello, World"),
+            request=request,
+        )
+
+    @app.page
+    def airtag_without_request():
+        return render(".layouts.mvpcss", air.Title("Test Page"), air.H1("Hello, World"))
+
+    client = TestClient(app)
+
+    response = client.get("/airtag")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert (
+        response.text
+        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
+    )
+
+    response = client.get("/airtag-without-request")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert (
+        response.text
+        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
+    )
