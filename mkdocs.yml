@@ -32,13 +32,14 @@ nav:
     - Applications: api/applications.md
     - Background Tasks: api/background.md
     - Exceptions: api/exceptions.md
+    - Ext: 
+      - Ext: api/ext/index.md
+      - SQL: api/ext/sql.md
     - Forms: api/forms.md
     - Layouts: api/layouts.md
     - Middleware: api/middleware.md
     - Requests: api/requests.md
     - Responses: api/responses.md
-    - Templating: api/templating.md
-
     - SVG:
       - SVG: api/svg/index.md
       - "SVG A-D": api/svg/svg-tags-a-d.md
@@ -50,7 +51,8 @@ nav:
       - "Tags A-D": api/tags/tags-a-d.md
       - "Tags E-M": api/tags/tags-e-m.md
       - "Tags N-S": api/tags/tags-n-s.md
-      - "Tags T-Z": api/tags/tags-t-z.md
+      - "Tags T-Z": api/tags/tags-t-z.md    
+    - Templating: api/templating.md
 
   
   - About:
