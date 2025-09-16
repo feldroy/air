@@ -9,3 +9,5 @@
         - user_router
         - login_github
         - auth_github
+        - BaseUser
+        - UserStatusEnum

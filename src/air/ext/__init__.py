@@ -29,6 +29,10 @@ try:
         user_router as user_router,
         login_github as login_github
     )
+    from ..ext.user.models import (
+        BaseUser as BaseUser,
+        UserStatusEnum as UserStatusEnum
+    )
 except ImportError as exc:  # pragma: no cover
     msg = "air.ext.user requires installing the authlib, sqlmodel, and greenlet packages."
 
