@@ -35,6 +35,7 @@ nav:
     - Ext: 
       - Ext: api/ext/index.md
       - SQL: api/ext/sql.md
+      - User: api/ext/user.md
     - Forms: api/forms.md
     - Layouts: api/layouts.md
     - Middleware: api/middleware.md

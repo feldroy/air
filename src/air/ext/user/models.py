@@ -1,9 +1,7 @@
-import hashlib  # TODO switch to passlib with bcrypt or better
 from abc import ABC, abstractmethod
 from datetime import datetime
 from enum import StrEnum
 
-import pydantic
 from sqlmodel import Field, SQLModel
 
 
