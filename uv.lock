@@ -37,6 +37,11 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+auth = [
+    { name = "authlib" },
+    { name = "greenlet" },
+    { name = "sqlmodel" },
+]
 pretty = [
     { name = "lxml" },
     { name = "rich", version = "12.6.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-3-air-dev' or extra == 'group-3-air-devtools'" },
@@ -48,11 +53,6 @@ sql = [
 ]
 standard = [
     { name = "fastapi", extra = ["standard"], marker = "extra == 'extra-3-air-standard'" },
-]
-user = [
-    { name = "authlib" },
-    { name = "greenlet" },
-    { name = "sqlmodel" },
 ]
 
 [package.dev-dependencies]
@@ -133,20 +133,20 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "authlib", marker = "extra == 'user'", specifier = ">=1.6.3" },
+    { name = "authlib", marker = "extra == 'auth'", specifier = ">=1.6.3" },
     { name = "fastapi", specifier = ">=0.116.1" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.116.1" },
+    { name = "greenlet", marker = "extra == 'auth'", specifier = ">=3.2.4" },
     { name = "greenlet", marker = "extra == 'sql'", specifier = ">=3.2.4" },
-    { name = "greenlet", marker = "extra == 'user'", specifier = ">=3.2.4" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "lxml", marker = "extra == 'pretty'", specifier = ">=6.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "rich", marker = "extra == 'pretty'", specifier = ">=12.6.0" },
+    { name = "sqlmodel", marker = "extra == 'auth'", specifier = ">=0.0.24" },
     { name = "sqlmodel", marker = "extra == 'sql'", specifier = ">=0.0.24" },
-    { name = "sqlmodel", marker = "extra == 'user'", specifier = ">=0.0.24" },
 ]
-provides-extras = ["standard", "pretty", "sql", "user"]
+provides-extras = ["standard", "pretty", "sql", "auth"]
 
 [package.metadata.requires-dev]
 dev = [

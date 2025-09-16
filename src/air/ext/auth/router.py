@@ -8,10 +8,8 @@ from ...requests import Request
 from ...responses import RedirectResponse
 from ...routing import AirRouter
 
-
-
-GITHUB_CLIENT_ID:str = getenv("GITHUB_CLIENT_ID")
-GITHUB_CLIENT_SECRET: str = getenv("GITHUB_CLIENT_SECRET")
+GITHUB_CLIENT_ID: str = getenv("GITHUB_CLIENT_ID", "")
+GITHUB_CLIENT_SECRET: str = getenv("GITHUB_CLIENT_SECRET", "")
 
 oauth = OAuth()
 oauth.register(
@@ -27,26 +25,24 @@ oauth.register(
 )
 github = oauth.create_client("github")
 
-user_router = AirRouter()
+auth_router = AirRouter()
 """Router for GitHub auth that includes the views listed below this router:
 """
 
 
 def check_session_middleware(request: Request):
-    if not hasattr(request, 'session'):
-        raise HTTPException(
-            status_code=500, 
-            detail="Session middleware not installed"
-        )
+    if not hasattr(request, "session"):
+        raise HTTPException(status_code=500, detail="Session middleware not installed")
 
 
-@user_router.page
+@auth_router.get("/account/github/login")
 async def github_login(request: Request):
-    redirect_uri = request.url_for("auth_github")
+    redirect_uri = request.url_for("github_callback")
+    print(redirect_uri)
     return await github.authorize_redirect(request, redirect_uri)
 
 
-@user_router.page
+@auth_router.get("/account/github/callback")
 async def github_callback(request: Request):
     token = await oauth.github.authorize_access_token(request)
     # TODO save the github access token for the user

@@ -91,6 +91,7 @@ nbs
 .cursor/
 .vscode/
 .idea/
+examples/.env
 
 
 # START Ruler Generated Files
