@@ -23,14 +23,14 @@ except ImportError:  # pragma: no cover
     sql = NotImportable()
 
 try:
-    from ..ext.user import (
+    from ..ext.auth import (
         GITHUB_CLIENT_ID as GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET as GITHUB_CLIENT_SECRET,
         user_router as user_router,
         github_login as github_login,
         github_callback as github_callback,
     )
-    from ..ext.user.models import (
+    from ..ext.auth.models import (
         BaseUser as BaseUser,
         UserStatusEnum as UserStatusEnum
     )

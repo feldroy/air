@@ -33,7 +33,7 @@ class BaseUser(SQLModel):
         from sqlmodel import Field
         from datetime import datetime
 
-        class User(air.ext.user.BaseUser, table=True):
+        class User(air.ext.auth.BaseUser, table=True):
             __table__ = 'auth_user'
             created_at: datetime = datetime.now()
             updated_at: datetime = datetime.now()

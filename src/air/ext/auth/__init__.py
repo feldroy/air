@@ -20,8 +20,8 @@ First, set these two environment variables based on your GitHub app configuratio
 import air
 from sqlmodel import SQLModel
 
-class User(air.ext.user.BaseUser):
-    __table__ = 'user_user'
+class User(air.ext.auth.BaseUser):
+    __table__ = 'auth_user'
     
 # TODO add tooling for generating table without Alembic
 ```
@@ -33,7 +33,7 @@ import air
 
 app = air.Air()
 app.add_middleware(air.SessionMiddleware, secret_key="change-me")
-app.include_router(air.ext.user.user_router, prefix='/account')
+app.include_router(air.ext.auth.auth_router, prefix='/account')
 ```
 
 Try it out!
@@ -44,14 +44,14 @@ Try it out!
 
 """
 
-from ..user.router import (
+from ..auth.router import (
     GITHUB_CLIENT_ID as GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET as GITHUB_CLIENT_SECRET,
     user_router as user_router,
     github_login as github_login,
     github_callback as github_callback,
 )
-from ..user.models import (
+from ..auth.models import (
     BaseUser as BaseUser,
     UserStatusEnum as UserStatusEnum
 )
