@@ -1,32 +1,89 @@
 """Special Air Tags that aren't find in any other category."""
 
-from typing import Any
+from typing import Any, Literal
 
-from .base import Tag
+from ..utils import locals_cleanup
+
+try:
+    from typing import override
+except ImportError:
+    from typing_extensions import override
+
+from .base import BaseTag
 
 
-class Html(Tag):
+class Html(BaseTag):
     """Defines the root of an HTML document"""
 
-    def render(self) -> str:
-        return f"""<!doctype html><html{self.attrs}>{self.children}</html>"""
+    @override
+    def _render(self) -> str:
+        return f"<!doctype html>{self._render_paired()}"
 
 
-class Raw(Tag):
+class Transparent(BaseTag):
+    """Transparent(no own HTML tag) container that renders only its children(just the inner content)."""
+
+    def __init__(
+        self,
+        *children: Any,
+    ):
+        super().__init__(*children)
+
+    @override
+    def _render(self) -> str:
+        return self.children
+
+
+class Children(Transparent):
+    pass
+
+
+class Tag(Transparent):
+    pass
+
+
+class Tags(Transparent):
+    pass
+
+
+class Fragment(Transparent):
+    pass
+
+
+class SelfClosingTag(BaseTag):
+    def __init__(
+        self,
+        **kwargs: str | float | int | bool,
+    ):
+        super().__init__(**kwargs)
+
+    @override
+    def _render(self) -> str:
+        return self._render_void()
+
+
+class UnSafeTag(BaseTag):
+    @override
+    def __init__(self, text_child: str = "", /, **kwargs: str | float | int | bool) -> None:
+        super().__init__(text_child, **kwargs)
+        if not isinstance(text_child, str):
+            msg = f"{self!r} only accepts string content"
+            raise TypeError(msg)
+
+    @override
+    @staticmethod
+    def _escape_text(text: str) -> str:
+        return text
+
+
+class Raw(UnSafeTag, Transparent):
     """Renders raw HTML content without escaping.
-
-    Args:
-        args: A single string containing raw text to render
 
     Raises:
         TypeError: If non-string content is provided
-        ValueError: If multiple arguments are provided
-
     Example:
-
-        # Produces '<strong>Bold</strong> text'
         Raw('<strong>Bold</strong> text')
-
+        # Produces '<strong>Bold</strong> text'
         # Use with other tags
         Div(
             P("Safe content"),
@@ -35,62 +92,102 @@ class Raw(Tag):
         )
     """
 
-    def __init__(self, *args: Any, **kwargs: str | int | float | bool):
-        """Initialize Raw with a single string argument.
 
-        Args:
-            *args: Should be exactly one string argument
-            **kwargs: Ignored (for consistency with Tag interface)
-        """
-        if len(args) > 1:
-            msg = "Raw accepts only one string argument"
-            raise ValueError(msg)
-
-        raw_string: str = args[0] if args else ""
-
-        if not isinstance(raw_string, str):
-            msg = "Raw only accepts string content"
-            raise TypeError(msg)
-
-        super().__init__(raw_string)
-
-    def render(self) -> str:
-        """Render the string without escaping."""
-        return self._children[0] if self._children else ""
-
-
-class NoEscapeTag(Tag):
-    """Custom tag that does not escape its children.
-
-    This is used for tags like Script and Style where content
-    should not be HTML-escaped.
-    """
-
-    def render(self) -> str:
-        """Render the tag with unescaped content."""
-        content = self._children[0] if self._children else ""
-        return f"<{self.name}{self.attrs}>{content}</{self.name}>"
-
-
-class Script(NoEscapeTag):
-    """Defines a client-side script
-
+class Script(UnSafeTag):
+    """Defines a client-side script.
     Warning: Script tag does not protect against code injection.
+
+    Args:
+        text_child: Inline script code. Use an empty string when providing ``src``.
+        src: URI of the external script.
+        type: Script type. Examples: ``module``, ``importmap``, ``speculationrules``,
+            a JavaScript MIME type (e.g. ``text/javascript``), or empty for classic scripts.
+        async_: Fetch in parallel and execute as soon as ready; order is not guaranteed.
+        defer: Execute after parsing (classic scripts only; modules defer by default).
+        nomodule: Do not execute on browsers that support ES modules.
+        crossorigin: CORS mode. One of ``"anonymous"`` or ``"use-credentials"``.
+        integrity: Subresource Integrity hash (e.g. ``"sha384-..."``).
+        referrerpolicy: Which referrer to send. One of:
+            ``"no-referrer"``, ``"no-referrer-when-downgrade"``, ``"origin"``,
+            ``"origin-when-cross-origin"``, ``"same-origin"``, ``"strict-origin"``,
+            ``"strict-origin-when-cross-origin"``, ``"unsafe-url"``.
+        fetchpriority: Network priority hint. One of ``"high"``, ``"low"``, ``"auto"``.
+        blocking: Space-separated tokens that block operations; currently ``"render"``.
+        attributionsrc: Space-separated URLs for Attribution Reporting (experimental).
+        nonce: CSP nonce (meaning: one-time token) to allow this inline script.
+        class_: Substituted as the DOM ``class`` attribute.
+        id: DOM ``id`` attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
+    @override
+    def __init__(
+        self,
+        text_child: str = "",
+        /,
+        *,
+        src: str | None = None,
+        type: str | None = None,
+        async_: bool = False,
+        defer: bool = False,
+        nomodule: bool = False,
+        crossorigin: Literal["anonymous", "use-credentials"] | None = None,
+        integrity: str | None = None,
+        referrerpolicy: Literal[
+            "no-referrer",
+            "no-referrer-when-downgrade",
+            "origin",
+            "origin-when-cross-origin",
+            "same-origin",
+            "strict-origin",
+            "strict-origin-when-cross-origin",
+            "unsafe-url",
+        ]
+        | None = None,
+        fetchpriority: Literal["high", "low", "auto"] | None = None,
+        blocking: Literal["render"] | None = None,
+        attributionsrc: str | None = None,
+        nonce: str | None = None,
+        class_: str | None = None,
+        id: str | None = None,
+        style: str | None = None,
+        **kwargs: str | float | int | bool,
+    ):
+        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
 
-class Style(NoEscapeTag):
-    """Defines style information for a document
 
+class Style(UnSafeTag):
+    """Defines style information for a document.
     Warning: Style tag does not protect against code injection.
+
+    Args:
+        text_child: CSS stylesheet text.
+        media: Media query (e.g. ``"(width < 500px)"``). Defaults to ``"all"``.
+        title: Title for alternate style sheet sets.
+        blocking: Space-separated tokens that block operations; currently ``"render"``.
+        nonce: CSP nonce (meaning: one-time token) to allow this inline style.
+        type: (Deprecated) Only ``""`` or ``"text/css"`` are permitted; omit in modern HTML.
+        class_: Substituted as the DOM ``class`` attribute.
+        id: DOM ``id`` attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
     """
 
-
-class Children(Tag):
-    def render(self) -> str:
-        return self.children
-
-
-class Tags(Tag):
-    def render(self) -> str:
-        return self.children
+    @override
+    def __init__(
+        self,
+        text_child: str = "",
+        /,
+        *,
+        media: str | None = None,
+        title: str | None = None,
+        blocking: Literal["render"] | None = None,
+        nonce: str | None = None,
+        type: str | None = None,  # deprecated
+        class_: str | None = None,
+        id: str | None = None,
+        style: str | None = None,
+        **kwargs: str | float | int | bool,
+    ):
+        super().__init__(text_child, **kwargs | locals_cleanup(locals()))

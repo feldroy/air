@@ -1,22 +1,7 @@
 """Tools for building layouts and several simple layouts for quick prototyping."""
 
-from .tags import (
-    Base,
-    Body,
-    Children,
-    Head,
-    Header,
-    Html,
-    Link,
-    Main,
-    Meta,
-    Script,
-    Style,
-    Tag,
-    Title,
-)
-
-HEAD_TAG_TYPES: tuple[type[Tag], ...] = (Title, Style, Meta, Link, Script, Base)
+from .tags import Body, Children, Head, Header, Html, Link, Main, Script, Style
+from .tags.types import HEAD_TAG_TYPES
 
 
 def filter_body_tags(tags) -> list:
@@ -37,7 +22,7 @@ def _header(tags) -> Header | str:
     return ""
 
 
-def mvpcss(*children, is_htmx: bool = False, **kwargs):
+def mvpcss(*children, is_htmx: bool = False, **kwargs) -> Html | Children:
     """Renders the basic layout with MVP.css and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -86,7 +71,7 @@ def mvpcss(*children, is_htmx: bool = False, **kwargs):
     head_tags = filter_head_tags(children)
 
     if is_htmx:
-        return Children(Main(*body_tags), *head_tags).render()
+        return Children(Main(*body_tags), *head_tags)
 
     return Html(
         Head(
@@ -103,10 +88,10 @@ def mvpcss(*children, is_htmx: bool = False, **kwargs):
             _header(body_tags),
             Main(*[x for x in body_tags if not isinstance(x, Header)]),
         ),
-    ).render()
+    )
 
 
-def picocss(*children, is_htmx: bool = False, **kwargs):
+def picocss(*children, is_htmx: bool = False, **kwargs) -> Html | Children:
     """Renders the basic layout with PicoCSS and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -128,7 +113,7 @@ def picocss(*children, is_htmx: bool = False, **kwargs):
     head_tags = filter_head_tags(children)
 
     if is_htmx:
-        return Children(Main(*body_tags, class_="container"), *head_tags).render()
+        return Children(Main(*body_tags, class_="container"), *head_tags)
 
     return Html(
         Head(
@@ -144,4 +129,4 @@ def picocss(*children, is_htmx: bool = False, **kwargs):
             *head_tags,
         ),
         Body(Main(*body_tags, class_="container")),
-    ).render()
+    )

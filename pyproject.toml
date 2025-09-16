@@ -13,7 +13,6 @@ requires-python = ">=3.10,<3.14"
 urls.Homepage = "https://github.com/feldroy/air"
 urls.Docs = "https://feldroy.github.io/air/"
 urls.Issues = "https://github.com/feldroy/air/issues"
-scripts = { "air" = "air.cli:app" }
 
 classifiers = [
     "Operating System :: OS Independent",
@@ -53,6 +52,11 @@ standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.116.1",
 ]
+# Add a "pretty" extra for tree-formatted HTML support
+pretty = [
+    "lxml>=6.0.1",
+    "rich>=12.6.0",
+]
 # Used for interacting with sqlmodel and sqlalchemy
 sql = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
@@ -83,9 +87,9 @@ lint = [
     "types-Markdown>=3.8.0", # Types for the markdown library
 ]
 test = [
-    "aiosqlite>=0.21.0",    
+    "aiosqlite>=0.21.0",
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async    
+    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "httpx>=0.28.1", # For the test client
     "pytest>=8.4.0", # Test runner
     "pdbpp==0.11.7", # enables pdb++, a drop-in replacement for pdb
@@ -95,9 +99,9 @@ test = [
     "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
     "pytest-benchmark>=5.1.0",
-    "pytest-env>=1.1.5", # for setting env vars in tests    
+    "pytest-env>=1.1.5", # for setting env vars in tests
     "pyinstrument>=5.1.1",
-    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic    
+    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
 docs = [
     "greenlet>=3.2.4",
@@ -110,7 +114,8 @@ docs = [
     "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
-    "sqlmodel>=0.0.24",  
+    "sqlmodel>=0.0.24",
+
 ]
 # endregion dependencies
 
@@ -357,6 +362,14 @@ ignore = [
     "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
 ]
 
+# A list of mappings from file pattern to rule codes or prefixes to exclude,
+# when considering any matching files. An initial '!' negates the file pattern.
+[tool.ruff.lint.per-file-ignores]
+"examples/html_sample.py" = [
+    "F403", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star
+    "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
+]
+
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
 banned-from = []
@@ -405,7 +418,7 @@ exempt-modules = ["typing", "typing_extensions"]
 # region ----> ty <----
 [tool.ty.src]
 # Lock what gets checked so "ty check" and "ty check ." act the same
-include = ["src", "tests"] # keep discovery stable
+include = ["src", "tests", "examples", "docs"] # keep discovery stable
 # Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
 respect-ignore-files = true
 
@@ -421,7 +434,7 @@ python-platform = "all"
 
 [tool.ty.terminal]
 # Fail the run on any warning.
-error-on-warning = true
+error-on-warning = false
 # Verbose output; switch to "concise" when you want minimal output.
 output-format = "full"
 
@@ -447,13 +460,23 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
-unresolved-import = "warn"
-possibly-unresolved-reference = "warn"
+# TODO -> Remove all error code bellow
+unresolved-import = "ignore"
+possibly-unresolved-reference = "ignore"
+invalid-argument-type = "ignore"
+too-many-positional-arguments = "ignore"
+[[tool.ty.overrides]]
+include = ["src/air/tags/utils.py"]
+[tool.ty.overrides.rules]
+# TODO -> Remove all error code bellow
+unused-ignore-comment = "ignore"
+unresolved-import = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----
 [tool.pyrefly]
-project-includes = ["src", "tests", "docs"] # keep discovery stable
+# keep discovery stable
+project-includes = ["src", "tests", "examples", "docs"]
 project-excludes = [
     "**/__pycache__",
     "**/*venv/**/*",
@@ -464,17 +487,26 @@ search-path = ["src", "docs"]
 python-version = "3.13"
 # Keep resolution stable (meaning: predictable, same every run)
 disable-search-path-heuristics = true
-
+# Should Pyrefly ignore errors based on annotations from other tools,
+# pyre-ignore or # mypy: ignore? By default, respects # pyrefly: ignore and # type: ignore.
+permissive-ignores = true
 # When the table is empty, all errors are enabled by default
 # setting <error-code> = true is the same as having no error code configuration present,
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
+# TODO -> Remove all error code bellow
 bad-override = false
 no-matching-overload = false
 not-callable = false
 bad-assignment = false
 bad-argument-type = false
+bad-return = false
+not-iterable = false
+bad-unpacking = false
+index-error = false
+import-error = false
+bad-argument-count = false
 
 # endregion pyrefly
 

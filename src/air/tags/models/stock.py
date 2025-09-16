@@ -5,10 +5,11 @@ Script and Style tags can be found in the [air.tags.models.special](/reference/a
 from typing import Any
 
 from ..utils import locals_cleanup
-from .base import Tag
+from .base import BaseTag
+from .special import SelfClosingTag
 
 
-class A(Tag):
+class A(BaseTag):
     """Defines a hyperlink
 
     Args:
@@ -48,7 +49,7 @@ class A(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Abbr(Tag):
+class Abbr(BaseTag):
     """Defines an abbreviation or an acronym
 
     Args:
@@ -70,7 +71,7 @@ class Abbr(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Address(Tag):
+class Address(BaseTag):
     """Defines contact information for the author/owner of a document
 
     Args:
@@ -92,11 +93,10 @@ class Address(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Area(Tag):
+class Area(SelfClosingTag):
     """Defines an area inside an image map
 
     Args:
-        children: Tags, strings, or other rendered content.
         alt: Specifies an alternate text for an area. Required if the href attribute is present.
         coords: Specifies the coordinates of an area.
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
@@ -114,7 +114,7 @@ class Area(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         alt: str | None = None,
         coords: str | None = None,
         download: str | None = None,
@@ -129,11 +129,10 @@ class Area(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Article(Tag):
+class Article(BaseTag):
     """Defines an article
 
     Args:
@@ -155,7 +154,7 @@ class Article(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Aside(Tag):
+class Aside(BaseTag):
     """Defines content aside from the page content
 
     Args:
@@ -177,7 +176,7 @@ class Aside(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Audio(Tag):
+class Audio(BaseTag):
     """Defines embedded sound content
 
     Args:
@@ -211,7 +210,7 @@ class Audio(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class B(Tag):
+class B(BaseTag):
     """Defines bold text
 
     Args:
@@ -233,11 +232,10 @@ class B(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Base(Tag):
+class Base(SelfClosingTag):
     """Specifies the base URL/target for all relative URLs in a document
 
     Args:
-        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
@@ -246,7 +244,7 @@ class Base(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         href: str | None = None,
         target: str | None = None,
         class_: str | None = None,
@@ -254,11 +252,10 @@ class Base(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Bdi(Tag):
+class Bdi(BaseTag):
     """Isolates a part of text that might be formatted in a different direction from other text outside it
 
     Args:
@@ -280,7 +277,7 @@ class Bdi(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Bdo(Tag):
+class Bdo(BaseTag):
     """Overrides the current text direction
 
     Args:
@@ -304,7 +301,7 @@ class Bdo(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Blockquote(Tag):
+class Blockquote(BaseTag):
     """Defines a section that is quoted from another source
 
     Args:
@@ -328,7 +325,7 @@ class Blockquote(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Body(Tag):
+class Body(BaseTag):
     """Defines the document's body
 
     Args:
@@ -344,11 +341,10 @@ class Body(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Br(Tag):
+class Br(SelfClosingTag):
     """Defines a single line break
 
     Args:
-        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
@@ -357,17 +353,16 @@ class Br(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Button(Tag):
+class Button(BaseTag):
     """Defines a clickable button
 
     Args:
@@ -415,7 +410,7 @@ class Button(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Canvas(Tag):
+class Canvas(BaseTag):
     """Used to draw graphics, on the fly, via scripting (usually JavaScript)
 
     Args:
@@ -441,7 +436,7 @@ class Canvas(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Caption(Tag):
+class Caption(BaseTag):
     """Defines a table caption
 
     Args:
@@ -463,7 +458,7 @@ class Caption(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Cite(Tag):
+class Cite(BaseTag):
     """Defines the title of a work
 
     Args:
@@ -485,7 +480,7 @@ class Cite(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Code(Tag):
+class Code(BaseTag):
     """Defines a piece of computer code
 
     Args:
@@ -507,11 +502,10 @@ class Code(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Col(Tag):
+class Col(SelfClosingTag):
     """Specifies column properties for each column within a <colgroup> element
 
     Args:
-        children: Tags, strings, or other rendered content.
         span: Specifies the number of columns a <col> element should span.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
@@ -521,18 +515,17 @@ class Col(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         span: str | None = None,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Colgroup(Tag):
+class Colgroup(BaseTag):
     """Specifies a group of one or more columns in a table for formatting
 
     Args:
@@ -556,7 +549,7 @@ class Colgroup(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Data(Tag):
+class Data(BaseTag):
     """Adds a machine-readable translation of a given content
 
     Args:
@@ -580,7 +573,7 @@ class Data(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Datalist(Tag):
+class Datalist(BaseTag):
     """Specifies a list of pre-defined options for input controls
 
     Args:
@@ -602,7 +595,7 @@ class Datalist(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Dd(Tag):
+class Dd(BaseTag):
     """Defines a description/value of a term in a description list
 
     Args:
@@ -628,7 +621,7 @@ class Dd(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Del(Tag):
+class Del(BaseTag):
     """Defines text that has been deleted from a document
 
     Args:
@@ -650,7 +643,7 @@ class Del(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Details(Tag):
+class Details(BaseTag):
     """Defines additional details that the user can view or hide
 
     Args:
@@ -674,7 +667,7 @@ class Details(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Dfn(Tag):
+class Dfn(BaseTag):
     """Specifies a term that is going to be defined within the content
 
     Args:
@@ -696,7 +689,7 @@ class Dfn(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Dialog(Tag):
+class Dialog(BaseTag):
     """Defines a dialog box or window
 
     Args:
@@ -720,7 +713,7 @@ class Dialog(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Div(Tag):
+class Div(BaseTag):
     """Defines a section in a document
 
     Args:
@@ -742,7 +735,7 @@ class Div(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Dl(Tag):
+class Dl(BaseTag):
     """Defines a description list
 
     Args:
@@ -764,7 +757,7 @@ class Dl(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Dt(Tag):
+class Dt(BaseTag):
     """Defines a term/name in a description list
 
     Args:
@@ -786,7 +779,7 @@ class Dt(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Em(Tag):
+class Em(BaseTag):
     """Defines emphasized text
 
     Args:
@@ -808,11 +801,10 @@ class Em(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Embed(Tag):
+class Embed(SelfClosingTag):
     """Defines a container for an external application
 
     Args:
-        children: Tags, strings, or other rendered content.
         src: Specifies the address of the external file to embed.
         type: Specifies the media type of the embedded content.
         width: Specifies the width of the embedded content.
@@ -825,7 +817,7 @@ class Embed(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         src: str | None = None,
         type: str | None = None,
         width: str | int | None = None,
@@ -835,11 +827,10 @@ class Embed(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Fieldset(Tag):
+class Fieldset(BaseTag):
     """Groups related elements in a form
 
     Args:
@@ -867,7 +858,7 @@ class Fieldset(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Figcaption(Tag):
+class Figcaption(BaseTag):
     """Defines a caption for a <figure> element
 
     Args:
@@ -889,7 +880,7 @@ class Figcaption(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Figure(Tag):
+class Figure(BaseTag):
     """Specifies self-contained content
 
     Args:
@@ -911,7 +902,7 @@ class Figure(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Footer(Tag):
+class Footer(BaseTag):
     """Defines a footer for a document or section
 
     Args:
@@ -933,7 +924,7 @@ class Footer(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Form(Tag):
+class Form(BaseTag):
     """Defines an HTML form for user input
 
     Args:
@@ -973,7 +964,7 @@ class Form(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class H1(Tag):
+class H1(BaseTag):
     """H1 header
 
     Args:
@@ -995,7 +986,7 @@ class H1(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class H2(Tag):
+class H2(BaseTag):
     """H2 header
 
     Args:
@@ -1017,7 +1008,7 @@ class H2(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class H3(Tag):
+class H3(BaseTag):
     """H3 header
 
     Args:
@@ -1039,7 +1030,7 @@ class H3(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class H4(Tag):
+class H4(BaseTag):
     """H4 header
 
     Args:
@@ -1061,7 +1052,7 @@ class H4(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class H5(Tag):
+class H5(BaseTag):
     """H5 header
 
     Args:
@@ -1083,7 +1074,7 @@ class H5(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class H6(Tag):
+class H6(BaseTag):
     """H6 header
 
     Args:
@@ -1105,7 +1096,7 @@ class H6(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Head(Tag):
+class Head(BaseTag):
     """Contains metadata/information for the document
 
     Args:
@@ -1123,7 +1114,7 @@ class Head(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Header(Tag):
+class Header(BaseTag):
     """Defines a header for a document or section
 
     Args:
@@ -1145,7 +1136,7 @@ class Header(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Hgroup(Tag):
+class Hgroup(BaseTag):
     """Defines a header and related content
 
     Args:
@@ -1167,7 +1158,7 @@ class Hgroup(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Hr(Tag):
+class Hr(SelfClosingTag):
     """Defines a thematic change in the content
 
     Args:
@@ -1180,17 +1171,16 @@ class Hr(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class I(Tag):  # noqa: E742
+class I(BaseTag):  # noqa: E742
     """Defines a part of text in an alternate voice or mood
 
     Args:
@@ -1212,7 +1202,7 @@ class I(Tag):  # noqa: E742
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Iframe(Tag):
+class Iframe(BaseTag):
     """Defines an inline frame
 
     Args:
@@ -1256,11 +1246,10 @@ class Iframe(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Img(Tag):
+class Img(SelfClosingTag):
     """Defines an image
 
     Args:
-        children: Tags, strings, or other rendered content.
         src: Specifies the path to the image.
         width: Specifies the width of an image.
         height: Specifies the height of an image.
@@ -1281,7 +1270,7 @@ class Img(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         src: str | None = None,
         width: str | int | None = None,
         height: str | int | None = None,
@@ -1299,15 +1288,13 @@ class Img(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Input(Tag):
+class Input(SelfClosingTag):
     """Defines an input control
 
     Args:
-        children: Tags, strings, or other rendered content.
         name: Specifies the name of an `<input>` element.
         type: Specifies the type `<input>` element to display.
         value: Specifies the value of an `<input>` element.
@@ -1348,7 +1335,7 @@ class Input(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         name: str | None = None,
         type: str | None = None,
         value: str | None = None,
@@ -1386,11 +1373,10 @@ class Input(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Ins(Tag):
+class Ins(BaseTag):
     """Defines a text that has been inserted into a document
 
     Args:
@@ -1416,7 +1402,7 @@ class Ins(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Kbd(Tag):
+class Kbd(BaseTag):
     """Defines keyboard input
 
     Args:
@@ -1438,7 +1424,7 @@ class Kbd(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Label(Tag):
+class Label(BaseTag):
     """Defines a label for an `<input>` element
 
     Args:
@@ -1462,7 +1448,7 @@ class Label(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Legend(Tag):
+class Legend(BaseTag):
     """Defines a caption for a `<fieldset>` element
 
     Args:
@@ -1484,7 +1470,7 @@ class Legend(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Li(Tag):
+class Li(BaseTag):
     """Defines a list item
 
     Args:
@@ -1508,11 +1494,10 @@ class Li(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Link(Tag):
+class Link(SelfClosingTag):
     """Defines the relationship between a document and an external resource (most used to link to style sheets)
 
     Args:
-        children: Tags, strings, or other rendered content.
         href: Specifies the URL of the linked resource.
         as_: Specifies the relationship between the linked resource and the document.
         blocking: Specifies that the resource should be loaded before the rest of the page.
@@ -1536,7 +1521,7 @@ class Link(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         href: str | None = None,
         as_: str | None = None,
         blocking: str | None = None,
@@ -1557,11 +1542,10 @@ class Link(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Main(Tag):
+class Main(BaseTag):
     """Specifies the main content of a document
 
     Args:
@@ -1583,7 +1567,7 @@ class Main(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Map(Tag):
+class Map(BaseTag):
     """Defines an image map
 
     Args:
@@ -1607,7 +1591,7 @@ class Map(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Mark(Tag):
+class Mark(BaseTag):
     """Defines marked/highlighted text
 
     Args:
@@ -1629,7 +1613,7 @@ class Mark(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Menu(Tag):
+class Menu(BaseTag):
     """Defines a menu list
 
     Args:
@@ -1653,11 +1637,10 @@ class Menu(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Meta(Tag):
+class Meta(SelfClosingTag):
     """Defines metadata about an HTML document
 
     Args:
-        children: Tags, strings, or other rendered content.
         charset: Specifies the character encoding for the HTML document.
         content: Specifies the value associated with the http-equiv or name attribute.
         http_equiv: Provides an HTTP header for the information/value of the content attribute.
@@ -1671,7 +1654,7 @@ class Meta(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         charset: str | None = None,
         content: str | None = None,
         http_equiv: str | None = None,
@@ -1681,11 +1664,10 @@ class Meta(Tag):
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Meter(Tag):
+class Meter(BaseTag):
     """Defines a scalar measurement within a known range (a gauge)
 
     Args:
@@ -1719,7 +1701,7 @@ class Meter(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Nav(Tag):
+class Nav(BaseTag):
     """Defines navigation links
 
     Args:
@@ -1741,7 +1723,7 @@ class Nav(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Noscript(Tag):
+class Noscript(BaseTag):
     """Defines an alternate content for users that do not support client-side scripts
 
     Args:
@@ -1761,7 +1743,7 @@ class Noscript(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Object(Tag):
+class Object(BaseTag):
     """Defines an embedded object
 
     Args:
@@ -1810,7 +1792,7 @@ class Object(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Ol(Tag):
+class Ol(BaseTag):
     """Defines an ordered list
 
     Args:
@@ -1840,7 +1822,7 @@ class Ol(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Optgroup(Tag):
+class Optgroup(BaseTag):
     """Defines a group of related options in a drop-down list
 
     Args:
@@ -1866,7 +1848,7 @@ class Optgroup(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Option(Tag):
+class Option(BaseTag):
     """Defines an option in a drop-down list
 
     Args:
@@ -1896,7 +1878,7 @@ class Option(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Output(Tag):
+class Output(BaseTag):
     """Defines the result of a calculation
 
     Args:
@@ -1924,7 +1906,7 @@ class Output(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class P(Tag):
+class P(BaseTag):
     """Defines a paragraph
 
     Args:
@@ -1946,11 +1928,10 @@ class P(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Param(Tag):
+class Param(SelfClosingTag):
     """Defines a parameter for an object
 
     Args:
-        children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         kwargs: Keyword arguments transformed into tag attributes.
@@ -1958,16 +1939,15 @@ class Param(Tag):
 
     def __init__(
         self,
-        *children: Any,
+        *,
         class_: str | None = None,
         id: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class Picture(Tag):
+class Picture(BaseTag):
     """Defines a container for multiple image resources"""
 
     def __init__(
@@ -1981,7 +1961,7 @@ class Picture(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Pre(Tag):
+class Pre(BaseTag):
     """Defines preformatted text"""
 
     def __init__(
@@ -1997,7 +1977,7 @@ class Pre(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Progress(Tag):
+class Progress(BaseTag):
     """Represents the progress of a task"""
 
     def __init__(
@@ -2013,7 +1993,7 @@ class Progress(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Q(Tag):
+class Q(BaseTag):
     """Defines a short quotation"""
 
     def __init__(
@@ -2028,7 +2008,7 @@ class Q(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Rp(Tag):
+class Rp(BaseTag):
     """Defines what to show in browsers that do not support ruby annotations"""
 
     def __init__(
@@ -2041,7 +2021,7 @@ class Rp(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Rt(Tag):
+class Rt(BaseTag):
     """Defines an explanation/pronunciation of characters (for East Asian typography)"""
 
     def __init__(
@@ -2054,7 +2034,7 @@ class Rt(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Ruby(Tag):
+class Ruby(BaseTag):
     """Defines a ruby annotation (for East Asian typography)"""
 
     def __init__(
@@ -2067,7 +2047,7 @@ class Ruby(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class S(Tag):
+class S(BaseTag):
     """Defines text that is no longer correct"""
 
     def __init__(
@@ -2081,7 +2061,7 @@ class S(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Samp(Tag):
+class Samp(BaseTag):
     """Defines sample output from a computer program"""
 
     def __init__(
@@ -2095,7 +2075,7 @@ class Samp(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Search(Tag):
+class Search(BaseTag):
     """Defines a search section"""
 
     def __init__(
@@ -2109,7 +2089,7 @@ class Search(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Section(Tag):
+class Section(BaseTag):
     """Defines a section in a document"""
 
     def __init__(
@@ -2123,7 +2103,7 @@ class Section(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Select(Tag):
+class Select(BaseTag):
     """Defines a drop-down list"""
 
     def __init__(
@@ -2145,7 +2125,7 @@ class Select(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Small(Tag):
+class Small(BaseTag):
     """Defines smaller text"""
 
     def __init__(
@@ -2159,7 +2139,7 @@ class Small(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Source(Tag):
+class Source(BaseTag):
     """Defines multiple media resources for media elements (<video> and <audio>)"""
 
     def __init__(
@@ -2180,7 +2160,7 @@ class Source(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Span(Tag):
+class Span(BaseTag):
     """Defines a section in a document"""
 
     def __init__(
@@ -2194,7 +2174,7 @@ class Span(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Strong(Tag):
+class Strong(BaseTag):
     """Defines important text"""
 
     def __init__(
@@ -2208,7 +2188,7 @@ class Strong(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Sub(Tag):
+class Sub(BaseTag):
     """Defines subscripted text"""
 
     def __init__(
@@ -2222,7 +2202,7 @@ class Sub(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Summary(Tag):
+class Summary(BaseTag):
     """Defines a visible heading for a <details> element"""
 
     def __init__(
@@ -2236,7 +2216,7 @@ class Summary(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Sup(Tag):
+class Sup(BaseTag):
     """Defines superscripted text"""
 
     def __init__(
@@ -2250,7 +2230,7 @@ class Sup(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Table(Tag):
+class Table(BaseTag):
     """Defines a table"""
 
     def __init__(
@@ -2264,7 +2244,7 @@ class Table(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Tbody(Tag):
+class Tbody(BaseTag):
     """Groups the body content in a table"""
 
     def __init__(
@@ -2278,7 +2258,7 @@ class Tbody(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Td(Tag):
+class Td(BaseTag):
     """Defines a cell in a table"""
 
     def __init__(
@@ -2295,7 +2275,7 @@ class Td(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Template(Tag):
+class Template(BaseTag):
     """Defines a container for content that should be hidden when the page loads"""
 
     def __init__(
@@ -2312,7 +2292,7 @@ class Template(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Textarea(Tag):
+class Textarea(BaseTag):
     """Defines a multiline input control (text area)"""
 
     def __init__(
@@ -2343,7 +2323,7 @@ class Textarea(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Tfoot(Tag):
+class Tfoot(BaseTag):
     """Groups the footer content in a table"""
 
     def __init__(
@@ -2357,7 +2337,7 @@ class Tfoot(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Th(Tag):
+class Th(BaseTag):
     """Defines a header cell in a table"""
 
     def __init__(
@@ -2376,7 +2356,7 @@ class Th(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Thead(Tag):
+class Thead(BaseTag):
     """Groups the header content in a table"""
 
     def __init__(
@@ -2390,7 +2370,7 @@ class Thead(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Time(Tag):
+class Time(BaseTag):
     """Defines a specific time (or datetime)"""
 
     def __init__(
@@ -2405,7 +2385,7 @@ class Time(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Title(Tag):
+class Title(BaseTag):
     """Defines a title for the document"""
 
     def __init__(
@@ -2419,7 +2399,7 @@ class Title(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Tr(Tag):
+class Tr(BaseTag):
     """Defines a row in a table"""
 
     def __init__(
@@ -2433,12 +2413,12 @@ class Tr(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Track(Tag):
+class Track(SelfClosingTag):
     """Defines text tracks for media elements (<video> and <audio>)"""
 
     def __init__(
         self,
-        *children: Any,
+        *,
         default: str | None = None,
         kind: str | None = None,
         label: str | None = None,
@@ -2449,11 +2429,10 @@ class Track(Tag):
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))
 
 
-class U(Tag):
+class U(BaseTag):
     """Defines some text that is unarticulated and styled differently from normal text"""
 
     def __init__(
@@ -2469,7 +2448,7 @@ class U(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Ul(Tag):
+class Ul(BaseTag):
     """Defines an unordered list"""
 
     def __init__(
@@ -2483,7 +2462,7 @@ class Ul(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Var(Tag):
+class Var(BaseTag):
     """Defines a variable"""
 
     def __init__(
@@ -2497,7 +2476,7 @@ class Var(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Video(Tag):
+class Video(BaseTag):
     """Defines embedded video content"""
 
     def __init__(
@@ -2525,16 +2504,15 @@ class Video(Tag):
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
-class Wbr(Tag):
+class Wbr(SelfClosingTag):
     """Defines a possible line-break"""
 
     def __init__(
         self,
-        *children: Any,
+        *,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | float | int | bool,
     ):
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
-        self.self_closing = True
+        super().__init__(**kwargs | locals_cleanup(locals()))

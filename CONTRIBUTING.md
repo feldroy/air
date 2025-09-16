@@ -7,9 +7,7 @@ Fork and clone this repository, and install the dependencies:
 ```bash
 git clone https://github.com/feldroy/air.git
 cd air
-uv venv
-source .venv/bin/activate
-uv sync
+uv sync --all-extras --no-extra standard
 ```
 
 Now you're ready to run Air from your local clone of your fork. Play with it, fix bugs, document, have fun!
@@ -33,7 +31,7 @@ Now you're ready to run Air from your local clone of your fork. Play with it, fi
 
 ### Day-to-day commands
 - Create or update your env and install Air (editable) plus default groups:
-  `uv sync`
+  `uv sync --all-extras --no-extra standard`
 - Run tests (auto-syncs first if needed):
   `uv run pytest -q`
 - Run any tool in the venv (auto-syncs):
