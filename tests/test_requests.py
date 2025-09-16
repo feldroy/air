@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from air import H1, Air, is_htmx_request
 
 
-def test_is_htmx():
+def test_is_htmx() -> None:
     """Test the is_htmx method, which only works if the response is wrapped."""
 
     app = Air()

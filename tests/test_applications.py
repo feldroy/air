@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 import air
 
 
-def test_air_app_factory():
+def test_air_app_factory() -> None:
     app = air.Air()
 
     # @app.get("/test", response_class=AirResponse)
@@ -20,7 +20,7 @@ def test_air_app_factory():
     assert response.text == "<h1>Hello, World!</h1>"
 
 
-def test_air_plus_fastapi():
+def test_air_plus_fastapi() -> None:
     app = FastAPI()
     html = air.Air()
 
@@ -33,7 +33,7 @@ def test_air_plus_fastapi():
         return air.H1("Hello, World!")
 
     @html.get("/page-html")
-    def test_page_html():
+    def test_page_html() -> str:
         return "<h1>Hello, World!</h1>"
 
     # Combine into one app
@@ -60,7 +60,7 @@ def test_air_plus_fastapi():
     assert response.text == "<h1>Hello, World!</h1>"
 
 
-def test_page_decorator():
+def test_page_decorator() -> None:
     app = air.Air()
     page = app.page
 
@@ -69,7 +69,7 @@ def test_page_decorator():
         return air.H1("Home page")
 
     @page
-    def about_us():
+    def about_us() -> str:
         return "<h1>About page</h1>"
 
     client = TestClient(app)
@@ -84,7 +84,7 @@ def test_page_decorator():
     assert response.text == "<h1>About page</h1>"
 
 
-def test_air_404_response():
+def test_air_404_response() -> None:
     app = air.Air()
 
     client = TestClient(app)
@@ -104,7 +104,7 @@ def test_air_404_response():
     )
 
 
-def test_default_500_exception_handler():
+def test_default_500_exception_handler() -> None:
     from starlette.requests import Request
 
     from air.error_responses import default_500_exception_handler
@@ -136,7 +136,7 @@ def test_default_500_exception_handler():
     )
 
 
-def test_injection_of_default_exception_handlers():
+def test_injection_of_default_exception_handlers() -> None:
     from air.error_responses import DEFAULT_EXCEPTION_HANDLERS
 
     def handler(request: air.Request, exc: Exception) -> air.AirResponse:

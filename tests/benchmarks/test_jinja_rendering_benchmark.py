@@ -12,7 +12,7 @@ from starlette.requests import Request
 from air.templating import JinjaRenderer
 
 
-def test_jinja_complex_page_rendering_benchmark(benchmark):
+def test_jinja_complex_page_rendering_benchmark(benchmark) -> None:
     """Benchmark Jinja2 template rendering for complex HTML structure."""
 
     template_content = """<html>

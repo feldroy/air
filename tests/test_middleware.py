@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 import air
 
 
-def test_session_middleware():
+def test_session_middleware() -> None:
     app = air.Air()
     app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 

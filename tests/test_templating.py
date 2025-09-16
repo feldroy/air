@@ -5,7 +5,7 @@ import air
 from air import Air, JinjaRenderer
 
 
-def test_JinjaRenderer():
+def test_JinjaRenderer() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
@@ -27,7 +27,7 @@ def test_JinjaRenderer():
     assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
 
 
-def test_JinjaRenderer_no_context():
+def test_JinjaRenderer_no_context() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
@@ -45,7 +45,7 @@ def test_JinjaRenderer_no_context():
     assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_Air():
+def test_JinjaRenderer_with_Air() -> None:
     """Test the JinjaRenderer class with air.Air."""
     app = Air()
 
@@ -63,7 +63,7 @@ def test_JinjaRenderer_with_Air():
     assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_kwargs():
+def test_JinjaRenderer_with_kwargs() -> None:
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
@@ -85,7 +85,7 @@ def test_JinjaRenderer_with_kwargs():
     assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
 
 
-def test_jinja_plus_airtags():
+def test_jinja_plus_airtags() -> None:
     app = Air()
 
     jinja = JinjaRenderer(directory="tests/templates")
@@ -108,7 +108,7 @@ def test_jinja_plus_airtags():
     )
 
 
-def test_jinja_plus_airtags_autorender():
+def test_jinja_plus_airtags_autorender() -> None:
     app = Air()
 
     jinja = JinjaRenderer(directory="tests/templates")
@@ -131,7 +131,7 @@ def test_jinja_plus_airtags_autorender():
     )
 
 
-def test_JinjaRenderer_with_context_processors():
+def test_JinjaRenderer_with_context_processors() -> None:
     """Test JinjaRenderer with context_processors parameter"""
 
     def add_globals(request):
@@ -143,7 +143,7 @@ def test_JinjaRenderer_with_context_processors():
     assert jinja.templates is not None
 
 
-def test_JinjaRenderer_with_env():
+def test_JinjaRenderer_with_env() -> None:
     """Test JinjaRenderer with custom env parameter"""
     import jinja2
 

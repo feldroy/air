@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 import air
 
 
-def test_form_sync_check():
+def test_form_sync_check() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -30,7 +30,7 @@ def test_form_sync_check():
     ]
 
 
-def test_form_validation_dependency_injection():
+def test_form_validation_dependency_injection() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -65,7 +65,7 @@ def test_form_validation_dependency_injection():
     assert response.text == "<!doctype html><html><h1>2</h1></html>"
 
 
-def test_form_validation_in_view():
+def test_form_validation_in_view() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -99,7 +99,7 @@ def test_form_validation_in_view():
     assert response.text == "<!doctype html><html><h1>2</h1></html>"
 
 
-def test_form_render():
+def test_form_render() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -116,7 +116,7 @@ def test_form_render():
     )
 
 
-def test_form_render_with_values():
+def test_form_render_with_values() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -132,7 +132,7 @@ def test_form_render_with_values():
     )
 
 
-def test_form_render_in_view():
+def test_form_render_in_view() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -159,7 +159,7 @@ def test_form_render_in_view():
     )
 
 
-def test_form_render_with_errors():
+def test_form_render_with_errors() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -185,7 +185,7 @@ def test_form_render_with_errors():
     )
 
 
-def test_html_input_field_types():
+def test_html_input_field_types() -> None:
     class ContactModel(BaseModel):
         name: str
         email: str | None = Field(json_schema_extra={"email": True})
@@ -200,7 +200,7 @@ def test_html_input_field_types():
     assert 'type="email"' in html
 
 
-def test_air_field():
+def test_air_field() -> None:
     class ContactModel(BaseModel):
         name: str
         email: str = air.AirField(type="email", label="Email")
@@ -219,14 +219,14 @@ def test_air_field():
     )
 
 
-def test_airform_notimplementederror():
+def test_airform_notimplementederror() -> None:
     with pytest.raises(NotImplementedError) as exc:
         air.AirForm()
 
     assert "model" in str(exc.value)
 
 
-def test_airform_validate():
+def test_airform_validate() -> None:
     class CheeseModel(BaseModel):
         name: str
         age: int
@@ -253,7 +253,7 @@ def test_airform_validate():
     ]
 
 
-def test_airform_autofocus():
+def test_airform_autofocus() -> None:
     class CheeseModel(BaseModel):
         name: str = air.AirField(label="Name", autofocus=True)
         age: int
@@ -265,7 +265,7 @@ def test_airform_autofocus():
     assert "autofocus" in html
 
 
-def test_air_field_json_schema_extra():
+def test_air_field_json_schema_extra() -> None:
     class CheeseModel(BaseModel):
         name: str = air.AirField(json_schema_extra={"autofocus": True})
         age: int = air.AirField(json_schema_extra={"label": "my-age"})
@@ -278,7 +278,7 @@ def test_air_field_json_schema_extra():
     assert '<label for="age">my-age</label>' in html
 
 
-def test_field_includes():
+def test_field_includes() -> None:
     class PlaneModel(BaseModel):
         id: int
         name: str

@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 import air
 
 
-def test_TagResponse_obj():
+def test_TagResponse_obj() -> None:
     """Test the TagResponse class."""
     app = air.Air()
 
@@ -21,7 +21,7 @@ def test_TagResponse_obj():
     assert response.text == "<h1>Hello, World!</h1>"
 
 
-def test_TagResponse_compatibility():
+def test_TagResponse_compatibility() -> None:
     """Test for non-proxied TagResponse that should still work if used directly."""
     # import to check backward compatibility
     from air.responses import TagResponse
@@ -41,7 +41,7 @@ def test_TagResponse_compatibility():
     assert response.text == "<div><h1>Hi from TagResponse!</h1><br /></div>"
 
 
-def test_AirResponse():
+def test_AirResponse() -> None:
     """Test the AirResponse class."""
     app = air.Air()
 
@@ -50,7 +50,7 @@ def test_AirResponse():
         return air.H1("Hello, World!")
 
     @app.get("/test_html", response_class=air.AirResponse)
-    def test_html_endpoint():
+    def test_html_endpoint() -> str:
         return "<h1>Hello, World!</h1>"
 
     client = TestClient(app)
@@ -67,7 +67,7 @@ def test_AirResponse():
     assert response.text == "<h1>Hello, World!</h1>"
 
 
-def test_AirResponse_type():
+def test_AirResponse_type() -> None:
     """Test the AirResponse class."""
 
     app = air.Air()
@@ -89,7 +89,7 @@ def test_AirResponse_type():
     )
 
 
-def test_AirResponse_html():
+def test_AirResponse_html() -> None:
     """Test the AirResponse class."""
 
     app = air.Air()
@@ -117,7 +117,7 @@ def test_AirResponse_html():
     )
 
 
-def test_strings_and_tag_children():
+def test_strings_and_tag_children() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=air.AirResponse)
@@ -134,7 +134,7 @@ def test_strings_and_tag_children():
     )
 
 
-def test_custom_name_in_response():
+def test_custom_name_in_response() -> None:
     app = air.Air()
 
     def Card(sentence):
@@ -151,7 +151,7 @@ def test_custom_name_in_response():
     assert response.text == "<article><header>Header</header>This is a sentence<footer>Footer</footer></article>"
 
 
-def test_AirResponse_with_layout_strings():
+def test_AirResponse_with_layout_strings() -> None:
     class CustomLayoutResponse(air.AirResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content)
@@ -171,7 +171,7 @@ def test_AirResponse_with_layout_strings():
     assert response.text == "<html><body><h1>Custom Layout</h1>b'<main><h2>Hello, World!</h2></main>'</body></html>"
 
 
-def test_AirResponse_with_layout_names():
+def test_AirResponse_with_layout_names() -> None:
     class CustomLayoutResponse(air.AirResponse):
         def render(self, content: Any) -> bytes:
             content = super().render(content).decode("utf-8")
@@ -191,7 +191,7 @@ def test_AirResponse_with_layout_names():
     assert response.text == "<!doctype html><html><body><main><h1>Hello, World!</h1></main></body></html>"
 
 
-def test_SSEResponse():
+def test_SSEResponse() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
@@ -211,7 +211,7 @@ def test_SSEResponse():
     assert response.text == "event: message\ndata: <p>Hello</p>\n\nevent: message\ndata: <p>World</p>\n\n"
 
 
-def test_SSEResponse_multiline_tag_content():
+def test_SSEResponse_multiline_tag_content() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
@@ -234,7 +234,7 @@ def test_SSEResponse_multiline_tag_content():
     )
 
 
-def test_SSEResponse_string_content():
+def test_SSEResponse_string_content() -> None:
     app = air.Air()
 
     async def event_generator():
@@ -256,7 +256,7 @@ def test_SSEResponse_string_content():
     )
 
 
-def test_SSEResponse_bytes_content():
+def test_SSEResponse_bytes_content() -> None:
     app = air.Air()
 
     async def event_generator():

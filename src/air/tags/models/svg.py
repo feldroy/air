@@ -50,7 +50,7 @@ class A(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -96,7 +96,7 @@ class Animate(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -130,7 +130,7 @@ class AnimateMotion(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -166,7 +166,7 @@ class AnimateTransform(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -196,7 +196,7 @@ class Circle(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -220,7 +220,7 @@ class ClipPath(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -242,7 +242,7 @@ class Defs(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -264,7 +264,7 @@ class Desc(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -296,7 +296,7 @@ class Ellipse(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -326,7 +326,7 @@ class FeBlend(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -356,7 +356,7 @@ class FeColorMatrix(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -382,7 +382,7 @@ class FeComponentTransfer(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -420,7 +420,7 @@ class FeComposite(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -462,7 +462,7 @@ class FeConvolveMatrix(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -494,7 +494,7 @@ class FeDiffuseLighting(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -528,7 +528,7 @@ class FeDisplacementMap(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -554,7 +554,7 @@ class FeDistantLight(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -586,7 +586,7 @@ class FeDropShadow(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -614,7 +614,7 @@ class FeFlood(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -650,7 +650,7 @@ class FeFuncA(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -686,7 +686,7 @@ class FeFuncB(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -722,7 +722,7 @@ class FeFuncG(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -758,7 +758,7 @@ class FeFuncR(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -788,7 +788,7 @@ class FeGaussianBlur(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -818,7 +818,7 @@ class FeImage(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -842,7 +842,7 @@ class FeMerge(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -866,7 +866,7 @@ class FeMergeNode(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -896,7 +896,7 @@ class FeMorphology(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -926,7 +926,7 @@ class FeOffset(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -954,7 +954,7 @@ class FePointLight(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -988,7 +988,7 @@ class FeSpecularLighting(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1026,7 +1026,7 @@ class FeSpotLight(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1052,7 +1052,7 @@ class FeTile(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1086,7 +1086,7 @@ class FeTurbulence(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1120,7 +1120,7 @@ class Filter(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1150,7 +1150,7 @@ class ForeignObject(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1172,7 +1172,7 @@ class G(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1212,7 +1212,7 @@ class Image(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1244,7 +1244,7 @@ class Line(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1282,7 +1282,7 @@ class LinearGradient(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1320,7 +1320,7 @@ class Marker(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1356,7 +1356,7 @@ class Mask(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1378,7 +1378,7 @@ class Metadata(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1402,7 +1402,7 @@ class Mpath(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1428,7 +1428,7 @@ class Path(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1470,7 +1470,7 @@ class Pattern(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1496,7 +1496,7 @@ class Polygon(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1522,7 +1522,7 @@ class Polyline(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1564,7 +1564,7 @@ class RadialGradient(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1600,7 +1600,7 @@ class Rect(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1630,7 +1630,7 @@ class Script(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1660,7 +1660,7 @@ class Set(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1688,7 +1688,7 @@ class Stop(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1714,7 +1714,7 @@ class Style(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1748,7 +1748,7 @@ class Svg(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1770,7 +1770,7 @@ class Switch(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1808,7 +1808,7 @@ class Symbol(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1844,7 +1844,7 @@ class Text(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1882,7 +1882,7 @@ class TextPath(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1904,7 +1904,7 @@ class Title(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1940,7 +1940,7 @@ class Tspan(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1972,7 +1972,7 @@ class Use(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))
 
 
@@ -1998,5 +1998,5 @@ class View(CaseTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | int | float | bool,
-    ):
+    ) -> None:
         super().__init__(*children, **kwargs | locals_cleanup(locals()))

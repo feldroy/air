@@ -69,7 +69,7 @@ def create_complex_page_with_jinja(jinja_renderer, mock_request):
     return jinja_renderer(mock_request, "complex_page.html", context=context)
 
 
-def test_air_tags_vs_jinja_rendering_benchmark(benchmark):
+def test_air_tags_vs_jinja_rendering_benchmark(benchmark) -> None:
     """Benchmark Air Tags vs Jinja2 template rendering for equivalent HTML.
 
     This tests the performance of Air's tag-based approach against traditional template rendering.
@@ -141,7 +141,7 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark):
         benchmark(render_with_air_tags)
 
 
-def test_simple_air_tags_rendering_benchmark(benchmark):
+def test_simple_air_tags_rendering_benchmark(benchmark) -> None:
     """Benchmark simple Air Tags rendering for baseline performance."""
 
     def render_simple_page():

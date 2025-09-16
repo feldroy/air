@@ -26,7 +26,7 @@ class Transparent(BaseTag):
     def __init__(
         self,
         *children: Any,
-    ):
+    ) -> None:
         super().__init__(*children)
 
     @override
@@ -54,7 +54,7 @@ class SelfClosingTag(BaseTag):
     def __init__(
         self,
         **kwargs: str | float | int | bool,
-    ):
+    ) -> None:
         super().__init__(**kwargs)
 
     @override
@@ -153,7 +153,7 @@ class Script(UnSafeTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | float | int | bool,
-    ):
+    ) -> None:
         super().__init__(text_child, **kwargs | locals_cleanup(locals()))
 
 
@@ -189,5 +189,5 @@ class Style(UnSafeTag):
         id: str | None = None,
         style: str | None = None,
         **kwargs: str | float | int | bool,
-    ):
+    ) -> None:
         super().__init__(text_child, **kwargs | locals_cleanup(locals()))

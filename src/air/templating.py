@@ -57,7 +57,7 @@ class JinjaRenderer:
         directory: str | PathLike[str] | Sequence[str | PathLike[str]],
         context_processors: list[Callable[[Request], dict[str, Any]]] | None = None,
         env: jinja2.Environment | None = None,
-    ):
+    ) -> None:
         """Initialize with template directory path"""
         if context_processors is None:
             context_processors = []

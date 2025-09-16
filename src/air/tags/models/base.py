@@ -41,7 +41,7 @@ class BaseTag:
     _registry: ClassVar[dict[str, type[BaseTag]]] = {}
     registry: ClassVar[Mapping[str, type[BaseTag]]] = MappingProxyType(_registry)  # read-only view
 
-    def __init__(self, *children: Any, **kwargs: str | int | float | bool):
+    def __init__(self, *children: Any, **kwargs: str | int | float | bool) -> None:
         """
         Args:
             children: Tags, strings, or other rendered content.

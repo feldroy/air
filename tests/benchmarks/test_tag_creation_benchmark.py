@@ -7,7 +7,7 @@ to run and save/compare results over time.
 import air
 
 
-def test_create_tags_benchmark(benchmark):
+def test_create_tags_benchmark(benchmark) -> None:
     """Benchmark creating a number of `air.A` tag objects.
 
     The `benchmark` fixture will run the callable multiple times and report
