@@ -1,3 +1,38 @@
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script>
+
+<div id="rotating-warning">
+  <span id="pithy-saying">Loading warning...</span>
+</div>
+
+<script>
+const pithySayings = [
+  "Experimental software: Use at your own risk!",
+  "Not enterprise-ready and proud of it!",
+  "May cause excessive joy while coding",
+  "Warning: Highly addictive framework ahead",
+  "Still in the 'painting' phase of development",
+  "Your production environment is not our test environment",
+  "Breaking changes included with every release",
+  "We're making this up as we go along",
+  "Not recommended by 9 out of 10 CTOs",
+  "Side effects include: Fun, excitement, and rapid development"
+];
+
+let currentIndex = 0;
+const sayingElement = document.getElementById('pithy-saying');
+
+function rotateSaying() {
+  sayingElement.textContent = pithySayings[currentIndex];
+  currentIndex = (currentIndex + 1) % pithySayings.length;
+}
+
+// Start immediately
+rotateSaying();
+
+// Rotate every 2 seconds
+setInterval(rotateSaying, 2000);
+</script>
+
 # Don't use AIR
 
 <div id="rotating-warning" >
