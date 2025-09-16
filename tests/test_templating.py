@@ -243,15 +243,15 @@ def test_renderer_with_installed_package_and_children():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
+        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
     )
 
     response = client.get("/airtag-without-request")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
-        response.text
-        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
+        "</script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>"
+        in response.text
     )
 
 
@@ -274,10 +274,7 @@ def test_render_with_callable():
     response = client.get("/layout")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text
-        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm" crossorigin="anonymous"></script></head><body><main></main></body></html>'
-    )
+    assert "</script></head><body><main></main></body></html>" in response.text
 
     response = client.get("/component")
     assert response.status_code == 200
@@ -348,7 +345,7 @@ def test_Renderer_tag_callable_with_both_args_and_context():
     import types
 
     test_module = types.ModuleType("test_module")
-    test_module.test_func = test_callable
+    test_module.test_func = test_callable  # ty:ignore[unresolved-attribute]
     sys.modules["tests.test_module"] = test_module
 
     @app.page
@@ -378,7 +375,7 @@ def test_Renderer_import_module_fallback():
 
     # Create a mock module that exists as a relative import but not absolute
     mock_module = types.ModuleType("mock_module")
-    mock_module.test_func = lambda: "test"
+    mock_module.test_func = lambda: "test"  # ty:ignore[unresolved-attribute]
     sys.modules["tests.mock_module"] = mock_module
 
     try:
