@@ -122,7 +122,7 @@ class Renderer:
                 context={'id': 5}
             )
 
-            
+
             # Will render callables to HTML
             return render(
                 air.layouts.mvpcss,
@@ -160,7 +160,12 @@ class Renderer:
         if callable(name):
             assert not isinstance(name, str)
             result = name(**context)
-            return str(result)
+            if isinstance(result, str):
+                return result
+            if hasattr(result, "render"):
+                return result.render()
+            msg = "Callable in name arg must a string or object with a render method."
+            raise TypeError(msg)
 
         assert isinstance(name, str)
 
@@ -170,7 +175,7 @@ class Renderer:
         if "." in name:
             return self._render_tag_callable(name, args, request, context)
 
-        msg = "Jinja template and/or Air Tag not found."
+        msg = "No callable or Jinja template found."
         raise RenderException(msg)
 
     def _prepare_context(self, context: dict[Any, Any] | None, kwargs: dict[Any, Any]) -> dict[Any, Any]:

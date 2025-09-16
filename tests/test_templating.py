@@ -1,3 +1,4 @@
+import pytest
 from fastapi import FastAPI, Request
 from fastapi.testclient import TestClient
 
@@ -282,3 +283,20 @@ def test_render_with_callable():
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
+
+
+def test_render_failing_name():
+    render = air.Renderer(directory="tests/templates", package="air")
+
+    with pytest.raises(air.RenderException):
+        render(name="dummy")
+
+
+def test_render_callable_wrong_type():
+    render = air.Renderer(directory="tests/templates")
+
+    def wrong_type():
+        return 5
+
+    with pytest.raises(TypeError):
+        render(wrong_type)
