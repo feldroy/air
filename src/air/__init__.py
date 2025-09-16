@@ -7,9 +7,7 @@ from . import (
     layouts as layouts,
     responses as responses,
 )
-from .applications import (
-    Air as Air,
-)
+from .applications import Air as Air
 from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
 from .exceptions import HTTPException as HTTPException
@@ -18,18 +16,14 @@ from .forms import (
     AirForm as AirForm,
 )
 from .middleware import SessionMiddleware as SessionMiddleware
-from .requests import (
-    Request as Request,
-)
+from .requests import Request as Request
 from .responses import (
     AirResponse as AirResponse,
     RedirectResponse as RedirectResponse,
     SSEResponse as SSEResponse,
     TagResponse as TagResponse,
 )
-from .routing import (
-    AirRouter as AirRouter,
-)
+from .routing import AirRouter as AirRouter
 from .tags import (
     H1 as H1,
     H2 as H2,
