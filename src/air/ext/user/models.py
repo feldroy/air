@@ -22,6 +22,7 @@ class BaseUser(SQLModel):
     """Base model for users in Air. Currently only supports GitHub OAuth.
     
     ARGS:
+
         id: Primary key for the User table.
         status: Connected to `UserStatusEnum`.
         github_oauth_access_token: Field for storing GitHub token set for user

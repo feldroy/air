@@ -41,16 +41,16 @@ def check_session_middleware(request: Request):
 
 
 @user_router.page
-async def login_github(request: Request):
+async def github_login(request: Request):
     redirect_uri = request.url_for("auth_github")
     return await github.authorize_redirect(request, redirect_uri)
 
 
 @user_router.page
-async def auth_github(request: Request):
+async def github_callback(request: Request):
     token = await oauth.github.authorize_access_token(request)
-    print(token)
     # TODO save the github access token for the user
+    # Use a function defined somewhere as a setting
     github_access_token = token["access_token"]
     request.session["github_access_token"] = github_access_token
     return RedirectResponse("/")

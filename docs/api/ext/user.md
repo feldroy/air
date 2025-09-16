@@ -1,6 +1,7 @@
 # ext.user
 
-::: air.ext
+
+::: air.ext.user
     options:
       group_by_category: false
       members:
