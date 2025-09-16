@@ -58,9 +58,14 @@ ij_python_method_parameters_right_paren_on_new_line = true
 ij_python_hang_closing_brackets = false
 
 # Trailing-comma behavior (to match Black/Ruff “magic comma”)
-ij_python_use_trailing_comma_in_arguments_list = true
+ij_python_use_trailing_comma_in_arguments_list = false
 ij_python_use_trailing_comma_in_collections = true
 ij_python_use_trailing_comma_in_parameter_list = true
+
+# Keep multi-line when a trailing comma exists (matches Ruff)
+ij_python_keep_line_breaks = true
+ij_python_call_parameters_wrap = off
+ij_python_method_parameters_wrap = off
 
 # Imports: mirror Ruff/isort “combine-as-imports” + “force-wrap-aliases” + “order-by-type”
 ij_python_optimize_imports_join_from_imports_with_same_source = true # combine from-imports
@@ -74,6 +79,10 @@ ij_python_optimize_imports_sort_names_in_from_imports = true
 # Let Black/Ruff control wrapping and line breaks
 ij_python_wrap_long_lines = false
 ij_python_keep_line_breaks = true
+
+# spaces around equality operators (==, !=)
+ij_python_spaces_around_equality_operators = true
+ij_python_spaces_around_assignment_operators = true
 
 # Keep “continuation indent” simple (Black style)
 ij_python_use_continuation_indent_for_arguments = false

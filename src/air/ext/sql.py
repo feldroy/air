@@ -1,3 +1,17 @@
+"""
+This module includes utility functions for using SQL with AIR.
+
+Introduces two environment variables
+
+- DEBUG
+- DATABASE_URL
+
+Requires additional dependencies:
+
+- SQLModel
+- greenlet
+"""
+
 from collections.abc import AsyncGenerator
 from enum import IntEnum
 from os import getenv
@@ -11,7 +25,9 @@ from sqlmodel import create_engine as _create_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 DEBUG = getenv("DEBUG", "false").lower() in ("1", "true", "yes")
+"""Environment variable for setting DEBUG loglevel."""
 DATABASE_URL = getenv("DATABASE_URL", "")
+"""Standard database url environment variable."""
 ASYNC_DATABASE_URL = DATABASE_URL.split("?")[0]
 ASYNC_DATABASE_URL = ASYNC_DATABASE_URL.replace("postgresql:", "postgresql+asyncpg:")
 ASYNC_DATABASE_URL = ASYNC_DATABASE_URL.replace("sqlite:", "sqlite+aiosqlite:")
@@ -137,5 +153,5 @@ async def get_async_session(
         await session.close()
 
 
-# Shortcut that only works if DATABASE_URL env var is set
 async_session_dependency = Depends(get_async_session)
+"Shortcut for `Depends(get_async_session)` that only works if DATABASE_URL env var is set."
