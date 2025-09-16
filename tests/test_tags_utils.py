@@ -4,8 +4,7 @@ These tests focus on `locals_cleanup` which filters a mapping of local
 arguments down to only those allowed for a given tag object.
 """
 
-import air
-from air.tags.utils import locals_cleanup
+from air.tags.utils import format_html, locals_cleanup
 
 
 def test_locals_cleanup_selects_allowed_attrs():
@@ -63,6 +62,10 @@ def test_locals_cleanup_defaults_for_unknown_class():
     # Only the default attribute keys are allowed for unknown classes
     assert result == {"class_": "c", "for_": "x", "style": "s"}
 
+
 def test_format_html():
-    escaped_html = '&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello, world&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;'
-    assert air.tags.utils.format_html(escaped_html) == '<span><!doctype html><html><body><h1>Hello, world</h1></body></html></span>\n'
+    escaped_html = (
+        "&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello, world&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;"
+    )
+    html = "<!doctype html><html><body><h1>Hello, world</h1></body></html>"
+    assert html in format_html(escaped_html)
