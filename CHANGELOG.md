@@ -1,5 +1,7 @@
 # Changelog
 
+## Latest Changes
+
 # 0.29.0 - 2025-09-12
 
 ## What's Changed
