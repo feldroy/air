@@ -1,5 +1,5 @@
 try:
-    from .sql import (
+    from ..ext.sql import (
         AsyncSession as AsyncSession,
         async_session_dependency as async_session_dependency,
         create_async_engine as create_async_engine,
@@ -8,7 +8,28 @@ try:
         get_async_session as get_async_session,
     )
 except ImportError:  # pragma: no cover
-    msg = "air.db.sql requires installing the sqlmodel and greenlet packages."
+    msg = "air.ext.sql requires installing the sqlmodel and greenlet packages."
+
+    class NotImportable:
+        def __getattribute__(self, name):
+            raise RuntimeError(msg)
+
+        def __str__(self):
+            return msg
+
+        def __repr__(self):
+            return msg
+
+    sql = NotImportable()
+
+try:
+    from ..ext.user.models import (
+        BaseUser as BaseUser,
+        User as User,
+        UserStatusEnum as UserStatusEnum,
+    )
+except ImportError:  # pragma: no cover
+    msg = "air.ext.user requires installing the sqlmodel and greenlet packages."
 
     class NotImportable:
         def __getattribute__(self, name):

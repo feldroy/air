@@ -86,7 +86,7 @@ def create_async_engine(
 
         @asynccontextmanager
         async def lifespan(app: air.Air):
-            async_engine = air.db.sql.create_async_engine()
+            async_engine = air.ext.sql.create_async_engine()
             async with async_engine.begin() as conn:
                 await conn.run_sync(lambda _: None)
             yield
@@ -138,11 +138,11 @@ async def get_async_session(
         app = air.Air()
 
         @app.page
-        def index(session = Depends(air.db.sql.get_async_session)):
+        def index(session = Depends(air.ext.sql.get_async_session)):
             return air.H1(session.user['username'])
 
         @app.page
-        def home(session = air.db.sql.async_session_dependency):
+        def home(session = air.ext.sql.async_session_dependency):
             return air.H1(session.user['username'])
     """
     session_factory = await create_async_session(url, echo)

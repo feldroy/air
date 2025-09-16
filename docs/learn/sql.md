@@ -22,7 +22,7 @@ import air
 
 @asynccontextmanager
 async def lifespan(app: air.Air):
-    async_engine = air.db.sql.create_async_engine()
+    async_engine = air.ext.sql.create_async_engine()
     async with async_engine.begin() as conn:
         await conn.run_sync(lambda _: None)    
     yield
