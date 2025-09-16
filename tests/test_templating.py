@@ -300,3 +300,113 @@ def test_render_callable_wrong_type():
 
     with pytest.raises(TypeError):
         render(wrong_type)
+
+
+def test_Renderer_with_context_processors():
+    """Test Renderer with context_processors parameter to cover the else branch"""
+
+    def add_globals(request):
+        return {"global_var": "test_value"}
+
+    render = air.Renderer(directory="tests/templates", context_processors=[add_globals])
+
+    # Just test that it initializes correctly
+    assert render.templates is not None
+
+
+def test_Renderer_render_template_with_air_tags():
+    """Test _render_template method with Air Tags in context"""
+    app = air.Air()
+    render = air.Renderer(directory="tests/templates")
+
+    @app.page
+    def test_with_tags(request: Request):
+        return render(
+            name="home.html",
+            request=request,
+            context={"title": "Test", "content": air.P("Test content")},
+        )
+
+    client = TestClient(app)
+    response = client.get("/test-with-tags")
+
+    assert response.status_code == 200
+    assert "Test content" in response.text
+
+
+def test_Renderer_tag_callable_with_both_args_and_context():
+    """Test case where filtered_context and args are both truthy"""
+    app = air.Air()
+    render = air.Renderer(directory="tests/templates", package="tests")
+
+    # Function that can be called with only keyword args to test the specific line 205
+    def test_callable(title=None):
+        return f"<p>{title}</p>"
+
+    # Create a test module to simulate the import
+    import sys
+    import types
+
+    test_module = types.ModuleType("test_module")
+    test_module.test_func = test_callable
+    sys.modules["tests.test_module"] = test_module
+
+    @app.page
+    def test_page(request: Request):
+        return render(
+            ".test_module.test_func",
+            "Hello",  # This is args - will be ignored due to line 205 behavior
+            request=request,
+            title="World",  # This goes to filtered_context
+        )
+
+    client = TestClient(app)
+    response = client.get("/test-page")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert "<p>World</p>" in response.text
+
+    # Clean up the module
+    del sys.modules["tests.test_module"]
+
+
+def test_Renderer_import_module_fallback():
+    """Test the ModuleNotFoundError fallback in _import_module"""
+    import sys
+    import types
+
+    # Create a mock module that exists as a relative import but not absolute
+    mock_module = types.ModuleType("mock_module")
+    mock_module.test_func = lambda: "test"
+    sys.modules["tests.mock_module"] = mock_module
+
+    try:
+        render = air.Renderer(directory="tests/templates", package="tests")
+
+        # This should use the fallback path: try absolute import (fail), then relative import (succeed)
+        result_module = render._import_module("mock_module")
+        assert result_module is mock_module
+    finally:
+        # Clean up
+        if "tests.mock_module" in sys.modules:
+            del sys.modules["tests.mock_module"]
+
+
+def test_Renderer_filter_context_with_request():
+    """Test _filter_context_for_callable when callable expects request parameter"""
+    render = air.Renderer(directory="tests/templates")
+
+    def test_callable(request, title):
+        return f"<p>{title}</p>"
+
+    context = {"title": "Test", "extra": "ignored"}
+    request = Request({"type": "http", "method": "GET", "path": "/"})
+
+    filtered = render._filter_context_for_callable(test_callable, context, request)
+
+    assert "title" in filtered
+    assert "request" in filtered
+    assert "extra" not in filtered
+    assert filtered["request"] is request
+    assert filtered["title"] == "Test"
