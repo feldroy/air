@@ -2,8 +2,8 @@
 
 Resources for learning the fundamentals of the Air web framework.
 
-- [Quickstart](/learn/quickstart) - Build and serve a minimal Air app. 
-- [Tutorial](/learn/tutorial) - Learn the basics of building an Air app, including combining with a FastAPI app.
+- [Quickstart](quickstart) - Build and serve a minimal Air app. 
+- [Tutorial](tutorial) - Learn the basics of building an Air app, including combining with a FastAPI app.
 
 ## Concepts
 
