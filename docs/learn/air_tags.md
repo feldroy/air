@@ -2,8 +2,8 @@
 
 **Air Tags**, sometimes shortened to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool. They are designed to be an easy to write and performant HTML content generation system using Python classes to render HTML.
 
-> ## Note
-> This document covers how **Air Tags** work. The full reference for them is the [Tags reference](https://feldroy.github.io/air/api/tags/).
+!!! Note
+    This document covers how **Air Tags** work. The full reference for them is the [Tags reference](../../api/tags).
 
 ## How **Air Tags** work
 
