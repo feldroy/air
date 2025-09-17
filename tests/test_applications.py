@@ -1,3 +1,4 @@
+from air.tags.models.stock import H1
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
@@ -9,7 +10,7 @@ def test_air_app_factory() -> None:
 
     # @app.get("/test", response_class=AirResponse)
     @app.get("/test")
-    def test_endpoint():
+    def test_endpoint() -> H1:
         return air.H1("Hello, World!")
 
     client = TestClient(app)
@@ -25,11 +26,11 @@ def test_air_plus_fastapi() -> None:
     html = air.Air()
 
     @app.get("/api")
-    def test_api():
+    def test_api() -> dict[str, str]:
         return {"text": "hello, world"}
 
     @html.get("/page")
-    def test_page():
+    def test_page() -> H1:
         return air.H1("Hello, World!")
 
     @html.get("/page-html")
@@ -65,7 +66,7 @@ def test_page_decorator() -> None:
     page = app.page
 
     @page
-    def index():
+    def index() -> H1:
         return air.H1("Home page")
 
     @page
