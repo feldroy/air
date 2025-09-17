@@ -1,3 +1,6 @@
+from unittest.mock import Mock
+
+from starlette.templating import _TemplateResponse
 from air.tags.models.special import Html
 """Benchmark comparing Air Tags vs Jinja2 template rendering performance.
 
@@ -58,7 +61,7 @@ def create_complex_page_with_tags() -> Html:
     )
 
 
-def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: Mock):
+def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: Mock) -> _TemplateResponse:
     """Generate the same complex HTML page using Jinja2 templates."""
     context = {
         "title": "Product Catalog",
@@ -135,7 +138,7 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark) -> None:
             return page.render()
 
         # Benchmark Jinja2 rendering
-        def render_with_jinja():
+        def render_with_jinja() -> _TemplateResponse:
             return create_complex_page_with_jinja(jinja_renderer, mock_request)
 
         # Benchmark Air Tags rendering
