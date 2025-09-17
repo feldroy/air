@@ -1,3 +1,5 @@
+from contextlib import suppress
+from datetime import datetime
 from os import getenv
 
 from authlib.integrations.starlette_client import OAuth
@@ -7,6 +9,9 @@ from ...requests import Request
 from ...responses import RedirectResponse
 from ...routing import AirRouter
 
+with suppress(ImportError):
+    from rich import print
+
 GITHUB_CLIENT_ID: str = getenv("GITHUB_CLIENT_ID", "")
 """Provided by GitHub in their OAuth app configuration screen."""
 
@@ -14,7 +19,7 @@ GITHUB_CLIENT_SECRET: str = getenv("GITHUB_CLIENT_SECRET", "")
 """Secret key value provided by GitHub in their OAuth app configuration screen. Only displayed once."""
 
 AUTH_LOGIN_REDIRECT_TO: str = getenv("AUTH_LOGIN_REDIRECT_TO", "/")
-"""Where users go after they have been authenticated."""
+"""Where users go after they have been authenticated. Defaults to '/'."""
 
 oauth = OAuth()
 oauth.register(
@@ -47,23 +52,41 @@ app.include_router(air.ext.auth.auth_router)
 ```
 """
 
+database = {}
 
-def check_session_middleware(request: Request):
+
+async def add_user_to_session(request: Request, token: dict) -> None:
+    access_token = token["access_token"]
+    print(token)
+    if access_token in database:
+        database[access_token]["updated_at"] = datetime.now()
+    else:
+        database[access_token] = token
+        database[access_token]["created_at"] = datetime.now()
+        database[access_token]["updated_at"] = datetime.now()
+        database[access_token]["access_token"] = access_token
+    print(database)
+
+
+def _check_session_middleware(request: Request):
+    """TODO: change out for a dependency"""
     if not hasattr(request, "session"):
-        raise HTTPException(status_code=500, detail="Session middleware not installed")
+        raise HTTPException(status_code=500, detail="Session middleware not installed.")
 
 
 @auth_router.get("/account/github/login")
 async def github_login(request: Request):
+    _check_session_middleware(request)
     redirect_uri = request.url_for("github_callback")
     return await github.authorize_redirect(request, redirect_uri)
 
 
 @auth_router.get("/account/github/callback")
 async def github_callback(request: Request):
+    _check_session_middleware(request)
     token = await oauth.github.authorize_access_token(request)
-    # TODO save the github access token for the user
-    # Use a function defined somewhere as a setting
-    github_access_token = token["access_token"]
-    request.session["github_access_token"] = github_access_token
+
+    # TODO make this configurable via an environment variable or some other method
+    await add_user_to_session(request=request, token=token)
+
     return RedirectResponse(AUTH_LOGIN_REDIRECT_TO)

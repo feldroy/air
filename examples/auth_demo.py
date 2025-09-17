@@ -1,11 +1,11 @@
 """
 A demonstration of the basic auth capabilities of AIR.
 
-This little app demonstrates how to AIR for authentication.
+This little app demonstrates how to use AIR for authentication.
 
 Run:
     `uv sync --all-extras --no-extra standard`
-    `fastapi dev examples/auth_demo.py`
+    `uv run --env-file .env fastapi dev auth_demo`
 """
 
 import air
