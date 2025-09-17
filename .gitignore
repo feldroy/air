@@ -69,8 +69,6 @@ target/
 # macOS
 .DS_Store
 
-# Air static site generator - generated output
-public/
 
 # Docs page
 site
@@ -91,6 +89,7 @@ nbs
 .cursor/
 .vscode/
 .idea/
+examples/.env
 
 
 # START Ruler Generated Files
