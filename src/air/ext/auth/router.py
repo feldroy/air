@@ -31,7 +31,7 @@ oauth.register(
 github = oauth.create_client("github")
 
 auth_router = AirRouter()
-"""Router for GitHub auth that includes the views listed below this router. 
+"""Router for GitHub auth that includes the views listed below this router.
 
 Note: Doesn't yet work with the `prefix` keyword argument in declaring routers.
 
@@ -56,12 +56,12 @@ def check_session_middleware(request: Request):
 @auth_router.get("/account/github/login")
 async def github_login(request: Request):
     redirect_uri = request.url_for("github_callback")
-    return await github.authorize_redirect(request, redirect_uri)  # pyrefly: ignore[missing-attribute]
+    return await github.authorize_redirect(request, redirect_uri)
 
 
 @auth_router.get("/account/github/callback")
 async def github_callback(request: Request):
-    token = await oauth.github.authorize_access_token(request)  # pyrefly: ignore[missing-attribute]
+    token = await oauth.github.authorize_access_token(request)
     # TODO save the github access token for the user
     # Use a function defined somewhere as a setting
     github_access_token = token["access_token"]

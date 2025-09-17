@@ -507,6 +507,9 @@ bad-unpacking = false
 index-error = false
 import-error = false
 bad-argument-count = false
+missing-attribute = false
+
+
 
 # endregion pyrefly
 
