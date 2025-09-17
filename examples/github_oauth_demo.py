@@ -31,7 +31,7 @@ async def github_process_callable(request: air.Request, token: dict, client: str
     print(database)
 
 
-github_oauth_router = air.ext.GitHubOAuthRouterFactory(
+github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
     github_client_id=environ["GITHUB_CLIENT_ID"],
     github_client_secret=environ["GITHUB_CLIENT_SECRET"],
     github_process_callable=github_process_callable,

@@ -10,7 +10,7 @@ def test_app_has_session():
     async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
         pass
 
-    github_oauth_router = air.ext.GitHubOAuthRouterFactory(
+    github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
         github_client_id="CLIENT_ID",
         github_client_secret="CLIENT_SECRET",
         github_process_callable=github_process_callable,
@@ -29,7 +29,7 @@ def test_github_login_route():
     async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
         pass
 
-    github_oauth_router = air.ext.GitHubOAuthRouterFactory(
+    github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
         github_client_id="CLIENT_ID",
         github_client_secret="CLIENT_SECRET",
         github_process_callable=github_process_callable,
@@ -59,7 +59,7 @@ def test_github_callback_route():
         mock_oauth = mock_oauth_class.return_value
         mock_oauth.github.authorize_access_token = AsyncMock(return_value=test_token)
 
-        github_oauth_router = air.ext.GitHubOAuthRouterFactory(
+        github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
             github_client_id="CLIENT_ID",
             github_client_secret="CLIENT_SECRET",
             github_process_callable=github_process_callable,
