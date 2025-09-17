@@ -1,6 +1,3 @@
-from sqlalchemy.engine.base import Engine
-from sqlalchemy.ext.asyncio.engine import AsyncEngine
-
 """
 This module includes utility functions for using SQL with AIR.
 
@@ -20,10 +17,12 @@ from enum import IntEnum
 from os import getenv
 
 from fastapi import Depends
+from sqlalchemy.engine.base import Engine
 from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine as _create_async_engine,
 )
+from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from sqlmodel import create_engine as _create_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 

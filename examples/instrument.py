@@ -1,5 +1,3 @@
-from air.tags.models.special import Children, Html
-
 """
 This project requires the "pyinstrument" package, intentionally not
 included in the dependencies of the Air project.
@@ -10,6 +8,7 @@ Call pyinstrument by adding '?profile=1' after any URL
 from pyinstrument import Profiler
 
 import air
+from air import Children, Html
 
 app = air.Air()
 

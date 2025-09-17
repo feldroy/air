@@ -1,10 +1,10 @@
 import pytest
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from starlette.templating import _TemplateResponse
 
 import air
-from air import Air, JinjaRenderer
+from air import Air, JinjaRenderer, Request
 
 from .components import index as index_callable  # pyrefly: ignore
 

@@ -1,11 +1,3 @@
-from re import A
-
-from httpx._transports.base import A
-from httpx._transports.default import A
-
-from air.tags.models.stock import A
-from air.tags.models.svg import A
-
 """Example pytest-benchmark test: measures creation throughput for `air.A` tags.
 
 This is intentionally lightweight and intended as an example. Use pytest-benchmark
@@ -22,7 +14,7 @@ def test_create_tags_benchmark(benchmark) -> None:
     statistics. Adjust the `n` value to make the workload heavier or lighter.
     """
 
-    def create(n: int = 5000) -> list[A]:
+    def create(n: int = 5000) -> list[air.A]:
         # Create many tag instances; keep this function small and self-contained
         return [air.A(href="/home", class_="link", id=f"elem{i}") for i in range(n)]
 

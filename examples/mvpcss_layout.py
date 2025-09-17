@@ -1,5 +1,5 @@
 import air
-from air.tags.models.special import Children, Html
+from air import Children, Html
 
 app = air.Air()
 

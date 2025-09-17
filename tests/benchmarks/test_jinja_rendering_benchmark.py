@@ -1,5 +1,3 @@
-from starlette.templating import _TemplateResponse
-
 """Benchmark Jinja2 template rendering performance in Air.
 
 This provides a comparison baseline for Air Tags performance by measuring
@@ -10,6 +8,7 @@ import tempfile
 from pathlib import Path
 
 from starlette.requests import Request
+from starlette.templating import _TemplateResponse
 
 from air.templating import JinjaRenderer
 

@@ -5,7 +5,7 @@ to ensure they are properly covered by tests.
 """
 
 import air
-from air.tags.models.special import SelfClosingTag
+from air import SelfClosingTag
 
 
 def test_stock_tags_comprehensive_coverage() -> None:

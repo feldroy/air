@@ -301,7 +301,7 @@ select = [
     # prefix
     "ERA", # https://docs.astral.sh/ruff/rules/#eradicate-era
     "FAST", # https://docs.astral.sh/ruff/rules/#fastapi-fast
-    "ANN", # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
+    #    "ANN", # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
     "ASYNC", # https://docs.astral.sh/ruff/rules/#flake8-async-async
     #    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
     "BLE", # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
@@ -500,6 +500,7 @@ bad-unpacking = false
 index-error = false
 import-error = false
 bad-argument-count = false
+bad-param-name-override = false
 
 # endregion pyrefly
 

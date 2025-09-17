@@ -1,7 +1,3 @@
-from types import ModuleType
-
-from starlette.templating import _TemplateResponse
-
 """Air loves Jinja!
 
 A common pattern is to use a Jinja template as the project base and then use Air Tags for individual content.
@@ -11,10 +7,12 @@ import importlib
 import inspect
 from collections.abc import Callable, Sequence
 from os import PathLike
+from types import ModuleType
 from typing import Any
 
 import jinja2
 from fastapi.templating import Jinja2Templates
+from starlette.templating import _TemplateResponse
 
 from .exceptions import RenderException
 from .requests import Request

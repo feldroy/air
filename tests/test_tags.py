@@ -1,41 +1,9 @@
-from optparse import Option
-from re import A
-from tkinter import Label
-
 import pytest
-from _pytest._py.error import P
-from _pytest.raises import P
-from click.core import Option
-from click.decorators import P
-from click.utils import P
-from fastapi.background import P
-from fastapi.openapi.models import Link, Tag
-from httpx._transports.base import A
-from httpx._transports.default import A
-from packaging.tags import Tag
-from prompt_toolkit.input.base import Input
-from prompt_toolkit.shortcuts.progress_bar.formatters import Label
-from prompt_toolkit.widgets.base import Label
-from pycparser.c_ast import Label
-from pydantic.plugin._schema_validator import P
-from pydantic.type_adapter import P
-from pydantic.types import Tag
-from rich.markup import Tag
-from sqlalchemy.sql.elements import Label
-from starlette.applications import P
-from starlette.background import P
-from starlette.concurrency import P
-from starlette.middleware import P
 
 import air
-from air import tags
-from air.background import P
-from air.tags.models.special import Children, Html, Tag
-from air.tags.models.stock import A, Area, Article, Input, Label, Link, Option, P
-from air.tags.models.svg import A
 
 
-def _r(tag: A | Area | Children | Input | Label | Link | Option | P | Tag):
+def _r(tag: air.BaseTag):
     """Shortcut for easy renders"""
     return tag.render()
 
@@ -154,7 +122,7 @@ def test_raw_html_reject_kwargs() -> None:
 def test_functions_as_tags() -> None:
     """Test that functions can be used as tags."""
 
-    def article_preview(title: str, slug: str, description: str) -> Article:
+    def article_preview(title: str, slug: str, description: str) -> air.Article:
         return air.Article(air.H2(air.A(title, href=f"/posts/{slug}")), air.P(description))
 
     articles = [
@@ -166,7 +134,7 @@ def test_functions_as_tags() -> None:
     content = air.Main(air.H1("Articles"), *articles, air.P("Read more on our blog."))
     assert isinstance(content.render(), str)
 
-    def layout(*children) -> Html:
+    def layout(*children) -> air.Html:
         return air.Html(*children)
 
     html = layout(content)
@@ -174,7 +142,7 @@ def test_functions_as_tags() -> None:
 
 
 def test_pico_card() -> None:
-    def card(*content, header: str, footer: str) -> Article:
+    def card(*content, header: str, footer: str) -> air.Article:
         return air.Article(air.Header(header), *content, air.Footer(footer))
 
     html = card(
@@ -263,10 +231,17 @@ def test_tag_generation() -> None:
     tests in this file. It performs a render check on all tag subclasses
     within the tags.py module.
     """
-    for name in dir(tags):
-        obj = getattr(tags, name)
-        if isinstance(obj, type) and issubclass(obj, air.Tag):
-            assert obj("test").render()
+    for tag in air.BaseTag.registry.values():
+        rendered = None
+        if issubclass(tag, air.UnSafeTag):
+            rendered = tag("test").render()
+        elif issubclass(tag, air.SelfClosingTag):
+            rendered = tag(foo="bar").render()
+        elif issubclass(tag, air.Transparent):
+            rendered = tag(air.H1("test")).render()
+        else:
+            rendered = tag(air.H1("test"), foo="bar").render()
+        assert rendered
 
 
 def test_safestr() -> None:
@@ -274,7 +249,7 @@ def test_safestr() -> None:
 
 
 def test_other_children_types() -> None:
-    assert tags.A(1).render() == "<a>1</a>"
+    assert air.A(1).render() == "<a>1</a>"
 
 
 def test_tag_for_tag_subclass_wrapper() -> None:
