@@ -10,6 +10,7 @@ from ...routing import AirRouter
 
 GITHUB_CLIENT_ID: str = getenv("GITHUB_CLIENT_ID", "")
 GITHUB_CLIENT_SECRET: str = getenv("GITHUB_CLIENT_SECRET", "")
+AUTH_LOGIN_REDIRECT_TO: str = getenv("AUTH_LOGIN_REDIRECT_TO", "/")
 
 oauth = OAuth()
 oauth.register(
@@ -49,4 +50,4 @@ async def github_callback(request: Request):
     # Use a function defined somewhere as a setting
     github_access_token = token["access_token"]
     request.session["github_access_token"] = github_access_token
-    return RedirectResponse("/")
+    return RedirectResponse(AUTH_LOGIN_REDIRECT_TO)

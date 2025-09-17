@@ -7,8 +7,6 @@
       members:
         - GITHUB_CLIENT_ID
         - GITHUB_CLIENT_SECRET
-        - user_router
+        - auth_router
         - login_github
         - auth_github
-        - BaseUser
-        - UserStatusEnum

@@ -14,28 +14,30 @@ First, set these two environment variables based on your GitHub app configuratio
 - GITHUB_CLIENT_ID
 - GITHUB_CLIENT_SECRET
 
-## Step 2: Add model for persistence
-
-```python
-import air
-from sqlmodel import SQLModel
-
-
-class User(air.ext.auth.BaseUser):
-    __table__ = "auth_user"
-
-
 # TODO add tooling for generating table without Alembic
 ```
 
-## Step 3: Bring in routes
+## Step 2: Bring in session middleware and auth routes
 
 ```python
 import air
 
 app = air.Air()
 app.add_middleware(air.SessionMiddleware, secret_key="change-me")
-app.include_router(air.ext.auth.auth_router, prefix="/account")
+app.include_router(air.ext.auth.auth_router)
+```
+
+## Step 3: Code a link to the login
+
+
+```python
+@app.page
+async def index(request: air.Request):
+    return air.layouts.mvpcss(
+        air.H1("GitHub OAuth Login Demo"),
+        air.P(air.A("Login to Github", href="/account/github/login")),
+        air.P(request.session.get("github_access_token", "Not authenticated yet")),
+    )
 ```
 
 Try it out!
@@ -47,10 +49,10 @@ Try it out!
 """
 
 try:
-    from .models import (
-        BaseUser as BaseUser,
-        UserStatusEnum as UserStatusEnum,
-    )
+    # from .models import (
+    #     BaseUser as BaseUser,
+    #     UserStatusEnum as UserStatusEnum,
+    # )
     from .router import (
         GITHUB_CLIENT_ID as GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET as GITHUB_CLIENT_SECRET,
@@ -59,7 +61,7 @@ try:
         github_login as github_login,
     )
 except ImportError:  # pragma: no cover
-    msg = "air.ext.user requires installing the authlib, sqlmodel, and greenlet packages."
+    msg = "air.ext.auth requires installing the authlib, sqlmodel, and greenlet packages."
 
     class NotImportable:
         def __getattribute__(self, name):
