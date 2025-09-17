@@ -1,5 +1,45 @@
 # Changelog
 
+# 0.30.0 - 2025-09-17
+
+## What's Changed
+
+### New contributor submissions
+* BUG: resolve type-check errors pyrefly in docs by adding path by @datnq26 in https://github.com/feldroy/air/pull/415
+* DOCS: add two uv steps by @modasserbillah in https://github.com/feldroy/air/pull/416
+* DOCS: Import Field from pydantic by @tamerz in https://github.com/feldroy/air/pull/419
+
+### Big changes
+* FEAT: Improve tag rendering by @tallerasaf in https://github.com/feldroy/air/pull/377
+* FEAT: Add GitHub OAuth router Factory by @pydanny in https://github.com/feldroy/air/pull/443
+* FEAT: Add templating.Renderer ComponentLoader by @pydanny in https://github.com/feldroy/air/pull/430
+
+### Everything else
+
+* ⬆(deps): Bump pytest-asyncio from 1.1.0 to 1.2.0 in the python-dependencies group by @dependabot[bot] in https://github.com/feldroy/air/pull/413
+* BUG: Move content of db to ext by @pydanny in https://github.com/feldroy/air/pull/421
+* TOOL: Migrate airdocs to mkdocs by @pydanny in https://github.com/feldroy/air/pull/422
+* TOOL: Add build command back by @pydanny in https://github.com/feldroy/air/pull/424
+* DOCS: Fix rotating reasons not to use air by @pydanny in https://github.com/feldroy/air/pull/425
+* DOCS: Fix doc index links by @pydanny in https://github.com/feldroy/air/pull/426
+* DOCS: Fix errant doc links by @pydanny in https://github.com/feldroy/air/pull/427
+* build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/428
+* FEAT: Get test coverage back up to 95+% by @pydanny in https://github.com/feldroy/air/pull/432
+* DOCS: Include ext.sql in docs by @pydanny in https://github.com/feldroy/air/pull/433
+* TOOL: Improve Justfile by @tallerasaf in https://github.com/feldroy/air/pull/431
+* BUG: Fix broken links by @Isaac-Flath in https://github.com/feldroy/air/pull/440
+* BUG: Updated the example usage command to `just run-py-module examples.tags_render`. by @tallerasaf in https://github.com/feldroy/air/pull/439
+* DOCS: SQL doc cleanup and fix why page by @pydanny in https://github.com/feldroy/air/pull/442
+
+* BUG: Cleanup ext namespace by @pydanny in https://github.com/feldroy/air/pull/445
+
+## New Contributors
+* @datnq26 made their first contribution in https://github.com/feldroy/air/pull/415
+* @modasserbillah made their first contribution in https://github.com/feldroy/air/pull/416
+* @tamerz made their first contribution in https://github.com/feldroy/air/pull/419
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.29.0...v0.30.0
+
 # 0.29.0 - 2025-09-12
 
 ## What's Changed
