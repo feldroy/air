@@ -1,47 +1,38 @@
-from air.tags.models.special import Html
-from air.tags.models.stock import Article
-from pydantic.types import Tag
-from packaging.tags import Tag
-from fastapi.openapi.models import Tag
-from air.tags.models.special import Tag
-from rich.markup import Tag
-from _pytest.raises import P
-from _pytest._py.error import P
-from starlette.concurrency import P
-from starlette.middleware import P
-from pydantic.plugin._schema_validator import P
-from click.utils import P
-from air.tags.models.stock import P
-from starlette.applications import P
-from air.background import P
-from pydantic.type_adapter import P
-from starlette.background import P
-from fastapi.background import P
-from click.decorators import P
 from optparse import Option
-from air.tags.models.stock import Option
+from re import A
+from tkinter import Label
+
+import pytest
+from _pytest._py.error import P
+from _pytest.raises import P
 from click.core import Option
-from fastapi.openapi.models import Link
-from air.tags.models.stock import Link
+from click.decorators import P
+from click.utils import P
+from fastapi.background import P
+from fastapi.openapi.models import Link, Tag
+from httpx._transports.base import A
+from httpx._transports.default import A
+from packaging.tags import Tag
+from prompt_toolkit.input.base import Input
+from prompt_toolkit.shortcuts.progress_bar.formatters import Label
 from prompt_toolkit.widgets.base import Label
 from pycparser.c_ast import Label
+from pydantic.plugin._schema_validator import P
+from pydantic.type_adapter import P
+from pydantic.types import Tag
+from rich.markup import Tag
 from sqlalchemy.sql.elements import Label
-from prompt_toolkit.shortcuts.progress_bar.formatters import Label
-from air.tags.models.stock import Label
-from tkinter import Label
-from air.tags.models.stock import Input
-from prompt_toolkit.input.base import Input
-from air.tags.models.special import Children
-from air.tags.models.stock import Area
-from air.tags.models.svg import A
-from re import A
-from air.tags.models.stock import A
-from httpx._transports.default import A
-from httpx._transports.base import A
-import pytest
+from starlette.applications import P
+from starlette.background import P
+from starlette.concurrency import P
+from starlette.middleware import P
 
 import air
 from air import tags
+from air.background import P
+from air.tags.models.special import Children, Html, Tag
+from air.tags.models.stock import A, Area, Article, Input, Label, Link, Option, P
+from air.tags.models.svg import A
 
 
 def _r(tag: A | Area | Children | Input | Label | Link | Option | P | Tag):

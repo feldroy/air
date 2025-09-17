@@ -1,5 +1,5 @@
-from air.tags.models.special import Html
 import air
+from air.tags.models.special import Html
 
 
 def index(title, content) -> Html:

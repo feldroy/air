@@ -1,9 +1,9 @@
-from air.tags.models.stock import H1
 import pytest
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
 
 import air
+from air.tags.models.stock import H1
 
 
 def test_air_routing() -> None:

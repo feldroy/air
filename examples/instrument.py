@@ -1,5 +1,5 @@
-from air.tags.models.special import Html
-from air.tags.models.special import Children
+from air.tags.models.special import Children, Html
+
 """
 This project requires the "pyinstrument" package, intentionally not
 included in the dependencies of the Air project.

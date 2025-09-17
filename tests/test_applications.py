@@ -1,8 +1,8 @@
-from air.tags.models.stock import H1
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 import air
+from air.tags.models.stock import H1
 
 
 def test_air_app_factory() -> None:

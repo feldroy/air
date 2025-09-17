@@ -1,8 +1,10 @@
-from air.tags.models.stock import Span
-from rich.text import Span
 from ast import Div
+
 from jinja2.nodes import Div
-from air.tags.models.stock import Div
+from rich.text import Span
+
+from air.tags.models.stock import Div, Span
+
 """Memory tests for Air Tags object cleanup and retention.
 
 These tests use tracemalloc to verify that tag objects are properly

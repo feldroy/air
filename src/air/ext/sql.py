@@ -1,5 +1,6 @@
-from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from sqlalchemy.engine.base import Engine
+from sqlalchemy.ext.asyncio.engine import AsyncEngine
+
 """
 This module includes utility functions for using SQL with AIR.
 

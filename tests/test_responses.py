@@ -1,19 +1,15 @@
-from fastapi.param_functions import Body
-from fastapi.params import Body
-from air.tags.models.stock import Body
-from air.tags.models.stock import Article
-from air.tags.models.special import Html
-from air.tags.models.stock import Main
-from air.tags.models.stock import H1
-from jinja2.nodes import Div
-from air.tags.models.stock import Div
 from ast import Div
-from air.responses import AirResponse
 from typing import Any
 
+from fastapi.param_functions import Body
+from fastapi.params import Body
 from fastapi.testclient import TestClient
+from jinja2.nodes import Div
 
 import air
+from air.responses import AirResponse
+from air.tags.models.special import Html
+from air.tags.models.stock import H1, Article, Body, Div, Main
 
 
 def test_TagResponse_obj() -> None:

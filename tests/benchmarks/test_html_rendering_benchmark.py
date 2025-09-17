@@ -1,7 +1,9 @@
 from unittest.mock import Mock
 
 from starlette.templating import _TemplateResponse
+
 from air.tags.models.special import Html
+
 """Benchmark comparing Air Tags vs Jinja2 template rendering performance.
 
 This benchmark measures the performance of Air's tag-based HTML generation

@@ -1,7 +1,8 @@
-from starlette.templating import _TemplateResponse
 import pytest
 from fastapi import FastAPI, Request
 from fastapi.testclient import TestClient
+from starlette.templating import _TemplateResponse
+
 import air
 from air import Air, JinjaRenderer
 

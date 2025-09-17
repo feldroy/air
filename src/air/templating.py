@@ -1,5 +1,7 @@
 from types import ModuleType
+
 from starlette.templating import _TemplateResponse
+
 """Air loves Jinja!
 
 A common pattern is to use a Jinja template as the project base and then use Air Tags for individual content.
