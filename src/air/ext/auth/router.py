@@ -8,8 +8,13 @@ from ...responses import RedirectResponse
 from ...routing import AirRouter
 
 GITHUB_CLIENT_ID: str = getenv("GITHUB_CLIENT_ID", "")
+"""Provided by GitHub in their OAuth app configuration screen."""
+
 GITHUB_CLIENT_SECRET: str = getenv("GITHUB_CLIENT_SECRET", "")
+"""Secret key value provided by GitHub in their OAuth app configuration screen. Only displayed once."""
+
 AUTH_LOGIN_REDIRECT_TO: str = getenv("AUTH_LOGIN_REDIRECT_TO", "/")
+"""Where users go after they have been authenticated."""
 
 oauth = OAuth()
 oauth.register(
@@ -26,7 +31,20 @@ oauth.register(
 github = oauth.create_client("github")
 
 auth_router = AirRouter()
-"""Router for GitHub auth that includes the views listed below this router:
+"""Router for GitHub auth that includes the views listed below this router. 
+
+Note: Doesn't yet work with the `prefix` keyword argument in declaring routers.
+
+```python
+import air
+
+auth_router = air.ext.auth
+
+
+app = air.Air()
+app.add_middleware(air.SessionMiddleware, secret_key="change-me")
+app.include_router(air.ext.auth.auth_router)
+```
 """
 
 

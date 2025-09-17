@@ -9,10 +9,11 @@ Implementing the User model with GitHub OAuth.
 
 ## Step 1: Configuration
 
-First, set these two environment variables based on your GitHub app configuration:
+First, set these three environment variables based on your GitHub app configuration:
 
 - GITHUB_CLIENT_ID
 - GITHUB_CLIENT_SECRET
+- AUTH_LOGIN_REDIRECT_TO
 
 # TODO add tooling for generating table without Alembic
 ```
@@ -56,6 +57,7 @@ if TYPE_CHECKING:
     from ...routing import AirRouter
 
     auth_router: AirRouter
+    AUTH_LOGIN_REDIRECT_TO: str
     GITHUB_CLIENT_ID: str
     GITHUB_CLIENT_SECRET: str
 
@@ -65,6 +67,7 @@ if TYPE_CHECKING:
 
 try:
     from .router import (
+        AUTH_LOGIN_REDIRECT_TO as AUTH_LOGIN_REDIRECT_TO,
         GITHUB_CLIENT_ID as GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET as GITHUB_CLIENT_SECRET,
         auth_router as auth_router,
