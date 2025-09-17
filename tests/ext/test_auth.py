@@ -1,3 +1,5 @@
+from unittest.mock import AsyncMock, patch
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -45,3 +47,37 @@ def test_github_login_route():
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response._request.url.host == "github.com"  # ty:ignore[possibly-unbound-attribute]
     assert response._request.url.path == "/login/oauth/authorize"  # ty:ignore[possibly-unbound-attribute]
+
+
+def test_github_callback_route():
+    test_token = {"access_token": "test_token"}
+
+    async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
+        pass
+
+    with patch("air.ext.auth.OAuth") as mock_oauth_class:
+        mock_oauth = mock_oauth_class.return_value
+        mock_oauth.github.authorize_access_token = AsyncMock(return_value=test_token)
+
+        github_oauth_router = air.ext.GitHubOAuthRouterFactory(
+            github_client_id="CLIENT_ID",
+            github_client_secret="CLIENT_SECRET",
+            github_process_callable=github_process_callable,
+            login_redirect_to="/",
+        )
+
+        app = air.Air()
+        app.add_middleware(air.SessionMiddleware, secret_key="insecure")
+        app.include_router(github_oauth_router)
+
+        @app.page
+        def index():
+            return air.H1("Hello, world")
+
+        client = TestClient(app)
+
+        response = client.get("/account/github/callback")
+
+        assert response.history[0].status_code == 307
+        assert response.status_code == 200
+        assert "Hello" in response.text
