@@ -80,19 +80,9 @@ from collections.abc import Callable
 
 from authlib.integrations.starlette_client import OAuth
 
-from ..exceptions import HTTPException
 from ..requests import Request
 from ..responses import RedirectResponse
 from ..routing import AirRouter
-
-
-def _check_session_middleware(request: Request):
-    """Confirms the session middleware is installed, raises a 500 exception if it is not.
-
-    TODO: Turn into a dependency, put in the dependencies.py module as `check_session_middleware`
-    """
-    if not hasattr(request, "session"):
-        raise HTTPException(status_code=500, detail="Session middleware not installed.")
 
 
 def GitHubOAuthRouterFactory(
@@ -125,13 +115,13 @@ def GitHubOAuthRouterFactory(
 
     @router.get("/account/github/login")
     async def github_login(request: Request):
-        _check_session_middleware(request)
+        assert hasattr(request, "session")
         redirect_uri = request.url_for("github_callback")
         return await github.authorize_redirect(request, redirect_uri)
 
     @router.get("/account/github/callback")
     async def github_callback(request: Request):
-        _check_session_middleware(request)
+        assert hasattr(request, "session")
         token = await oauth.github.authorize_access_token(request)
 
         await github_process_callable(request=request, token=token)
