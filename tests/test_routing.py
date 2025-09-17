@@ -1,3 +1,4 @@
+from air.tags.models.stock import H1
 import pytest
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
@@ -11,11 +12,11 @@ def test_air_routing() -> None:
     router = air.AirRouter()
 
     @app.page
-    def index():
+    def index() -> H1:
         return air.H1("Hello, World!")
 
     @router.page
-    def home():
+    def home() -> H1:
         return air.H1("Hello, Air!")
 
     app.include_router(router)
@@ -39,11 +40,11 @@ def test_air_routing_prefix() -> None:
     router = air.AirRouter()
 
     @app.page
-    def index():
+    def index() -> H1:
         return air.H1("Hello, World!")
 
     @router.page
-    def home():
+    def home() -> H1:
         return air.H1("Hello, Air!")
 
     with pytest.raises(AssertionError):
@@ -89,7 +90,7 @@ def test_air_router_no_prefix() -> None:
     assert router.prefix == ""
 
 
-def test_air_router_get_with_awaitable_result():
+def test_air_router_get_with_awaitable_result() -> None:
     """Test GET method with async function that returns awaitable result"""
     app = air.Air()
     router = air.AirRouter()
@@ -106,13 +107,13 @@ def test_air_router_get_with_awaitable_result():
     assert response.text == "<h1>Async Hello!</h1>"
 
 
-def test_air_router_get_with_response_object():
+def test_air_router_get_with_response_object() -> None:
     """Test GET method that returns Response object directly"""
     app = air.Air()
     router = air.AirRouter()
 
     @router.get("/response-test")
-    def response_endpoint():
+    def response_endpoint() -> HTMLResponse:
         return HTMLResponse(content="<p>Custom Response</p>")
 
     app.include_router(router)
@@ -123,13 +124,13 @@ def test_air_router_get_with_response_object():
     assert response.text == "<p>Custom Response</p>"
 
 
-def test_air_router_post_basic():
+def test_air_router_post_basic() -> None:
     """Test POST method basic functionality"""
     app = air.Air()
     router = air.AirRouter()
 
     @router.post("/post-test")
-    def post_endpoint():
+    def post_endpoint() -> H1:
         return air.H1("POST Response")
 
     app.include_router(router)
@@ -140,7 +141,7 @@ def test_air_router_post_basic():
     assert response.text == "<h1>POST Response</h1>"
 
 
-def test_air_router_post_with_awaitable_result():
+def test_air_router_post_with_awaitable_result() -> None:
     """Test POST method with async function that returns awaitable result"""
     app = air.Air()
     router = air.AirRouter()
@@ -157,13 +158,13 @@ def test_air_router_post_with_awaitable_result():
     assert response.text == "<h1>Async POST!</h1>"
 
 
-def test_air_router_post_with_response_object():
+def test_air_router_post_with_response_object() -> None:
     """Test POST method that returns Response object directly"""
     app = air.Air()
     router = air.AirRouter()
 
     @router.post("/post-response-test")
-    def post_response_endpoint():
+    def post_response_endpoint() -> HTMLResponse:
         return HTMLResponse(content="<p>Custom POST Response</p>")
 
     app.include_router(router)

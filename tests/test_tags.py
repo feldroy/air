@@ -1,10 +1,50 @@
+from air.tags.models.special import Html
+from air.tags.models.stock import Article
+from pydantic.types import Tag
+from packaging.tags import Tag
+from fastapi.openapi.models import Tag
+from air.tags.models.special import Tag
+from rich.markup import Tag
+from _pytest.raises import P
+from _pytest._py.error import P
+from starlette.concurrency import P
+from starlette.middleware import P
+from pydantic.plugin._schema_validator import P
+from click.utils import P
+from air.tags.models.stock import P
+from starlette.applications import P
+from air.background import P
+from pydantic.type_adapter import P
+from starlette.background import P
+from fastapi.background import P
+from click.decorators import P
+from optparse import Option
+from air.tags.models.stock import Option
+from click.core import Option
+from fastapi.openapi.models import Link
+from air.tags.models.stock import Link
+from prompt_toolkit.widgets.base import Label
+from pycparser.c_ast import Label
+from sqlalchemy.sql.elements import Label
+from prompt_toolkit.shortcuts.progress_bar.formatters import Label
+from air.tags.models.stock import Label
+from tkinter import Label
+from air.tags.models.stock import Input
+from prompt_toolkit.input.base import Input
+from air.tags.models.special import Children
+from air.tags.models.stock import Area
+from air.tags.models.svg import A
+from re import A
+from air.tags.models.stock import A
+from httpx._transports.default import A
+from httpx._transports.base import A
 import pytest
 
 import air
 from air import tags
 
 
-def _r(tag):
+def _r(tag: A | Area | Children | Input | Label | Link | Option | P | Tag):
     """Shortcut for easy renders"""
     return tag.render()
 
@@ -123,7 +163,7 @@ def test_raw_html_reject_kwargs() -> None:
 def test_functions_as_tags() -> None:
     """Test that functions can be used as tags."""
 
-    def article_preview(title: str, slug: str, description: str):
+    def article_preview(title: str, slug: str, description: str) -> Article:
         return air.Article(air.H2(air.A(title, href=f"/posts/{slug}")), air.P(description))
 
     articles = [
@@ -135,7 +175,7 @@ def test_functions_as_tags() -> None:
     content = air.Main(air.H1("Articles"), *articles, air.P("Read more on our blog."))
     assert isinstance(content.render(), str)
 
-    def layout(*children):
+    def layout(*children) -> Html:
         return air.Html(*children)
 
     html = layout(content)
@@ -143,7 +183,7 @@ def test_functions_as_tags() -> None:
 
 
 def test_pico_card() -> None:
-    def card(*content, header: str, footer: str):
+    def card(*content, header: str, footer: str) -> Article:
         return air.Article(air.Header(header), *content, air.Footer(footer))
 
     html = card(

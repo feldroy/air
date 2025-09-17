@@ -1,3 +1,8 @@
+from air.tags.models.stock import Span
+from rich.text import Span
+from ast import Div
+from jinja2.nodes import Div
+from air.tags.models.stock import Div
 """Memory tests for Air Tags object cleanup and retention.
 
 These tests use tracemalloc to verify that tag objects are properly
@@ -86,7 +91,7 @@ def test_nested_tag_memory_efficiency() -> None:
     tracemalloc.start()
 
     # Create deeply nested structure
-    def create_nested_structure(depth=10):
+    def create_nested_structure(depth=10) -> Div | Span:
         if depth == 0:
             return air.Span("Deep content", class_="leaf")
 

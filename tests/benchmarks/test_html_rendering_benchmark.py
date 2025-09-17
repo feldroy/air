@@ -1,3 +1,4 @@
+from air.tags.models.special import Html
 """Benchmark comparing Air Tags vs Jinja2 template rendering performance.
 
 This benchmark measures the performance of Air's tag-based HTML generation
@@ -13,7 +14,7 @@ import air
 from air.templating import JinjaRenderer
 
 
-def create_complex_page_with_tags():
+def create_complex_page_with_tags() -> Html:
     """Generate a complex HTML page using Air Tags."""
     return air.Html(
         air.Head(
@@ -57,7 +58,7 @@ def create_complex_page_with_tags():
     )
 
 
-def create_complex_page_with_jinja(jinja_renderer, mock_request):
+def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: Mock):
     """Generate the same complex HTML page using Jinja2 templates."""
     context = {
         "title": "Product Catalog",
@@ -129,7 +130,7 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark) -> None:
         mock_request.url = URL("http://localhost/test")
 
         # Benchmark Air Tags rendering
-        def render_with_air_tags():
+        def render_with_air_tags() -> str:
             page = create_complex_page_with_tags()
             return page.render()
 
@@ -144,7 +145,7 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark) -> None:
 def test_simple_air_tags_rendering_benchmark(benchmark) -> None:
     """Benchmark simple Air Tags rendering for baseline performance."""
 
-    def render_simple_page():
+    def render_simple_page() -> str:
         page = air.Html(
             air.Head(air.Title("Simple Page")),
             air.Body(

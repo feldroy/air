@@ -1,3 +1,14 @@
+from fastapi.param_functions import Body
+from fastapi.params import Body
+from air.tags.models.stock import Body
+from air.tags.models.stock import Article
+from air.tags.models.special import Html
+from air.tags.models.stock import Main
+from air.tags.models.stock import H1
+from jinja2.nodes import Div
+from air.tags.models.stock import Div
+from ast import Div
+from air.responses import AirResponse
 from typing import Any
 
 from fastapi.testclient import TestClient
@@ -10,7 +21,7 @@ def test_TagResponse_obj() -> None:
     app = air.Air()
 
     @app.get("/test")
-    def test_endpoint():
+    def test_endpoint() -> AirResponse:
         return air.TagResponse(air.H1("Hello, World!"))
 
     client = TestClient(app)
@@ -29,7 +40,7 @@ def test_TagResponse_compatibility() -> None:
     app = air.Air()
 
     @app.get("/test_tag", response_class=TagResponse)
-    def test_tag_endpoint():
+    def test_tag_endpoint() -> Div:
         return air.Div(air.H1("Hi from TagResponse!"), air.Br())
 
     client = TestClient(app)
@@ -46,7 +57,7 @@ def test_AirResponse() -> None:
     app = air.Air()
 
     @app.get("/test_tag", response_class=air.AirResponse)
-    def test_tag_endpoint():
+    def test_tag_endpoint() -> H1:
         return air.H1("Hello, World!")
 
     @app.get("/test_html", response_class=air.AirResponse)
@@ -73,7 +84,7 @@ def test_AirResponse_type() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint():
+    def test_endpoint() -> Main:
         return air.Main(
             air.H1("Hello, clean HTML response!"),
             air.P("This is a paragraph in the response."),
@@ -95,7 +106,7 @@ def test_AirResponse_html() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint():
+    def test_endpoint() -> Html:
         return air.Html(
             air.Head(),
             air.Body(
@@ -121,7 +132,7 @@ def test_strings_and_tag_children() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint():
+    def test_endpoint() -> Html:
         return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
 
     client = TestClient(app)
@@ -137,11 +148,11 @@ def test_strings_and_tag_children() -> None:
 def test_custom_name_in_response() -> None:
     app = air.Air()
 
-    def Card(sentence):
+    def Card(sentence: str) -> Article:
         return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
 
     @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint():
+    def test_endpoint() -> Article:
         return Card("This is a sentence")
 
     client = TestClient(app)
@@ -160,7 +171,7 @@ def test_AirResponse_with_layout_strings() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint():
+    def test_endpoint() -> Main:
         return air.Main(air.H2("Hello, World!"))
 
     client = TestClient(app)
@@ -180,7 +191,7 @@ def test_AirResponse_with_layout_names() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint():
+    def test_endpoint() -> Body:
         return air.Body(air.Main(air.H1("Hello, World!")))
 
     client = TestClient(app)

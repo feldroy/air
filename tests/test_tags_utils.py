@@ -63,7 +63,7 @@ def test_locals_cleanup_defaults_for_unknown_class() -> None:
     assert result == {"class_": "c", "for_": "x", "style": "s"}
 
 
-def test_format_html():
+def test_format_html() -> None:
     escaped_html = (
         "&lt;!doctype html&gt;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello, world&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;"
     )

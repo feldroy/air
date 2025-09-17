@@ -1,3 +1,5 @@
+from types import ModuleType
+from starlette.templating import _TemplateResponse
 """Air loves Jinja!
 
 A common pattern is to use a Jinja template as the project base and then use Air Tags for individual content.
@@ -72,7 +74,7 @@ class JinjaRenderer:
         name: str,
         context: dict[Any, Any] | None = None,
         **kwargs,
-    ):
+    ) -> _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
         """
@@ -137,7 +139,7 @@ class Renderer:
         context_processors: list[Callable[[Request], dict[str, Any]]] | None = None,
         env: jinja2.Environment | None = None,
         package: str | None = None,
-    ):
+    ) -> None:
         """Initialize with template directory path"""
         if context_processors is None:
             context_processors = []
@@ -205,7 +207,7 @@ class Renderer:
             return tag_callable(**filtered_context)
         return tag_callable(*args, **filtered_context)
 
-    def _import_module(self, module_name: str):
+    def _import_module(self, module_name: str) -> ModuleType:
         """Import module handling relative imports."""
         if module_name.startswith("."):
             return importlib.import_module(module_name, package=self.package)

@@ -482,6 +482,7 @@ python-version = "3.13"
 disable-search-path-heuristics = true
 # Should Pyrefly ignore errors based on annotations from other tools,
 # pyre-ignore or # mypy: ignore? By default, respects # pyrefly: ignore and # type: ignore.
+# TODO -> Uncomment:
 #permissive-ignores = true
 # When the table is empty, all errors are enabled by default
 # setting <error-code> = true is the same as having no error code configuration present,
@@ -489,6 +490,7 @@ disable-search-path-heuristics = true
 # will disable the error for type checking.
 [tool.pyrefly.errors]
 # TODO -> Remove all error code bellow
+# TODO -> Uncomment:
 #bad-override = false
 #no-matching-overload = false
 #not-callable = false

@@ -1,3 +1,4 @@
+from starlette.templating import _TemplateResponse
 """Benchmark Jinja2 template rendering performance in Air.
 
 This provides a comparison baseline for Air Tags performance by measuring
@@ -79,7 +80,7 @@ def test_jinja_complex_page_rendering_benchmark(benchmark) -> None:
             ],
         }
 
-        def render_jinja_page():
+        def render_jinja_page() -> _TemplateResponse:
             return jinja_renderer(mock_request, "complex_page.html", context=context)
 
         benchmark(render_jinja_page)

@@ -1,3 +1,5 @@
+from air.tags.models.special import Html
+from air.tags.models.special import Children
 """
 This project requires the "pyinstrument" package, intentionally not
 included in the dependencies of the Air project.
@@ -25,5 +27,5 @@ async def profile_request(request: air.Request, call_next):
 
 
 @app.page
-def index():
+def index() -> Children | Html:
     return air.layouts.mvpcss(air.H1("Home"), air.Ol(*[air.Li(x) for x in range(1, 100)]))
