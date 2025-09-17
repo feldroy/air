@@ -88,6 +88,7 @@ run-with-relative-paths +CMD:
     just run --script "{{ TARGET }}"
 
 # uv run helper
+[doc]
 [group('uv')]
 @run +ARGS:
     just run-with-relative-paths uv run -q --all-extras --no-extra standard {{ ARGS }}
