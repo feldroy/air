@@ -1,5 +1,6 @@
 # ext.sql
 
+
 ::: air.ext.sql
     options:
       group_by_category: false
