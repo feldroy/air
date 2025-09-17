@@ -1,7 +1,7 @@
 """
 Implementing the User model with GitHub OAuth.
 
-!!! note "Coming Soon: More authentication types!"
+!!! note "Coming Soon: More authentication methods!"
 
     We chose GitHub OAuth because configuring it is straightforward. Our plan is to expand to other OAuth providers as well as other registration and authentication mechanisms.
 
@@ -14,9 +14,6 @@ First, set these three environment variables based on your GitHub app configurat
 - GITHUB_CLIENT_ID
 - GITHUB_CLIENT_SECRET
 - AUTH_LOGIN_REDIRECT_TO
-
-# TODO add tooling for generating table without Alembic
-```
 
 ## Step 2: Bring in session middleware and auth routes
 
