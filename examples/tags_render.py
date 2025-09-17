@@ -7,8 +7,7 @@ structure. It then utilizes a rendering function to display the generated
 HTML in a nicely formatted panel with syntax highlighting and stylized
 borders in the terminal.
 Run:
-    `uv sync --all-extras --no-extra standard`
-    `just run examples.tags_render`
+    `just run-py-module examples.tags_render`
 """
 
 from __future__ import annotations

@@ -4,7 +4,7 @@
 
 !!! note
 
-    Tags, or **Air Tag**, are explained in the [concepts document about tags][air-tags].
+    Tags, or **Air Tag**, are explained in the [concepts document about tags](../../learn/air_tags).
 
 
 In the spirit of helping our users, every **Air Tag** has copious documentation—enough that sometimes it breaks the documentation build process. Therefore, **Air Tag** that directly correspond to their HTML equivalents can be found in smaller, easier-to-compile pages.

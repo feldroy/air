@@ -10,6 +10,29 @@ Requires additional dependencies:
 
 - SQLModel
 - greenlet
+
+Persistent database connections require a lifespan object, otherwise you will receive timeout warnings.
+
+
+```python
+from contextlib import asynccontextmanager
+import air
+
+
+@asynccontextmanager
+async def lifespan(app: air.Air):
+    async_engine = air.db.sql.create_async_engine()
+    async with async_engine.begin() as conn:
+        await conn.run_sync(lambda _: None)
+    yield
+    await async_engine.dispose()
+
+
+app = air.Air(lifespan=lifespan)
+```
+
+---
+
 """
 
 from collections.abc import AsyncGenerator
