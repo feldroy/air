@@ -1,7 +1,6 @@
 from os import getenv
 
 from authlib.integrations.starlette_client import OAuth
-from rich import print
 
 from ...exceptions import HTTPException
 from ...requests import Request
@@ -39,13 +38,12 @@ def check_session_middleware(request: Request):
 @auth_router.get("/account/github/login")
 async def github_login(request: Request):
     redirect_uri = request.url_for("github_callback")
-    print(redirect_uri)
-    return await github.authorize_redirect(request, redirect_uri)
+    return await github.authorize_redirect(request, redirect_uri)  # pyrefly: ignore[missing-attribute]
 
 
 @auth_router.get("/account/github/callback")
 async def github_callback(request: Request):
-    token = await oauth.github.authorize_access_token(request)
+    token = await oauth.github.authorize_access_token(request)  # pyrefly: ignore[missing-attribute]
     # TODO save the github access token for the user
     # Use a function defined somewhere as a setting
     github_access_token = token["access_token"]

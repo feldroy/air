@@ -48,11 +48,22 @@ Try it out!
 
 """
 
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from ...requests import Request
+    from ...responses import Response
+    from ...routing import AirRouter
+
+    auth_router: AirRouter
+    GITHUB_CLIENT_ID: str
+    GITHUB_CLIENT_SECRET: str
+
+    async def github_callback(request: Request) -> Response: ...
+    async def github_login(request: Request) -> Response: ...
+
+
 try:
-    # from .models import (
-    #     BaseUser as BaseUser,
-    #     UserStatusEnum as UserStatusEnum,
-    # )
     from .router import (
         GITHUB_CLIENT_ID as GITHUB_CLIENT_ID,
         GITHUB_CLIENT_SECRET as GITHUB_CLIENT_SECRET,
@@ -73,5 +84,5 @@ except ImportError:  # pragma: no cover
         def __repr__(self):
             return msg
 
-    def __getattr__(obj):
+    def __getattr__(name: str) -> Any:
         return NotImportable()
