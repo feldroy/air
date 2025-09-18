@@ -2,35 +2,82 @@
 
 **Air Tags**, sometimes shortened to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool. They are designed to be an easy to write and performant HTML content generation system using Python classes to render HTML.
 
-> ## Note
-> This document covers how **Air Tags** work. The full reference for them is the [Tags reference](https://feldroy.github.io/air/api/tags/).
+!!! Note
+    This document covers how **Air Tags** work. The full reference for them is the [Tags reference](../../api/tags).
 
 ## How **Air Tags** work
 
-Used individually or combined into a greater whole, every Air Tag includes a `render()` method. When the render method is called, it returns the HTML representation of the Air Tag, as well as all the children of the Air Tag.
+Used individually or combined into a greater whole, every Air Tag includes a `render()` method. When the `render()` method is called it returns a HTML representation of the Air Tag, as well as all the children of the Air Tag.
 
 This example:
 
 ```python
 >>> from air import Article, H1, P
 >>> content = Article(
-...     H1("Air Tags"),
-...     P("Air Tags are a fast, expressive way to generate HTML.",
-...             class_="subtitle")
-... )
+    H1("Air Tags"),
+    P("Air Tags are a fast, expressive way to generate HTML.",
+        class_="subtitle")
+)
 >>> content
-<air.tags.Article at 0x1052f2cf0>
->>> content.render()
+<air.Article("Defines an article")>
 ```
+
+In constructing this example, the `Article` tag has wrapped the `H1` and `P` tags. You can't see that the `H1` and `P` tags are inside, but they have been carefully stored. 
 
 This is the output of the `render()` method for the example above:
 
+```python
+>>> content.render()
+```
+
+```html
+<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+```
+
+A shortcut for the `render()` method is the `str()` built-ins. 
+
+```python
+>>> str(content)
+```
+
+```html
+<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+```
+
+The `print()` built-in also does this conversion, but the result goes to `stdout`, so can't be saved to a variable.
+
+
+```python
+>>> print(content)
+```
+
+```html
+<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+```
+
+!!! note
+
+    When returned from an Air view this conversion to HTML happens automatically, much like how FastAPI automatically converts `dict` responses to JSON.
+
+## Pretty HTML renders
+
+What if we want a more human-friendly display of HTML? We can use `.pretty_render()` method on any Air Tag:
+
+```python
+>>> print(content.pretty_render())
+```
+
 ```html
 <article>
-    <h1>Air Tags</h1>
-    <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
+  <h1>Air Tags</h1>
+  <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
 </article>
 ```
+
+!!! tip
+
+    Combine Air Tag's `.pretty_render()` method with the [rich package](https://github.com/Textualize/rich) for truly lovely colorized output.
+
 
 ## Attributes
 
@@ -77,10 +124,7 @@ air.Label(
 renders as
 
 ```html
-<label for="email">
-    Email
-    <input name="email" type="email" />
-</label>
+<label for="email">Email<input name="email" type="email"></label>
 ```
 
 ### Attributes starting with special characters
@@ -112,10 +156,14 @@ Renders as:
 
 ```html
 <select>
-    <option value="SA" selected>South America</option>
+    <option selected value="SA">South America</option>
     <option value="NA">North America</option>
 </select>
 ```
+
+!!! note
+
+    For the sake of clarity this example was rendered using `print(content.pretty_render())`.
 
 If you need a value set to `true`, use `"true"` in Python. For example:
 
@@ -147,9 +195,13 @@ This will render the following SVG:
 
 ```html
 <svg width="100" height="100">
-  <circle cx="50" cy="50" r="40" fill="blue" />
+  <circle fill="blue" cx="50" cy="50" r="40"></circle>
 </svg>
 ```
+
+!!! note
+
+    For the sake of clarity this example was rendered using `print(content.pretty_render())`.
 
 ## Custom Air Tags
 
@@ -209,6 +261,10 @@ Which produces the following HTML:
 </article>
 ```
 
+!!! note
+
+    For the sake of clarity this example was rendered using `print(card(...).pretty_render())`.
+
 ## Returning Multiple Children (used in HTMX)
 
 When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are hierarchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
@@ -243,10 +299,6 @@ This will generate HTML that looks something like this, without any wrapping tex
     hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true"
      >Cart 2</a>
 ```
-
-## Converting HTML to Air Tags
-
-The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package.
 
 ## Converting HTML to Air Tags
 

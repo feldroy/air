@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.29.0"
+version = "0.30.0"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -61,6 +61,10 @@ pretty = [
 sql = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
+]
+# Used for authentication
+auth = [
+    "authlib>=1.6.3", # OAuth clients
 ]
 
 # Groups are for contributors; install with: uv sync --group NAME
@@ -501,6 +505,7 @@ index-error = false
 import-error = false
 bad-argument-count = false
 bad-param-name-override = false
+missing-attribute = false
 
 # endregion pyrefly
 
