@@ -9,7 +9,7 @@ try:
 except ImportError:
     from typing_extensions import override
 
-from .base import BaseTag
+from .base import AttributesType, BaseTag
 
 
 class Html(BaseTag):
@@ -53,7 +53,7 @@ class Fragment(Transparent):
 class SelfClosingTag(BaseTag):
     def __init__(
         self,
-        **kwargs: str | float | int | bool,
+        **kwargs: AttributesType,
     ) -> None:
         super().__init__(**kwargs)
 
@@ -64,7 +64,7 @@ class SelfClosingTag(BaseTag):
 
 class UnSafeTag(BaseTag):
     @override
-    def __init__(self, text_child: str = "", /, **kwargs: str | float | int | bool) -> None:
+    def __init__(self, text_child: str = "", /, **kwargs: AttributesType) -> None:
         super().__init__(text_child, **kwargs)
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
@@ -152,7 +152,7 @@ class Script(UnSafeTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: str | float | int | bool,
+        **kwargs: AttributesType,
     ) -> None:
         super().__init__(text_child, **kwargs | locals_cleanup(locals()))
 
@@ -188,6 +188,6 @@ class Style(UnSafeTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: str | float | int | bool,
+        **kwargs: AttributesType,
     ) -> None:
         super().__init__(text_child, **kwargs | locals_cleanup(locals()))

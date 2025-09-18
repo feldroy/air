@@ -16,7 +16,6 @@ from starlette.templating import _TemplateResponse
 
 from .exceptions import RenderException
 from .requests import Request
-from .tags import Tag
 
 
 class JinjaRenderer:
@@ -73,7 +72,7 @@ class JinjaRenderer:
         request: Request,
         name: str,
         context: dict[Any, Any] | None = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
@@ -84,9 +83,7 @@ class JinjaRenderer:
             context |= kwargs
 
         # Attempt to render any Tags in the contect
-        for k, v in context.items():
-            if isinstance(v, Tag) and hasattr(v, "render"):
-                context[k] = v.render()
+        context = {k: str(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
 
@@ -149,10 +146,10 @@ class Renderer:
     def __call__(
         self,
         name: str | Callable,
-        *args,
+        *children: Any,
         request: Request | None = None,
         context: dict[Any, Any] | None = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> str:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
@@ -175,7 +172,7 @@ class Renderer:
             return self._render_template(name, request, context)
 
         if "." in name:
-            return self._render_tag_callable(name, args, request, context)
+            return self._render_tag_callable(name, children, request, context)
 
         msg = "No callable or Jinja template found."
         raise RenderException(msg)
@@ -188,11 +185,9 @@ class Renderer:
             context |= kwargs
         return context
 
-    def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> str:
+    def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> _TemplateResponse:
         """Render Jinja template with Air Tag support."""
-        for k, v in context.items():
-            if isinstance(v, Tag) and hasattr(v, "render"):
-                context[k] = v.render()
+        context = {k: str(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:

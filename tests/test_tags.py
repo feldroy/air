@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 
 import air
@@ -134,7 +136,7 @@ def test_functions_as_tags() -> None:
     content = air.Main(air.H1("Articles"), *articles, air.P("Read more on our blog."))
     assert isinstance(content.render(), str)
 
-    def layout(*children) -> air.Html:
+    def layout(*children: Any) -> air.Html:
         return air.Html(*children)
 
     html = layout(content)
@@ -142,8 +144,8 @@ def test_functions_as_tags() -> None:
 
 
 def test_pico_card() -> None:
-    def card(*content, header: str, footer: str) -> air.Article:
-        return air.Article(air.Header(header), *content, air.Footer(footer))
+    def card(*children: Any, header: str, footer: str) -> air.Article:
+        return air.Article(air.Header(header), *children, air.Footer(footer))
 
     html = card(
         air.P("This is a card with some content."),
