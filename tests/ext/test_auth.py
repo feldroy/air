@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 import air
 
 
-def test_app_has_session():
+def test_app_has_session() -> None:
     async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
         pass
 
@@ -25,7 +25,7 @@ def test_app_has_session():
         client.get("/account/github/login")
 
 
-def test_github_login_route():
+def test_github_login_route() -> None:
     async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
         pass
 
@@ -49,7 +49,7 @@ def test_github_login_route():
     assert response._request.url.path == "/login/oauth/authorize"  # ty:ignore[possibly-unbound-attribute]
 
 
-def test_github_callback_route():
+def test_github_callback_route() -> None:
     test_token = {"access_token": "test_token"}
 
     async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:

@@ -31,10 +31,10 @@ except ImportError:  # pragma: no cover
         def __getattribute__(self, name):
             raise RuntimeError(msg)
 
-        def __str__(self):
+        def __str__(self) -> str:
             return msg
 
-        def __repr__(self):
+        def __repr__(self) -> str:
             return msg
 
     sql = NotImportable()  # ty:ignore[invalid-assignment]
