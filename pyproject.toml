@@ -365,10 +365,8 @@ ignore = [
     "W505", # Doc line too long
     "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
     "ANN001", # https://docs.astral.sh/ruff/rules/missing-type-function-argument
-#    "ANN003", # https://docs.astral.sh/ruff/rules/missing-type-kwargs
     "ANN201", # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
     "ANN202", # https://docs.astral.sh/ruff/rules/missing-return-type-private-function
-    "ANN204", # https://docs.astral.sh/ruff/rules/missing-return-type-special-method
     "ANN401", # https://docs.astral.sh/ruff/rules/any-type
 ]
 
