@@ -7,7 +7,7 @@ Fork and clone this repository, and install the dependencies:
 ```bash
 git clone https://github.com/feldroy/air.git
 cd air
-uv sync --all-extras --no-extra standard
+uv sync --extra all
 ```
 
 Now you're ready to run Air from your local clone of your fork. Play with it, fix bugs, document, have fun!
