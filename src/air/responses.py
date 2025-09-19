@@ -1,9 +1,6 @@
 """Air uses custom response classes to improve the developer experience."""
 
-try:
-    from typing import override
-except ImportError:
-    from typing import override
+from typing import override
 
 from starlette.responses import (
     FileResponse as FileResponse,
