@@ -470,6 +470,7 @@ unsupported-base = "error"               # https://docs.astral.sh/ty/reference/r
 division-by-zero = "error"               # https://docs.astral.sh/ty/reference/rules/#division-by-zero
 possibly-unresolved-reference = "error"  # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
 unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/rules/#unused-ignore-comment
+unresolved-attribute = "ignore"
 
 # Tests often import optional dev deps or use dynamic patterns.
 [[tool.ty.overrides]]

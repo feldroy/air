@@ -7,6 +7,8 @@ Here is the Air reference documentation. It explains how to do things, as well a
 - [Exception Handlers](../api/exception_handlers) - Exceptions are returned to the user, specifically 404 and 500
 - [Exceptions](../api/exceptions) - Sometimes it's good to know exactly what is breaking
 - [Ext](../api/ext) - Functionality for Air that requires extra dependencies
+    - [Auth](../api/ext/auth) - Authentication tools for OAuth and eventually email and magic link.
+    - [SQL](../api/ext/sql) - Utilities for connecting to relational databases like PostgreSQL, MySQL, and SQLite.
 - [Forms](../api/forms) - Receive and validate data from users on web pages
 - [Layouts](../api/layouts) - Utilities for building layout functions and two example layouts for css microframeworks (mvcss and picocss)
 - [Middleware](../api/middleware.md) - Middleware for Air

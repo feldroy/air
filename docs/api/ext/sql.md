@@ -12,3 +12,4 @@
         - create_async_session
         - get_async_session
         - async_session_dependency
+        - get_object_or_404

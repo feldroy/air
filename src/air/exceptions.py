@@ -11,3 +11,7 @@ class BaseAirException(Exception):
 
 class RenderException(BaseAirException):
     """Error thrown when render function fails."""
+
+
+class ObjectDoesNotExist(HTTPException):
+    """Thrown when a record in a persistence store can't be found."""
