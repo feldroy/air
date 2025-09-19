@@ -66,6 +66,14 @@ sql = [
 auth = [
     "authlib>=1.6.3", # OAuth clients
 ]
+# All optional packages (combined list of every extra above, except 'standard')
+all = [
+    "lxml>=6.0.1",
+    "rich>=12.6.0",
+    "greenlet>=3.2.4",
+    "sqlmodel>=0.0.24",
+    "authlib>=1.6.3",
+]
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],
@@ -511,6 +519,7 @@ import-error = false
 bad-argument-count = false
 bad-param-name-override = false
 missing-attribute = false
+bad-param-name-override = false
 
 # endregion pyrefly
 

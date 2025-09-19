@@ -1,8 +1,7 @@
-# Requests
+Dependencies 
 
-
-::: starlette.requests
+::: air.dependencies
     options:
       group_by_category: false
       members:
-        - Request
+        - is_htmx_request
