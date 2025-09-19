@@ -14,7 +14,6 @@ from fastapi.templating import Jinja2Templates
 
 from .exceptions import RenderException
 from .requests import Request
-from .tags import Tag
 
 
 class JinjaRenderer:
@@ -82,9 +81,7 @@ class JinjaRenderer:
             context |= kwargs
 
         # Attempt to render any Tags in the contect
-        for k, v in context.items():
-            if isinstance(v, Tag) and hasattr(v, "render"):
-                context[k] = v.render()
+        context = {k: str(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
 
@@ -188,9 +185,7 @@ class Renderer:
 
     def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> str:
         """Render Jinja template with Air Tag support."""
-        for k, v in context.items():
-            if isinstance(v, Tag) and hasattr(v, "render"):
-                context[k] = v.render()
+        context = {k: str(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:

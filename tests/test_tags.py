@@ -227,15 +227,22 @@ def test_children_tag():
     assert _r(air.Children(air.P("Hello, world!"), air.P("Uma"))) == "<p>Hello, world!</p><p>Uma</p>"
 
 
-def test_tag_generation():
+def test_tag_generation() -> None:
     """This test exists because not all Tags are covered by other
     tests in this file. It performs a render check on all tag subclasses
     within the tags.py module.
     """
-    for name in dir(tags):
-        obj = getattr(tags, name)
-        if isinstance(obj, type) and issubclass(obj, air.Tag):
-            assert obj("test").render()
+    for tag in air.BaseTag.registry.values():
+        rendered = None
+        if issubclass(tag, air.UnSafeTag):
+            rendered = tag("test").render()
+        elif issubclass(tag, air.SelfClosingTag):
+            rendered = tag(foo="bar").render()
+        elif issubclass(tag, air.Transparent):
+            rendered = tag(air.H1("test")).render()
+        else:
+            rendered = tag(air.H1("test"), foo="bar").render()
+        assert rendered
 
 
 def test_safestr():
