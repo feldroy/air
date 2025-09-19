@@ -91,7 +91,7 @@ run-with-relative-paths +CMD:
 [doc]
 [group('uv')]
 @run +ARGS:
-    just run-with-relative-paths uv run -q --extra all {{ ARGS }}
+    just run-with-relative-paths uv run -q --extra all --frozen {{ ARGS }}
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
