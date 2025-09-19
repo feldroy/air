@@ -10,9 +10,12 @@ from .special import (
     Html as Html,
     Raw as Raw,
     Script as Script,
+    SelfClosingTag as SelfClosingTag,
     Style as Style,
     Tag as Tag,
     Tags as Tags,
+    Transparent as Transparent,
+    UnSafeTag as UnSafeTag,
 )
 from .stock import (
     H1 as H1,

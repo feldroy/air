@@ -90,7 +90,7 @@ run-with-relative-paths +CMD:
 # uv run helper
 [group('uv')]
 @run +ARGS:
-    just run-with-relative-paths uv run -q --extra all {{ ARGS }}
+    just run-with-relative-paths uv run -q --extra all --frozen {{ ARGS }}
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
