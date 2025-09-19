@@ -11,6 +11,7 @@ from typing import (
     Annotated,
     Any,
     TypeVar,
+    Awaitable
 )
 
 from fastapi import FastAPI, routing
@@ -29,7 +30,7 @@ from .responses import AirResponse
 from .utils import compute_page_path
 
 AppType = TypeVar("AppType", bound="FastAPI")
-
+type MaybeAwaitable[T] = T | Awaitable[T]
 
 class Air(FastAPI):
     """FastAPI wrapper class with AirResponse as the default response class.
@@ -736,9 +737,9 @@ class Air(FastAPI):
         ```
         """
 
-        def decorator(func: Callable[..., Any]) -> Any:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[P, MaybeAwaitable[R]]:
             @wraps(func)
-            async def endpoint(*args: Any, **kw: Any) -> Any:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> R:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result
@@ -1111,9 +1112,9 @@ class Air(FastAPI):
         Add a *path operation* using an HTTP POST operation.
         """
 
-        def decorator(func: Callable[..., Any]) -> Any:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[P, MaybeAwaitable[R]]:
             @wraps(func)
-            async def endpoint(*args: Any, **kw: Any) -> Any:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> R:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result

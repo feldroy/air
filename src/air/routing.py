@@ -21,7 +21,7 @@ from starlette.routing import (
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc, deprecated
 
-from .applications import Air
+from .applications import Air, MaybeAwaitable
 from .responses import AirResponse
 from .utils import compute_page_path, default_generate_unique_id
 
@@ -674,9 +674,9 @@ class AirRouter(APIRouter):
         ```
         """
 
-        def decorator(func: Callable[..., Any]) -> Any:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[P, MaybeAwaitable[R]]:
             @wraps(func)
-            async def endpoint(*args: Any, **kw: Any) -> Any:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> R:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result
@@ -1049,9 +1049,9 @@ class AirRouter(APIRouter):
         Add a *path operation* using an HTTP POST operation.
         """
 
-        def decorator(func: Callable[..., Any]) -> Any:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[P, MaybeAwaitable[R]]:
             @wraps(func)
-            async def endpoint(*args: Any, **kw: Any) -> Any:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> R:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result
