@@ -13,6 +13,13 @@ conflicts = [[
     { package = "air", group = "dev" },
 ]]
 
+[manifest]
+members = [
+    "air",
+    "auth",
+    "db",
+]
+
 [[package]]
 name = "aiosqlite"
 version = "0.21.0"
@@ -46,16 +53,15 @@ all = [
     { name = "sqlmodel" },
 ]
 auth = [
-    { name = "authlib" },
+    { name = "auth" },
+]
+db = [
+    { name = "db" },
 ]
 pretty = [
     { name = "lxml" },
     { name = "rich", version = "12.6.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-3-air-dev' or extra == 'group-3-air-devtools'" },
     { name = "rich", version = "14.1.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'extra-3-air-standard' or (extra != 'group-3-air-dev' and extra != 'group-3-air-devtools')" },
-]
-sql = [
-    { name = "greenlet" },
-    { name = "sqlmodel" },
 ]
 standard = [
     { name = "fastapi", extra = ["standard"], marker = "extra == 'extra-3-air-standard'" },
@@ -139,12 +145,12 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "auth", marker = "extra == 'auth'", editable = "extra/auth" },
     { name = "authlib", marker = "extra == 'all'", specifier = ">=1.6.3" },
-    { name = "authlib", marker = "extra == 'auth'", specifier = ">=1.6.3" },
+    { name = "db", marker = "extra == 'db'", editable = "extra/db" },
     { name = "fastapi", specifier = ">=0.116.1" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.116.1" },
     { name = "greenlet", marker = "extra == 'all'", specifier = ">=3.2.4" },
-    { name = "greenlet", marker = "extra == 'sql'", specifier = ">=3.2.4" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "lxml", marker = "extra == 'all'", specifier = ">=6.0.1" },
@@ -153,9 +159,8 @@ requires-dist = [
     { name = "rich", marker = "extra == 'all'", specifier = ">=12.6.0" },
     { name = "rich", marker = "extra == 'pretty'", specifier = ">=12.6.0" },
     { name = "sqlmodel", marker = "extra == 'all'", specifier = ">=0.0.24" },
-    { name = "sqlmodel", marker = "extra == 'sql'", specifier = ">=0.0.24" },
 ]
-provides-extras = ["standard", "pretty", "sql", "auth", "all"]
+provides-extras = ["standard", "pretty", "db", "auth", "all"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -283,6 +288,17 @@ sdist = { url = "https://files.pythonhosted.org/packages/5a/b0/1367933a8532ee6ff
 wheels = [
     { url = "https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl", hash = "sha256:427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3", size = 63815, upload-time = "2025-03-13T11:10:21.14Z" },
 ]
+
+[[package]]
+name = "auth"
+version = "0.0.0"
+source = { editable = "extra/auth" }
+dependencies = [
+    { name = "authlib" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "authlib", specifier = ">=1.6.3" }]
 
 [[package]]
 name = "authlib"
@@ -684,6 +700,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/9f/86/fd7f58fc498b3166f3a7e8e0cddb6e620fe1da35b02248b1bd59e95dbaaa/cssselect2-0.8.0.tar.gz", hash = "sha256:7674ffb954a3b46162392aee2a3a0aedb2e14ecf99fcc28644900f4e6e3e9d3a", size = 35716, upload-time = "2025-03-05T14:46:07.988Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/0f/e7/aa315e6a749d9b96c2504a1ba0ba031ba2d0517e972ce22682e3fccecb09/cssselect2-0.8.0-py3-none-any.whl", hash = "sha256:46fc70ebc41ced7a32cd42d58b1884d72ade23d21e5a4eaaf022401c13f0e76e", size = 15454, upload-time = "2025-03-05T14:46:06.463Z" },
+]
+
+[[package]]
+name = "db"
+version = "0.0.0"
+source = { editable = "extra/db" }
+dependencies = [
+    { name = "greenlet" },
+    { name = "sqlmodel" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "greenlet", specifier = ">=3.2.4" },
+    { name = "sqlmodel", specifier = ">=0.0.24" },
 ]
 
 [[package]]

@@ -1,13 +1,10 @@
 [project]
 name = "db"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-authors = [
-    { name = "Asaf Taller", email = "tallerasaf@gmail.com" }
+version = "0.0.0"
+dependencies = [
+    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
+    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
-requires-python = ">=3.13"
-dependencies = []
 
 [build-system]
 requires = ["uv_build>=0.8.17,<0.9.0"]

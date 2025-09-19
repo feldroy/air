@@ -80,9 +80,9 @@ from collections.abc import Callable
 
 from authlib.integrations.starlette_client import OAuth
 
-from ..requests import Request
-from ..responses import RedirectResponse
-from ..routing import AirRouter
+from air.requests import Request
+from air.responses import RedirectResponse
+from air.routing import AirRouter
 
 
 def GitHubOAuthRouterFactory(

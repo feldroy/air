@@ -3,22 +3,22 @@ from sqlalchemy import Engine
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from air.ext import sql
+from air import db
 
 
 def test_create_sync_engine() -> None:
-    engine = sql.create_sync_engine()
+    engine = db.sql.create_sync_engine()
     assert isinstance(engine, Engine)
 
 
 def test_create_async_engine() -> None:
-    engine = sql.create_async_engine()
+    engine = db.sql.create_async_engine()
     assert isinstance(engine, AsyncEngine)
 
 
 @pytest.mark.asyncio
 async def test_create_async_session() -> None:
-    session_factory = await sql.create_async_session()
+    session_factory = await db.sql.create_async_session()
     assert isinstance(session_factory, async_sessionmaker)
 
 
@@ -26,7 +26,7 @@ async def test_create_async_session() -> None:
 async def test_get_async_session() -> None:
     """Test that get_async_session yields an AsyncSession and properly closes it."""
     # Test the async generator the way it's meant to be used with async context manager
-    async for session in sql.get_async_session():
+    async for session in db.sql.get_async_session():
         # Check that we got an AsyncSession
         assert isinstance(session, AsyncSession)
         assert session.is_active is True
@@ -41,6 +41,6 @@ async def test_get_async_session() -> None:
 async def test_get_async_session_with_custom_params() -> None:
     """Test get_async_session with custom URL and echo parameters."""
     # Test with custom parameters
-    async for session in sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=sql.EchoEnum.FALSE):
+    async for session in db.sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=db.sql.EchoEnum.FALSE):
         assert isinstance(session, AsyncSession)
         break

@@ -1,3 +1,4 @@
 from .github_oauth import (
-    GitHubOAuthRouterFactory as GitHubOAuthRouterFactory
+    GitHubOAuthRouterFactory as GitHubOAuthRouterFactory,
+    OAuth as OAuth,
 )

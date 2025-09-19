@@ -58,14 +58,9 @@ pretty = [
     "rich>=12.6.0",
 ]
 # Used for interacting with sqlmodel and sqlalchemy
-sql = [
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
-    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
-]
+db = ["db"]
 # Used for authentication
-auth = [
-    "authlib>=1.6.3", # OAuth clients
-]
+auth = ["auth"]
 # All optional packages (combined list of every extra above, except 'standard')
 all = [
     "lxml>=6.0.1",
@@ -188,6 +183,8 @@ conflicts = [
 # In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
 # uv uses your checked-out code.
 air = { workspace = true }
+auth = { workspace = true }
+db = { workspace = true }
 # -------- uv build backend (fast and strict) --------
 # PEP 517/518: tells installers (pip/uv) how to build/install this project.
 # For Python libraries, an editable install is the standard:
@@ -396,7 +393,7 @@ exempt-modules = ["typing", "typing_extensions"]
 # region ----> ty <----
 [tool.ty.src]
 # Lock what gets checked so "ty check" and "ty check ." act the same
-include = ["src", "tests", "examples", "docs"] # keep discovery stable
+include = ["src", "tests", "examples", "docs", "extra"] # keep discovery stable
 # Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
 respect-ignore-files = true
 
@@ -448,7 +445,7 @@ too-many-positional-arguments = "ignore"
 # region ----> pyrefly <----
 [tool.pyrefly]
 # keep discovery stable
-project-includes = ["src", "tests", "examples", "docs"]
+project-includes = ["src", "tests", "examples", "docs", "extra"]
 project-excludes = [
     "**/__pycache__",
     "**/*venv/**/*",
