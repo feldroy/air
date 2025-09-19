@@ -5,13 +5,13 @@ from fastapi.testclient import TestClient
 from air import H1, Air, is_htmx_request
 
 
-def test_is_htmx():
+def test_is_htmx() -> None:
     """Test the is_htmx method, which only works if the response is wrapped."""
 
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(is_htmx: Annotated[bool, is_htmx_request]):
+    def test_endpoint(is_htmx: Annotated[bool, is_htmx_request]) -> H1:
         return H1(f"Is HTMX request: {is_htmx}")
 
     client = TestClient(app)

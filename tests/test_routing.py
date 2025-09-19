@@ -3,19 +3,20 @@ from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
 
 import air
+from air import H1
 
 
-def test_air_routing():
+def test_air_routing() -> None:
     app = air.Air()
 
     router = air.AirRouter()
 
     @app.page
-    def index():
+    def index() -> H1:
         return air.H1("Hello, World!")
 
     @router.page
-    def home():
+    def home() -> H1:
         return air.H1("Hello, Air!")
 
     app.include_router(router)
@@ -33,34 +34,34 @@ def test_air_routing():
     assert response.text == "<h1>Hello, Air!</h1>"
 
 
-def test_air_routing_prefix():
+def test_air_routing_prefix() -> None:
     app = air.Air()
 
     router = air.AirRouter()
 
     @app.page
-    def index():
+    def index() -> H1:
         return air.H1("Hello, World!")
 
     @router.page
-    def home():
+    def home() -> H1:
         return air.H1("Hello, Air!")
 
     with pytest.raises(AssertionError):
         app.include_router(router, prefix="/")
 
 
-def test_air_router_default_none():
+def test_air_router_default_none() -> None:
     """Test AirRouter when default parameter is None"""
     router = air.AirRouter(default=None)
     # Verify that when default=None, it gets set to Air class
     assert router.default is air.Air
 
 
-def test_air_router_default_not_none():
+def test_air_router_default_not_none() -> None:
     """Test AirRouter when default parameter is not None (covers other branch)"""
 
-    def custom_default():
+    def custom_default() -> str:
         return "custom"
 
     router = air.AirRouter(default=custom_default)
@@ -68,7 +69,7 @@ def test_air_router_default_not_none():
     assert router.default is custom_default
 
 
-def test_air_router_prefix_validation():
+def test_air_router_prefix_validation() -> None:
     """Test prefix validation assertions"""
     # Test prefix must start with '/'
     with pytest.raises(AssertionError, match="A path prefix must start with '/'"):
@@ -83,13 +84,13 @@ def test_air_router_prefix_validation():
     assert router.prefix == "/api"
 
 
-def test_air_router_no_prefix():
+def test_air_router_no_prefix() -> None:
     """Test AirRouter when no prefix is provided (covers other branch of prefix check)"""
     router = air.AirRouter()  # No prefix
     assert router.prefix == ""
 
 
-def test_air_router_get_with_awaitable_result():
+def test_air_router_get_with_awaitable_result() -> None:
     """Test GET method with async function that returns awaitable result"""
     app = air.Air()
     router = air.AirRouter()
@@ -106,13 +107,13 @@ def test_air_router_get_with_awaitable_result():
     assert response.text == "<h1>Async Hello!</h1>"
 
 
-def test_air_router_get_with_response_object():
+def test_air_router_get_with_response_object() -> None:
     """Test GET method that returns Response object directly"""
     app = air.Air()
     router = air.AirRouter()
 
     @router.get("/response-test")
-    def response_endpoint():
+    def response_endpoint() -> HTMLResponse:
         return HTMLResponse(content="<p>Custom Response</p>")
 
     app.include_router(router)
@@ -123,13 +124,13 @@ def test_air_router_get_with_response_object():
     assert response.text == "<p>Custom Response</p>"
 
 
-def test_air_router_post_basic():
+def test_air_router_post_basic() -> None:
     """Test POST method basic functionality"""
     app = air.Air()
     router = air.AirRouter()
 
     @router.post("/post-test")
-    def post_endpoint():
+    def post_endpoint() -> H1:
         return air.H1("POST Response")
 
     app.include_router(router)
@@ -140,7 +141,7 @@ def test_air_router_post_basic():
     assert response.text == "<h1>POST Response</h1>"
 
 
-def test_air_router_post_with_awaitable_result():
+def test_air_router_post_with_awaitable_result() -> None:
     """Test POST method with async function that returns awaitable result"""
     app = air.Air()
     router = air.AirRouter()
@@ -157,13 +158,13 @@ def test_air_router_post_with_awaitable_result():
     assert response.text == "<h1>Async POST!</h1>"
 
 
-def test_air_router_post_with_response_object():
+def test_air_router_post_with_response_object() -> None:
     """Test POST method that returns Response object directly"""
     app = air.Air()
     router = air.AirRouter()
 
     @router.post("/post-response-test")
-    def post_response_endpoint():
+    def post_response_endpoint() -> HTMLResponse:
         return HTMLResponse(content="<p>Custom POST Response</p>")
 
     app.include_router(router)

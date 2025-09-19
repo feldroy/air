@@ -8,11 +8,12 @@ import tempfile
 from pathlib import Path
 
 from starlette.requests import Request
+from starlette.templating import _TemplateResponse
 
 from air.templating import JinjaRenderer
 
 
-def test_jinja_complex_page_rendering_benchmark(benchmark):
+def test_jinja_complex_page_rendering_benchmark(benchmark) -> None:
     """Benchmark Jinja2 template rendering for complex HTML structure."""
 
     template_content = """<html>
@@ -79,7 +80,7 @@ def test_jinja_complex_page_rendering_benchmark(benchmark):
             ],
         }
 
-        def render_jinja_page():
+        def render_jinja_page() -> _TemplateResponse:
             return jinja_renderer(mock_request, "complex_page.html", context=context)
 
         benchmark(render_jinja_page)

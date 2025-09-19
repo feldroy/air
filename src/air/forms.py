@@ -61,7 +61,7 @@ class AirForm:
     is_valid: bool = False
     includes: Sequence[str] | None = None
 
-    def __init__(self, initial_data: dict | None = None):
+    def __init__(self, initial_data: dict | None = None) -> None:
         if self.model is None:
             msg = "model"
             raise NotImplementedError(msg)

@@ -1,21 +1,22 @@
 import pytest
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from starlette.templating import _TemplateResponse
 
 import air
-from air import Air, JinjaRenderer
+from air import Air, JinjaRenderer, Request
 
 from .components import index as index_callable  # pyrefly: ignore
 
 
-def test_JinjaRenderer():
+def test_JinjaRenderer() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request):
+    def test_endpoint(request: Request) -> _TemplateResponse:
         return jinja(
             request,
             name="home.html",
@@ -30,14 +31,14 @@ def test_JinjaRenderer():
     assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
 
 
-def test_JinjaRenderer_no_context():
+def test_JinjaRenderer_no_context() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request):
+    def test_endpoint(request: Request) -> _TemplateResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -48,14 +49,14 @@ def test_JinjaRenderer_no_context():
     assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_Air():
+def test_JinjaRenderer_with_Air() -> None:
     """Test the JinjaRenderer class with air.Air."""
     app = Air()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request):
+    def test_endpoint(request: Request) -> _TemplateResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -66,13 +67,13 @@ def test_JinjaRenderer_with_Air():
     assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_kwargs():
+def test_JinjaRenderer_with_kwargs() -> None:
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request):
+    def test_endpoint(request: Request) -> _TemplateResponse:
         return jinja(
             request,
             name="home.html",
@@ -88,13 +89,13 @@ def test_JinjaRenderer_with_kwargs():
     assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
 
 
-def test_jinja_plus_airtags():
+def test_jinja_plus_airtags() -> None:
     app = Air()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.page
-    def index(request: Request):
+    def index(request: Request) -> _TemplateResponse:
         return jinja(
             request,
             name="jinja_airtags.html",
@@ -111,13 +112,13 @@ def test_jinja_plus_airtags():
     )
 
 
-def test_jinja_plus_airtags_autorender():
+def test_jinja_plus_airtags_autorender() -> None:
     app = Air()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.page
-    def index(request: Request):
+    def index(request: Request) -> _TemplateResponse:
         return jinja(
             request,
             name="jinja_airtags.html",
@@ -134,10 +135,10 @@ def test_jinja_plus_airtags_autorender():
     )
 
 
-def test_JinjaRenderer_with_context_processors():
+def test_JinjaRenderer_with_context_processors() -> None:
     """Test JinjaRenderer with context_processors parameter"""
 
-    def add_globals(request):
+    def add_globals(request) -> dict[str, str]:
         return {"global_var": "test_value"}
 
     jinja = JinjaRenderer(directory="tests/templates", context_processors=[add_globals])
@@ -146,7 +147,7 @@ def test_JinjaRenderer_with_context_processors():
     assert jinja.templates is not None
 
 
-def test_JinjaRenderer_with_env():
+def test_JinjaRenderer_with_env() -> None:
     """Test JinjaRenderer with custom env parameter"""
     import jinja2
 
@@ -160,14 +161,14 @@ def test_JinjaRenderer_with_env():
     assert jinja.templates is not None
 
 
-def test_Renderer():
+def test_Renderer() -> None:
     """Test the Renderer class."""
     app = air.Air()
 
     render = air.Renderer(directory="tests/templates", package="tests")
 
     @app.page
-    def jinja(request: Request):
+    def jinja(request: Request) -> str:
         return render(
             name="home.html",
             request=request,
@@ -175,7 +176,7 @@ def test_Renderer():
         )
 
     @app.page
-    def airtag(request: Request):
+    def airtag(request: Request) -> str:
         return render(
             name=".components.index",
             request=request,
@@ -195,14 +196,14 @@ def test_Renderer():
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
 
 
-def test_Renderer_without_request_for_components():
+def test_Renderer_without_request_for_components() -> None:
     """Test the Renderer class."""
     app = air.Air()
 
     render = air.Renderer(directory="tests/templates", package="tests")
 
     @app.page
-    def airtag(request: Request):
+    def airtag(request: Request) -> str:
         return render(
             name=".components.index",
             request=request,
@@ -217,14 +218,14 @@ def test_Renderer_without_request_for_components():
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
 
 
-def test_renderer_with_installed_package_and_children():
+def test_renderer_with_installed_package_and_children() -> None:
     """Test the Renderer class."""
     app = air.Air()
 
     render = air.Renderer(directory="tests/templates", package="air")
 
     @app.page
-    def airtag(request: Request):
+    def airtag(request: Request) -> str:
         return render(
             ".layouts.mvpcss",
             air.Title("Test Page"),
@@ -233,7 +234,7 @@ def test_renderer_with_installed_package_and_children():
         )
 
     @app.page
-    def airtag_without_request():
+    def airtag_without_request() -> str:
         return render(".layouts.mvpcss", air.Title("Test Page"), air.H1("Hello, World"))
 
     client = TestClient(app)
@@ -255,18 +256,18 @@ def test_renderer_with_installed_package_and_children():
     )
 
 
-def test_render_with_callable():
+def test_render_with_callable() -> None:
     """Test the Renderer class with callable."""
     app = air.Air()
 
     render = air.Renderer(directory="tests/templates", package="air")
 
     @app.page
-    def layout(request: Request):
+    def layout(request: Request) -> str:
         return render(air.layouts.mvpcss, air.Title("Test Page"), air.H1("Hello, World"))
 
     @app.page
-    def component(request: Request):
+    def component(request: Request) -> str:
         return render(index_callable, title="Test Page", content="Hello, World!")
 
     client = TestClient(app)
@@ -282,27 +283,27 @@ def test_render_with_callable():
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
 
 
-def test_render_failing_name():
+def test_render_failing_name() -> None:
     render = air.Renderer(directory="tests/templates", package="air")
 
     with pytest.raises(air.RenderException):
         render(name="dummy")
 
 
-def test_render_callable_wrong_type():
+def test_render_callable_wrong_type() -> None:
     render = air.Renderer(directory="tests/templates")
 
-    def wrong_type():
+    def wrong_type() -> int:
         return 5
 
     with pytest.raises(TypeError):
         render(wrong_type)
 
 
-def test_Renderer_with_context_processors():
+def test_Renderer_with_context_processors() -> None:
     """Test Renderer with context_processors parameter to cover the else branch"""
 
-    def add_globals(request):
+    def add_globals(request) -> dict[str, str]:
         return {"global_var": "test_value"}
 
     render = air.Renderer(directory="tests/templates", context_processors=[add_globals])
@@ -311,13 +312,13 @@ def test_Renderer_with_context_processors():
     assert render.templates is not None
 
 
-def test_Renderer_render_template_with_air_tags():
+def test_Renderer_render_template_with_air_tags() -> None:
     """Test _render_template method with Air Tags in context"""
     app = air.Air()
     render = air.Renderer(directory="tests/templates")
 
     @app.page
-    def test_with_tags(request: Request):
+    def test_with_tags(request: Request) -> str:
         return render(
             name="home.html",
             request=request,
@@ -331,13 +332,13 @@ def test_Renderer_render_template_with_air_tags():
     assert "Test content" in response.text
 
 
-def test_Renderer_tag_callable_with_both_args_and_context():
+def test_Renderer_tag_callable_with_both_args_and_context() -> None:
     """Test case where filtered_context and args are both truthy"""
     app = air.Air()
     render = air.Renderer(directory="tests/templates", package="tests")
 
     # Function that can be called with only keyword args to test the specific line 205
-    def test_callable(title=None):
+    def test_callable(title=None) -> str:
         return f"<p>{title}</p>"
 
     # Create a test module to simulate the import
@@ -349,7 +350,7 @@ def test_Renderer_tag_callable_with_both_args_and_context():
     sys.modules["tests.test_module"] = test_module
 
     @app.page
-    def test_page(request: Request):
+    def test_page(request: Request) -> str:
         return render(
             ".test_module.test_func",
             "Hello",  # This is args - will be ignored due to line 205 behavior
@@ -368,7 +369,7 @@ def test_Renderer_tag_callable_with_both_args_and_context():
     del sys.modules["tests.test_module"]
 
 
-def test_Renderer_import_module_fallback():
+def test_Renderer_import_module_fallback() -> None:
     """Test the ModuleNotFoundError fallback in _import_module"""
     import sys
     import types
@@ -390,11 +391,11 @@ def test_Renderer_import_module_fallback():
             del sys.modules["tests.mock_module"]
 
 
-def test_Renderer_filter_context_with_request():
+def test_Renderer_filter_context_with_request() -> None:
     """Test _filter_context_for_callable when callable expects request parameter"""
     render = air.Renderer(directory="tests/templates")
 
-    def test_callable(request, title):
+    def test_callable(request, title) -> str:
         return f"<p>{title}</p>"
 
     context = {"title": "Test", "extra": "ignored"}

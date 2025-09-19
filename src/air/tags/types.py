@@ -11,6 +11,7 @@ from .models import (
     Style,
     Title,
 )
+from .models.base import AttributesType as AttributesType
 
 TagTypes = tuple[type[BaseTag], ...]
 HEAD_TAG_TYPES: Final[TagTypes] = (Title, Style, Meta, Link, Script, Base)

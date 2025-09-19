@@ -1,7 +1,7 @@
 import air
 
 
-def test_pico_layout():
+def test_pico_layout() -> None:
     html = air.layouts.picocss(air.H1("Cheese Monger"), air.Title("Cheese Monger"))
     assert (
         html.render()
@@ -13,12 +13,12 @@ def test_pico_layout():
     )
 
 
-def test_pico_layout_htmx():
+def test_pico_layout_htmx() -> None:
     html = air.layouts.picocss(air.H1("Hello, Air"), is_htmx=True)
     assert html.render() == '<main class="container"><h1>Hello, Air</h1></main>'
 
 
-def test_mvpcss_layout():
+def test_mvpcss_layout() -> None:
     html = air.layouts.mvpcss(air.H1("Cheese Monger"), air.Title("Cheese Monger"))
     assert (
         html.render() == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" />'
@@ -29,7 +29,7 @@ def test_mvpcss_layout():
     )
 
 
-def test_mvpcss_layout_header():
+def test_mvpcss_layout_header() -> None:
     html = air.layouts.mvpcss(
         air.Header(
             air.H1("This is in the header"),
@@ -46,6 +46,6 @@ def test_mvpcss_layout_header():
     )
 
 
-def test_mvpcss_layout_htmx():
+def test_mvpcss_layout_htmx() -> None:
     html = air.layouts.mvpcss(air.H1("Hello, Air"), is_htmx=True)
     assert html.render() == "<main><h1>Hello, Air</h1></main>"

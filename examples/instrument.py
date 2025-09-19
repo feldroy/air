@@ -8,6 +8,7 @@ Call pyinstrument by adding '?profile=1' after any URL
 from pyinstrument import Profiler
 
 import air
+from air import Children, Html
 
 app = air.Air()
 
@@ -25,5 +26,5 @@ async def profile_request(request: air.Request, call_next):
 
 
 @app.page
-def index():
+def index() -> Children | Html:
     return air.layouts.mvpcss(air.H1("Home"), air.Ol(*[air.Li(x) for x in range(1, 100)]))

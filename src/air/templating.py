@@ -7,10 +7,12 @@ import importlib
 import inspect
 from collections.abc import Callable, Sequence
 from os import PathLike
+from types import ModuleType
 from typing import Any
 
 import jinja2
 from fastapi.templating import Jinja2Templates
+from starlette.templating import _TemplateResponse
 
 from .exceptions import RenderException
 from .requests import Request
@@ -59,7 +61,7 @@ class JinjaRenderer:
         directory: str | PathLike[str] | Sequence[str | PathLike[str]],
         context_processors: list[Callable[[Request], dict[str, Any]]] | None = None,
         env: jinja2.Environment | None = None,
-    ):
+    ) -> None:
         """Initialize with template directory path"""
         if context_processors is None:
             context_processors = []
@@ -70,8 +72,8 @@ class JinjaRenderer:
         request: Request,
         name: str,
         context: dict[Any, Any] | None = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
         """
@@ -134,7 +136,7 @@ class Renderer:
         context_processors: list[Callable[[Request], dict[str, Any]]] | None = None,
         env: jinja2.Environment | None = None,
         package: str | None = None,
-    ):
+    ) -> None:
         """Initialize with template directory path"""
         if context_processors is None:
             context_processors = []
@@ -144,10 +146,10 @@ class Renderer:
     def __call__(
         self,
         name: str | Callable,
-        *args,
+        *children: Any,
         request: Request | None = None,
         context: dict[Any, Any] | None = None,
-        **kwargs,
+        **kwargs: Any,
     ) -> str:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
@@ -170,7 +172,7 @@ class Renderer:
             return self._render_template(name, request, context)
 
         if "." in name:
-            return self._render_tag_callable(name, args, request, context)
+            return self._render_tag_callable(name, children, request, context)
 
         msg = "No callable or Jinja template found."
         raise RenderException(msg)
@@ -183,7 +185,7 @@ class Renderer:
             context |= kwargs
         return context
 
-    def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> str:
+    def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> _TemplateResponse:
         """Render Jinja template with Air Tag support."""
         context = {k: str(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
@@ -200,7 +202,7 @@ class Renderer:
             return tag_callable(**filtered_context)
         return tag_callable(*args, **filtered_context)
 
-    def _import_module(self, module_name: str):
+    def _import_module(self, module_name: str) -> ModuleType:
         """Import module handling relative imports."""
         if module_name.startswith("."):
             return importlib.import_module(module_name, package=self.package)

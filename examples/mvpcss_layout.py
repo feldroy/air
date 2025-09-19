@@ -1,10 +1,11 @@
 import air
+from air import Children, Html
 
 app = air.Air()
 
 
 @app.page
-def index():
+def index() -> Children | Html:
     return air.layouts.mvpcss(
         air.Header(
             air.Nav(

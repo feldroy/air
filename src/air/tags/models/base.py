@@ -16,10 +16,12 @@ except ImportError:
 
 from ..utils import SafeStr, clean_html_attr_key, format_html
 
+AttributesType = str | int | float | bool
+
 
 class TagDictType(TypedDict):
     name: str
-    attributes: dict[str, str | int | float | bool]
+    attributes: dict[str, AttributesType]
     children: tuple[Any, ...]
 
 
@@ -41,7 +43,7 @@ class BaseTag:
     _registry: ClassVar[dict[str, type[BaseTag]]] = {}
     registry: ClassVar[Mapping[str, type[BaseTag]]] = MappingProxyType(_registry)  # read-only view
 
-    def __init__(self, *children: Any, **kwargs: str | int | float | bool):
+    def __init__(self, *children: Any, **kwargs: AttributesType) -> None:
         """
         Args:
             children: Tags, strings, or other rendered content.

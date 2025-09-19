@@ -10,10 +10,11 @@ import tracemalloc
 import pytest
 
 import air
+from air import Div, Span
 
 
 @pytest.mark.memory
-def test_tag_object_memory_cleanup():
+def test_tag_object_memory_cleanup() -> None:
     """Verify that creating and destroying many tag objects doesn't leak memory.
 
     This test ensures that Air Tags are properly garbage collected and don't
@@ -76,7 +77,7 @@ def test_tag_object_memory_cleanup():
 
 
 @pytest.mark.memory
-def test_nested_tag_memory_efficiency():
+def test_nested_tag_memory_efficiency() -> None:
     """Test memory usage patterns for deeply nested tag structures.
 
     Verifies that complex nested structures don't use excessive memory
@@ -86,7 +87,7 @@ def test_nested_tag_memory_efficiency():
     tracemalloc.start()
 
     # Create deeply nested structure
-    def create_nested_structure(depth=10):
+    def create_nested_structure(depth=10) -> Div | Span:
         if depth == 0:
             return air.Span("Deep content", class_="leaf")
 
@@ -135,7 +136,7 @@ def test_nested_tag_memory_efficiency():
 
 
 @pytest.mark.memory
-def test_tag_creation_memory_scaling():
+def test_tag_creation_memory_scaling() -> None:
     """Test that tag creation memory usage scales linearly with object count.
 
     Ensures that Air Tags don't have hidden memory overhead that grows
