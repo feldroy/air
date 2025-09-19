@@ -1,6 +1,13 @@
 """
 This module includes utility functions for using SQL with AIR.
 
+Included Dialects (See: https://docs.sqlalchemy.org/en/20/dialects):
+    1. PostgreSQL
+    2. MySQL and MariaDB
+    3. SQLite
+    4. Oracle
+    5. Microsoft SQL Server
+
 Introduces two environment variables
 
 - DEBUG

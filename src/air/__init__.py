@@ -1,9 +1,9 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
+# region ----> Main Features <----
 from starlette.staticfiles import StaticFiles as StaticFiles
 
 from . import (
-    ext as ext,
     layouts as layouts,
     responses as responses,
 )
@@ -155,3 +155,15 @@ from .templating import (
     JinjaRenderer as JinjaRenderer,
     Renderer as Renderer,
 )
+
+# endregion ----> Main Features <----
+
+# region ----> Optional Features <----
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # Static typing: these names exist for type checkers.
+    import auth as auth
+    import db as db
+
+# endregion ----> Optional Features <----
