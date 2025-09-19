@@ -7,12 +7,7 @@ import json
 from collections.abc import Mapping
 from functools import cached_property
 from types import MappingProxyType
-from typing import Any, ClassVar, Final, TypedDict
-
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
+from typing import Any, ClassVar, Final, TypedDict, Self
 
 from ..utils import SafeStr, clean_html_attr_key, format_html
 

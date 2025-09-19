@@ -3,7 +3,7 @@
 try:
     from typing import override
 except ImportError:
-    from typing_extensions import override
+    from typing import override
 
 from starlette.responses import (
     FileResponse as FileResponse,
