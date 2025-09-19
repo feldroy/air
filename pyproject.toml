@@ -569,6 +569,41 @@ skip_covered = true
 ignore_errors = true
 precision = 0
 sort = "miss"
+exclude_lines = [
+    # --- standard/noise you already had ---
+    "pragma: no cover",
+    "pragma: lax no cover",
+    "^\\s*raise\\s+NotImplementedError",
+    "^\\s*if\\s+TYPE_CHECKING\\s*:",
+    "^\\s*if\\s+typing\\.TYPE_CHECKING\\s*:",
+    # --- imports anywhere ---
+    "^\\s*import\\s+",
+    "^\\s*from\\s+\\S+\\s+import\\s+",
+    # --- typing / decorators / protocols ---
+    "^\\s*from\\s+__future__\\s+import\\s+annotations\\s*$",
+    "@overload",
+    "@typing\\.overload",
+    "@abstractmethod",
+    "@deprecated",
+    "\\(Protocol\\):$",
+    # --- typing helpers and assertions ---
+    "^\\s*typing\\.cast\\(",
+    "^\\s*reveal_type\\(",
+    "^\\s*assert_never\\(",
+    "typing\\.assert_never",
+    "^\\s*[A-Za-z_][A-Za-z0-9_]*\\s*:\\s*[^=]+$", # pure variable annotations (no assignment)
+
+    # --- common non-runtime blocks / noise ---
+    "^if __name__ == ['\\\"]__main__['\\\"]:",
+    "^\\s*except\\s+ImportError\\s+as\\s+_import_error\\s*:",
+    "^\\s*pass$",
+    "^\\s*assert\\s+False\\b",
+    # --- ellipsis placeholders ---
+    "^\\s*\\.\\.\\.\\s*(#.*)?$", # line that is just "..."
+    "^\\s*return\\s+\\.\\.\\.\\s*(#.*)?$", # return ...
+    "^\\s*[A-Za-z_][A-Za-z0-9_]*\\s*:\\s*[^=]+=\\s*\\.\\.\\.\\s*$", # x: T = ...
+    "^\\s*(?:async\\s+)?def\\s+\\w+\\s*\\(.*\\)\\s*(?:->[^:]+)?\\s*:\\s*\\.\\.\\.$", # def func(...) -> Type: ...
+]
 
 [tool.coverage.html]
 directory = "htmlcov" # default “htmlcov”
