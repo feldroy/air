@@ -1,5 +1,10 @@
 """Air uses custom response classes to improve the developer experience."""
 
+try:
+    from typing import override
+except ImportError:
+    from typing_extensions import override
+
 from starlette.responses import (
     FileResponse as FileResponse,
     HTMLResponse as HTMLResponse,
@@ -17,6 +22,7 @@ from .tags import BaseTag
 class AirResponse(HTMLResponse):
     """Response class to handle air.tags.Tags or HTML (from Jinja2)."""
 
+    @override
     def render(self, tag: BaseTag | str) -> bytes:
         """Render Tag elements to bytes of HTML."""
         return super().render(str(tag))

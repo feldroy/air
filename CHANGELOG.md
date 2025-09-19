@@ -1,4 +1,4 @@
-# Latest Changes
+### Latest Changes
 
 # 0.30.0 - 2025-09-17
 

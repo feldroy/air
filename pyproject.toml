@@ -127,7 +127,6 @@ docs = [
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
     "sqlmodel>=0.0.24",
-
 ]
 # endregion dependencies
 
@@ -276,7 +275,7 @@ select = [
     # prefix
     "ERA", # https://docs.astral.sh/ruff/rules/#eradicate-era
     "FAST", # https://docs.astral.sh/ruff/rules/#fastapi-fast
-    #    "ANN",    # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
+    "ANN", # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
     "ASYNC", # https://docs.astral.sh/ruff/rules/#flake8-async-async
     #    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
     "BLE", # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
@@ -286,6 +285,7 @@ select = [
     "C4", # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
     "EM", # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
     #    "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
+    "FA", # https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa
     "ISC", # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
     "INP", # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
     "PIE", # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
@@ -334,6 +334,10 @@ ignore = [
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "W505", # Doc line too long
     "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
+    "ANN001", # https://docs.astral.sh/ruff/rules/missing-type-function-argument
+    "ANN201", # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
+    "ANN202", # https://docs.astral.sh/ruff/rules/missing-return-type-private-function
+    "ANN401", # https://docs.astral.sh/ruff/rules/any-type
 ]
 
 # A list of mappings from file pattern to rule codes or prefixes to exclude,
@@ -453,7 +457,7 @@ use-ignore-files = true
 #### configuring what to type check and where to import from
 search-path = ["src", "docs"]
 python-version = "3.13"
-# Keep resolution stable (meaning: predictable, same every run)
+# Keep resolution stable
 disable-search-path-heuristics = true
 # Should Pyrefly ignore errors based on annotations from other tools,
 # pyre-ignore or # mypy: ignore? By default, respects # pyrefly: ignore and # type: ignore.
@@ -475,8 +479,8 @@ bad-unpacking = false
 index-error = false
 import-error = false
 bad-argument-count = false
-missing-attribute = false
 bad-param-name-override = false
+missing-attribute = false
 
 # endregion pyrefly
 

@@ -3,14 +3,14 @@ from fastapi.testclient import TestClient
 import air
 
 
-def test_background_task_in_view():
+def test_background_task_in_view() -> None:
     app = air.Air()
 
     elements = []
 
     assert len(elements) == 0
 
-    def creeping_task():
+    def creeping_task() -> None:
         elements.append(1)
 
     @app.get("/big-process")
@@ -25,12 +25,12 @@ def test_background_task_in_view():
     assert len(elements) == 1
 
 
-def test_add_background_task():
+def test_add_background_task() -> None:
     elements = []
 
     assert len(elements) == 0
 
-    def creeping_task():
+    def creeping_task() -> None:
         elements.append(1)
 
     # Instantiate the task holder and add one

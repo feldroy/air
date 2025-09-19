@@ -7,14 +7,14 @@ to run and save/compare results over time.
 import air
 
 
-def test_create_tags_benchmark(benchmark):
+def test_create_tags_benchmark(benchmark) -> None:
     """Benchmark creating a number of `air.A` tag objects.
 
     The `benchmark` fixture will run the callable multiple times and report
     statistics. Adjust the `n` value to make the workload heavier or lighter.
     """
 
-    def create(n=5000):
+    def create(n: int = 5000) -> list[air.A]:
         # Create many tag instances; keep this function small and self-contained
         return [air.A(href="/home", class_="link", id=f"elem{i}") for i in range(n)]
 

@@ -47,10 +47,12 @@ from enum import IntEnum
 from os import getenv
 
 from fastapi import Depends
+from sqlalchemy.engine.base import Engine
 from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine as _create_async_engine,
 )
+from sqlalchemy.ext.asyncio.engine import AsyncEngine
 from sqlmodel import create_engine as _create_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -81,7 +83,7 @@ class PoolPrePingEnum(IntEnum):
 def create_sync_engine(
     url: str = DATABASE_URL,
     echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
-):
+) -> Engine:
     """Convenience wrapper for SQLModel/SQLAlchemy's create_engine function. Useful for database scripts or synchronous views.
 
     Args:
@@ -100,7 +102,7 @@ def create_async_engine(
     echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
     future: FutureEnum = FutureEnum.TRUE,
     pool_pre_ping: PoolPrePingEnum = PoolPrePingEnum.TRUE,
-):
+) -> AsyncEngine:
     """Convenience wrapper for SQLModel/SQLAlchemy's create_async_engine function. Usually set within an Air app's lifetime object.
 
     Args:

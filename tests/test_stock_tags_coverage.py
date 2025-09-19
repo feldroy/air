@@ -5,10 +5,10 @@ to ensure they are properly covered by tests.
 """
 
 import air
-from air.tags.models.special import SelfClosingTag
+from air import SelfClosingTag
 
 
-def test_stock_tags_comprehensive_coverage():
+def test_stock_tags_comprehensive_coverage() -> None:
     """Test that covers all stock tag classes to improve __init__ coverage."""
 
     # Test BaseTag subclasses with children and various attributes
@@ -166,7 +166,7 @@ def test_stock_tags_comprehensive_coverage():
         assert len(rendered) > 0
 
 
-def test_stock_tags_with_kwargs():
+def test_stock_tags_with_kwargs() -> None:
     """Test stock tags with keyword arguments to ensure locals_cleanup works."""
 
     # Test BaseTag subclasses with children and kwargs
@@ -202,7 +202,7 @@ def test_stock_tags_with_kwargs():
         assert len(rendered) > 0
 
 
-def test_stock_tags_edge_cases():
+def test_stock_tags_edge_cases() -> None:
     """Test edge cases for stock tags to ensure robust coverage."""
 
     # Test with mixed content types
@@ -237,7 +237,7 @@ def test_stock_tags_edge_cases():
         assert len(rendered) > 0
 
 
-def test_stock_tags_inheritance():
+def test_stock_tags_inheritance() -> None:
     """Test that stock tags properly inherit from their base classes."""
 
     # Test a sample of BaseTag inheritance

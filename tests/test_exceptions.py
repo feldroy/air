@@ -1,3 +1,5 @@
+from typing import NoReturn
+
 import pytest
 from fastapi.exceptions import HTTPException as FastAPIHTTPException
 from fastapi.testclient import TestClient
@@ -5,7 +7,7 @@ from fastapi.testclient import TestClient
 import air
 
 
-def test_init_signature_compat():
+def test_init_signature_compat() -> None:
     e = air.HTTPException(status_code=418, detail="teapot", headers={"X-Foo": "Bar"})
     assert e.status_code == 418
     assert e.detail == "teapot"
@@ -20,11 +22,11 @@ def test_init_signature_compat():
         (422, {"errors": [{"loc": ["q"], "msg": "invalid"}]}),
     ],
 )
-def test_fastapi_integration_various_details(status, detail):
+def test_fastapi_integration_various_details(status, detail) -> None:
     app = air.Air()
 
     @app.get("/boom")
-    def boom():
+    def boom() -> NoReturn:
         raise air.HTTPException(status_code=status, detail=detail)
 
     client = TestClient(app)
@@ -33,11 +35,11 @@ def test_fastapi_integration_various_details(status, detail):
     assert r.json()["detail"] == detail
 
 
-def test_fastapi_integration_404():
+def test_fastapi_integration_404() -> None:
     app = air.Air()
 
     @app.get("/")
-    def boom():
+    def boom() -> NoReturn:
         raise air.HTTPException(status_code=404)
 
     client = TestClient(app)
@@ -46,11 +48,11 @@ def test_fastapi_integration_404():
     assert "The requested resource was not found on this server." in r.text
 
 
-def test_headers_passthrough():
+def test_headers_passthrough() -> None:
     app = air.Air()
 
     @app.get("/with-headers")
-    def with_headers():
+    def with_headers() -> NoReturn:
         raise air.HTTPException(
             status_code=429,
             detail="too many requests",
@@ -65,7 +67,7 @@ def test_headers_passthrough():
     assert r.json() == {"detail": "too many requests"}
 
 
-def test_custom_exception_handler_compat():
+def test_custom_exception_handler_compat() -> None:
     app = air.Air()
 
     @app.exception_handler(FastAPIHTTPException)
@@ -73,7 +75,7 @@ def test_custom_exception_handler_compat():
         return air.responses.PlainTextResponse(f"oops:{exc.status_code}:{exc.detail}", status_code=exc.status_code)
 
     @app.get("/handled")
-    def handled():
+    def handled() -> NoReturn:
         raise air.HTTPException(status_code=403, detail="nope")
 
     client = TestClient(app)
