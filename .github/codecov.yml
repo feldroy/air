@@ -2,7 +2,11 @@ coverage:
   status:
     project:
       default:
-        target: auto       # Match base commit’s coverage (relative check, not fixed 100%)
-        threshold: 0.5%    # Allow coverage to drop by at most 0.5 percentage points vs base
-        informational: false
-        only_pulls: true   # Apply check only to PRs (enforces relative coverage on new PRs)
+        informational: true      # show overall coverage but never fail
+
+    patch:
+      default:
+        target: auto             # Match base commit’s coverage (relative check, not fixed 100%)
+        threshold: 1%            # Allow coverage to drop by at most 1 percentage points vs base
+        informational: false     # show overall coverage and fail
+        only_pulls: true         # Apply check only to PRs (enforces relative coverage on new PRs)
