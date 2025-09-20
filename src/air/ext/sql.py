@@ -21,7 +21,7 @@ import air
 
 @asynccontextmanager
 async def lifespan(app: air.Air):
-    async_engine = air.db.sql.create_async_engine()
+    async_engine = air.ext.sql.create_async_engine()
     async with async_engine.begin() as conn:
         await conn.run_sync(lambda _: None)
     yield
@@ -118,7 +118,7 @@ def create_async_engine(
 
         @asynccontextmanager
         async def lifespan(app: air.Air):
-            async_engine = air.db.sql.create_async_engine()
+            async_engine = air.ext.sql.create_async_engine()
             async with async_engine.begin() as conn:
                 await conn.run_sync(lambda _: None)
             yield
@@ -210,7 +210,7 @@ async def get_object_or_404(session: AsyncSession, model: SQLModel, *args: Binar
         app = air.Air()
 
         @app.get('/heroes/{name: str}')
-        async def hero(name: str, session = Depends(air.db.sql.get_async_session)):
+        async def hero(name: str, session = Depends(air.ext.sql.get_async_session)):
             hero = await get_object_or_404(session, model, Hero.name==name)
             return air.layouts.mvpcss(
                 air.H1(hero.name),
