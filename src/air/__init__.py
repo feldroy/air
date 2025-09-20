@@ -166,11 +166,6 @@ from .templating import (
 #         from air import db
 #         from air.db import Something
 
-# Predeclare submodules so IDEs see air.auth / air.db
-auth: ModuleType = sys.modules.setdefault("air.auth", ModuleType("air.auth"))
-db: ModuleType = sys.modules.setdefault("air.db", ModuleType("air.db"))
-sys.modules["air.auth"] = auth
-
 try:
     import auth as auth  # provided by extra: air[auth]
 except ModuleNotFoundError as exc:

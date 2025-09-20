@@ -1,13 +1,6 @@
 """
 This module includes utility functions for using SQL with AIR.
 
-Included Dialects (See: https://docs.sqlalchemy.org/en/20/dialects):
-    1. PostgreSQL
-    2. MySQL and MariaDB
-    3. SQLite
-    4. Oracle
-    5. Microsoft SQL Server
-
 Introduces two environment variables
 
 - DEBUG
@@ -61,7 +54,7 @@ from sqlmodel import (
 )
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from ..exceptions import ObjectDoesNotExist
+from air.exceptions import ObjectDoesNotExist
 
 DEBUG = getenv("DEBUG", "false").lower() in ("1", "true", "yes")
 """Environment variable for setting DEBUG loglevel."""
@@ -166,9 +159,26 @@ async def create_async_session(
 
 
 async def get_async_session(
-    url: str = ASYNC_DATABASE_URL, echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE
+    url: str = ASYNC_DATABASE_URL, echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
 ) -> AsyncGenerator[AsyncSession, None]:
-    """Builder function for `async_session_dependency`."""
+    """Used with fastapi.Depends to instantiate db session in a view.
+
+    Example:
+
+        # Assumes environment variable DATABASE_URL has been set
+        import air
+        from fastapi import Depends
+
+        app = air.Air()
+
+        @app.page
+        def index(session = Depends(air.db.sql.get_async_session)):
+            return air.H1(session.user['username'])
+
+        @app.page
+        def home(session = air.db.sql.async_session_dependency):
+            return air.H1(session.user['username'])
+    """
     session_factory = await create_async_session(url, echo)
     session = session_factory()
     try:
@@ -178,27 +188,7 @@ async def get_async_session(
 
 
 async_session_dependency = Depends(get_async_session)
-"""Dependency for accessing sessions in views.
-
-Requires that environment variable DATABASE_URL has been set
-
-Example:
-
-    import air
-    from db import Heroes
-
-    app = air.Air()
-    AsyncSession = air.ext.sql.AsyncSession
-
-
-    @app.page
-    async def index(session: AsyncSession = air.ext.sql.async_session_dependency):
-        statement = select(tables.Heroes)
-        heroes = await session.exec(statement=statement)
-        return air.Ul(
-            *[Li(hero) for hero in heroes]
-        )
-"""
+"Shortcut for `Depends(get_async_session)` that only works if DATABASE_URL env var is set."
 
 
 async def get_object_or_404(session: AsyncSession, model: SQLModel, *args: BinaryExpression):

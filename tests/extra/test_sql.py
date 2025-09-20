@@ -2,23 +2,27 @@ import pytest
 from sqlalchemy import Engine
 from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlmodel import Field, SQLModel
 
-from air import db
+from air.exceptions import ObjectDoesNotExist
+from air.db.sql import create_async_session
+from air.db import sql
 
 
 def test_create_sync_engine() -> None:
-    engine = db.sql.create_sync_engine()
+    engine = sql.create_sync_engine()
     assert isinstance(engine, Engine)
 
 
 def test_create_async_engine() -> None:
-    engine = db.sql.create_async_engine()
+    engine = sql.create_async_engine()
     assert isinstance(engine, AsyncEngine)
 
 
 @pytest.mark.asyncio
 async def test_create_async_session() -> None:
-    session_factory = await db.sql.create_async_session()
+    session_factory = await sql.create_async_session()
     assert isinstance(session_factory, async_sessionmaker)
 
 
@@ -26,7 +30,7 @@ async def test_create_async_session() -> None:
 async def test_get_async_session() -> None:
     """Test that get_async_session yields an AsyncSession and properly closes it."""
     # Test the async generator the way it's meant to be used with async context manager
-    async for session in db.sql.get_async_session():
+    async for session in sql.get_async_session():
         # Check that we got an AsyncSession
         assert isinstance(session, AsyncSession)
         assert session.is_active is True
@@ -41,7 +45,7 @@ async def test_get_async_session() -> None:
 async def test_get_async_session_with_custom_params() -> None:
     """Test get_async_session with custom URL and echo parameters."""
     # Test with custom parameters
-    async for session in db.sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=db.sql.EchoEnum.FALSE):
+    async for session in sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=sql.EchoEnum.FALSE):
         assert isinstance(session, AsyncSession)
         break
 
@@ -49,11 +53,6 @@ async def test_get_async_session_with_custom_params() -> None:
 @pytest.mark.asyncio
 async def test_get_object_or_404():
     """Use sqlite in memory to test the quality of the get_object_or_404 function."""
-    from sqlalchemy.ext.asyncio import create_async_engine
-    from sqlmodel import Field, SQLModel
-
-    from air.exceptions import ObjectDoesNotExist
-    from air.ext.sql import create_async_session
 
     # Define a simple test model
     class TestUser(SQLModel, table=True):
