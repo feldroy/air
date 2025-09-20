@@ -4,7 +4,7 @@ Pro-tip: Always validate incoming data."""
 
 from collections.abc import Callable, Sequence
 from types import UnionType
-from typing import Any, Union, get_args, get_origin
+from typing import Any, Self, Union, get_args, get_origin
 
 from pydantic import BaseModel, Field, ValidationError
 from pydantic_core import ErrorDetails
@@ -13,13 +13,6 @@ from starlette.datastructures import FormData
 from . import tags
 from .requests import Request
 from .tags import SafeStr
-
-try:  # pragma: no cover
-    # Remove this try/except statement once support for Python 3.10 is dropped
-    # Then we can do just this immediate line below
-    from typing import Self  # Python 3.11+
-except ImportError:  # pragma: no cover
-    from typing_extensions import Self
 
 
 class AirForm:

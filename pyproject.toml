@@ -9,7 +9,7 @@ authors = [
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.12,<3.14"
 urls.Homepage = "https://github.com/feldroy/air"
 urls.Docs = "https://feldroy.github.io/air/"
 urls.Issues = "https://github.com/feldroy/air/issues"
@@ -29,8 +29,6 @@ classifiers = [
     "Framework :: FastAPI",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
@@ -134,6 +132,7 @@ docs = [
 
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
+required-version = ">=0.8.0"
 # Whether to enable experimental, preview features.
 preview = true
 # Treat this repo as an installable *package*, not just a “virtual” project.

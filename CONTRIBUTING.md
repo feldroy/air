@@ -37,7 +37,7 @@ Now you're ready to run Air from your local clone of your fork. Play with it, fi
 - Run any tool in the venv (auto-syncs):
   `uv run <command>`
 
-If your Python is older than 3.13, don't worry! uv will automatically install Python 3.13 just for this project, the library does work on Python 3.10->3.13, but dev tools (group `dev`) are pinned to Python 3.13+ to keep the toolchain modern.
+If your Python is older than 3.13, don't worry! uv will automatically install Python 3.13 just for this project!
 
 ---
 

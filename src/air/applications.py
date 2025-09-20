@@ -3,19 +3,15 @@ Instantiating Air applications.
 """
 
 import inspect
-from collections.abc import Callable, Coroutine, Sequence
+from collections.abc import Awaitable, Callable, Coroutine, Sequence
 from enum import Enum
 from functools import wraps
 from types import FunctionType
-from typing import (
-    Annotated,
-    Any,
-    TypeVar,
-)
+from typing import Annotated, Any, TypeVar
 
 from fastapi import FastAPI, routing
 from fastapi.params import Depends
-from fastapi.types import DecoratedCallable, IncEx
+from fastapi.types import IncEx
 from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -29,6 +25,7 @@ from .responses import AirResponse
 from .utils import compute_page_path
 
 AppType = TypeVar("AppType", bound="FastAPI")
+type MaybeAwaitable[T] = T | Awaitable[T]
 
 
 class Air(FastAPI):
@@ -718,7 +715,7 @@ class Air(FastAPI):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP GET operation.
 
@@ -736,9 +733,9 @@ class Air(FastAPI):
         ```
         """
 
-        def decorator(func: Callable[..., Any]) -> Any:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
             @wraps(func)
-            async def endpoint(*args: Any, **kw: Any) -> Any:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result
@@ -1106,14 +1103,14 @@ class Air(FastAPI):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP POST operation.
         """
 
-        def decorator(func: Callable[..., Any]) -> Any:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
             @wraps(func)
-            async def endpoint(*args: Any, **kw: Any) -> Any:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result
