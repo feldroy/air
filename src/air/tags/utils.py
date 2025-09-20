@@ -38,7 +38,7 @@ def _format_html_with_escaping(source: str) -> str:
             etree,  # ty: ignore[unresolved-import]
             html as l_html,
         )
-    except ImportError:
+    except ModuleNotFoundError:
         return source
     else:
         root = l_html.fromstring(source)

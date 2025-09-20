@@ -7,16 +7,11 @@ import json
 from collections.abc import Mapping
 from functools import cached_property
 from types import MappingProxyType
-from typing import Any, ClassVar, Final, TypedDict
-
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
+from typing import Any, ClassVar, Final, Self, TypedDict
 
 from ..utils import SafeStr, clean_html_attr_key, format_html
 
-AttributesType = str | int | float | bool
+type AttributesType = str | int | float | bool
 
 
 class TagDictType(TypedDict):
@@ -53,7 +48,7 @@ class BaseTag:
         self._module = self.__class__.__module__
         self._children, self._attrs = children, kwargs
 
-    def __new__(cls, *args: object, **kwargs: object) -> Self:
+    def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         """Non-instantiable base; all subclasses are instantiable."""
         if cls is BaseTag:
             msg = f"{cls.__name__} cannot be instantiated; use a subclass"
@@ -137,7 +132,7 @@ class BaseTag:
             from rich.pretty import pretty_repr
 
             return pretty_repr(self.to_dict(), max_width=170, max_length=7, max_depth=4, max_string=25)
-        except ImportError:
+        except ModuleNotFoundError:
             return str(self.to_dict())
 
     def to_dict(self) -> TagDictType:

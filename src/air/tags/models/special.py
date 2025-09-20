@@ -1,14 +1,8 @@
 """Special Air Tags that aren't find in any other category."""
 
-from typing import Any, Literal
+from typing import Any, Literal, override
 
 from ..utils import locals_cleanup
-
-try:
-    from typing import override
-except ImportError:
-    from typing_extensions import override
-
 from .base import AttributesType, BaseTag
 
 

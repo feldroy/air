@@ -4,9 +4,7 @@ from collections.abc import Callable
 from typing import Annotated
 
 from fastapi.background import BackgroundTasks as FastAPIBackgroundTasks
-from typing_extensions import Any, Doc, ParamSpec
-
-P = ParamSpec("P")
+from typing_extensions import Doc
 
 
 class BackgroundTasks(FastAPIBackgroundTasks):
@@ -36,10 +34,10 @@ class BackgroundTasks(FastAPIBackgroundTasks):
 
     """
 
-    def add_task(
+    def add_task[**P, T](
         self,
         func: Annotated[
-            Callable[P, Any],
+            Callable[P, T],
             Doc(
                 """
                 The function to call after the response is sent.
