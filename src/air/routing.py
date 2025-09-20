@@ -12,7 +12,7 @@ from typing import (
 
 from fastapi import params
 from fastapi.routing import APIRoute, APIRouter
-from fastapi.types import DecoratedCallable, IncEx
+from fastapi.types import IncEx
 from fastapi.utils import generate_unique_id
 from starlette.responses import Response
 from starlette.routing import (
@@ -652,7 +652,7 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP GET operation.
 
@@ -674,9 +674,9 @@ class AirRouter(APIRouter):
         ```
         """
 
-        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[P, MaybeAwaitable[R]]:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
             @wraps(func)
-            async def endpoint(*args: P.args, **kw: P.kwargs) -> R:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result
@@ -1044,14 +1044,14 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[DecoratedCallable], DecoratedCallable]:
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP POST operation.
         """
 
-        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[P, MaybeAwaitable[R]]:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
             @wraps(func)
-            async def endpoint(*args: P.args, **kw: P.kwargs) -> R:
+            async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
                 if inspect.isawaitable(result):
                     result = await result
