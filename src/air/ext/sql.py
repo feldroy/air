@@ -46,8 +46,15 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine as _create_async_engine,
 )
 from sqlalchemy.ext.asyncio.engine import AsyncEngine
-from sqlmodel import create_engine as _create_engine
+from sqlalchemy.sql.elements import BinaryExpression
+from sqlmodel import (
+    SQLModel,
+    create_engine as _create_engine,
+    select,
+)
 from sqlmodel.ext.asyncio.session import AsyncSession
+
+from ..exceptions import ObjectDoesNotExist
 
 DEBUG = getenv("DEBUG", "false").lower() in ("1", "true", "yes")
 """Environment variable for setting DEBUG loglevel."""
@@ -125,6 +132,7 @@ def create_async_engine(
 async def create_async_session(
     url: str = ASYNC_DATABASE_URL,  # Database URL
     echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
+    async_engine=None,
 ):
     """
     Create an async SQLAlchemy session factory.
@@ -137,11 +145,12 @@ async def create_async_session(
             session.add(database_object)
             await session.commit()
     """
-    async_engine = create_async_engine(
-        url,  # Async connection string
-        echo=echo,
-        future=FutureEnum.TRUE,
-    )
+    if async_engine is None:
+        async_engine = create_async_engine(
+            url,  # Async connection string
+            echo=echo,
+            future=FutureEnum.TRUE,
+        )
     return async_sessionmaker(
         bind=async_engine,
         class_=AsyncSession,
@@ -180,3 +189,39 @@ async def get_async_session(
 
 async_session_dependency = Depends(get_async_session)
 "Shortcut for `Depends(get_async_session)` that only works if DATABASE_URL env var is set."
+
+
+async def get_object_or_404(session: AsyncSession, model: SQLModel, *args: BinaryExpression):
+    """Get a record or raise an exception.
+
+    Args:
+        session: An `AsyncSession` object.
+        model: A SQLModel subclass, in the example inspired by SQLModel below we use Hero as a table object.
+        *args: One or more SQLAlchemy BinaryExpressions. The classic example is `Hero.name=='Spiderman'` which will display as `<sqlalchemy.sql.elements.BinaryExpression object at 0x104ba0410>`..
+
+    Example:
+
+        import air
+        from db import Hero
+
+        app = air.Air()
+
+        @app.get('/heroes/{name: str}')
+        async def hero(name: str, session = Depends(air.db.sql.get_async_session)):
+            hero = await get_object_or_404(session, model, Hero.name==name)
+            return air.layouts.mvpcss(
+                air.H1(hero.name),
+                air.P(hero.secret_identity)
+            )
+
+    """
+    stmt = select(model)
+    for arg in args:
+        stmt = stmt.where(arg)
+    results = await session.exec(stmt)
+    if obj := results.one_or_none():
+        return obj
+    error = ObjectDoesNotExist(status_code=404)
+    error.add_note(f"{model=}")
+    error.add_note(f"{args=}")
+    raise error

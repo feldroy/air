@@ -44,3 +44,58 @@ async def test_get_async_session_with_custom_params() -> None:
     async for session in sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=sql.EchoEnum.FALSE):
         assert isinstance(session, AsyncSession)
         break
+
+
+@pytest.mark.asyncio
+async def test_get_object_or_404():
+    """Use sqlite in memory to test the quality of the get_object_or_404 function."""
+    from sqlalchemy.ext.asyncio import create_async_engine
+    from sqlmodel import Field, SQLModel
+
+    from air.exceptions import ObjectDoesNotExist
+    from air.ext.sql import create_async_session
+
+    # Define a simple test model
+    class TestUser(SQLModel, table=True):
+        id: int = Field(primary_key=True)
+        name: str
+        email: str
+
+    # Create in-memory async engine and session
+    async_engine = create_async_engine("sqlite+aiosqlite:///:memory:", echo=False)
+
+    async with async_engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+
+    async_session_maker = await create_async_session("sqlite+aiosqlite:///:memory:", async_engine=async_engine)
+
+    async with async_session_maker() as session:  # pyrefly:ignore[bad-context-manager]
+        # Add test data
+        user1 = TestUser(id=1, name="John Doe", email="john@example.com")
+        user2 = TestUser(id=2, name="Jane Smith", email="jane@example.com")
+        session.add(user1)
+        session.add(user2)
+        await session.commit()
+
+        # Test successful retrieval
+        found_user = await sql.get_object_or_404(session, TestUser, TestUser.id == 1)
+        assert found_user.id == 1
+        assert found_user.name == "John Doe"
+        assert found_user.email == "john@example.com"
+
+        # Test with multiple conditions
+        found_user2 = await sql.get_object_or_404(session, TestUser, TestUser.id == 2, TestUser.name == "Jane Smith")
+        assert found_user2.id == 2
+        assert found_user2.name == "Jane Smith"
+
+        # Test ObjectDoesNotExist exception for non-existent record
+        with pytest.raises(ObjectDoesNotExist) as exc_info:
+            await sql.get_object_or_404(session, TestUser, TestUser.id == 999)
+
+        assert exc_info.value.status_code == 404
+
+        # Test ObjectDoesNotExist exception with multiple conditions
+        with pytest.raises(ObjectDoesNotExist) as exc_info:
+            await sql.get_object_or_404(session, TestUser, TestUser.id == 1, TestUser.name == "Wrong Name")
+
+        assert exc_info.value.status_code == 404

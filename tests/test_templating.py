@@ -346,7 +346,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
     import types
 
     test_module = types.ModuleType("test_module")
-    test_module.test_func = test_callable  # ty:ignore[unresolved-attribute]
+    test_module.test_func = test_callable
     sys.modules["tests.test_module"] = test_module
 
     @app.page
@@ -376,7 +376,7 @@ def test_Renderer_import_module_fallback() -> None:
 
     # Create a mock module that exists as a relative import but not absolute
     mock_module = types.ModuleType("mock_module")
-    mock_module.test_func = lambda: "test"  # ty:ignore[unresolved-attribute]
+    mock_module.test_func = lambda: "test"
     sys.modules["tests.mock_module"] = mock_module
 
     try:
