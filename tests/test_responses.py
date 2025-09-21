@@ -273,3 +273,25 @@ def test_SSEResponse_bytes_content() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
     assert response.text == "already encoded"
+
+
+def test_RedirectResponse() -> None:
+    """Test the RedirectResponse class."""
+    app = air.Air()
+
+    @app.get("/test2")
+    async def another_test_endpoint():
+        return air.AirResponse()
+
+    @app.get("/test")
+    async def test_endpoint():
+        return air.RedirectResponse("/test2")
+
+    client = TestClient(app)
+    response = client.get("/test", follow_redirects=False)
+    assert response.status_code == 303
+
+    # check if redirect works
+    response = client.get("/test", follow_redirects=True)
+    assert response.status_code == 200
+    assert "/test2" in response.url.path
