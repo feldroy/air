@@ -1,13 +1,16 @@
 """Air uses custom response classes to improve the developer experience."""
 
+from collections.abc import Mapping
 from typing import override
 
+from starlette.background import BackgroundTask
+from starlette.datastructures import URL
 from starlette.responses import (
     FileResponse as FileResponse,
     HTMLResponse as HTMLResponse,
     JSONResponse as JSONResponse,
     PlainTextResponse as PlainTextResponse,
-    RedirectResponse as RedirectResponse,
+    RedirectResponse as StarletteRedirectResponse,
     Response as Response,
     StreamingResponse as StreamingResponse,
 )
@@ -92,3 +95,14 @@ class SSEResponse(StreamingResponse):
             await send({"type": "http.response.body", "body": chunk, "more_body": True})
 
         await send({"type": "http.response.body", "body": b"", "more_body": False})
+
+
+class RedirectResponse(StarletteRedirectResponse):
+    def __init__(
+        self,
+        url: str | URL,
+        status_code: int = 303,
+        headers: Mapping[str, str] | None = None,
+        background: BackgroundTask | None = None,
+    ) -> None:
+        super().__init__(url=url, status_code=status_code, headers=headers, background=background)
