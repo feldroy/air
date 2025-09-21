@@ -9,7 +9,7 @@ from functools import cached_property
 from types import MappingProxyType
 from typing import Any, ClassVar, Final, Self, TypedDict
 
-from ..utils import SafeStr, clean_html_attr_key, format_html
+from ..utils import SafeStr, clean_html_attr_key, pretty_format_html, pretty_print_html
 
 type AttributesType = str | int | float | bool
 
@@ -91,9 +91,19 @@ class BaseTag:
     def render(self) -> str:
         return self._render()
 
-    def pretty_render(self) -> str:
+    def pretty_render(
+        self,
+        *,
+        with_body: bool = False,
+        with_head: bool = False,
+        with_doctype: bool = False,
+    ) -> str:
         """Pretty-print without escaping."""
-        return format_html(self._render())
+        return pretty_format_html(self._render(), with_body=with_body, with_head=with_head, with_doctype=with_doctype)
+
+    def pretty_print(self) -> None:
+        """Pretty-print and render HTML with syntax highlighting."""
+        pretty_print_html(self.pretty_render())
 
     def _render(self) -> str:
         return self._render_paired()

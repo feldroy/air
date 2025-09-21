@@ -12,32 +12,10 @@ Run:
 
 from __future__ import annotations
 
-from rich import box, print
-from rich.console import Console
-from rich.padding import Padding
-from rich.panel import Panel
-from rich.syntax import Syntax
+from rich import print
 
 from air import H1, H2, H3, A, B, Div, Img, Link, P, SafeStr, Script
 from examples.html_sample import HTML_SAMPLE
-
-
-def render_html_pretty(html: str, *, theme: str = "dracula") -> None:
-    """Pretty-print and render HTML with syntax highlighting."""
-    syntax = Syntax(
-        html,
-        "html",
-        line_numbers=True,
-        word_wrap=True,
-    )
-    panel = Panel(
-        Padding(syntax, (0, 2)),
-        box=box.HEAVY,
-        title="Air → HTML",
-    )
-    console = Console()
-    console.print(panel, soft_wrap=False)
-
 
 if __name__ == "__main__":
     link = Link(
@@ -84,7 +62,7 @@ if __name__ == "__main__":
     # Full tag representation
     print(div.full_repr())
     # Render the generated HTML nicely in the terminal
-    render_html_pretty(div.pretty_render())
+    div.pretty_print()
 
     # Extra
     print(repr(HTML_SAMPLE.from_dict(HTML_SAMPLE.to_dict())))
