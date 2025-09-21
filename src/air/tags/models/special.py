@@ -19,10 +19,10 @@ class Html(BaseTag):
         *,
         with_body: bool = False,
         with_head: bool = False,
-        with_doctype: bool = False,
+        with_doctype: bool = True,
     ) -> str:
         """Pretty-print without escaping."""
-        return super().pretty_render(with_doctype=True)
+        return super().pretty_render(with_body=with_body, with_head=with_head, with_doctype=with_doctype)
 
 
 class Transparent(BaseTag):

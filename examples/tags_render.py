@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # Full tag representation
     print(div.full_repr())
     # Render the generated HTML nicely in the terminal
-    div.pretty_print()
+    HTML_SAMPLE.pretty_print()
 
     # Extra
     print(repr(HTML_SAMPLE.from_dict(HTML_SAMPLE.to_dict())))
