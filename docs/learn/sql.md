@@ -17,16 +17,7 @@ To ensure the database remains connected to Air, we configure a `lifespan` funct
 So when instantiating your project's root 'app':
 
 ```python
-from contextlib import asynccontextmanager
 import air
 
-@asynccontextmanager
-async def lifespan(app: air.Air):
-    async_engine = air.ext.sql.create_async_engine()
-    async with async_engine.begin() as conn:
-        await conn.run_sync(lambda _: None)    
-    yield
-    await async_engine.dispose()
-
-app = air.Air(lifespan=lifespan)
+app = air.Air(lifespan=air.ext.sql.async_db_lifespan)
 ```
