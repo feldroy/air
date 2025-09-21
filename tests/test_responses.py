@@ -274,6 +274,7 @@ def test_SSEResponse_bytes_content() -> None:
     assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
     assert response.text == "already encoded"
 
+
 def test_RedirectResponse() -> None:
     """Test the RedirectResponse class."""
     app = air.Air()
