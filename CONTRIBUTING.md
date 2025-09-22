@@ -48,9 +48,9 @@ uv sync --frozen --extra all
 ###### 2. PyCharm (macOS, Linux, Windows):
 
 > 1. Open the project folder (air) in PyCharm → Settings → Python → Interpreter → "Add Interpreter"
->   → "Add Local Interpreter" → "select existing" → "select existing" → "select existing":
+>    → "Add Local Interpreter" → "select existing" → "select existing" → "select existing":
 >    - "Type": `uv`.
->    - "Path to uv": bash```which uv```
+>    - "Path to uv": `$ which uv`
 >    - "uv env use": `<project>/air/.venv/bin/python`.
 > 2. Click OK/Apply. More details: https://www.jetbrains.com/help/pycharm/uv.html
 
