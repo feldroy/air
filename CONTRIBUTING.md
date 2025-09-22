@@ -34,9 +34,29 @@ git switch -c your-new-branch-name upstream/main
 uv sync --frozen --extra all
 ```
 
-#### 6. Make your code changes and write/adjust tests to cover them (keep changes focused and small).
+#### 6. Configure your IDE with the uv environment:
 
-#### 7. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty and pyrefly.
+###### 1. VS Code (macOS, Linux, Windows):
+
+> 1. Open the project folder (air) in VS Code.
+> 2. Open the Command Palette (Cmd+Shift+P on macOS, Ctrl+Shift+P on Windows/Linux) → “Python: Select Interpreter”.
+> 3. Choose “Enter interpreter path…”, paste the path to `.venv/bin/python`, and press Enter.
+> 4. If .venv appears, select it. If not, choose Enter interpreter path… and use:
+>     - macOS/Linux: ./.venv/bin/python
+>     - Windows: .\.venv\Scripts\python.exe
+
+###### 2. PyCharm (macOS, Linux, Windows):
+
+> 1. Open the project folder (air) in PyCharm → Settings → Python → Interpreter → "Add Interpreter"
+>   → "Add Local Interpreter" → "select existing" → "select existing" → "select existing":
+>    - "Type": `uv`.
+>    - "Path to uv": bash```which uv```
+>    - "uv env use": `<project>/air/.venv/bin/python`.
+> 2. Click OK/Apply. More details: https://www.jetbrains.com/help/pycharm/uv.html
+
+#### 7. Make your code changes and write/adjust tests to cover them (keep changes focused and small).
+
+#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty and pyrefly.
 
 ```bash
 just qa
@@ -44,7 +64,7 @@ just qa
 
 Make sure `just qa` does not produce any errors before you open a PR!
 
-#### 8. Run the full pytest test suite
+#### 9. Run the full pytest test suite
 
 ```bash
 just test
@@ -52,19 +72,19 @@ just test
 
 Make sure `just test` does not produce any errors before you open a PR!
 
-#### 9. Make a single commit that includes your tracked file changes with a clear message.
+#### 10. Make a single commit that includes your tracked file changes with a clear message.
 
 ```bash
 git commit -am "feat: brief, clear message"
 ```
 
-#### 10. Push your branch to your fork and set the remote tracking.
+#### 11. Push your branch to your fork and set the remote tracking.
 
 ```bash
 git push -u origin your-new-branch-name
 ```
 
-#### 11. Open a Pull Request back to feldroy/air with a prefilled title and body (edit as needed).
+#### 12. Open a Pull Request back to feldroy/air with a prefilled title and body (edit as needed).
 
 ```bash
 gh pr create --fill --repo feldroy/air
