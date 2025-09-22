@@ -23,8 +23,7 @@ nav:
       - Charts: learn/cookbook/charts.md
       - Minimal app: learn/cookbook/minimal.md
       - Forms & validation: learn/cookbook/forms.md
-      - Jinja templates: learn/cookbook/jinja.md
-      - Static files: learn/cookbook/static    .md
+      - Static files: learn/cookbook/static.md
 
   - Reference:
     - api/index.md
