@@ -1,5 +1,34 @@
 ### Latest Changes
 
+# 0.31.0 - 2025-09-21
+
+## What's Changed
+* Add latest-changes GitHub Action workflow (Issue #163) by @prodigisoftwares in https://github.com/feldroy/air/pull/437
+* Issue #60-Document-is_htmx_request - Add documentation and add a coup… by @prodigisoftwares in https://github.com/feldroy/air/pull/458
+* Incremental doc improvements by @pydanny in https://github.com/feldroy/air/pull/448
+* Documentation on Airtag cleanup by @pydanny in https://github.com/feldroy/air/pull/450
+* chore(deps): update actions/checkout action to v5 by @renovate[bot] in https://github.com/feldroy/air/pull/449
+* Added a new "all" group for combined optional dependencies in `pyproject.toml` by @tallerasaf in https://github.com/feldroy/air/pull/451
+* Add missing doc pages by @pydanny in https://github.com/feldroy/air/pull/452
+* Add requests to documentation by @pydanny in https://github.com/feldroy/air/pull/455
+* Add PR checklist by @pydanny in https://github.com/feldroy/air/pull/456
+* ⬆(deps): Bump rich from 12.6.0 to 14.1.0 in the python-dependencies group across 1 directory by @dependabot[bot] in https://github.com/feldroy/air/pull/457
+* Small refactor extracted from a big PR by @tallerasaf in https://github.com/feldroy/air/pull/459
+* Add type annotations to the entire codebase using pyrefly and ruff(What they could do, still not 100%) by @tallerasaf in https://github.com/feldroy/air/pull/441
+* chore: update Codecov config and refine coverage exclusions by @tallerasaf in https://github.com/feldroy/air/pull/469
+* Drop Python 3.10 and 3.11 by @tallerasaf in https://github.com/feldroy/air/pull/470
+* Added get_object_or_404 to air.ext.sql. by @pydanny in https://github.com/feldroy/air/pull/466
+* Move ty ignore rule to correct location in pyproject.toml by @pydanny in https://github.com/feldroy/air/pull/471
+* Add docs issue template by @pydanny in https://github.com/feldroy/air/pull/474
+* Change air.db.sql path to air.ext.sql in docs by @pydanny in https://github.com/feldroy/air/pull/476
+* Add lifespan db func to air.ext.sql by @pydanny in https://github.com/feldroy/air/pull/478
+* Make contributing.md more concise by @pydanny in https://github.com/feldroy/air/pull/479
+
+## New Contributors
+* @prodigisoftwares made their first contribution in https://github.com/feldroy/air/pull/437
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.30.0...v0.31.0
+
 # 0.30.0 - 2025-09-17
 
 ## What's Changed
