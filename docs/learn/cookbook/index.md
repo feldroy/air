@@ -9,8 +9,7 @@ This section contains short recipes. See the topic pages for details:
 - **[Bigger applications](bigger-applications)** - how to structure larger applications
 - **[Charts](charts)** - Examples of using charts in Air
 - **[Minimal app](minimal)** - The smallest possible Air app
-- **[Forms & validation](forms)** - how to create forms and validate user input
-- **[Jinja templates](jinja)** - how to use Jinja templates with Air
+- **[Forms & validation](forms)** - how to create forms and validate user inputs
 - **[Static files](static)** - how to serve static files like CSS and JavaScript
 
 If you'd like to contribute a recipe, open a PR with a new file under `docs/cookbook`.

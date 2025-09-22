@@ -15,17 +15,15 @@ nav:
     - Jinja: learn/jinja.md
     - Layouts: learn/layouts.md
     - SQL: learn/sql.md
-
-  - Cookbook:
-    - cookbook/index.md
-    - app.page decorator: cookbook/page-decorator
-    - Authentication: cookbook/authentication
-    - Bigger applications: cookbook/bigger-applications
-    - Charts: cookbook/charts
-    - Minimal app: cookbook/minimal
-    - Forms & validation: cookbook/forms
-    - Jinja templates: cookbook/jinja
-    - Static files: cookbook/static
+    - Cookbook:
+      - learn/cookbook/index.md
+      - app.page decorator: learn/cookbook/page-decorator.md
+      - Authentication: learn/cookbook/authentication.md
+      - Bigger applications: learn/cookbook/bigger-applications.md
+      - Charts: learn/cookbook/charts.md
+      - Minimal app: learn/cookbook/minimal.md
+      - Forms & validation: learn/cookbook/forms.md
+      - Static files: learn/cookbook/static.md
 
   - Reference:
     - api/index.md
