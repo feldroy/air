@@ -78,4 +78,4 @@ Try it out!
     options:
       group_by_category: false
       members:
-        - GitHubOAuthRouterFactory
+        - GitHubOAuthClientFactory
