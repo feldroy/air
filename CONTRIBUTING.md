@@ -1,6 +1,9 @@
-# Contributing to Air
+# Contributing to the Air 💨 Web Framework!
 
-Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/) installed.
+##### Prerequisites:
+
+1. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
+2. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
 
 #### 1. Create the fork on GitHub, clone it locally, and wire remotes correctly.
 
@@ -75,8 +78,10 @@ Make sure `just test` does not produce any errors before you open a PR!
 #### 10. Make a single commit that includes your tracked file changes with a clear message.
 
 ```bash
-git commit -am "feat: brief, clear message"
+git commit -am "<type>(<optional scope>): <description><optional body><optional footer>"
 ```
+
+For more info, see: [Conventional Commits Cheatsheet](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)
 
 #### 11. Push your branch to your fork and set the remote tracking.
 
