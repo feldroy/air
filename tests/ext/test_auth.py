@@ -57,7 +57,9 @@ def test_github_callback_route() -> None:
 
     with patch("air.ext.auth.OAuth") as mock_oauth_class:
         mock_oauth = mock_oauth_class.return_value
-        mock_oauth.github.authorize_access_token = AsyncMock(return_value=test_token)
+        mock_github_client = AsyncMock()
+        mock_github_client.authorize_access_token = AsyncMock(return_value=test_token)
+        mock_oauth.create_client.return_value = mock_github_client
 
         github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
             github_client_id="CLIENT_ID",

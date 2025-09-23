@@ -1,5 +1,3 @@
-
-
 from collections.abc import Callable
 
 from authlib.integrations.starlette_client import OAuth
@@ -54,9 +52,14 @@ def GitHubOAuthRouterFactory(
 
 
 class GitHubOAuthClientFactory:
-    def __init__(self,
-        github_client_id: str, github_client_secret: str, github_process_callable: Callable, login_redirect_to: str = "/", scope="user:email"         
-    ):
+    def __init__(
+        self,
+        github_client_id: str,
+        github_client_secret: str,
+        github_process_callable: Callable,
+        login_redirect_to: str = "/",
+        scope="user:email",
+    ) -> None:
         """Creates an `air.AirRouter` affiliated with the supplied credentials.
 
         ARGS:
@@ -121,7 +124,7 @@ class GitHubOAuthClientFactory:
             client_kwargs={"scope": scope},
         )
         self.client = oauth.create_client("github")
-    
+
         @router.get("/account/github/login")
         async def github_login(request: Request):
             assert hasattr(request, "session")
@@ -136,6 +139,5 @@ class GitHubOAuthClientFactory:
             await github_process_callable(request=request, token=token, client=self.client)
 
             return RedirectResponse(login_redirect_to)
-        
-        self.router = router
 
+        self.router = router
