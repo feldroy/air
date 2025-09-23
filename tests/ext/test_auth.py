@@ -10,7 +10,7 @@ def test_app_has_session() -> None:
     async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
         pass
 
-    github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
+    github_oauth_client = air.ext.auth.GitHubOAuthClientFactory(
         github_client_id="CLIENT_ID",
         github_client_secret="CLIENT_SECRET",
         github_process_callable=github_process_callable,
@@ -18,7 +18,7 @@ def test_app_has_session() -> None:
     )
 
     app = air.Air()
-    app.include_router(github_oauth_router)
+    app.include_router(github_oauth_client.router)
 
     client = TestClient(app)
     with pytest.raises(AssertionError):
@@ -29,7 +29,7 @@ def test_github_login_route() -> None:
     async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
         pass
 
-    github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
+    github_oauth_client = air.ext.auth.GitHubOAuthClientFactory(
         github_client_id="CLIENT_ID",
         github_client_secret="CLIENT_SECRET",
         github_process_callable=github_process_callable,
@@ -38,7 +38,7 @@ def test_github_login_route() -> None:
 
     app = air.Air()
     app.add_middleware(air.SessionMiddleware, secret_key="insecure")
-    app.include_router(github_oauth_router)
+    app.include_router(github_oauth_client.router)
 
     client = TestClient(app)
     response = client.get("/account/github/login")
@@ -57,9 +57,11 @@ def test_github_callback_route() -> None:
 
     with patch("air.ext.auth.OAuth") as mock_oauth_class:
         mock_oauth = mock_oauth_class.return_value
-        mock_oauth.github.authorize_access_token = AsyncMock(return_value=test_token)
+        mock_github_client = AsyncMock()
+        mock_github_client.authorize_access_token = AsyncMock(return_value=test_token)
+        mock_oauth.create_client.return_value = mock_github_client
 
-        github_oauth_router = air.ext.auth.GitHubOAuthRouterFactory(
+        github_oauth_client = air.ext.auth.GitHubOAuthClientFactory(
             github_client_id="CLIENT_ID",
             github_client_secret="CLIENT_SECRET",
             github_process_callable=github_process_callable,
@@ -68,7 +70,7 @@ def test_github_callback_route() -> None:
 
         app = air.Air()
         app.add_middleware(air.SessionMiddleware, secret_key="insecure")
-        app.include_router(github_oauth_router)
+        app.include_router(github_oauth_client.router)
 
         @app.page
         def index():
