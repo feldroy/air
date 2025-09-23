@@ -6,7 +6,13 @@ from typing import Any, Final
 EXTRA_FEATURE_PRETTY_ERROR_MESSAGE: Final = (
     "Extra feature 'pretty' is not installed. Install with: `uv add air[pretty]`"
 )
+FORMAT_HTML_ENCODING: Final = "unicode"
 HTML_DOCTYPE: Final = "<!doctype html>"
+DEFAULT_THEME: Final = "dracula"
+PANEL_TITLE: Final = "Air → HTML"
+PANEL_TITLE_STYLE: Final = "italic bold"
+PANEL_BORDER_STYLE: Final = "bright_magenta"
+SYNTAX_LEXER: Final = "html"
 
 
 def clean_html_attr_key(key: str) -> str:
@@ -68,30 +74,48 @@ def format_html(
         if pretty:
             etree.indent(source)  # pretty indentation
         doctype = HTML_DOCTYPE if with_doctype else None
-        return l_html.tostring(source, encoding="unicode", pretty_print=pretty, doctype=doctype)
+        return l_html.tostring(source, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
 
 
-def pretty_print_html(source: str, *, theme: str = "dracula") -> None:
-    """Pretty-print and render HTML with syntax highlighting."""
+def pretty_print_html(
+    source: str,
+    *,
+    theme: str = DEFAULT_THEME,
+) -> None:
+    """
+    Render HTML with syntax highlighting inside a compact, styled panel.
+
+    Args:
+        source: The HTML source to render.
+        theme: Pygments style name; falls back (meaning: uses a safe default) if unknown.
+
+    Raises:
+        ModuleNotFoundError: If Rich (and its dependencies) are not available.
+    """
     try:
         from rich import box
         from rich.console import Console
         from rich.padding import Padding
         from rich.panel import Panel
         from rich.syntax import Syntax
+        from rich.text import Text
     except ModuleNotFoundError as exc:
         raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from exc
     else:
         syntax = Syntax(
             source,
-            "html",
+            SYNTAX_LEXER,
+            theme=theme,
             line_numbers=True,
-            word_wrap=True,
+            indent_guides=True,
+            word_wrap=True
         )
-        panel = Panel(
-            Padding(syntax, (0, 2)),
+        title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
+        panel = Panel.fit(
+            syntax,
             box=box.HEAVY,
-            title="Air → HTML",
+            border_style=PANEL_BORDER_STYLE,
+            title=title,
         )
         console = Console()
         console.print(panel, soft_wrap=False)
