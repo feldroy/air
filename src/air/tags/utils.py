@@ -1,7 +1,18 @@
 """Utilities for the Air Tag system."""
 
 import html
-from typing import Any
+from typing import Any, Final
+
+EXTRA_FEATURE_PRETTY_ERROR_MESSAGE: Final = (
+    "Extra feature 'pretty' is not installed. Install with: `uv add air[pretty]`"
+)
+FORMAT_HTML_ENCODING: Final = "unicode"
+HTML_DOCTYPE: Final = "<!doctype html>"
+DEFAULT_THEME: Final = "dracula"
+PANEL_TITLE: Final = "Air → HTML"
+PANEL_TITLE_STYLE: Final = "italic bold"
+PANEL_BORDER_STYLE: Final = "bright_magenta"
+SYNTAX_LEXER: Final = "html"
 
 
 def clean_html_attr_key(key: str) -> str:
@@ -21,7 +32,13 @@ def clean_html_attr_key(key: str) -> str:
     return key.lstrip("_").replace("_", "-")
 
 
-def format_html(source: str) -> str:
+def pretty_format_html(
+    source: str,
+    *,
+    with_body: bool = False,
+    with_head: bool = False,
+    with_doctype: bool = False,
+) -> str:
     """
     Pretty-print HTML with pretty indentation and then unescape &lt;, &gt;, &amp; &#x27; in the final string.
 
@@ -29,21 +46,71 @@ def format_html(source: str) -> str:
     HTML invalid and unsafe. Use only if you fully trust the input/output.
     """
 
-    return html.unescape(_format_html_with_escaping(source))
+    return html.unescape(
+        format_html(source, with_body=with_body, with_head=with_head, with_doctype=with_doctype, pretty=True)
+    )
 
 
-def _format_html_with_escaping(source: str) -> str:
+def format_html(
+    source: str,
+    *,
+    with_body: bool = False,
+    with_head: bool = False,
+    with_doctype: bool = False,
+    pretty: bool = False,
+) -> str:
     try:
         from lxml import (
             etree,  # ty: ignore[unresolved-import]
             html as l_html,
         )
-    except ModuleNotFoundError:
-        return source
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from exc
     else:
-        root = l_html.fromstring(source)
-        etree.indent(root)  # pretty indentation
-        return l_html.tostring(root, pretty_print=True, encoding="unicode")
+        if with_body:
+            source = l_html.document_fromstring(source, ensure_head_body=with_head)
+        else:
+            source = l_html.fromstring(source)
+        if pretty:
+            etree.indent(source)  # pretty indentation
+        doctype = HTML_DOCTYPE if with_doctype else None
+        return l_html.tostring(source, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
+
+
+def pretty_print_html(
+    source: str,
+    *,
+    theme: str = DEFAULT_THEME,
+) -> None:
+    """
+    Render HTML with syntax highlighting inside a compact, styled panel.
+
+    Args:
+        source: The HTML source to render.
+        theme: Pygments style name; falls back (meaning: uses a safe default) if unknown.
+
+    Raises:
+        ModuleNotFoundError: If Rich (and its dependencies) are not available.
+    """
+    try:
+        from rich import box
+        from rich.console import Console
+        from rich.panel import Panel
+        from rich.syntax import Syntax
+        from rich.text import Text
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from exc
+    else:
+        syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
+        title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
+        panel = Panel.fit(
+            syntax,
+            box=box.HEAVY,
+            border_style=PANEL_BORDER_STYLE,
+            title=title,
+        )
+        console = Console()
+        console.print(panel, soft_wrap=False)
 
 
 def locals_cleanup(
