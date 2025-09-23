@@ -1,6 +1,15 @@
 # SQL
 
-> Note: This feature is for Air 0.28.0 or later. 
+!!! note "This feature is for Air 0.28.0 or later."
+
+!!! info "air.ext.sql"
+    The SQL support in Air is provided by the `air.ext.sql` module, which is an optional extension. To use it, you need to install Air with the `sql` extra:
+
+    ```bash
+    pip install "air[sql]"
+    ```
+
+    The full reference for the tooling can be found at the [SQL API Reference](../../api/ext/sql/).
 
 Thanks to the power of SQLModel and SQLAlchemy **Air** works with relational databases. Right now it just supports PostgreSQL and SQLite. Fortunately the project will soon expand to support all relational databases that allow for asynchronous connections through SQLAlchemy. 
 
@@ -12,12 +21,52 @@ Using Air's SQL module requires an understanding of SQLModel. Fortunately, it's 
 
 ## Configuring Air for SQL
 
+While not strictly required, it's highly recommended to use the `DATABASE_URL` environment variable to configure your database connection. This is a common convention used by many web frameworks and libraries.
+
 To ensure the database remains connected to Air, we configure a `lifespan` function, and pass that to the Air app upon instantiation. If you don't do this, then the connection will eventually expire and your application will start throwing errors.
 
 So when instantiating your project's root 'app':
 
-```python
+```python title="main.py"
 import air
 
 app = air.Air(lifespan=air.ext.sql.async_db_lifespan)
+```
+
+## Making SQL Queries inside Air Views
+
+Most of the time, you'll be using SQLModel inside your Air views. The easiest way to do this is to use the `air.ext.sql.async_session_dependency` dependency, which requires that the `DATABASE_URL` environment variable be set. This will provide you with an asynchronous session connected to your database.
+
+```python title="main.py"
+import air
+sql = air.ext.sql
+
+app = air.Air(lifespan=air.ext.sql.async_db_lifespan)
+
+@app.page
+async def index(request: Request, session: sql.AsyncSession = air.Depends(sql.async_session_dependency)):
+    # Use the session to interact with the database
+    result = await session.execute(select(User).where(User.name == "John"))
+    user = result.scalars().first()
+    
+    return air.Main(
+        air.H1("User Info"),
+        air.P(f"Name: {user.name}"),
+        air.P(f"Email: {user.email}"),
+    )
+```
+
+## Making SQL Queries outside Air Views
+
+Sometimes you may want to make SQL queries outside of Air views, for example in background tasks or other parts of your application. In these cases, you can use the `air.ext.sql.get_async_session` function to get an asynchronous session.
+
+```python title="tasks.py"
+import air
+sql = air.ext.sql
+
+async def some_background_task():
+    async with sql.get_async_session() as session:
+        result = await session.execute(select(User).where(User.active == True))
+        active_users = result.scalars().all()
+        # Do something with active_users
 ```
