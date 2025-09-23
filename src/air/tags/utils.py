@@ -95,21 +95,13 @@ def pretty_print_html(
     try:
         from rich import box
         from rich.console import Console
-        from rich.padding import Padding
         from rich.panel import Panel
         from rich.syntax import Syntax
         from rich.text import Text
     except ModuleNotFoundError as exc:
         raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from exc
     else:
-        syntax = Syntax(
-            source,
-            SYNTAX_LEXER,
-            theme=theme,
-            line_numbers=True,
-            indent_guides=True,
-            word_wrap=True
-        )
+        syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
         title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
         panel = Panel.fit(
             syntax,
