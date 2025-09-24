@@ -23,7 +23,7 @@ wheels = [
 
 [[package]]
 name = "air"
-version = "0.31.0"
+version = "0.32.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -88,12 +88,14 @@ dev = [
     { name = "rust-just" },
     { name = "sqlmodel" },
     { name = "ty" },
+    { name = "typer" },
     { name = "types-markdown" },
     { name = "uvicorn" },
 ]
 devtools = [
     { name = "rich-cli" },
     { name = "rust-just" },
+    { name = "typer" },
     { name = "uvicorn" },
 ]
 docs = [
@@ -184,12 +186,14 @@ dev = [
     { name = "rust-just", specifier = ">=1.42.3" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
     { name = "ty", specifier = ">=0.0.1a16" },
+    { name = "typer", specifier = ">=0.19.1" },
     { name = "types-markdown", specifier = ">=3.8.0" },
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 devtools = [
     { name = "rich-cli", specifier = ">=1.8.1" },
     { name = "rust-just", specifier = ">=1.42.3" },
+    { name = "typer", specifier = ">=0.19.1" },
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 docs = [
@@ -2493,7 +2497,8 @@ version = "0.19.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "rich", version = "14.1.0", source = { registry = "https://pypi.org/simple" } },
+    { name = "rich", version = "12.6.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-3-air-dev' or extra == 'group-3-air-devtools'" },
+    { name = "rich", version = "14.1.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'extra-3-air-standard'" },
     { name = "shellingham" },
     { name = "typing-extensions" },
 ]
