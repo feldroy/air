@@ -65,6 +65,8 @@ class AirForm:
         return self
 
     def validate(self, form_data: dict[Any, Any] | FormData) -> bool:
+        # Store the submitted data to preserve values on error
+        self.submitted_data = dict(form_data) if hasattr(form_data, 'items') else form_data
         try:
             self.data = self.model(**form_data)
             self.is_valid = True
@@ -92,8 +94,10 @@ class AirForm:
         return default_form_widget
 
     def render(self) -> SafeStr:
+        # Use submitted data if available (preserves values on validation errors)
+        render_data = getattr(self, 'submitted_data', None) or self.initial_data
         return SafeStr(
-            self.widget(model=self.model, data=self.initial_data, errors=self.errors, includes=self.includes),
+            self.widget(model=self.model, data=render_data, errors=self.errors, includes=self.includes),
         )
 
 
