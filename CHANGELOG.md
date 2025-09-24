@@ -1,5 +1,26 @@
 ### Latest Changes
 
+# 0.32.0 - 2025-09-24
+
+## What's Changed
+* FEAT: Add changelog link to pyproject.toml by @alaminopu in https://github.com/feldroy/air/pull/480
+* FEAT: Make the default status_code of air.RedirectResponse be 303 by @alaminopu in https://github.com/feldroy/air/pull/481
+* Merge cookbook into learn section by @pydanny in https://github.com/feldroy/air/pull/483
+* DOCS:  Enhance contribution guide with detailed setup instructions by @tallerasaf in https://github.com/feldroy/air/pull/484
+* Add GitHubOAuthClientFactory to support easier authentication by @pydanny in https://github.com/feldroy/air/pull/487
+* Improved learn docs for SQL by @pydanny in https://github.com/feldroy/air/pull/488
+* Add script to look for missing examples in callables by @pydanny in https://github.com/feldroy/air/pull/489
+* FEAT: pretty_render enhancements by @tallerasaf in https://github.com/feldroy/air/pull/477
+* docs: add docstrings for P, Q and R tags by @vanessapigwin in https://github.com/feldroy/air/pull/492
+* Various minor fixes to documentation by @pydanny in https://github.com/feldroy/air/pull/493
+* build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/482
+* chore(deps): update wechuli/allcheckspassed action to v2 by @renovate[bot] in https://github.com/feldroy/air/pull/491
+
+## New Contributors
+* @alaminopu made their first contribution in https://github.com/feldroy/air/pull/480
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.31.0...v0.32.0
+
 # 0.31.0 - 2025-09-21
 
 ## What's Changed
