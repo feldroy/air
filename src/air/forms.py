@@ -120,6 +120,36 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
     return {int: "number", float: "number", bool: "checkbox", str: "text"}.get(field_info.annotation, "text")
 
 
+def get_user_error_message(error: dict) -> str:
+    """Convert technical pydantic error to user-friendly message."""
+    error_type = error.get("type", "")
+    technical_msg = error.get("msg", "")
+
+    # Map error types to user-friendly messages
+    messages = {
+        "missing": "This field is required.",
+        "int_parsing": "Please enter a valid number.",
+        "float_parsing": "Please enter a valid number.",
+        "bool_parsing": "Please select a valid option.",
+        "string_too_short": "This value is too short.",
+        "string_too_long": "This value is too long.",
+        "value_error": "This value is not valid.",
+        "type_error": "Please enter the correct type of value.",
+        "assertion_error": "This value doesn't meet the requirements.",
+        "url_parsing": "Please enter a valid URL.",
+        "email": "Please enter a valid email address.",
+        "json_invalid": "Please enter valid JSON.",
+        "enum": "Please select a valid option.",
+        "greater_than": "This value must be greater than the minimum.",
+        "greater_than_equal": "This value must be at least the minimum.",
+        "less_than": "This value must be less than the maximum.",
+        "less_than_equal": "This value must be at most the maximum.",
+    }
+
+    # Get user-friendly message or fallback to technical message
+    return messages.get(error_type, technical_msg or "Please correct this error.")
+
+
 def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
     """Converts a pydantic error list to a dictionary for easier reference."""
     if errors is None:
@@ -164,7 +194,7 @@ def default_form_widget(
                     for_=field_name,
                 ),
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
-                tags.Small("Please correct this error.", id=f"{field_name}-error") if error else "",
+                tags.Small(get_user_error_message(error), id=f"{field_name}-error") if error else "",
             ),
         )
 

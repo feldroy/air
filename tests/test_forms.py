@@ -179,9 +179,9 @@ def test_form_render_with_errors() -> None:
 
     assert (
         html == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" id="name" />'
-        '<small id="name-error">Please correct this error.</small><label for="age">age</label>'
+        '<small id="name-error">This field is required.</small><label for="age">age</label>'
         '<input aria-invalid="true" name="age" type="number" id="age" />'
-        '<small id="age-error">Please correct this error.</small>'
+        '<small id="age-error">This field is required.</small>'
     )
 
 
