@@ -1948,7 +1948,15 @@ class Param(SelfClosingTag):
 
 
 class Picture(BaseTag):
-    """Defines a container for multiple image resources"""
+    """Defines a container for multiple image resources
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1962,7 +1970,17 @@ class Picture(BaseTag):
 
 
 class Pre(BaseTag):
-    """Defines preformatted text"""
+    """Defines preformatted text
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        width: preferred counf of characters that a line should have
+        wrap: hint indicating how overflow must happen
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1978,7 +1996,17 @@ class Pre(BaseTag):
 
 
 class Progress(BaseTag):
-    """Represents the progress of a task"""
+    """Represents the progress of a task
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        max: The maximum value of the progress bar.
+        value: The current value of the progress bar.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -1994,7 +2022,16 @@ class Progress(BaseTag):
 
 
 class Q(BaseTag):
-    """Defines a short quotation"""
+    """Defines a short quotation
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        cite: Specifies a URL to the source of the quotation.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2009,7 +2046,14 @@ class Q(BaseTag):
 
 
 class Rp(BaseTag):
-    """Defines what to show in browsers that do not support ruby annotations"""
+    """Defines what to show in browsers that do not support ruby annotations
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2022,7 +2066,14 @@ class Rp(BaseTag):
 
 
 class Rt(BaseTag):
-    """Defines an explanation/pronunciation of characters (for East Asian typography)"""
+    """Defines an explanation/pronunciation of characters (for East Asian typography)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2035,7 +2086,14 @@ class Rt(BaseTag):
 
 
 class Ruby(BaseTag):
-    """Defines a ruby annotation (for East Asian typography)"""
+    """Defines a ruby annotation (for East Asian typography)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,

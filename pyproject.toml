@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.30.0"
+version = "0.32.0"
 description = "The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -13,6 +13,7 @@ requires-python = ">=3.12,<3.14"
 urls.Homepage = "https://github.com/feldroy/air"
 urls.Docs = "https://feldroy.github.io/air/"
 urls.Issues = "https://github.com/feldroy/air/issues"
+urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
 
 classifiers = [
     "Operating System :: OS Independent",
@@ -84,6 +85,7 @@ devtools = [
     "rust-just>=1.42.3", # Justfile tasks
     "uvicorn>=0.34.0", # run full example apps
     "rich-cli>=1.8.1", # Command Line Interface to Rich
+    "typer>=0.19.1" # For running of scripts
 ]
 lint = [
     "pyrefly>=0.29.1", # A fast type checker

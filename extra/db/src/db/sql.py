@@ -1,41 +1,5 @@
-"""
-This module includes utility functions for using SQL with AIR.
-
-Introduces two environment variables
-
-- DEBUG
-- DATABASE_URL
-
-Requires additional dependencies:
-
-- SQLModel
-- greenlet
-
-Persistent database connections require a lifespan object, otherwise you will receive timeout warnings.
-
-
-```python
-from contextlib import asynccontextmanager
-import air
-
-
-@asynccontextmanager
-async def lifespan(app: air.Air):
-    async_engine = air.db.sql.create_async_engine()
-    async with async_engine.begin() as conn:
-        await conn.run_sync(lambda _: None)
-    yield
-    await async_engine.dispose()
-
-
-app = air.Air(lifespan=lifespan)
-```
-
----
-
-"""
-
 from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 from enum import IntEnum
 from os import getenv
 
@@ -54,6 +18,7 @@ from sqlmodel import (
 )
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from ..applications import Air as AirApp
 from air.exceptions import ObjectDoesNotExist
 
 DEBUG = getenv("DEBUG", "false").lower() in ("1", "true", "yes")
@@ -110,23 +75,28 @@ def create_async_engine(
         echo: Enables logging of all SQL statements executed by the engine, which can be useful for debugging.
         future: In SQLAlchemy, the future=True argument for create_async_engine enables 2.0-style behaviors and API conventions while still running under SQLAlchemy 1.4.
         pool_pre_ping: Makes the engine test a connection with a lightweight SELECT 1 before using it, ensuring stale or dropped connections are detected and replaced automatically.
+    """
+    return _create_async_engine(url=url, echo=echo, future=future, pool_pre_ping=pool_pre_ping)
+
+
+@asynccontextmanager
+async def async_db_lifespan(app: AirApp):
+    """Application Lifespan object for ensuring that database connections remain active.
+
+    Not including this can result in `sqlalchemy.exc.OperationalError` or `asyncpg.exceptions.ConnectionDoesNotExistError`
+    errors when the database connection times out because of inactivity.
 
     Example:
 
-        from contextlib import asynccontextmanager
         import air
 
-        @asynccontextmanager
-        async def lifespan(app: air.Air):
-            async_engine = air.db.sql.create_async_engine()
-            async with async_engine.begin() as conn:
-                await conn.run_sync(lambda _: None)
-            yield
-            await async_engine.dispose()
-
-        app = air.Air(lifespan=lifespan)
+        app = air.Air(lifespan=air.ext.sql.async_db_lifespan)
     """
-    return _create_async_engine(url=url, echo=echo, future=future, pool_pre_ping=pool_pre_ping)
+    async_engine = create_async_engine()
+    async with async_engine.begin() as conn:
+        await conn.run_sync(lambda _: None)
+    yield
+    await async_engine.dispose()
 
 
 async def create_async_session(
@@ -207,7 +177,7 @@ async def get_object_or_404(session: AsyncSession, model: SQLModel, *args: Binar
         app = air.Air()
 
         @app.get('/heroes/{name: str}')
-        async def hero(name: str, session = Depends(air.db.sql.get_async_session)):
+        async def hero(name: str, session = Depends(air.ext.sql.get_async_session)):
             hero = await get_object_or_404(session, model, Hero.name==name)
             return air.layouts.mvpcss(
                 air.H1(hero.name),

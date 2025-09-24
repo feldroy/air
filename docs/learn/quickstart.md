@@ -49,5 +49,5 @@ Here's a few interesting things about this page:
 2. The Python for this app is similar in design to how FastAPI code is written
 3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
 
-Want to learn more? Want to see how Air combines with FastAPI? [Try out the tutorial!](/learn/tutorial)
+Want to learn more? Want to see how Air combines with FastAPI? [Try out the tutorial!](tutorial.md)
  

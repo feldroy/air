@@ -5,6 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import Field, SQLModel
 
+from air.applications import Air
 from air.exceptions import ObjectDoesNotExist
 from air.db.sql import create_async_session
 from air.db import sql
@@ -98,3 +99,15 @@ async def test_get_object_or_404():
             await sql.get_object_or_404(session, TestUser, TestUser.id == 1, TestUser.name == "Wrong Name")
 
         assert exc_info.value.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_async_db_lifespan():
+    """Test the async_db_lifespan context manager."""
+    app = Air()
+
+    # Test that the lifespan runs without error
+    async with sql.async_db_lifespan(app):
+        # Inside the lifespan context, we should be able to proceed normally
+        pass
+    # The lifespan should complete successfully
