@@ -9,7 +9,7 @@
     pip install "air[sql]"
     ```
 
-    The full reference for the tooling can be found at the [SQL API Reference](../../api/ext/sql/).
+    The full reference for the tooling can be found at the [SQL API Reference](../api/ext/sql.md).
 
 Thanks to the power of SQLModel and SQLAlchemy **Air** works with relational databases. Right now it just supports PostgreSQL and SQLite. Fortunately the project will soon expand to support all relational databases that allow for asynchronous connections through SQLAlchemy. 
 
