@@ -2,15 +2,22 @@
 
 This module includes utility functions for using SQL with AIR.
 
-Introduces two environment variables
+## Package requirements
 
-- DEBUG
-- DATABASE_URL
-
-Requires additional dependencies installable in `air[sql]`, which can be installed with `uv add "air[sql]"`:
+Using this module rquires additional dependencies installable in `air[sql]`, which can be installed with `uv add "air[sql]"`:
 
 - SQLModel
 - greenlet
+
+## Database-specific Connection libraries
+
+Depending on your database, you may also need to install sync and async drivers, for example:
+
+|Database | Connection Libraries |
+| --- | --- |
+| PostgreSQL | `psycopg2-binary`, `asyncpg` |
+| SQLite | `aiosqlite` |
+
 
 !!! warning
 
@@ -22,7 +29,9 @@ Requires additional dependencies installable in `air[sql]`, which can be install
     app = air.Air(lifespan=air.ext.sql.async_db_lifespan)
     ```
 
+## Configuration
 
+This module introduces two environment variables:
 
 ::: air.ext.sql
     options:

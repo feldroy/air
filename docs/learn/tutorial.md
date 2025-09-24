@@ -36,6 +36,6 @@ Add the rest of this tutorial page.
 
 ## Want to learn more?
 
-Want to see a handy batch of recipes for doing things in Air? [Check out the Air Cookbook!](/cookbook)
+Want to see a handy batch of recipes for doing things in Air? [Check out the Air Cookbook!](cookbook/index.md)
 
 
