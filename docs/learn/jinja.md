@@ -7,9 +7,9 @@ We love Jinja. Proven and fast, its our go-to for when we want to manually craft
 
 !!! info "Jinja or Jinja2?"
     While the package is listed on [PyPI as Jinja2](https://pypi.org/project/jinja2/), that package and the [official Jinja docs](https://jinja.palletsprojects.com/) refers to Jinja as just "Jinja". Also, Jinja was released in 2008 and is well into the 3.x release cycle. If we want to lean into pedantry, we are arguably using Jinja 5 (base plus major releases cycles of 0.x, 1.x, 2.x, and 3.x).
-     
+
     Most importantly, it is the intent of the maintainer of Jinja to not only document the package as 'Jinja' but to even provide a `jinja` namespace in addition to `jinja2`.
-    
+
     In short, to match the Jinja documentation and the intent of the maintainer, in the Air documentation we use the term "Jinja".
 
 
@@ -27,14 +27,14 @@ Here's a simple Jinja layout file:
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
         <script
-            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" 
+            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
             integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
             crossorigin="anonymous"></script>
         <title>{{title}}</title>
     </head>
-    <body>  
+    <body>
         <main class="container">
-        {# We need to safe the content, which can be 
+        {# We need to safe the content, which can be
             a security risk. We'll cover mitigation
             of such issues later on this page.
         #}
@@ -47,7 +47,10 @@ Here's a simple Jinja layout file:
 If you've used Jinja before this should look familiar. Now let's add in our Air Tags-powered content, which we'll do from the view.
 
 ```python title="main.py"
+from air import Air
+from air.requests import Request
 import air
+
 
 app = Air()
 
@@ -57,7 +60,7 @@ jinja = air.JinjaRenderer(directory="tests/templates")
 @app.get('/')
 def index(request: Request):
     content = air.Main(
-        air.h2('Does Jinja work with Air Tags?')
+        air.H2('Does Jinja work with Air Tags?'),
         air.P("Jinja works great with Air Tags")
     )
     return jinja(
