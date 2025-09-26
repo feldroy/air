@@ -32,7 +32,7 @@ nav:
     - Dependencies: api/dependencies.md
     - Exception Handlers: api/exception_handlers.md
     - Exceptions: api/exceptions.md
-    - Ext: 
+    - Ext:
       - Ext: api/ext/index.md
       - Auth: api/ext/auth.md
       - SQL: api/ext/sql.md
@@ -53,16 +53,16 @@ nav:
       - "Tags A-D": api/tags/tags-a-d.md
       - "Tags E-M": api/tags/tags-e-m.md
       - "Tags N-S": api/tags/tags-n-s.md
-      - "Tags T-Z": api/tags/tags-t-z.md    
+      - "Tags T-Z": api/tags/tags-t-z.md
     - Templating: api/templating.md
     - Utils: api/utils.md
 
-  
+
   - About:
     - about/index.md
     - about/roadmap.md
     - about/alternatives.md
-    - about/help_air.md  
+    - about/help_air.md
 
   - Tools: tools.md
 
@@ -81,6 +81,21 @@ theme:
     - navigation.tabs
   icon:
     repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: black
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: white
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 markdown_extensions:
   - admonition
