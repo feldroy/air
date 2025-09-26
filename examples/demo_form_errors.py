@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Demo script to show enhanced form error messages."""
 
-import air
 from pydantic import BaseModel, Field
+from rich import print
+
+import air
 
 
 class ContactModel(BaseModel):
     name: str = Field(min_length=2, max_length=50)
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
-    email: str = Field(pattern=r'^[^@]+@[^@]+\.[^@]+$')  # Basic email pattern
+    email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
 
 
 class ContactForm(air.AirForm):
@@ -36,9 +38,9 @@ async def show_form():
                     method="post",
                     action="/submit",
                 ),
-                class_="container"
+                class_="container",
             )
-        )
+        ),
     )
 
 
@@ -55,7 +57,7 @@ async def handle_form(request: air.Request):
                 air.P(f"Name: {form.data.name}"),
                 air.P(f"Age: {form.data.age}"),
                 air.P(f"Email: {form.data.email}"),
-            )
+            ),
         )
 
     # Show form with enhanced error messages
@@ -77,16 +79,17 @@ async def handle_form(request: air.Request):
                 air.Hr(),
                 air.Details(
                     air.Summary("Technical Error Details (for developers)"),
-                    air.Pre(str(form.errors)) if form.errors else "No errors"
+                    air.Pre(str(form.errors)) if form.errors else "No errors",
                 ),
-                class_="container"
+                class_="container",
             )
-        )
+        ),
     )
 
 
 if __name__ == "__main__":
     import uvicorn
+
     print("Demo server starting...")
     print("1. Open http://localhost:8000 in your browser")
     print("2. Leave fields empty and click Submit to see 'This field is required.'")
