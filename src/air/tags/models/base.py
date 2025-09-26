@@ -7,7 +7,7 @@ import json
 from collections.abc import Mapping
 from functools import cached_property
 from types import MappingProxyType
-from typing import Any, ClassVar, Final, Self, TypedDict, Union
+from typing import Any, ClassVar, Final, Self, TypedDict
 
 from ..utils import SafeStr, clean_html_attr_key, pretty_format_html, pretty_print_html
 
@@ -18,7 +18,7 @@ type AttributesType = str | int | float | bool
 # Excludes types like None (renders as "None"), bool ("True"/"False"),
 # complex ("(1+2j)"), bytes ("b'...'"), and others that produce
 # undesirable or unintended HTML output.
-Renderable = Union[str, "BaseTag", SafeStr, int, float]
+type Renderable = str | BaseTag | SafeStr | int | float
 
 
 class TagDictType(TypedDict):
