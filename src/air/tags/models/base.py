@@ -14,6 +14,13 @@ from ..utils import SafeStr, clean_html_attr_key, pretty_format_html, pretty_pri
 type AttributesType = str | int | float | bool
 
 
+# Type hint for renderable content
+# Excludes types like None (renders as "None"), bool ("True"/"False"),
+# complex ("(1+2j)"), bytes ("b'...'"), and others that produce
+# undesirable or unintended HTML output.
+type Renderable = str | BaseTag | SafeStr | int | float
+
+
 class TagDictType(TypedDict):
     name: str
     attributes: dict[str, AttributesType]
@@ -38,7 +45,7 @@ class BaseTag:
     _registry: ClassVar[dict[str, type[BaseTag]]] = {}
     registry: ClassVar[Mapping[str, type[BaseTag]]] = MappingProxyType(_registry)  # read-only view
 
-    def __init__(self, *children: Any, **kwargs: AttributesType) -> None:
+    def __init__(self, *children: Renderable, **kwargs: AttributesType) -> None:
         """
         Args:
             children: Tags, strings, or other rendered content.
@@ -46,7 +53,8 @@ class BaseTag:
         """
         self._name = self.__class__.__name__
         self._module = self.__class__.__module__
-        self._children, self._attrs = children, kwargs
+        self._children: tuple[Renderable, ...] = children
+        self._attrs: dict[str, AttributesType] = kwargs
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         """Non-instantiable base; all subclasses are instantiable."""

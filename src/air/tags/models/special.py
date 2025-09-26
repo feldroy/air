@@ -1,9 +1,9 @@
 """Special Air Tags that aren't find in any other category."""
 
-from typing import Any, Literal, override
+from typing import Literal, override
 
 from ..utils import HTML_DOCTYPE, locals_cleanup
-from .base import AttributesType, BaseTag
+from .base import AttributesType, BaseTag, Renderable
 
 
 class Html(BaseTag):
@@ -30,7 +30,7 @@ class Transparent(BaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
     ) -> None:
         super().__init__(*children)
 
