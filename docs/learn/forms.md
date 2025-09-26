@@ -101,12 +101,25 @@ contact_form.render()
     <label>
         name
         <input name="name" type="text" id="name" aria-invalid="true" />
-        <small id="name-error">Please correct this error.</small>
+        <small id="name-error">This field is required.</small>
     </label>
     <label>
         Email
         <input name="email" type="email" id="email" aria-invalid="true" />
-        <small id="email-error">Please correct this error.</small>
+        <small id="email-error">This field is required.</small>
     </label>
 </fieldset>
 ```
+
+## Enhanced Error Messages
+
+Air Forms automatically display user-friendly error messages that clearly explain validation failures:
+
+- **Missing fields**: "This field is required."
+- **Invalid numbers**: "Please enter a valid number."
+- **Invalid email addresses**: "Please enter a valid email address."
+- **Values too short/long**: "This value is too short." / "This value is too long."
+- **URL validation**: "Please enter a valid URL."
+- **And many more...**
+
+For unknown error types, the system falls back to the technical Pydantic error message, ensuring developers always get meaningful feedback.
