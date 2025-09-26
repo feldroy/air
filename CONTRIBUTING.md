@@ -55,6 +55,7 @@ uv sync --frozen --extra all
 >    - "Type": `uv`.
 >    - "Path to uv": `$ which uv`
 >    - "uv env use": `<project>/air/.venv/bin/python`.
+>    - "Associate this virtual environment with the current project": `☑️`.
 > 2. Click OK/Apply. More details: https://www.jetbrains.com/help/pycharm/uv.html
 
 #### 7. Make your code changes and write/adjust tests to cover them (keep changes focused and small).
