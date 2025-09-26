@@ -1,5 +1,26 @@
 ### Latest Changes
 
+# 0.33.0 - 2025-09-26
+
+## New Features
+* Show type of form failure rather than just an error happened by @prodigisoftwares in https://github.com/feldroy/air/pull/495
+* Constrain the exports from air.ext.sql by @pydanny in https://github.com/feldroy/air/pull/496
+* Add dark theme support to docs by @EnriqueSoria in https://github.com/feldroy/air/pull/499
+* Renderable Type for Tag children by @audreyfeldroy in https://github.com/feldroy/air/pull/498
+
+## Bugfixes
+
+* docs: update jinja templating example by @alaminopu in https://github.com/feldroy/air/pull/497
+
+## Chores
+* ⬆(deps): Bump the python-dependencies group across 1 directory with 5 updates by @dependabot[bot] in https://github.com/feldroy/air/pull/494
+* Bring forward old version release instructions by @pydanny in https://github.com/feldroy/air/pull/501
+
+## New Contributors
+* @EnriqueSoria made their first contribution in https://github.com/feldroy/air/pull/499
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.32.0...v0.33.0
+
 # 0.32.0 - 2025-09-24
 
 ## What's Changed

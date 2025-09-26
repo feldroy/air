@@ -46,7 +46,7 @@ async def test_get_async_session() -> None:
 async def test_get_async_session_with_custom_params() -> None:
     """Test get_async_session with custom URL and echo parameters."""
     # Test with custom parameters
-    async for session in sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=sql.EchoEnum.FALSE):
+    async for session in sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=sql._EchoEnum.FALSE):
         assert isinstance(session, AsyncSession)
         break
 

@@ -35,13 +35,44 @@ async def flight_info(request: Request):
     flight = await FlightForm.from_request(request)
     if flight.is_valid:
         return air.Html(air.H1(f'{flight.data.flight_number} → {flight.data.destination}'))
-    return air.Html(
-        air.H1("Errors"),
-        air.Ul(*[
-            air.Li(f"{err['loc'][0]}: {err['msg']}")
-            for err in flight.errors
-        ])
+
+    # Show form with enhanced error messages and preserved user input
+    return air.layouts.mvpcss(
+        air.H1("Flight Form"),
+        air.P("Please correct the errors below:"),
+        air.Form(
+            flight.render(),  # Automatically shows user-friendly error messages
+            air.Button("Submit", type="submit"),
+            method="post",
+            action="/flight-info",
+        ),
     )
+```
+
+## Enhanced Form Features
+
+### User-Friendly Error Messages
+
+Air Forms automatically convert technical Pydantic validation errors into clear, actionable messages:
+
+```python
+# Instead of: "Input should be a valid integer, unable to parse string as an integer"
+# Users see: "Please enter a valid number."
+
+# Instead of: "Field required"
+# Users see: "This field is required."
+```
+
+### Value Preservation
+
+When validation fails, user input is automatically preserved, so users don't have to re-enter their data:
+
+```python
+# User submits: {"flight_number": "AB123", "destination": ""}
+# After validation error, the form still shows "AB123" in the flight_number field
+flight = await FlightForm.from_request(request)
+if not flight.is_valid:
+    return show_form_with_errors(flight)  # Values are preserved automatically
 ```
 
 ## Coming Soon: Dependency-Injection Form Handling

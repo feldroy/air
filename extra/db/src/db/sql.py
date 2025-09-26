@@ -1,16 +1,16 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from enum import IntEnum
-from os import getenv
+from enum import IntEnum as _IntEnum
+from os import getenv as _getenv
 
 from fastapi import Depends
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.ext.asyncio import (
-    async_sessionmaker,
+    async_sessionmaker as _async_sessionmaker,
     create_async_engine as _create_async_engine,
 )
 from sqlalchemy.ext.asyncio.engine import AsyncEngine
-from sqlalchemy.sql.elements import BinaryExpression
+from sqlalchemy.sql.elements import BinaryExpression as _BinaryExpression
 from sqlmodel import (
     SQLModel,
     create_engine as _create_engine,
@@ -18,36 +18,36 @@ from sqlmodel import (
 )
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from ..applications import Air as AirApp
+from ..applications import Air as _AirApp
 from air.exceptions import ObjectDoesNotExist
 
-DEBUG = getenv("DEBUG", "false").lower() in ("1", "true", "yes")
+DEBUG = _getenv("DEBUG", "false").lower() in ("1", "true", "yes")
 """Environment variable for setting DEBUG loglevel."""
-DATABASE_URL = getenv("DATABASE_URL", "")
+DATABASE_URL = _getenv("DATABASE_URL", "")
 """Standard database url environment variable."""
 ASYNC_DATABASE_URL = DATABASE_URL.split("?")[0]
 ASYNC_DATABASE_URL = ASYNC_DATABASE_URL.replace("postgresql:", "postgresql+asyncpg:")
 ASYNC_DATABASE_URL = ASYNC_DATABASE_URL.replace("sqlite:", "sqlite+aiosqlite:")
 
 
-class EchoEnum(IntEnum):
+class _EchoEnum(_IntEnum):
     FALSE = 0
     TRUE = 1
 
 
-class FutureEnum(IntEnum):
+class _FutureEnum(_IntEnum):
     FALSE = 0
     TRUE = 1
 
 
-class PoolPrePingEnum(IntEnum):
+class _PoolPrePingEnum(_IntEnum):
     FALSE = 0
     TRUE = 1
 
 
 def create_sync_engine(
     url: str = DATABASE_URL,
-    echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
+    echo: _EchoEnum = _EchoEnum.TRUE if DEBUG else _EchoEnum.FALSE,
 ) -> Engine:
     """Convenience wrapper for SQLModel/SQLAlchemy's create_engine function. Useful for database scripts or synchronous views.
 
@@ -64,9 +64,9 @@ def create_sync_engine(
 
 def create_async_engine(
     url: str = ASYNC_DATABASE_URL,  # Async connection string
-    echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
-    future: FutureEnum = FutureEnum.TRUE,
-    pool_pre_ping: PoolPrePingEnum = PoolPrePingEnum.TRUE,
+    echo: _EchoEnum = _EchoEnum.TRUE if DEBUG else _EchoEnum.FALSE,
+    future: _FutureEnum = _FutureEnum.TRUE,
+    pool_pre_ping: _PoolPrePingEnum = _PoolPrePingEnum.TRUE,
 ) -> AsyncEngine:
     """Convenience wrapper for SQLModel/SQLAlchemy's create_async_engine function. Usually set within an Air app's lifetime object.
 
@@ -80,7 +80,7 @@ def create_async_engine(
 
 
 @asynccontextmanager
-async def async_db_lifespan(app: AirApp):
+async def async_db_lifespan(app: _AirApp):
     """Application Lifespan object for ensuring that database connections remain active.
 
     Not including this can result in `sqlalchemy.exc.OperationalError` or `asyncpg.exceptions.ConnectionDoesNotExistError`
@@ -101,7 +101,7 @@ async def async_db_lifespan(app: AirApp):
 
 async def create_async_session(
     url: str = ASYNC_DATABASE_URL,  # Database URL
-    echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
+    echo: _EchoEnum = _EchoEnum.TRUE if DEBUG else _EchoEnum.FALSE,
     async_engine=None,
 ):
     """
@@ -119,9 +119,9 @@ async def create_async_session(
         async_engine = create_async_engine(
             url,  # Async connection string
             echo=echo,
-            future=FutureEnum.TRUE,
+            future=_FutureEnum.TRUE,
         )
-    return async_sessionmaker(
+    return _async_sessionmaker(
         bind=async_engine,
         class_=AsyncSession,
         expire_on_commit=False,
@@ -129,7 +129,7 @@ async def create_async_session(
 
 
 async def get_async_session(
-    url: str = ASYNC_DATABASE_URL, echo: EchoEnum = EchoEnum.TRUE if DEBUG else EchoEnum.FALSE,
+    url: str = ASYNC_DATABASE_URL, echo: _EchoEnum = _EchoEnum.TRUE if DEBUG else _EchoEnum.FALSE,
 ) -> AsyncGenerator[AsyncSession, None]:
     """Used with fastapi.Depends to instantiate db session in a view.
 
@@ -161,7 +161,7 @@ async_session_dependency = Depends(get_async_session)
 "Shortcut for `Depends(get_async_session)` that only works if DATABASE_URL env var is set."
 
 
-async def get_object_or_404(session: AsyncSession, model: SQLModel, *args: BinaryExpression):
+async def get_object_or_404(session: AsyncSession, model: SQLModel, *args: _BinaryExpression):
     """Get a record or raise an exception.
 
     Args:
