@@ -49,5 +49,36 @@ Here's a few interesting things about this page:
 2. The Python for this app is similar in design to how FastAPI code is written
 3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
 
-Want to learn more? Want to see how Air combines with FastAPI? [Try out the tutorial!](tutorial.md)
+## Want to see how to combine Air with FastAPI?
+
+With just a few lines of code, you can serve a homepage and an API side by side:
+
+```python
+import air
+from fastapi import FastAPI
+
+app = air.Air()
+api = FastAPI()
+
+@app.get("/")
+def landing_page():
+    return air.layouts.mvpcss(
+        air.Head(air.Title("My Awesome Startup")),
+        air.Body(
+            air.H1("My Awesome Startup"),
+            air.P(air.A("API Docs", target="_blank", href="/api/docs")),
+        ),
+    )
+
+@api.get("/")
+def api_root():
+    return {"message": "My Awesome Startup is powered by FastAPI"}
+
+# Bring it all together: mount your API under /api
+app.mount("/api", api)
+```
+
+## Want to learn more?
+
+Want to see how Air combines with FastAPI? [Try out the tutorial!](tutorial.md)
  
