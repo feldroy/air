@@ -2,10 +2,8 @@
 is supported.
 """
 
-from typing import Any
-
 from ..utils import locals_cleanup
-from .base import AttributesType, BaseTag
+from .base import AttributesType, BaseTag, Renderable
 
 
 class CaseTag(BaseTag):
@@ -37,7 +35,7 @@ class A(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         target: str | None = None,
         download: str | None = None,
@@ -79,7 +77,7 @@ class Animate(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         attributeName: str | None = None,
         attributeType: str | None = None,
         values: str | None = None,
@@ -119,7 +117,7 @@ class AnimateMotion(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         path: str | None = None,
         keyPoints: str | None = None,
         rotate: str | float | None = None,
@@ -154,7 +152,7 @@ class AnimateTransform(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         type: str | None = None,
         by: str | None = None,
         from_: str | None = None,
@@ -187,7 +185,7 @@ class Circle(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         cx: str | float | None = None,
         cy: str | float | None = None,
         r: str | float | None = None,
@@ -214,7 +212,7 @@ class ClipPath(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         clipPathUnits: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -237,7 +235,7 @@ class Defs(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -259,7 +257,7 @@ class Desc(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -286,7 +284,7 @@ class Ellipse(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         cx: str | float | None = None,
         cy: str | float | None = None,
         rx: str | float | None = None,
@@ -317,7 +315,7 @@ class FeBlend(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         in2: str | None = None,
         mode: str | None = None,
@@ -347,7 +345,7 @@ class FeColorMatrix(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         type: str | None = None,
         values: str | None = None,
@@ -375,7 +373,7 @@ class FeComponentTransfer(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -407,7 +405,7 @@ class FeComposite(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         in2: str | None = None,
         operator: str | None = None,
@@ -447,7 +445,7 @@ class FeConvolveMatrix(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         order: str | None = None,
         kernelMatrix: str | None = None,
@@ -484,7 +482,7 @@ class FeDiffuseLighting(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         surfaceScale: float | None = None,
         diffuseConstant: float | None = None,
@@ -517,7 +515,7 @@ class FeDisplacementMap(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         in2: str | None = None,
         scale: float | None = None,
@@ -547,7 +545,7 @@ class FeDistantLight(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         azimuth: str | float | None = None,
         elevation: str | float | None = None,
         class_: str | None = None,
@@ -576,7 +574,7 @@ class FeDropShadow(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         dx: str | float | None = None,
         dy: str | float | None = None,
         stdDeviation: str | float | None = None,
@@ -606,7 +604,7 @@ class FeFlood(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         flood_color: str | None = None,
         flood_opacity: str | float | None = None,
         result: str | None = None,
@@ -638,7 +636,7 @@ class FeFuncA(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         type: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
@@ -674,7 +672,7 @@ class FeFuncB(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         type: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
@@ -710,7 +708,7 @@ class FeFuncG(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         type: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
@@ -746,7 +744,7 @@ class FeFuncR(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         type: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
@@ -779,7 +777,7 @@ class FeGaussianBlur(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         stdDeviation: str | float | None = None,
         edgeMode: str | None = None,
@@ -809,7 +807,7 @@ class FeImage(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         preserveAspectRatio: str | None = None,
         crossorigin: str | None = None,
@@ -836,7 +834,7 @@ class FeMerge(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         result: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -860,7 +858,7 @@ class FeMergeNode(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -887,7 +885,7 @@ class FeMorphology(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         operator: str | None = None,
         radius: str | float | None = None,
@@ -917,7 +915,7 @@ class FeOffset(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         dx: str | float | None = None,
         dy: str | float | None = None,
@@ -946,7 +944,7 @@ class FePointLight(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         z: str | float | None = None,
@@ -977,7 +975,7 @@ class FeSpecularLighting(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         surfaceScale: float | None = None,
         specularConstant: float | None = None,
@@ -1013,7 +1011,7 @@ class FeSpotLight(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         z: str | float | None = None,
@@ -1045,7 +1043,7 @@ class FeTile(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         in_: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -1075,7 +1073,7 @@ class FeTurbulence(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         baseFrequency: str | float | None = None,
         numOctaves: int | None = None,
         seed: float | None = None,
@@ -1109,7 +1107,7 @@ class Filter(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         width: str | float | None = None,
@@ -1141,7 +1139,7 @@ class ForeignObject(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         width: str | float | None = None,
@@ -1167,7 +1165,7 @@ class G(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1198,7 +1196,7 @@ class Image(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         width: str | float | None = None,
@@ -1234,7 +1232,7 @@ class Line(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x1: str | float | None = None,
         y1: str | float | None = None,
         x2: str | float | None = None,
@@ -1269,7 +1267,7 @@ class LinearGradient(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x1: str | float | None = None,
         y1: str | float | None = None,
         x2: str | float | None = None,
@@ -1307,7 +1305,7 @@ class Marker(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         markerWidth: str | float | None = None,
         markerHeight: str | float | None = None,
         markerUnits: str | None = None,
@@ -1344,7 +1342,7 @@ class Mask(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         width: str | float | None = None,
@@ -1373,7 +1371,7 @@ class Metadata(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1396,7 +1394,7 @@ class Mpath(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         class_: str | None = None,
         id: str | None = None,
@@ -1421,7 +1419,7 @@ class Path(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         d: str | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
@@ -1455,7 +1453,7 @@ class Pattern(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         width: str | float | None = None,
@@ -1489,7 +1487,7 @@ class Polygon(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         points: str | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
@@ -1515,7 +1513,7 @@ class Polyline(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         points: str | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
@@ -1549,7 +1547,7 @@ class RadialGradient(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         cx: str | float | None = None,
         cy: str | float | None = None,
         r: str | float | None = None,
@@ -1588,7 +1586,7 @@ class Rect(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         width: str | float | None = None,
@@ -1621,7 +1619,7 @@ class Script(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         type: str | None = None,
         href: str | None = None,
         crossorigin: str | None = None,
@@ -1651,7 +1649,7 @@ class Set(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         to: str | None = None,
         attributeName: str | None = None,
         begin: str | None = None,
@@ -1680,7 +1678,7 @@ class Stop(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         offset: str | float | None = None,
         stop_color: str | None = None,
         stop_opacity: str | float | None = None,
@@ -1707,7 +1705,7 @@ class Style(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         type: str | None = None,
         media: str | None = None,
         class_: str | None = None,
@@ -1737,7 +1735,7 @@ class Svg(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         width: str | float | None = None,
         height: str | float | None = None,
         x: str | float | None = None,
@@ -1765,7 +1763,7 @@ class Switch(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1795,7 +1793,7 @@ class Symbol(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         width: str | float | None = None,
         height: str | float | None = None,
         x: str | float | None = None,
@@ -1832,7 +1830,7 @@ class Text(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         dx: str | float | None = None,
@@ -1869,7 +1867,7 @@ class TextPath(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         lengthAdjust: str | None = None,
         method: str | None = None,
@@ -1899,7 +1897,7 @@ class Title(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
@@ -1928,7 +1926,7 @@ class Tspan(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         x: str | float | None = None,
         y: str | float | None = None,
         dx: str | float | None = None,
@@ -1962,7 +1960,7 @@ class Use(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         href: str | None = None,
         x: str | float | None = None,
         y: str | float | None = None,
@@ -1991,7 +1989,7 @@ class View(CaseTag):
 
     def __init__(
         self,
-        *children: Any,
+        *children: Renderable,
         viewBox: str | None = None,
         preserveAspectRatio: str | None = None,
         class_: str | None = None,
