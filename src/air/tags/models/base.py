@@ -9,10 +9,14 @@ from functools import cached_property
 from types import MappingProxyType
 from typing import Any, ClassVar, Final, Self, TypedDict
 
-from ..utils import SafeStr, clean_html_attr_key, pretty_format_html, pretty_print_html
+from ..utils import (
+    SafeStr, StrPath, clean_html_attr_key, export_pretty_html, open_html_blob_in_the_browser,
+    open_pretty_html_in_the_browser, pretty_format_html,
+    pretty_print_html,
+    save_pretty_html
+)
 
 type AttributesType = str | int | float | bool
-
 
 # Type hint for renderable content
 # Excludes types like None (renders as "None"), bool ("True"/"False"),
@@ -99,6 +103,9 @@ class BaseTag:
     def render(self) -> str:
         return self._render()
 
+    def open_in_the_browser(self) -> None:
+        open_html_blob_in_the_browser(self.pretty_render(with_body=True, with_doctype=True))
+
     def pretty_render(
         self,
         *,
@@ -107,11 +114,23 @@ class BaseTag:
         with_doctype: bool = False,
     ) -> str:
         """Pretty-print without escaping."""
-        return pretty_format_html(self._render(), with_body=with_body, with_head=with_head, with_doctype=with_doctype)
+        return pretty_format_html(
+            self._render(), with_body=with_body,
+            with_head=with_head, with_doctype=with_doctype
+        )
 
     def pretty_print(self) -> None:
         """Pretty-print and render HTML with syntax highlighting."""
         pretty_print_html(self.pretty_render())
+
+    def pretty_save(self, file_path: StrPath) -> None:
+        save_pretty_html(self.pretty_render(), file_path=file_path)
+
+    def pretty_open_in_the_browser(self) -> None:
+        open_pretty_html_in_the_browser(self.pretty_render())
+
+    def pretty_export(self) -> str:
+        return pretty_format_html(export_pretty_html(self.pretty_render()))
 
     def _render(self) -> str:
         return self._render_paired()

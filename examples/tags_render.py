@@ -58,12 +58,14 @@ if __name__ == "__main__":
         kwarg3="kwarg3",
     )
     # Raw tag representation
-    print(repr(div))
+    # print(repr(div))
     # Full tag representation
-    print(div.full_repr())
+    # print(div.full_repr())
     # Render the generated HTML nicely in the terminal
-    HTML_SAMPLE.pretty_print()
+    # HTML_SAMPLE.pretty_print()
+    # div.pretty_save(file_path=".div1.html")
+    HTML_SAMPLE.open_in_the_browser()
 
     # Extra
-    print(repr(HTML_SAMPLE.from_dict(HTML_SAMPLE.to_dict())))
-    print(repr(HTML_SAMPLE.from_json(HTML_SAMPLE.to_json())))
+    # print(repr(HTML_SAMPLE.from_dict(HTML_SAMPLE.to_dict())))
+    # print(repr(HTML_SAMPLE.from_json(HTML_SAMPLE.to_json())))
