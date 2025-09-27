@@ -1,7 +1,7 @@
 """Utilities for the Air Tag system."""
+
 from __future__ import annotations
 
-import atexit
 import base64
 import html
 import tempfile
@@ -113,10 +113,8 @@ def open_local_file_in_the_browser(path: StrPath) -> None:
 def _open_new_tab(url: str) -> None:
     open_new_tab_successfully = webbrowser.open_new_tab(url)
     if not open_new_tab_successfully:
-        raise BrowserOpenError(
-            f"Could not open browser for URI: {url}. "
-            "Tip: set the BROWSER environment variable or configure your default browser."
-        )
+        msg = f"Could not open browser for URI: {url}. "
+        raise BrowserOpenError(msg)
 
 
 # TODO -> Remove
@@ -152,7 +150,8 @@ def open_html_blob_in_the_browser_old2(html_source: str, *, data_url_max: int = 
 
     _open_new_tab(path.as_uri())
 
-def open_html_in_the_browser(html_source: str, *, data_url_max: int = DATA_URL_MAX) -> None:
+
+def open_html_in_the_browser(html_source: str) -> None:
     """
     Open an HTML string in the default browser.
 
@@ -162,13 +161,12 @@ def open_html_in_the_browser(html_source: str, *, data_url_max: int = DATA_URL_M
     Raises:
         BrowserOpenError: if the browser could not be launched.
     """
-    source_bytes = html_source.encode()
-
     with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding="utf-8") as f:
         f.write(html_source)
         path = Path(f.name)
 
     _open_new_tab(path.as_uri())
+
 
 def save_pretty_html(
     source: str,

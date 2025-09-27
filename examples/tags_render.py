@@ -12,8 +12,6 @@ Run:
 
 from __future__ import annotations
 
-from rich import print
-
 from air import H1, H2, H3, A, B, Div, Img, Link, P, SafeStr, Script
 from examples.html_sample import HTML_SAMPLE
 

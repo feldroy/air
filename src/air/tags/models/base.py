@@ -11,10 +11,13 @@ from types import MappingProxyType
 from typing import Any, ClassVar, Final, Self, TypedDict
 
 from ..utils import (
-    SafeStr, StrPath, clean_html_attr_key, export_pretty_html, open_html_in_the_browser,
-    display_pretty_html_in_the_browser, pretty_format_html,
+    SafeStr,
+    StrPath,
+    clean_html_attr_key,
+    display_pretty_html_in_the_browser,
+    open_html_in_the_browser,
+    pretty_format_html,
     pretty_print_html,
-    save_pretty_html
 )
 
 type AttributesType = str | int | float | bool
@@ -118,10 +121,7 @@ class BaseTag:
         with_doctype: bool = False,
     ) -> str:
         """Pretty-print without escaping."""
-        return pretty_format_html(
-            self._render(), with_body=with_body,
-            with_head=with_head, with_doctype=with_doctype
-        )
+        return pretty_format_html(self._render(), with_body=with_body, with_head=with_head, with_doctype=with_doctype)
 
     def pretty_print(self) -> None:
         """Pretty-print and render HTML with syntax highlighting."""
