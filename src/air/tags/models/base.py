@@ -6,12 +6,13 @@ import html
 import json
 from collections.abc import Mapping
 from functools import cached_property
+from pathlib import Path
 from types import MappingProxyType
 from typing import Any, ClassVar, Final, Self, TypedDict
 
 from ..utils import (
-    SafeStr, StrPath, clean_html_attr_key, export_pretty_html, open_html_blob_in_the_browser,
-    open_pretty_html_in_the_browser, pretty_format_html,
+    SafeStr, StrPath, clean_html_attr_key, export_pretty_html, open_html_in_the_browser,
+    display_pretty_html_in_the_browser, pretty_format_html,
     pretty_print_html,
     save_pretty_html
 )
@@ -103,8 +104,11 @@ class BaseTag:
     def render(self) -> str:
         return self._render()
 
-    def open_in_the_browser(self) -> None:
-        open_html_blob_in_the_browser(self.pretty_render(with_body=True, with_doctype=True))
+    def render_in_the_browser(self) -> None:
+        open_html_in_the_browser(self.render())
+
+    def pretty_render_in_the_browser(self) -> None:
+        open_html_in_the_browser(self.pretty_render(with_body=True, with_doctype=True))
 
     def pretty_render(
         self,
@@ -123,14 +127,14 @@ class BaseTag:
         """Pretty-print and render HTML with syntax highlighting."""
         pretty_print_html(self.pretty_render())
 
+    def save(self, file_path: StrPath) -> None:
+        Path(file_path).write_text(self.render())
+
     def pretty_save(self, file_path: StrPath) -> None:
-        save_pretty_html(self.pretty_render(), file_path=file_path)
+        Path(file_path).write_text(self.pretty_render())
 
-    def pretty_open_in_the_browser(self) -> None:
-        open_pretty_html_in_the_browser(self.pretty_render())
-
-    def pretty_export(self) -> str:
-        return pretty_format_html(export_pretty_html(self.pretty_render()))
+    def pretty_display_in_the_browser(self) -> None:
+        display_pretty_html_in_the_browser(self.pretty_render(with_body=True, with_doctype=True))
 
     def _render(self) -> str:
         return self._render_paired()

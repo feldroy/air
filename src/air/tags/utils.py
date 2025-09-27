@@ -126,7 +126,7 @@ def open_html_blob_in_the_browser_old(html_source: str) -> None:
     _open_new_tab(url)
 
 
-def open_html_blob_in_the_browser(html_source: str, *, data_url_max: int = DATA_URL_MAX) -> None:
+def open_html_blob_in_the_browser_old2(html_source: str, *, data_url_max: int = DATA_URL_MAX) -> None:
     """
     Open an HTML string in the default browser.
 
@@ -150,9 +150,25 @@ def open_html_blob_in_the_browser(html_source: str, *, data_url_max: int = DATA_
         f.write(html_source)
         path = Path(f.name)
 
-    atexit.register(path.unlink, missing_ok=True)
     _open_new_tab(path.as_uri())
 
+def open_html_in_the_browser(html_source: str, *, data_url_max: int = DATA_URL_MAX) -> None:
+    """
+    Open an HTML string in the default browser.
+
+    Strategy:
+        write a temporary .html and open file://.
+
+    Raises:
+        BrowserOpenError: if the browser could not be launched.
+    """
+    source_bytes = html_source.encode()
+
+    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding="utf-8") as f:
+        f.write(html_source)
+        path = Path(f.name)
+
+    _open_new_tab(path.as_uri())
 
 def save_pretty_html(
     source: str,
@@ -164,12 +180,12 @@ def save_pretty_html(
     console.save_html(path=file_path)
 
 
-def open_pretty_html_in_the_browser(
+def display_pretty_html_in_the_browser(
     source: str,
     *,
     theme: str = DEFAULT_THEME,
 ) -> None:
-    open_html_blob_in_the_browser(export_pretty_html(source, theme=theme))
+    open_html_in_the_browser(export_pretty_html(source, theme=theme))
 
 
 def export_pretty_html(
