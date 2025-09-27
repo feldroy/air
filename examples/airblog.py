@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # /// script
 # dependencies = [
 #   "air",
@@ -57,10 +58,31 @@ def NavBar(request):
         air.A("Tags", href="/tags"),
     )
 
+=======
+import air
+from frontmatter import Frontmatter
+from pathlib import Path
+from rich import print
+from functools import cache
+import mistletoe
+
+app = air.Air()
+
+# @cache
+def list_articles() -> list[dict]:
+    articles = []
+    for path in Path('airblog-articles').glob('*.md'):
+        articles.append(Frontmatter.read_file(path))
+    
+    return sorted(articles, key=lambda x: x["attributes"]["date"], reverse=True)
+
+
+>>>>>>> 013941b (Bring in airblog as a project example)
 
 def BlogPostPreview(article, request):
     return air.Aside(
         air.H3(
+<<<<<<< HEAD
             air.A(
                 article["attributes"]["title"],
                 href=request.url_for("article_detail", slug=article["attributes"]["slug"]),
@@ -70,10 +92,20 @@ def BlogPostPreview(article, request):
         air.P(air.Small(article["attributes"]["date"])),
     )
 
+=======
+            air.A(article['attributes']['title'],
+                  href=request.url_for('article_detail', slug=article['attributes']['slug']))
+
+            ),
+        air.P(article['attributes']['description']),
+        air.P(air.Small(article['attributes']['date'])),
+    )
+>>>>>>> 013941b (Bring in airblog as a project example)
 
 @app.page
 async def index(request: air.Request):
     title = "AirBlog!"
+<<<<<<< HEAD
     return air.layouts.mvpcss(
         air.Title(title),
         air.Header(
@@ -159,3 +191,40 @@ if __name__ == "__main__":
     print("[bold]Demo server starting...[/bold]")  # noqa
     print("[bold]Open http://localhost:8005 in your browser[/bold]")
     uvicorn.run("airblog:app", host="127.0.0.1", port=8005, reload=True)
+=======
+    print(list_articles())
+    return air.layouts.mvpcss(
+        air.Title(title),
+        air.H1(title),
+        air.P("Your go-to platform for blogging with Air."),
+        air.Section(
+            *[BlogPostPreview(x, request) for x in list_articles()]
+        )
+    )
+
+def get_article(slug: str) -> None:
+    for article in list_articles():
+        if article['attributes']['slug'].strip() == slug.strip():
+            return article
+    
+    # Also can be done with:
+        # next((x for x in list_articles() if x['attributes']["slug"] == slug), None)
+    return None
+
+@app.get('/article/{slug}')
+async def article_detail(slug: str):
+    article = get_article(slug)
+    return air.layouts.mvpcss(
+        air.Title(article['attributes']['title']),
+        air.H1(article['attributes']['title']),
+        air.P(
+            air.I(article['attributes'].get('description'))),
+            air.Time(air.Small(article['attributes']['date'])
+        ),
+        air.Article(
+            air.Raw(mistletoe.markdown(article['body']))
+        )
+    )
+
+
+>>>>>>> 013941b (Bring in airblog as a project example)
