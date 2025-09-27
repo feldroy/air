@@ -4,9 +4,9 @@ Welcome! If you're looking to build a modern web app that combines beautiful HTM
 
 ## Project AirBlog
 
-We're going to create a simple blogging platform called AirBlog. It will have:
+We're going to create a markdown file-powered blogging platform called AirBlog. It will have:
 
-1. A web interface for reading and writing blog posts.
+1. A web interface for reading blog posts.
 2. A REST API for programmatic access to blog posts.
 
 ## Prerequisites:
@@ -80,9 +80,9 @@ fastapi dev
 
 Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>
 
-!!! question "Why are we using fastapi to start Air?"
+!!! question "Why are we using fastapi to run Air?"
 
-    Air is built on top of FastAPI, so we use the `fastapi` command to run our Air application. This allows us to leverage FastAPI's powerful features while enjoying the simplicity and elegance of Air for building our web pages.
+    Air is built on top of FastAPI, so we use the `fastapi` CLI command to run our Air application. This allows us to leverage FastAPI's powerful features while enjoying the simplicity and elegance of Air for building our web pages.
 
 ## Want to learn more?
 
