@@ -4,14 +4,13 @@ import collections
 
 import air
 from frontmatter import Frontmatter
-from rich import print
 import mistletoe
 
 app = air.Air()
 
 
 @cache
-def list_articles() -> list[dict]:
+def get_articles() -> list[dict]:
     articles = []
     for path in Path("airblog-articles").glob("*.md"):
         articles.append(Frontmatter.read_file(path))
@@ -20,7 +19,7 @@ def list_articles() -> list[dict]:
 
 @cache
 def get_tags() -> dict[str, int]:
-    articles = list_articles()
+    articles = get_articles()
     unsorted_tags = {}
     for article in articles:
         for tag in article["attributes"].get("tags", []):
@@ -55,7 +54,6 @@ def BlogPostPreview(article, request):
 @app.page
 async def index(request: air.Request):
     title = "AirBlog!"
-    print(list_articles())
     return air.layouts.mvpcss(
         air.Title(title),
         air.Header(
@@ -63,17 +61,30 @@ async def index(request: air.Request):
             air.H1(title),
             air.P("Your go-to platform for blogging with Air."),
         ),
-        air.Section(*[BlogPostPreview(x, request) for x in list_articles()]),
+        air.Section(*[BlogPostPreview(x, request) for x in get_articles()]),
+        air.Ul(
+            *[
+                air.Li(
+                    air.A(
+                        article["attributes"]["title"],
+                        href=f'/{article["attributes"]["slug"]}',
+                    ),
+                    air.Br(),
+                    article["attributes"]["description"],
+                )
+                for article in get_articles()
+            ]
+        )        
     )
 
 
 def get_article(slug: str) -> None:
-    for article in list_articles():
+    for article in get_articles():
         if article["attributes"]["slug"].strip() == slug.strip():
             return article
 
     # Also can be done with:
-    # next((x for x in list_articles() if x['attributes']["slug"] == slug), None)
+    # next((x for x in get_articles() if x['attributes']["slug"] == slug), None)
     return None
 
 
@@ -122,7 +133,7 @@ def tags(request: air.Request):
 
 @app.get("/tag/{slug}")
 def tag(slug: str, request: air.Request):
-    articles = (x for x in list_articles() if slug in x["attributes"]["tags"])
+    articles = (x for x in get_articles() if slug in x["attributes"]["tags"])
     return air.layouts.mvpcss(
         air.Title(f"Tag: {slug}"),
         air.Header(
