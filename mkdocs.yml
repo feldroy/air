@@ -78,7 +78,7 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
-    - navigation.tabs
+    - navigation.tabs    
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -107,6 +107,8 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
 
 plugins:
   - search
@@ -121,3 +123,6 @@ plugins:
             docstring_options:
               ignore_init_summary: true
             merge_init_into_class: true
+  - redirects:
+      redirect_maps:
+        'roadmap.md': 'about/roadmap.md'
