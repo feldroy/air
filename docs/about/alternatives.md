@@ -1,4 +1,4 @@
-# Alternatives, Inspiration, and Comparisons
+# Alternatives and Inspirations
 
 Air was built on the shoulders of giants. Here we discuss what inspired Air and the tools that serve as dependencies for Air.
 
