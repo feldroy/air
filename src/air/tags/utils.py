@@ -9,9 +9,12 @@ import webbrowser
 from io import StringIO
 from os import PathLike
 from pathlib import Path
-from typing import Any, Final
+from typing import TYPE_CHECKING, Any, Final
 
 type StrPath = PathLike | Path | str
+
+if TYPE_CHECKING:
+    from rich.console import Console
 
 EXTRA_FEATURE_PRETTY_ERROR_MESSAGE: Final = (
     "Extra feature 'pretty' is not installed. Install with: `uv add air[pretty]`"
@@ -79,8 +82,8 @@ def format_html(
             etree,  # ty: ignore[unresolved-import]
             html as l_html,
         )
-    except ModuleNotFoundError as exc:
-        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from exc
+    except ModuleNotFoundError:
+        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
     else:
         if with_body:
             source = l_html.document_fromstring(source, ensure_head_body=with_head)
@@ -175,7 +178,7 @@ def save_pretty_html(
     file_path: StrPath,
 ) -> None:
     console = _get_pretty_html_console(source, theme=theme, record=True)
-    console.save_html(path=file_path)
+    console.save_html(path=str(file_path))
 
 
 def display_pretty_html_in_the_browser(
@@ -219,15 +222,15 @@ def _get_pretty_html_console(
     *,
     theme: str = DEFAULT_THEME,
     record: bool = False,
-) -> "Console":
+) -> Console:
     try:
         from rich import box
         from rich.console import Console
         from rich.panel import Panel
         from rich.syntax import Syntax
         from rich.text import Text
-    except ModuleNotFoundError as exc:
-        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from exc
+    except ModuleNotFoundError:
+        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
     else:
         syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
         title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
