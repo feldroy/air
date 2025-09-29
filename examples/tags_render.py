@@ -67,5 +67,10 @@ if __name__ == "__main__":
     # Extra
     print(repr(HTML_SAMPLE.from_dict(HTML_SAMPLE.to_dict())))
     print(repr(HTML_SAMPLE.from_json(HTML_SAMPLE.to_json())))
+
+    # New for PR: 512
+    HTML_SAMPLE.save(".HTML_SAMPLE.html")
+    HTML_SAMPLE.pretty_save(".HTML_SAMPLE.html")
+    HTML_SAMPLE.render_in_the_browser()
     HTML_SAMPLE.pretty_render_in_the_browser()
     HTML_SAMPLE.pretty_display_in_the_browser()
