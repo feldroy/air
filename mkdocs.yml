@@ -60,7 +60,7 @@ nav:
 
   - About:
     - about/index.md
-    - about/alternatives.md
+    - about/inspirations.md
     - about/help_air.md
     - about/roadmap.md    
 
@@ -125,4 +125,5 @@ plugins:
             merge_init_into_class: true
   - redirects:
       redirect_maps:
+        'about/alternatives.md': 'about/inspirations.md'
         'roadmap.md': 'about/roadmap.md'
