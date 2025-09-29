@@ -10,6 +10,7 @@ from io import StringIO
 from os import PathLike
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final
+from urllib.error import URLError
 
 type StrPath = PathLike | Path | str
 
@@ -26,7 +27,8 @@ PANEL_TITLE: Final = "Air → HTML"
 PANEL_TITLE_STYLE: Final = "italic bold"
 PANEL_BORDER_STYLE: Final = "bright_magenta"
 SYNTAX_LEXER: Final = "html"
-DATA_URL_MAX: Final[int] = 23_973
+DATA_URL_MAX: Final[int] = 32_000
+BLOB_URL_PRESET = "data:text/html;charset=utf-8;base64,"
 
 
 class BrowserOpenError(RuntimeError):
@@ -120,38 +122,12 @@ def _open_new_tab(url: str) -> None:
         raise BrowserOpenError(msg)
 
 
-# TODO -> Remove
-def open_html_blob_in_the_browser_old(html_source: str) -> None:
-    data = base64.b64encode(html_source.encode()).decode("ascii")
-    url = "data:text/html;charset=utf-8;base64," + data
-    _open_new_tab(url)
-
-
-def open_html_blob_in_the_browser_old2(html_source: str, *, data_url_max: int = DATA_URL_MAX) -> None:
-    """
-    Open an HTML string in the default browser.
-
-    Strategy:
-      1) Try a data: URL for small content.
-      2) Fallback: write a temporary .html and open file://.
-
-    Raises:
-        BrowserOpenError: if the browser could not be launched.
-    """
+def open_html_blob_in_the_browser(html_source: str, *, data_url_max: int = DATA_URL_MAX) -> None:
     source_bytes = html_source.encode()
-
-    # 1) data: URL for small pages (fast, no disk I/O)
-    if len(source_bytes) <= data_url_max:
-        url = "data:text/html;charset=utf-8;base64," + base64.b64encode(source_bytes).decode("ascii")
-        _open_new_tab(url)
-        return
-
-    # 2) Fallback: temp file + file:// URL (reliable)
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding="utf-8") as f:
-        f.write(html_source)
-        path = Path(f.name)
-
-    _open_new_tab(path.as_uri())
+    url = BLOB_URL_PRESET + base64.b64encode(source_bytes).decode("ascii")
+    if len(url) >= data_url_max:
+        raise URLError("html_source is to long!")
+    _open_new_tab(url)
 
 
 def open_html_in_the_browser(html_source: str) -> None:
