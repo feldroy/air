@@ -12,11 +12,24 @@ cd helloair
 uv venv
 source .venv/bin/activate
 uv init
-uv add "air[standard]"
+uv add air
+uv add "fastapi[standard]"
 ```
 
-> [!TIP]
-> You can also do `pip install -U air` or `conda install air -c conda-forge`, and similar for fastapi[standard], in any project directory.
+!!! note
+    You can also do:
+
+    ```sh
+    pip install -U air "fastapi[standard]"
+    ```
+
+    or even 
+
+    ```sh
+    conda install air -c conda-forge
+    conda install "fastapi[standard]" -c conda-forge
+    ```
+
 
 ## Hello, Air! Example
 
@@ -69,7 +82,7 @@ def index():
 def air_is_grounded():
     return air.layouts.mvpcss(
         air.H1("Air is Grounded"),
-        air.P("Built on industry standard libraries including:")
+        air.P("Built on industry standard libraries including:"),
         air.Ul(
             air.Li('FastAPI'),
             air.Li('Starlette'),
@@ -89,7 +102,7 @@ async def form_handler(request: air.Request): # (1)!
 
 To expedite `HTTP GET` pages we provide the `app.page` decorator, which can replace the `app.get()` decorator for views without arguments. `app.page` converts the name of the function to the route, converting underscores to dashes:
 
-```python hl_lines="5-6 12-12"
+```python hl_lines="5-6 12-13"
 import air
 
 app = air.Air()
@@ -105,7 +118,7 @@ def index(): # (1)!
 def air_is_grounded(): # (2)!
     return air.layouts.mvpcss(
         air.H1("Air is Grounded"),
-        air.P("Built on industry standard libraries including:")
+        air.P("Built on industry standard libraries including:"),
         air.Ul(
             air.Li('FastAPI'),
             air.Li('Starlette'),
