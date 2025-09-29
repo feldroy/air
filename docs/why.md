@@ -70,7 +70,7 @@ Actually, there are a lot more reasons, but we got tired of editing this page an
 
 ## More Information
 
-- **[Alternatives, Inspiration, and Comparisons](../about/alternatives)**
+- **[Alternatives and Inspirations](../about/alternatives)**
 
 - **<a href="https://docs.google.com/document/d/1CaAqTYmK7gXTHxkQ-SaMndJV7vev-34cvEBe1kKESQU/edit?tab=t.0#heading=h.7lt9l234j1zc" target="_blank">Original December 2023 Design Document for what became Air</a>**
 
