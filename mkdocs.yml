@@ -70,6 +70,7 @@ theme:
   name: material
   features:
     - content.code.copy
+    - content.code.annotate    
     - content.tabs.link
     - navigation.indexes
     - navigation.instant
