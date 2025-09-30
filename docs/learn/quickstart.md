@@ -131,6 +131,22 @@ def air_is_grounded(): # (2)!
 1. `app.page` used over functions named `index` are converted to the `/` route.
 2. `app.page` used over functions are converted to a route based on their name, with underscores converted to dashes. 
 
+## Using Jinja with Air Tags
+
+TODO
+
+## JavaScript Files and Inline Scripts
+
+Here's how to call external JavaScript files or add inline scripts:
+
+
+```python
+import 
+
+```
+
+
+
 ## Want to learn more?
 
 Check out these documentation sections:
