@@ -376,7 +376,7 @@ class Air(FastAPI):
                 return H1("I am the home page")
 
             @app.page
-            def about_us(): # routes is "/about-us"
+            def about_us(): # routes is "/about/us"
                 return H1("I am the about page")
         """
         page_path = compute_page_path(func.__name__)

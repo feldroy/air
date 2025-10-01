@@ -14,5 +14,5 @@ default_generate_unique_id: Final = Default(generate_unique_id)
 
 
 def compute_page_path(endpoint_name: str) -> str:
-    """index -> '/', otherwise '/name-with-dashes'."""
-    return "/" if endpoint_name == "index" else f"/{endpoint_name.replace('_', '-')}"
+    """index -> '/', otherwise '/name/with/slashes'."""
+    return "/" if endpoint_name == "index" else f"/{endpoint_name.replace('_', '/')}"
