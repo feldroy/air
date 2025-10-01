@@ -221,3 +221,20 @@ Check out these documentation sections:
 
 - [Learn](/learn)
 - [API Reference](/api)
+
+## Future Segments
+
+What we plan to include in the Quick Start:
+
+- [ ] Jinja
+- [ ] The Jinja + Air Tags pattern the core devs love to use
+- [ ] Forms
+- [ ] HTMX basics
+- [ ] Variables in URLs
+- [ ] Variables in paths
+- [ ] Custom exception handlers
+- [ ] Sessions
+- [ ] Cookies
+- [ ] File uploads (part of forms)
+- [ ] Large File downloads
+- [ ] Server Sent Events
