@@ -247,7 +247,7 @@ def test_renderer_with_installed_package_and_children() -> None:
         == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
     )
 
-    response = client.get("/airtag-without-request")
+    response = client.get("/airtag/without/request")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
@@ -326,7 +326,7 @@ def test_Renderer_render_template_with_air_tags() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-with-tags")
+    response = client.get("/test/with/tags")
 
     assert response.status_code == 200
     assert "Test content" in response.text
@@ -359,7 +359,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-page")
+    response = client.get("/test/page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"

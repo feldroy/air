@@ -78,7 +78,7 @@ def test_page_decorator() -> None:
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Home page</h1>"
 
-    response = client.get("/about-us")
+    response = client.get("/about/us")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About page</h1>"
