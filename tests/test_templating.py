@@ -233,7 +233,7 @@ def test_renderer_with_installed_package_and_children() -> None:
             request=request,
         )
 
-    @app.page
+    @app.page(separator="-")
     def airtag_without_request() -> str:
         return render(".layouts.mvpcss", air.Title("Test Page"), air.H1("Hello, World"))
 
@@ -247,7 +247,7 @@ def test_renderer_with_installed_package_and_children() -> None:
         == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
     )
 
-    response = client.get("/airtag/without/request")
+    response = client.get("/airtag-without-request")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (

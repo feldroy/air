@@ -72,6 +72,10 @@ def test_page_decorator() -> None:
     def about_us() -> str:
         return "<h1>About page</h1>"
 
+    @page(separator="-")
+    def contact_us() -> str:
+        return "<h1>Contact page</h1>"
+
     client = TestClient(app)
     response = client.get("/")
     assert response.status_code == 200
@@ -82,6 +86,11 @@ def test_page_decorator() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About page</h1>"
+
+    response = client.get("/contact-us")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Contact page</h1>"
 
 
 def test_air_404_response() -> None:
