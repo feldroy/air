@@ -35,7 +35,7 @@ uv add "fastapi[standard]"
 
 Create a `main.py` file in your new directory with:
 
-```python
+```python title="main.py"
 import air
 
 app = air.Air()
@@ -62,11 +62,15 @@ Here's a few interesting things about this page:
 2. The Python for this app is similar in design to how FastAPI code is written
 3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
 
-## Routing: Basics
+## Routing
 
-Air wraps FastAPI so you can use the same decorator patterns for specifying URL:
+Routing is how users on paths are directed to the correct 'view' function that handles their request.
 
-```python
+### Basics
+
+Air wraps FastAPI so you can use the same decorator patterns for specifying URLs:
+
+```python  hl_lines="5 12 25"
 import air
 
 app = air.Air()
@@ -98,7 +102,7 @@ async def form_handler(request: air.Request): # (1)!
 
 1. Form handling in Air requires `async` functions and usually an `air.Request` argument. We cover forms later on this page as well as in numerous places across the Air documentation.
 
-## Routing: app.page decorator
+### app.page decorator
 
 To expedite `HTTP GET` pages we provide the `app.page` decorator, which can replace the `app.get()` decorator for views without arguments. `app.page` converts the name of the function to the route, converting underscores to dashes:
 
@@ -131,21 +135,85 @@ def air_is_grounded(): # (2)!
 1. `app.page` used over functions named `index` are converted to the `/` route.
 2. `app.page` used over functions are converted to a route based on their name, with underscores converted to dashes. 
 
-## Using Jinja with Air Tags
+## Air Tags
 
-TODO
-
-## JavaScript Files and Inline Scripts
-
-Here's how to call external JavaScript files or add inline scripts:
+[Air Tags](learn/air_tags) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
 
 
-```python
-import 
+### JavaScript Files
 
+Using Air Tags to call external JavaScript files:
+
+```python hl_lines="7"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Script(src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js")
 ```
 
+### Inline Scripts
 
+When you need to use JavaScript inline in Air Tags:
+
+
+```python hl_lines="7"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Script("alert('The Last Airbender is an awesome series.')")
+```
+
+### CSS Files
+
+Here's how to use Air Tags to call external CSS files:
+
+```python hl_lines="9"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Html(
+        air.Head(
+            air.Link(rel="stylesheet", href="https://unpkg.com/mvp.css"),
+        ),
+        air.Body(
+            air.Main(
+                air.H1("Air Web Framework"),
+                air.P("The web framework for Air Nomads.")
+            )
+        )
+    )
+```
+
+### Inline CSS Styles
+
+Inline CSS styles via Air are a good way to control design elements at runtime.
+
+```python hl_lines="9"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Html(
+        air.Head(
+            air.Style("h1 {color: red;}"),
+        ),
+        air.Body(
+            air.H1("Air Web Framework"),
+            air.P("The web framework for Air Nomads.")
+        )
+    )
+```
 
 ## Want to learn more?
 
