@@ -356,7 +356,9 @@ class Air(FastAPI):
             **extra,
         )
 
-    def page(self, func: FunctionType) -> FunctionType:
+    def page(
+        self, func: FunctionType | None = None, separator: str = "/"
+    ) -> Callable[[FunctionType], FunctionType] | FunctionType:
         """Decorator that creates a GET route using the function name as the path.
 
         If the name of the function is "index", then the route is "/".
@@ -378,11 +380,20 @@ class Air(FastAPI):
             @app.page
             def about_us(): # routes is "/about/us"
                 return H1("I am the about page")
-        """
-        page_path = compute_page_path(func.__name__)
 
-        # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(page_path)(func)
+            @app.page(separator="-")
+            def contact_us(): # routes is "/contact-us"
+                return H1("I am the about page")
+        """
+
+        def decorator(f: FunctionType) -> Callable[..., Any]:
+            page_path = compute_page_path(f.__name__, separator=separator)
+
+            # Pin the route's response_class for belt-and-suspenders robustness
+            return self.get(page_path)(f)
+
+        # Handle both @app.page and @app.page(separator="-")
+        return decorator(func) if func else decorator
 
     def get(
         self,

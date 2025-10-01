@@ -13,6 +13,6 @@ default_json_response: Final = Default(JSONResponse)
 default_generate_unique_id: Final = Default(generate_unique_id)
 
 
-def compute_page_path(endpoint_name: str) -> str:
+def compute_page_path(endpoint_name: str, separator: str = "/") -> str:
     """index -> '/', otherwise '/name/with/slashes'."""
-    return "/" if endpoint_name == "index" else f"/{endpoint_name.replace('_', '/')}"
+    return "/" if endpoint_name == "index" else f"/{endpoint_name.replace('_', separator)}"
