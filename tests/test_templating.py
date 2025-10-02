@@ -220,7 +220,7 @@ def test_Renderer_without_request_for_components() -> None:
 
 def test_renderer_with_installed_package_and_children() -> None:
     """Test the Renderer class."""
-    app = air.Air()
+    app = air.Air(path_separator="-")
 
     render = air.Renderer(directory="tests/templates", package="air")
 
@@ -233,7 +233,7 @@ def test_renderer_with_installed_package_and_children() -> None:
             request=request,
         )
 
-    @app.page(separator="-")
+    @app.page
     def airtag_without_request() -> str:
         return render(".layouts.mvpcss", air.Title("Test Page"), air.H1("Hello, World"))
 
