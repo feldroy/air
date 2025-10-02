@@ -7,7 +7,7 @@ from collections.abc import Awaitable, Callable, Coroutine, Sequence
 from enum import Enum
 from functools import wraps
 from types import FunctionType
-from typing import Annotated, Any, TypeVar
+from typing import Annotated, Any, Literal, TypeVar
 
 from fastapi import FastAPI, routing
 from fastapi.params import Depends
@@ -43,6 +43,7 @@ class Air(FastAPI):
         on_shutdown: A list of shutdown event handler functions.
         lifespan: A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
+        path_separator: An optional path seperator, default to "/". valid option available ["/", "-"]
     Example:
 
         import air
@@ -319,6 +320,7 @@ class Air(FastAPI):
                 """
             ),
         ] = None,
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "/",
         **extra: Annotated[
             Any,
             Doc(
@@ -334,6 +336,7 @@ class Air(FastAPI):
         This preserves all FastAPI initialization parameters while setting
         AirResponse as the default response class.
         """
+        self.path_separator = path_separator
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
@@ -357,8 +360,9 @@ class Air(FastAPI):
         )
 
     def page(
-        self, func: FunctionType | None = None, separator: str = "/"
-    ) -> Callable[[FunctionType], FunctionType] | FunctionType:
+        self,
+        func: FunctionType,
+    ) -> FunctionType:
         """Decorator that creates a GET route using the function name as the path.
 
         If the name of the function is "index", then the route is "/".
@@ -381,19 +385,11 @@ class Air(FastAPI):
             def about_us(): # routes is "/about/us"
                 return H1("I am the about page")
 
-            @app.page(separator="-")
-            def contact_us(): # routes is "/contact-us"
-                return H1("I am the about page")
         """
+        page_path = compute_page_path(func.__name__, separator=self.path_separator)
 
-        def wrapper(f: FunctionType) -> Callable[..., Any]:
-            page_path = compute_page_path(f.__name__, separator=separator)
-
-            # Pin the route's response_class for belt-and-suspenders robustness
-            return self.get(page_path)(f)
-
-        # Handle both @app.page and @app.page(separator="-")
-        return wrapper(func) if func else wrapper
+        # Pin the route's response_class for belt-and-suspenders robustness
+        return self.get(page_path)(func)
 
     def get(
         self,

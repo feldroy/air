@@ -8,6 +8,7 @@ from types import FunctionType
 from typing import (
     Annotated,
     Any,
+    Literal,
 )
 
 from fastapi import params
@@ -264,7 +265,9 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = default_generate_unique_id,
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "/",
     ) -> None:
+        self.path_separator = path_separator
         if default is None:
             default = Air
         super().__init__(
@@ -290,9 +293,7 @@ class AirRouter(APIRouter):
             assert prefix.startswith("/"), "A path prefix must start with '/'"
             assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
 
-    def page(
-        self, func: FunctionType | None = None, separator: str = "/"
-    ) -> Callable[[FunctionType], FunctionType] | FunctionType:
+    def page(self, func: FunctionType) -> FunctionType:
         """Decorator that creates a GET route using the function name as the path.
 
         If the name of the function is "index", then the route is "/".
@@ -316,21 +317,12 @@ class AirRouter(APIRouter):
             def about_us(): # routes is "/about-us"
                 return H1("I am the about page")
 
-            @router.page(separator="-")
-            def contact_us(): # routes is "/contact-us"
-                return H1("I am the about page")
-
             app.include_router(router)
         """
+        page_path = compute_page_path(func.__name__, separator=self.path_separator)
 
-        def wrapper(f: FunctionType) -> Callable[..., Any]:
-            page_path = compute_page_path(f.__name__, separator=separator)
-
-            # Pin the route's response_class for belt-and-suspenders robustness
-            return self.get(page_path)(f)
-
-        # Handle both @app.page and @app.page(separator="-")
-        return wrapper(func) if func else wrapper
+        # Pin the route's response_class for belt-and-suspenders robustness
+        return self.get(page_path)(func)
 
     def get(
         self,
