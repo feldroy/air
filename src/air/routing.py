@@ -24,8 +24,22 @@ from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc
 
 from .applications import Air, MaybeAwaitable
+from .requests import Request
 from .responses import AirResponse
 from .utils import compute_page_path, default_generate_unique_id
+
+
+class AirRoute(APIRoute):
+    """Custom APIRoute that uses Air's custom Request class."""
+
+    def get_route_handler(self) -> Callable:
+        original_route_handler = super().get_route_handler()
+
+        async def custom_route_handler(request: Any) -> Response:
+            request = Request(request.scope, request.receive)
+            return await original_route_handler(request)
+
+        return custom_route_handler
 
 
 class AirRouter(APIRouter):
