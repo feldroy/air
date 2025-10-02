@@ -24,7 +24,7 @@ from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS
 from .responses import AirResponse
 from .utils import compute_page_path
 
-AppType = TypeVar("AppType", bound="FastAPI")
+AppType = TypeVar("AppType", bound="Air")
 type MaybeAwaitable[T] = T | Awaitable[T]
 
 
