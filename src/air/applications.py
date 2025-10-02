@@ -386,14 +386,14 @@ class Air(FastAPI):
                 return H1("I am the about page")
         """
 
-        def decorator(f: FunctionType) -> Callable[..., Any]:
+        def wrapper(f: FunctionType) -> Callable[..., Any]:
             page_path = compute_page_path(f.__name__, separator=separator)
 
             # Pin the route's response_class for belt-and-suspenders robustness
             return self.get(page_path)(f)
 
         # Handle both @app.page and @app.page(separator="-")
-        return decorator(func) if func else decorator
+        return wrapper(func) if func else wrapper
 
     def get(
         self,
