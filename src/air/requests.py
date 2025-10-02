@@ -8,19 +8,49 @@ from starlette.requests import Request as _Request
 
 
 class HtmxDetails:
+    """This class is attached to every Request served by Air, and provides tooling for using HTMX.
+    """
     def __init__(self, request: _Request) -> None:
         self.request = request
         self.headers = request.headers
 
     def __bool__(self) -> bool:
-        return self.is_htmx
+        """True if the request was made with htmx, otherwise False. Detected by checking if the HX-Request header equals true.
+        
+        This method allows you to change content for requests made with htmx:
+
+        Example:
+        
+            import air
+            from random import randint
+
+            app = air.Air()
+
+
+            @app.page
+            def index(request: air.Request):
+                
+                if request.htmx:
+                    return air.H1(
+                        "Click me: ", randint(1, 100),
+                        id="number",
+                        hx_get="/",
+                        hx_swap="outerHTML"
+                    )
+                return air.layouts.mvpcss(
+                    air.H1(
+                        "Click me: ", randint(1, 100),
+                        id="number",
+                        hx_get="/",
+                        hx_swap="outerHTML"
+                    )                    
+                )
+        """
+
+        return self.headers.get("HX-Request") == "true"
 
     def __str__(self) -> str:
-        return str(self.is_htmx)
-
-    @property
-    def is_htmx(self):
-        return self.headers.get("HX-Request") == "true"
+        return str(self.__bool__)
 
     @property
     def boosted(self) -> bool:
