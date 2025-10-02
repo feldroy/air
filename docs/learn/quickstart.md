@@ -135,6 +135,52 @@ def air_is_grounded(): # (2)!
 1. `app.page` used over functions named `index` are converted to the `/` route.
 2. `app.page` used over functions are converted to a route based on their name, with underscores converted to dashes. 
 
+### Variables in Paths
+
+Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete`  function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function. 
+
+```python hl_lines="5-6"
+import air
+
+app = air.Air()
+
+@app.get('/users/{username}') # (1)!
+def user_detail(username: str): # (2)!
+    return air.layouts.mvpcss(
+        air.Title(username),
+        air.H1(username)
+    )
+```
+
+1. We've specified a variable called `username`.
+2. We have defined a function argument named `username`, which is identical to the variable specified in the decorator. We also specified the Python type in this definition.
+
+Try it out by going to <http://localhost:8000/users/Aang>
+
+### Variables in URLs
+
+If you specify variables in in the function definition but not the function decorator, those become URL parameters. 
+
+The function receives the `{variable}` so long as it is the correct type specified by the function. 
+
+```python hl_lines="6"
+import air
+
+app = air.Air()
+
+@app.get('/users')
+def user_detail(username: str): # (1)!
+    return air.layouts.mvpcss(
+        air.Title(username),
+        air.H1(username)
+    )
+```
+
+1. We have defined a function argument named `username`, which is identical to the variable specified in the decorator. We also specified the Python type in this definition.
+
+Try it out by going to <http://localhost:8000/users/?username=Aang>
+
+
 ## Air Tags
 
 [Air Tags](learn/air_tags) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
@@ -230,8 +276,8 @@ What we plan to include in the Quick Start:
 - [ ] The Jinja + Air Tags pattern the core devs love to use
 - [ ] Forms
 - [ ] HTMX basics
-- [ ] Variables in URLs
-- [ ] Variables in paths
+- [x] Routing: Variables in URLs
+- [x] Routing: Variables in paths
 - [ ] Custom exception handlers
 - [ ] Sessions
 - [ ] Cookies
