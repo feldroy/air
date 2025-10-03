@@ -15,7 +15,7 @@ class HtmxDetails:
         self.headers = request.headers
 
     def __bool__(self) -> bool:
-        """True if the request was made with htmx, otherwise False. Detected by checking if the HX-Request header equals true.
+        """`True` if the request was made with htmx, otherwise `False`. Detected by checking if the `HX-Request` header equals `true`.
         
         This method allows you to change content for requests made with htmx:
 
@@ -54,6 +54,22 @@ class HtmxDetails:
 
     @property
     def boosted(self) -> bool:
+        """`True` if the request came from an element with the `hx-boost` attribute. Detected by checking if the `HX-Boosted` header equals `true`.
+        
+        Example:
+
+            import air
+            from random import randint
+
+            app = air.Air()
+
+
+            @app.page
+            def index(request: air.Request):
+                
+                if request.htmx.boosted:
+                    # Do something here         
+        """
         return self.headers.get("HX-Boosted") == "true"
 
     @property
