@@ -123,7 +123,7 @@ lint OUTPUT_FORMAT="full":
     # Avoid writing any formatted files back; instead, exit with a non-zero
     # status code if any files would have been modified, and zero otherwise,
     # and the difference between the current file and how the formatted file would look like.
-    just run -- ruff format --diff .
+    just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
     # Check for lint violations
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
 
