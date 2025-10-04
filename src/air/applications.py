@@ -331,12 +331,17 @@ class Air(FastAPI):
     ) -> None:
         """Initialize Air app with AirResponse as default response class.
 
-        This preserves all FastAPI initialization parameters while setting
-        AirResponse as the default response class.
+        This preserves all FastAPI initialization parameters while setting:
+            - AirResponse as the default response class.
+            - AirRoute as the default route class.
         """
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
+
+        # Imported here to avoid circular imports
+        from .routing import AirRoute
+
         super().__init__(  # ty: ignore [invalid-super-argument]
             debug=debug,
             routes=routes,
@@ -355,6 +360,8 @@ class Air(FastAPI):
             deprecated=deprecated,
             **extra,
         )
+
+        self.router.route_class = AirRoute
 
     def page(self, func: FunctionType) -> FunctionType:
         """Decorator that creates a GET route using the function name as the path.
