@@ -4,22 +4,22 @@ from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from air.applications import Air
-from air.ext import sql
+from air.ext import sqlmodel
 
 
 def test_create_sync_engine() -> None:
-    engine = sql.create_sync_engine()
+    engine = sqlmodel.create_sync_engine()
     assert isinstance(engine, Engine)
 
 
 def test_create_async_engine() -> None:
-    engine = sql.create_async_engine()
+    engine = sqlmodel.create_async_engine()
     assert isinstance(engine, AsyncEngine)
 
 
 @pytest.mark.asyncio
 async def test_create_async_session() -> None:
-    session_factory = await sql.create_async_session()
+    session_factory = await sqlmodel.create_async_session()
     assert isinstance(session_factory, async_sessionmaker)
 
 
@@ -27,7 +27,7 @@ async def test_create_async_session() -> None:
 async def test_get_async_session() -> None:
     """Test that get_async_session yields an AsyncSession and properly closes it."""
     # Test the async generator the way it's meant to be used with async context manager
-    async for session in sql.get_async_session():
+    async for session in sqlmodel.get_async_session():
         # Check that we got an AsyncSession
         assert isinstance(session, AsyncSession)
         assert session.is_active is True
@@ -42,7 +42,7 @@ async def test_get_async_session() -> None:
 async def test_get_async_session_with_custom_params() -> None:
     """Test get_async_session with custom URL and echo parameters."""
     # Test with custom parameters
-    async for session in sql.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=sql._EchoEnum.FALSE):
+    async for session in sqlmodel.get_async_session(url="sqlite+aiosqlite:///:memory:", echo=sqlmodel._EchoEnum.FALSE):
         assert isinstance(session, AsyncSession)
         break
 
@@ -54,7 +54,7 @@ async def test_get_object_or_404():
     from sqlmodel import Field, SQLModel
 
     from air.exceptions import ObjectDoesNotExist
-    from air.ext.sql import create_async_session
+    from air.ext.sqlmodel import create_async_session
 
     # Define a simple test model
     class TestUser(SQLModel, table=True):
@@ -79,25 +79,27 @@ async def test_get_object_or_404():
         await session.commit()
 
         # Test successful retrieval
-        found_user = await sql.get_object_or_404(session, TestUser, TestUser.id == 1)
+        found_user = await sqlmodel.get_object_or_404(session, TestUser, TestUser.id == 1)
         assert found_user.id == 1
         assert found_user.name == "John Doe"
         assert found_user.email == "john@example.com"
 
         # Test with multiple conditions
-        found_user2 = await sql.get_object_or_404(session, TestUser, TestUser.id == 2, TestUser.name == "Jane Smith")
+        found_user2 = await sqlmodel.get_object_or_404(
+            session, TestUser, TestUser.id == 2, TestUser.name == "Jane Smith"
+        )
         assert found_user2.id == 2
         assert found_user2.name == "Jane Smith"
 
         # Test ObjectDoesNotExist exception for non-existent record
         with pytest.raises(ObjectDoesNotExist) as exc_info:
-            await sql.get_object_or_404(session, TestUser, TestUser.id == 999)
+            await sqlmodel.get_object_or_404(session, TestUser, TestUser.id == 999)
 
         assert exc_info.value.status_code == 404
 
         # Test ObjectDoesNotExist exception with multiple conditions
         with pytest.raises(ObjectDoesNotExist) as exc_info:
-            await sql.get_object_or_404(session, TestUser, TestUser.id == 1, TestUser.name == "Wrong Name")
+            await sqlmodel.get_object_or_404(session, TestUser, TestUser.id == 1, TestUser.name == "Wrong Name")
 
         assert exc_info.value.status_code == 404
 
@@ -108,7 +110,7 @@ async def test_async_db_lifespan():
     app = Air()
 
     # Test that the lifespan runs without error
-    async with sql.async_db_lifespan(app):
+    async with sqlmodel.async_db_lifespan(app):
         # Inside the lifespan context, we should be able to proceed normally
         pass
     # The lifespan should complete successfully
