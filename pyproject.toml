@@ -9,7 +9,7 @@ authors = [
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.12,<3.14"
+requires-python = ">=3.12,<3.15"
 urls.Homepage = "https://github.com/feldroy/air"
 urls.Docs = "https://feldroy.github.io/air/"
 urls.Issues = "https://github.com/feldroy/air/issues"
@@ -32,6 +32,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 
 dependencies = [
@@ -448,7 +449,7 @@ root = ["./src", "."]
 # Freeze analysis semantics across dev/CI.
 # If your project table already has `requires-python`, Ty will infer the min;
 # setting explicitly keeps things deterministic.
-python-version = "3.13"
+python-version = "3.14"
 # For cross-platform libraries, analyze as if code may run anywhere.
 python-platform = "all"
 
@@ -499,7 +500,7 @@ project-excludes = [
 use-ignore-files = true
 #### configuring what to type check and where to import from
 search-path = ["src", "docs"]
-python-version = "3.13"
+python-version = "3.14"
 # Keep resolution stable
 disable-search-path-heuristics = true
 # Should Pyrefly ignore errors based on annotations from other tools,
