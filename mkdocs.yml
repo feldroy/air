@@ -8,7 +8,6 @@ nav:
   - Learn:
     - learn/index.md
     - Quickstart: learn/quickstart.md
-    - Tutorial: learn/tutorial.md
     - Air Tags: learn/air_tags.md
     - Escaping HTML: learn/escaping_html.md
     - Forms: learn/forms.md
@@ -35,7 +34,7 @@ nav:
     - Ext:
       - Ext: api/ext/index.md
       - Auth: api/ext/auth.md
-      - SQL: api/ext/sql.md
+      - SQLModel: api/ext/sqlmodel.md
     - Forms: api/forms.md
     - Layouts: api/layouts.md
     - Middleware: api/middleware.md
@@ -60,9 +59,9 @@ nav:
 
   - About:
     - about/index.md
-    - about/roadmap.md
-    - about/alternatives.md
+    - about/inspirations.md
     - about/help_air.md
+    - about/roadmap.md    
 
   - Tools: tools.md
 
@@ -70,6 +69,7 @@ theme:
   name: material
   features:
     - content.code.copy
+    - content.code.annotate    
     - content.tabs.link
     - navigation.indexes
     - navigation.instant
@@ -78,7 +78,7 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
-    - navigation.tabs
+    - navigation.tabs    
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -107,6 +107,8 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
 
 plugins:
   - search
@@ -121,3 +123,7 @@ plugins:
             docstring_options:
               ignore_init_summary: true
             merge_init_into_class: true
+  - redirects:
+      redirect_maps:
+        'about/alternatives.md': 'about/inspirations.md'
+        'roadmap.md': 'about/roadmap.md'

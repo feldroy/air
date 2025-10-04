@@ -1,6 +1,6 @@
 # About
 
-- [Read about alternatives and inspirations](alternatives)
+- [Read about what inspired Air and what it's built on](inspirations)
 - [Helping Air and getting help about Air](help_air)
 - [Air Beta Release Project Board](roadmap)
 
