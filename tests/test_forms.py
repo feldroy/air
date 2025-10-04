@@ -25,7 +25,7 @@ def test_form_sync_check() -> None:
             "loc": ("age",),
             "msg": "Input should be a valid integer, unable to parse string as an integer",
             "input": "Hello",
-            "url": "https://errors.pydantic.dev/2.11/v/int_parsing",
+            "url": "https://errors.pydantic.dev/2.12/v/int_parsing",
         },
     ]
 
@@ -248,7 +248,7 @@ def test_airform_validate() -> None:
             "loc": ("age",),
             "msg": "Field required",
             "input": {"name": "Cheddar"},
-            "url": "https://errors.pydantic.dev/2.11/v/missing",
+            "url": "https://errors.pydantic.dev/2.12/v/missing",
         },
     ]
 
