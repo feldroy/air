@@ -1,7 +1,6 @@
 # Requests
 
-`air.requests.Request` is a lightweight wrapper around [`starlette.requests.Request`](https://www.starlette.io/requests/).
-It provides a stable import path within Air and ensures compatibility with Starlette-based ASGI components.
+`air.requests.Request` is an alias for [`starlette.requests.Request`](https://www.starlette.io/requests/), giving Air users a consistent import path.
 
 While it behaves identically to Starlette’s implementation, it’s documented here for discoverability and ease of use.
 
