@@ -39,6 +39,7 @@ dependencies = [
     "fastapi>=0.116.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
+    "pydantic>=2.12.0b1",
     "python-multipart>=0.0.20",
 ]
 # endregion project
