@@ -8,6 +8,7 @@ from types import FunctionType
 from typing import (
     Annotated,
     Any,
+    Literal,
 )
 
 from fastapi import params
@@ -264,7 +265,9 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = default_generate_unique_id,
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "-",
     ) -> None:
+        self.path_separator = path_separator
         if default is None:
             default = Air
         super().__init__(
@@ -316,7 +319,7 @@ class AirRouter(APIRouter):
 
             app.include_router(router)
         """
-        page_path = compute_page_path(func.__name__)
+        page_path = compute_page_path(func.__name__, separator=self.path_separator)
 
         # Pin the route's response_class for belt-and-suspenders robustness
         return self.get(page_path)(func)
