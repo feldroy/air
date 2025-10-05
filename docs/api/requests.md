@@ -30,6 +30,12 @@ Here are smaller, focused examples for specific use cases:
 
 ### Accessing Query Parameters
 ```python
+import air
+from air.requests import Request
+from air.responses import JSONResponse
+
+app = air.Air()
+
 @app.get("/search")
 async def search(request: Request):
     query = request.query_params.get("q", "none")
@@ -38,6 +44,12 @@ async def search(request: Request):
 
 ### Reading JSON Body
 ```python
+import air
+from air.requests import Request
+from air.responses import JSONResponse
+
+app = air.Air()
+
 @app.post("/items")
 async def create_item(request: Request):
     data = await request.json()
@@ -46,6 +58,12 @@ async def create_item(request: Request):
 
 ### Reading Form Data
 ```python
+import air
+from air.requests import Request
+from air.responses import JSONResponse
+
+app = air.Air()
+
 @app.post("/login")
 async def login(request: Request):
     form = await request.form()
