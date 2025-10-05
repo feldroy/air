@@ -258,6 +258,9 @@ module-name = "air"
 
 # region ----> ruff <----
 [tool.ruff]
+# Enforce a requirement on the version of Ruff, to enforce at runtime.
+# If the version of Ruff does not meet the requirement, Ruff will exit with an error.
+required-version = ">=0.13.3"
 # Enable preview features.
 preview = true
 # Enumerate all fixed violations.
