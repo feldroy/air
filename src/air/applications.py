@@ -43,7 +43,7 @@ class Air(FastAPI):
         on_shutdown: A list of shutdown event handler functions.
         lifespan: A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
-        path_separator: An optional path seperator, default to "/". valid option available ["/", "-"]
+        path_separator: An optional path seperator, default to "-". valid option available ["/", "-"]
     Example:
 
         import air
@@ -320,7 +320,7 @@ class Air(FastAPI):
                 """
             ),
         ] = None,
-        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "/",
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "-",
         **extra: Annotated[
             Any,
             Doc(
@@ -382,7 +382,7 @@ class Air(FastAPI):
                 return H1("I am the home page")
 
             @app.page
-            def about_us(): # routes is "/about/us"
+            def about_us(): # routes is "/about-us"
                 return H1("I am the about page")
 
         """

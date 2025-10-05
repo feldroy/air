@@ -37,26 +37,7 @@ def test_air_routing() -> None:
 def test_air_routing_with_default_path_separator() -> None:
     app = air.Air()
 
-    router = air.AirRouter()  # default path separator "/"
-
-    @router.page
-    def about_us() -> H1:
-        return air.H1("About us!")
-
-    app.include_router(router)
-
-    client = TestClient(app)
-
-    response = client.get("/about/us")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<h1>About us!</h1>"
-
-
-def test_air_routing_with_path_separator() -> None:
-    app = air.Air()
-
-    router = air.AirRouter(path_separator="-")
+    router = air.AirRouter()  # default path separator "-"
 
     @router.page
     def about_us() -> H1:
@@ -67,6 +48,25 @@ def test_air_routing_with_path_separator() -> None:
     client = TestClient(app)
 
     response = client.get("/about-us")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>About us!</h1>"
+
+
+def test_air_routing_with_path_separator() -> None:
+    app = air.Air()
+
+    router = air.AirRouter(path_separator="/")
+
+    @router.page
+    def about_us() -> H1:
+        return air.H1("About us!")
+
+    app.include_router(router)
+
+    client = TestClient(app)
+
+    response = client.get("/about/us")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About us!</h1>"

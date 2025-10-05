@@ -1,6 +1,6 @@
 # The app.page decorator
 
-For simple HTTP GET requests, Air provides the handy @app.page shortcut. It converts the name of the function to a URL, where underscores are replaced with forward slashes by default and `index` is replaced with '/'.
+For simple HTTP GET requests, Air provides the handy @app.page shortcut. It converts the name of the function to a URL, where underscores are replaced with dashes and `index` is replaced with '/'.
 
 ```python
 import air
@@ -20,6 +20,21 @@ def dashboard():
 
 @app.page
 def show_item():
-    # same as app.get('/show/item')
+    # same as app.get('/show-item')
     return air.H1('Showing an item')
+```
+
+An option has been added to change the path separator to forward slashes instead of dashes.
+
+```python
+import air
+
+app = air.Air(path_separator="/")
+
+
+@app.page
+def about_us():
+    # same as app.get('/about/us`)
+    return air.H1('About us!')
+
 ```

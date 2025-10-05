@@ -78,29 +78,14 @@ def test_page_decorator() -> None:
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Home page</h1>"
 
-    response = client.get("/about/us")
+    response = client.get("/about-us")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>About page</h1>"
 
 
 def test_page_decorator_with_default_path_separator() -> None:
-    app = air.Air()  # default path_separator "/"
-    page = app.page
-
-    @page
-    def contact_us() -> str:
-        return "<h1>Contact page</h1>"
-
-    client = TestClient(app)
-    response = client.get("/contact/us")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<h1>Contact page</h1>"
-
-
-def test_page_decorator_with_path_separator() -> None:
-    app = air.Air(path_separator="-")
+    app = air.Air()  # default path_separator "-"
     page = app.page
 
     @page
@@ -109,6 +94,21 @@ def test_page_decorator_with_path_separator() -> None:
 
     client = TestClient(app)
     response = client.get("/contact-us")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Contact page</h1>"
+
+
+def test_page_decorator_with_path_separator() -> None:
+    app = air.Air(path_separator="/")
+    page = app.page
+
+    @page
+    def contact_us() -> str:
+        return "<h1>Contact page</h1>"
+
+    client = TestClient(app)
+    response = client.get("/contact/us")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Contact page</h1>"

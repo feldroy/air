@@ -220,7 +220,7 @@ def test_Renderer_without_request_for_components() -> None:
 
 def test_renderer_with_installed_package_and_children() -> None:
     """Test the Renderer class."""
-    app = air.Air(path_separator="-")
+    app = air.Air()
 
     render = air.Renderer(directory="tests/templates", package="air")
 
@@ -326,7 +326,7 @@ def test_Renderer_render_template_with_air_tags() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test/with/tags")
+    response = client.get("/test-with-tags")
 
     assert response.status_code == 200
     assert "Test content" in response.text
@@ -359,7 +359,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test/page")
+    response = client.get("/test-page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
