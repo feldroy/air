@@ -2,7 +2,70 @@
 
 When building larger applications with Air, you may find yourself needing to organize your code better, manage multiple routes, or even mount different applications together. This guide will help you understand how to structure your Air applications for scalability and maintainability.
 
-# Mounting Air apps inside Air apps
+## Routing Separate Apps Together
+
+!!! note
+
+    This approach shares state between the composited efforts. This means that authentication, database pooling, and other things will be usable between components. The [API reference](../../../api/routing) for this documentation displays options for more controls like Router-specific lifespans, URL prefixes, and more.
+
+Let's imagine we have a landing page that links to a sophisticated dashboard. While our example dashboard is trivial, let's assume it is complicated enough that we want it in a seperate Python module yet share state. We design the `main.py` as we would a normal Air application:
+
+```python title="main.py"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.H1('Avatar Data'),
+        air.P(air.A('Dashboard', href='/dashboard'))
+    )
+```
+
+Now for the dashboard, instead of using the typical `air.Air` tool to instantiate our application, we use `air.AirRouter` like so:
+
+```python title="dashboard.py" hl_lines="3"
+import air
+
+router = air.AirRouter()
+
+@router.page
+def dashboard():
+    return air.layouts.mvpcss(
+        air.H1('Avatar Data Dashboard'),
+        air.P(air.A('<- Home', href='/'))
+    )
+```
+
+Now if we go back to our `main.py` we can use the `app.include_router()` method to include the dashboard in our app:
+
+```python title="main.py"  hl_lines="2 5"
+import air
+from .dashboard import router
+
+app = air.Air()
+app.include_router(router)
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.H1('Avatar Data'),
+        air.P(air.A('Dashboard', href='/dashboard'))
+    )
+```
+
+If run locally these links should work:
+
+- http://localhost:8000
+- http://localhost:8000/dashboard
+
+
+## Mounting Air and FastAPI apps inside Air apps
+
+!!! warning
+
+    This approach does not share state between the apps. That means attempting to share authentication and database pooling will not function predictably, if at all.
 
 One of the really nice features of Air is the ability to mount apps inside each other. This allows you to create modular applications where different parts of your app can be developed and maintained independently. To do this, we lean on Starlette's `mount` functionality that Air inherits through FastAPI.
 
