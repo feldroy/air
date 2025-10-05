@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.33.1"
+version = "0.34.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -258,6 +258,9 @@ module-name = "air"
 
 # region ----> ruff <----
 [tool.ruff]
+# Enforce a requirement on the version of Ruff, to enforce at runtime.
+# If the version of Ruff does not meet the requirement, Ruff will exit with an error.
+required-version = ">=0.13.3"
 # Enable preview features.
 preview = true
 # Enumerate all fixed violations.
