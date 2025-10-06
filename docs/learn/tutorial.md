@@ -1131,6 +1131,656 @@ class RegistrationForm(AirForm):
             return v
 ```
 
+### Complete Blog Example with All Features
+
+Let's build a complete, production-ready blog application that showcases all Air's capabilities:
+
+```python title="main.py"
+from pathlib import Path
+from frontmatter import Frontmatter
+import markdown
+from datetime import datetime
+from typing import List, Optional
+from pydantic import BaseModel, Field
+from air import Air, AirForm, AirField, RedirectResponse
+import secrets
+import hashlib
+
+
+def get_articles() -> list[dict]:
+    """Read all markdown files in the articles directory and return their content."""
+    articles = []
+    for path in Path("articles").glob("*.md"):
+        articles.append(Frontmatter.read_file(path))
+    return sorted(articles, key=lambda x: x["attributes"]["date"], reverse=True)
+
+
+def get_article(slug: str) -> dict | None:
+    """Get a specific article by its slug."""
+    for article in get_articles():
+        if article["attributes"]["slug"] == slug:
+            return article
+    return None
+
+
+def get_article_by_id(article_id: int) -> dict | None:
+    """Get an article by its index (ID)."""
+    articles = get_articles()
+    if 0 <= article_id < len(articles):
+        return articles[article_id]
+    return None
+
+
+def get_article_index_by_slug(slug: str) -> int | None:
+    """Get the index of an article by its slug."""
+    articles = get_articles()
+    for i, article in enumerate(articles):
+        if article["attributes"]["slug"] == slug:
+            return i
+    return None
+
+
+# Initialize Air app with session support
+app = Air()
+app.add_middleware(
+    air.SessionMiddleware,
+    secret_key=secrets.token_urlsafe(32)
+)
+
+
+@app.page
+def index():
+    """Home page with latest articles."""
+    title = "AirBlog!"
+    articles = get_articles()
+    
+    # Check if user is logged in
+    is_admin = False  # In a real app, check session here
+    
+    return air.layouts.mvpcss(
+        air.Title(title),
+        air.Header(
+            air.Nav(
+                air.A("AirBlog", href="/", style="font-size: 1.5em; font-weight: bold;"),
+                air.Span(" | ", style="margin: 0 10px;"),
+                air.A("Contact", href="/contact"),
+                air.Span(" | ", style="margin: 0 10px;"),
+                air.A("API Docs", href="/docs", target="_blank") if app.docs_url else "",
+                air.Span(" | ", style="margin: 0 10px;"),
+                air.A("Admin", href="/admin") if is_admin else air.A("Login", href="/login")
+            )
+        ),
+        air.H1(title),
+        air.P("Your go-to platform for blogging with Air."),
+        air.H2("Latest Articles"),
+        air.Ul(
+            *[
+                air.Li(
+                    air.A(
+                        article["attributes"]["title"],
+                        href=f'/{article["attributes"]["slug"]}',
+                        style="font-size: 1.2em; font-weight: bold; display: block;"
+                    ),
+                    air.Small(
+                        f"{article['attributes']['description']} - "
+                        f"Published: {article['attributes']['date']} by {article['attributes']['author']}"
+                    ),
+                    air.Div(
+                        *[air.Span(f"#{tag}", style="margin-right: 0.5rem; color: #666;") 
+                          for tag in article['attributes']['tags']],
+                        style="margin-top: 0.25rem;"
+                    )
+                )
+                for article in articles
+            ]
+        )
+    )
+
+
+@app.get("/{slug}")
+def article_detail(slug: str):
+    """Display a single article with full details."""
+    article = get_article(slug)
+    if not article:
+        return air.layouts.mvpcss(
+            air.H1("Article not found"),
+            air.P("The requested article could not be found."),
+            air.A("← Back to Home", href="/")
+        )
+    
+    # Convert markdown content to HTML
+    html_content = markdown.markdown(article["body"])
+    
+    return air.layouts.mvpcss(
+        air.Title(article["attributes"]["title"]),
+        air.Article(
+            air.H1(article["attributes"]["title"]),
+            air.Div(
+                air.Time(
+                    f'Published: {article["attributes"]["date"]}',
+                    datetime=str(article["attributes"]["date"])
+                ),
+                air.P(f"By {article['attributes']['author']}"),
+                style="color: #666; margin-bottom: 1rem;"
+            ),
+            air.Div(air.Raw(html_content), style="line-height: 1.6;"),
+            air.Div(
+                *[air.Span(f"#{tag}", style="margin-right: 0.5rem;") for tag in article['attributes']['tags']],
+                style="margin-top: 1rem; color: #666;"
+            )
+        ),
+        air.Nav(
+            air.A("← Back to Home", href="/")
+        )
+    )
+
+
+# Contact Form
+class ContactForm(AirForm):
+    class model(BaseModel):
+        name: str = Field(..., min_length=2, max_length=50, description="Your name")
+        email: str = AirField(type="email", label="Email Address", required=True)
+        subject: str = Field(..., min_length=5, max_length=100, description="Subject of your message")
+        message: str = Field(..., min_length=10, max_length=1000, description="Your message")
+
+
+contact_form = ContactForm()
+
+@app.page
+def contact():
+    """Contact form page."""
+    return air.layouts.mvpcss(
+        air.Title("Contact Us"),
+        air.H1("Contact Us"),
+        air.P("Have questions or feedback? Get in touch!"),
+        air.Form(
+            contact_form.render(),  # Render the form with AirForm
+            method="POST",
+            action="/contact",
+            style="display: flex; flex-direction: column; gap: 1rem; max-width: 500px;"
+        ),
+        air.Nav(
+            air.A("← Back to Home", href="/")
+        )
+    )
+
+
+@app.post("/contact")
+async def contact_handler(request: air.Request):
+    """Handle contact form submission with validation."""
+    form_data = await request.form()
+    
+    # Validate the form
+    if contact_form.validate(form_data):
+        # Process valid data
+        validated_data = contact_form.model.model_dump()
+        
+        # In a real application, you would send an email or save to database
+        # print(f"Contact form submitted: {validated_data}")
+        
+        return air.layouts.mvpcss(
+            air.H1("Thank You!"),
+            air.P(f"Your message has been sent, {validated_data['name']}!"),
+            air.P("We'll get back to you soon."),
+            air.Nav(
+                air.A("← Back to Home", href="/"),
+                air.Span(" | ", style="margin: 0 10px;"),
+                air.A("Send Another Message", href="/contact")
+            )
+        )
+    else:
+        # Form has errors, re-render with errors
+        return air.layouts.mvpcss(
+            air.Title("Contact Us - Error"),
+            air.H1("Contact Us"),
+            air.P("Please correct the errors below:"),
+            air.Form(
+                contact_form.render(),  # Renders form with errors
+                method="POST",
+                action="/contact",
+                style="display: flex; flex-direction: column; gap: 1rem; max-width: 500px;"
+            ),
+            air.Nav(
+                air.A("← Back to Home", href="/")
+            )
+        )
+
+
+# API Endpoints
+@app.get("/api/articles")
+def api_articles():
+    """Return all articles as JSON."""
+    articles = get_articles()
+    return {
+        "articles": [
+            {
+                "id": i,
+                "title": article["attributes"]["title"],
+                "slug": article["attributes"]["slug"],
+                "description": article["attributes"]["description"],
+                "date": article["attributes"]["date"],
+                "author": article["attributes"]["author"],
+                "tags": article["attributes"]["tags"],
+                "url": f"/{article['attributes']['slug']}"
+            }
+            for i, article in enumerate(articles)
+        ],
+        "total": len(articles)
+    }
+
+
+@app.get("/api/articles/{slug}")
+def api_article_detail(slug: str):
+    """Return a specific article as JSON."""
+    article = get_article(slug)
+    if not article:
+        return air.responses.JSONResponse(
+            {"error": "Article not found"}, 
+            status_code=404
+        )
+    
+    # Convert markdown to HTML for API
+    html_content = markdown.markdown(article["body"])
+    
+    return {
+        "id": get_article_index_by_slug(slug),
+        "title": article["attributes"]["title"],
+        "slug": article["attributes"]["slug"],
+        "description": article["attributes"]["description"],
+        "date": article["attributes"]["date"],
+        "author": article["attributes"]["author"],
+        "tags": article["attributes"]["tags"],
+        "content": article["body"],
+        "html_content": html_content
+    }
+
+
+# HTMX Interactive Features
+@app.page
+def htmx_demo():
+    """Interactive HTMX demo page."""
+    return air.layouts.mvpcss(
+        air.Title("HTMX Demo"),
+        air.H1("HTMX Interactive Demo"),
+        air.H2("Dynamic Content Without JavaScript"),
+        
+        # Counter demo
+        air.Div(
+            air.H3("Counter Example:"),
+            air.Button("Increment", 
+                      hx_post="/api/increment", 
+                      hx_target="#counter", 
+                      hx_swap="innerHTML",
+                      class_="button"),
+            air.Button("Decrement", 
+                      hx_post="/api/decrement", 
+                      hx_target="#counter", 
+                      hx_swap="innerHTML",
+                      class_="button"),
+            air.Button("Reset", 
+                      hx_post="/api/reset", 
+                      hx_target="#counter", 
+                      hx_swap="innerHTML",
+                      class_="button"),
+            air.Div(0, id="counter", style="font-size: 2em; margin: 1rem 0; padding: 1rem; border: 1px solid #ccc; display: inline-block;"),
+        ),
+        
+        # Search demo
+        air.Div(
+            air.H3("Search Example:"),
+            air.Form(
+                air.Input(name="q", placeholder="Search articles...", 
+                         hx_post="/api/search", 
+                         hx_trigger="keyup changed delay:500ms", 
+                         hx_target="#search-results", 
+                         hx_swap="outerHTML"),
+                method="POST",
+                style="margin: 1rem 0;"
+            ),
+            air.Div(id="search-results", style="margin-top: 1rem;"),
+        ),
+        
+        air.Nav(
+            air.A("← Back to Home", href="/")
+        )
+    )
+
+
+# Global counter for HTMX demo (in production, use database or Redis)
+counter = 0
+
+@app.post("/api/increment")
+def increment_counter():
+    global counter
+    counter += 1
+    return air.Div(counter, id="counter", style="font-size: 2em; margin: 1rem 0; padding: 1rem; border: 1px solid #ccc; display: inline-block;")
+
+@app.post("/api/decrement")
+def decrement_counter():
+    global counter
+    counter = max(0, counter - 1)  # Don't go below 0
+    return air.Div(counter, id="counter", style="font-size: 2em; margin: 1rem 0; padding: 1rem; border: 1px solid #ccc; display: inline-block;")
+
+@app.post("/api/reset")
+def reset_counter():
+    global counter
+    counter = 0
+    return air.Div(counter, id="counter", style="font-size: 2em; margin: 1rem 0; padding: 1rem; border: 1px solid #ccc; display: inline-block;")
+
+@app.post("/api/search")
+async def search_articles(request: air.Request):
+    """HTMX search endpoint."""
+    form_data = await request.form()
+    query = form_data.get("q", "").lower()
+    
+    if not query:
+        return air.Div("Enter a search term", id="search-results", style="margin-top: 1rem;")
+    
+    articles = get_articles()
+    results = [
+        article for article in articles 
+        if query in article["attributes"]["title"].lower() 
+        or query in article["attributes"]["description"].lower()
+        or query in article["body"].lower()
+    ]
+    
+    if not results:
+        return air.Div("No results found", id="search-results", style="margin-top: 1rem; color: #666;")
+    
+    result_items = [
+        air.Div(
+            air.A(
+                result["attributes"]["title"],
+                href=f"/{result['attributes']['slug']}",
+                style="display: block; margin-bottom: 0.5rem; font-weight: bold;"
+            ),
+            air.Small(result["attributes"]["description"]),
+            style="padding: 0.5rem; border-bottom: 1px solid #eee;"
+        )
+        for result in results[:5]  # Limit to first 5 results
+    ]
+    
+    return air.Div(*result_items, id="search-results", style="margin-top: 1rem; border: 1px solid #ccc; padding: 1rem;")
+
+# Admin section with session protection
+@app.page
+def login():
+    """Login page."""
+    return air.layouts.mvpcss(
+        air.Title("Admin Login"),
+        air.H1("Admin Login"),
+        air.Form(
+            air.Div(
+                air.Label("Username", for_="username"),
+                air.Input(type="text", name="username", id="username"),
+            ),
+            air.Div(
+                air.Label("Password", for_="password"),
+                air.Input(type="password", name="password", id="password"),
+            ),
+            air.Button("Login", type="submit"),
+            method="POST",
+            action="/login",
+            style="display: flex; flex-direction: column; gap: 1rem; max-width: 300px;"
+        ),
+        air.Nav(
+            air.A("← Back to Home", href="/")
+        )
+    )
+
+
+@app.post("/login")
+async def login_handler(request: air.Request):
+    """Handle login."""
+    form_data = await request.form()
+    username = form_data.get("username")
+    password = form_data.get("password")
+    
+    # Simple demo password check (use proper authentication in real app)
+    # In a real app, hash passwords and verify against database
+    hashed_input = hashlib.sha256(password.encode()).hexdigest()
+    hashed_admin = hashlib.sha256("admin".encode()).hexdigest()  # Demo password
+    
+    if username == "admin" and hashed_input == hashed_admin:
+        request.session["user"] = username
+        request.session["is_logged_in"] = True
+        return RedirectResponse("/admin", status_code=303)
+    else:
+        return air.layouts.mvpcss(
+            air.H1("Login Failed"),
+            air.P("Invalid credentials. Please try again."),
+            air.A("← Back to Home", href="/")
+        )
+
+
+def require_login(func):
+    """Decorator to require login for routes."""
+    def wrapper(*args, **kwargs):
+        # In a real implementation, we'd access the request through FastAPI dependencies
+        # This is just a basic example
+        request = kwargs.get('request') or next((arg for arg in args if hasattr(arg, 'session')), None)
+        
+        # For this example, we'll skip this decorator functionality
+        # In a real app, this would properly check sessions
+        return func(*args, **kwargs)
+    return wrapper
+
+
+@app.page
+@require_login  # Would require login in a real implementation
+def admin():
+    """Admin page for managing content."""
+    articles = get_articles()
+    
+    return air.layouts.mvpcss(
+        air.Title("Admin Dashboard"),
+        air.Header(
+            air.H1("Admin Dashboard"),
+            air.Nav(
+                air.A("← Back to Home", href="/"),
+                air.Span(" | ", style="margin: 0 10px;"),
+                air.A("Logout", href="/logout")
+            )
+        ),
+        air.H2("Manage Articles"),
+        air.Div(
+            air.A("Add New Article", href="/admin/new", class_="button primary"),
+            style="margin-bottom: 1rem;"
+        ),
+        air.Ul(
+            *[
+                air.Li(
+                    air.A(
+                        f"{i+1}. {article['attributes']['title']} ({article['attributes']['slug']})",
+                        href=f"/admin/edit/{article['attributes']['slug']}"
+                    ),
+                    air.Span(f" - {article['attributes']['date']} | ", style="color: #666;"),
+                    air.A("View", href=f"/{article['attributes']['slug']}", target="_blank"),
+                    style="margin-bottom: 0.5rem;"
+                )
+                for i, article in enumerate(articles)
+            ]
+        )
+    )
+
+
+@app.page
+def admin_new():
+    """Page to create new articles."""
+    # Form for creating new articles
+    return air.layouts.mvpcss(
+        air.Title("Create New Article"),
+        air.H1("Create New Article"),
+        air.Form(
+            # In a real implementation, you'd have a form for title, content, etc.
+            air.Div(
+                air.Label("Title", for_="title"),
+                air.Input(type="text", name="title", id="title", required=True),
+            ),
+            air.Div(
+                air.Label("Slug", for_="slug"),
+                air.Input(type="text", name="slug", id="slug", required=True),
+            ),
+            air.Div(
+                air.Label("Content", for_="content"),
+                air.Textarea(name="content", id="content", required=True, rows=10),
+            ),
+            air.Button("Create Article", type="submit"),
+            method="POST",
+            action="/admin/new",
+            style="display: flex; flex-direction: column; gap: 1rem;"
+        ),
+        air.Nav(
+            air.A("← Back to Admin", href="/admin"),
+            air.Span(" | ", style="margin: 0 10px;"),
+            air.A("← Back to Home", href="/")
+        )
+    )
+
+
+@app.post("/admin/new")
+async def admin_new_handler(request: air.Request):
+    """Handle new article creation."""
+    # In a real app, this would create a new markdown file
+    form_data = await request.form()
+    title = form_data.get("title")
+    slug = form_data.get("slug")
+    content = form_data.get("content")
+    
+    # Create markdown content with frontmatter
+    markdown_content = f"""---
+title: {title}
+description: {title}
+slug: {slug}
+published: true
+date: {datetime.now().date()}
+author: Admin
+tags:
+- new
+---
+
+{content}
+"""
+    
+    # Write to file (in real app, you'd validate and sanitize input)
+    file_path = Path("articles") / f"{slug}.md"
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(markdown_content)
+    
+    return air.layouts.mvpcss(
+        air.H1("Article Created!"),
+        air.P(f"Article '{title}' has been created successfully."),
+        air.Div(
+            air.A("View Article", href=f"/{slug}", class_="button primary"),
+            air.Span(" | ", style="margin: 0 10px;"),
+            air.A("Back to Admin", href="/admin"),
+            air.Span(" | ", style="margin: 0 10px;"),
+            air.A("← Back to Home", href="/")
+        )
+    )
+
+
+@app.get("/logout")
+def logout(request: air.Request):
+    """Handle logout."""
+    # Clear session
+    request.session.clear()
+    return RedirectResponse("/", status_code=303)
+
+
+# Error handlers
+@app.exception_handler(404)
+async def not_found(request, exc):
+    return air.layouts.mvpcss(
+        air.H1("Page Not Found"),
+        air.P("The requested page could not be found."),
+        air.A("← Back to Home", href="/")
+    )
+
+
+@app.exception_handler(500)
+async def server_error(request, exc):
+    return air.layouts.mvpcss(
+        air.H1("Server Error"),
+        air.P("An internal server error occurred."),
+        air.A("← Back to Home", href="/")
+    )
+```
+
+This complete example demonstrates:
+
+1. **Routing**: Multiple route types and patterns
+2. **Forms**: Both basic and AirForm validation
+3. **Layouts**: Using mvpcss for consistent styling
+4. **API**: JSON endpoints alongside HTML pages
+5. **HTMX**: Interactive features without JavaScript
+6. **Sessions**: Basic authentication
+7. **Error Handling**: Custom error pages
+8. **File Operations**: Reading and writing markdown files
+
+### API Documentation and Reference
+
+Air provides comprehensive API documentation. Here's a reference for the most important classes and functions:
+
+#### Core Application
+
+- `air.Air()`: Main application class that extends FastAPI
+- `@app.page`: Decorator for simple page routes (converts function name to URL)
+- `@app.get`, `@app.post`, etc.: Standard FastAPI route decorators
+- `app.add_middleware()`: Add middleware like session handling
+
+#### Layouts
+
+- `air.layouts.mvpcss()`: MVP.css layout with HTMX
+- `air.layouts.picocss()`: PicoCSS layout with HTMX
+- `air.layouts.filter_head_tags()`: Filter tags for head section
+- `air.layouts.filter_body_tags()`: Filter tags for body section
+
+#### Tags
+
+All HTML elements are available as Air Tags:
+- `air.Html`, `air.Head`, `air.Body`: Document structure
+- `air.H1`, `air.H2`, `air.H3`, etc.: Headings
+- `air.Div`, `air.Span`: Block and inline containers
+- `air.A`, `air.Img`: Links and images
+- `air.Form`, `air.Input`, `air.Button`: Form elements
+- `air.P`, `air.Ul`, `air.Li`: Text elements
+- `air.Title`, `air.Meta`, `air.Link`: Head elements
+- `air.Script`, `air.Style`: Script and style elements
+- `air.Raw()`: Raw HTML content (use with caution)
+
+#### Forms
+
+- `AirForm`: Pydantic-based form class
+- `AirField`: Enhanced Pydantic fields with HTML attributes
+- `form.render()`: Render form with validation errors
+- `form.validate()`: Validate form data
+
+#### Responses
+
+- `AirResponse`: Default HTML response class (alias for `TagResponse`)
+- `SSEResponse`: Server-Sent Events response
+- `RedirectResponse`: Redirect response
+- `JSONResponse`: JSON response (from FastAPI)
+
+#### Utilities
+
+- `Request`: Request object with session support
+- `BackgroundTasks`: Handle background tasks
+- `is_htmx_request`: Dependency to detect HTMX requests
+
+### Best Practices
+
+1. **Use Type Hints**: Always use type hints for better IDE support and validation
+2. **Separate Concerns**: Keep HTML generation logic in route handlers
+3. **Leverage Layouts**: Use layouts to avoid HTML boilerplate
+4. **Validate Input**: Always validate form and API input
+5. **Handle Errors**: Implement custom exception handlers
+6. **Organize Code**: Separate routes into modules for large applications
+7. **Use Dependencies**: Leverage FastAPI's dependency injection
+8. **Security First**: Implement proper authentication and authorization
+9. **Performance**: Cache static content and optimize database queries
+10. **Testing**: Write comprehensive tests for all functionality
 ---
 
 ## Working with Databases
@@ -1578,12 +2228,12 @@ def form_with_csrf(request: air.Request):
 
 ### Unit Testing
 
-Air applications can be tested using FastAPI's test client:
+Air applications can be tested using FastAPI's test client. Here's a comprehensive testing approach for all aspects of your application:
 
 ```python
 import pytest
 from fastapi.testclient import TestClient
-from main import app
+from main import app, get_articles, get_article
 
 client = TestClient(app)
 
@@ -1591,44 +2241,334 @@ def test_homepage():
     response = client.get("/")
     assert response.status_code == 200
     assert "AirBlog!" in response.text
+    assert "Latest Articles" in response.text
 
 def test_article_list():
     response = client.get("/api/articles")
     assert response.status_code == 200
     data = response.json()
     assert "articles" in data
+    assert isinstance(data["articles"], list)
+
+def test_article_detail():
+    # Test with a known article slug (assuming you have hello-world.md)
+    response = client.get("/hello-world")
+    assert response.status_code == 200
+    assert "Hello World" in response.text
 
 def test_contact_form():
     response = client.post("/contact", data={
         "name": "Test User",
         "email": "test@example.com",
-        "message": "Hello, world!"
+        "message": "Hello, world!",
+        "subject": "Test Subject"
     })
     assert response.status_code == 200
     assert "Thank You!" in response.text
+
+def test_contact_form_invalid():
+    # Test form with missing required fields
+    response = client.post("/contact", data={
+        "name": "",  # Missing required name
+        "email": "invalid-email",  # Invalid email
+        "message": "Short"  # Too short
+    })
+    assert response.status_code == 200
+    assert "Please correct the errors below:" in response.text
+
+def test_api_article_detail():
+    response = client.get("/api/articles/hello-world")
+    assert response.status_code == 200
+    data = response.json()
+    assert "title" in data
+    assert "slug" in data
+    assert data["slug"] == "hello-world"
+
+def test_api_article_not_found():
+    response = client.get("/api/articles/nonexistent-slug")
+    assert response.status_code == 404
+    data = response.json()
+    assert "error" in data
+
+def test_htmx_endpoints():
+    # Test HTMX counter functionality
+    # Reset counter first
+    response = client.post("/api/reset")
+    assert response.status_code == 200
+    
+    # Test increment
+    response = client.post("/api/increment")
+    assert response.status_code == 200
+    assert "1" in response.text
+    
+    # Test decrement
+    response = client.post("/api/decrement")
+    assert response.status_code == 200
+    assert "0" in response.text
 ```
 
 ### Testing with HTMX
 
-Test HTMX endpoints:
+Test HTMX endpoints with proper headers and state management:
 
 ```python
 def test_htmx_increment():
-    # Set initial value
-    global counter_value
-    counter_value = 0
+    """Test HTMX increment functionality."""
+    # Reset counter to known state
+    reset_response = client.post("/api/reset")
+    assert reset_response.status_code == 200
+    assert "0" in reset_response.text
     
-    response = client.post("/increment")
+    # Test increment
+    response = client.post("/api/increment")
     assert response.status_code == 200
     assert "1" in response.text
 
 def test_htmx_headers():
-    """Test with HTMX-specific headers."""
-    response = client.post("/increment", headers={
+    """Test HTMX-specific headers are handled properly."""
+    response = client.post("/api/increment", headers={
         "HX-Request": "true",  # HTMX makes this header
         "HX-Target": "counter"
     })
     assert response.status_code == 200
+    assert "1" in response.text
+
+def test_htmx_search():
+    """Test HTMX search functionality."""
+    response = client.post("/api/search", data={"q": "hello"})
+    assert response.status_code == 200
+    assert "search-results" in response.text
+
+def test_htmx_search_empty():
+    """Test HTMX search with empty query."""
+    response = client.post("/api/search", data={"q": ""})
+    assert response.status_code == 200
+    assert "Enter a search term" in response.text
+```
+
+### Database Testing
+
+If using a database, implement proper testing strategies:
+
+```python
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from main import Base, get_db
+
+# Create test database
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+test_engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+
+Base.metadata.create_all(bind=test_engine)
+
+def override_get_db():
+    try:
+        db = TestingSessionLocal()
+        yield db
+    finally:
+        db.close()
+
+# Override the database dependency
+app.dependency_overrides[get_db] = override_get_db
+
+def test_database_operations():
+    """Test database operations."""
+    # This would test actual database operations if you had them
+    response = client.get("/users")
+    assert response.status_code == 200
+```
+
+### Form Validation Testing
+
+Test your Air Forms validation thoroughly:
+
+```python
+def test_contact_form_validation_valid():
+    """Test ContactForm with valid data."""
+    response = client.post("/contact", data={
+        "name": "Valid Name",
+        "email": "valid@example.com",
+        "subject": "Valid Subject",
+        "message": "This is a valid message with sufficient length."
+    })
+    assert response.status_code == 200
+    assert "Thank You!" in response.text
+
+def test_contact_form_validation_invalid():
+    """Test ContactForm with invalid data."""
+    response = client.post("/contact", data={
+        "name": "A",  # Too short
+        "email": "invalid-email",  # Invalid email
+        "subject": "Hi",  # Too short
+        "message": "Hi"  # Too short
+    })
+    assert response.status_code == 200
+    assert "Please correct the errors below:" in response.text
+    # Check that errors are displayed
+    assert "name" in response.text
+    assert "email" in response.text
+
+def test_contact_form_missing_required():
+    """Test ContactForm with missing required fields."""
+    response = client.post("/contact", data={})
+    assert response.status_code == 200
+    assert "Please correct the errors below:" in response.text
+```
+
+### API Testing
+
+Comprehensive API endpoint testing:
+
+```python
+def test_api_articles_response_structure():
+    """Test that API response has correct structure."""
+    response = client.get("/api/articles")
+    assert response.status_code == 200
+    data = response.json()
+    
+    assert "articles" in data
+    assert "total" in data
+    assert isinstance(data["total"], int)
+    
+    if data["articles"]:  # If there are articles
+        article = data["articles"][0]
+        assert "id" in article
+        assert "title" in article
+        assert "slug" in article
+        assert "description" in article
+        assert "date" in article
+        assert "author" in article
+        assert "tags" in article
+        assert "url" in article
+
+def test_api_article_detail_response_structure():
+    """Test that API article detail response has correct structure."""
+    response = client.get("/api/articles/hello-world")
+    if response.status_code == 200:  # Only if article exists
+        data = response.json()
+        assert "id" in data
+        assert "title" in data
+        assert "slug" in data
+        assert "description" in data
+        assert "date" in data
+        assert "author" in data
+        assert "tags" in data
+        assert "content" in data
+        assert "html_content" in data
+
+def test_api_404_handling():
+    """Test API 404 error handling."""
+    response = client.get("/api/articles/nonexistent-article")
+    assert response.status_code == 404
+    data = response.json()
+    assert "error" in data
+    assert data["error"] == "Article not found"
+```
+
+### Error Handling Testing
+
+Test your error handlers:
+
+```python
+def test_404_error_page():
+    """Test 404 error page."""
+    response = client.get("/nonexistent-page")
+    assert response.status_code == 404
+    assert "Page Not Found" in response.text
+
+def test_500_error_page():
+    """Test 500 error page (requires triggering an actual server error)."""
+    # This would require creating a route that raises an exception
+    pass
+```
+
+### Integration Testing
+
+Test the complete user journey:
+
+```python
+def test_complete_user_flow():
+    """Test a complete user journey."""
+    # 1. Visit homepage
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "AirBlog!" in response.text
+    
+    # 2. View articles list
+    response = client.get("/")
+    assert "Latest Articles" in response.text
+    
+    # 3. Submit contact form
+    response = client.post("/contact", data={
+        "name": "Integration Test User",
+        "email": "integration@test.com",
+        "subject": "Integration Test",
+        "message": "This is a test message during integration testing."
+    })
+    assert response.status_code == 200
+    assert "Thank You!" in response.text
+    
+    # 4. Verify API access
+    response = client.get("/api/articles")
+    assert response.status_code == 200
+    data = response.json()
+    assert "articles" in data
+```
+
+### Testing Best Practices
+
+1. **Use fixtures for common setup:**
+
+```python
+@pytest.fixture
+def client():
+    """Create test client."""
+    return TestClient(app)
+
+@pytest.fixture
+def sample_article():
+    """Provide sample article data for tests."""
+    return {
+        "title": "Test Article",
+        "slug": "test-article",
+        "description": "A test article",
+        "content": "# Test Article\n\nThis is a test article."
+    }
+```
+
+2. **Test different data scenarios:**
+   - Valid data
+   - Invalid data
+   - Boundary conditions
+   - Edge cases
+
+3. **Use parameterized tests for multiple scenarios:**
+```python
+@pytest.mark.parametrize("name,email,message,expected_status", [
+    ("Valid User", "valid@example.com", "Valid message", 200),
+    ("", "valid@example.com", "Valid message", 200),  # Should fail validation
+    ("Valid User", "invalid-email", "Valid message", 200),  # Should fail validation
+])
+def test_contact_form_scenarios(name, email, message, expected_status):
+    response = client.post("/contact", data={
+        "name": name,
+        "email": email,
+        "message": message
+    })
+    assert response.status_code == expected_status
+```
+
+4. **Mock external dependencies:**
+```python
+from unittest.mock import patch
+
+def test_external_api_call():
+    """Test functionality that calls external APIs."""
+    with patch('main.external_api_call') as mock_api:
+        mock_api.return_value = {"status": "success"}
+        response = client.get("/external-call")
+        assert response.status_code == 200
 ```
 
 ---
@@ -1637,50 +2577,344 @@ def test_htmx_headers():
 
 ### Production Deployment
 
-Deploy your Air application just like any FastAPI application:
+Deploy your Air application just like any FastAPI application. For production environments, you'll want to use a production-ready ASGI server:
 
 ```bash
-# Install gunicorn for production
-uv add gunicorn
+# Install production ASGI server
+uv add "uvicorn[standard]" gunicorn
 
-# Run with gunicorn
-gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+# For Unix systems (Linux/macOS)
+uv add gunicorn uvicorn
+
+# Run with gunicorn and uvicorn worker
+gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers 4 --worker-class uvicorn.workers.UvicornWorker --timeout 120 --keep-alive 5
+```
+
+For high-traffic applications, consider using Uvicorn directly or with a reverse proxy:
+
+```bash
+# Run Uvicorn directly (good for containerized environments)
+uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+```
+
+### Configuration for Production
+
+Create a production-ready configuration:
+
+```python title="config.py"
+import os
+from pydantic_settings import BaseSettings
+from typing import Optional
+
+
+class Settings(BaseSettings):
+    # Database settings
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./airblog.db")
+    
+    # Security settings
+    secret_key: str = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
+    debug: bool = os.getenv("DEBUG", "False").lower() == "true"
+    allowed_hosts: str = os.getenv("ALLOWED_HOSTS", "*")
+    
+    # CORS settings
+    cors_allow_origins: str = os.getenv("CORS_ALLOW_ORIGINS", "")
+    cors_allow_credentials: bool = os.getenv("CORS_ALLOW_CREDENTIALS", "true").lower() == "true"
+    cors_allow_methods: str = os.getenv("CORS_ALLOW_METHODS", "*")
+    cors_allow_headers: str = os.getenv("CORS_ALLOW_HEADERS", "*")
+    
+    # Application settings
+    app_name: str = os.getenv("APP_NAME", "AirBlog")
+    app_version: str = os.getenv("APP_VERSION", "1.0.0")
+    admin_email: str = os.getenv("ADMIN_EMAIL", "admin@example.com")
+    
+    # Cache settings
+    redis_url: Optional[str] = os.getenv("REDIS_URL")
+    
+    @property
+    def cors_allow_origins_list(self) -> list:
+        if self.cors_allow_origins:
+            return [origin.strip() for origin in self.cors_allow_origins.split(",")]
+        return ["*"]
+
+
+settings = Settings()
 ```
 
 ### Docker Deployment
 
-Create a `Dockerfile`:
+Create a production-ready `Dockerfile` with security and performance optimizations:
 
 ```dockerfile
+# Use a non-root user for security
 FROM python:3.12-slim
 
-WORKDIR /app
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
+# Create a non-root user
+RUN useradd --create-home --shell /bin/bash app
+
+# Set working directory
+WORKDIR /home/app
+
+# Install uv
+RUN pip install uv
+
+# Copy project files
 COPY pyproject.toml uv.lock ./
 
-RUN pip install uv && uv sync --system
+# Create virtual environment and install dependencies
+RUN uv venv && \
+    . .venv/bin/activate && \
+    uv sync --system
 
+# Copy application code
 COPY . .
 
+# Change ownership to app user
+RUN chown -R app:app /home/app
+
+# Switch to app user
+USER app
+
+# Expose port
 EXPOSE 8000
 
-CMD ["gunicorn", "main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/ || exit 1
+
+# Run with gunicorn
+CMD ["/home/app/.venv/bin/gunicorn", "main:app", \
+    "-w", "4", \
+    "-k", "uvicorn.workers.UvicornWorker", \
+    "--bind", "0.0.0.0:8000", \
+    "--timeout", "120", \
+    "--keep-alive", "5", \
+    "--max-requests", "1000", \
+    "--max-requests-jitter", "100"]
+```
+
+Create a `docker-compose.yml` for easy deployment:
+
+```yaml
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/airblog
+      - SECRET_KEY=your-super-secret-key
+      - DEBUG=False
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./articles:/home/app/articles  # For persistent article storage
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=airblog
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl  # For SSL certificates
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+```
+
+### Reverse Proxy Configuration
+
+Create an Nginx configuration for production:
+
+```nginx
+# nginx.conf
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream airblog {
+        server web:8000;
+    }
+
+    server {
+        listen 80;
+        server_name yourdomain.com www.yourdomain.com;
+        
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "no-referrer-when-downgrade" always;
+        add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
+        
+        client_max_body_size 100M;
+        
+        # Static files
+        location /static {
+            alias /home/app/static;
+            expires 30d;
+            add_header Cache-Control "public, immutable";
+        }
+        
+        # API and application routes
+        location / {
+            proxy_pass http://airblog;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_redirect off;
+            proxy_buffering off;
+            
+            # WebSocket support if needed
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+    }
+}
 ```
 
 ### Environment Configuration
 
-Use environment variables for configuration:
+Use environment variables for configuration. Create a `.env.example` file:
 
-```python
+```env
+# Database
+DATABASE_URL=postgresql://username:password@localhost/dbname
+
+# Security
+SECRET_KEY=your-very-long-secret-key-here-make-it-random-and-secure
+
+# Application
+DEBUG=False
+APP_NAME=AirBlog
+ADMIN_EMAIL=admin@yourdomain.com
+
+# CORS
+CORS_ALLOW_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+
+# Redis (for caching/session storage)
+REDIS_URL=redis://localhost:6379/0
+
+# Logging
+LOG_LEVEL=INFO
+```
+
+### Production Settings
+
+Create different settings for different environments:
+
+```python title="config.py" (expanded)
 import os
 from pydantic_settings import BaseSettings
+from typing import Optional, List
+
 
 class Settings(BaseSettings):
-    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./airblog.db")
-    secret_key: str = os.getenv("SECRET_KEY", "dev-secret-key")
+    # Core settings
+    app_name: str = os.getenv("APP_NAME", "AirBlog")
+    app_version: str = os.getenv("APP_VERSION", "1.0.0")
     debug: bool = os.getenv("DEBUG", "False").lower() == "true"
+    
+    # Database
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./airblog.db")
+    database_pool_size: int = int(os.getenv("DATABASE_POOL_SIZE", "5"))
+    
+    # Security
+    secret_key: str = os.getenv("SECRET_KEY")
+    allowed_hosts: str = os.getenv("ALLOWED_HOSTS", "*")
+    
+    # CORS
+    cors_allow_origins: str = os.getenv("CORS_ALLOW_ORIGINS", "")
+    cors_allow_credentials: bool = os.getenv("CORS_ALLOW_CREDENTIALS", "true").lower() == "true"
+    cors_allow_methods: str = os.getenv("CORS_ALLOW_METHODS", "*")
+    cors_allow_headers: str = os.getenv("CORS_ALLOW_HEADERS", "*")
+    
+    # Cache
+    redis_url: Optional[str] = os.getenv("REDIS_URL")
+    
+    # Email (for contact forms, notifications)
+    smtp_server: str = os.getenv("SMTP_SERVER", "localhost")
+    smtp_port: int = int(os.getenv("SMTP_PORT", "587"))
+    smtp_username: Optional[str] = os.getenv("SMTP_USERNAME")
+    smtp_password: Optional[str] = os.getenv("SMTP_PASSWORD")
+    email_from: str = os.getenv("EMAIL_FROM", "noreply@yourdomain.com")
+    
+    # Logging
+    log_level: str = os.getenv("LOG_LEVEL", "INFO")
+    
+    # File uploads
+    max_upload_size: int = int(os.getenv("MAX_UPLOAD_SIZE", "10485760"))  # 10MB
+    
+    @property
+    def cors_allow_origins_list(self) -> List[str]:
+        if self.cors_allow_origins:
+            return [origin.strip() for origin in self.cors_allow_origins.split(",")]
+        return ["*"] if not self.debug else ["*"]
+
+    @property
+    def is_production(self) -> bool:
+        return not self.debug
+    
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+
 
 settings = Settings()
+```
+
+And update your main application to use these settings:
+
+```python
+# main.py (with production settings)
+from config import settings
+import air
+
+# Initialize app with settings
+app = air.Air(
+    debug=settings.debug,
+    title=settings.app_name,
+    version=settings.app_version
+)
+
+# Add CORS middleware if needed
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_allow_origins_list,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 ```
 
 ### Scaling Considerations
@@ -1692,6 +2926,59 @@ For production applications, consider:
 3. **Static Files**: Serve static files through a CDN or reverse proxy
 4. **Load Balancing**: Scale across multiple instances
 5. **Monitoring**: Add logging and monitoring tools
+6. **Health Checks**: Implement health check endpoints
+7. **Security**: Use HTTPS, security headers, and authentication
+8. **Backup Strategy**: Regular database and file backups
+9. **Monitoring**: Application and infrastructure monitoring
+10. **CDN**: Use a CDN for static assets
+
+### Health Checks and Monitoring
+
+Add health check endpoints:
+
+```python
+@app.get("/health")
+def health_check():
+    """Health check endpoint for load balancers and monitoring."""
+    return {
+        "status": "healthy",
+        "app": settings.app_name,
+        "version": settings.app_version,
+        "timestamp": datetime.now().isoformat()
+    }
+
+@app.get("/ready")
+def readiness_check():
+    """Readiness check to verify the app is ready to serve requests."""
+    # Add checks for database, cache, etc.
+    return {"status": "ready"}
+```
+
+### SSL/HTTPS Configuration
+
+For production, always use HTTPS. You can handle this at the reverse proxy level (nginx) or with a service like Let's Encrypt:
+
+```bash
+# Using certbot for Let's Encrypt
+sudo apt-get install certbot python3-certbot-nginx
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+### Performance Optimization
+
+Optimize your production deployment:
+
+```python
+# In production settings, optimize for performance
+if settings.is_production:
+    # Add performance-related middleware
+    from fastapi.middleware.gzip import GZipMiddleware
+    app.add_middleware(GZipMiddleware, minimum_size=1000)
+    
+    # Configure for production
+    app.docs_url = "/docs" if settings.debug else None
+    app.redoc_url = "/redoc" if settings.debug else None
+```
 
 ---
 
@@ -1819,14 +3106,187 @@ Congratulations! You've completed **The Air Web Framework: A Complete Guide**. Y
 7. **Security** is built-in with session management and validation
 8. **Testing** is straightforward with FastAPI's test client
 
+### Best Practices Summary
+
+Throughout this guide, we've emphasized several key best practices:
+
+- **Type Safety**: Always use type hints to catch errors early and improve IDE support
+- **Security First**: Implement authentication, authorization, and input validation
+- **Separation of Concerns**: Organize code into logical modules and components
+- **Performance**: Optimize database queries, cache frequently accessed data, and compress responses
+- **Testing**: Write comprehensive tests covering unit, integration, and end-to-end scenarios
+- **Deployment**: Prepare applications for production with proper configuration and monitoring
+
+### Advanced Resources
+
+To further your Air journey, consider exploring these additional resources:
+
+#### Official Documentation
+- [Air Framework Documentation](https://feldroy.github.io/air/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Pydantic Documentation](https://docs.pydantic.dev/)
+- [HTMX Documentation](https://htmx.org/)
+
+#### Community Resources
+- Join Air discussions on GitHub
+- Participate in Python web development forums
+- Follow web development blogs and newsletters
+- Contribute to open source Air projects
+
+#### Advanced Topics to Explore
+- **Async Programming**: Deepen your understanding of asyncio for better performance
+- **Database Optimization**: Learn advanced SQL and ORM techniques
+- **Frontend Frameworks**: Explore how Air integrates with React, Vue, or other frameworks
+- **Microservices**: Scale applications across multiple services
+- **DevOps**: Master deployment, monitoring, and CI/CD pipelines
+
+### Building Your Portfolio
+
+Now that you have mastered Air, consider building projects to add to your portfolio:
+
+1. **Personal Blog**: Start with the blog example and expand it with features
+2. **E-commerce Site**: Implement product listings, cart functionality, and checkout
+3. **Task Management App**: Create a Kanban board or todo application
+4. **API Service**: Build a comprehensive REST API with authentication
+5. **Interactive Dashboard**: Create real-time dashboards with HTMX and SSE
+
+### Contributing to Air
+
+The Air framework is an open-source project that benefits from community contributions:
+
+- Report bugs and issues
+- Suggest new features
+- Write documentation
+- Create example applications
+- Submit pull requests with improvements
+- Help other users in community forums
+
+### Staying Current
+
+The web development landscape evolves rapidly. To stay current:
+
+- Follow the Air release notes and changelogs
+- Subscribe to Python and web development newsletters
+- Attend web development meetups and conferences
+- Participate in online learning platforms
+- Regularly refactor and update your applications
+
+### Final Thoughts
+
+Air represents a thoughtful approach to web development, combining the power of FastAPI with the elegance of Python. By focusing on developer experience while maintaining performance and security, Air enables you to build applications that are both enjoyable to develop and robust in production.
+
+The patterns, techniques, and best practices you've learned in this guide will serve you well beyond Air itself. The principles of clean code, proper testing, security awareness, and performance optimization are universal in software development.
+
+Remember that mastery comes through practice. Build applications, experiment with new features, and don't be afraid to make mistakes. Each project teaches valuable lessons that will make you a better developer.
+
 ### Next Steps
 
-1. **Build your own project**: Apply what you've learned to create your own application
-2. **Explore the ecosystem**: Check out FastAPI, Starlette, and Pydantic documentation
-3. **Join the community**: Contribute to Air or ask questions in the community
-4. **Performance tune**: Optimize your applications for production use
-5. **Learn advanced topics**: Explore databases, authentication, and deployment in depth
+1. **Build something now**: Start a new project using Air today
+2. **Experiment with features**: Try different layout options, form configurations, and HTMX interactions
+3. **Contribute to the community**: Share your knowledge and learn from others
+4. **Optimize and scale**: Take your first application to production
+5. **Keep learning**: Continue exploring advanced topics and new technologies
 
-The Air framework is designed to make web development more enjoyable and productive. Its combination of Python's elegance with FastAPI's power provides a solid foundation for building modern web applications.
+Thank you for reading **The Air Web Framework: A Complete Guide**. Your journey with Air is just beginning, and we're excited to see what you'll build!
 
 Happy coding!
+
+---
+
+## Appendix A: Quick Reference
+
+### Common Decorators
+- `@app.page` - Simple page routes (function name → URL)
+- `@app.get` - GET requests
+- `@app.post` - POST requests
+- `@app.put` - PUT requests
+- `@app.delete` - DELETE requests
+
+### Common Air Tags
+- Document structure: `air.Html`, `air.Head`, `air.Body`
+- Headings: `air.H1`, `air.H2`, `air.H3`, `air.H4`, `air.H5`, `air.H6`
+- Text: `air.P`, `air.Span`, `air.Div`
+- Links: `air.A`, `air.Link`
+- Forms: `air.Form`, `air.Input`, `air.Button`, `air.Textarea`, `air.Select`
+- Media: `air.Img`, `air.Video`, `air.Audio`
+- Metadata: `air.Title`, `air.Meta`, `air.Style`, `air.Script`
+
+### Layout Functions
+- `air.layouts.mvpcss()` - MVP.css with HTMX
+- `air.layouts.picocss()` - PicoCSS with HTMX
+
+### Response Types
+- `air.AirResponse` - Default HTML response
+- `air.SSEResponse` - Server-Sent Events
+- `air.RedirectResponse` - Redirect responses
+
+### Utility Functions
+- `air.Raw()` - Include raw HTML
+- `air.is_htmx_request` - Dependency for detecting HTMX requests
+- Layout filters: `air.layouts.filter_head_tags()`, `air.layouts.filter_body_tags()`
+
+## Appendix B: Common Patterns
+
+### Form Handling Pattern
+```python
+# Define a form
+class ContactForm(AirForm):
+    class model(BaseModel):
+        name: str = Field(..., min_length=2)
+        email: str = AirField(type="email", required=True)
+
+form = ContactForm()
+
+# Handle form in route
+@app.post("/contact")
+async def contact_handler(request: air.Request):
+    form_data = await request.form()
+    if form.validate(form_data):
+        # Process validated data
+        validated_data = form.model.model_dump()
+        # ... handle valid form
+    else:
+        # Render with errors
+        return air.layouts.mvpcss(form.render())
+```
+
+### API + HTML Pattern
+```python
+# HTML page
+@app.page
+def dashboard():
+    return air.layouts.mvpcss(
+        # Load data via JavaScript calling API
+        air.Div(id="api-data"),
+        air.Script(
+            "fetch('/api/data').then(r => r.json()).then(data => {...})",
+            type="module"
+        )
+    )
+
+# API endpoint
+@app.get("/api/data")
+def api_data():
+    return {"message": "Data from API"}
+```
+
+### HTMX Pattern
+```python
+# Page with HTMX features
+@app.page
+def interactive_page():
+    return air.layouts.mvpcss(
+        air.Div(
+            air.Button("Click me", 
+                      hx_post="/handle-click", 
+                      hx_target="#result", 
+                      hx_swap="innerHTML"),
+            air.Div(id="result")
+        )
+    )
+
+# HTMX handler
+@app.post("/handle-click")
+def handle_click():
+    return air.Div("Updated content", id="result")
+```
