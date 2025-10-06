@@ -1,5 +1,43 @@
 ### Latest Changes
 
+# 0.34.0 - 2025-10-06
+
+## What's Changed
+* FEAT: add option for app.page decorator to convert underscores to forward slashes by default by @alaminopu in https://github.com/feldroy/air/pull/522
+* FEAT: Add support for Python 3.14! by @tallerasaf in https://github.com/feldroy/air/pull/529
+* DOCS: : add usage and recipes for requests.Request by @zorexsalvo in https://github.com/feldroy/air/pull/527
+* DOCS: Add mixed bread AI search on docs by @pydanny in https://github.com/feldroy/air/pull/530
+* DOCS: Refine `ruff` configuration by @tallerasaf in https://github.com/feldroy/air/pull/528
+* DOCS: Show use of include router for bigger apps by @pydanny in https://github.com/feldroy/air/pull/531
+* build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/534
+* chore(deps): update wechuli/allcheckspassed action to v2.1.0 by @renovate[bot] in https://github.com/feldroy/air/pull/532
+
+## New Contributors
+* @zorexsalvo made their first contribution in https://github.com/feldroy/air/pull/527
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.34.0...v0.35.0
+
+# 0.34.0 - 2025-10-04
+
+## What's Changed
+* REFACTOR: Change name of air.ext.sql to air.ext.sqlmodel by @pydanny in https://github.com/feldroy/air/pull/526
+* DOCS: Quickstart javascript and CSS files by @pydanny in https://github.com/feldroy/air/pull/520
+* DOCS: Describes adding variables in different ways to URLs in Quickstart by @pydanny in https://github.com/feldroy/air/pull/523
+* build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/509
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.33.1...v0.34.0
+
+# 0.33.1 - 2025-09-30
+
+## What's Changed
+* BUGFIX: Provide option to set GH callback URI by @pydanny in https://github.com/feldroy/air/pull/517
+* DOCS: Roadmap docs cleanup by @pydanny in https://github.com/feldroy/air/pull/507
+* DOCS: Move alternatives to use admonitions by @pydanny in https://github.com/feldroy/air/pull/508
+* DOCS: Add routing to quickstart by @pydanny in https://github.com/feldroy/air/pull/514
+* DOCS: Add airblog example by @pydanny in https://github.com/feldroy/air/pull/513
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.33.0...v0.33.1
+
 # 0.33.0 - 2025-09-26
 
 ## New Features

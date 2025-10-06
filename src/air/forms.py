@@ -7,7 +7,7 @@ from types import UnionType
 from typing import Any, Self, Union, get_args, get_origin
 
 from pydantic import BaseModel, Field, ValidationError
-from pydantic_core import ErrorDetails
+from pydantic_core import ErrorDetails, PydanticUndefined
 from starlette.datastructures import FormData
 
 from . import tags
@@ -223,11 +223,11 @@ def default_form_widget(
 
 
 def AirField(
-    default: Any = None,
+    default: Any = PydanticUndefined,
     *,
     type: str | None = None,
     label: str | None = None,
-    default_factory: Callable[[], Any] | None = None,
+    default_factory: Callable[[], Any] | Callable[[dict[str, Any]], Any] | None = None,
     alias: str | None = None,
     autofocus: bool = False,
     title: str | None = None,
@@ -267,56 +267,60 @@ def AirField(
 
         class CheeseForm(air.AirForm):
             model = CheeseModel
+
+    Used with FastAPI's dependency injection system:
+        class CheeseModel(pydantic.BaseModel):
+            name: str
+            age: int
+
+        class CheeseForm(air.AirForm):
+            model = CheeseModel
+
+        @app.post("/cheese")
+        async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
+            if cheese.is_valid:
+                return air.Html(air.H1(cheese.data.name))
+            return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
     """
-    if json_schema_extra is None:
-        json_schema_extra = {}
+    schema_extra: dict[str, Any] = dict(json_schema_extra or {})
     if type:
-        json_schema_extra[type] = True
+        schema_extra[type] = True
     if label:
-        json_schema_extra["label"] = label
+        schema_extra["label"] = label
     if autofocus:
-        json_schema_extra["autofocus"] = True
+        schema_extra["autofocus"] = True
+    if extra:
+        schema_extra.update(extra)
 
-    return Field(
-        default,
-        json_schema_extra=json_schema_extra,
-        default_factory=default_factory,
-        alias=alias,
-        title=title,
-        description=description,
-        gt=gt,
-        ge=ge,
-        lt=lt,
-        le=le,
-        multiple_of=multiple_of,
-        min_length=min_length,
-        max_length=max_length,
-        pattern=pattern,
-        max_digits=max_digits,
-        decimal_places=decimal_places,
-        examples=examples,
-        deprecated=deprecated,
-        exclude=exclude,
-        discriminator=discriminator,
-        frozen=frozen,
-        validate_default=validate_default,
-        repr=repr,
-        init_var=init_var,
-        kw_only=kw_only,
-        **extra,
-    )
+    kwargs: dict[str, Any] = {
+        "json_schema_extra": schema_extra,
+        "alias": alias,
+        "title": title,
+        "description": description,
+        "gt": gt,
+        "ge": ge,
+        "lt": lt,
+        "le": le,
+        "multiple_of": multiple_of,
+        "min_length": min_length,
+        "max_length": max_length,
+        "pattern": pattern,
+        "max_digits": max_digits,
+        "decimal_places": decimal_places,
+        "examples": examples,
+        "deprecated": deprecated,
+        "exclude": exclude,
+        "discriminator": discriminator,
+        "frozen": frozen,
+        "validate_default": validate_default,
+        "repr": repr,
+        "init_var": init_var,
+        "kw_only": kw_only,
+    }
+    if default_factory is not None:
+        kwargs["default_factory"] = default_factory
 
-    # Can be used with FastAPI's dependency injection system.
-
-    #     class CheeseModel(pydantic.BaseModel):
-    #         name: str
-    #         age: int
-
-    #     class CheeseForm(air.AirForm):
-    #         model = CheeseModel
-
-    #     @app.post("/cheese")
-    #     async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
-    #         if cheese.is_valid:
-    #             return air.Html(air.H1(cheese.data.name))
-    #         return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
+    # Call the correct Field overload
+    if default is PydanticUndefined:
+        return Field(**kwargs)
+    return Field(default, **kwargs)

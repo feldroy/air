@@ -12,17 +12,30 @@ cd helloair
 uv venv
 source .venv/bin/activate
 uv init
-uv add "air[standard]"
+uv add air
+uv add "fastapi[standard]"
 ```
 
-> [!TIP]
-> You can also do `pip install -U air` or `conda install air -c conda-forge`, and similar for fastapi[standard], in any project directory.
+!!! note
+    You can also do:
+
+    ```sh
+    pip install -U air "fastapi[standard]"
+    ```
+
+    or even 
+
+    ```sh
+    conda install air -c conda-forge
+    conda install "fastapi[standard]" -c conda-forge
+    ```
+
 
 ## Hello, Air! Example
 
 Create a `main.py` file in your new directory with:
 
-```python
+```python title="main.py"
 import air
 
 app = air.Air()
@@ -49,5 +62,225 @@ Here's a few interesting things about this page:
 2. The Python for this app is similar in design to how FastAPI code is written
 3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
 
-Want to learn more? Want to see how Air combines with FastAPI? [Try out the tutorial!](tutorial.md)
- 
+## Routing
+
+Routing is how users on paths are directed to the correct 'view' function that handles their request.
+
+### Basics
+
+Air wraps FastAPI so you can use the same decorator patterns for specifying URLs:
+
+```python  hl_lines="5 12 25"
+import air
+
+app = air.Air()
+
+@app.get("/")
+def index():
+    return air.layouts.mvpcss(
+        air.H1("Hello, Air!"),
+        air.P("Breathe it in.")
+    )
+
+@app.get("/air-is-grounded")
+def air_is_grounded():
+    return air.layouts.mvpcss(
+        air.H1("Air is Grounded"),
+        air.P("Built on industry standard libraries including:"),
+        air.Ul(
+            air.Li('FastAPI'),
+            air.Li('Starlette'),
+            air.Li('Pydantic'),
+            air.Li('Jinja'),
+        )
+    )
+
+@app.post('/form-handler')
+async def form_handler(request: air.Request): # (1)!
+    ...
+```
+
+1. Form handling in Air requires `async` functions and usually an `air.Request` argument. We cover forms later on this page as well as in numerous places across the Air documentation.
+
+### app.page decorator
+
+To expedite `HTTP GET` pages we provide the `app.page` decorator, which can replace the `app.get()` decorator for views without arguments. `app.page` converts the name of the function to the route, converting underscores to dashes:
+
+```python hl_lines="5-6 12-13"
+import air
+
+app = air.Air()
+
+@app.page # Renders as '/'
+def index(): # (1)!
+    return air.layouts.mvpcss(
+        air.H1("Hello, Air!"),
+        air.P("Breathe it in.")
+    )
+
+@app.page # Renders as '/air-is-grounded'
+def air_is_grounded(): # (2)!
+    return air.layouts.mvpcss(
+        air.H1("Air is Grounded"),
+        air.P("Built on industry standard libraries including:"),
+        air.Ul(
+            air.Li('FastAPI'),
+            air.Li('Starlette'),
+            air.Li('Pydantic'),
+            air.Li('Jinja'),
+        )
+    )
+```  
+
+1. `app.page` used over functions named `index` are converted to the `/` route.
+2. `app.page` used over functions are converted to a route based on their name, with underscores converted to dashes. 
+
+### Variables in Paths
+
+Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete`  function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function. 
+
+```python hl_lines="5-6"
+import air
+
+app = air.Air()
+
+@app.get('/users/{username}') # (1)!
+def user_detail(username: str): # (2)!
+    return air.layouts.mvpcss(
+        air.Title(username),
+        air.H1(username)
+    )
+```
+
+1. We've specified a variable called `username`.
+2. We have defined a function argument named `username`, which is identical to the variable specified in the decorator. We also specified the Python type in this definition.
+
+Try it out by going to <http://localhost:8000/users/Aang>
+
+### Variables in URLs
+
+If you specify variables in in the function definition but not the function decorator, those become URL parameters. 
+
+The function receives the `{variable}` so long as it is the correct type specified by the function. 
+
+```python hl_lines="6"
+import air
+
+app = air.Air()
+
+@app.get('/users')
+def user_detail(username: str): # (1)!
+    return air.layouts.mvpcss(
+        air.Title(username),
+        air.H1(username)
+    )
+```
+
+1. We have defined a function argument named `username`, which is identical to the variable specified in the decorator. We also specified the Python type in this definition.
+
+Try it out by going to <http://localhost:8000/users/?username=Aang>
+
+
+## Air Tags
+
+[Air Tags](learn/air_tags) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
+
+
+### JavaScript Files
+
+Using Air Tags to call external JavaScript files:
+
+```python hl_lines="7"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Script(src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js")
+```
+
+### Inline Scripts
+
+When you need to use JavaScript inline in Air Tags:
+
+
+```python hl_lines="7"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Script("alert('The Last Airbender is an awesome series.')")
+```
+
+### CSS Files
+
+Here's how to use Air Tags to call external CSS files:
+
+```python hl_lines="9"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Html(
+        air.Head(
+            air.Link(rel="stylesheet", href="https://unpkg.com/mvp.css"),
+        ),
+        air.Body(
+            air.Main(
+                air.H1("Air Web Framework"),
+                air.P("The web framework for Air Nomads.")
+            )
+        )
+    )
+```
+
+### Inline CSS Styles
+
+Inline CSS styles via Air are a good way to control design elements at runtime.
+
+```python hl_lines="9"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.Html(
+        air.Head(
+            air.Style("h1 {color: red;}"),
+        ),
+        air.Body(
+            air.H1("Air Web Framework"),
+            air.P("The web framework for Air Nomads.")
+        )
+    )
+```
+
+## Want to learn more?
+
+Check out these documentation sections:
+
+- [Learn](/learn)
+- [API Reference](/api)
+
+## Future Segments
+
+What we plan to include in the Quick Start:
+
+- [ ] Jinja
+- [ ] The Jinja + Air Tags pattern the core devs love to use
+- [ ] Forms
+- [ ] HTMX basics
+- [x] Routing: Variables in URLs
+- [x] Routing: Variables in paths
+- [ ] Custom exception handlers
+- [ ] Sessions
+- [ ] Cookies
+- [ ] File uploads (part of forms)
+- [ ] Large File downloads
+- [ ] Server Sent Events

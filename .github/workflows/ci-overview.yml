@@ -25,7 +25,7 @@ jobs:
     steps:
       # Wait until PR checks settle; Write a markdown overview
       - name: Wait for checks
-        uses: wechuli/allcheckspassed@5b5009ffd707b7c6759574c984bb666034b441eb # v2.0.0
+        uses: wechuli/allcheckspassed@f423b273f5fdf73582e41f8f6f0f204d69c27379 # v2.1.0
         with:
           delay: '1'
           retries: '15'
