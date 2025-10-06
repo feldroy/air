@@ -299,3 +299,124 @@ def test_field_includes() -> None:
 
     html = PlaneForm().render()
     assert '<label for="id">id</label><input name="id" type="number" id="id" />' not in html
+
+
+def test_default_form_widget_basic():
+    """
+    Test that the default form widget is applied correctly to all fields in a form.
+    """
+
+    class TestModel(BaseModel):
+        name: str
+        age: int
+
+    html = air.forms.default_form_widget(TestModel)
+    # Check that the generated HTML contains the expected input fields
+    assert '<label for="name">name</label>' in html
+    assert '<input name="name" type="text" id="name"' in html
+    assert '<label for="age">age</label>' in html
+    assert '<input name="age" type="number" id="age"' in html
+
+    # Check no errors and invalid states
+    assert 'aria-invalid="true"' not in html
+    assert "<small" not in html
+
+
+def test_default_form_widget_with_data():
+    """
+    Test form widget with pre-populated data.
+    """
+
+    class TestModel(BaseModel):
+        name: str
+        age: int
+
+    data = {"name": "John", "age": 27}
+    html = air.forms.default_form_widget(TestModel, data=data)
+    assert 'value="John"' in html
+    assert 'value="27"' in html
+
+
+def test_default_form_widget_with_errors():
+    """
+    Test form widget rendering with validation errors.
+    """
+
+    class TestModel(BaseModel):
+        name: str
+        age: int
+
+    errors = [
+        {"type": "missing", "loc": ("name",), "msg": "Field required"},
+        {"type": "int_parsing", "loc": ("age",), "msg": "Invalid integer"},
+    ]
+
+    html = air.forms.default_form_widget(TestModel, errors=errors)
+    # check for invalid states
+    assert 'aria-invalid="true"' in html
+    # check for error messages
+    assert "This field is required." in html
+    assert "Please enter a valid number." in html
+
+
+def test_default_form_widget_bool_field():
+    """Test form widget with boolean field."""
+
+    class TestModel(BaseModel):
+        active: bool
+
+    html = air.forms.default_form_widget(TestModel)
+    assert 'type="checkbox"' in html
+
+
+def test_default_form_widget_includes():
+    """Test form widget with includes."""
+
+    class TestModel(BaseModel):
+        id: int
+        name: str
+        age: int
+
+    html = air.forms.default_form_widget(TestModel, includes=("name", "age"))
+    # Ensure excluded fields are not present
+    assert '<label for="id">' not in html
+    assert '<input name="id"' not in html
+
+    # Ensure included fields are present
+    assert '<label for="name">name</label>' in html
+    assert '<input name="name" type="text" id="name" />' in html
+    assert '<label for="age">age</label>' in html
+    assert '<input name="age" type="number" id="age" />' in html
+
+
+def test_default_form_widget_optional_fields():
+    """Test form widget with optional fields."""
+
+    class AnotherInterestingTestModel(BaseModel):
+        name: str | None
+
+    html = air.forms.default_form_widget(AnotherInterestingTestModel)
+    # Ensure fields are present but not marked as required
+    assert '<label for="name">name</label>' in html
+    assert '<input name="name" type="text" id="name" />' in html
+    assert "required" not in html
+
+
+def test_default_form_widget_custom_label():
+    """Test form widget with custom label via json_schema_extra."""
+
+    class CustomLabelTestModel(BaseModel):
+        name: str = Field(json_schema_extra={"label": "Full Name"})
+
+    html = air.forms.default_form_widget(CustomLabelTestModel)
+    assert '<label for="name">Full Name</label>' in html
+
+
+def test_default_form_widget_autofocus():
+    """Test form widget with autofocus attribute via json_schema_extra."""
+
+    class AutofocusTestModel(BaseModel):
+        name: str = Field(json_schema_extra={"autofocus": True})
+
+    html = air.forms.default_form_widget(AutofocusTestModel)
+    assert "autofocus" in html
