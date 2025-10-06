@@ -111,8 +111,7 @@ def test_form_render() -> None:
 
     form = cheese.render()
     assert (
-        form
-        == '<label for="name">name</label><input name="name" type="text" id="name" />'
+        form == '<label for="name">name</label><input name="name" type="text" id="name" />'
         '<label for="age">age</label><input name="age" type="number" id="age" />'
     )
 
@@ -128,8 +127,7 @@ def test_form_render_with_values() -> None:
     cheese = CheeseForm({"name": "Cheddar", "age": 3})
 
     assert (
-        cheese.render()
-        == '<label for="name">name</label><input name="name" type="text" value="Cheddar" id="name" />'
+        cheese.render() == '<label for="name">name</label><input name="name" type="text" value="Cheddar" id="name" />'
         '<label for="age">age</label><input name="age" type="number" value="3" id="age" />'
     )
 
@@ -156,8 +154,7 @@ def test_form_render_in_view() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
-        response.text
-        == '<form><label for="name">name</label><input name="name" type="text" id="name" />'
+        response.text == '<form><label for="name">name</label><input name="name" type="text" id="name" />'
         '<label for="age">age</label><input name="age" type="number" id="age" /></form>'
     )
 
@@ -181,8 +178,7 @@ def test_form_render_with_errors() -> None:
     html = cheese.render()
 
     assert (
-        html
-        == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" id="name" />'
+        html == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" id="name" />'
         '<small id="name-error">This field is required.</small><label for="age">age</label>'
         '<input aria-invalid="true" name="age" type="number" id="age" />'
         '<small id="age-error">This field is required.</small>'
@@ -208,9 +204,7 @@ def test_air_field() -> None:
     class ContactModel(BaseModel):
         name: str
         email: str = air.AirField(type="email", label="Email")
-        date_and_time: str = air.AirField(
-            type="datedatetime-local", label="Date and Time"
-        )
+        date_and_time: str = air.AirField(type="datedatetime-local", label="Date and Time")
 
     class ContactForm(air.AirForm):
         model = ContactModel
@@ -218,8 +212,7 @@ def test_air_field() -> None:
     contact_form = ContactForm()
     html = contact_form.render()
     assert (
-        html
-        == '<label for="name">name</label><input name="name" type="text" id="name" />'
+        html == '<label for="name">name</label><input name="name" type="text" id="name" />'
         '<label for="email">Email</label><input name="email" type="email" id="email" />'
         '<label for="date_and_time">Date and Time</label>'
         '<input name="date_and_time" type="datedatetime-local" id="date_and_time" />'
@@ -305,10 +298,7 @@ def test_field_includes() -> None:
         includes = ("name", "year_released", "max_airspeed")
 
     html = PlaneForm().render()
-    assert (
-        '<label for="id">id</label><input name="id" type="number" id="id" />'
-        not in html
-    )
+    assert '<label for="id">id</label><input name="id" type="number" id="id" />' not in html
 
 
 def test_default_form_widget_basic():
