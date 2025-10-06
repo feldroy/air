@@ -97,15 +97,15 @@ Before we begin, you'll need:
 Let's start by creating a new project:
 
 ```bash
-uv init airblog
+uv init myblog
 ```
 
-This initializes a new Python project in a directory called `airblog`.
+This initializes a new Python project in a directory called `myblog`.
 
 Navigate to the project directory:
 
 ```bash
-cd airblog
+cd myblog
 ```
 
 Set up a virtual environment for project isolation:
@@ -335,7 +335,7 @@ app = air.Air(
 
 ## Building Our Blog Application
 
-### Project AirBlog
+### Project My Personal Blog
 
 We're going to create a markdown file-powered blogging platform called My Personal Blog. It will have:
 
@@ -1861,7 +1861,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 
 # Database setup
-DATABASE_URL = "sqlite:///./airblog.db"
+DATABASE_URL = "sqlite:///./myblog.db"
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -1944,7 +1944,7 @@ class Post(Model):
 # Initialize database
 async def init_db():
     await Tortoise.init(
-        db_url='sqlite://airblog.db',
+        db_url='sqlite://myblog.db',
         modules={'models': ['__main__']}  # Use your actual module path
     )
     await Tortoise.generate_schemas()
@@ -2669,7 +2669,7 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # Database settings
-    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./airblog.db")
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./myblog.db")
     
     # Security settings
     secret_key: str = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
@@ -2683,7 +2683,6 @@ class Settings(BaseSettings):
     cors_allow_headers: str = os.getenv("CORS_ALLOW_HEADERS", "*")
     
     # Application settings
-    app_name: str = os.getenv("APP_NAME", "AirBlog")
     app_version: str = os.getenv("APP_VERSION", "1.0.0")
     admin_email: str = os.getenv("ADMIN_EMAIL", "admin@example.com")
     
@@ -2768,7 +2767,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/airblog
+      - DATABASE_URL=postgresql://user:password@db:5432/myblog
       - SECRET_KEY=your-super-secret-key
       - DEBUG=False
       - REDIS_URL=redis://redis:6379/0
@@ -2782,7 +2781,7 @@ services:
   db:
     image: postgres:15
     environment:
-      - POSTGRES_DB=airblog
+      - POSTGRES_DB=myblog
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
     volumes:
@@ -2820,7 +2819,7 @@ events {
 }
 
 http {
-    upstream airblog {
+    upstream myblog {
         server web:8000;
     }
 
@@ -2845,7 +2844,7 @@ http {
         
         # API and application routes
         location / {
-            proxy_pass http://airblog;
+            proxy_pass http://myblog;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -2875,7 +2874,6 @@ SECRET_KEY=your-very-long-secret-key-here-make-it-random-and-secure
 
 # Application
 DEBUG=False
-APP_NAME=AirBlog
 ADMIN_EMAIL=admin@yourdomain.com
 
 # CORS
@@ -2900,12 +2898,11 @@ from typing import Optional, List
 
 class Settings(BaseSettings):
     # Core settings
-    app_name: str = os.getenv("APP_NAME", "AirBlog")
     app_version: str = os.getenv("APP_VERSION", "1.0.0")
     debug: bool = os.getenv("DEBUG", "False").lower() == "true"
     
     # Database
-    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./airblog.db")
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./myblog.db")
     database_pool_size: int = int(os.getenv("DATABASE_POOL_SIZE", "5"))
     
     # Security
@@ -2962,7 +2959,7 @@ import air
 # Initialize app with settings
 app = air.Air(
     debug=settings.debug,
-    title=settings.app_name,
+    title="My Personal Blog",
     version=settings.app_version
 )
 
@@ -3002,7 +2999,7 @@ def health_check():
     """Health check endpoint for load balancers and monitoring."""
     return {
         "status": "healthy",
-        "app": settings.app_name,
+        "app": "My Personal Blog",
         "version": settings.app_version,
         "timestamp": datetime.now().isoformat()
     }
@@ -3049,7 +3046,7 @@ if settings.is_production:
 Organize your application into modules:
 
 ```
-airblog/
+myblog/
 ├── main.py              # Application entry point
 ├── config.py            # Configuration settings
 ├── models.py            # Database models
