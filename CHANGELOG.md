@@ -1,5 +1,22 @@
 ### Latest Changes
 
+# 0.34.0 - 2025-10-06
+
+## What's Changed
+* FEAT: add option for app.page decorator to convert underscores to forward slashes by default by @alaminopu in https://github.com/feldroy/air/pull/522
+* FEAT: Add support for Python 3.14! by @tallerasaf in https://github.com/feldroy/air/pull/529
+* DOCS: : add usage and recipes for requests.Request by @zorexsalvo in https://github.com/feldroy/air/pull/527
+* DOCS: Add mixed bread AI search on docs by @pydanny in https://github.com/feldroy/air/pull/530
+* DOCS: Refine `ruff` configuration by @tallerasaf in https://github.com/feldroy/air/pull/528
+* DOCS: Show use of include router for bigger apps by @pydanny in https://github.com/feldroy/air/pull/531
+* build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/534
+* chore(deps): update wechuli/allcheckspassed action to v2.1.0 by @renovate[bot] in https://github.com/feldroy/air/pull/532
+
+## New Contributors
+* @zorexsalvo made their first contribution in https://github.com/feldroy/air/pull/527
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.34.0...v0.35.0
+
 # 0.34.0 - 2025-10-04
 
 ## What's Changed
