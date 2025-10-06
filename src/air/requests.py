@@ -1,4 +1,4 @@
-"""Tools for handling requests"""
+"""Tools for handling requests."""
 
 import json
 from typing import Any
@@ -8,19 +8,19 @@ from starlette.requests import Request as _Request
 
 
 class HtmxDetails:
-    """This class is attached to every Request served by Air, and provides tooling for using HTMX.
-    """
+    """This class is attached to every Request served by Air, and provides tooling for using HTMX."""
+
     def __init__(self, request: _Request) -> None:
         self.request = request
         self.headers = request.headers
 
     def __bool__(self) -> bool:
         """`True` if the request was made with htmx, otherwise `False`. Detected by checking if the `HX-Request` header equals `true`.
-        
+
         This method allows you to change content for requests made with htmx:
 
         Example:
-        
+
             import air
             from random import randint
 
@@ -29,7 +29,7 @@ class HtmxDetails:
 
             @app.page
             def index(request: air.Request):
-                
+
                 if request.htmx:
                     return air.H1(
                         "Click me: ", randint(1, 100),
@@ -43,19 +43,19 @@ class HtmxDetails:
                         id="number",
                         hx_get="/",
                         hx_swap="outerHTML"
-                    )                    
+                    )
                 )
         """
 
         return self.headers.get("HX-Request") == "true"
 
     def __str__(self) -> str:
-        return str(self.__bool__)
+        return str(self.__bool__())
 
     @property
     def boosted(self) -> bool:
         """`True` if the request came from an element with the `hx-boost` attribute. Detected by checking if the `HX-Boosted` header equals `true`.
-        
+
         Example:
 
             import air
@@ -66,9 +66,9 @@ class HtmxDetails:
 
             @app.page
             def index(request: air.Request):
-                
+
                 if request.htmx.boosted:
-                    # Do something here         
+                    # Do something here
         """
         return self.headers.get("HX-Boosted") == "true"
 
@@ -81,7 +81,7 @@ class HtmxDetails:
         url = self.current_url
         if url is not None:
             split = urlsplit(url)
-            if split.scheme == self.request.scheme and split.netloc == self.request.get_host():
+            if split.scheme == self.request.url.scheme and split.netloc == self.request.url.netloc:
                 url = urlunsplit(split._replace(scheme="", netloc=""))
             else:
                 url = None
