@@ -35,6 +35,7 @@ This book is designed to be both a comprehensive tutorial and a reference manual
 Air is a Python web framework built on top of FastAPI that enables you to build both elegant HTML interfaces and powerful REST APIs within a single application. Air streamlines common web development workflows while maintaining the flexibility and power of the underlying FastAPI ecosystem.
 
 Key concepts:
+
 - **Web Framework**: A structured approach to building web applications
 - **API (Application Programming Interface)**: Programmatic interfaces for data exchange
 - **HTML**: The markup language for web browsers
@@ -61,6 +62,7 @@ Key concepts:
 ### Why Choose Air?
 
 Air is ideal for developers who want to:
+
 - Build modern, interactive web applications quickly
 - Leverage FastAPI's ecosystem without HTML response boilerplate
 - Create unified applications serving both UI and API clients
@@ -70,6 +72,7 @@ Air is ideal for developers who want to:
 ### Philosophy of Air
 
 Air prioritizes these principles:
+
 1. **Developer Experience**: Intuitive, discoverable APIs that follow Python conventions
 2. **Pythonic Design**: Leverages Python's natural syntax and type system
 3. **Type Safety**: Full type hinting for better development tooling and error prevention  
@@ -83,6 +86,7 @@ Air prioritizes these principles:
 ### Prerequisites
 
 Before we begin, you'll need:
+
 1. **Python 3.11 or higher** (3.14 is recommended): The programming language we'll use. You can check your Python version with `python --version` or `python3 --version`.
 2. **[uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv)**: A modern Python package and project manager that streamlines dependency management.
 3. **A code editor**: [VS Code](https://code.visualstudio.com/) is recommended, though any Python-capable editor works.
@@ -148,6 +152,7 @@ def index():
 ```
 
 This creates a simple web application with:
+
 - `import air`: Imports the Air framework
 - `app = air.Air()`: Creates a new Air application instance
 - `@app.page`: Decorator that maps the function to the root path `/`
@@ -176,6 +181,7 @@ Let's break down what's happening in this code:
 5. **Layout**: `air.layouts.mvpcss()` provides a complete HTML document structure with basic styling
 
 The `mvpcss` layout function automatically:
+
 - Wraps content in proper HTML structure
 - Includes MVP.css for basic styling
 - Includes HTMX for interactive features
@@ -368,6 +374,7 @@ for i in range(10):
 ```
 
 The file has two sections:
+
 - **Frontmatter**: Delimited by `---` lines, contains metadata like title, description, slug, etc.
 - **Content**: The main body of the article, written in Markdown format
 
@@ -1706,6 +1713,7 @@ published: true
 date: {datetime.now().date()}
 author: Admin
 tags:
+
 - new
 ---
 
@@ -1789,6 +1797,7 @@ Air provides comprehensive API documentation. Here's a reference for the most im
 #### Tags
 
 All HTML elements are available as Air Tags:
+
 - `air.Html`, `air.Head`, `air.Body`: Document structure
 - `air.H1`, `air.H2`, `air.H3`, etc.: Headings
 - `air.Div`, `air.Span`: Block and inline containers
@@ -2588,6 +2597,7 @@ def sample_article():
 ```
 
 2. **Test different data scenarios:**
+
    - Valid data
    - Invalid data
    - Boundary conditions
