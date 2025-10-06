@@ -414,12 +414,12 @@ app = air.Air()
 
 @app.page
 def index():
-    title = "AirBlog!"
+    title = "My Personal Blog"
     articles = get_articles()
     return air.layouts.mvpcss(
         air.Head(air.Title(title)),
         air.H1(title),
-        air.P("Your go-to platform for blogging with Air."),
+        air.P("Welcome to my personal blog!"),
         air.Ul(
             *[
                 air.Li(
@@ -472,12 +472,12 @@ app = air.Air()
 
 @app.page
 def index():
-    title = "AirBlog!"
+    title = "My Personal Blog"
     articles = get_articles()
     return air.layouts.mvpcss(
         air.Head(air.Title(title)),
         air.H1(title),
-        air.P("Your go-to platform for blogging with Air."),
+        air.P("Welcome to my personal blog!"),
         air.H2("Latest Articles"),
         air.Ul(
             *[
@@ -570,19 +570,19 @@ app = air.Air()
 
 @app.page
 def index():
-    title = "AirBlog!"
+    title = "My Personal Blog"
     articles = get_articles()
     return air.layouts.mvpcss(
         air.Head(air.Title(title)),
         air.Header(
             air.Nav(
-                air.A("AirBlog", href="/", style="font-size: 1.5em; font-weight: bold;"),
+                air.A("My Personal Blog", href="/", style="font-size: 1.5em; font-weight: bold;"),
                 air.Span(" | ", style="margin: 0 10px;"),
                 air.A("Contact", href="/contact")
             )
         ),
         air.H1(title),
-        air.P("Your go-to platform for blogging with Air."),
+        air.P("Welcome to my personal blog!"),
         air.H2("Latest Articles"),
         air.Ul(
             *[
@@ -724,12 +724,12 @@ app = air.Air()
 
 @app.page
 def index():
-    title = "AirBlog!"
+    title = "My Personal Blog"
     articles = get_articles()
     return air.layouts.mvpcss(
         air.Header(
             air.Nav(
-                air.A("AirBlog", href="/", style="font-size: 1.5em; font-weight: bold;"),
+                air.A("My Personal Blog", href="/", style="font-size: 1.5em; font-weight: bold;"),
                 air.Span(" | ", style="margin: 0 10px;"),
                 air.A("Contact", href="/contact"),
                 air.Span(" | ", style="margin: 0 10px;"),
@@ -738,7 +738,7 @@ def index():
         ),
         air.Head(air.Title(title)),
         air.H1(title),
-        air.P("Your go-to platform for blogging with Air."),
+        air.P("Welcome to my personal blog!"),
         air.H2("Latest Articles"),
         air.Ul(
             *[
@@ -1191,7 +1191,7 @@ app.add_middleware(
 @app.page
 def index():
     """Home page with latest articles."""
-    title = "AirBlog!"
+    title = "My Personal Blog"
     articles = get_articles()
     
     # Check if user is logged in
@@ -1201,7 +1201,7 @@ def index():
         air.Title(title),
         air.Header(
             air.Nav(
-                air.A("AirBlog", href="/", style="font-size: 1.5em; font-weight: bold;"),
+                air.A("My Personal Blog", href="/", style="font-size: 1.5em; font-weight: bold;"),
                 air.Span(" | ", style="margin: 0 10px;"),
                 air.A("Contact", href="/contact"),
                 air.Span(" | ", style="margin: 0 10px;"),
@@ -1211,7 +1211,7 @@ def index():
             )
         ),
         air.H1(title),
-        air.P("Your go-to platform for blogging with Air."),
+        air.P("Welcome to my personal blog!"),
         air.H2("Latest Articles"),
         air.Ul(
             *[
@@ -2240,7 +2240,7 @@ client = TestClient(app)
 def test_homepage():
     response = client.get("/")
     assert response.status_code == 200
-    assert "AirBlog!" in response.text
+    assert "My Personal Blog" in response.text
     assert "Latest Articles" in response.text
 
 def test_article_list():
@@ -2493,7 +2493,7 @@ def test_complete_user_flow():
     # 1. Visit homepage
     response = client.get("/")
     assert response.status_code == 200
-    assert "AirBlog!" in response.text
+    assert "My Personal Blog" in response.text
     
     # 2. View articles list
     response = client.get("/")
