@@ -28,24 +28,19 @@ Here is what is planned for the Beta release, which is tracked on the <a href="h
 
 Forms are a core part of any web framework. While the foundations for forms are in place with Air Tags, there is still a lot of work to be done. Part of it is that form libraries have to support a lot of edge cases. This includes:
 
-- Form validation - Ensure error messages are clear and helpful
-- CSRF protection - Implement CSRF protection for forms
-- Integration with FastAPI's dependency injection - This is coded but it is not stable yet
-- Default widget cleanup - It is working but the code is ungainly and hard to extend
-
-### Air ORM
-
-In working on the blog tutorial as well as professional projects it has become clear that tying Air to SQLModel/SQLAlchemy is really powerful. However, the configuration is a bit clunky and documentation for it is almost non-existent or full of errors. This means that humans and LLMs alike struggle to understand how to use it.
-
-The goal is Air ORM is include helper tools to make using SQLModel/SQLAlchemy easier, as well as better documentation and examples.
+- [x] Form validation - Ensure error messages are clear and helpful
+- [ ] CSRF protection - Implement CSRF protection for forms
+- [ ] Integration with FastAPI's dependency injection - This is coded but it is not stable yet
+[ ] - Default widget cleanup - It is working but the code is ungainly and hard to extend
 
 ### Accessibility Improvements
 
-There are a number of accessibility improvements that we can make, mostly for built-in layouts module. This includes:
+There are a number of accessibility improvements that we can make, mostly for built-in layouts module and project documentation. This includes:
 
-- Light/Dark Modes - Air layouts should support both light and dark modes out of the box, as well as the ability to switch between them
-- Mobile and cross platform form support - Air layouts should resize tags to look perfect on any screen and will have a mobile version and a desktop version. We think this is already part of the MVPCSS framework but it needs to be tested and documented
-- Confirm fonts resizing works properly
+- [x] Light/Dark Modes for Air itself - Air layouts should support both light and dark modes out of the box, as well as the ability to switch between them
+- [x] Light/Dark Modes for the docs
+- [ ] Mobile and cross platform form support - Air layouts should resize tags to look perfect on any screen and will have a mobile version and a desktop version. We think this is already part of the MVPCSS framework but it needs to be tested and documented
+- [ ] Confirm fonts resizing works properly
 
 ### Bringing AirMarkdown Into Air Core
 
@@ -63,10 +58,9 @@ The goal is to finish the blog tutorial, as that forces us to have Air be more u
 
 We want to make it easier to add authentication and authorization and user constructs to Air applications while preserving interoperability with the FastAPI dependency injection-based ecosystem. This includes:
 
-- User models - Provide a base user model that can be extended
-- Authentication - Provide helper tools to make authentication easier, including OAuth2. FastAPI is of great help here, at this point we think we just need to document how to use it with Air
-- Authorization - Provide helper tools to make authorization easier, including role-based access control
-- Integration with FastAPI's security utilities - Ensure compatibility with FastAPI's security features
+- [ ] User models - Provide a base user model that can be extended
+- [x] Authentication - Provide helper tools to make authentication easier, including OAuth2. FastAPI is of great help here, at this point we think we just need to document how to use it with Air
+- [ ] Authorization - Provide helper tools to make authorization easier, including role-based access control
 
 ### AirComponents
 
@@ -74,9 +68,9 @@ This will be a layout library that provides elegant defaults for making awesome 
 
 Tools like [shadcn](https://ui.shadcn.com/) and other Tailwind-powered projects are really powerful, but require an understanding of CSS (or tailwind) to be able to use. AirComponents will address this through intelligent defaults so those of us who don't know CSS can use it to make incredible looking sites. Yet AirComponents will be built so that it can be easily modified to support all kinds of usecases.
 
-AirComponents will be a separate repo and package, managed in its own [GitHub repo](https://github.com/feldroy/AirComponents). That will allow for faster velocity and provide room for playing with architecture and design. 
+AirComponents may be a separate repo and package, managed in its own [GitHub repo](https://github.com/feldroy/AirComponents). That will allow for faster velocity and provide room for playing with architecture and design. 
 
-## What's already been done
+## What's already been completed
 
 ### Air Tag API
 
@@ -87,3 +81,9 @@ The Air Tag API is complete and stable. This is based off working projects as we
 The AirResponse, Application and Router APIs are mostly complete. There should be no breaking changes to these APIs, rather adding polish, addressing bugs, and improving error handling.
 
 What we really like is that AirResponse is so flexible. It can return Jinja templates, Air Tags, or even raw HTML strings. This means that users can incrementally adopt Air Tags into existing FastAPI/Jinja projects. Or use other HTML renderers, just so long as they return a string or have a `.render()` method that returns a string.
+
+### Air ORM (Powered by SQLModel/SQLAlchemy)
+
+In working on the blog tutorial as well as professional projects it has become clear that tying Air to SQLModel/SQLAlchemy is really powerful. However, the configuration is a bit clunky and documentation for it is almost non-existent or full of errors. This means that humans and LLMs alike struggle to understand how to use it.
+
+The goal is Air ORM is include helper tools to make using SQLModel/SQLAlchemy easier, as well as better documentation and examples.

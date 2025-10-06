@@ -23,9 +23,10 @@ except ImportError:  # pragma: no cover
 
 
 try:
-    from . import sql as sql
+    from . import sqlmodel as sqlmodel
 except ImportError:  # pragma: no cover
-    msg = "air.ext.sql requires installing the sqlmodel and greenlet packages."
+    msg = "air.ext.sqlmodel requires installing the sqlmodel and greenlet packages. "
+    msg += "It may also require the installation of database specific connectors."
 
     class NotImportable:
         def __getattribute__(self, name: str) -> NoReturn:
@@ -37,4 +38,4 @@ except ImportError:  # pragma: no cover
         def __repr__(self) -> str:
             return msg
 
-    sql = NotImportable()  # ty:ignore[invalid-assignment]
+    sqlmodel = NotImportable()  # ty:ignore[invalid-assignment]

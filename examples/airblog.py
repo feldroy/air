@@ -1,19 +1,39 @@
-from pathlib import Path
+# /// script
+# dependencies = [
+#   "air",
+#   "frontmatter",
+#   "mistletoe",
+#   "rich",
+#   "uvicorn"
+# ]
+# ///
+# ruff: noqa
+# type: ignore
+# pyrefly: ignore
+"""
+A markdown-powered blog for Air.
+
+Usage:
+    uv run airblog.py
+"""
+
 from functools import cache
-import collections
+from operator import itemgetter
+from pathlib import Path
+
+import mistletoe
+import uvicorn
+from frontmatter import Frontmatter
+from rich import print
 
 import air
-from frontmatter import Frontmatter
-import mistletoe
 
 app = air.Air()
 
 
 @cache
 def get_articles() -> list[dict]:
-    articles = []
-    for path in Path("airblog-articles").glob("*.md"):
-        articles.append(Frontmatter.read_file(path))
+    articles = [Frontmatter.read_file(path) for path in Path("airblog").glob("*.md")]
     return sorted(articles, key=lambda x: x["attributes"]["date"], reverse=True)
 
 
@@ -27,7 +47,7 @@ def get_tags() -> dict[str, int]:
                 unsorted_tags[tag] += 1
             else:
                 unsorted_tags[tag] = 1
-    tags: dict = collections.OrderedDict(sorted(unsorted_tags.items(), key=lambda x: x[1], reverse=True))
+    tags: dict = dict(sorted(unsorted_tags.items(), key=itemgetter(1), reverse=True))
     return tags
 
 
@@ -62,29 +82,15 @@ async def index(request: air.Request):
             air.P("Your go-to platform for blogging with Air."),
         ),
         air.Section(*[BlogPostPreview(x, request) for x in get_articles()]),
-        air.Ul(
-            *[
-                air.Li(
-                    air.A(
-                        article["attributes"]["title"],
-                        href=f'/{article["attributes"]["slug"]}',
-                    ),
-                    air.Br(),
-                    article["attributes"]["description"],
-                )
-                for article in get_articles()
-            ]
-        )        
     )
 
 
-def get_article(slug: str) -> None:
+def get_article(slug: str) -> dict | None:
+    # This function could be replaced with this code:
+    # next((x for x in get_articles() if x['attributes']["slug"] == slug.strip()), None)
     for article in get_articles():
         if article["attributes"]["slug"].strip() == slug.strip():
             return article
-
-    # Also can be done with:
-    # next((x for x in get_articles() if x['attributes']["slug"] == slug), None)
     return None
 
 
@@ -147,3 +153,9 @@ def tag(slug: str, request: air.Request):
             )
         ),
     )
+
+
+if __name__ == "__main__":
+    print("[bold]Demo server starting...[/bold]")  # noqa
+    print("[bold]Open http://localhost:8005 in your browser[/bold]")
+    uvicorn.run("airblog:app", host="127.0.0.1", port=8005, reload=True)

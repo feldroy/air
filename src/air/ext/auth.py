@@ -13,6 +13,7 @@ class GitHubOAuthClientFactory:
         github_client_id: str,
         github_client_secret: str,
         github_process_callable: Callable,
+        github_redirect_uri: str = "http://localhost:8000/account/github/callback",
         login_redirect_to: str = "/",
         scope="user:email",
     ) -> None:
@@ -59,14 +60,16 @@ class GitHubOAuthClientFactory:
                     )
 
             github_oauth_client = air.ext.auth.GitHubOAuthClientFactory(
-                github_client_id=environ['github_client_id'],
-                github_client_secret=environ['github_client_secret'],
+                github_client_id=environ['GITHUB_CLIENT_ID'],
+                github_client_secret=environ['GITHUB_CLIENT_SECRET'],
                 github_process_callable=save_github_token,
+                github_redirect_uri=environ['GITHUB_REDIRECT_URI']
                 login_redirect_to='/dashboard',
                 scope='read:profile user:email'
             )
             app.include_router(github_oauth_client.router)
         """
+        self.github_redirect_uri = github_redirect_uri
         router = AirRouter()
         oauth = OAuth()
         oauth.register(
@@ -85,8 +88,7 @@ class GitHubOAuthClientFactory:
         @router.get("/account/github/login")
         async def github_login(request: Request):
             assert hasattr(request, "session")
-            redirect_uri = request.url_for("github_callback")
-            return await self.client.authorize_redirect(request, redirect_uri)
+            return await self.client.authorize_redirect(request, self.github_redirect_uri)
 
         @router.get("/account/github/callback")
         async def github_callback(request: Request):
