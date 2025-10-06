@@ -261,6 +261,55 @@ def index():
     )
 ```
 
+## Forms
+
+In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet workable example of receiving data using a `Request` object. 
+
+```python hl_lines="19 20"
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.H1('Email form'),
+        air.Form(
+            air.Label("Email:", for_="email"),
+            air.Input(type="email", name="email", required=True),
+            air.Button("Submit", type="submit"),
+            method="POST",
+            action="/submit"
+        )
+    )
+
+@app.post('/submit')
+async def email_handler(request: air.Request): #(1)!
+    form = await request.form() #(2)!
+    return air.layouts.mvpcss(
+        air.H1('Email form data'),
+        air.Pre(
+            air.Code(form),
+            air.Code(form.keys()),
+            air.Code(form.values()),
+        )
+    )
+```
+
+1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the form data is contained within the `air.Request` object.
+2.Form data needs to be received via an `await` keyword on `request.form()`. 
+
+
+!!! tip "FormData is a dict-like object"
+
+    While the value `FormData([('email', 'aang@example.com')])` might be displayed, the keys and values are accessed via traditional methods.
+
+Coming soon in this section:
+
+- [ ] Using Pydantic-powered AirForms for validation of incoming data
+- [ ] `HTTP GET` forms, like those used in search forms
+
+
 ## Want to learn more?
 
 Check out these documentation sections:
@@ -274,7 +323,7 @@ What we plan to include in the Quick Start:
 
 - [ ] Jinja
 - [ ] The Jinja + Air Tags pattern the core devs love to use
-- [ ] Forms
+- [x] Forms
 - [ ] HTMX basics
 - [x] Routing: Variables in URLs
 - [x] Routing: Variables in paths
