@@ -299,3 +299,43 @@ def test_field_includes() -> None:
 
     html = PlaneForm().render()
     assert '<label for="id">id</label><input name="id" type="number" id="id" />' not in html
+
+
+def test_air_field_with_extra_kwargs() -> None:
+    """Test AirField with extra keyword arguments."""
+
+    class TestModel(BaseModel):
+        name: str = air.AirField(label="Name", custom_attr="custom_value")
+
+    # Verify the field was created successfully with extra kwargs
+    assert TestModel.model_fields["name"].json_schema_extra == {
+        "label": "Name",
+        "custom_attr": "custom_value",
+    }
+
+
+def test_air_field_with_default_factory() -> None:
+    """Test AirField with default_factory parameter."""
+
+    def name_factory() -> str:
+        return "default_name"
+
+    class TestModel(BaseModel):
+        name: str = air.AirField(default_factory=name_factory, label="Name")
+
+    # Verify the default_factory works
+    instance = TestModel()
+    assert instance.name == "default_name"
+
+
+def test_air_field_with_default_value() -> None:
+    """Test AirField with default value parameter."""
+
+    class TestModel(BaseModel):
+        name: str = air.AirField("default_name", label="Name")
+        age: int = air.AirField(25, ge=0, le=150)
+
+    # Verify the default values work
+    instance = TestModel()
+    assert instance.name == "default_name"
+    assert instance.age == 25
