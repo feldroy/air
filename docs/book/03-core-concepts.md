@@ -1,126 +1,66 @@
-# Core Concepts: Air Tags and Layouts
+# Core Concepts
 
-## Air Tags: The Foundation of Air
+This chapter covers the fundamental concepts that underpin the Air web framework. At its heart, Air is an AI-first Python web framework designed to optimize web development for AI agents and human developers alike. Understanding these concepts is essential for effectively using Air to build modern web applications.
 
-Air Tags are strongly-typed Python classes that generate HTML elements. Instead of writing HTML strings, you work with Python objects that provide type safety and IDE autocompletion.
+## AI-First and AI-Native Design
 
-### Basic Tag Usage
+Air's foundational principle is to be "deeply AI-native," with every function, class, module, and documentation page optimized for AI agents to generate and interact with code effectively. This represents the framework's core identity, evolving web frameworks to prioritize AI collaboration as a first-class citizen in the development process.
 
-```python
-# Simple tags
-air.H1("Main Header")
-air.P("This is a paragraph")
-air.Div("This is a division")
+The AI-first approach means:
+- Every function includes comprehensive docstrings for AI understanding
+- Type hints are extensive and precise for AI code completion
+- Code structure follows predictable patterns that AI agents can easily navigate
+- Documentation is written to be clear for both humans and AI systems
 
-# Tags with attributes
-air.A("Click here", href="/page", class_="button primary")
-air.Img(src="image.jpg", alt="An image", width="300", height="200")
-air.Input(type="text", name="username", required=True)
-```
+## Air's Architecture
 
-### Nested Tags
+Built on top of FastAPI and Starlette, Air provides access to powerful backend capabilities while maintaining the AI-first design:
 
-Tags can be nested by passing child tags as arguments:
+- **Automatic API documentation** (Swagger UI and ReDoc)
+- **Async support** for high-performance applications  
+- **Pydantic-powered request validation**
+- **Flexible routing and middleware systems**
+- **Dependency injection**
 
-```python
-air.Div(
-    air.H2("Section Title"),
-    air.P("Some content here"),
-    air.Button("Submit", type="submit")
-)
-```
+Air draws from Django expertise in design patterns and best practices, combining this with the AI-first architecture that optimizes for both human and AI agent development. This makes Air a comprehensive web framework that combines the best of multiple ecosystems.
 
-### Attributes and the Underscore Convention
+## Exceptional Developer Experience (DX)
 
-In Air Tags, HTML attributes that conflict with Python keywords are suffixed with an underscore:
+Inspired by tools like Meteor.js, Air emphasizes making every aspect— from APIs to docs—feel intuitive and delightful to use. Air sets a high bar for user experience, similar to Django's reputation for developer-friendly design.
 
-- `class` becomes `class_`
-- `for` becomes `for_`
-- `id` remains `id`
-- `type` remains `type`
+Key DX features include:
+- Predictable and consistent APIs
+- Comprehensive error messages
+- Intuitive function and class names
+- Smooth integration between components
 
-```python
-air.Label("Username", for_="username-field")
-air.Div(class_="container", id="main-content")
-```
+## Modularity and Interoperability
 
-## Layouts: Structuring Complete Documents
+Drawing from Pyramid's philosophy, Air features a modular, swappable architecture that promotes reusable components across frameworks. Air positions itself as a "friend and collaborator" rather than a competitor to existing tools like Django, allowing developers to mix and match technologies as needed.
 
-Air's layout system automatically handles the separation of head and body content, eliminating boilerplate and making it easy to create complete HTML documents.
+## Pythonic HTML Generation with Air Tags
 
-### How Layout Filtering Works
+Influenced by FastHTML, Air allows generating HTML directly from Python objects using Air Tags, while integrating HTMX as a first-class citizen for reactive sites without heavy JavaScript frameworks. Air Tags provide a beginner-friendly entry point while maintaining the AI-optimized architecture underneath.
 
-Air layouts use intelligent filtering to determine which tags belong in the head and which belong in the body:
+## Template Flexibility
 
-- **Head tags**: `Title`, `Style`, `Meta`, `Link`, `Script`, `Base`
-- **Body tags**: All other tags
+Extending Flask's approach, Air supports both Jinja templates and Air Tags, enabling developers to mix and match for a balanced workflow that suits different project needs and team preferences.
 
-```python
-# Without layout (manual creation)
-air.Html(
-    air.Head(
-        air.Title("My App"),
-        air.Link(rel="stylesheet", href="style.css")
-    ),
-    air.Body(
-        air.H1("Welcome"),
-        air.P("Content here")
-    )
-)
+## Integrated Essentials for Rapid Development
 
-# With layout (automatic separation)
-air.layouts.mvpcss(
-    air.Title("My App"),           # Automatically goes to <head>
-    air.Link(rel="stylesheet", href="style.css"),  # Also goes to <head>
-    air.H1("Welcome"),             # Goes to <body>
-    air.P("Content here")          # Also goes to <body>
-)
-```
+Air includes core utilities for rapid development:
+- PostgreSQL integration via SQLModel/SQLAlchemy
+- GitHub OAuth authentication
+- Forthcoming scaffolding inspired by Rails and RedwoodJS to accelerate project setup
+- Automatic form generation and validation
 
-### Built-in Layouts
+## The App Object
 
-Air provides several built-in layouts for rapid prototyping:
-
-1. **mvpcss**: Uses MVP.css for minimal styling
-2. **picocss**: Uses PicoCSS for slightly more sophisticated styling
-
-Both layouts include HTMX by default for interactive features.
-
-### Creating Custom Layouts
-
-For production applications, you'll often want to create custom layouts. Here's the pattern:
+The `air.Air()` object is the AI-optimized core of every Air application. It inherits from FastAPI but is configured with Air-specific defaults that prioritize both human and AI developer experience.
 
 ```python
 import air
 
-def my_custom_layout(*children):
-    # Separate head and body content
-    head_tags = air.layouts.filter_head_tags(children)
-    body_tags = air.layouts.filter_body_tags(children)
-    
-    # Build your custom structure
-    return air.Html(
-        air.Head(
-            # Your custom head content
-            air.Link(rel="stylesheet", href="/css/custom.css"),
-            air.Script(src="/js/custom.js"),
-            *head_tags  # User's head tags
-        ),
-        air.Body(
-            air.Header("My App"),
-            air.Main(*body_tags),  # User's body content
-            air.Footer("© 2024 My App")
-        ),
-    )
-```
-
-## The App Object
-
-The `air.Air()` object is the core of every Air application. It inherits from FastAPI but is configured with Air-specific defaults.
-
-### Common Configuration Options
-
-```python
 app = air.Air(
     debug=True,  # Enable debug mode
     docs_url="/docs",  # Swagger UI endpoint
@@ -128,3 +68,7 @@ app = air.Air(
     path_separator="-"  # How to convert function names to URLs
 )
 ```
+
+## Open-Source and Community-Driven Philosophy
+
+Air is fully open-source with no vendor lock-in, currently in alpha for experimental iteration, and encourages community contributions to foster collaborative growth between human developers and AI agents.
