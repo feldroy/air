@@ -10,7 +10,7 @@ This guide demonstrates how to build a complete blog application, showcasing bot
 
 1. [Introduction to Air](01-introduction.md)
 2. [Getting Started](02-getting-started.md)
-3. [Core Concepts](03-core-concepts.md)
+3. [AI-Enhanced Development Setup](03-ai-enhanced-development-setup.md)
 4. [Air Tags and Layouts](04-air-tags-and-layouts.md)
 5. [Building Our Blog Application](05-building-blog-application.md)
 6. [Advanced Routing and URL Management](06-advanced-routing.md)

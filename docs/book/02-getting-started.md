@@ -153,7 +153,7 @@ The `mvpcss` layout function automatically:
 - Separates head and body content automatically
 
 !!! info "More on Layouts"
-    We'll explore layouts in much more detail in the [Core Concepts: Air Tags and Layouts](03-core-concepts.md) section, including how to create your own custom layouts.
+    We'll explore layouts in much more detail in the [Air Tags and Layouts](04-air-tags-and-layouts.md) section, including how to create your own custom layouts.
 
 **Air Tags**: The HTML elements you see in the code (`H1`, `P`, etc.) are called "Air Tags". These are Python classes that generate HTML. Each tag (like `H1`, `P`, `Div`) corresponds to an HTML element. When you create an instance of an Air Tag, it renders to the corresponding HTML:
 
@@ -165,7 +165,7 @@ air.P("This is a paragraph")  # Renders as <p>This is a paragraph</p>
 Air Tags are type-safe and provide IDE autocompletion, making it easier to write correct HTML.
 
 !!! info "More on Air Tags"
-    We'll dive deeper into Air Tags, their attributes, and advanced usage in the [Core Concepts: Air Tags and Layouts](03-core-concepts.md) section.
+    We'll dive deeper into Air Tags, their attributes, and advanced usage in the [Air Tags and Layouts](04-air-tags-and-layouts.md) section.
 
 Now would be a good time to commit your work:
 

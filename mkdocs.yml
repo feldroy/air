@@ -27,7 +27,7 @@ nav:
     - Book Introduction: book/README.md
     - Introduction to Air: book/01-introduction.md
     - Getting Started: book/02-getting-started.md
-    - 'Core Concepts': book/03-core-concepts.md
+    - 'AI-Enhanced Development Setup': book/03-ai-enhanced-development-setup.md
     - 'Air Tags and Layouts': book/04-air-tags-and-layouts.md
     - 'Building Our Blog Application': book/05-building-blog-application.md
     - 'Advanced Routing and URL Management': book/06-advanced-routing.md
