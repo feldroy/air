@@ -1,6 +1,13 @@
 # AI-Enhanced Development Setup
 
-To maximize the effectiveness of AI on your Air project, you will need to set up various standard Python tools, the Air codebase as a git submodule of your project, and an AI coding agent.
+Now that you've created your first Air application and seen how straightforward it can be to build with the framework, let's optimize your development environment for maximum AI collaboration. In the previous chapter, you:
+
+- Created an Air project using `uv init`
+- Set up a virtual environment with `uv venv`
+- Installed Air and its dependencies with `uv add`
+- Built and ran your first application with `fastapi dev`
+
+These are all great first steps! Now, to maximize the effectiveness of AI on your Air project, you will need to set up various standard Python tools, and an AI coding agent.
 
 ## AI-First and AI-Native Design
 
@@ -233,6 +240,34 @@ Help me fix any issues found by Ruff, MyPy, and Pytest in my project.
 
 This ensures that your AI coding assistant is aligned with your project's standards and can help maintain code quality as you develop.
 
+## Including the Air Codebase for AI Context
+
+To further enhance your AI coding assistant's ability to understand and work with Air's functionality, you can add the Air repository as a git submodule to your project. This allows AI agents to read the core Air codebase files directly, giving them deeper insight into how the framework works internally.
+
+From within your project directory, add the Air repository as a submodule:
+
+```bash
+git submodule add https://github.com/feldroy/air.git
+```
+
+This will create an `air` directory in your project that contains the Air source code. AI coding assistants can then reference these core files when generating code or answering questions about Air's implementation details.
+
+After adding the submodule, commit the change:
+
+```bash
+git add .gitmodules air
+git commit -m "Add Air core codebase as git submodule for AI context"
+```
+
 ## Summary
 
 Setting up your AI-enhanced development environment with proper tooling (Ruff, MyPy, PyTest) creates a foundation where both humans and AI coding assistants can work more effectively together. The tools provide clear, consistent feedback on code quality, type safety, and test coverage, enabling better collaboration between developers and AI systems.
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Set up AI-enhanced development tools: Ruff, MyPy, PyTest, AGENTS.md, and Air core submodule"
+```
+
+With these tools in place, you're now ready to build more sophisticated applications with Air, leveraging both the framework's capabilities and AI assistance for enhanced productivity.
