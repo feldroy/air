@@ -1,18 +1,67 @@
 """Tools for handling requests."""
 
 import json
-from typing import Any
+from dataclasses import dataclass, field
+from typing import Any, Final
 from urllib.parse import urlsplit, urlunsplit
 
+from starlette.datastructures import Headers as Headers
 from starlette.requests import Request as _Request
 
+# HTMX Header names as constants
+HX_REQUEST: Final = "HX-Request"
+HX_BOOSTED: Final = "HX-Boosted"
+HX_CURRENT_URL: Final = "HX-Current-URL"
+HX_HISTORY_RESTORE_REQUEST: Final = "HX-History-Restore-Request"
+HX_PROMPT: Final = "HX-Prompt"
+HX_TARGET: Final = "HX-Target"
+HX_TRIGGER: Final = "HX-Trigger"
+HX_TRIGGER_NAME: Final = "HX-Trigger-Name"
 
+# Some servers send either of these for the triggering event payload
+TRIGGERING_EVENT_ALIASES: Final[tuple[str, ...]] = ("Triggering-Event", "HX-Triggering-Event")
+
+
+@dataclass(slots=True)
 class HtmxDetails:
-    """This class is attached to every Request served by Air, and provides tooling for using HTMX."""
+    """
+    Attached to every Request served by Air; provides helpers for HTMX-aware handling.
+    Derived values are computed once in `__post_init__`.
+    """
 
-    def __init__(self, request: _Request) -> None:
-        self.request = request
-        self.headers = request.headers
+    request: _Request
+
+    # Derived fields (formerly properties)
+    headers: Headers = field(init=False)
+
+    is_hx_request: bool = field(init=False)
+    boosted: bool = field(init=False)
+    current_url: str | None = field(init=False)
+    current_url_abs_path: str | None = field(init=False)
+    history_restore_request: bool = field(init=False)
+    prompt: str | None = field(init=False)
+    target: str | None = field(init=False)
+    trigger: str | None = field(init=False)
+    trigger_name: str | None = field(init=False)
+    triggering_event: Any = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.headers = self.request.headers
+
+        self.is_hx_request = self.headers.get(HX_REQUEST) == "true"
+        self.boosted = self.headers.get(HX_BOOSTED) == "true"
+
+        # Multi-line logic moved to helpers:
+        self.current_url = self._get_current_url()
+        self.current_url_abs_path = self._compute_current_url_abs_path(self.current_url)
+        self.triggering_event = self._parse_triggering_event(self.headers)
+
+        # Single-line field sets (stay inline):
+        self.history_restore_request = self.headers.get(HX_HISTORY_RESTORE_REQUEST) == "true"
+        self.prompt = self.headers.get(HX_PROMPT)
+        self.target = self.headers.get(HX_TARGET)
+        self.trigger = self.headers.get(HX_TRIGGER)
+        self.trigger_name = self.headers.get(HX_TRIGGER_NAME)
 
     def __bool__(self) -> bool:
         """`True` if the request was made with htmx, otherwise `False`. Detected by checking if the `HX-Request` header equals `true`.
@@ -52,73 +101,34 @@ class HtmxDetails:
     def __str__(self) -> str:
         return str(self.__bool__())
 
-    @property
-    def boosted(self) -> bool:
-        """`True` if the request came from an element with the `hx-boost` attribute. Detected by checking if the `HX-Boosted` header equals `true`.
+    # ----------------- Private helpers -----------------
 
-        Example:
+    def _get_current_url(self) -> str | None:
+        return self.headers.get(HX_CURRENT_URL)
 
-            import air
-            from random import randint
+    def _compute_current_url_abs_path(self, url: str | None) -> str | None:
+        if url is None:
+            return None
+        split = urlsplit(url)
+        if split.scheme == self.request.url.scheme and split.netloc == self.request.url.netloc:
+            return urlunsplit(split._replace(scheme="", netloc=""))
+        return None
 
-            app = air.Air()
-
-
-            @app.page
-            def index(request: air.Request):
-
-                if request.htmx.boosted:
-                    # Do something here
-        """
-        return self.headers.get("HX-Boosted") == "true"
-
-    @property
-    def current_url(self) -> str | None:
-        return self.headers.get("HX-Current-URL")
-
-    @property
-    def current_url_abs_path(self) -> str | None:
-        url = self.current_url
-        if url is not None:
-            split = urlsplit(url)
-            if split.scheme == self.request.url.scheme and split.netloc == self.request.url.netloc:
-                url = urlunsplit(split._replace(scheme="", netloc=""))
-            else:
-                url = None
-        return url
-
-    @property
-    def history_restore_request(self) -> bool:
-        return self.headers.get("HX-History-Restore-Request") == "true"
-
-    @property
-    def prompt(self) -> str | None:
-        return self.headers.get("HX-Prompt")
-
-    @property
-    def target(self) -> str | None:
-        return self.headers.get("HX-Target")
-
-    @property
-    def trigger(self) -> str | None:
-        return self.headers.get("HX-Trigger")
-
-    @property
-    def trigger_name(self) -> str | None:
-        return self.headers.get("HX-Trigger-Name")
-
-    @property
-    def triggering_event(self) -> Any:
-        value = self.headers.get("Triggering-Event")
-        if value is not None:
-            try:
-                value = json.loads(value)
-            except json.JSONDecodeError:
-                value = None
-        return value
+    def _parse_triggering_event(self, headers: Headers) -> Any:
+        for name in TRIGGERING_EVENT_ALIASES:
+            raw = headers.get(name)
+            if raw is not None:
+                try:
+                    return json.loads(raw)
+                except json.JSONDecodeError:
+                    return None
+        return None
 
 
-class Request(_Request):
+class AirRequest(_Request):
     @property
     def htmx(self) -> HtmxDetails:
         return HtmxDetails(self)
+
+
+Request = AirRequest

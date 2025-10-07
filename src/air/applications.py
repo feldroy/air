@@ -3,7 +3,7 @@ Instantiating Air applications.
 """
 
 import inspect
-from collections.abc import Awaitable, Callable, Coroutine, Sequence
+from collections.abc import Callable, Coroutine, Sequence
 from enum import Enum
 from functools import wraps
 from types import FunctionType
@@ -15,18 +15,19 @@ from fastapi.params import Depends
 from fastapi.types import IncEx
 from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
-from starlette.requests import Request
 from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS
+from .requests import Request
 from .responses import AirResponse
+from .routing import AirRoute
+from .types import MaybeAwaitable
 from .utils import compute_page_path
 
 AppType = TypeVar("AppType", bound="Air")
-type MaybeAwaitable[T] = T | Awaitable[T]
 
 
 class Air(FastAPI):
@@ -334,7 +335,7 @@ class Air(FastAPI):
     ) -> None:
         """Initialize Air app with AirResponse as default response class.
 
-        This preserves all FastAPI initialization parameters while setting:
+        This preserves most FastAPI initialization parameters while setting:
             - AirResponse as the default response class.
             - AirRoute as the default route class.
         """
@@ -342,10 +343,6 @@ class Air(FastAPI):
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
-
-        # Imported here to avoid circular imports
-        from .routing import AirRoute
-
         super().__init__(  # ty: ignore [invalid-super-argument]
             debug=debug,
             routes=routes,

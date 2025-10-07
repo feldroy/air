@@ -9,6 +9,7 @@ from typing import (
     Annotated,
     Any,
     Literal,
+    override,
 )
 from warnings import deprecated
 
@@ -23,15 +24,16 @@ from starlette.routing import (
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc
 
-from .applications import Air, MaybeAwaitable
 from .requests import Request
 from .responses import AirResponse
+from .types import MaybeAwaitable
 from .utils import compute_page_path, default_generate_unique_id
 
 
 class AirRoute(APIRoute):
     """Custom APIRoute that uses Air's custom Request class."""
 
+    @override
     def get_route_handler(self) -> Callable:
         original_route_handler = super().get_route_handler()
 
@@ -189,7 +191,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         route_class: Annotated[
-            type[APIRoute],
+            type[AirRoute],
             Doc(
                 """
                 Custom route (*path operation*) class to be used by this router.
@@ -198,7 +200,7 @@ class AirRouter(APIRouter):
                 [FastAPI docs for Custom Request and APIRoute class](https://fastapi.tiangolo.com/how-to/custom-request-and-route/#custom-apiroute-class-in-a-router).
                 """
             ),
-        ] = APIRoute,
+        ] = AirRoute,
         on_startup: Annotated[
             Sequence[Callable[[], Any]] | None,
             Doc(
@@ -266,7 +268,7 @@ class AirRouter(APIRouter):
             ),
         ] = True,
         generate_unique_id_function: Annotated[
-            Callable[[APIRoute], str],
+            Callable[[AirRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -284,7 +286,8 @@ class AirRouter(APIRouter):
     ) -> None:
         self.path_separator = path_separator
         if default is None:
-            default = Air
+            # TODO: This used to be applications.Air, need to determine if this is a valid action
+            default = ASGIApp
         super().__init__(
             prefix=prefix,
             tags=tags,
@@ -656,7 +659,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[APIRoute], str],
+            Callable[[AirRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -1048,7 +1051,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[APIRoute], str],
+            Callable[[AirRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path

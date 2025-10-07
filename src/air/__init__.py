@@ -7,7 +7,10 @@ from . import (
     layouts as layouts,
     responses as responses,
 )
-from .applications import Air as Air
+from .applications import (
+    Air as Air,
+    AirRoute as AirRoute,
+)
 from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
 from .exceptions import (
@@ -19,7 +22,10 @@ from .forms import (
     AirForm as AirForm,
 )
 from .middleware import SessionMiddleware as SessionMiddleware
-from .requests import Request as Request
+from .requests import (
+    AirRequest as AirRequest,
+    Request as Request,
+)
 from .responses import (
     AirResponse as AirResponse,
     RedirectResponse as RedirectResponse,
