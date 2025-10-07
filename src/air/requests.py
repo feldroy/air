@@ -36,13 +36,41 @@ class HtmxDetails:
 
     is_hx_request: bool = field(init=False)
     boosted: bool = field(init=False)
+    """`True` if the request came from an element with the `hx-boost` attribute. Detected by checking if the `HX-Boosted` header equals `true`.
+
+    Example:
+
+        import air
+        from random import randint
+
+        app = air.Air()
+
+
+        @app.page
+        def index(request: air.Request):
+
+            if request.htmx.boosted:
+                # Do something here
+    """
     current_url: str | None = field(init=False)
+    """The current URL in the browser that htmx made this request from, or `None` for non-htmx requests. Based on the `HX-Current-URL` header."""
     current_url_abs_path: str | None = field(init=False)
+    """The absolute-path form of `current_url`, that is the URL without scheme or netloc, or None for non-htmx requests.
+
+    This value will also be `None` if the scheme and netloc do not match the request. This could happen if the request is cross-origin, or if Air is not configured correctly.
+    """
     history_restore_request: bool = field(init=False)
+    """`True` if the request is for history restoration after a miss in the local history cache. Detected by checking if the `HX-History-Restore-Request` header equals `true`."""
     prompt: str | None = field(init=False)
+    """The user response to `hx-prompt` if it was used, or `None`."""
     target: str | None = field(init=False)
+    """The `id` of the target element if it exists, or `None`. Based on the `HX-Target` header."""
     trigger: str | None = field(init=False)
+    """The `id` of the triggered element if it exists, or `None`. Based on the `HX-Trigger` header."""
     trigger_name: str | None = field(init=False)
+    """The name of the triggered element if it exists, or `None`. Based on the `HX-Trigger-Name` header."""
+
+    # TODO this requires an HTMX extention, evaluate if it makes sense to use it
     triggering_event: Any = field(init=False)
 
     def __post_init__(self) -> None:
@@ -126,9 +154,12 @@ class HtmxDetails:
 
 
 class AirRequest(_Request):
+    """A wrapper around Starlette's FastAPI that includes the HtmxDetails object."""
+
     @property
     def htmx(self) -> HtmxDetails:
         return HtmxDetails(self)
 
 
 Request = AirRequest
+"""`Request` is a proxy for `AirRequest` kept for backwards compatability."""

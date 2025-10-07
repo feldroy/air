@@ -89,5 +89,6 @@ def index(request: air.Request):
     options:
       group_by_category: false
       members:
-        - Request
-        - HtmxDetails
+        - AirRequest
+        - Request      
+        - HtmxDetails      
