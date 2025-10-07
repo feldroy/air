@@ -102,11 +102,39 @@ uv init myblog
 
 This initializes a new Python project in a directory called `myblog`.
 
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Initialize myblog project with uv"
+```
+
 Navigate to the project directory:
 
 ```bash
 cd myblog
 ```
+
+Open it in Visual Studio Code:
+
+```bash
+code .
+```
+
+Familiarize yourself with the contents of a project created by `uv init`, if you're not already familiar:
+
+```
+myblog
+├── .git
+│   └── ...
+├── .gitignore
+├── .python-version
+├── main.py
+├── pyproject.toml
+└── README.md
+```
+
+Press `Ctrl+`` (backtick) to open a terminal in Visual Studio Code.
 
 Set up a virtual environment for project isolation:
 
@@ -186,6 +214,13 @@ The `mvpcss` layout function automatically:
 - Includes MVP.css for basic styling
 - Includes HTMX for interactive features
 - Separates head and body content automatically
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add first Air app with index page"
+```
 
 ### Air Tags Explained
 
@@ -439,6 +474,13 @@ A list of items:
 > This is a quote from someone important or a thought I want to highlight.
 ```
 
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add article files: hello-world.md, about-me.md, markdown-features.md"
+```
+
 ### Reading Articles into Our Application
 
 To read the articles from the `articles` directory, we'll use the `pathlib` and `python-frontmatter` libraries. First, install the frontmatter library:
@@ -496,6 +538,13 @@ def index():
             ]
         )
     )
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add functionality to read and display articles on homepage"
 ```
 
 ### Creating Article Detail Pages
@@ -587,6 +636,13 @@ def article_detail(slug: str):
             air.A("← Back to Home", href="/")
         )
     )
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add article detail pages with markdown conversion"
 ```
 
 First, install the markdown library to convert Markdown to HTML:
@@ -746,6 +802,13 @@ async def contact_handler(request: air.Request):
             air.A("Send Another Message", href="/contact")
         )
     )
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add contact form with handler"
 ```
 
 ### Adding an API Endpoint
@@ -942,6 +1005,13 @@ def api_article_detail(slug: str):
         "content": article["body"]
     }
 
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add API endpoints for articles"
 ```
 
 ---
@@ -1765,6 +1835,13 @@ async def server_error(request, exc):
     )
 ```
 
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Complete blog application with all features"
+```
+
 This complete example demonstrates:
 
 1. **Routing**: Multiple route types and patterns
@@ -1861,7 +1938,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 
 # Database setup
-DATABASE_URL = "sqlite:///./myblog.db"
+DATABASE_URL = "postgresql://postgres:password@localhost:5432/myblog"
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -1948,6 +2025,13 @@ async def init_db():
         modules={'models': ['__main__']}  # Use your actual module path
     )
     await Tortoise.generate_schemas()
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add database integration with SQLAlchemy and Tortoise ORM"
 ```
 
 ---
@@ -2050,6 +2134,13 @@ def dashboard():
 @app.get("/api/user-data")
 def get_user_data():
     return {"message": "Hello from API", "timestamp": datetime.now()}
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add API endpoints and development patterns"
 ```
 
 ---
@@ -2170,6 +2261,13 @@ async def events():
     return air.SSEResponse(event_generator())
 ```
 
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add HTMX and interactive interface features"
+```
+
 ---
 
 ## Authentication and Security
@@ -2279,6 +2377,13 @@ def form_with_csrf(request: air.Request):
             action="/process-data"
         )
     )
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add authentication and security features"
 ```
 
 ---
@@ -2631,6 +2736,13 @@ def test_external_api_call():
         assert response.status_code == 200
 ```
 
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add comprehensive testing framework"
+```
+
 ---
 
 ## Deployment
@@ -2669,7 +2781,7 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # Database settings
-    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./myblog.db")
+    database_url: str = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/myblog")
     
     # Security settings
     secret_key: str = os.getenv("SECRET_KEY", "dev-secret-key-change-in-production")
@@ -2779,7 +2891,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: postgres:15
+    image: postgres:18
     environment:
       - POSTGRES_DB=myblog
       - POSTGRES_USER=user
@@ -2902,7 +3014,7 @@ class Settings(BaseSettings):
     debug: bool = os.getenv("DEBUG", "False").lower() == "true"
     
     # Database
-    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./myblog.db")
+    database_url: str = os.getenv("DATABASE_URL", "postgresql://postgres:password@localhost:5432/myblog")
     database_pool_size: int = int(os.getenv("DATABASE_POOL_SIZE", "5"))
     
     # Security
@@ -3035,6 +3147,13 @@ if settings.is_production:
     # Configure for production
     app.docs_url = "/docs" if settings.debug else None
     app.redoc_url = "/redoc" if settings.debug else None
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Complete deployment configuration"
 ```
 
 ---
@@ -3346,4 +3465,11 @@ def interactive_page():
 @app.post("/handle-click")
 def handle_click():
     return air.Div("Updated content", id="result")
+```
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Complete the Air web framework tutorial"
 ```
