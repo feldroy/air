@@ -264,7 +264,7 @@ coverage-md: coverage-xml
 # Serve docs locally
 [group('docs')]
 doc:
-    just run -- mkdocs serve -a localhost:3000 -w docs -w src 
+    just run -- mkdocs serve -a localhost:3000
 
 # Build docs
 [group('docs')]

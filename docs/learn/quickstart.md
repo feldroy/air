@@ -304,93 +304,80 @@ async def email_handler(request: air.Request): #(1)!
 
     While the value `FormData([('email', 'aang@example.com')])` might be displayed, the keys and values are accessed via traditional methods.
 
-### Validating form data with pydantic-powered AirForms
+### AirForms: pydantic+forms
 
 The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use pydantic models to determine how a form is constructed.
 
 ```python
 from pydantic import BaseModel, Field
-from rich import print
-
 import air
 
-
-class ContactModel(BaseModel):
+class ContactModel(BaseModel): #(1)!
     name: str = Field(min_length=2, max_length=50)
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
 
-
-class ContactForm(air.AirForm):
+class ContactForm(air.AirForm): #(2)!
     model = ContactModel
-
 
 app = air.Air()
 
-
-@app.get("/")
-async def show_form():
+@app.page
+async def index():
     """Show the form initially."""
-    form = ContactForm()
-    return air.layouts.mvpcss(
+    form = ContactForm() #(3)!
+    return air.layouts.picocss(
         air.Title("Enhanced Form Errors Demo"),
-        air.Head(
-            air.Title("Enhanced Form Errors Demo"),
-            air.Link(rel="stylesheet", href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"),
-        ),
         air.H1("Contact Form - Error Message Demo"),
         air.Form(
-            form.render(),
+            form.render(), #(4)!
             air.Button("Submit", type="submit"),
             method="post",
             action="/submit",
-        )
+        )     
     )
-
 
 @app.post("/submit")
 async def handle_form(request: air.Request):
     """Handle form submission and show errors."""
-    form = await ContactForm.from_request(request)
+    form = await ContactForm.from_request(request) #(5)!
 
-    if form.is_valid:
-        return air.Html(
-            air.Head(air.Title("Success")),
-            air.Body(
-                air.H1("Success!"),
-                air.P(f"Name: {form.data.name}"),
-                air.P(f"Age: {form.data.age}"),
-                air.P(f"Email: {form.data.email}"),
-            ),
+    if form.is_valid:  #(6)!
+        return air.layouts.picocss(
+            air.Title("Success"),
+            air.H1("Success!"),
+            air.P(f"Name: {form.data.name}"),
+            air.P(f"Age: {form.data.age}"),
+            air.P(f"Email: {form.data.email}"),
         )
 
     # Show form with enhanced error messages
-    return air.Html(
-        air.Head(
-            air.Title("Enhanced Form Errors Demo"),
-            air.Link(rel="stylesheet", href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"),
+    return air.layouts.picocss(
+        air.Title("Enhanced Form Errors Demo"),
+        air.H1("Contact Form - With Enhanced Error Messages"),
+        air.P("Notice the specific, user-friendly error messages below:"),
+        air.Form(
+            form.render(), #(7)!
+            air.Br(),
+            air.Button("Submit", type="submit"),
+            method="post",
+            action="/submit",
         ),
-        air.Body(
-            air.Main(
-                air.H1("Contact Form - With Enhanced Error Messages"),
-                air.P("Notice the specific, user-friendly error messages below:"),
-                air.Form(
-                    form.render(),
-                    air.Button("Submit", type="submit"),
-                    method="post",
-                    action="/submit",
-                ),
-                air.Hr(),
-                air.Details(
-                    air.Summary("Technical Error Details (for developers)"),
-                    air.Pre(str(form.errors)) if form.errors else "No errors",
-                ),
-                class_="container",
-            )
-        ),
+        air.Hr(),
+        air.Details(
+            air.Summary("Technical Error Details (for developers)"),
+            air.P(str(form.errors)) if form.errors else "No errors",
+        )
     )
-
 ```
+
+1. `ContactModel` is a pydantic model that represents data we want to collect from the user.
+2. `ContactForm` is an `AirForm` whose model is the `ContactModel`. 
+3. This instantiates the form without data.
+4. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
+5. AirForms have `.from_request()` method which takes the form from an `air.Request` and loads it into the form. 
+6. The `.is_valid` property of an AirForm is powered by pydantic. It returns a `bool` that can be used to control logic of what to do with form successes or failures.
+7. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
 
 
 ## Want to learn more?
@@ -407,7 +394,7 @@ What we plan to include in the Quick Start:
 - [ ] Jinja
     - [ ] The Jinja + Air Tags pattern the core devs love to use
 - [x] Forms: 
-    - [ ] Using Pydantic-powered AirForms for validation of incoming data
+    - [x] Using Pydantic-powered AirForms for validation of incoming data
     - [ ] `HTTP GET` forms, like those used in search forms
     - [ ] File uploads (part of forms)    
 - [ ] HTMX basics
