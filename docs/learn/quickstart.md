@@ -304,10 +304,93 @@ async def email_handler(request: air.Request): #(1)!
 
     While the value `FormData([('email', 'aang@example.com')])` might be displayed, the keys and values are accessed via traditional methods.
 
-Coming soon in this section:
+### Validating form data with pydantic-powered AirForms
 
-- [ ] Using Pydantic-powered AirForms for validation of incoming data
-- [ ] `HTTP GET` forms, like those used in search forms
+The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use pydantic models to determine how a form is constructed.
+
+```python
+from pydantic import BaseModel, Field
+from rich import print
+
+import air
+
+
+class ContactModel(BaseModel):
+    name: str = Field(min_length=2, max_length=50)
+    age: int = Field(ge=1, le=120)  # Age between 1 and 120
+    email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
+
+
+class ContactForm(air.AirForm):
+    model = ContactModel
+
+
+app = air.Air()
+
+
+@app.get("/")
+async def show_form():
+    """Show the form initially."""
+    form = ContactForm()
+    return air.layouts.mvpcss(
+        air.Title("Enhanced Form Errors Demo"),
+        air.Head(
+            air.Title("Enhanced Form Errors Demo"),
+            air.Link(rel="stylesheet", href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"),
+        ),
+        air.H1("Contact Form - Error Message Demo"),
+        air.Form(
+            form.render(),
+            air.Button("Submit", type="submit"),
+            method="post",
+            action="/submit",
+        )
+    )
+
+
+@app.post("/submit")
+async def handle_form(request: air.Request):
+    """Handle form submission and show errors."""
+    form = await ContactForm.from_request(request)
+
+    if form.is_valid:
+        return air.Html(
+            air.Head(air.Title("Success")),
+            air.Body(
+                air.H1("Success!"),
+                air.P(f"Name: {form.data.name}"),
+                air.P(f"Age: {form.data.age}"),
+                air.P(f"Email: {form.data.email}"),
+            ),
+        )
+
+    # Show form with enhanced error messages
+    return air.Html(
+        air.Head(
+            air.Title("Enhanced Form Errors Demo"),
+            air.Link(rel="stylesheet", href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"),
+        ),
+        air.Body(
+            air.Main(
+                air.H1("Contact Form - With Enhanced Error Messages"),
+                air.P("Notice the specific, user-friendly error messages below:"),
+                air.Form(
+                    form.render(),
+                    air.Button("Submit", type="submit"),
+                    method="post",
+                    action="/submit",
+                ),
+                air.Hr(),
+                air.Details(
+                    air.Summary("Technical Error Details (for developers)"),
+                    air.Pre(str(form.errors)) if form.errors else "No errors",
+                ),
+                class_="container",
+            )
+        ),
+    )
+
+```
 
 
 ## Want to learn more?
@@ -322,14 +405,17 @@ Check out these documentation sections:
 What we plan to include in the Quick Start:
 
 - [ ] Jinja
-- [ ] The Jinja + Air Tags pattern the core devs love to use
-- [x] Forms
+    - [ ] The Jinja + Air Tags pattern the core devs love to use
+- [x] Forms: 
+    - [ ] Using Pydantic-powered AirForms for validation of incoming data
+    - [ ] `HTTP GET` forms, like those used in search forms
+    - [ ] File uploads (part of forms)    
 - [ ] HTMX basics
-- [x] Routing: Variables in URLs
-- [x] Routing: Variables in paths
+- [x] Routing
+    - [x] Variables in URLs
+    - [x] Variables in paths
 - [ ] Custom exception handlers
 - [ ] Sessions
 - [ ] Cookies
-- [ ] File uploads (part of forms)
 - [ ] Large File downloads
 - [ ] Server Sent Events
