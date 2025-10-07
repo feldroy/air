@@ -152,16 +152,7 @@ The `mvpcss` layout function automatically:
 - Includes HTMX for interactive features
 - Separates head and body content automatically
 
-Now would be a good time to commit your work:
-
-```bash
-git add .
-git commit -m "Add minimal Air app with index page"
-```
-
-## Air Tags Explained
-
-Air Tags are Python classes that generate HTML. Each tag (like `H1`, `P`, `Div`) corresponds to an HTML element. When you create an instance of an Air Tag, it renders to the corresponding HTML:
+**Air Tags**: The HTML elements you see in the code (`H1`, `P`, etc.) are called "Air Tags". These are Python classes that generate HTML. Each tag (like `H1`, `P`, `Div`) corresponds to an HTML element. When you create an instance of an Air Tag, it renders to the corresponding HTML:
 
 ```python
 air.H1("Hello, World!")  # Renders as <h1>Hello, World!</h1>
@@ -169,3 +160,10 @@ air.P("This is a paragraph")  # Renders as <p>This is a paragraph</p>
 ```
 
 Air Tags are type-safe and provide IDE autocompletion, making it easier to write correct HTML.
+
+Now would be a good time to commit your work:
+
+```bash
+git add .
+git commit -m "Add minimal Air app with index page"
+```
