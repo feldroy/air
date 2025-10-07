@@ -10,6 +10,7 @@ from typing import (
     Any,
     Literal,
 )
+from warnings import deprecated
 
 from fastapi import params
 from fastapi.routing import APIRoute, APIRouter
@@ -20,7 +21,7 @@ from starlette.routing import (
     BaseRoute,
 )
 from starlette.types import ASGIApp, Lifespan
-from typing_extensions import Doc, deprecated
+from typing_extensions import Doc
 
 from .applications import Air, MaybeAwaitable
 from .responses import AirResponse
