@@ -34,21 +34,11 @@ Install Ruff as a dev dependency with uv:
 uv add --dev ruff
 ```
 
-Then run it on your code to check for style and linting issues:
+Then run all of these commands on your code to check for style and linting issues, fix any fixable issues, and format your code:
 
 ```bash
 ruff check .
-```
-
-To automatically fix any fixable issues:
-
-```bash
 ruff check --fix .
-```
-
-To format your code according to Ruff's standards:
-
-```bash
 ruff format .
 ```
 
@@ -56,47 +46,30 @@ Air's configuration for Ruff is defined in its `pyproject.toml` file, at https:/
 
 To start, most people won't need custom Ruff configuration. If you do, add a `[tool.ruff]` section to your own project's `pyproject.toml` file. See the [Ruff documentation](https://docs.ruff.rs/) for configuration options.
 
-## Type Checkers: MyPy
-
-MyPy is the most mature Python type checker. It helps catch type-related errors before runtime, making your code more reliable and easier for AI coding assistants to understand.
-
-Install MyPy as a dev dependency with uv:
+After setting up Ruff and running the commands, commit these changes:
 
 ```bash
-uv add --dev mypy
+git add .
+git commit -m "Add Ruff, and have it auto-fix issues and format code"
 ```
 
-Run MyPy on your project to check for type errors:
+## Type Checkers: Ty
+
+Air recommends using `ty` instead of MyPy for type checking. `ty` is a tool built specifically for Air projects that provides helpful type checking without the noise that MyPy produces on Air projects. This is because MyPy will print errors that are not helpful if you run it on the current main.py file.
+
+Install Ty as a dev dependency with uv:
 
 ```bash
-mypy .
+uv add --dev ty
 ```
 
-For a more comprehensive type checking experience, also install the typing extensions that complement MyPy:
+Run Ty on your project to check for type errors:
 
 ```bash
-uv add --dev typing-extensions
+ty check
 ```
 
-Configure MyPy by adding settings to your `pyproject.toml` or creating a `mypy.ini` file. This helps AI coding assistants understand your project's type expectations:
-
-```ini
-[mypy]
-python_version = 3.9
-warn_return_any = True
-warn_unused_configs = True
-disallow_untyped_defs = True
-```
-
-Add type hints to your functions to help both humans and AI understand your code:
-
-```python
-def greet(name: str) -> str:
-    """Greet a user by name."""
-    return f"Hello, {name}!"
-```
-
-Regularly running type checkers ensures your codebase remains clean and well-understood by AI tools.
+Ty provides better integration with Air's type system and is designed to be more helpful for Air projects specifically.
 
 ## Testing: PyTest and Coverage
 
