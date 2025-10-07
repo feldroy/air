@@ -53,14 +53,14 @@ git add .
 git commit -m "Add Ruff, and have it auto-fix issues and format code"
 ```
 
-## Type Checkers: Ty
+## Type Checkers: Ty and Pyrefly
 
-Air recommends using `ty` instead of MyPy for type checking. `ty` is a tool built specifically for Air projects that provides helpful type checking without the noise that MyPy produces on Air projects. This is because MyPy will print errors that are not helpful if you run it on the current main.py file.
+Air recommends using `ty` and `pyrefly` instead of MyPy for type checking. `ty` and `pyrefly` are tools built specifically for Air projects that provide helpful type checking without the noise that MyPy produces on Air projects. This is because MyPy will print errors that are not helpful if you run it on the current main.py file.
 
-Install Ty as a dev dependency with uv:
+Install both tools as dev dependencies with uv:
 
 ```bash
-uv add --dev ty
+uv add --dev ty pyrefly
 ```
 
 Run Ty on your project to check for type errors:
@@ -69,7 +69,13 @@ Run Ty on your project to check for type errors:
 ty check
 ```
 
-Ty provides better integration with Air's type system and is designed to be more helpful for Air projects specifically.
+Run Pyrefly to analyze your project's dependencies and structure:
+
+```bash
+pyrefly check
+```
+
+Both tools provide better integration with Air's type system and are designed to be more helpful for Air projects specifically.
 
 ## Testing: PyTest and Coverage
 
