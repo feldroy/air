@@ -97,7 +97,7 @@ app = air.Air()
 
 @app.page
 def index():
-    title = "My Blog"
+    title = "My Blog"  # TODO: Change this to your own blog title!
     return air.layouts.mvpcss(
         air.Head(air.Title(title)),
         air.H1(title),
@@ -111,6 +111,17 @@ This creates a simple web application with:
 - `app = air.Air()`: Creates a new Air application instance
 - `@app.page`: Decorator that maps the function to the root path `/`
 - The function returns a complete HTML document using Air's layout system
+
+!!! tip "Make It Yours!"
+    This tutorial will be a lot more fun if you use it to make a real blog for yourself! Change that `"My Blog"` title to something that reflects your personality or interests. Here are some fun examples to get your creative juices flowing:
+    
+    - `"Carla's Tech Adventures"` or `"John's Culinary Journey"`
+    - `"The Daily Musings of a Cat Lover"`
+    - `"Code & Coffee"` or `"Python Ponderings"`
+    - `"Creative Uma's Awesome Blog"` or `"Sony's Random Thoughts About Board Games"`
+    - Get creative: `"The Midnight Coder's Chronicles"` or `"From Zero to Hero"`
+    
+    Don't forget to also update the paragraph text to match your personal style - maybe `"Welcome to my corner of the internet where I share my passion for [your topic]!"` or `"Thanks for stopping by my digital space!"`
 
 Run the development server:
 
@@ -145,7 +156,7 @@ Now would be a good time to commit your work:
 
 ```bash
 git add .
-git commit -m "Add first Air app with index page"
+git commit -m "Add minimal Air app with index page"
 ```
 
 ## Air Tags Explained
