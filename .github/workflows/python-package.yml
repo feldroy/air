@@ -69,7 +69,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
-        python-version: [ "3.12", "3.13" ]
+        python-version: [ "3.13", "3.14" ]
     name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }} (via just, uv, pytest, pytest-pretty)
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45

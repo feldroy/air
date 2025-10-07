@@ -8,7 +8,7 @@ import air
 app = air.Air()
 
 
-@app.page 
+@app.page
 def index():
     # Same as route app.get('/')
     return air.H1('Welcome to our site!')
@@ -20,6 +20,21 @@ def dashboard():
 
 @app.page
 def show_item():
-    # same as app.get('/get-item')
+    # same as app.get('/show-item')
     return air.H1('Showing an item')
+```
+
+An option has been added to change the path separator to forward slashes instead of dashes.
+
+```python
+import air
+
+app = air.Air(path_separator="/")
+
+
+@app.page
+def about_us():
+    # same as app.get('/about/us`)
+    return air.H1('About us!')
+
 ```
