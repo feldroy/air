@@ -52,7 +52,9 @@ To format your code according to Ruff's standards:
 ruff format .
 ```
 
-Air's configuration for Ruff is defined in your `pyproject.toml` file. This ensures that AI coding assistants can understand and follow the same formatting conventions when generating code for your project.
+Air's configuration for Ruff is defined in its `pyproject.toml` file, at https://github.com/feldroy/air/blob/main/pyproject.toml
+
+To start, most people won't need custom Ruff configuration. If you do, add a `[tool.ruff]` section to your own project's `pyproject.toml` file. See the [Ruff documentation](https://docs.ruff.rs/) for configuration options.
 
 ## Type Checkers: MyPy
 
