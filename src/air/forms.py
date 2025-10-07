@@ -186,7 +186,8 @@ def default_form_widget(
         if data is not None and field_name in data:
             kwargs["value"] = data[field_name]
 
-        if error := error_dict.get(field_name, False):
+        error = error_dict.get(field_name)
+        if error:
             kwargs["aria-invalid"] = "true"
         json_schema_extra: dict = field_info.json_schema_extra or {}
         if json_schema_extra.get("autofocus"):
