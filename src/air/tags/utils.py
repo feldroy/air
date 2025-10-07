@@ -126,7 +126,8 @@ def open_html_blob_in_the_browser(html_source: str, *, data_url_max: int = DATA_
     source_bytes = html_source.encode()
     url = BLOB_URL_PRESET + base64.b64encode(source_bytes).decode("ascii")
     if len(url) >= data_url_max:
-        raise URLError("html_source is to long!")
+        msg = "html_source is to long!"
+        raise URLError(msg)
     _open_new_tab(url)
 
 
