@@ -8,6 +8,7 @@ from enum import Enum
 from functools import wraps
 from types import FunctionType
 from typing import Annotated, Any, Literal, TypeVar
+from warnings import deprecated
 
 from fastapi import FastAPI, routing
 from fastapi.params import Depends
@@ -18,7 +19,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
-from typing_extensions import Doc, deprecated
+from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS
 from .responses import AirResponse
