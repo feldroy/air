@@ -64,10 +64,6 @@ HTML_SAMPLE: Final = Html(
         Script(
             src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/css.min.js",
         ),
-        Script("marked.setOptions({\n  gfm: true,\n  breaks: true, // Optional: Treat single line breaks as"),
-        A(
-            "highlight: function (code, lang) {\n    // Use highlight.js with a fallback for unknown languages\n    const validLang = hljs.getLanguage(lang) ? lang : 'plaintext';\n    return hljs.highlight(code, { language: validLang }).value;\n  }    \n  });\n\n//   const html = marked.parse(markdown);\n\n// Find all elements with the \"marked\" class and convert content\ndocument.addEventListener('DOMContentLoaded', () => {\n  document.querySelectorAll('.marked').forEach(el => {\n    const markdown = el.textContent;\n    const html = marked.parse(markdown);\n    el.innerHTML = html;\n\n    el.querySelectorAll('pre code').forEach(block => {\n    hljs.highlightElement(block);\n    });    \n  });\n });\n\ndocument.addEventListener(\"htmx:afterSettle\", function(evt) {\n  // console.log(\"Boosted navigation finished!\");\n  document.querySelectorAll('.marked').forEach(el => {\n    const markdown = el.textContent;\n    const html = marked.parse(markdown);\n    el.innerHTML = html;\n\n    el.querySelectorAll('pre code').forEach(block => {\n    hljs.highlightElement(block);\n    });    \n  });                           \n});",
-        ),
         Link(href="/public/style.css", rel="stylesheet", type="text/css"),
         Title("Daniel Roy Greenfeld"),
     ),
