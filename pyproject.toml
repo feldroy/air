@@ -628,8 +628,8 @@ source = ["src"]
 [tool.codespell]
 # Fail loud: print everything
 quiet-level = 0
-count = true
-summary = true
+count = false
+summary = false
 interactive = 0
 enable-colors = true
 # Check more things
@@ -644,8 +644,6 @@ skip = '.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytes
 uri-ignore-words-list = '*'
 # Your project-specific words (file: one word per line)
 ignore-words = '.codespellignore'
-# Quick local exceptions (keep these short and justified)
-ignore-words-list = 'asend,aci'
 # Ignore Markdown bolding forms like **L**anguage
 ignore-regex = '\*\*[A-Z]\*\*[a-z]+\b'
 # Skip fenced code blocks in Markdown (reduces false positives)
