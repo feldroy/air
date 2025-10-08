@@ -77,6 +77,13 @@ pyrefly check
 
 Both tools provide better integration with Air's type system and are designed to be more helpful for Air projects specifically.
 
+After setting up ty and pyrefly and running the checks, commit these changes:
+
+```bash
+git add .
+git commit -m "Add ty and pyrefly for type checking"
+```
+
 ## Testing: PyTest and Coverage
 
 Testing is crucial for maintaining code quality and ensuring your application works as expected. PyTest is the preferred testing framework for Python projects, including Air. It makes writing and running tests simple and intuitive for both humans and AI coding assistants.
