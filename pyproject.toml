@@ -622,7 +622,3 @@ output = "coverage.xml" # default “coverage.xml”
 [tool.coverage.paths]
 source = ["src"]
 # endregion pytest
-
-[tool.codespell]
-count = true
-write = true

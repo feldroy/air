@@ -157,6 +157,11 @@ type-annotate TARGET="src":
 spell-check TARGET="docs":
     just run -- codespell "{{ TARGET }}"
 
+# Check for spelling errors in documentation
+[group('qa')]
+spell-fix TARGET="docs":
+    just run -- codespell -w "{{ TARGET }}"
+
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
 qa: format type-check spell-check
