@@ -625,3 +625,4 @@ source = ["src"]
 
 [tool.codespell]
 count = true
+write = true
