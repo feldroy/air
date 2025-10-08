@@ -108,9 +108,6 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     just run -- typos --write-changes
     just run -- codespell --write-changes
 
-test55 OUTPUT_FORMAT="full":
-    @echo --format {{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
-
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
 format-unsafe: && (format "concise" "--unsafe-fixes")
