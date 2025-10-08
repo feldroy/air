@@ -97,7 +97,12 @@ class AirForm:
         # Use submitted data if available (preserves values on validation errors)
         render_data = getattr(self, "submitted_data", None) or self.initial_data
         return SafeStr(
-            self.widget(model=self.model, data=render_data, errors=self.errors, includes=self.includes),
+            self.widget(
+                model=self.model,
+                data=render_data,
+                errors=self.errors,
+                includes=self.includes,
+            ),
         )
 
 
@@ -167,6 +172,18 @@ def default_form_widget(
     errors: list | None = None,
     includes: Sequence[str] | None = None,
 ) -> str:
+    """
+    Render a form widget for a given Pydantic model.
+
+    Args:
+        model: The Pydantic model class to render
+        data: Dictionary of data to pre-populate
+        errors: List of Pydantic validation errors
+        includes: Sequence of field names to include (None means all)
+
+    Returns:
+        HTML string representing the form
+    """
     error_dict = errors_to_dict(errors)
     fields = []
     for field_name, field_info in model.model_fields.items():
@@ -199,7 +216,7 @@ def default_form_widget(
                     for_=field_name,
                 ),
                 tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
-                tags.Small(get_user_error_message(error), id=f"{field_name}-error") if error else "",
+                (tags.Small(get_user_error_message(error), id=f"{field_name}-error") if error else ""),
             ),
         )
 
