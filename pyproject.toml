@@ -86,6 +86,7 @@ dev = [
     { include-group = "lint" }, # linting and type-checking toolchain
     { include-group = "test" }, # test runner and helpers
     { include-group = "docs" }, # documentation build toolchain
+    "codespell>=2.4.1",
 ]
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
@@ -621,3 +622,6 @@ output = "coverage.xml" # default “coverage.xml”
 [tool.coverage.paths]
 source = ["src"]
 # endregion pytest
+
+[tool.codespell]
+count = true

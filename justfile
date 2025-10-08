@@ -152,9 +152,14 @@ type-check-concise TARGET=".":
 type-annotate TARGET="src":
     just run -- pyrefly infer "{{ TARGET }}"
 
+# Check for spelling errors in documentation
+[group('qa')]
+spell-check TARGET="docs":
+    just run -- codespell "{{ TARGET }}"
+
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
-qa: format type-check
+qa: format type-check spell-check
 
 # Visualize Ruff analyze graph as JSON (uses rich for display)
 [group('qa')]
