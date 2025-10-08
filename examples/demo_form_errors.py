@@ -24,22 +24,14 @@ app = air.Air()
 async def show_form():
     """Show the form initially."""
     form = ContactForm()
-    return air.Html(
-        air.Head(
-            air.Title("Enhanced Form Errors Demo"),
-            air.Link(rel="stylesheet", href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"),
-        ),
-        air.Body(
-            air.Main(
-                air.H1("Contact Form - Error Message Demo"),
-                air.Form(
-                    form.render(),
-                    air.Button("Submit", type="submit"),
-                    method="post",
-                    action="/submit",
-                ),
-                class_="container",
-            )
+    return air.layouts.picocss(
+        air.Title("Enhanced Form Errors Demo"),
+        air.H1("Contact Form - Error Message Demo"),
+        air.Form(
+            form.render(),
+            air.Button("Submit", type="submit"),
+            method="post",
+            action="/submit",
         ),
     )
 
@@ -50,39 +42,30 @@ async def handle_form(request: air.Request):
     form = await ContactForm.from_request(request)
 
     if form.is_valid:
-        return air.Html(
-            air.Head(air.Title("Success")),
-            air.Body(
-                air.H1("Success!"),
-                air.P(f"Name: {form.data.name}"),
-                air.P(f"Age: {form.data.age}"),
-                air.P(f"Email: {form.data.email}"),
-            ),
+        return air.layouts.picocss(
+            air.Title("Success"),
+            air.H1("Success!"),
+            air.P(f"Name: {form.data.name}"),
+            air.P(f"Age: {form.data.age}"),
+            air.P(f"Email: {form.data.email}"),
         )
 
     # Show form with enhanced error messages
-    return air.Html(
-        air.Head(
-            air.Title("Enhanced Form Errors Demo"),
-            air.Link(rel="stylesheet", href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"),
+    return air.layouts.picocss(
+        air.Title("Enhanced Form Errors Demo"),
+        air.H1("Contact Form - With Enhanced Error Messages"),
+        air.P("Notice the specific, user-friendly error messages below:"),
+        air.Form(
+            form.render(),
+            air.Br(),
+            air.Button("Submit", type="submit"),
+            method="post",
+            action="/submit",
         ),
-        air.Body(
-            air.Main(
-                air.H1("Contact Form - With Enhanced Error Messages"),
-                air.P("Notice the specific, user-friendly error messages below:"),
-                air.Form(
-                    form.render(),
-                    air.Button("Submit", type="submit"),
-                    method="post",
-                    action="/submit",
-                ),
-                air.Hr(),
-                air.Details(
-                    air.Summary("Technical Error Details (for developers)"),
-                    air.Pre(str(form.errors)) if form.errors else "No errors",
-                ),
-                class_="container",
-            )
+        air.Hr(),
+        air.Details(
+            air.Summary("Technical Error Details (for developers)"),
+            air.P(str(form.errors)) if form.errors else "No errors",
         ),
     )
 

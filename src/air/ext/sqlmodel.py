@@ -130,7 +130,7 @@ async def create_async_session(
 
 async def get_async_session(
     url: str = ASYNC_DATABASE_URL, echo: _EchoEnum = _EchoEnum.TRUE if DEBUG else _EchoEnum.FALSE
-) -> AsyncGenerator[AsyncSession, None]:
+) -> AsyncGenerator[AsyncSession]:
     """Builder function for `async_session_dependency`."""
     session_factory = await create_async_session(url, echo)
     session = session_factory()
