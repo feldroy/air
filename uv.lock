@@ -101,6 +101,7 @@ devtools = [
     { name = "uvicorn" },
 ]
 docs = [
+    { name = "codespell" },
     { name = "greenlet" },
     { name = "mkdocs" },
     { name = "mkdocs-autorefs" },
@@ -201,6 +202,7 @@ devtools = [
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 docs = [
+    { name = "codespell", specifier = ">=2.4.1" },
     { name = "greenlet", specifier = ">=3.2.4" },
     { name = "mkdocs", specifier = ">=1.6.1" },
     { name = "mkdocs-autorefs", specifier = ">=1.4.2" },

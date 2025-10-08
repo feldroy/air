@@ -86,13 +86,12 @@ dev = [
     { include-group = "lint" }, # linting and type-checking toolchain
     { include-group = "test" }, # test runner and helpers
     { include-group = "docs" }, # documentation build toolchain
-    "codespell>=2.4.1",
 ]
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
     "uvicorn>=0.34.0", # run full example apps
     "rich-cli>=1.8.1", # Command Line Interface to Rich
-    "typer>=0.19.1" # For running of scripts
+    "typer>=0.19.1", # For running of scripts
 ]
 lint = [
     "pyrefly>=0.29.1", # A fast type checker
@@ -129,6 +128,7 @@ docs = [
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
     "sqlmodel>=0.0.24",
+    "codespell>=2.4.1", # for spell checking
 ]
 # endregion dependencies
 
