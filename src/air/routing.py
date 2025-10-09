@@ -24,6 +24,7 @@ from starlette.routing import (
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc
 
+from .exception_handlers import default_404_router_handler
 from .requests import Request
 from .responses import AirResponse
 from .types import MaybeAwaitable
@@ -286,8 +287,7 @@ class AirRouter(APIRouter):
     ) -> None:
         self.path_separator = path_separator
         if default is None:
-            # TODO: This used to be applications.Air, need to determine if this is a valid action
-            default = ASGIApp
+            default = default_404_router_handler
         super().__init__(
             prefix=prefix,
             tags=tags,
