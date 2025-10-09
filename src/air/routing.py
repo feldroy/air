@@ -25,21 +25,21 @@ from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc
 
 from .exception_handlers import default_404_router_handler
-from .requests import Request
+from .requests import AirRequest
 from .responses import AirResponse
 from .types import MaybeAwaitable
 from .utils import compute_page_path, default_generate_unique_id
 
 
 class AirRoute(APIRoute):
-    """Custom APIRoute that uses Air's custom Request class."""
+    """Custom APIRoute that uses Air's custom AirRequest class."""
 
     @override
     def get_route_handler(self) -> Callable:
         original_route_handler = super().get_route_handler()
 
         async def custom_route_handler(request: Any) -> Response:
-            request = Request(request.scope, request.receive)
+            request = AirRequest(request.scope, request.receive)
             return await original_route_handler(request)
 
         return custom_route_handler

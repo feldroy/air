@@ -3,7 +3,7 @@ from typing import Annotated
 
 from fastapi.testclient import TestClient
 
-from air import H1, Air, Request, is_htmx_request
+from air import H1, Air, AirRequest, Request, is_htmx_request
 
 
 def test_is_htmx() -> None:
@@ -193,7 +193,7 @@ def test_htmx_triggering_event() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def test_endpoint(request: AirRequest) -> H1:
         event = request.htmx.triggering_event
         if event:
             return H1(f"Event: {event['type']}")

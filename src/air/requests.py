@@ -6,7 +6,7 @@ from typing import Any, Final
 from urllib.parse import urlsplit, urlunsplit
 
 from starlette.datastructures import Headers as Headers
-from starlette.requests import Request as _Request
+from starlette.requests import Request as Request
 
 # HTMX Header names as constants
 HX_REQUEST: Final = "HX-Request"
@@ -29,7 +29,7 @@ class HtmxDetails:
     Derived values are computed once in `__post_init__`.
     """
 
-    request: _Request
+    request: "AirRequest"
 
     # Derived fields (formerly properties)
     headers: Headers = field(init=False)
@@ -153,13 +153,9 @@ class HtmxDetails:
         return None
 
 
-class AirRequest(_Request):
+class AirRequest(Request):
     """A wrapper around Starlette's FastAPI that includes the HtmxDetails object."""
 
     @property
     def htmx(self) -> HtmxDetails:
         return HtmxDetails(self)
-
-
-Request = AirRequest
-"""`Request` is a proxy for `AirRequest` kept for backwards compatability."""
