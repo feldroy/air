@@ -17,11 +17,11 @@ These are all great first steps! Now, to maximize the effectiveness of AI on you
 
 ## AI-First and AI-Native Design
 
-At Feldroy our research evolves the whole field of web development. Air is our experiment in which we prioritize AI agent collaboration as a first-class citizen in the development process.
+At our indie research lab [Feldroy](https://www.feldroy.com) our core research question is, "How can we evolve the field of web development in the age of AI?" Air is our experiment in which we prioritize AI agent collaboration as a first-class citizen in the development process.
 
 Air's foundational principle is to be deeply AI-native, with every function, class, module, and documentation page optimized for AI agents to generate and interact with code effectively. This represents our framework's core identity. 
 
-All Air core and package code from us is optimized for AI agent collaboration. 
+All Air core and package code from us is optimized for AIs. Naturally, that makes it great for humans to work with as well.
 
 ## Air's Principles Apply to Your Codebase
 
@@ -37,7 +37,7 @@ Follow these principles, which are extended from Air core:
 - Testing should be thoughtful and comprehensive, using pytest and coverage. AI agents can run pytest to check that they didn't break things, and add to tests. Write/curate the starting tests by hand, as AI will follow your patterns.
 - Code structure follows predictable patterns that AI agents can easily navigate. Break up long files meaningfully so AI agents can selectively choose portions to read into context.
 - Be strict about naming. Name everything carefully and precisely. Use AI to help you with naming. Make names self-documenting. No 1-2 letter variable or function names.
-- Reduce cognitive load for both humans and AIs. Be expressive yet compact. Use bulleted cheatsheet-style lists and tables.
+- Reduce cognitive load for both humans and AIs. Be expressive yet compact. Use bulleted cheatsheet-style lists and tables. Don't take "smart" coding shortcuts like `import *` or doubly-nested list comprehensions.
 - Teach a human or AI how to fish. Teach them useful commands, so they can explore and extend them. Don't have them blindly follow recipes.
 - Maximize observability. Use Playwright to provide screenshots to multimodal AI agents. Log liberally. Define and use custom exceptions.
 
