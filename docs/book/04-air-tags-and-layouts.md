@@ -1,5 +1,11 @@
 # Air Tags and Layouts
 
+!!! warning "Unreliable, incorrect advice lurks here"
+
+    This chapter likely contains heavy AI edits on Daniel Roy Greenfeld's initial handwritten blog tutorial. AI has expanded sections, and Audrey M. Roy Greenfeld has not tested and rewritten those yet. 
+    
+    Please treat it as a very early draft, and DO NOT TRUST anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
+
 ## Air Tags: An Approachable Entry Point to Air
 
 Air Tags are strongly-typed Python classes that generate HTML elements. Instead of writing HTML strings, you work with Python objects that provide type safety and IDE autocompletion. Air Tags provide a beginner-friendly entry point to creating web interfaces in Air, but Air's architecture extends far beyond just tags to include routing, middleware, database integration, and API capabilities built on FastAPI and Starlette.

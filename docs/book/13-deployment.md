@@ -1,5 +1,11 @@
 # Deployment
 
+!!! warning "Unreliable, incorrect advice lurks here"
+
+    This chapter likely contains heavy AI edits on Daniel Roy Greenfeld's initial handwritten blog tutorial. AI has expanded sections, and Audrey M. Roy Greenfeld has not tested and rewritten those yet. 
+    
+    Please treat it as a very early draft, and DO NOT TRUST anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
+
 ## Production Deployment
 
 Deploy your Air application just like any FastAPI application. For production environments, you'll want to use a production-ready ASGI server:
