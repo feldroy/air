@@ -243,7 +243,7 @@ air = { workspace = true }
 [build-system]
 # Ensure the chosen backend is present. A version range keeps CI reproducible
 # (meaning: stable over time) while allowing safe updates.
-requires = ["uv_build>=0.8.7,<0.9.0"]
+requires = ["uv_build>=0.9.0,<0.10.0"]
 # Use uv’s build backend. It is fast and strict, supports PEP 660 editable installs,
 # and produces correct distribution metadata for tooling.
 build-backend = "uv_build"
