@@ -1,4 +1,4 @@
-# AI-Enhanced Development Setup
+# A Best Practices Setup for Vibe Engineering
 
 Now that you've created your first Air application and seen how straightforward it can be to build with the framework, let's optimize your development environment for maximum AI collaboration. In the previous chapter, you:
 
@@ -9,20 +9,39 @@ Now that you've created your first Air application and seen how straightforward 
 
 These are all great first steps! Now, to maximize the effectiveness of AI on your Air project, you will need to set up various standard Python tools, and an AI coding agent.
 
+!!! note "Vibe Engineering? A Note from Audrey"
+
+    Vibe engineering is a new term coined by Simon Willison and heavily explored by me, Audrey M. Roy Greenfeld. It's like vibe coding, but with a focus on maintainability, code quality, clean architecture, and ability of AI agents to work with the codebase. In a way it's potentially the opposite of vibe coding because all you care about is having a great codebase, regardless of the end product.
+
+    Here in this book our focus is on helping you set up your Air codebase to follow engineering best practices from the start, including vibe engineering best practices.
+
 ## AI-First and AI-Native Design
 
-Air's foundational principle is to be "deeply AI-native," with every function, class, module, and documentation page optimized for AI agents to generate and interact with code effectively. This represents the framework's core identity, evolving web development to prioritize AI collaboration as a first-class citizen in the development process.
+At Feldroy our research evolves the whole field of web development. Air is our experiment in which we prioritize AI agent collaboration as a first-class citizen in the development process.
 
-The AI-first approach means:
+Air's foundational principle is to be deeply AI-native, with every function, class, module, and documentation page optimized for AI agents to generate and interact with code effectively. This represents our framework's core identity. 
 
-- Every function in Air includes comprehensive docstrings for AI understanding, because these help with AI context.
-- Type hints are extensive and precise for AI code completion, and used by AI to validate its code by running type checkers.
-- Documentation is written to be clear for both humans and LLMs. Start with clear docstrings, then document anything that AI has trouble figuring out on its own.
-- Testing is thoughtful and comprehensive, using pytest and coverage. AI agents can run pytest to check that they didn't break things, and add to tests. Write/curate the starting tests by hand, as AI will follow your patterns.
+All Air core and package code from us is optimized for AI agent collaboration. 
+
+## Air's Principles Apply to Your Codebase
+
+When you build with Air, you should write code as if it were going into an official Air package or Air core. Specifically, you must also optimize your own codebase for AI collaboration. 
+
+Follow these principles, which are extended from Air core:
+
+- Every function should include comprehensive docstrings for AI understanding, because these help with AI context.
+- Type hints should be extensive and precise for AI code completion, and used by AI to validate its code by running type checkers.
+- Documentation should be written to be concise and clear for both humans and LLMs. Start with clear docstrings, then document anything that AI has trouble figuring out on its own. 
+- Aggressively remove comments that are blatantly obvious. AI often adds unnecessary comments to code, and it's your responsibility to fight that from the start. Only meaningful or truly helpful comments are allowed.
+- Keep code flat. Reduce abstraction and functions calling functions calling functions to a bare minimum.
+- Testing should be thoughtful and comprehensive, using pytest and coverage. AI agents can run pytest to check that they didn't break things, and add to tests. Write/curate the starting tests by hand, as AI will follow your patterns.
 - Code structure follows predictable patterns that AI agents can easily navigate. Break up long files meaningfully so AI agents can selectively choose portions to read into context.
-- Just as everything is thoughtfully and deliberately named in Air, so should the objects be in your code. Reducing cognitive load for humans helps AI models as well.
+- Be strict about naming. Name everything carefully and precisely. Use AI to help you with naming. Make names self-documenting. No 1-2 letter variable or function names.
+- Reduce cognitive load for both humans and AIs. Be expressive yet compact. Use bulleted cheatsheet-style lists and tables.
+- Teach a human or AI how to fish. Teach them useful commands, so they can explore and extend them. Don't have them blindly follow recipes.
+- Maximize observability. Use Playwright to provide screenshots to multimodal AI agents. Log liberally. Define and use custom exceptions.
 
-Air follows these same principles, and so should all your Air code for best results.
+We'll now set up your project and development environment with the necessary tools to support these principles.
 
 ## Linting and Formatting: Ruff
 
