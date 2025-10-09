@@ -196,5 +196,5 @@ This framework is ideal for developers who want the power of FastAPI with elegan
 
 ## Documentation
 
-- Official Docs: https://airdocs.fastapicloud.dev
+- Official Docs: https://feldroy.github.io/air/
 - Source Code: https://github.com/feldroy/air
