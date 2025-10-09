@@ -1,4 +1,4 @@
-# A Best Practices Setup for Vibe Engineering
+# Best Practices Setup for AI-Augmented Engineering
 
 Now that you've created your first Air application and seen how straightforward it can be to build with the framework, let's optimize your development environment for maximum AI collaboration. In the previous chapter, you:
 
@@ -11,9 +11,13 @@ These are all great first steps! Now, to maximize the effectiveness of AI on you
 
 !!! note "Vibe Engineering? A Note from Audrey"
 
-    Vibe engineering is a new term coined by Simon Willison and heavily explored by me, Audrey M. Roy Greenfeld. It's like vibe coding, but with a focus on maintainability, code quality, clean architecture, and ability of AI agents to work with the codebase. In a way it's potentially the opposite of vibe coding because all you care about is having a great codebase, regardless of the end product.
+    Vibe engineering[1] is a new term coined by Simon Willison and currently being explored by me, Audrey M. Roy Greenfeld. It's like vibe coding, but with a focus on maintainability, code quality, clean architecture, and ability of AI agents to work with the codebase. In a way it's potentially the opposite of vibe coding because all you care about is having a great codebase, regardless of the end product.
 
-    Here in this book our focus is on helping you set up your Air codebase to follow engineering best practices from the start, including vibe engineering best practices.
+    Here in this book our focus is on helping you set up your Air codebase to follow AI-assisted engineering best practices from the start, a field where we're all still working out what those best practices are. 
+    
+    I'm still exploring whether to formally call it vibe engineering in this book, or something else. Terminology matters. Let's experiment and get this right, and update this chapter embracing this or another term soon.
+
+[1]: https://simonwillison.net/2025/Oct/7/vibe-engineering/
 
 ## AI-First and AI-Native Design
 
