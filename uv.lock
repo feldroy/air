@@ -61,7 +61,6 @@ standard = [
 [package.dev-dependencies]
 dev = [
     { name = "aiosqlite" },
-    { name = "codespell" },
     { name = "coverage", marker = "extra == 'group-3-air-dev' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "diff-cover" },
     { name = "greenlet" },
@@ -73,6 +72,7 @@ dev = [
     { name = "mkdocs-llmstxt" },
     { name = "mkdocs-material", extra = ["imaging"], marker = "extra == 'group-3-air-dev' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "mkdocs-redirects" },
+    { name = "mkdocs-spellcheck", extra = ["codespell"], marker = "extra == 'group-3-air-dev' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "mkdocstrings", extra = ["python"], marker = "extra == 'group-3-air-dev' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "mkdocstrings-python" },
     { name = "pdbpp" },
@@ -101,7 +101,6 @@ devtools = [
     { name = "uvicorn" },
 ]
 docs = [
-    { name = "codespell" },
     { name = "greenlet" },
     { name = "mkdocs" },
     { name = "mkdocs-autorefs" },
@@ -110,6 +109,7 @@ docs = [
     { name = "mkdocs-llmstxt" },
     { name = "mkdocs-material", extra = ["imaging"] },
     { name = "mkdocs-redirects" },
+    { name = "mkdocs-spellcheck", extra = ["codespell"] },
     { name = "mkdocstrings", extra = ["python"] },
     { name = "mkdocstrings-python" },
     { name = "sqlmodel" },
@@ -162,7 +162,6 @@ provides-extras = ["standard", "pretty", "sql", "auth", "all"]
 [package.metadata.requires-dev]
 dev = [
     { name = "aiosqlite", specifier = ">=0.21.0" },
-    { name = "codespell", specifier = ">=2.4.1" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.8.2" },
     { name = "diff-cover", specifier = ">=9.6.0" },
     { name = "greenlet", specifier = ">=3.2.4" },
@@ -174,6 +173,7 @@ dev = [
     { name = "mkdocs-llmstxt", specifier = ">=0.3.1" },
     { name = "mkdocs-material", extras = ["imaging"], specifier = ">=9.6.17" },
     { name = "mkdocs-redirects", specifier = ">=1.2.2" },
+    { name = "mkdocs-spellcheck", extras = ["codespell"], specifier = ">=1.1.2" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.30.0" },
     { name = "mkdocstrings-python", specifier = ">=1.16.12" },
     { name = "pdbpp", specifier = "==0.11.7" },
@@ -202,7 +202,6 @@ devtools = [
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 docs = [
-    { name = "codespell", specifier = ">=2.4.1" },
     { name = "greenlet", specifier = ">=3.2.4" },
     { name = "mkdocs", specifier = ">=1.6.1" },
     { name = "mkdocs-autorefs", specifier = ">=1.4.2" },
@@ -211,6 +210,7 @@ docs = [
     { name = "mkdocs-llmstxt", specifier = ">=0.3.1" },
     { name = "mkdocs-material", extras = ["imaging"], specifier = ">=9.6.17" },
     { name = "mkdocs-redirects", specifier = ">=1.2.2" },
+    { name = "mkdocs-spellcheck", extras = ["codespell"], specifier = ">=1.1.2" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.30.0" },
     { name = "mkdocstrings-python", specifier = ">=1.16.12" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
@@ -1477,6 +1477,23 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f1/a8/6d44a6cf07e969c7420cb36ab287b0669da636a2044de38a7d2208d5a758/mkdocs_redirects-1.2.2.tar.gz", hash = "sha256:3094981b42ffab29313c2c1b8ac3969861109f58b2dd58c45fc81cd44bfa0095", size = 7162, upload-time = "2024-11-07T14:57:21.109Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c4/ec/38443b1f2a3821bbcb24e46cd8ba979154417794d54baf949fefde1c2146/mkdocs_redirects-1.2.2-py3-none-any.whl", hash = "sha256:7dbfa5647b79a3589da4401403d69494bd1f4ad03b9c15136720367e1f340ed5", size = 6142, upload-time = "2024-11-07T14:57:19.143Z" },
+]
+
+[[package]]
+name = "mkdocs-spellcheck"
+version = "1.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mkdocs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/79/28/3f52d27adf3e352099388608bccfac84b30e886ca6f7b0cb01d2eb4ef5ae/mkdocs_spellcheck-1.1.2.tar.gz", hash = "sha256:66ff4a3b82b9399dbeacdf5516698406fbdcb5b654b64fec584b185514181c79", size = 33719, upload-time = "2025-08-05T12:03:15.292Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/17/db/8c957ebe8caa2d58f0df985e2ed10dd0d9d096fb6ca2eedb32f2228c66c3/mkdocs_spellcheck-1.1.2-py3-none-any.whl", hash = "sha256:947644eb2b9b8c06740d7f693838edca1fa195b198c455337648977c9a86f039", size = 13643, upload-time = "2025-08-05T12:03:13.828Z" },
+]
+
+[package.optional-dependencies]
+codespell = [
+    { name = "codespell" },
 ]
 
 [[package]]

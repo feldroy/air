@@ -127,3 +127,11 @@ plugins:
       redirect_maps:
         'about/alternatives.md': 'about/inspirations.md'
         'roadmap.md': 'about/roadmap.md'
+  - spellcheck:
+      backends:
+        - codespell:
+            dictionaries: [clear, rare]
+      ignore_code: no
+      min_length: 2
+      max_capital: 1
+      allow_unicode: no

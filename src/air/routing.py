@@ -266,7 +266,7 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = default_generate_unique_id,
-        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "-",
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
     ) -> None:
         self.path_separator = path_separator
         if default is None:

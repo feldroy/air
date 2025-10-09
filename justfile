@@ -152,15 +152,16 @@ type-check-concise TARGET=".":
 type-annotate TARGET="src":
     just run -- pyrefly infer "{{ TARGET }}"
 
-# Check for spelling errors in documentation
+# Spell check the docs with mkdocs-spellcheck
 [group('qa')]
-spell-check TARGET="docs":
-    just run -- codespell "{{ TARGET }}"
+spell-check FLAGS="--strict":
+    # Run mkdocs build and capture output to a log file, then filter for mkdocs_spellcheck warnings
+    just run -- mkdocs build {{ FLAGS }} 2>&1 | tee /tmp/mkdocs.log | grep -i mkdocs_spellcheck || echo "All checks passed."
 
-# Check for spelling errors in documentation
-[group('qa')]
-spell-fix TARGET="docs":
-    just run -- codespell -w "{{ TARGET }}"
+    @if grep -qi mkdocs_spellcheck /tmp/mkdocs.log; then \
+        echo "Spellcheck warnings found."; \
+        exit 1; \
+    fi
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]

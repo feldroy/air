@@ -128,7 +128,7 @@ docs = [
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
     "sqlmodel>=0.0.24",
-    "codespell>=2.4.1", # for spell checking
+    "mkdocs-spellcheck[codespell]>=1.1.2", # for spell checking
 ]
 # endregion dependencies
 
