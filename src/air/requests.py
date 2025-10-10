@@ -152,7 +152,7 @@ class HtmxDetails:
 
 
 class AirRequest(Request):
-    """A wrapper around Starlette's FastAPI that includes the HtmxDetails object."""
+    """A wrapper around `starlette.requests.Request` that includes the `HtmxDetails` object."""
 
     @property
     def htmx(self) -> HtmxDetails:
