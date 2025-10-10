@@ -1,6 +1,28 @@
 ### Latest Changes
 
-# 0.34.0 - 2025-10-06
+# 0.36.0 - 2025-10-10
+
+## What's Changed
+* Implement .htmx object on air.Request by @pydanny in https://github.com/feldroy/air/pull/524
+* Drop Python 3.12 support! by @tallerasaf in https://github.com/feldroy/air/pull/538
+* Add forms quickstart by @pydanny in https://github.com/feldroy/air/pull/536 abd https://github.com/feldroy/air/pull/539
+* Restore llms.txt for LLM-friendly documentation by @intellectronica in https://github.com/feldroy/air/pull/552
+* fixed broken cookbook docs link by @alaminopu in https://github.com/feldroy/air/pull/553
+* Temporary just tdd fix for Python 3.14 by @tallerasaf in https://github.com/feldroy/air/pull/555
+* Add comprehensive tests for default_form_widget by @kernelshard in https://github.com/feldroy/air/pull/535
+* Remove redundant CI workflow and simplify coverage configuration by @tallerasaf in https://github.com/feldroy/air/pull/542
+* Fix the request part of the docs by @pydanny in https://github.com/feldroy/air/pull/557
+* chore(deps): update astral-sh/setup-uv action to v7 by @renovate[bot] in https://github.com/feldroy/air/pull/541
+* chore(deps): update dependency uv_build to >=0.9.0,<0.10.0 by @renovate[bot] in https://github.com/feldroy/air/pull/543
+* ⬆(deps): Bump the python-dependencies group across 1 directory with 5 updates by @dependabot[bot] in https://github.com/feldroy/air/pull/556
+
+## New Contributors
+* @kernelshard made their first contribution in https://github.com/feldroy/air/pull/535
+* @intellectronica made their first contribution in https://github.com/feldroy/air/pull/552
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.35.0...v0.36.0
+
+# 0.35.0 - 2025-10-06
 
 ## What's Changed
 * FEAT: add option for app.page decorator to convert underscores to forward slashes by default by @alaminopu in https://github.com/feldroy/air/pull/522

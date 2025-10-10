@@ -153,10 +153,10 @@ class HtmxDetails:
 
 class AirRequest(Request):
     """A wrapper around `starlette.requests.Request` that includes the `HtmxDetails` object.
-    
-        !!! note
-        
-            AirRequest is available in Air 0.36.0+
+
+    !!! note
+
+        AirRequest is available in Air 0.36.0+
     """
 
     @property
