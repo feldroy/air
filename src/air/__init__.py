@@ -9,7 +9,6 @@ from . import (
 )
 from .applications import (
     Air as Air,
-    AirRoute as AirRoute,
 )
 from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
@@ -32,7 +31,10 @@ from .responses import (
     SSEResponse as SSEResponse,
     TagResponse as TagResponse,
 )
-from .routing import AirRouter as AirRouter
+from .routing import (
+    AirRoute as AirRoute,
+    AirRouter as AirRouter,
+)
 from .tags import (
     H1 as H1,
     H2 as H2,
