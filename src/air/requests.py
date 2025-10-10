@@ -29,11 +29,11 @@ class HtmxDetails:
     Derived values are computed once in `__post_init__`.
     """
 
-    request: "AirRequest"
+    # fields
+    headers: Headers
+    url: str
 
     # Derived fields (formerly properties)
-    headers: Headers = field(init=False)
-
     is_hx_request: bool = field(init=False)
     boosted: bool = field(init=False)
     """`True` if the request came from an element with the `hx-boost` attribute. Detected by checking if the `HX-Boosted` header equals `true`.
@@ -74,8 +74,6 @@ class HtmxDetails:
     triggering_event: Any = field(init=False)
 
     def __post_init__(self) -> None:
-        self.headers = self.request.headers
-
         self.is_hx_request = self.headers.get(HX_REQUEST) == "true"
         self.boosted = self.headers.get(HX_BOOSTED) == "true"
 
@@ -138,7 +136,7 @@ class HtmxDetails:
         if url is None:
             return None
         split = urlsplit(url)
-        if split.scheme == self.request.url.scheme and split.netloc == self.request.url.netloc:
+        if split.scheme == self.url.scheme and split.netloc == self.url.netloc:
             return urlunsplit(split._replace(scheme="", netloc=""))
         return None
 
@@ -158,4 +156,4 @@ class AirRequest(Request):
 
     @property
     def htmx(self) -> HtmxDetails:
-        return HtmxDetails(self)
+        return HtmxDetails(headers=self.headers, url=self.url)
