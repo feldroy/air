@@ -6,13 +6,21 @@ import html
 import json
 from collections.abc import Mapping
 from functools import cached_property
+from pathlib import Path
 from types import MappingProxyType
 from typing import Any, ClassVar, Final, Self, TypedDict
 
-from ..utils import SafeStr, clean_html_attr_key, pretty_format_html, pretty_print_html
+from ..utils import (
+    SafeStr,
+    StrPath,
+    clean_html_attr_key,
+    display_pretty_html_in_the_browser,
+    open_html_in_the_browser,
+    pretty_format_html,
+    pretty_print_html,
+)
 
 type AttributesType = str | int | float | bool
-
 
 # Type hint for renderable content
 # Excludes types like None (renders as "None"), bool ("True"/"False"),
@@ -99,6 +107,12 @@ class BaseTag:
     def render(self) -> str:
         return self._render()
 
+    def render_in_the_browser(self) -> None:
+        open_html_in_the_browser(self.render())
+
+    def pretty_render_in_the_browser(self) -> None:
+        open_html_in_the_browser(self.pretty_render(with_body=True, with_doctype=True))
+
     def pretty_render(
         self,
         *,
@@ -112,6 +126,15 @@ class BaseTag:
     def pretty_print(self) -> None:
         """Pretty-print and render HTML with syntax highlighting."""
         pretty_print_html(self.pretty_render())
+
+    def save(self, file_path: StrPath) -> None:
+        Path(file_path).write_text(self.render())
+
+    def pretty_save(self, file_path: StrPath) -> None:
+        Path(file_path).write_text(self.pretty_render())
+
+    def pretty_display_in_the_browser(self) -> None:
+        display_pretty_html_in_the_browser(self.pretty_render(with_body=True, with_doctype=True))
 
     def _render(self) -> str:
         return self._render_paired()
