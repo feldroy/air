@@ -92,8 +92,11 @@ def test_air_routing_prefix() -> None:
 def test_air_router_default_none() -> None:
     """Test AirRouter when default parameter is None"""
     router = air.AirRouter(default=None)
-    # Verify that when default=None, it gets set to Air class
-    assert router.default is air.Air
+    # Verify that when default=None, it gets set to an ASGIApp
+    # We have to use `callable()` instead of `issubclass` or `isinstance` because
+    # python generics can't be type checked in this way and typing.get_origin
+    # called on `router.default` returns `None` rather than anything meaningful.
+    assert callable(router.default)
 
 
 def test_air_router_default_not_none() -> None:

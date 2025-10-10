@@ -1,8 +1,6 @@
 # Requests
 
-`air.requests.Request` is an alias for [`starlette.requests.Request`](https://www.starlette.io/requests/), giving Air users a consistent import path.
-
-While it behaves identically to Starlette’s implementation, it’s documented here for discoverability and ease of use.
+`air.requests.Request` is an wrapper for [`starlette.requests.Request`](https://www.starlette.io/requests/), giving Air users a consistent import path. It adds an `htmx` object that includes a lot of quite useful utility methods.
 
 ---
 
@@ -69,3 +67,28 @@ async def login(request: Request):
     form = await request.form()
     return JSONResponse({"username": form.get("username")})
 ```
+
+
+### Accessing the HTMX object
+
+```python
+import air
+
+app = air.Air()
+
+@app.page
+def index(request: air.Request):
+    return air.layouts.mvpcss(
+        air.H1(f'From HTMX?'),
+        air.P(f"This request came from an HTMX element on a page: {request.htmx}")
+    )
+```
+
+
+::: air.requests
+    options:
+      group_by_category: false
+      members:
+        - AirRequest
+        - Request      
+        - HtmxDetails      
