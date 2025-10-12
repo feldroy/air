@@ -13,7 +13,7 @@ Why and how Air works.
 - **[Forms](forms.md)** - How to create and validate forms in Air
 - **[Jinja](jinja.md)** - How to use Jinja templates in Air
 - **[Layouts](layouts.md)** - Tools for building layouts in Air along with two simple layout systems
-- **[SQL](sql.md)** - How to use SQL databases in Air apps
+- **[SQLModel](sqlmodel.md)** - How to use SQL databases in Air apps
 
 # Cookbook
 

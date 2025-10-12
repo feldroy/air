@@ -58,7 +58,7 @@ pretty = [
     "rich>=12.6.0",
 ]
 # Used for interacting with sqlmodel and sqlalchemy
-sql = [
+sqlmodel = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
