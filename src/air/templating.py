@@ -17,6 +17,7 @@ from starlette.templating import _TemplateResponse
 
 from .exceptions import RenderException
 from .requests import Request
+from .tags.models.base import BaseTag
 
 
 class JinjaRenderer:
@@ -81,8 +82,8 @@ class JinjaRenderer:
         if kwargs:
             context |= kwargs
 
-        # Attempt to render any Tags in the contact
-        context = {k: str(v) for k, v in context.items()}
+        # Attempt to render any Tags in the context
+        context = {k: str(v) if isinstance(v, BaseTag) else v for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
 
@@ -184,7 +185,7 @@ class Renderer:
 
     def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> _TemplateResponse:
         """Render Jinja template with Air Tag support."""
-        context = {k: str(v) for k, v in context.items()}
+        context = {k: str(v) if isinstance(v, BaseTag) else v for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:

@@ -408,3 +408,26 @@ def test_Renderer_filter_context_with_request() -> None:
     assert "extra" not in filtered
     assert filtered["request"] is request
     assert filtered["title"] == "Test"
+
+
+def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
+    app = air.Air()
+    render = air.Renderer(directory="tests/templates", package="tests")
+
+    @app.page
+    def test_page(request: Request) -> str:
+        return render(
+            name="lists_and_dicts.html",
+            request=request,
+            title="World",  # This goes to filtered_context
+            meta={"title": "Lists and Dicts"},
+            items=["One", "Two", "Three"],
+        )
+
+    client = TestClient(app)
+    response = client.get("/test-page")
+
+    assert "<h1>Lists and Dicts</h1>" in response.text
+    assert "<li>One</li>" in response.text
+    assert "<li>Two</li>" in response.text
+    assert "<li>Three</li>" in response.text
