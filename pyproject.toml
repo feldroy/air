@@ -482,7 +482,7 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 unresolved-import = "ignore"
 possibly-unresolved-reference = "ignore"
 invalid-argument-type = "ignore"
@@ -512,7 +512,7 @@ permissive-ignores = true
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 bad-override = false
 no-matching-overload = false
 not-callable = false
@@ -640,7 +640,11 @@ hard-encoding-detection = true
 # Use extra built-in dictionaries for stricter wording
 builtin = 'clear,rare,usage,informal,names,code'
 # Avoid noisy or binary paths, but keep the set lean so we still catch issues
-skip = '.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,coverage*,target,out,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage'
+skip = '''
+.idea,.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
+coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
+*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage
+'''
 # Ignore typos inside URLs/emails to avoid breaking links
 uri-ignore-words-list = '*'
 # Your project-specific words (file: one word per line)
