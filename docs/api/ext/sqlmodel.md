@@ -4,7 +4,7 @@ This module includes utility functions for using SQLModel with AIR. This allows 
 
 ## Package requirements
 
-Using this module rquires additional dependencies installable in `air[sqlmodel]`, which can be installed with `uv add "air[sqlmodel]"`:
+Using this module requires additional dependencies installable in `air[sqlmodel]`, which can be installed with `uv add "air[sqlmodel]"`:
 
 - SQLModel
 - greenlet
