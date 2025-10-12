@@ -5,7 +5,7 @@
 ## What's Changed
 * Implement .htmx object on air.Request by @pydanny in https://github.com/feldroy/air/pull/524
 * Drop Python 3.12 support! by @tallerasaf in https://github.com/feldroy/air/pull/538
-* Add forms quickstart by @pydanny in https://github.com/feldroy/air/pull/536 abd https://github.com/feldroy/air/pull/539
+* Add forms quickstart by @pydanny in https://github.com/feldroy/air/pull/536 and https://github.com/feldroy/air/pull/539
 * Restore llms.txt for LLM-friendly documentation by @intellectronica in https://github.com/feldroy/air/pull/552
 * fixed broken cookbook docs link by @alaminopu in https://github.com/feldroy/air/pull/553
 * Temporary just tdd fix for Python 3.14 by @tallerasaf in https://github.com/feldroy/air/pull/555
@@ -262,7 +262,7 @@
 
 ## What's Changed
 * TOOL: PyRefly by @tallerasaf in https://github.com/feldroy/air/pull/318
-* BUG: Performance optimisations by @pydanny in https://github.com/feldroy/air/pull/342
+* BUG: Performance optimizations by @pydanny in https://github.com/feldroy/air/pull/342
 * BUG: Add missing autofocus option to AirField by @pydanny in https://github.com/feldroy/air/pull/324
 * ⬆(deps): bump ty from 0.0.1a18 to 0.0.1a19 by @dependabot[bot] in https://github.com/feldroy/air/pull/323
 * ⬆(deps): bump rust-just from 1.42.3 to 1.42.4 by @dependabot[bot] in https://github.com/feldroy/air/pull/331
@@ -524,7 +524,7 @@ We did get in one feature to Air itself:
 * Added `html_to_airtags` function, converts HTML to Air Tags by @pydanny in https://github.com/feldroy/air/pull/125
 
 
-## Documentaton improvements
+## Documentation improvements
 * Reorder member order in object docs by @pydanny in https://github.com/feldroy/air/pull/116
 * Documentation on how to escape HTML by @pydanny in https://github.com/feldroy/air/pull/108
 * Update project description in README and pyproject.toml by @audreyfeldroy in https://github.com/feldroy/air/pull/118
