@@ -2104,7 +2104,15 @@ class Ruby(BaseTag):
 
 
 class S(BaseTag):
-    """Defines text that is no longer correct"""
+    """Defines text that is no longer correct
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2118,7 +2126,15 @@ class S(BaseTag):
 
 
 class Samp(BaseTag):
-    """Defines sample output from a computer program"""
+    """Defines sample output from a computer program
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2132,7 +2148,15 @@ class Samp(BaseTag):
 
 
 class Search(BaseTag):
-    """Defines a search section"""
+    """Defines a search section
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2146,7 +2170,15 @@ class Search(BaseTag):
 
 
 class Section(BaseTag):
-    """Defines a section in a document"""
+    """Defines a section in a document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2160,7 +2192,23 @@ class Section(BaseTag):
 
 
 class Select(BaseTag):
-    """Defines a drop-down list"""
+    """Defines a drop-down list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        autocomplete: Hint for a user agent's autocomplete feature.
+        autofocus: Indicate that a form control should have input focus when the page loads.
+        disabled: Indicates that the user cannot interact with the control.
+        form: Associates the drop-down list with a form element.
+        multiple: Indicates that multiple options can be selected at once.
+        name: Specifies the name of the drop-down list.
+        required: Indicates that an option must be selected before the form can be submitted.
+        size: If drop-down list is a scrolling list box, specifies the number of visible options.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2182,7 +2230,15 @@ class Select(BaseTag):
 
 
 class Small(BaseTag):
-    """Defines smaller text"""
+    """Defines smaller text
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
