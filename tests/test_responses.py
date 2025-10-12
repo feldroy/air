@@ -29,7 +29,7 @@ def test_TagResponse_compatibility() -> None:
 
     app = air.Air()
 
-    @app.get("/test_tag", response_class=TagResponse)
+    @app.get("/test_tag", response_class=TagResponse, response_model=None)
     def test_tag_endpoint() -> Div:
         return air.Div(air.H1("Hi from TagResponse!"), air.Br())
 
@@ -46,11 +46,11 @@ def test_AirResponse() -> None:
     """Test the AirResponse class."""
     app = air.Air()
 
-    @app.get("/test_tag", response_class=air.AirResponse)
+    @app.get("/test_tag", response_class=air.AirResponse, response_model=None)
     def test_tag_endpoint() -> H1:
         return air.H1("Hello, World!")
 
-    @app.get("/test_html", response_class=air.AirResponse)
+    @app.get("/test_html", response_class=air.AirResponse, response_model=None)
     def test_html_endpoint() -> str:
         return "<h1>Hello, World!</h1>"
 
@@ -73,7 +73,7 @@ def test_AirResponse_type() -> None:
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.AirResponse, response_model=None)
     def test_endpoint() -> Main:
         return air.Main(
             air.H1("Hello, clean HTML response!"),
@@ -95,7 +95,7 @@ def test_AirResponse_html() -> None:
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.AirResponse, response_model=None)
     def test_endpoint() -> Html:
         return air.Html(
             air.Head(),
@@ -121,7 +121,7 @@ def test_AirResponse_html() -> None:
 def test_strings_and_tag_children() -> None:
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.AirResponse, response_model=None)
     def test_endpoint() -> Html:
         return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
 
@@ -141,7 +141,7 @@ def test_custom_name_in_response() -> None:
     def Card(sentence: str) -> Article:
         return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
 
-    @app.get("/test", response_class=air.AirResponse)
+    @app.get("/test", response_class=air.AirResponse, response_model=None)
     def test_endpoint() -> Article:
         return Card("This is a sentence")
 
@@ -160,7 +160,7 @@ def test_AirResponse_with_layout_strings() -> None:
 
     app = air.Air()
 
-    @app.get("/test", response_class=CustomLayoutResponse)
+    @app.get("/test", response_class=CustomLayoutResponse, response_model=None)
     def test_endpoint() -> Main:
         return air.Main(air.H2("Hello, World!"))
 
@@ -180,7 +180,7 @@ def test_AirResponse_with_layout_names() -> None:
 
     app = air.Air()
 
-    @app.get("/test", response_class=CustomLayoutResponse)
+    @app.get("/test", response_class=CustomLayoutResponse, response_model=None)
     def test_endpoint() -> Body:
         return air.Body(air.Main(air.H1("Hello, World!")))
 

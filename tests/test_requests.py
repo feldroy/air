@@ -192,7 +192,7 @@ def test_htmx_trigger_name() -> None:
 def test_htmx_triggering_event() -> None:
     app = Air()
 
-    @app.get("/test")
+    @app.get("/test", response_model=None)
     def test_endpoint(request: AirRequest) -> H1:
         event = request.htmx.triggering_event
         if event:

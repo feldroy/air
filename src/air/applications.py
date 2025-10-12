@@ -877,45 +877,45 @@ class Air(FastAPI):
             openapi_external_docs=openapi_external_docs,
             **extra,
         )
-        self.router: AirRouter = AirRouter(
-            routes=routes,
-            redirect_slashes=redirect_slashes,
-            dependency_overrides_provider=self,
-            on_startup=on_startup,
-            on_shutdown=on_shutdown,
-            lifespan=lifespan,
-            default_response_class=default_response_class,
-            dependencies=dependencies,
-            callbacks=callbacks,
-            deprecated=deprecated,
-            include_in_schema=include_in_schema,
-            responses=responses,
-            generate_unique_id_function=generate_unique_id_function,
-        )
-        self.setup()
-
-    def page(self, func: FunctionType) -> FunctionType:
-        """Decorator that creates a GET route using the function name as the path.
-
-        If the name of the function is "index", then the route is "/".
-
-        Example:
-
-            import air
-
-            app = Air()
-
-            @app.page
-            def index(): # routes is "/"
-                return H1("I am the home page")
-
-            @app.page
-            def data(): # route is "/data"
-                return H1("I am the home page")
-
-            @app.page
-            def about_us(): # routes is "/about-us"
-                return H1("I am the about page")
-
-        """
-        return self.router.page(func)
+    #     self.router: AirRouter = AirRouter(
+    #         routes=routes,
+    #         redirect_slashes=redirect_slashes,
+    #         dependency_overrides_provider=self,
+    #         on_startup=on_startup,
+    #         on_shutdown=on_shutdown,
+    #         lifespan=lifespan,
+    #         default_response_class=default_response_class,
+    #         dependencies=dependencies,
+    #         callbacks=callbacks,
+    #         deprecated=deprecated,
+    #         include_in_schema=include_in_schema,
+    #         responses=responses,
+    #         generate_unique_id_function=generate_unique_id_function,
+    #     )
+    #     self.setup()
+    #
+    # def page(self, func: FunctionType) -> FunctionType:
+    #     """Decorator that creates a GET route using the function name as the path.
+    #
+    #     If the name of the function is "index", then the route is "/".
+    #
+    #     Example:
+    #
+    #         import air
+    #
+    #         app = Air()
+    #
+    #         @app.page
+    #         def index(): # routes is "/"
+    #             return H1("I am the home page")
+    #
+    #         @app.page
+    #         def data(): # route is "/data"
+    #             return H1("I am the home page")
+    #
+    #         @app.page
+    #         def about_us(): # routes is "/about-us"
+    #             return H1("I am the about page")
+    #
+    #     """
+    #     return self.router.page(func)

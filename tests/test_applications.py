@@ -7,7 +7,6 @@ import air
 def test_air_app_factory() -> None:
     app = air.Air()
 
-    # @app.get("/test", response_class=AirResponse)
     @app.get("/test")
     def test_endpoint() -> air.H1:
         return air.H1("Hello, World!")
