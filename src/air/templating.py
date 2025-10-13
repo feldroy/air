@@ -81,7 +81,7 @@ class JinjaRenderer:
         if kwargs:
             context |= kwargs
 
-        # Attempt to render any Tags in the contect
+        # Attempt to render any Tags in the contact
         context = {k: str(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 

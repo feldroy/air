@@ -104,6 +104,9 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
     # show an enumeration of all fixed lint violations.
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
+    # Check for spelling and grammar violations and apply fixes
+    just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
+    just run -- codespell --write-changes
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -126,6 +129,9 @@ lint OUTPUT_FORMAT="full":
     just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
     # Check for lint violations
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
+    # Check for spelling and grammar violations
+    just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
+    just run -- codespell
 
 # [print diagnostics concisely, one per line]
 [group('qa')]

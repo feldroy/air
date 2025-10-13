@@ -103,7 +103,7 @@ Far and away Pydantic is the most widely used data validation library for Python
 
 Pydantic uses types to provide an intuitive and explicit API. From simple to complex use cases, thanks to its Rust-powered backend, does so excellently at scale.
 
-What we like about Pydantic's documention is the clean, intuitive structure of it. All the objects are well-documented, something that Air is working towards copying.
+What we like about Pydantic's documentation is the clean, intuitive structure of it. All the objects are well-documented, something that Air is working towards copying.
 
 !!! note "Air uses Pydantic to"
     1. Power the form validation system
