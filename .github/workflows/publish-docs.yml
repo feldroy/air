@@ -25,7 +25,7 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - name: Install uv (with cache)
-        uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7
+        uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
