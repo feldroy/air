@@ -2252,7 +2252,22 @@ class Small(BaseTag):
 
 
 class Source(BaseTag):
-    """Defines multiple media resources for media elements (<video> and <audio>)"""
+    """Defines multiple media resources for media elements (<video> and <audio>)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        src: Specifies the URL of the media resource.
+        type: Specifies the MIME type of the media resource.
+        sizes: List of source sizes that describe the final rendered width of the image.
+        media: Specifies the media query for the media resource.
+        srcset: Specifies a list of one or more image URLs and their descriptors.
+        height: Specifies the height of the media resource.
+        width: Specifies the width of the media resource.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2273,7 +2288,15 @@ class Source(BaseTag):
 
 
 class Span(BaseTag):
-    """Defines a section in a document"""
+    """Defines a section in a document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2287,7 +2310,15 @@ class Span(BaseTag):
 
 
 class Strong(BaseTag):
-    """Defines important text"""
+    """Defines important text
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2301,7 +2332,15 @@ class Strong(BaseTag):
 
 
 class Sub(BaseTag):
-    """Defines subscripted text"""
+    """Defines subscripted text
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2315,7 +2354,15 @@ class Sub(BaseTag):
 
 
 class Summary(BaseTag):
-    """Defines a visible heading for a <details> element"""
+    """Defines a visible heading for a <details> element
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2329,7 +2376,15 @@ class Summary(BaseTag):
 
 
 class Sup(BaseTag):
-    """Defines superscripted text"""
+    """Defines superscripted text
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
