@@ -8,13 +8,13 @@ We're happy to assist with both!
 
 ## Star **Air** in GitHub  ⭐️
 
-You can "star" Air in GitHub (clicking the star button at the top right): [https://github.com/feldroy/air](github.com/feldroy/air).
+You can "star" Air in GitHub (clicking the star button at the top right): [/github.com/feldroy/air](https:/github.com/feldroy/air).
 
 By adding a star, other users will be able to find it more easily and see that it has been already useful for others.
 
 ## Watch the GitHub repository for releases 👀
 
-You can "watch" Air in GitHub (clicking the "watch" button at the top right): [https://github.com/feldroy/air](github.com/feldroy/air).
+You can "watch" Air in GitHub (clicking the "watch" button at the top right): [github.com/feldroy/air](https://github.com/feldroy/air).
 
 There you can select "Releases only".
 
