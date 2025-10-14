@@ -1,5 +1,5 @@
 """
-These render but demonstrates behavior that should be unnacceptable
+These render but demonstrates behavior that should be unacceptable
 and will be caught by type checkers. The types help guide LLMs and
 type savvy humans. Yet you can pass whatever you want and the code will
 still run, which is useful from a development perspective.

@@ -6,7 +6,7 @@ We're really proud of what we've accomplished with Air. In a few short months we
 
 Through our own experiences and feedback from users we can say the following is working out quite well:
 
-- **Air Tags** are really popular and most people enjoy the API. That it plugs so well into IDEs and LLMs is a super power. Performance could be better, but optimisation will happen once Air reaches Beta
+- **Air Tags** are really popular and most people enjoy the API. That it plugs so well into IDEs and LLMs is a super power. Performance could be better, but optimization will happen once Air reaches Beta
 - **AirResponse** makes writing views powered by Jinja or Air Tags easy and fast. Like Air Tags the API feature for this is complete
 - **Examples** in all the doc strings makes it much easier for both humans and LLMs. This is an ongoing effort
 - **Jinja + Air Tags** base templates for layout and Air Tags for content is a really sweet pattern we should talk about more. Unfortunately Jinja inside of Air Tags is a challenge not yet solved

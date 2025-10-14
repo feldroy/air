@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7
+      - uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7
       - name: Check for formatting and linting violations
         run: just lint
   type-check:
@@ -61,7 +61,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7
+      - uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7
       - name: Type Checking
         run: just type-check
   test-all:
@@ -76,7 +76,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7
+      - uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Run all the tests
@@ -89,7 +89,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7
+      - uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7
       - name: Generating an XML Coverage Report
         run: just coverage-xml
       - name: Upload Coverage Report to Codecov

@@ -94,10 +94,12 @@ devtools = [
     "typer>=0.19.1" # For running of scripts
 ]
 lint = [
+    "codespell>=2.4.1",
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
     "types-Markdown>=3.8.0", # Types for the markdown library
+    "typos>=1.38.1",
 ]
 test = [
     "aiosqlite>=0.21.0",
@@ -480,7 +482,7 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 unresolved-import = "ignore"
 possibly-unresolved-reference = "ignore"
 invalid-argument-type = "ignore"
@@ -510,7 +512,7 @@ permissive-ignores = true
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 bad-override = false
 no-matching-overload = false
 not-callable = false
@@ -622,3 +624,60 @@ output = "coverage.xml" # default “coverage.xml”
 [tool.coverage.paths]
 source = ["src"]
 # endregion pytest
+
+# region ----> spell checker <----
+[tool.codespell]
+# Fail loud: print everything
+quiet-level = 0
+count = false
+summary = false
+interactive = 0
+enable-colors = true
+# Check more things
+check-filenames = true
+check-hidden = true
+hard-encoding-detection = true
+# Use extra built-in dictionaries for stricter wording
+builtin = 'clear,rare,usage,informal,names,code'
+# Avoid noisy or binary paths, but keep the set lean so we still catch issues
+skip = '''
+.idea,.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
+coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
+*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage
+'''
+# Ignore typos inside URLs/emails to avoid breaking links
+uri-ignore-words-list = '*'
+# Your project-specific words (file: one word per line)
+ignore-words = '.codespellignore'
+# Ignore Markdown bolding forms like **L**anguage
+ignore-regex = '\*\*[A-Z]\*\*[a-z]+\b'
+# Skip fenced code blocks in Markdown (reduces false positives)
+ignore-multiline-regex = '```.*?```'
+
+[tool.typos]
+# Strict, safe config for English repositories
+[tool.typos.files]
+ignore-hidden = false                # check dotfiles too
+ignore-files = true                  # respect .gitignore etc.
+ignore-dot = true                    # respect .ignore
+ignore-vcs = true                    # skip .git/
+ignore-global = true                 # respect global ignores
+ignore-parent = true                 # respect parent ignores
+extend-exclude = [
+    ".git", ".svn", ".hg",
+    ".tox", ".venv", "venv",
+    "node_modules", "dist", "build", "target", "out",
+    ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",
+    "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.ico", "*.svg",
+    "*.pdf", "*.zip", "*.gz", "*.tgz", "*.bz2", "*.xz", "*.7z",
+    "*.min.js", "*.min.css", "*.map", "*.lock", "*.pyc"
+]
+
+[tool.typos.default]
+binary = false
+check-filename = true
+check-file = true
+unicode = true
+locale = "en-us"
+
+# endregion spell checker
