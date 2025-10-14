@@ -11,7 +11,7 @@
 
     The full reference for the tooling can be found at the [SQL API Reference](../api/ext/sqlmodel.md).
 
-Thanks to the power of SQLModel and SQLAlchemy **Air** works with relational databases. Right now we have verified it supports PostgreSQL and SQLite. Fortunately the project will soon expand to support all relational databases that allow for asynchronous connections through SQLAlchemy. 
+Thanks to the power of SQLModel and SQLAlchemy **Air** works with relational databases. Right now we have verified it supports PostgreSQL and SQLite. Our vision is for the community to build packages for all relational databases that allow for asynchronous connections through SQLAlchemy. 
 
 ## Air loves SQLModel
 
