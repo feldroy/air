@@ -70,7 +70,7 @@ async def index():
 
 !!! note
 
-    This example uses [Air Tags](/air/api/tags/), which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
+    This example uses [Air Tags](api/tags/index.md), which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
 
 ## Combining FastAPI and Air
 
