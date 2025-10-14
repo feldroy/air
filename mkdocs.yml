@@ -127,3 +127,20 @@ plugins:
       redirect_maps:
         'about/alternatives.md': 'about/inspirations.md'
         'roadmap.md': 'about/roadmap.md'
+  - llmstxt:
+      markdown_description: "Air is a Python web framework that provides a friendly layer over FastAPI for building modern web applications that combine beautiful HTML pages with powerful REST APIs."
+      full_output: llms-full.txt
+      sections:
+        Usage documentation:
+        - index.md
+        - learn/quickstart.md
+        - learn/air_tags.md
+        - learn/escaping_html.md        
+        - learn/forms.md                
+        - learn/jinja.md                
+        - learn/layouts.md                
+        - learn/cookbook/*.md   
+        - api/*.md
+        - api/tags/*.md
+        - api/svg/*.md
+        - tools.md        
