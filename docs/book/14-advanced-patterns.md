@@ -1,10 +1,8 @@
 # Advanced Patterns and Best Practices
 
-!!! warning "Unreliable, incorrect advice lurks here"
-
-    This chapter likely contains heavy AI edits on Daniel Roy Greenfeld's initial handwritten blog tutorial. AI has expanded sections, and Audrey M. Roy Greenfeld has not tested and rewritten those yet. 
+!!! warning "First draft!"
     
-    Please treat it as a very early draft, and DO NOT TRUST anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
+    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
 
 ## Application Structure
 
@@ -160,7 +158,7 @@ To further your Air journey, consider exploring these additional resources:
 - **Database Optimization**: Learn advanced SQL and ORM techniques
 - **Frontend Frameworks**: Explore how Air integrates with React, Vue, or other frameworks
 - **Microservices**: Scale applications across multiple services
-- **DevOps**: Master deployment, monitoring, and CI/CD pipelines
+- **DevOps**: Deployment, monitoring, and CI/CD pipelines
 
 ### Building Your Portfolio
 

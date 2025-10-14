@@ -1,10 +1,8 @@
 # Advanced Routing and URL Management
 
-!!! warning "Unreliable, incorrect advice lurks here"
-
-    This chapter likely contains heavy AI edits on Daniel Roy Greenfeld's initial handwritten blog tutorial. AI has expanded sections, and Audrey M. Roy Greenfeld has not tested and rewritten those yet. 
+!!! warning "First draft!"
     
-    Please treat it as a very early draft, and DO NOT TRUST anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
+    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
 
 Air provides multiple ways to define routes, making it easy to handle various URL patterns and request methods.
 

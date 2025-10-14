@@ -1,10 +1,8 @@
 # HTMX and Interactive Interfaces
 
-!!! warning "Unreliable, incorrect advice lurks here"
-
-    This chapter likely contains heavy AI edits on Daniel Roy Greenfeld's initial handwritten blog tutorial. AI has expanded sections, and Audrey M. Roy Greenfeld has not tested and rewritten those yet. 
+!!! warning "First draft!"
     
-    Please treat it as a very early draft, and DO NOT TRUST anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
+    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
 
 HTMX allows you to create dynamic, interactive web applications without writing JavaScript.
 
@@ -80,44 +78,39 @@ air.Form(
 Air supports Server-Sent Events for real-time updates:
 
 ```python
-import asyncio
 import random
+from asyncio import sleep
+
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.Script(src="https://unpkg.com/htmx-ext-sse@2.2.1/sse.js"), 
+        air.Title("Server Sent Event Demo"),
+        air.H1("Server Sent Event Demo"),
+        air.P("Lottery number generator"),
+        air.Section(
+            hx_ext="sse",  
+            sse_connect="/lottery-numbers", 
+            hx_swap="beforeend show:bottom", 
+            sse_swap="message", 
+        ),
+    )
+
+async def lottery_generator():  
+    while True:
+        lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
+        # Tags work seamlessly
+        yield air.Aside(lottery_numbers) 
+        await sleep(1)
 
 
 @app.page
-def sse_demo():
-    """Server-Sent Events demo."""
-    return air.layouts.mvpcss(
-        air.Title("SSE Demo"),
-        air.H1("Server-Sent Events Demo"),
-        air.Div(id="events", style="height: 200px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px;"),
-        air.Script(
-            """
-            const eventSource = new EventSource('/events');
-            const eventsDiv = document.getElementById('events');
-            
-            eventSource.onmessage = function(event) {
-                const p = document.createElement('p');
-                p.textContent = event.data;
-                eventsDiv.appendChild(p);
-                eventsDiv.scrollTop = eventsDiv.scrollHeight;
-            };
-            """,
-            type="module"
-        ),
-        air.A("← Back to Home", href="/")
-    )
-
-
-@app.get("/events")
-async def events():
-    """SSE endpoint."""
-    async def event_generator():
-        for i in range(100):
-            await asyncio.sleep(2)  # Wait 2 seconds
-            yield air.Raw(f"data: Event {i} at {datetime.now()}\\n\\n")
-    
-    return air.SSEResponse(event_generator())
+async def lottery_numbers():
+    return air.SSEResponse(lottery_generator())
 ```
 
 Now would be a good time to commit your work:

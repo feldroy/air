@@ -1,37 +1,14 @@
 # API Development
 
-!!! warning "Unreliable, incorrect advice lurks here"
-
-    This chapter likely contains heavy AI edits on Daniel Roy Greenfeld's initial handwritten blog tutorial. AI has expanded sections, and Audrey M. Roy Greenfeld has not tested and rewritten those yet. 
+!!! warning "First draft!"
     
-    Please treat it as a very early draft, and DO NOT TRUST anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
+    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
 
 Air makes it easy to create powerful REST APIs alongside your HTML pages.
 
 ## JSON Responses
 
-Air automatically handles JSON responses when you return Python dictionaries:
-
-```python
-@app.get("/api/users")
-def get_users():
-    # Return Python data structure, Air converts to JSON
-    return {
-        "users": [
-            {"id": 1, "name": "John", "email": "john@example.com"},
-            {"id": 2, "name": "Jane", "email": "jane@example.com"}
-        ]
-    }
-
-@app.get("/api/users/{user_id}")
-def get_user(user_id: int):
-    # Return single user
-    return {"id": user_id, "name": "John", "email": "john@example.com"}
-```
-
-## Custom JSON Responses
-
-For more control, use FastAPI's JSONResponse:
+Unlike FastAPI, Air does not automatically handles JSON responses when you return Python dictionaries. Instead, we use FastAPI's `JSONResponse` class to return JSON.
 
 ```python
 from fastapi.responses import JSONResponse
@@ -61,17 +38,17 @@ class UserCreate(BaseModel):
 @app.post("/api/users")
 def create_user(user: UserCreate):
     # user is automatically validated against UserCreate schema
-    return {
+    return JSONResponse({
         "id": 123,  # In real app, this would be from database
         "name": user.name,
         "email": user.email,
         "age": user.age
-    }
+    })
 ```
 
 ## API Documentation
 
-Air integrates with FastAPI's automatic API documentation. Access it at `/docs` and `/redoc` (if enabled).
+Air **does not** integrate with FastAPI's automatic API documentation. This is one reason why for API work we recommend instantiating a separate FastAPI app called `api`.
 
 ## Combining HTML and API
 
@@ -79,6 +56,9 @@ You can easily serve both HTML pages and API endpoints from the same application
 
 ```python
 # HTML page
+app = air.Air()
+api = fastapi.FastAPI()
+
 @app.page
 def dashboard():
     return air.layouts.mvpcss(
@@ -99,9 +79,12 @@ def dashboard():
     )
 
 # API endpoint
-@app.get("/api/user-data")
+@api.get("/user-data")
 def get_user_data():
     return {"message": "Hello from API", "timestamp": datetime.now()}
+
+
+app.mount('/api', api)
 ```
 
 Now would be a good time to commit your work:

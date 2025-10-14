@@ -1,10 +1,8 @@
 # Building Our Blog Application
 
-!!! warning "Unreliable, incorrect advice lurks here"
-
-    This chapter likely contains heavy AI edits on Daniel Roy Greenfeld's initial handwritten blog tutorial. AI has expanded sections, and Audrey M. Roy Greenfeld has not tested and rewritten those yet. 
+!!! warning "First draft!"
     
-    Please treat it as a very early draft, and DO NOT TRUST anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
+    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
 
 ## Project My Personal Blog
 
@@ -42,7 +40,7 @@ I'm excited to share my thoughts and projects with you through this blog.
 for i in range(10):
     print("Hello, World!")
 ```
-```
+
 
 The file has two sections:
 
@@ -457,7 +455,7 @@ from frontmatter import Frontmatter
 import markdown
 from datetime import datetime
 from typing import List
-import air
+import fastapi
 
 
 def get_articles() -> list[dict]:
@@ -477,6 +475,7 @@ def get_article(slug: str) -> dict | None:
 
 
 app = air.Air()
+api = fastapi.FastAPI()
 
 @app.page
 def index():
@@ -599,9 +598,8 @@ async def contact_handler(request: air.Request):
         )
     )
 
-
 # API Endpoints
-@app.get("/api/articles")
+@api.get("/articles")
 def api_articles():
     """Return all articles as JSON."""
     articles = get_articles()
@@ -621,15 +619,12 @@ def api_articles():
     }
 
 
-@app.get("/api/articles/{slug}")
+@api.get("/articles/{slug}")
 def api_article_detail(slug: str):
     """Return a specific article as JSON."""
     article = get_article(slug)
     if not article:
-        return air.responses.JSONResponse(
-            {"error": "Article not found"}, 
-            status_code=404
-        )
+        raise fastapi.exceptions.HTTPException(status_code=404)
     
     return {
         "title": article["attributes"]["title"],
@@ -640,6 +635,9 @@ def api_article_detail(slug: str):
         "tags": article["attributes"]["tags"],
         "content": article["body"]
     }
+
+# Mounting the API into the APP
+app.mount("/api", api)
 ```
 
 Now would be a good time to commit your work:
@@ -663,6 +661,7 @@ from pydantic import BaseModel, Field
 from air import Air, AirForm, AirField, RedirectResponse
 import secrets
 import hashlib
+import fastapi
 
 
 def get_articles() -> list[dict]:
@@ -704,6 +703,7 @@ app.add_middleware(
     air.SessionMiddleware,
     secret_key=secrets.token_urlsafe(32)
 )
+api = fastapi.FastAPI()
 
 
 @app.page
@@ -865,52 +865,46 @@ async def contact_handler(request: air.Request):
 
 
 # API Endpoints
-@app.get("/api/articles")
+# API Endpoints
+@api.get("/articles")
 def api_articles():
     """Return all articles as JSON."""
     articles = get_articles()
+    # Return only the attributes, not the full frontmatter object
     return {
         "articles": [
             {
-                "id": i,
                 "title": article["attributes"]["title"],
                 "slug": article["attributes"]["slug"],
                 "description": article["attributes"]["description"],
                 "date": article["attributes"]["date"],
                 "author": article["attributes"]["author"],
-                "tags": article["attributes"]["tags"],
-                "url": f"/{article['attributes']['slug']}"
+                "tags": article["attributes"]["tags"]
             }
-            for i, article in enumerate(articles)
-        ],
-        "total": len(articles)
+            for article in articles
+        ]
     }
 
 
-@app.get("/api/articles/{slug}")
+@api.get("/articles/{slug}")
 def api_article_detail(slug: str):
     """Return a specific article as JSON."""
     article = get_article(slug)
     if not article:
-        return air.responses.JSONResponse(
-            {"error": "Article not found"}, 
-            status_code=404
-        )
-    
-    # Convert markdown to HTML for API
-    html_content = markdown.markdown(article["body"])
+        raise fastapi.exceptions.HTTPException(status_code=404)
     
     return {
-        "id": get_article_index_by_slug(slug),
         "title": article["attributes"]["title"],
         "slug": article["attributes"]["slug"],
         "description": article["attributes"]["description"],
         "date": article["attributes"]["date"],
         "author": article["attributes"]["author"],
         "tags": article["attributes"]["tags"],
-        "content": article["body"],
-        "html_content": html_content
+        "content": article["body"]
     }
+
+# Mounting the API into the APP
+app.mount("/api", api)
 
 
 # HTMX Interactive Features
