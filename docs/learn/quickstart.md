@@ -183,7 +183,7 @@ Try it out by going to <http://localhost:8000/users/?username=Aang>
 
 ## Air Tags
 
-[Air Tags](learn/air_tags) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
+[Air Tags](../learn/air_tags.md) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
 
 
 ### JavaScript Files
@@ -433,8 +433,8 @@ async def lottery_numbers():
 
 Check out these documentation sections:
 
-- [Learn](/learn)
-- [API Reference](/api)
+- [Learn](../learn/index.md)
+- [API Reference](../api/index.md)
 
 ## Future Segments
 
