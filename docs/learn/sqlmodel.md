@@ -3,7 +3,7 @@
 !!! note "This feature is for Air 0.30.0 or later."
 
 !!! info "air.ext.sqlmodel"
-    The SQLModel support in Air is provided by the `air.ext.sqlmodel` module, which is an optional extension. To use it, you need to install Air with the `sqlmodel` extra:
+    The SQLModel support in Air is provided by the `air.ext.sqlmodel` module, which is an optional extension (currently in core Air but to be moved to an external package shortly). To use it, you need to install Air with the `sqlmodel` extra:
 
     ```bash
     pip install "air[sqlmodel]"
