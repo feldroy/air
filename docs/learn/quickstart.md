@@ -379,6 +379,55 @@ async def handle_form(request: air.Request):
 6. The `.is_valid` property of an AirForm is powered by pydantic. It returns a `bool` that can be used to control logic of what to do with form successes or failures.
 7. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
 
+## Server-Sent Events
+
+Part of the HTTP specification, Server-Sent Events (SSE) allow the server to push things to the user. Air makes SSE easy to implement and maintain. Here's an example of using it to generate random lottery numbers every second. 
+
+```python hl_lines="11 16 17 18 19 23 27 33"
+import random
+from asyncio import sleep
+
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.Script(src="https://unpkg.com/htmx-ext-sse@2.2.1/sse.js"), #(1)!
+        air.Title("Server Sent Event Demo"),
+        air.H1("Server Sent Event Demo"),
+        air.P("Lottery number generator"),
+        air.Section(
+            hx_ext="sse",  #(2)!
+            sse_connect="/lottery-numbers", #(3)!
+            hx_swap="beforeend show:bottom", #(4)!
+            sse_swap="message", #(5)!
+        ),
+    )
+
+async def lottery_generator():  #(6)!
+    while True:
+        lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
+        # Tags work seamlessly
+        yield air.Aside(lottery_numbers) #(7)!
+        await sleep(1)
+
+
+@app.page
+async def lottery_numbers():
+    return air.SSEResponse(lottery_generator())  #(8)!
+```
+
+1. To use SSE, the source for the HTMX plugin for them has to be included in the page.
+2. The `hx_ext` attribute is used to initialize the SSE plugin.
+3. `sse_connect` is the endpoint where the SSE pushes from.
+4. `hx_swap` tells HTMX how to swap or place elements. In this case, it says to place the incoming HTML underneath all the other content in this section. The move the focus of the page to that location.
+5. The `sse_swap` attribute informs HTMX that we only want to receive SSE events of the `message` type. This is a common response and shouldn't be changed unless you have a good reason.
+6. The `air.SSEResponse` needs a generator function or generator expression. Our example just generates random numbers, but people use similar functions to query databases and fetch data from APIs. Of note is that in our example instead of using `return` statements we use `yield` statements to ensure control is not lost.
+7. Air Tags work great, but any type of data can be passed back.
+8. Air does all  heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!
+
 
 ## Want to learn more?
 
@@ -405,4 +454,4 @@ What we plan to include in the Quick Start:
 - [ ] Sessions
 - [ ] Cookies
 - [ ] Large File downloads
-- [ ] Server Sent Events
+- [x] Server Sent Events
