@@ -56,7 +56,7 @@ async def index(request: Request, session: sql.AsyncSession = air.Depends(sql.as
     )
 ```
 
-## Making SQLModel Queries outside Air Views
+## Making SQLModel Queries Outside Air Views
 
 Sometimes you may want to make SQL queries outside of Air views, for example in background tasks or other parts of your application. In these cases, you can use the `air.ext.sqlmodel.get_async_session` function to get an asynchronous session.
 
