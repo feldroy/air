@@ -4,7 +4,7 @@ This module includes utility functions for using SQLModel with AIR. This allows 
 
 ## Package requirements
 
-Using this module requires additional dependencies installable in `air[sql]`, which can be installed with `uv add "air[sql]"`:
+Using this module requires additional dependencies installable in `air[sqlmodel]`, which can be installed with `uv add "air[sqlmodel]"`:
 
 - SQLModel
 - greenlet
@@ -26,7 +26,7 @@ Depending on your database, you may also need to install sync and async drivers,
     ```python
     import air
 
-    app = air.Air(lifespan=air.ext.sql.async_db_lifespan)
+    app = air.Air(lifespan=air.ext.sqlmodel.async_db_lifespan)
     ```
 
 ## Configuration

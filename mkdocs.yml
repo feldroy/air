@@ -13,7 +13,7 @@ nav:
     - Forms: learn/forms.md
     - Jinja: learn/jinja.md
     - Layouts: learn/layouts.md
-    - SQL: learn/sql.md
+    - SQL: learn/sqlmodel.md
     - Cookbook:
       - learn/cookbook/index.md
       - app.page decorator: learn/cookbook/page-decorator.md

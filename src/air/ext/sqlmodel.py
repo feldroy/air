@@ -90,7 +90,7 @@ async def async_db_lifespan(app: _AirApp):
 
         import air
 
-        app = air.Air(lifespan=air.ext.sql.async_db_lifespan)
+        app = air.Air(lifespan=air.ext.sqlmodel.async_db_lifespan)
     """
     async_engine = create_async_engine()
     async with async_engine.begin() as conn:
@@ -151,11 +151,11 @@ Example:
     from db import Heroes
 
     app = air.Air()
-    AsyncSession = air.ext.sql.AsyncSession
+    AsyncSession = air.ext.sqlmodel.AsyncSession
 
 
     @app.page
-    async def index(session: AsyncSession = air.ext.sql.async_session_dependency):
+    async def index(session: AsyncSession = air.ext.sqlmodel.async_session_dependency):
         statement = select(tables.Heroes)
         heroes = await session.exec(statement=statement)
         return air.Ul(
@@ -180,7 +180,7 @@ async def get_object_or_404(session: AsyncSession, model: SQLModel, *args: _Bina
         app = air.Air()
 
         @app.get('/heroes/{name: str}')
-        async def hero(name: str, session = Depends(air.ext.sql.get_async_session)):
+        async def hero(name: str, session = Depends(air.ext.sqlmodel.get_async_session)):
             hero = await get_object_or_404(session, model, Hero.name==name)
             return air.layouts.mvpcss(
                 air.H1(hero.name),

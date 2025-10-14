@@ -42,7 +42,7 @@ class GitHubOAuthClientFactory:
                 profile = resp.json()
                 github_login = profile.get('login')
 
-                async_session = await air.ext.sql.create_async_session()
+                async_session = await air.ext.sqlmodel.create_async_session()
                 async with async_session() as session:
                     # check if access_token is in database
                     stmt = select(User).where(User.github_login==github_login)
