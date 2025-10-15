@@ -23,7 +23,22 @@ nav:
       - Minimal app: learn/cookbook/minimal.md
       - Forms & validation: learn/cookbook/forms.md
       - Static files: learn/cookbook/static.md
-
+  - Book:
+    - Book Introduction: book/README.md
+    - Introduction to Air: book/01-introduction.md
+    - Getting Started: book/02-getting-started.md
+    - 'AI-Enhanced Development Setup': book/03-ai-enhanced-development-setup.md
+    - 'Air Tags and Layouts': book/04-air-tags-and-layouts.md
+    - 'Building Our Blog Application': book/05-building-blog-application.md
+    - 'Advanced Routing and URL Management': book/06-advanced-routing.md
+    - 'Forms and Data Validation': book/07-forms-validation.md
+    - 'Working with Databases': book/08-databases.md
+    - 'API Development': book/09-api-development.md
+    - 'HTMX and Interactive Interfaces': book/10-htmx-interfaces.md
+    - 'Authentication and Security': book/11-authentication-security.md
+    - Testing: book/12-testing.md
+    - Deployment: book/13-deployment.md
+    - 'Advanced Patterns and Best Practices': book/14-advanced-patterns.md
   - Reference:
     - api/index.md
     - Applications: api/applications.md
