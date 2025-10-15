@@ -20,6 +20,18 @@ from .requests import Request
 from .tags.models.base import BaseTag
 
 
+def _jinja_context_item(item: Any) -> Any:
+    """Prepare an item for processing by Jinja.
+
+    BaseTag instances are converted to string.
+    All other objects are handled by Jinja directly.
+    """
+
+    if isinstance(item, BaseTag):
+        return str(item)
+    return item
+
+
 class JinjaRenderer:
     """Template renderer to make Jinja easier in Air.
 
@@ -83,7 +95,7 @@ class JinjaRenderer:
             context |= kwargs
 
         # Attempt to render any Tags in the context
-        context = {k: str(v) if isinstance(v, BaseTag) else v for k, v in context.items()}
+        context = {k: _jinja_context_item(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
 
@@ -185,7 +197,7 @@ class Renderer:
 
     def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> _TemplateResponse:
         """Render Jinja template with Air Tag support."""
-        context = {k: str(v) if isinstance(v, BaseTag) else v for k, v in context.items()}
+        context = {k: _jinja_context_item(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:
