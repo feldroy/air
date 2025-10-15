@@ -41,7 +41,7 @@ if __name__ == "__main__":
         width=250,
         height=100,
         alt="My Img",
-        cheched=False,
+        checked=False,
         selected=True,
         bar="foo",
     )

@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.35.0"
+version = "0.36.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -58,7 +58,7 @@ pretty = [
     "rich>=12.6.0",
 ]
 # Used for interacting with sqlmodel and sqlalchemy
-sql = [
+sqlmodel = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
@@ -94,18 +94,19 @@ devtools = [
     "typer>=0.19.1" # For running of scripts
 ]
 lint = [
+    "codespell>=2.4.1",
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
     "types-Markdown>=3.8.0", # Types for the markdown library
+    "typos>=1.38.1",
 ]
 test = [
     "aiosqlite>=0.21.0",
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "httpx>=0.28.1", # For the test client
-    "pytest>=8.4.0", # Test runner
-    "pdbpp==0.11.7", # enables pdb++, a drop-in replacement for pdb
+    "pytest>=8.4.0", # The pytest framework
     "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
     "pytest-pretty>=1.3.0", # Provides richer test session output.
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
@@ -114,7 +115,7 @@ test = [
     "pytest-benchmark>=5.1.0",
     "pytest-env>=1.1.5", # for setting env vars in tests
     "pyinstrument>=5.1.1",
-    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
+    "sqlmodel>=0.0.24",
 ]
 docs = [
     "greenlet>=3.2.4",
@@ -242,7 +243,7 @@ air = { workspace = true }
 [build-system]
 # Ensure the chosen backend is present. A version range keeps CI reproducible
 # (meaning: stable over time) while allowing safe updates.
-requires = ["uv_build>=0.8.7,<0.9.0"]
+requires = ["uv_build>=0.9.0,<0.10.0"]
 # Use uv’s build backend. It is fast and strict, supports PEP 660 editable installs,
 # and produces correct distribution metadata for tooling.
 build-backend = "uv_build"
@@ -484,7 +485,7 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 unresolved-import = "ignore"
 possibly-unresolved-reference = "ignore"
 invalid-argument-type = "ignore"
@@ -514,7 +515,7 @@ permissive-ignores = true
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 bad-override = false
 no-matching-overload = false
 not-callable = false
@@ -549,6 +550,8 @@ addopts = [
     "--color=yes",
     "--cov-context=test", # record per-test contexts
     "--cov-config=pyproject.toml", # be explicit about the config source
+    # TODO -> Uncomment this line, when https://github.com/ipython/ipython/issues/14620 is solved:
+    # "--pdbcls=IPython.terminal.debugger:Pdb",
 ]
 # Set the directory basename patterns to avoid when recursing for test discovery.
 # The individual (fnmatch-style) patterns are applied to the basename of a directory,
@@ -624,3 +627,60 @@ output = "coverage.xml" # default “coverage.xml”
 [tool.coverage.paths]
 source = ["src"]
 # endregion pytest
+
+# region ----> spell checker <----
+[tool.codespell]
+# Fail loud: print everything
+quiet-level = 0
+count = false
+summary = false
+interactive = 0
+enable-colors = true
+# Check more things
+check-filenames = true
+check-hidden = true
+hard-encoding-detection = true
+# Use extra built-in dictionaries for stricter wording
+builtin = 'clear,rare,usage,informal,names,code'
+# Avoid noisy or binary paths, but keep the set lean so we still catch issues
+skip = '''
+.idea,.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
+coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
+*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage
+'''
+# Ignore typos inside URLs/emails to avoid breaking links
+uri-ignore-words-list = '*'
+# Your project-specific words (file: one word per line)
+ignore-words = '.codespellignore'
+# Ignore Markdown bolding forms like **L**anguage
+ignore-regex = '\*\*[A-Z]\*\*[a-z]+\b'
+# Skip fenced code blocks in Markdown (reduces false positives)
+ignore-multiline-regex = '```.*?```'
+
+[tool.typos]
+# Strict, safe config for English repositories
+[tool.typos.files]
+ignore-hidden = false                # check dotfiles too
+ignore-files = true                  # respect .gitignore etc.
+ignore-dot = true                    # respect .ignore
+ignore-vcs = true                    # skip .git/
+ignore-global = true                 # respect global ignores
+ignore-parent = true                 # respect parent ignores
+extend-exclude = [
+    ".git", ".svn", ".hg",
+    ".tox", ".venv", "venv",
+    "node_modules", "dist", "build", "target", "out",
+    ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",
+    "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.ico", "*.svg",
+    "*.pdf", "*.zip", "*.gz", "*.tgz", "*.bz2", "*.xz", "*.7z",
+    "*.min.js", "*.min.css", "*.map", "*.lock", "*.pyc"
+]
+
+[tool.typos.default]
+binary = false
+check-filename = true
+check-file = true
+unicode = true
+locale = "en-us"
+
+# endregion spell checker

@@ -3,7 +3,7 @@ Instantiating Air applications.
 """
 
 import inspect
-from collections.abc import Awaitable, Callable, Coroutine, Sequence
+from collections.abc import Callable, Coroutine, Sequence
 from enum import Enum
 from functools import wraps
 from types import FunctionType
@@ -15,18 +15,19 @@ from fastapi.params import Depends
 from fastapi.types import IncEx
 from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
-from starlette.requests import Request
 from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS
+from .requests import Request
 from .responses import AirResponse
+from .routing import AirRoute
+from .types import MaybeAwaitable
 from .utils import compute_page_path
 
 AppType = TypeVar("AppType", bound="Air")
-type MaybeAwaitable[T] = T | Awaitable[T]
 
 
 class Air(FastAPI):
@@ -44,7 +45,7 @@ class Air(FastAPI):
         on_shutdown: A list of shutdown event handler functions.
         lifespan: A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
-        path_separator: An optional path seperator, default to "-". valid option available ["/", "-"]
+        path_separator: An optional path separator, default to "-". valid option available ["/", "-"]
     Example:
 
         import air
@@ -321,7 +322,7 @@ class Air(FastAPI):
                 """
             ),
         ] = None,
-        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "-",
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
         **extra: Annotated[
             Any,
             Doc(
@@ -334,8 +335,9 @@ class Air(FastAPI):
     ) -> None:
         """Initialize Air app with AirResponse as default response class.
 
-        This preserves all FastAPI initialization parameters while setting
-        AirResponse as the default response class.
+        This preserves most FastAPI initialization parameters while setting:
+            - AirResponse as the default response class.
+            - AirRoute as the default route class.
         """
         self.path_separator = path_separator
         if exception_handlers is None:
@@ -360,10 +362,9 @@ class Air(FastAPI):
             **extra,
         )
 
-    def page(
-        self,
-        func: FunctionType,
-    ) -> FunctionType:
+        self.router.route_class = AirRoute
+
+    def page(self, func: FunctionType) -> FunctionType:
         """Decorator that creates a GET route using the function name as the path.
 
         If the name of the function is "index", then the route is "/".

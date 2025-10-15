@@ -12,6 +12,7 @@ from typing import Any
 
 import jinja2
 from fastapi.templating import Jinja2Templates
+from starlette.requests import Request as StarletteRequest
 from starlette.templating import _TemplateResponse
 
 from .exceptions import RenderException
@@ -59,12 +60,10 @@ class JinjaRenderer:
     def __init__(
         self,
         directory: str | PathLike[str] | Sequence[str | PathLike[str]],
-        context_processors: list[Callable[[Request], dict[str, Any]]] | None = None,
+        context_processors: list[Callable[[StarletteRequest], dict[str, Any]]] | None = None,
         env: jinja2.Environment | None = None,
     ) -> None:
         """Initialize with template directory path"""
-        if context_processors is None:
-            context_processors = []
         self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
 
     def __call__(
@@ -82,7 +81,7 @@ class JinjaRenderer:
         if kwargs:
             context |= kwargs
 
-        # Attempt to render any Tags in the contect
+        # Attempt to render any Tags in the contact
         context = {k: str(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)
 
@@ -133,13 +132,11 @@ class Renderer:
     def __init__(
         self,
         directory: str | PathLike[str] | Sequence[str | PathLike[str]],
-        context_processors: list[Callable[[Request], dict[str, Any]]] | None = None,
+        context_processors: list[Callable[[StarletteRequest], dict[str, Any]]] | None = None,
         env: jinja2.Environment | None = None,
         package: str | None = None,
     ) -> None:
         """Initialize with template directory path"""
-        if context_processors is None:
-            context_processors = []
         self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
         self.package = package
 

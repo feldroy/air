@@ -6,9 +6,9 @@ When building larger applications with Air, you may find yourself needing to org
 
 !!! note
 
-    This approach shares state between the composited efforts. This means that authentication, database pooling, and other things will be usable between components. The [API reference](../../../api/routing) for this documentation displays options for more controls like Router-specific lifespans, URL prefixes, and more.
+    This approach shares state between the composited efforts. This means that authentication, database pooling, and other things will be usable between components. The [API reference](../../api/routing.md) for this documentation displays options for more controls like Router-specific lifespans, URL prefixes, and more.
 
-Let's imagine we have a landing page that links to a sophisticated dashboard. While our example dashboard is trivial, let's assume it is complicated enough that we want it in a seperate Python module yet share state. We design the `main.py` as we would a normal Air application:
+Let's imagine we have a landing page that links to a sophisticated dashboard. While our example dashboard is trivial, let's assume it is complicated enough that we want it in a separate Python module yet share state. We design the `main.py` as we would a normal Air application:
 
 ```python title="main.py"
 import air
@@ -82,7 +82,7 @@ def index():
         air.P(air.A('Shop', href='/shop'))
     )
 
-# Creating a seperate app for the shop,
+# Creating a separate app for the shop,
 # which could be placed in a different file
 shop = air.Air(title='Air shop')
 

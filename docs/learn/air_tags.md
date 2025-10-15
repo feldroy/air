@@ -22,7 +22,7 @@ This example:
 <air.Article("Defines an article")>
 ```
 
-In constructing this example, the `Article` tag has wrapped the `H1` and `P` tags. You can't see that the `H1` and `P` tags are inside, but they have been carefully stored. 
+In constructing this example, the `Article` tag has wrapped the `H1` and `P` tags. You can't see that the `H1` and `P` tags are inside, but they have been carefully stored.
 
 This is the output of the `render()` method for the example above:
 
@@ -34,7 +34,7 @@ This is the output of the `render()` method for the example above:
 <article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
 ```
 
-A shortcut for the `render()` method is the `str()` built-ins. 
+A shortcut for the `render()` method is the `str()` built-ins.
 
 ```python
 >>> str(content)
@@ -93,7 +93,7 @@ renders as:
 <p id="mine">Hello</p>
 ```
 
-Lets take a look at some additional scenarios.
+Let's take a look at some additional scenarios.
 
 ### Setting the `class` attribute
 

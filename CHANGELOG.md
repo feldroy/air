@@ -1,12 +1,34 @@
 ### Latest Changes
 
-# 0.34.0 - 2025-10-06
+# 0.36.0 - 2025-10-10
+
+## What's Changed
+* Implement .htmx object on air.Request by @pydanny in https://github.com/feldroy/air/pull/524
+* Drop Python 3.12 support! by @tallerasaf in https://github.com/feldroy/air/pull/538
+* Add forms quickstart by @pydanny in https://github.com/feldroy/air/pull/536 and https://github.com/feldroy/air/pull/539
+* Restore llms.txt for LLM-friendly documentation by @intellectronica in https://github.com/feldroy/air/pull/552
+* fixed broken cookbook docs link by @alaminopu in https://github.com/feldroy/air/pull/553
+* Temporary just tdd fix for Python 3.14 by @tallerasaf in https://github.com/feldroy/air/pull/555
+* Add comprehensive tests for default_form_widget by @kernelshard in https://github.com/feldroy/air/pull/535
+* Remove redundant CI workflow and simplify coverage configuration by @tallerasaf in https://github.com/feldroy/air/pull/542
+* Fix the request part of the docs by @pydanny in https://github.com/feldroy/air/pull/557
+* chore(deps): update astral-sh/setup-uv action to v7 by @renovate[bot] in https://github.com/feldroy/air/pull/541
+* chore(deps): update dependency uv_build to >=0.9.0,<0.10.0 by @renovate[bot] in https://github.com/feldroy/air/pull/543
+* ⬆(deps): Bump the python-dependencies group across 1 directory with 5 updates by @dependabot[bot] in https://github.com/feldroy/air/pull/556
+
+## New Contributors
+* @kernelshard made their first contribution in https://github.com/feldroy/air/pull/535
+* @intellectronica made their first contribution in https://github.com/feldroy/air/pull/552
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.35.0...v0.36.0
+
+# 0.35.0 - 2025-10-06
 
 ## What's Changed
 * FEAT: add option for app.page decorator to convert underscores to forward slashes by default by @alaminopu in https://github.com/feldroy/air/pull/522
 * FEAT: Add support for Python 3.14! by @tallerasaf in https://github.com/feldroy/air/pull/529
 * DOCS: : add usage and recipes for requests.Request by @zorexsalvo in https://github.com/feldroy/air/pull/527
-* DOCS: Add mixed bread AI search on docs by @pydanny in https://github.com/feldroy/air/pull/530
+* DOCS: Add mixed bread AI search on docs by @pydanny and @audreyfeldroy in https://github.com/feldroy/air/pull/530
 * DOCS: Refine `ruff` configuration by @tallerasaf in https://github.com/feldroy/air/pull/528
 * DOCS: Show use of include router for bigger apps by @pydanny in https://github.com/feldroy/air/pull/531
 * build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/534
@@ -66,7 +88,7 @@
 * FEAT: Make the default status_code of air.RedirectResponse be 303 by @alaminopu in https://github.com/feldroy/air/pull/481
 * Merge cookbook into learn section by @pydanny in https://github.com/feldroy/air/pull/483
 * DOCS:  Enhance contribution guide with detailed setup instructions by @tallerasaf in https://github.com/feldroy/air/pull/484
-* Add GitHubOAuthClientFactory to support easier authentication by @pydanny in https://github.com/feldroy/air/pull/487
+* Add GitHubOAuthClientFactory to support easier authentication by @pydanny and @audreyfeldroy in https://github.com/feldroy/air/pull/487
 * Improved learn docs for SQL by @pydanny in https://github.com/feldroy/air/pull/488
 * Add script to look for missing examples in callables by @pydanny in https://github.com/feldroy/air/pull/489
 * FEAT: pretty_render enhancements by @tallerasaf in https://github.com/feldroy/air/pull/477
@@ -97,11 +119,11 @@
 * Add type annotations to the entire codebase using pyrefly and ruff(What they could do, still not 100%) by @tallerasaf in https://github.com/feldroy/air/pull/441
 * chore: update Codecov config and refine coverage exclusions by @tallerasaf in https://github.com/feldroy/air/pull/469
 * Drop Python 3.10 and 3.11 by @tallerasaf in https://github.com/feldroy/air/pull/470
-* Added get_object_or_404 to air.ext.sql. by @pydanny in https://github.com/feldroy/air/pull/466
+* Added get_object_or_404 to air.ext.sql. by @pydanny and @audreyfeldroy in https://github.com/feldroy/air/pull/466
 * Move ty ignore rule to correct location in pyproject.toml by @pydanny in https://github.com/feldroy/air/pull/471
 * Add docs issue template by @pydanny in https://github.com/feldroy/air/pull/474
 * Change air.db.sql path to air.ext.sql in docs by @pydanny in https://github.com/feldroy/air/pull/476
-* Add lifespan db func to air.ext.sql by @pydanny in https://github.com/feldroy/air/pull/478
+* Add lifespan db func to air.ext.sql by @pydanny and @audreyfeldroy in https://github.com/feldroy/air/pull/478
 * Make contributing.md more concise by @pydanny in https://github.com/feldroy/air/pull/479
 
 ## New Contributors
@@ -240,7 +262,7 @@
 
 ## What's Changed
 * TOOL: PyRefly by @tallerasaf in https://github.com/feldroy/air/pull/318
-* BUG: Performance optimisations by @pydanny in https://github.com/feldroy/air/pull/342
+* BUG: Performance optimizations by @pydanny in https://github.com/feldroy/air/pull/342
 * BUG: Add missing autofocus option to AirField by @pydanny in https://github.com/feldroy/air/pull/324
 * ⬆(deps): bump ty from 0.0.1a18 to 0.0.1a19 by @dependabot[bot] in https://github.com/feldroy/air/pull/323
 * ⬆(deps): bump rust-just from 1.42.3 to 1.42.4 by @dependabot[bot] in https://github.com/feldroy/air/pull/331
@@ -502,7 +524,7 @@ We did get in one feature to Air itself:
 * Added `html_to_airtags` function, converts HTML to Air Tags by @pydanny in https://github.com/feldroy/air/pull/125
 
 
-## Documentaton improvements
+## Documentation improvements
 * Reorder member order in object docs by @pydanny in https://github.com/feldroy/air/pull/116
 * Documentation on how to escape HTML by @pydanny in https://github.com/feldroy/air/pull/108
 * Update project description in README and pyproject.toml by @audreyfeldroy in https://github.com/feldroy/air/pull/118

@@ -88,7 +88,7 @@ You can install each optional feature (extras) like this:
    ```
 3. **SQL** — SQLModel / SQLAlchemy support
    ```sh
-   uv add "air[sql]"
+   uv add "air[sqlmodel]"
    ```
 4. **Auth** — OAuth clients via Authlib
    ```sh

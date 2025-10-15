@@ -9,6 +9,7 @@ from typing import (
     Annotated,
     Any,
     Literal,
+    override,
 )
 from warnings import deprecated
 
@@ -23,9 +24,25 @@ from starlette.routing import (
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc
 
-from .applications import Air, MaybeAwaitable
+from .exception_handlers import default_404_router_handler
+from .requests import AirRequest
 from .responses import AirResponse
+from .types import MaybeAwaitable
 from .utils import compute_page_path, default_generate_unique_id
+
+
+class AirRoute(APIRoute):
+    """Custom APIRoute that uses Air's custom AirRequest class."""
+
+    @override
+    def get_route_handler(self) -> Callable:
+        original_route_handler = super().get_route_handler()
+
+        async def custom_route_handler(request: Any) -> Response:
+            request = AirRequest(request.scope, request.receive)
+            return await original_route_handler(request)
+
+        return custom_route_handler
 
 
 class AirRouter(APIRouter):
@@ -175,7 +192,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         route_class: Annotated[
-            type[APIRoute],
+            type[AirRoute],
             Doc(
                 """
                 Custom route (*path operation*) class to be used by this router.
@@ -184,7 +201,7 @@ class AirRouter(APIRouter):
                 [FastAPI docs for Custom Request and APIRoute class](https://fastapi.tiangolo.com/how-to/custom-request-and-route/#custom-apiroute-class-in-a-router).
                 """
             ),
-        ] = APIRoute,
+        ] = AirRoute,
         on_startup: Annotated[
             Sequence[Callable[[], Any]] | None,
             Doc(
@@ -252,7 +269,7 @@ class AirRouter(APIRouter):
             ),
         ] = True,
         generate_unique_id_function: Annotated[
-            Callable[[APIRoute], str],
+            Callable[[AirRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -266,11 +283,11 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = default_generate_unique_id,
-        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "-",
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
     ) -> None:
         self.path_separator = path_separator
         if default is None:
-            default = Air
+            default = default_404_router_handler
         super().__init__(
             prefix=prefix,
             tags=tags,
@@ -642,7 +659,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[APIRoute], str],
+            Callable[[AirRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -1034,7 +1051,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[APIRoute], str],
+            Callable[[AirRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path

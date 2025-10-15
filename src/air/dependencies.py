@@ -1,4 +1,4 @@
-"""Tools for handling dependecies, for things like handling incoming data from client libraries like HTMX."""
+"""Tools for handling dependencies, for things like handling incoming data from client libraries like HTMX."""
 
 from fastapi import Depends, Header
 
