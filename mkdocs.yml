@@ -138,9 +138,9 @@ plugins:
         - learn/escaping_html.md        
         - learn/forms.md                
         - learn/jinja.md                
-        - learn/layouts.md                
+        - learn/layouts.md
         - learn/cookbook/*.md   
         - api/*.md
         - api/tags/*.md
         - api/svg/*.md
-        - tools.md        
+        - tools.md

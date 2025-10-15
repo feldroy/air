@@ -7,4 +7,4 @@ Useful utilities and tools for **AIR**.
 - [AirMCP](https://airmcp.fastapicloud.dev/) - MCP server for Air tools
 - [AirCookbook](learn/cookbook/index.md) - A recipe book for getting everything done imaginable in the web
 - [Air's llms.txt](https://feldroy.github.io/air/llms.txt) - Context for LLMs about Air
-- [Air's full-llms.txt](https://feldroy.github.io/air/full-llms.txt) - The full length context for LLMs about Air
+- [Air's llms-full.txt](https://feldroy.github.io/air/llms-full.txt) - The full length context for LLMs about Air
