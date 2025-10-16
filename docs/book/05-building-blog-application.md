@@ -117,10 +117,10 @@ git commit -m "Add article files: hello-world.md, about-me.md, markdown-features
 
 ## Reading Articles into Our Application
 
-To read the articles from the `articles` directory, we'll use the `pathlib` and `python-frontmatter` libraries. First, install the frontmatter library:
+To read the articles from the `articles` directory, we'll use the `pathlib` and `frontmatter` libraries. First, install the frontmatter library:
 
 ```bash
-uv add python-frontmatter
+uv add frontmatter
 ```
 
 Now, let's modify our `main.py` file to read the articles and display them on the homepage:
