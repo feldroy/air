@@ -3,16 +3,16 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #   "mcp>=1.17.0",
-#   "playwright>=1.40.0",
+#   "playwright>=1.55.0",
 # ]
 # ///
 
 from mcp.server.fastmcp import FastMCP
 from textwrap import dedent
-from subprocess import Popen, PIPE
+import asyncio
 from pathlib import Path
-import time
-from playwright.sync_api import sync_playwright
+from playwright.async_api import async_playwright
+import subprocess
 
 # Create the MCP server
 mcp = FastMCP(
@@ -39,28 +39,45 @@ def get_code_quality_prompt() -> str:
     """).strip()
 
 @mcp.tool()
-def get_change_size_prompt(branch_name: str) -> str:
-    """Evaluate if a branch's changes are appropriately sized for a single PR
+def get_change_size_analysis(branch_name: str) -> str:
+    """Analyze if a branch's changes are appropriately sized for a single PR
 
     Args:
         branch_name: Name of the branch to evaluate against main
 
     Returns:
-        Prompt with guidelines for evaluating PR scope
+        Prompt with git diff data for AI analysis of PR scope
     """
-    return dedent(f"""
-        Evaluate PR scope for branch '{branch_name}' against main:
+    try:
+        diff_result = subprocess.run(
+            ["git", "diff", f"main...{branch_name}"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        diff = diff_result.stdout.strip()
+        
+        return dedent(f"""
+            Evaluate PR scope for branch '{branch_name}' against main:
 
-        Run: `git diff main...{branch_name} --stat` and `git diff main...{branch_name} --name-only`
+            Code changes:
+            ```diff
+            {diff}
+            ```
 
-        PR Scope Guidelines for Air:
-        - Good PR: 1-5 files, focused on single feature/fix/refactor
-        - Acceptable: 6-10 files if tightly related changes
-        - Too large: >10 files or mixing multiple unrelated concerns
+            PR Scope Guidelines for Air:
+            - Good PR: 1-5 files, focused on single feature/fix/refactor
+            - Acceptable: 6-10 files if tightly related changes
+            - Too large: >10 files or mixing multiple unrelated concerns
 
-        Assess whether changes should be split into multiple PRs for better review.
-        Each PR must independently pass `just qa` and `just test`.
-    """).strip()
+            Assess whether changes should be split into multiple PRs for better review.
+            Each PR must independently pass `just qa` and `just test`.
+        """).strip()
+        
+    except subprocess.CalledProcessError as e:
+        return f"Error running git diff: {e.stderr}"
+    except Exception as e:
+        return f"Error analyzing changes: {str(e)}"
 
 
 # ================================================================================
@@ -68,7 +85,7 @@ def get_change_size_prompt(branch_name: str) -> str:
 # ================================================================================
 
 # Global state for browser and process
-__state = {
+_state = {
     "playwright": None,
     "browser": None,
     "page": None,
@@ -79,7 +96,7 @@ __state = {
 }
 
 @mcp.tool()
-def start_app(example_file: str, port: int = 8005) -> str:
+async def start_app(example_file: str, port: int = 8005) -> str:
     """Start an Air example app from the `examples/` directory
 
     Args:
@@ -93,32 +110,34 @@ def start_app(example_file: str, port: int = 8005) -> str:
     if not example_path.exists():
         return f"Error: {example_file} not found in examples/"
     
-    __state.update({
+    _state.update({
         "server_logs": [],
         "console_errors": [],
         "port": port,
     })
 
-    # Start app
-    __state["process"] = Popen(["uv", "run", str(example_path)], stdout=PIPE, stderr=PIPE, text=True)
-    time.sleep(3)
+    _state["process"] = await asyncio.create_subprocess_exec(
+        "uv", "run", str(example_path),
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE
+    )
+    await asyncio.sleep(3)
 
     # Start browser
-    __state["playwright"] = sync_playwright().start()
-    __state["browser"] = __state["playwright"].chromium.launch(headless=True)
-    __state["page"] = __state["browser"].new_page()
+    _state["playwright"] = await async_playwright().start()
+    _state["browser"] = await _state["playwright"].chromium.launch(headless=True)
+    _state["page"] = await _state["browser"].new_page()
 
-    # Capture console errors
-    __state["page"].on("console", lambda msg:
-        __state["console_errors"].append(f"[{msg.type}] {msg.text}")
-        if msg.type in ["error", "warning"] else None
-    )
+    def __msg_handler(msg):
+        if msg.type in ["error", "warning"]:
+            _state["console_errors"].append(f"[{msg.type}] {msg.text}")
+    _state["page"].on("console", __msg_handler)
 
     return f"Started {example_file} on port {port}"
 
 
 @mcp.tool()
-def stop_app() -> str:
+async def stop_app() -> str:
     """Stop the running example app and close browser
 
     Returns:
@@ -127,30 +146,33 @@ def stop_app() -> str:
     result = ["App stopped and browser closed"]
 
     # Capture server logs
-    if __state["process"]:
-        __state["process"].terminate()
-        stdout, stderr = __state["process"].communicate(timeout=2)
-        if stdout:
-            __state["server_logs"].append(stdout)
-        if stderr:
-            __state["server_logs"].append(stderr)
+    if _state["process"]:
+        _state["process"].terminate()
+        try:
+            stdout, stderr = await asyncio.wait_for(
+                _state["process"].communicate(), timeout=2
+            )
+            if stdout:
+                _state["server_logs"].append(stdout.decode())
+            if stderr:
+                _state["server_logs"].append(stderr.decode())
+        except asyncio.TimeoutError:
+            _state["process"].kill()
 
-    # Close browser
-    if __state["page"]:
-        __state["page"].close()
-    if __state["browser"]:
-        __state["browser"].close()
-    if __state["playwright"]:
-        __state["playwright"].stop()
+    if _state["page"]:
+        await _state["page"].close()
+    if _state["browser"]:
+        await _state["browser"].close()
+    if _state["playwright"]:
+        await _state["playwright"].stop()
 
-    # Report errors and logs
-    if __state["console_errors"]:
-        result.append("Console errors/warnings:\n" + "\n".join(__state["console_errors"]))
-    if __state["server_logs"]:
-        result.append("Server logs:\n" + "\n".join(__state["server_logs"]))
+    if _state["console_errors"]:
+        result.append("Console errors/warnings:\n" + "\n".join(_state["console_errors"]))
+    if _state["server_logs"]:
+        result.append("Server logs:\n" + "\n".join(_state["server_logs"]))
 
     # Reset state
-    __state.update({
+    _state.update({
         "playwright": None,
         "browser": None,
         "page": None,
@@ -161,7 +183,7 @@ def stop_app() -> str:
 
 
 @mcp.tool()
-def navigate(route: str) -> str:
+async def navigate(route: str) -> str:
     """Navigate to a route in the running app
 
     Args:
@@ -170,15 +192,15 @@ def navigate(route: str) -> str:
     Returns:
         Page title and URL
     """
-    if not __state["page"]:
+    if not _state["page"]:
         return "Error: No app running. Use start_app first."
 
-    __state["page"].goto(f"http://localhost:{__state['port']}{route}")
-    return f"URL: {__state['page'].url}\nTitle: {__state['page'].title()}"
+    await _state["page"].goto(f"http://localhost:{_state['port']}{route}")
+    return f"URL: {_state['page'].url}\nTitle: {await _state['page'].title()}"
 
 
 @mcp.tool()
-def click(selector: str) -> str:
+async def click(selector: str) -> str:
     """Click an element on the current page
 
     Args:
@@ -187,20 +209,20 @@ def click(selector: str) -> str:
     Returns:
         Result after clicking (new URL and title)
     """
-    if not __state["page"]:
+    if not _state["page"]:
         return "Error: No page loaded. Use start_app and navigate first."
 
-    element = __state["page"].locator(selector)
-    if element.count() == 0:
+    element = _state["page"].locator(selector)
+    if await element.count() == 0:
         return f"Element not found: {selector}"
 
-    element.first.click()
-    __state["page"].wait_for_load_state()
-    return f"Clicked: {selector}\nURL: {__state['page'].url}\nTitle: {__state['page'].title()}"
+    await element.first.click()
+    await _state["page"].wait_for_load_state()
+    return f"Clicked: {selector}\nURL: {_state['page'].url}\nTitle: {await _state['page'].title()}"
 
 
 @mcp.tool()
-def get_logs() -> str:
+async def get_logs() -> str:
     """Get captured server logs and browser console errors
 
     Returns:
@@ -208,24 +230,18 @@ def get_logs() -> str:
     """
     result = []
 
-    if __state["process"] and __state["process"].poll() is None:
+    if _state["process"] and _state["process"].returncode is None:
         result.append("Server is running (logs available on stop_app)")
 
-    if __state["console_errors"]:
-        result.append("Console errors/warnings:\n" + "\n".join(__state["console_errors"]))
+    if _state["console_errors"]:
+        result.append("Console errors/warnings:\n" + "\n".join(_state["console_errors"]))
     else:
         result.append("No console errors")
 
-    if __state["server_logs"]:
-        result.append("Server logs:\n" + "\n".join(__state["server_logs"]))
+    if _state["server_logs"]:
+        result.append("Server logs:\n" + "\n".join(_state["server_logs"]))
 
     return "\n\n".join(result) if result else "No logs captured yet"
-
-
-
-# ================================================================================
-# SERVER STARTUP
-# ================================================================================
 
 if __name__ == "__main__":
     mcp.run()
