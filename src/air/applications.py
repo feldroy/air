@@ -46,6 +46,8 @@ class Air(FastAPI):
         lifespan: A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
         path_separator: An optional path separator, default to "-". valid option available ["/", "-"]
+        fastapi_app: An optional FastAPI project assigned to the `api` property
+
     Example:
 
         import air
@@ -323,6 +325,18 @@ class Air(FastAPI):
             ),
         ] = None,
         path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
+        fastapi_app: Annotated[
+            FastAPI | None,
+            Doc(
+                """
+                The app that serves out an API.
+
+                Set to `None` to disable it.
+
+                If no routes are attached to the app, it disables itself.
+                """
+            ),
+        ] = FastAPI,
         **extra: Annotated[
             Any,
             Doc(
@@ -363,6 +377,14 @@ class Air(FastAPI):
         )
 
         self.router.route_class = AirRoute
+        if fastapi_app is not None:
+            self.fastapi_app = fastapi_app()
+            self.mount("/api", self.fastapi_app)
+
+    @property
+    def api(self) -> FastAPI | None:
+        """Access the FastAPI application for API routes."""
+        return self.fastapi_app
 
     def page(self, func: FunctionType) -> FunctionType:
         """Decorator that creates a GET route using the function name as the path.

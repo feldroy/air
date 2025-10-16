@@ -182,3 +182,27 @@ def test_injection_of_default_exception_handlers() -> None:
     expected_handlers = {**DEFAULT_EXCEPTION_HANDLERS, **CUSTOM_EXCEPTION_HANDLERS}
     assert set(expected_handlers) <= set(app.exception_handlers)
     assert app.exception_handlers[405] is handler
+
+
+def test_api_namespace_in_air() -> None:
+    app = air.Air()
+
+    @app.page
+    def index() -> air.H1:
+        return air.H1("Hello, World!")
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Hello, World!</h1>"
+
+    @app.api.get("/items")
+    def get_items():
+        return {"items": ["one", "two", "three"]}
+
+    client = TestClient(app)
+    response = client.get("/api/items")
+    assert response.status_code == 200
+    assert response.json() == {"items": ["one", "two", "three"]}
