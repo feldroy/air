@@ -537,7 +537,6 @@ skip_covered = true
 ignore_errors = true
 precision = 0
 sort = "miss"
-
 exclude_lines = [
     # Pragmas explicitly telling Coverage to skip
     'pragma: no cover', # skip lines marked not to cover
