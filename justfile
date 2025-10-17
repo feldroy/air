@@ -93,6 +93,11 @@ run-with-relative-paths +CMD:
 @run +ARGS:
     just run-with-relative-paths uv run -q --extra all --frozen {{ ARGS }}
 
+# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet)
+[group('uv')]
+upgrade-dependencies:
+    uv sync --extra all -U
+
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
