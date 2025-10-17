@@ -24,7 +24,7 @@ type Renderable = str | BaseTag | SafeStr | int | float
 class TagDictType(TypedDict):
     name: str
     attributes: dict[str, AttributesType]
-    children: tuple[Any, ...]
+    children: tuple[Renderable, ...]
 
 
 class TagKeys:
