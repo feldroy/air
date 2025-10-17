@@ -57,7 +57,8 @@ def default_500_exception_handler(request: Request, exc: Exception) -> AirRespon
     )
 
 
-DEFAULT_EXCEPTION_HANDLERS: Final[dict[int, Callable[[Request, Exception], AirResponse]]] = {
+type ExceptionHandlersType = dict[int, Callable[[Request, Exception], AirResponse]]
+DEFAULT_EXCEPTION_HANDLERS: Final[ExceptionHandlersType] = {
     404: default_404_exception_handler,
     500: default_500_exception_handler,
 }
