@@ -45,8 +45,8 @@ def test_github_login_route() -> None:
 
     assert response.history[0].status_code == 302
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response._request.url.host == "github.com"  # ty:ignore[possibly-unbound-attribute]
-    assert response._request.url.path == "/login/oauth/authorize"  # ty:ignore[possibly-unbound-attribute]
+    assert response._request.url.host == "github.com"
+    assert response._request.url.path == "/login/oauth/authorize"
 
 
 def test_github_callback_route() -> None:
