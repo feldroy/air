@@ -82,7 +82,7 @@ Attaching this dependency to a route ensures that only authenticated users can a
 import air
 
 air = air.Air()
-air.add_middleware(air.SessionMiddleware
+air.add_middleware(air.SessionMiddleware, secret_key="change-me")
 
 # --- Dependency ---
 def require_login(request: air.Request):
