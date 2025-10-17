@@ -534,8 +534,8 @@ Check out these documentation sections:
 
 What we plan to include in the Quick Start:
 
-- [ ] Jinja
-    - [ ] The Jinja + Air Tags pattern the core devs love to use
+- [x] Jinja
+    - [x] The Jinja + Air Tags pattern the core devs love to use
 - [x] Forms: 
     - [x] Using Pydantic-powered AirForms for validation of incoming data
     - [ ] `HTTP GET` forms, like those used in search forms
