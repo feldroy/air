@@ -267,7 +267,7 @@ In addition to Air Tags, Air supports Jinja natively. In addition to being great
 
 Here's a simple Jinja template:
 
-```jinja title="templates/base.html"
+```html+jinja title="templates/base.html"
 <!doctype html>
 <html>
     <body>
@@ -306,6 +306,54 @@ def index(request: air.Request):
 2. Air automatically handles turning the `jinja` response into an HTML response.
 3. Individual keyword arguments for values can be passed, these are added to the Jinja template's context dictionary.
 4. This is the standard Jinja context dictionary, which is added to each template.
+
+### Jinja + Air Tags
+
+It is very easy to include Air Tags in Jinja. Let's first create our template:
+
+```jinja title="templates/avatar.html"  hl_lines="6"
+<!doctype html>
+<html>
+    <body>
+        <main class="container">
+          <h1>{{title}}</h1>
+          {{fragment|safe}} {# (1)! #}
+        </main>
+    </body>
+</html>
+```
+
+1. The `safe` filter is necessary for using Air Tags in Jinja. This has security implications, so be careful what content you allow.
+
+And here is our Python code describing the view:
+
+```python title="main.py"  hl_lines="13-16"
+import air
+
+app = air.Air()
+
+jinja = air.JinjaRenderer(directory="templates")
+
+@app.get("/avatar")
+def avatar(request: air.Request):
+    return jinja(
+        request,
+        name="avatar.html",
+        title="Hello, Air Benders",
+        fragment=air.Div(
+            air.P("We are fans of the Last Avatar"),
+            class_="thing"
+        ) #(1)!
+    )
+```
+
+1. We can pass Air Tags into the context of a Jinja template.
+
+!!! tip
+
+    Where Jinja + Air Tags truly come alive is when the base templates for a project are in Jinja. For some people this makes styling pages a bit easier. Then content, especially HTMX swaps and other fragments are rendered via Air Tags. This keeps the developer in Python, which means less context switching while working on challenges.
+
+
 
 ## Forms
 
