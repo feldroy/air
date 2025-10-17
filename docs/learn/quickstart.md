@@ -261,6 +261,52 @@ def index():
     )
 ```
 
+## Jinja
+
+In addition to Air Tags, Air supports Jinja natively. In addition to being great at delivering HTML content, Jinja can be used to render all kinds of content.
+
+Here's a simple Jinja template:
+
+```jinja title="templates/base.html"
+<!doctype html>
+<html>
+    <body>
+        <main class="container">
+          <h1>{{title}}</h1>
+          <p>{{message}}</p>
+        </main>
+    </body>
+</html>
+```
+
+And here's the view that calls it:
+
+
+```python title="main.py"  hl_lines="6 10 14 16"
+import air
+
+app = air.Air()
+
+# Set the Jinja render function
+jinja = air.JinjaRenderer(directory="templates") #(1)!
+
+@app.page
+def index(request: air.Request):
+    return jinja( #(2)!
+        request,
+        name="base.html",
+        # You can pass in individual keyword arguments
+        title="Hello, Air Benders", #(3)!
+        # Or a dict for the context
+        context={"message": "Air + Jinja is awesome"} #(4)!
+    )
+```
+
+1. This sets up the Jinja environment for calling and rendering of templates.
+2. Air automatically handles turning the `jinja` response into an HTML response.
+3. Individual keyword arguments for values can be passed, these are added to the Jinja template's context dictionary.
+4. This is the standard Jinja context dictionary, which is added to each template.
+
 ## Forms
 
 In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet workable example of receiving data using a `Request` object. 

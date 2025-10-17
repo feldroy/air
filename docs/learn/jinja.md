@@ -75,6 +75,6 @@ When run, this will look like this:
 
 TODO: ADD SCREEN CAPTURE
 
-> ## Why don't we call the `jinja()` function `render()`?
->
-> Because Air uses `.render()` as a method name in a lot of places, especially with Air Tags. So even though `render()` instead of `jinja()` is more semantically correct, to avoid confusion and collision, we use `jinja2()` instead.
+!!! info "Why don't we call the `jinja()` function `render()`?"
+
+    Because Air uses `.render()` as a method name in a lot of places, especially with Air Tags. So even though `render()` instead of `jinja()` is more semantically correct, to avoid confusion and collision, we use `jinja2()` instead.
