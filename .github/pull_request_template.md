@@ -29,11 +29,6 @@ The following have been completed for this task:
 - [ ] Alterations of behavior come with a working implementation in the `examples` folder
 - [ ] Tests on new or altered behaviors
 
-## Demo or screenshot
-
-<!-- If possible, link to a demo or screenshot of your change. -->
-<!-- If not possible, remove this section. -->
-
 ## Checklist
 <!-- Go over all the following points, and put an `x` in all the boxes that apply -->
 
@@ -41,6 +36,12 @@ The following have been completed for this task:
 - [ ] I have performed a self-review of my own code
 - [ ] I have ensured that there are tests to cover my changes
 
+## Demo or screenshot
+
+<!-- If possible, link to a demo or screenshot of your change. -->
+<!-- If not possible, remove this section. -->
+
 ## Other information
 
-<!-- If possible, link to a demo or screenshot of your change -->
+<!-- If there's anything else not covered above, provide it here -->
+<!-- If there's nothing else, remove this section. -->
