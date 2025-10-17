@@ -20,7 +20,7 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc
 
-from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS
+from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .requests import Request
 from .responses import AirResponse
 from .routing import AirRoute
@@ -212,7 +212,7 @@ class Air(FastAPI):
             ),
         ] = None,
         exception_handlers: Annotated[
-            dict[int | type[Exception], Callable[[Request, Any], Coroutine[Any, Any, Response]]] | None,
+            ExceptionHandlersType,
             Doc(
                 """
                 A dictionary with handlers for exceptions.
@@ -343,7 +343,7 @@ class Air(FastAPI):
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
-        super().__init__(  # ty: ignore [invalid-super-argument]
+        super(Air, self).__init__(
             debug=debug,
             routes=routes,
             servers=servers,
