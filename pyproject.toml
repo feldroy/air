@@ -104,7 +104,6 @@ lint = [
 test = [
     "aiosqlite==0.21.0",
     "coverage[toml]==7.11.0", # Measure how much of the code is covered by tests
-    "greenlet==3.2.4", # Dependency for SQLAlchemy to run async
     "httpx==0.28.1", # For the test client
     "pytest==8.4.2", # The pytest framework
     "pytest-cov==7.0.0", # Pytest plugin for measuring coverage.
