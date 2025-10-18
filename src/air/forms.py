@@ -300,7 +300,7 @@ def AirField(
     """
     schema_extra: dict[str, JsonValue] = json_schema_extra or {}
     if type:
-        schema_extra["type"] = True
+        schema_extra[type] = True
     if label:
         schema_extra["label"] = label
     if autofocus:
