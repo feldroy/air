@@ -283,10 +283,7 @@ def _get_pretty_html_console(
     except ModuleNotFoundError:
         raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
     else:
-        syntax = Syntax(
-            source, SYNTAX_LEXER, theme=theme,
-            line_numbers=True, indent_guides=True, word_wrap=True
-        )
+        syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
         title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
         panel = Panel.fit(
             syntax,
