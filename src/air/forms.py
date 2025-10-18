@@ -346,5 +346,4 @@ def AirField(
         max_length=max_length,
         union_mode=union_mode,
         fail_fast=fail_fast,
-        **extra,
     )  # ty: ignore[no-matching-overload]

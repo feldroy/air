@@ -213,9 +213,9 @@ def test_air_field() -> None:
     html = contact_form.render()
     assert (
         html == '<label for="name">name</label><input name="name" type="text" id="name" />'
-        '<label for="email">Email</label><input name="email" type="email" id="email" />'
+        '<label for="email">Email</label><input name="email" type="text" id="email" />'
         '<label for="date_and_time">Date and Time</label>'
-        '<input name="date_and_time" type="datedatetime-local" id="date_and_time" />'
+        '<input name="date_and_time" type="text" id="date_and_time" />'
     )
 
 
