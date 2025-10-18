@@ -32,7 +32,7 @@ type Renderable = str | BaseTag | SafeStr | int | float
 class TagDictType(TypedDict):
     name: str
     attributes: dict[str, AttributesType]
-    children: tuple[Any, ...]
+    children: tuple[Renderable, ...]
 
 
 class TagKeys:
@@ -201,7 +201,7 @@ class BaseTag:
     def from_dict(cls, source_dict: TagDictType) -> Self:
         name, attributes, children_dict = source_dict.values()
         children: tuple[Self, ...] = tuple(cls._from_child_dict(children_dict))
-        tag = cls.registry[name](*children, **attributes)
+        tag = cls.registry[name](*children, **attributes)  # ty: ignore[invalid-argument-type]
         tag._name = name
         return tag
 

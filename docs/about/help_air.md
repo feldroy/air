@@ -22,10 +22,8 @@ By doing it, you will receive notifications (in your email) whenever there's a n
 
 ## Participate in discussions
 
-Our primary location for chat is our [Discord chat server](https://discord.gg/5sze6AbW).  
+Our primary location for chat is our [Discord chat server](https://discord.gg/znf8vPsz47).  
 
-We also will be using [Discussions](https://github.com/feldroy/air/discussions) in GitHub.
-
-For non-code GitHub issues, we'll ask those to be moved to either the Discord and GH Discissions.
+For non-code GitHub issues, we'll ask those to be moved to the Discord chat server.
 
 See you there!
