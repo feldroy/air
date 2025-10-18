@@ -35,10 +35,10 @@ classifiers = [
 ]
 
 dependencies = [
-    "fastapi>=0.116.1",
+    # fastapi==0.119.0: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+    "fastapi==0.118.3",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
-    "pydantic>=2.12.0b1",
     "python-multipart>=0.0.20",
 ]
 # endregion project
@@ -412,23 +412,25 @@ python-platform = "all"
 
 [tool.ty.terminal]
 # Fail the run on any warning.
-error-on-warning = false
+error-on-warning = true
 # Verbose output; switch to "concise" when you want minimal output.
 output-format = "full"
 
 # Promote every non-error rule to error (strict).
 [tool.ty.rules]
 # Defaults = warn:
+ambiguous-protocol-member = "error"      # https://docs.astral.sh/ty/reference/rules/#ambiguous-protocol-member
 deprecated = "error"                     # https://docs.astral.sh/ty/reference/rules/#deprecated
 invalid-ignore-comment = "error"         # https://docs.astral.sh/ty/reference/rules/#invalid-ignore-comment
-possibly-unbound-attribute = "error"     # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-attribute
-possibly-unbound-implicit-call = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-implicit-call
-possibly-unbound-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-import
+possibly-missing-attribute = "error"     # https://docs.astral.sh/ty/reference/rules/#possibly-missing-attribute
+possibly-missing-implicit-call = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-missing-implicit-call
+possibly-missing-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-missing-import
 redundant-cast = "error"                 # https://docs.astral.sh/ty/reference/rules/#redundant-cast
 undefined-reveal = "error"               # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
 unknown-rule = "error"                   # https://docs.astral.sh/ty/reference/rules/#unknown-rule
 unresolved-global = "error"              # https://docs.astral.sh/ty/reference/rules/#unresolved-global
 unsupported-base = "error"               # https://docs.astral.sh/ty/reference/rules/#unsupported-base
+useless-overload-body = "error"          # https://docs.astral.sh/ty/reference/rules/#useless-overload-body
 # Defaults = ignore:
 division-by-zero = "error"               # https://docs.astral.sh/ty/reference/rules/#division-by-zero
 possibly-unresolved-reference = "error"  # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
@@ -444,6 +446,7 @@ possibly-unresolved-reference = "ignore"
 invalid-argument-type = "ignore"
 too-many-positional-arguments = "ignore"
 unresolved-attribute = "ignore"
+possibly-missing-attribute = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----
@@ -534,7 +537,6 @@ skip_covered = true
 ignore_errors = true
 precision = 0
 sort = "miss"
-
 exclude_lines = [
     # Pragmas explicitly telling Coverage to skip
     'pragma: no cover', # skip lines marked not to cover
