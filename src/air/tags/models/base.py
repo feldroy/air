@@ -13,7 +13,6 @@ from ..utils import SafeStr, clean_html_attr_key, pretty_format_html, pretty_pri
 
 type AttributesType = str | int | float | bool
 
-
 # Type hint for renderable content
 # Excludes types like None (renders as "None"), bool ("True"/"False"),
 # complex ("(1+2j)"), bytes ("b'...'"), and others that produce
@@ -178,7 +177,7 @@ class BaseTag:
     def from_dict(cls, source_dict: TagDictType) -> Self:
         name, attributes, children_dict = source_dict.values()
         children: tuple[Self, ...] = tuple(cls._from_child_dict(children_dict))
-        tag = cls.registry[name](*children, **attributes)
+        tag = cls.registry[name](*children, **attributes)  # ty: ignore[invalid-argument-type]
         tag._name = name
         return tag
 

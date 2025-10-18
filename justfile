@@ -148,9 +148,9 @@ lint OUTPUT_FORMAT="full":
 
 # Type check the project with Ty and pyrefly
 [group('qa')]
-type-check:
-    just run -- ty check .
-    just run -- pyrefly check .
+type-check TARGET=".":
+    just run -- ty check "{{TARGET}}"
+    just run -- pyrefly check "{{TARGET}}"
 
 # Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
 [group('qa')]

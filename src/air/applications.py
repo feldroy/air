@@ -3,7 +3,7 @@ Instantiating Air applications.
 """
 
 import inspect
-from collections.abc import Callable, Coroutine, Sequence
+from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
 from types import FunctionType
@@ -21,7 +21,6 @@ from starlette.types import Lifespan
 from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
-from .requests import Request
 from .responses import AirResponse
 from .routing import AirRoute
 from .types import MaybeAwaitable
@@ -212,7 +211,7 @@ class Air(FastAPI):
             ),
         ] = None,
         exception_handlers: Annotated[
-            ExceptionHandlersType,
+            ExceptionHandlersType | None,
             Doc(
                 """
                 A dictionary with handlers for exceptions.
@@ -343,14 +342,14 @@ class Air(FastAPI):
         if exception_handlers is None:
             exception_handlers = {}
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
-        super(Air, self).__init__(
+        super().__init__(
             debug=debug,
             routes=routes,
             servers=servers,
             dependencies=dependencies,
             default_response_class=default_response_class,
             middleware=middleware,
-            exception_handlers=exception_handlers,
+            exception_handlers=exception_handlers,  # ty: ignore[invalid-argument-type]
             on_startup=on_startup,
             on_shutdown=on_shutdown,
             lifespan=lifespan,
