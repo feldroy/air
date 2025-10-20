@@ -2,6 +2,45 @@ from typing import Final
 
 from air import *
 
+SMALL_HTML_SAMPLE: Final = Html(
+    Div(
+        Link(
+            rel="stylesheet",
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css",
+        ),
+        Script(
+            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js",
+            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm",
+            crossorigin="anonymous",
+        ),
+        H1("H1", data_cloud=True, data_earth="true"),
+        H2("H1", data_cloud=True, data_earth="true"),
+        P(
+            A("A", data_cloud=True, data_earth="true"),
+            A(SafeStr(":root & > < { --pico-font-size: 100%; }"), id="id1"),
+            SafeStr("safe <> string"),
+            A(":root & > < { --pico-font-size: 100%; }", id="id1"),
+            Img(
+                src="https://cdn.jsdelivr.net/dist/img.png",
+                width=250,
+                height=100,
+                alt="My Img",
+                checked=False,
+                selected=True,
+                bar="foo",
+            ),
+            "<>",
+            Script("safe <> Script", crossorigin="anonymous"),
+        ),
+        class_="class1",
+        id="id1",
+        style="style1",
+        kwarg1="kwarg1",
+        kwarg2="kwarg2",
+        kwarg3="kwarg3",
+    )
+)
+
 HTML_SAMPLE: Final = Html(
     Head(
         Meta(
@@ -63,10 +102,6 @@ HTML_SAMPLE: Final = Html(
         ),
         Script(
             src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/css.min.js",
-        ),
-        Script("marked.setOptions({\n  gfm: true,\n  breaks: true, // Optional: Treat single line breaks as"),
-        A(
-            "highlight: function (code, lang) {\n    // Use highlight.js with a fallback for unknown languages\n    const validLang = hljs.getLanguage(lang) ? lang : 'plaintext';\n    return hljs.highlight(code, { language: validLang }).value;\n  }    \n  });\n\n//   const html = marked.parse(markdown);\n\n// Find all elements with the \"marked\" class and convert content\ndocument.addEventListener('DOMContentLoaded', () => {\n  document.querySelectorAll('.marked').forEach(el => {\n    const markdown = el.textContent;\n    const html = marked.parse(markdown);\n    el.innerHTML = html;\n\n    el.querySelectorAll('pre code').forEach(block => {\n    hljs.highlightElement(block);\n    });    \n  });\n });\n\ndocument.addEventListener(\"htmx:afterSettle\", function(evt) {\n  // console.log(\"Boosted navigation finished!\");\n  document.querySelectorAll('.marked').forEach(el => {\n    const markdown = el.textContent;\n    const html = marked.parse(markdown);\n    el.innerHTML = html;\n\n    el.querySelectorAll('pre code').forEach(block => {\n    hljs.highlightElement(block);\n    });    \n  });                           \n});",
         ),
         Link(href="/public/style.css", rel="stylesheet", type="text/css"),
         Title("Daniel Roy Greenfeld"),

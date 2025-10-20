@@ -347,6 +347,9 @@ ignore = [
     "F403", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star
     "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
 ]
+"examples/**.py" = [
+    "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+]
 
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
