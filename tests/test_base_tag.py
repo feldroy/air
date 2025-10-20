@@ -202,7 +202,7 @@ def test_to_dict_and_to_child_dict_structure() -> None:
     tag = WrapperTag(nested, "plain", title="example")
 
     tag_dict = tag.to_dict()
-    child_list = tag.to_child_dict()
+    child_list = tag._to_child_dict()
 
     assert tag_dict["name"] == "WrapperTag"
     assert tag_dict["attributes"] == {"title": "example"}

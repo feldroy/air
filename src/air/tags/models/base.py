@@ -224,6 +224,7 @@ class BaseTag:
 
         Note:
             HTML5 does not require a trailing slash for void elements.
+            TODO: consider returning f"<{self.name}{self.attrs}>" instead.
         """
         return f"<{self.name}{self.attrs} />"
 
@@ -265,7 +266,7 @@ class BaseTag:
         return f"{self._name}({attributes}{children_str})"
 
     def to_pretty_dict(self) -> str:
-        """Return a human-friendly view of the tag mapping.
+        """Produce a human-friendly mapping view of the tag.
 
         Returns:
             A formatted string produced by the rich pretty printer when available,
@@ -287,10 +288,10 @@ class BaseTag:
         return {
             TagKeys.NAME: self._name,
             TagKeys.ATTRIBUTES: self._attrs,
-            TagKeys.CHILDREN: tuple(self.to_child_dict()),
+            TagKeys.CHILDREN: tuple(self._to_child_dict()),
         }
 
-    def to_child_dict(self) -> list[TagDictType]:
+    def _to_child_dict(self) -> list[TagDictType]:
         """Convert child nodes into serializable objects.
 
         Returns:
