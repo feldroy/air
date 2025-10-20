@@ -96,6 +96,7 @@ examples/.env
 *.bak
 .gemini/settings.json
 .gemini/settings.json.bak
+AGENTS.md
 AGENT.md
 AGENT.md.bak
 GEMINI.md

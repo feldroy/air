@@ -2,7 +2,7 @@
 
 Resources for learning the fundamentals of the Air web framework.
 
-- **[Quickstart](quickstart.md)** - Build and serve a minimal Air app. 
+- **[Quickstart](quickstart.md)** - The TL;DR for getting started with Air, including many fundamental operations necessary for web development.
 
 ## Concepts
 
@@ -13,7 +13,7 @@ Why and how Air works.
 - **[Forms](forms.md)** - How to create and validate forms in Air
 - **[Jinja](jinja.md)** - How to use Jinja templates in Air
 - **[Layouts](layouts.md)** - Tools for building layouts in Air along with two simple layout systems
-- **[SQL](sql.md)** - How to use SQL databases in Air apps
+- **[SQLModel](sqlmodel.md)** - One way to use SQL databases in Air apps (to be moved to an external package soon)
 
 # Cookbook
 

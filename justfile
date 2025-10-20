@@ -93,6 +93,11 @@ run-with-relative-paths +CMD:
 @run +ARGS:
     just run-with-relative-paths uv run -q --extra all --frozen {{ ARGS }}
 
+# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet)
+[group('uv')]
+upgrade-dependencies:
+    uv sync --extra all -U
+
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
@@ -104,6 +109,9 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
     # show an enumeration of all fixed lint violations.
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
+    # Check for spelling and grammar violations and apply fixes
+    just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
+    just run -- codespell --write-changes
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -126,6 +134,9 @@ lint OUTPUT_FORMAT="full":
     just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
     # Check for lint violations
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
+    # Check for spelling and grammar violations
+    just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
+    just run -- codespell
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
@@ -137,9 +148,9 @@ lint OUTPUT_FORMAT="full":
 
 # Type check the project with Ty and pyrefly
 [group('qa')]
-type-check:
-    just run -- ty check .
-    just run -- pyrefly check .
+type-check TARGET=".":
+    just run -- ty check "{{TARGET}}"
+    just run -- pyrefly check "{{TARGET}}"
 
 # Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
 [group('qa')]

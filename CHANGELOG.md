@@ -1,11 +1,33 @@
 ### Latest Changes
 
+# 0.37.0 - 2025-10-16
+
+## What's Changed
+* BOOK: The Air Book by @audreyfeldroy in https://github.com/feldroy/air/pull/504
+* BUG: Constrain renderers to only stringify items inheriting from BaseTag by @bluerosej  and @pydanny in https://github.com/feldroy/air/pull/561
+* DOCS: book example uses the wrong library #576 by @MrValdez in https://github.com/feldroy/air/pull/577
+* docs(tags): add docstring Args for S to Small by @vanessapigwin in https://github.com/feldroy/air/pull/558
+* Integrate spelling and grammar checkers (`codespell` and `typos`) for the entire project! by @tallerasaf in https://github.com/feldroy/air/pull/548
+* Fix link to air tags by @pydanny in https://github.com/feldroy/air/pull/567
+* docs: add Args for Source to Sup tags by @vanessapigwin in https://github.com/feldroy/air/pull/568
+* chore(deps): update astral-sh/setup-uv digest to 3259c62 by @renovate[bot] in https://github.com/feldroy/air/pull/562
+* Finish moving ext.sql to ext.sqlmodel by @pydanny in https://github.com/feldroy/air/pull/560
+* Quickstart: SSE plus file in `/examples` by @pydanny in https://github.com/feldroy/air/pull/572
+* Address doclink warnings by @pydanny in https://github.com/feldroy/air/pull/573
+* Configure project for mkdocs-llmstxt by @pydanny in https://github.com/feldroy/air/pull/574
+
+## New Contributors
+* @bluerosej made their first contribution in https://github.com/feldroy/air/pull/561
+* @MrValdez made their first contribution in https://github.com/feldroy/air/pull/577
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.36.0...v0.37.0
+
 # 0.36.0 - 2025-10-10
 
 ## What's Changed
 * Implement .htmx object on air.Request by @pydanny in https://github.com/feldroy/air/pull/524
 * Drop Python 3.12 support! by @tallerasaf in https://github.com/feldroy/air/pull/538
-* Add forms quickstart by @pydanny in https://github.com/feldroy/air/pull/536 abd https://github.com/feldroy/air/pull/539
+* Add forms quickstart by @pydanny in https://github.com/feldroy/air/pull/536 and https://github.com/feldroy/air/pull/539
 * Restore llms.txt for LLM-friendly documentation by @intellectronica in https://github.com/feldroy/air/pull/552
 * fixed broken cookbook docs link by @alaminopu in https://github.com/feldroy/air/pull/553
 * Temporary just tdd fix for Python 3.14 by @tallerasaf in https://github.com/feldroy/air/pull/555
@@ -262,7 +284,7 @@
 
 ## What's Changed
 * TOOL: PyRefly by @tallerasaf in https://github.com/feldroy/air/pull/318
-* BUG: Performance optimisations by @pydanny in https://github.com/feldroy/air/pull/342
+* BUG: Performance optimizations by @pydanny in https://github.com/feldroy/air/pull/342
 * BUG: Add missing autofocus option to AirField by @pydanny in https://github.com/feldroy/air/pull/324
 * ⬆(deps): bump ty from 0.0.1a18 to 0.0.1a19 by @dependabot[bot] in https://github.com/feldroy/air/pull/323
 * ⬆(deps): bump rust-just from 1.42.3 to 1.42.4 by @dependabot[bot] in https://github.com/feldroy/air/pull/331
@@ -524,7 +546,7 @@ We did get in one feature to Air itself:
 * Added `html_to_airtags` function, converts HTML to Air Tags by @pydanny in https://github.com/feldroy/air/pull/125
 
 
-## Documentaton improvements
+## Documentation improvements
 * Reorder member order in object docs by @pydanny in https://github.com/feldroy/air/pull/116
 * Documentation on how to escape HTML by @pydanny in https://github.com/feldroy/air/pull/108
 * Update project description in README and pyproject.toml by @audreyfeldroy in https://github.com/feldroy/air/pull/118

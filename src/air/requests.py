@@ -70,7 +70,7 @@ class HtmxDetails:
     trigger_name: str | None = field(init=False)
     """The name of the triggered element if it exists, or `None`. Based on the `HX-Trigger-Name` header."""
 
-    # TODO this requires an HTMX extention, evaluate if it makes sense to use it
+    # TODO this requires an HTMX extension, evaluate if it makes sense to use it
     triggering_event: Any = field(init=False)
 
     def __post_init__(self) -> None:

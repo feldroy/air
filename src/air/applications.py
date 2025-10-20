@@ -4,7 +4,7 @@ Instantiating Air applications.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Coroutine, Sequence
+from collections.abc import Callable, Sequence
 from types import FunctionType
 from typing import Annotated, Any, Literal
 from warnings import deprecated
@@ -19,8 +19,7 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc
 
-from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS
-from .requests import Request
+from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
 from .routing import AirRouter
 
@@ -40,7 +39,7 @@ class Air(FastAPI):
         on_shutdown: A list of shutdown event handler functions.
         lifespan: A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
-        path_separator: An optional path seperator, default to "-". valid option available ["/", "-"]
+        path_separator: An optional path separator, default to "-". valid option available ["/", "-"]
     Example:
 
         import air
@@ -470,7 +469,7 @@ class Air(FastAPI):
             ),
         ] = None,
         exception_handlers: Annotated[
-            dict[int | type[Exception], Callable[[Request, Any], Coroutine[Any, Any, Response]]] | None,
+            ExceptionHandlersType | None,
             Doc(
                 """
                 A dictionary with handlers for exceptions.

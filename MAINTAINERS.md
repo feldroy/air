@@ -32,3 +32,8 @@ Finally, create a new release on GitHub:
 * Copy in whatever notes you have from the `CHANGELOG.md` file
 * Revise the notes as needed
 * Click "Publish release"
+
+## Categorizing Features
+
+In the `Features: Categories` section of CONTRIBUTING.md there are four categories, each should be assigned to feature issues and pull requests.
+

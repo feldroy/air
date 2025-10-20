@@ -2,11 +2,14 @@
 
 Pro-tip: Always validate incoming data."""
 
+import re
 from collections.abc import Callable, Sequence
 from types import UnionType
-from typing import Any, Self, Union, get_args, get_origin
+from typing import Any, Literal, Self, Union, get_args, get_origin
 
-from pydantic import BaseModel, Field, ValidationError
+import annotated_types
+from pydantic import AliasChoices, AliasPath, BaseModel, Discriminator, Field, JsonValue, ValidationError
+from pydantic.fields import Deprecated, FieldInfo
 from pydantic_core import ErrorDetails, PydanticUndefined
 from starlette.datastructures import FormData
 
@@ -226,33 +229,45 @@ def default_form_widget(
 def AirField(
     default: Any = PydanticUndefined,
     *,
-    type: str | None = None,
-    label: str | None = None,
     default_factory: Callable[[], Any] | Callable[[dict[str, Any]], Any] | None = None,
     alias: str | None = None,
-    autofocus: bool = False,
+    alias_priority: int | None = None,
+    validation_alias: str | AliasPath | AliasChoices | None = None,
+    serialization_alias: str | None = None,
     title: str | None = None,
+    field_title_generator: Callable[[str, FieldInfo], str] | None = None,
     description: str | None = None,
-    gt: float | None = None,
-    ge: float | None = None,
-    lt: float | None = None,
-    le: float | None = None,
-    multiple_of: float | None = None,
-    min_length: int | None = None,
-    max_length: int | None = None,
-    pattern: str | None = None,
-    max_digits: int | None = None,
-    decimal_places: int | None = None,
     examples: list[Any] | None = None,
-    deprecated: bool | str | None = None,
-    exclude: bool = False,
-    discriminator: str | None = None,
+    exclude: bool | None = None,
+    exclude_if: Callable[[Any], bool] | None = None,
+    discriminator: str | Discriminator | None = None,
+    deprecated: Deprecated | str | bool | None = None,
+    json_schema_extra: dict[str, JsonValue] | None = None,
     frozen: bool | None = None,
     validate_default: bool | None = None,
-    repr: bool = True,
+    repr: bool | None = None,
+    init: bool | None = None,
     init_var: bool | None = None,
     kw_only: bool | None = None,
-    json_schema_extra: dict | None = None,
+    pattern: str | re.Pattern[str] | None = None,
+    strict: bool | None = None,
+    coerce_numbers_to_str: bool | None = None,
+    gt: annotated_types.SupportsGt | None = None,
+    ge: annotated_types.SupportsGe | None = None,
+    lt: annotated_types.SupportsLt | None = None,
+    le: annotated_types.SupportsLe | None = None,
+    multiple_of: float | None = None,
+    allow_inf_nan: bool | None = None,
+    max_digits: int | None = None,
+    decimal_places: int | None = None,
+    min_length: int | None = None,
+    max_length: int | None = None,
+    union_mode: Literal["smart", "left_to_right"] | None = None,
+    fail_fast: bool | None = None,
+    # Not in pydantic.Field:
+    type: str | None = None,
+    label: str | None = None,
+    autofocus: bool = False,
     **extra: Any,
 ) -> Any:
     """A wrapper around pydantic.Field to provide a cleaner interface for defining
@@ -283,7 +298,7 @@ def AirField(
                 return air.Html(air.H1(cheese.data.name))
             return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
     """
-    schema_extra: dict[str, Any] = dict(json_schema_extra or {})
+    schema_extra: dict[str, JsonValue] = json_schema_extra or {}
     if type:
         schema_extra[type] = True
     if label:
@@ -293,35 +308,42 @@ def AirField(
     if extra:
         schema_extra.update(extra)
 
-    kwargs: dict[str, Any] = {
-        "json_schema_extra": schema_extra,
-        "alias": alias,
-        "title": title,
-        "description": description,
-        "gt": gt,
-        "ge": ge,
-        "lt": lt,
-        "le": le,
-        "multiple_of": multiple_of,
-        "min_length": min_length,
-        "max_length": max_length,
-        "pattern": pattern,
-        "max_digits": max_digits,
-        "decimal_places": decimal_places,
-        "examples": examples,
-        "deprecated": deprecated,
-        "exclude": exclude,
-        "discriminator": discriminator,
-        "frozen": frozen,
-        "validate_default": validate_default,
-        "repr": repr,
-        "init_var": init_var,
-        "kw_only": kw_only,
-    }
-    if default_factory is not None:
-        kwargs["default_factory"] = default_factory
-
-    # Call the correct Field overload
-    if default is PydanticUndefined:
-        return Field(**kwargs)
-    return Field(default, **kwargs)
+    # noinspection PyArgumentList
+    return Field(
+        default,
+        default_factory=default_factory,
+        alias=alias,
+        alias_priority=alias_priority,
+        validation_alias=validation_alias,
+        serialization_alias=serialization_alias,
+        title=title,
+        field_title_generator=field_title_generator,
+        description=description,
+        examples=examples,
+        exclude=exclude,
+        exclude_if=exclude_if,
+        discriminator=discriminator,
+        deprecated=deprecated,
+        json_schema_extra=schema_extra,
+        frozen=frozen,
+        validate_default=validate_default,
+        repr=repr,
+        init=init,
+        init_var=init_var,
+        kw_only=kw_only,
+        pattern=pattern,
+        strict=strict,
+        coerce_numbers_to_str=coerce_numbers_to_str,
+        gt=gt,
+        ge=ge,
+        lt=lt,
+        le=le,
+        multiple_of=multiple_of,
+        allow_inf_nan=allow_inf_nan,
+        max_digits=max_digits,
+        decimal_places=decimal_places,
+        min_length=min_length,
+        max_length=max_length,
+        union_mode=union_mode,
+        fail_fast=fail_fast,
+    )  # ty: ignore[no-matching-overload]

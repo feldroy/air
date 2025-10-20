@@ -183,7 +183,7 @@ Try it out by going to <http://localhost:8000/users/?username=Aang>
 
 ## Air Tags
 
-[Air Tags](learn/air_tags) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
+[Air Tags](../learn/air_tags.md) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
 
 
 ### JavaScript Files
@@ -260,6 +260,100 @@ def index():
         )
     )
 ```
+
+## Jinja
+
+In addition to Air Tags, Air supports Jinja natively. In addition to being great at delivering HTML content, Jinja can be used to render all kinds of content.
+
+Here's a simple Jinja template:
+
+```html+jinja title="templates/base.html"
+<!doctype html>
+<html>
+    <body>
+        <main class="container">
+          <h1>{{title}}</h1>
+          <p>{{message}}</p>
+        </main>
+    </body>
+</html>
+```
+
+And here's the view that calls it:
+
+
+```python title="main.py"  hl_lines="6 10 14 16"
+import air
+
+app = air.Air()
+
+# Set the Jinja render function
+jinja = air.JinjaRenderer(directory="templates") #(1)!
+
+@app.page
+def index(request: air.Request):
+    return jinja( #(2)!
+        request,
+        name="base.html",
+        # You can pass in individual keyword arguments
+        title="Hello, Air Benders", #(3)!
+        # Or a dict for the context
+        context={"message": "Air + Jinja is awesome"} #(4)!
+    )
+```
+
+1. This sets up the Jinja environment for calling and rendering of templates.
+2. Air automatically handles turning the `jinja` response into an HTML response.
+3. Individual keyword arguments for values can be passed, these are added to the Jinja template's context dictionary.
+4. This is the standard Jinja context dictionary, which is added to each template.
+
+### Jinja + Air Tags
+
+It is very easy to include Air Tags in Jinja. Let's first create our template:
+
+```jinja title="templates/avatar.html"  hl_lines="6"
+<!doctype html>
+<html>
+    <body>
+        <main class="container">
+          <h1>{{title}}</h1>
+          {{fragment|safe}} {# (1)! #}
+        </main>
+    </body>
+</html>
+```
+
+1. The `safe` filter is necessary for using Air Tags in Jinja. This has security implications, so be careful what content you allow.
+
+And here is our Python code describing the view:
+
+```python title="main.py"  hl_lines="13-16"
+import air
+
+app = air.Air()
+
+jinja = air.JinjaRenderer(directory="templates")
+
+@app.get("/avatar")
+def avatar(request: air.Request):
+    return jinja(
+        request,
+        name="avatar.html",
+        title="Hello, Air Benders",
+        fragment=air.Div(
+            air.P("We are fans of the Last Avatar"),
+            class_="thing"
+        ) #(1)!
+    )
+```
+
+1. We can pass Air Tags into the context of a Jinja template.
+
+!!! tip
+
+    Where Jinja + Air Tags truly come alive is when the base templates for a project are in Jinja. For some people this makes styling pages a bit easier. Then content, especially HTMX swaps and other fragments are rendered via Air Tags. This keeps the developer in Python, which means less context switching while working on challenges.
+
+
 
 ## Forms
 
@@ -379,20 +473,69 @@ async def handle_form(request: air.Request):
 6. The `.is_valid` property of an AirForm is powered by pydantic. It returns a `bool` that can be used to control logic of what to do with form successes or failures.
 7. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
 
+## Server-Sent Events
+
+Part of the HTTP specification, Server-Sent Events (SSE) allow the server to push things to the user. Air makes SSE easy to implement and maintain. Here's an example of using it to generate random lottery numbers every second. 
+
+```python hl_lines="11 16 17 18 19 23 27 33"
+import random
+from asyncio import sleep
+
+import air
+
+app = air.Air()
+
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.Script(src="https://unpkg.com/htmx-ext-sse@2.2.1/sse.js"), #(1)!
+        air.Title("Server Sent Event Demo"),
+        air.H1("Server Sent Event Demo"),
+        air.P("Lottery number generator"),
+        air.Section(
+            hx_ext="sse",  #(2)!
+            sse_connect="/lottery-numbers", #(3)!
+            hx_swap="beforeend show:bottom", #(4)!
+            sse_swap="message", #(5)!
+        ),
+    )
+
+async def lottery_generator():  #(6)!
+    while True:
+        lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
+        # Tags work seamlessly
+        yield air.Aside(lottery_numbers) #(7)!
+        await sleep(1)
+
+
+@app.page
+async def lottery_numbers():
+    return air.SSEResponse(lottery_generator())  #(8)!
+```
+
+1. To use SSE, the source for the HTMX plugin for them has to be included in the page.
+2. The `hx_ext` attribute is used to initialize the SSE plugin.
+3. `sse_connect` is the endpoint where the SSE pushes from.
+4. `hx_swap` tells HTMX how to swap or place elements. In this case, it says to place the incoming HTML underneath all the other content in this section. The move the focus of the page to that location.
+5. The `sse_swap` attribute informs HTMX that we only want to receive SSE events of the `message` type. This is a common response and shouldn't be changed unless you have a good reason.
+6. The `air.SSEResponse` needs a generator function or generator expression. Our example just generates random numbers, but people use similar functions to query databases and fetch data from APIs. Of note is that in our example instead of using `return` statements we use `yield` statements to ensure control is not lost.
+7. Air Tags work great, but any type of data can be passed back.
+8. Air does all  heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!
+
 
 ## Want to learn more?
 
 Check out these documentation sections:
 
-- [Learn](/learn)
-- [API Reference](/api)
+- [Learn](../learn/index.md)
+- [API Reference](../api/index.md)
 
 ## Future Segments
 
 What we plan to include in the Quick Start:
 
-- [ ] Jinja
-    - [ ] The Jinja + Air Tags pattern the core devs love to use
+- [x] Jinja
+    - [x] The Jinja + Air Tags pattern the core devs love to use
 - [x] Forms: 
     - [x] Using Pydantic-powered AirForms for validation of incoming data
     - [ ] `HTTP GET` forms, like those used in search forms
@@ -405,4 +548,4 @@ What we plan to include in the Quick Start:
 - [ ] Sessions
 - [ ] Cookies
 - [ ] Large File downloads
-- [ ] Server Sent Events
+- [x] Server Sent Events

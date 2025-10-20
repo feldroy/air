@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.36.0"
+version = "0.37.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -35,10 +35,10 @@ classifiers = [
 ]
 
 dependencies = [
-    "fastapi>=0.116.1",
+    # fastapi==0.119.0: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+    "fastapi==0.118.3",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
-    "pydantic>=2.12.0b1",
     "python-multipart>=0.0.20",
 ]
 # endregion project
@@ -58,7 +58,7 @@ pretty = [
     "rich>=12.6.0",
 ]
 # Used for interacting with sqlmodel and sqlalchemy
-sql = [
+sqlmodel = [
     "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
 ]
@@ -94,10 +94,12 @@ devtools = [
     "typer>=0.19.1" # For running of scripts
 ]
 lint = [
+    "codespell>=2.4.1",
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
     "types-Markdown>=3.8.0", # Types for the markdown library
+    "typos>=1.38.1",
 ]
 test = [
     "aiosqlite>=0.21.0",
@@ -189,55 +191,11 @@ conflicts = [
 # In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
 # uv uses your checked-out code.
 air = { workspace = true }
-
-# -------- uv build backend (fast and strict) --------
-# ======================================================================
-# Why this build-backend section exists (the big picture for newcomers)
-#
-# Short version:
-# For a library, installing the library itself into the virtual environment
-# (not just its dependencies) is how modern Python packaging is meant to work.
-# Many features only “exist” after install because they’re defined by packaging
-# standards, not by simply having files on disk.
-#
-# Official Python basis:
-# • PEP 517/518 build systems: Projects declare a build backend in pyproject.toml.
-#   Front-ends (meaning: installers like pip/uv) build+install through that backend.
-#   That produces an installed distribution,
-#   with metadata (meaning: version, entry points, requirements).
-# • PEP 660 editable installs: In development, you install *editable* so code
-#   changes take effect without reinstalling, still producing a proper installed
-#   distribution with .dist-info.
-# • Entry points & console scripts: Commands and plugin hooks are created at
-#   *install time* from entry points. Without install, the commands/hooks do not exist.
-# • Distribution metadata: Tools read version and entry points via importlib.metadata
-#   from the installed .dist-info. No install → nothing to read.
-# • src/ layout: With “src/”, tests and tools should import the *installed* package
-#   (editable), not in-tree files. This matches how users import from PyPI.
-#
-# uv’s behavior:
-# • Package vs “virtual” project: Packages are installed into the venv (editable by
-#   default) and therefore need a build backend. “Virtual” projects only install deps.
-# • Auto-sync: `uv run` checks the lockfile/env before every run and, for packages,
-#   ensures your library is installed so commands run against the installed distribution.
-# • Editable by default: uv installs your project editable unless you pass --no-editable.
-# • No [build-system]? By default uv won’t install your project (only deps). You can
-#   force install with `tool.uv.package = true` (uv falls back to a legacy backend),
-#   but declaring a proper backend is the recommended path.
-#
-# Real-world effects you will notice:
-# 1) CLI commands appear only after install (via entry points), e.g. `air` on PATH.
-# 2) pytest/flake8 plugins are discovered only when installed (via entry points).
-# 3) `importlib.metadata.version("air")` works only for an installed distribution.
-# 4) src/ layout behaves correctly (imports mirror what end users get from PyPI).
-#
-# Takeaway:
-# For a Python 3.13+ library, an editable install is the spec-aligned (meaning:
-# follows the standard) workflow. It enables scripts, plugins, metadata, compiled
-# code, and correct src/ behavior. uv follows these standards and installs your
-# package by default so everything “just works”.
-# ======================================================================
+# -------- uv build backend --------
 # PEP 517/518: tells installers (pip/uv) how to build/install this project.
+# For Python libraries, an editable install is the standard:
+# it enables scripts, plugins, metadata, compiled code, and proper src/ behavior.
+# uv follows these standards and installs your package by default, ensuring everything “just works.”
 [build-system]
 # Ensure the chosen backend is present. A version range keeps CI reproducible
 # (meaning: stable over time) while allowing safe updates.
@@ -454,23 +412,25 @@ python-platform = "all"
 
 [tool.ty.terminal]
 # Fail the run on any warning.
-error-on-warning = false
+error-on-warning = true
 # Verbose output; switch to "concise" when you want minimal output.
 output-format = "full"
 
 # Promote every non-error rule to error (strict).
 [tool.ty.rules]
 # Defaults = warn:
+ambiguous-protocol-member = "error"      # https://docs.astral.sh/ty/reference/rules/#ambiguous-protocol-member
 deprecated = "error"                     # https://docs.astral.sh/ty/reference/rules/#deprecated
 invalid-ignore-comment = "error"         # https://docs.astral.sh/ty/reference/rules/#invalid-ignore-comment
-possibly-unbound-attribute = "error"     # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-attribute
-possibly-unbound-implicit-call = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-implicit-call
-possibly-unbound-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-unbound-import
+possibly-missing-attribute = "error"     # https://docs.astral.sh/ty/reference/rules/#possibly-missing-attribute
+possibly-missing-implicit-call = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-missing-implicit-call
+possibly-missing-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-missing-import
 redundant-cast = "error"                 # https://docs.astral.sh/ty/reference/rules/#redundant-cast
 undefined-reveal = "error"               # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
 unknown-rule = "error"                   # https://docs.astral.sh/ty/reference/rules/#unknown-rule
 unresolved-global = "error"              # https://docs.astral.sh/ty/reference/rules/#unresolved-global
 unsupported-base = "error"               # https://docs.astral.sh/ty/reference/rules/#unsupported-base
+useless-overload-body = "error"          # https://docs.astral.sh/ty/reference/rules/#useless-overload-body
 # Defaults = ignore:
 division-by-zero = "error"               # https://docs.astral.sh/ty/reference/rules/#division-by-zero
 possibly-unresolved-reference = "error"  # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
@@ -480,12 +440,13 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 [[tool.ty.overrides]]
 include = ["tests/**", "**/test_*.py", "**/*_test.py"]
 [tool.ty.overrides.rules]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 unresolved-import = "ignore"
 possibly-unresolved-reference = "ignore"
 invalid-argument-type = "ignore"
 too-many-positional-arguments = "ignore"
 unresolved-attribute = "ignore"
+possibly-missing-attribute = "ignore"
 # endregion ty
 
 # region ----> pyrefly <----
@@ -510,7 +471,7 @@ permissive-ignores = true
 # which means the error will be shown. Setting <error-code> = false,
 # will disable the error for type checking.
 [tool.pyrefly.errors]
-# TODO -> Remove all error code bellow
+# TODO -> Remove all error code below
 bad-override = false
 no-matching-overload = false
 not-callable = false
@@ -577,39 +538,50 @@ ignore_errors = true
 precision = 0
 sort = "miss"
 exclude_lines = [
-    # --- standard/noise you already had ---
-    "pragma: no cover",
-    "pragma: lax no cover",
-    "^\\s*raise\\s+NotImplementedError",
-    "^\\s*if\\s+TYPE_CHECKING\\s*:",
-    "^\\s*if\\s+typing\\.TYPE_CHECKING\\s*:",
-    # --- imports anywhere ---
-    "^\\s*import\\s+",
-    "^\\s*from\\s+\\S+\\s+import\\s+",
-    # --- typing / decorators / protocols ---
-    "^\\s*from\\s+__future__\\s+import\\s+annotations\\s*$",
-    "@overload",
-    "@typing\\.overload",
-    "@abstractmethod",
-    "@deprecated",
-    "\\(Protocol\\):$",
-    # --- typing helpers and assertions ---
-    "^\\s*typing\\.cast\\(",
-    "^\\s*reveal_type\\(",
-    "^\\s*assert_never\\(",
-    "typing\\.assert_never",
-    "^\\s*[A-Za-z_][A-Za-z0-9_]*\\s*:\\s*[^=]+$", # pure variable annotations (no assignment)
+    # Pragmas explicitly telling Coverage to skip
+    'pragma: no cover', # skip lines marked not to cover
+    'pragma: lax no cover', # skip lines marked lax not to cover
 
-    # --- common non-runtime blocks / noise ---
-    "^if __name__ == ['\\\"]__main__['\\\"]:",
-    "^\\s*except\\s+ImportError\\s+as\\s+_import_error\\s*:",
-    "^\\s*pass$",
-    "^\\s*assert\\s+False\\b",
-    # --- ellipsis placeholders ---
-    "^\\s*\\.\\.\\.\\s*(#.*)?$", # line that is just "..."
-    "^\\s*return\\s+\\.\\.\\.\\s*(#.*)?$", # return ...
-    "^\\s*[A-Za-z_][A-Za-z0-9_]*\\s*:\\s*[^=]+=\\s*\\.\\.\\.\\s*$", # x: T = ...
-    "^\\s*(?:async\\s+)?def\\s+\\w+\\s*\\(.*\\)\\s*(?:->[^:]+)?\\s*:\\s*\\.\\.\\.$", # def func(...) -> Type: ...
+    # TYPE_CHECKING guards
+    '^\s*if\s+TYPE_CHECKING\s*:', # runtime-false typing gate
+    '^\s*if\s+typing\.TYPE_CHECKING\s*:', # runtime-false typing gate (qualified)
+
+    # Imports (declarations, not behavior)
+    '^\s*import\s+', # bare import lines
+    '^\s*from\s+\S+\s+import\s+', # from-import lines
+
+    # Typing/decorators/protocol markers
+    '^\s*from\s+__future__\s+import\s+annotations\s*$', # future annotations import
+    '@overload', # typing overload stub
+    '@typing\.overload', # typing overload stub (qualified)
+    '@abstractmethod', # abstract method decorator
+    '@deprecated', # deprecated decorator marker
+    '\(Protocol\):$', # Protocol base class line
+
+    # Typing helpers and asserts
+    '^\s*typing\.cast\(', # typing cast helper
+    '^\s*reveal_type\(', # static type reveal helper
+    '^\s*assert_never\(', # assert_never helper
+    'typing\.assert_never', # qualified assert_never
+    '^\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*[^=]+$', # pure annotation (no assignment)
+
+    # Main guards
+    "^if __name__ == '__main__':", # entrypoint guard (single quotes)
+    '^if __name__ == "__main__":', # entrypoint guard (double quotes)
+
+    # Intentional stub exceptions
+    '^\s*raise\s+NotImplementedError', # explicit unimplemented stub
+
+    # Common non-runtime noise
+    '^\s*except\s+ImportError\s+as\s+_import_error\s*:', # optional import shim branch
+    '^\s*pass$', # no-op pass
+    '^\s*assert\s+False\b', # hard stop assertion
+
+    # Ellipsis placeholders
+    '^\s*\.\.\.\s*(#.*)?$', # bare ellipsis
+    '^\s*return\s+\.\.\.\s*(#.*)?$', # return ellipsis
+    '^\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*[^=]+=\s*\.\.\.\s*$', # annotated ellipsis assignment
+    '^\s*(?:async\s+)?def\s+\w+\s*\(.*\)\s*(?:->[^:]+)?\s*:\s*\.\.\.$'  # function body ellipsis
 ]
 
 [tool.coverage.html]
@@ -622,3 +594,60 @@ output = "coverage.xml" # default “coverage.xml”
 [tool.coverage.paths]
 source = ["src"]
 # endregion pytest
+
+# region ----> spell checker <----
+[tool.codespell]
+# Fail loud: print everything
+quiet-level = 0
+count = false
+summary = false
+interactive = 0
+enable-colors = true
+# Check more things
+check-filenames = true
+check-hidden = true
+hard-encoding-detection = true
+# Use extra built-in dictionaries for stricter wording
+builtin = 'clear,rare,usage,informal,names,code'
+# Avoid noisy or binary paths, but keep the set lean so we still catch issues
+skip = '''
+.idea,.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
+coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
+*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage,.cov_html,.benchmarks
+'''
+# Ignore typos inside URLs/emails to avoid breaking links
+uri-ignore-words-list = '*'
+# Your project-specific words (file: one word per line)
+ignore-words = '.codespellignore'
+# Ignore Markdown bolding forms like **L**anguage
+ignore-regex = '\*\*[A-Z]\*\*[a-z]+\b'
+# Skip fenced code blocks in Markdown (reduces false positives)
+ignore-multiline-regex = '```.*?```'
+
+[tool.typos]
+# Strict, safe config for English repositories
+[tool.typos.files]
+ignore-hidden = false                # check dotfiles too
+ignore-files = true                  # respect .gitignore etc.
+ignore-dot = true                    # respect .ignore
+ignore-vcs = true                    # skip .git/
+ignore-global = true                 # respect global ignores
+ignore-parent = true                 # respect parent ignores
+extend-exclude = [
+    ".git", ".svn", ".hg",
+    ".tox", ".venv", "venv",
+    "node_modules", "dist", "build", "target", "out",
+    ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",
+    "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.ico", "*.svg",
+    "*.pdf", "*.zip", "*.gz", "*.tgz", "*.bz2", "*.xz", "*.7z",
+    "*.min.js", "*.min.css", "*.map", "*.lock", "*.pyc"
+]
+
+[tool.typos.default]
+binary = false
+check-filename = true
+check-file = true
+unicode = true
+locale = "en-us"
+
+# endregion spell checker
