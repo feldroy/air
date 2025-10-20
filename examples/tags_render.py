@@ -61,9 +61,9 @@ if __name__ == "__main__":
     # Serialize the tag to a prettified JSON string.
     if False:
         print(SMALL_HTML_SAMPLE.to_pretty_json())
-    # Reconstruct a tag from serialized dict.
+    # Reconstruct a tag from a serialized dict.
     if False:
         print(repr(SMALL_HTML_SAMPLE.from_dict(SMALL_HTML_SAMPLE.to_dict())))
-    # Reconstruct a tag from serialized JSON string.
+    # Reconstruct a tag from a serialized JSON string.
     if False:
         print(repr(SMALL_HTML_SAMPLE.from_json(SMALL_HTML_SAMPLE.to_json())))

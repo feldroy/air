@@ -11,7 +11,8 @@ from typing import Any, cast
 import pytest
 
 import air.tags.utils as utils
-from air.tags.utils import BrowserOpenError, SafeStr
+from air.exceptions import BrowserOpenError
+from air.tags.utils import SafeStr
 
 
 @pytest.fixture

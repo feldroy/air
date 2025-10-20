@@ -12,6 +12,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final
 from urllib.error import URLError
 
+from air.exceptions import BrowserOpenError
+
 type StrPath = PathLike | Path | str
 
 if TYPE_CHECKING:
@@ -29,10 +31,6 @@ PANEL_BORDER_STYLE: Final = "bright_magenta"
 SYNTAX_LEXER: Final = "html"
 DATA_URL_MAX: Final[int] = 32_000
 BLOB_URL_PRESET = "data:text/html;charset=utf-8;base64,"
-
-
-class BrowserOpenError(RuntimeError):
-    """Opening the browser failed for a valid file:// URL."""
 
 
 def clean_html_attr_key(key: str) -> str:

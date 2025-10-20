@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from fastapi.exceptions import HTTPException as FASTAPIHTTPException
 
 
@@ -10,8 +12,12 @@ class BaseAirException(Exception):
 
 
 class RenderException(BaseAirException):
-    """Error thrown when render function fails."""
+    """Error thrown when a render function fails."""
 
 
 class ObjectDoesNotExist(HTTPException):
     """Thrown when a record in a persistence store can't be found."""
+
+
+class BrowserOpenError(RuntimeError):
+    """Opening the browser failed."""
