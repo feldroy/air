@@ -817,7 +817,7 @@ class Air(FastAPI):
                 """
             ),
         ] = None,
-        path_separator: Annotated[Literal["/", "-"], Doc("An optional path seperator.")] = "-",
+        path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
         **extra: Annotated[
             Any,
             Doc(
