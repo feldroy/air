@@ -27,3 +27,7 @@ Our primary location for chat is our [Discord chat server](https://discord.gg/zn
 For non-code GitHub issues, we'll ask those to be moved to the Discord chat server.
 
 See you there!
+
+## Sponsor the project
+
+Air is an open-source project that is free to use. We are constantly working to improve it. If you want to support the project financially, you can do so via <a href="https://github.com/sponsors/feldroy" target="_blank">our GitHub Sponsors page</a>.
