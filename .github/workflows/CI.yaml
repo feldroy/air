@@ -1,11 +1,11 @@
-# .github/workflows/python-package.yml
+# .github/workflows/CI.yml
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # CI using uv + just, with minimal/noise-free logs:
 # - Colors forced inside a tiny wrapper script (not via step `env:`), so they don’t appear in the log header.
 # - No echo/group commands shown.
 # - Shared bootstrap steps are DRY via YAML anchors.
 
-name: Python Package - CI
+name: CI
 
 on:
   push:
@@ -70,6 +70,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         python-version: [ "3.13", "3.14" ]
+        resolution-strategy: [ "highest", "lowest" ]
     name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }} (via just, uv, pytest, pytest-pretty)
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
@@ -80,6 +81,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Run all the tests
+        env:
+          UV_RESOLUTION: ${{ matrix.resolution-strategy }}
         run: just test
   coverage-xml:
     if: github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]'

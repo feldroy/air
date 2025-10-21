@@ -167,6 +167,11 @@ type-annotate TARGET="src":
 [group('qa')]
 qa: format type-check
 
+# Run all the formatting, linting, type checking and tests for local development.
+[group('qa')]
+[group('test')]
+qa-plus: qa test
+
 # Visualize Ruff analyze graph as JSON (uses rich for display)
 [group('qa')]
 @ruff-graph: (title "Ruff - Graph")
@@ -179,6 +184,11 @@ qa: format type-check
 [group('test')]
 test:
     just run -- pytest
+
+# Run all the tests for the lowest compatible version of each package.
+[group('test')]
+test-lowest-resolution:
+    just run --resolution=lowest -- pytest
 
 # Run all the tests on a specified Python version
 [group('test')]

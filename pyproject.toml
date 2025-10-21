@@ -49,7 +49,7 @@ dependencies = [
 # so *users* can do: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
-    "fastapi[standard]>=0.116.1",
+    "fastapi[standard]>=0.119.1",
 ]
 # Add a "pretty" extra for tree-formatted HTML support
 pretty = [
@@ -482,8 +482,9 @@ bad-argument-type = false
 bad-return = false
 not-iterable = false
 bad-unpacking = false
-index-error = false
-import-error = false
+bad-index = false
+missing-import = false
+implicit-import = false
 bad-argument-count = false
 bad-param-name-override = false
 missing-attribute = false
@@ -540,46 +541,38 @@ ignore_errors = true
 precision = 0
 sort = "miss"
 exclude_lines = [
-    # Pragmas explicitly telling Coverage to skip
+    # Pragmas explicitly telling Coverage to skip:
     'pragma: no cover', # skip lines marked not to cover
     'pragma: lax no cover', # skip lines marked lax not to cover
-
-    # TYPE_CHECKING guards
+    # TYPE_CHECKING guards:
     '^\s*if\s+TYPE_CHECKING\s*:', # runtime-false typing gate
     '^\s*if\s+typing\.TYPE_CHECKING\s*:', # runtime-false typing gate (qualified)
-
-    # Imports (declarations, not behavior)
+    # Imports (declarations, not behavior):
     '^\s*import\s+', # bare import lines
     '^\s*from\s+\S+\s+import\s+', # from-import lines
-
-    # Typing/decorators/protocol markers
+    # Typing/decorators/protocol markers:
     '^\s*from\s+__future__\s+import\s+annotations\s*$', # future annotations import
     '@overload', # typing overload stub
     '@typing\.overload', # typing overload stub (qualified)
     '@abstractmethod', # abstract method decorator
     '@deprecated', # deprecated decorator marker
     '\(Protocol\):$', # Protocol base class line
-
-    # Typing helpers and asserts
+    # Typing helpers and asserts:
     '^\s*typing\.cast\(', # typing cast helper
     '^\s*reveal_type\(', # static type reveal helper
     '^\s*assert_never\(', # assert_never helper
     'typing\.assert_never', # qualified assert_never
     '^\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*[^=]+$', # pure annotation (no assignment)
-
-    # Main guards
+    # Main guards:
     "^if __name__ == '__main__':", # entrypoint guard (single quotes)
     '^if __name__ == "__main__":', # entrypoint guard (double quotes)
-
-    # Intentional stub exceptions
+    # Intentional stub exceptions:
     '^\s*raise\s+NotImplementedError', # explicit unimplemented stub
-
-    # Common non-runtime noise
+    # Common non-runtime noise:
     '^\s*except\s+ImportError\s+as\s+_import_error\s*:', # optional import shim branch
     '^\s*pass$', # no-op pass
     '^\s*assert\s+False\b', # hard stop assertion
-
-    # Ellipsis placeholders
+    # Ellipsis placeholders:
     '^\s*\.\.\.\s*(#.*)?$', # bare ellipsis
     '^\s*return\s+\.\.\.\s*(#.*)?$', # return ellipsis
     '^\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*[^=]+=\s*\.\.\.\s*$', # annotated ellipsis assignment
