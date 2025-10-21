@@ -167,6 +167,11 @@ type-annotate TARGET="src":
 [group('qa')]
 qa: format type-check
 
+# Run all the formatting, linting, type checking and tests for local development.
+[group('qa')]
+[group('test')]
+qa-plus: qa test
+
 # Visualize Ruff analyze graph as JSON (uses rich for display)
 [group('qa')]
 @ruff-graph: (title "Ruff - Graph")
