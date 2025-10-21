@@ -35,8 +35,7 @@ classifiers = [
 ]
 
 dependencies = [
-    # fastapi==0.119.0: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
-    "fastapi==0.118.3",
+    "fastapi>=0.119.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
     "python-multipart>=0.0.20",
