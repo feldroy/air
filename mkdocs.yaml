@@ -91,6 +91,7 @@ theme:
     - navigation.instant
     - navigation.instant.prefetch
     - navigation.tracking
+    - navigation.footer
     - search.suggest
     - search.highlight
     - search.share
