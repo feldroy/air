@@ -180,6 +180,11 @@ qa: format type-check
 test:
     just run -- pytest
 
+# Run all the tests for the lowest compatible version of each package.
+[group('test')]
+test-lowest-resolution:
+    just run --resolution=lowest -- pytest
+
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
