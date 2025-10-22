@@ -1,5 +1,15 @@
 ### Latest Changes
 
+# 0.38.1 - 2025-10-22
+
+## What's Changed
+* Fix CI badge by @pydanny in https://github.com/feldroy/air/pull/604
+* chore(deps): update astral-sh/setup-uv digest to 2ddd2b9 by @renovate[bot] in https://github.com/feldroy/air/pull/593
+* build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/594
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.38.0...v0.38.1
+
 # 0.38.0 - 2025-10-22
 
 ## What's Changed
