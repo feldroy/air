@@ -1,5 +1,38 @@
 ### Latest Changes
 
+# 0.38.0 - 2025-10-22
+
+## What's Changed
+
+Showcase feature that boggles the mind:
+
+* FEATURE: Render Air Tags Fast in the Browser! by @tallerasaf in https://github.com/feldroy/air/pull/512
+
+New contributors!
+
+* DOCS: Fix typo in learn Jinja docs (`jinja2` → `jinja`) by @davidbgk in https://github.com/feldroy/air/pull/587
+* DOCS: Missing end of line in authentication cookbook example by @davidbgk in https://github.com/feldroy/air/pull/588
+* DOCS Add navigation footer for next/previous page navigation by @hamelsmu in https://github.com/feldroy/air/pull/601
+
+Awesome stuff from existing contributors
+
+* BUG: Fix a bug where basedpyright and pyright as well as Zed editor could not parse our pyproject.toml file! by @tallerasaf in https://github.com/feldroy/air/pull/578
+* BUG: Fix all errors from the newest ty version! by @tallerasaf in https://github.com/feldroy/air/pull/590
+* DOCS: Quickstart jinja by @pydanny in https://github.com/feldroy/air/pull/583
+* CHORE: Improve the PR template by @pydanny in https://github.com/feldroy/air/pull/584
+* DOCS: Fix Discord link and update discussion guidelines by @pydanny in https://github.com/feldroy/air/pull/589
+* DOCS: Add feature categories by @pydanny and @tallerasaf  in https://github.com/feldroy/air/pull/585
+* DOCS: Add segment on articles and videos by @pydanny in https://github.com/feldroy/air/pull/595
+* CHORE: Update sponsors config by @pydanny in https://github.com/feldroy/air/pull/596
+* CHORE: Update FastAPI dependency to >=0.119.1 by @pydanny in https://github.com/feldroy/air/pull/600
+* CHORE: When publishing libraries, it is recommended to separately run tests with --resolution lowest or --resolution lowest-direct in continuous integration to ensure compatibility with the declared lower bounds. by @tallerasaf in https://github.com/feldroy/air/pull/59
+
+## New Contributors
+* @davidbgk made their first contribution in https://github.com/feldroy/air/pull/587
+* @hamelsmu made their first contribution in https://github.com/feldroy/air/pull/601
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.37.0...v0.38.0
+
 # 0.37.0 - 2025-10-16
 
 ## What's Changed
