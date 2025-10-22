@@ -222,9 +222,7 @@ Maintenance of this project is made possible by all the [contributors](https://g
 If you would like to support this project and have your avatar or company logo appear below, please [sponsor us](https://github.com/sponsors/feldroy). 💖💨
 
 <!-- SPONSORS -->
-<p align="center" hidden="hidden">
-  <a href=""><img src="" width="50px" alt="Lechler GmbH" /></a>
-</p>
+
 <!-- SPONSORS -->
 
 Consider this low-barrier form of contribution yourself.
