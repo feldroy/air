@@ -15,7 +15,7 @@ Community articles and blog posts about Air:
 
 Showcase of sites built with the Air framework:
 
-- <a href="https://feldroy.com/", target="_blank">Feldroy</a>: The website of the people behind Air, Daniel and Audrey Roy-Greenfeld
+- <a href="https://feldroy.com/", target="_blank">Feldroy</a>: The website of the people behind Air, Daniel and Audrey Roy Greenfeld
 - <a href="https://isaacflath.com/", target="_blank">Personal Website</a> of Isaac Flath
 - <a href="https://plot.builders/", target="_blank">Plot Builders:</a> A SaaS product to help people write novels incrementally
 
