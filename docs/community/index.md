@@ -16,6 +16,8 @@ Community articles and blog posts about Air:
 Showcase of sites built with the Air framework:
 
 - <a href="https://feldroy.com/", target="_blank">Feldroy</a>: The website of the people behind Air, Daniel and Audrey Roy Greenfeld
+- <a href="https://airconvert.fastapicloud.dev/", target="_blank">Air Convert:</a> Convert HTML to Air Tags
+- <a href="https://airmcp.fastapicloud.dev/", target="_blank">Air MCP:</a> A hosted MCP server with tools related to Air
 - <a href="https://isaacflath.com/", target="_blank">Personal Website</a> of Isaac Flath
 - <a href="https://plot.builders/", target="_blank">Plot Builders:</a> A SaaS product to help people write novels incrementally
 
