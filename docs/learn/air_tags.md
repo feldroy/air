@@ -78,6 +78,146 @@ What if we want a more human-friendly display of HTML? We can use `.pretty_rende
 
     Combine Air Tag's `.pretty_render()` method with the [rich package](https://github.com/Textualize/rich) for truly lovely colorized output.
 
+## Display and Debugging Methods
+
+Air Tags provide several methods for displaying, debugging, and inspecting tag structures during development.
+
+### Pretty Print with Syntax Highlighting
+
+The `.pretty_print()` method displays formatted HTML in the console with syntax highlighting:
+
+```python
+>>> content.pretty_print()
+```
+
+This is especially useful when debugging layouts in the terminal, as it provides colorized output that makes the structure easy to read.
+
+### Inspecting Tag Representations
+
+For debugging, you can view different representations of tags:
+
+The built-in `repr()` function shows a concise representation:
+
+```python
+>>> repr(content)
+<air.Article("Defines an article")>
+```
+
+The `.full_repr()` method shows an expanded representation including all attributes and children:
+
+```python
+>>> content.full_repr()
+Article(H1(children=Air Tags), P(attributes={'class_': 'subtitle'}, children=Air Tags are a fast, expressive way to generate HTML.))
+```
+
+### Browser Preview Methods
+
+Air Tags can automatically open your HTML in a browser for quick visual inspection:
+
+The `.render_in_the_browser()` method opens the rendered HTML in a browser tab:
+
+```python
+>>> content.render_in_the_browser()
+```
+
+The `.pretty_render_in_the_browser()` method opens pretty-formatted HTML in a browser tab:
+
+```python
+>>> content.pretty_render_in_the_browser()
+```
+
+The `.pretty_display_in_the_browser()` method displays pretty-formatted HTML in the browser:
+
+```python
+>>> content.pretty_display_in_the_browser()
+```
+
+### Saving HTML to Files
+
+You can persist rendered HTML to disk using the save methods:
+
+The `.save()` method saves the rendered HTML to a file:
+
+```python
+>>> content.save("output.html")
+```
+
+The `.pretty_save()` method saves pretty-formatted HTML to a file:
+
+```python
+>>> content.pretty_save("output_pretty.html")
+```
+
+## Serialization Methods
+
+Air Tags can be serialized to dictionaries and JSON, making it easy to store, transmit, or inspect tag structures programmatically.
+
+### Visualizing Tag Structure
+
+The `.to_pretty_dict()` method produces a human-friendly formatted view of the tag tree:
+
+```python
+>>> print(content.to_pretty_dict())
+```
+
+This method uses the `rich` library for pretty-printing when available, making it ideal for debugging complex tag hierarchies.
+
+### Converting to Dictionaries
+
+The `.to_dict()` method serializes a tag to a JSON-compatible dictionary:
+
+```python
+>>> tag_dict = content.to_dict()
+>>> print(tag_dict)
+{'name': 'Article', 'attributes': {}, 'children': (...)}
+```
+
+### Converting to JSON
+
+The `.to_json()` method serializes a tag to a JSON string:
+
+```python
+>>> json_str = content.to_json()
+>>> print(json_str)
+```
+
+The `.to_pretty_json()` method serializes with indentation for readability:
+
+```python
+>>> pretty_json = content.to_pretty_json()
+>>> print(pretty_json)
+{
+    "name": "Article",
+    "attributes": {},
+    "children": [...]
+}
+```
+
+### Reconstructing Tags from Serialized Data
+
+Tags can be reconstructed from their serialized forms:
+
+The `.from_dict()` class method reconstructs a tag from a dictionary:
+
+```python
+>>> tag_dict = content.to_dict()
+>>> reconstructed = content.from_dict(tag_dict)
+>>> repr(reconstructed)
+<air.Article("Defines an article")>
+```
+
+The `.from_json()` class method reconstructs a tag from a JSON string:
+
+```python
+>>> json_str = content.to_json()
+>>> reconstructed = content.from_json(json_str)
+>>> repr(reconstructed)
+<air.Article("Defines an article")>
+```
+
+!!! note
+
+    These serialization methods are particularly useful when working with APIs or storing tag structures for later use.
 
 ## Attributes
 
