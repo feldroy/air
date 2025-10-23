@@ -37,6 +37,8 @@
 [![Jinja](https://img.shields.io/badge/jinja-white.svg?&logo=Jinja&logoColor=black)](https://jinja.palletsprojects.com/en/latest)
 [![Astral](https://img.shields.io/badge/uv|ruff|ty-black.svg?logo=astral&logoColor=D1FF4F)](https://docs.astral.sh)
 
+---
+
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
 
@@ -45,7 +47,6 @@
 > If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
 
 ## Why use Air?
-
 
 - **Powered by FastAPI** - Designed to work with FastAPI so you can serve your API and web pages from one app
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
@@ -61,7 +62,6 @@
 **Documentation**: <a href="https://airdocs.fastapicloud.dev/" target="_blank">https://airdocs.fastapicloud.dev</a>
 
 **Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
-
 
 ## Installation
 
@@ -216,6 +216,26 @@ Don't forget the Jinja template!
 > [!NOTE]
 > Using Jinja with Air is easier than with FastAPI. That's because as much as we enjoy Air Tags, we also love Jinja!
 
+## Sponsors
+
+Maintenance of this project is made possible by all the [contributors](https://github.com/feldroy/air/graphs/contributors) and [sponsors](https://github.com/sponsors/feldroy).
+If you would like to support this project and have your avatar or company logo appear below, please [sponsor us](https://github.com/sponsors/feldroy). 💖💨
+
+<!-- SPONSORS -->
+
+<!-- SPONSORS -->
+
+Consider this low-barrier form of contribution yourself.
+Your [support](https://github.com/sponsors/feldroy) is much appreciated.
+
 ## Contributing
 
 For guidance on setting up a development environment and how to make a contribution to Air, see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).
+
+## Contributors
+
+Thanks to all the contributors to the Air 💨 web framework!
+
+<a href="https://github.com/feldroy/air/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=feldroy/air" />
+</a>

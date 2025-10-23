@@ -71,7 +71,8 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         python-version: [ "3.13", "3.14" ]
         resolution-strategy: [ "highest", "lowest" ]
-    name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }} (via just, uv, pytest, pytest-pretty)
+    name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }}
+      • resolution-strategy ${{ matrix.resolution-strategy }} (via just, uv, pytest, pytest-pretty)
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
