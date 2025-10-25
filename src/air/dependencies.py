@@ -18,7 +18,7 @@ def _is_htmx_request(hx_request: str = Header(default=None)) -> bool:
 
         @app.get("/")
         def index(is_htmx: bool = Depends(air.is_htmx_request)):
-            return air.H1(f"Is HTMX request: {is_htmx}")
+            return air.H1(f"Is HTMX request?: {is_htmx}")
     """
     return hx_request is not None and hx_request.lower() == "true"
 

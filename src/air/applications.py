@@ -372,20 +372,22 @@ class Air(FastAPI):
 
             import air
 
-            app = Air()
+            app = air.Air()
+
 
             @app.page
-            def index(): # routes is "/"
-                return H1("I am the home page")
+            def index():  # routes is "/"
+                return air.H1("I am the home page")
+
 
             @app.page
-            def data(): # route is "/data"
-                return H1("I am the home page")
+            def data():  # route is "/data"
+                return air.H1("I am the data page")
+
 
             @app.page
-            def about_us(): # routes is "/about-us"
-                return H1("I am the about page")
-
+            def about_us():  # route is "/about-us"
+                return air.H1("I am the about page")
         """
         page_path = compute_page_path(func.__name__, separator=self.path_separator)
 
