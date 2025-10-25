@@ -2,7 +2,7 @@
 
 <p align="center">
   <!-- <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/air-neon.png" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a> -->
-  <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>  
+  <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>
 </p>
 
 <p align="center">
@@ -74,7 +74,7 @@ async def index():
 
 ## Combining FastAPI and Air
 
-Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app. 
+Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
 
 ```python
 import air
@@ -98,7 +98,7 @@ def landing_page():
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
-# Combining the Air and and FastAPI apps into one
+# Combining the Air and FastAPI apps into one
 app.mount("/api", api)
 ```
 
@@ -125,7 +125,7 @@ def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
 # Combining the Air and and FastAPI apps into one
-app.mount("/api", api)    
+app.mount("/api", api)
 ```
 
 Don't forget the Jinja template!
