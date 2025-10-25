@@ -81,6 +81,8 @@ nav:
 
   - Community: community/index.md
 
+  - Sprint: sprint/index.md
+
   - Tools: tools.md
 
 theme:
