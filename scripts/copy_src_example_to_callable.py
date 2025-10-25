@@ -11,9 +11,11 @@ from pathlib import Path
 import typer
 
 
-def parse_filename(filename: str) -> tuple[str, str, str] | None:
+def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
     """Parse filename like 'applications__Air__page.py' into (module, class, method).
 
+    Also supports 'module__function.py' format for module-level functions.
+    Returns (module, class_name, method_name) or (module, None, function_name).
     Returns None if filename is a test file or doesn't match expected pattern.
     """
     if filename.endswith("__test.py") or filename == "__init__.py":
@@ -28,56 +30,75 @@ def parse_filename(filename: str) -> tuple[str, str, str] | None:
     # Split by double underscore
     parts = name.split("__")
 
-    if len(parts) < 3:
-        return None
+    if len(parts) == 2:
+        # Module-level function: module__function
+        module = parts[0]
+        function_name = parts[1]
+        return module, None, function_name
+    if len(parts) >= 3:
+        # Class method: module__class__method
+        module = parts[0]
+        class_name = parts[1]
+        method_name = parts[2]
+        return module, class_name, method_name
 
-    module = parts[0]
-    class_name = parts[1]
-    method_name = parts[2]
-
-    return module, class_name, method_name
+    return None
 
 
-def update_example_section(file_path: Path, class_name: str, method_name: str, example_content: str) -> bool:
-    """Update the Example section in the specified method's docstring.
+def update_example_section(file_path: Path, class_name: str | None, method_name: str, example_content: str) -> bool:
+    """Update the Example section in the specified method or function's docstring.
 
     Returns True if successful, False otherwise.
     """
     content = file_path.read_text()
 
-    # Parse the AST to find the class and method
+    # Parse the AST to find the class and method or function
     try:
         tree = ast.parse(content)
     except SyntaxError:
         typer.secho(f"Error parsing {file_path}")
         return False
 
-    # Find the class
-    target_class = None
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef) and node.name == class_name:
-            target_class = node
-            break
-
-    if not target_class:
-        typer.secho(f"Class {class_name} not found in {file_path}")
-        return False
-
-    # Find the method
     target_method = None
-    for node in target_class.body:
-        if isinstance(node, ast.FunctionDef) and node.name == method_name:
-            target_method = node
-            break
 
-    if not target_method:
-        typer.secho(f"Method {method_name} not found in class {class_name} in {file_path}")
-        return False
+    if class_name is None:
+        # Module-level function
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef) and node.name == method_name:
+                target_method = node
+                break
+
+        if not target_method:
+            typer.secho(f"Function {method_name} not found in {file_path}")
+            return False
+    else:
+        # Class method
+        # Find the class
+        target_class = None
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name == class_name:
+                target_class = node
+                break
+
+        if not target_class:
+            typer.secho(f"Class {class_name} not found in {file_path}")
+            return False
+
+        # Find the method
+        for node in target_class.body:
+            if isinstance(node, ast.FunctionDef) and node.name == method_name:
+                target_method = node
+                break
+
+        if not target_method:
+            typer.secho(f"Method {method_name} not found in class {class_name} in {file_path}")
+            return False
 
     # Get the docstring
     docstring = ast.get_docstring(target_method)
     if not docstring or "Example:" not in docstring:
-        typer.secho(f"No Example section found in {class_name}.{method_name}")
+        callable_name = f"{class_name}.{method_name}" if class_name else method_name
+        typer.secho(f"No Example section found in {callable_name}")
         return False
 
     # Find the actual position of the docstring in the source
@@ -142,7 +163,8 @@ def update_example_section(file_path: Path, class_name: str, method_name: str, e
 
     # Write back
     file_path.write_text(new_content)
-    typer.secho(f"Updated {class_name}.{method_name} in {file_path}")
+    callable_name = f"{class_name}.{method_name}" if class_name else method_name
+    typer.secho(f"Updated {callable_name} in {file_path}")
     return True
 
 
@@ -158,7 +180,7 @@ def main():
 
     # Process each file in src_examples
     for example_file in src_examples_dir.glob("*.py"):
-        parsed = parse_filename(example_file.name)
+        parsed = parse_filename_class(example_file.name)
         if not parsed:
             continue
 
