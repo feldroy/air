@@ -20,6 +20,7 @@ Showcase of sites built with the Air framework:
 - <a href="https://airmcp.fastapicloud.dev/", target="_blank">Air MCP:</a> A hosted MCP server with tools related to Air
 - <a href="https://isaacflath.com/", target="_blank">Personal Website</a> of Isaac Flath
 - <a href="https://plot.builders/", target="_blank">Plot Builders:</a> A SaaS product to help people write novels incrementally
+- <a href="https://daniel.feldroy.com", target="_blank">Personal website</a> of Daniel Roy Greenfeld, includes <a href="https://daniel.feldroy.com/tags/air">all his articles about Air</a>
 
 ## Contributing
 
