@@ -1,12 +1,13 @@
 """Script to copy src_examples content into corresponding docstring Example sections.
 
 Run:
-    just run-py-module scripts.copy_src_example_to_callable
+    uv run scripts/copy_src_example_to_callable.py
 """
 
 import ast
 import re
 from pathlib import Path
+import typer
 
 
 def parse_filename(filename: str) -> tuple[str, str, str] | None:
@@ -179,4 +180,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)
