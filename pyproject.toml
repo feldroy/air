@@ -496,7 +496,7 @@ missing-attribute = false
 # Keep imports simple (src/ layout)
 pythonpath = ["src"]
 # Only look here for tests
-testpaths = ["tests"]
+testpaths = ["tests", "src_examples", ]
 # Fail on any warning
 filterwarnings = ["error"]  # equals: -W error
 # pytest-asyncio
