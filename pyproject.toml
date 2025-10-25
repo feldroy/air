@@ -349,6 +349,7 @@ ignore = [
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
 ]
+"scripts/copy_src_example_to_callable.py" = ["C901"]
 
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.

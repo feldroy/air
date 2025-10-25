@@ -1,5 +1,6 @@
-from applications__Air__page import app
 from fastapi.testclient import TestClient
+
+from .applications__Air__page import app
 
 
 def test_page_routes() -> None:
