@@ -2,6 +2,12 @@
 
 Welcome to the Air community! This page showcases community-created content, resources, and applications built with Air.
 
+## Libraries
+
+Community libraries to help you build more with Air:
+
+- <a href="https://kentro-tech.github.io/airheads/" target="_blank">Airheads</a> - A library to make project discoverability less of a pain.  Create you `Head` tag with social, SEO, search engine optimization.
+
 ## Articles
 
 Community articles and blog posts about Air:
