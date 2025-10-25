@@ -21,8 +21,9 @@ Note: If anything changes last-minute, organizers may post an update in the **#p
 
 ## ✅ Before You Start
 
-- Read the project's contributing guide: [CONTRIBUTING.md](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md)
-- Optional: See our dev tools tips in `docs/tools.md` if you need help with environment setup.
+- Work through the Air tutorials to get up to speed with Air if you aren't familiar with it yet. File issues as you find typos or parts that are unclear. 
+
+- Read Air's contributing guide: [CONTRIBUTING.md](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md)
 
 ## 🔍 Finding the Right Issue
 
