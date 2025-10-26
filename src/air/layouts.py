@@ -102,7 +102,7 @@ def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> 
         feature of HTMX
 
     Note: `PicoCSS` is a quick prototyping tool. It isn't designed to be extensible.
-        Rather the `pico` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
+        Rather the `picocss` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
         For more advanced layouts like Eidos or a full-fledged PicoCSS implementation,
         you'll have to create your own layouts.
 
