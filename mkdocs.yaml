@@ -81,7 +81,9 @@ nav:
 
   - Community: community/index.md
 
-  - Sprint: sprint/index.md
+  - Sprint:
+    - sprint/index.md
+    - Source Examples: sprint/src_examples.md
 
   - Tools: tools.md
 

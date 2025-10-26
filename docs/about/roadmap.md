@@ -31,7 +31,7 @@ Forms are a core part of any web framework. While the foundations for forms are 
 - [x] Form validation - Ensure error messages are clear and helpful
 - [ ] CSRF protection - Implement CSRF protection for forms
 - [ ] Integration with FastAPI's dependency injection - This is coded but it is not stable yet
-[ ] - Default widget cleanup - It is working but the code is ungainly and hard to extend
+- [ ] Default widget cleanup - It is working but the code is ungainly and hard to extend
 
 ### Accessibility Improvements
 
