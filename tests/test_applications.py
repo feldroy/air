@@ -124,7 +124,7 @@ def test_air_404_response() -> None:
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header,'
+        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet"><style>footer, header,'
         " main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script "
         'src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" '
         'integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>'
@@ -157,7 +157,7 @@ def test_default_500_exception_handler() -> None:
     assert response.status_code == 500
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
-        response.body == b'<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" />'
+        response.body == b'<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet">'
         b"<style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script"
         b' src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"'
         b' integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>'
