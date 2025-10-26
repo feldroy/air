@@ -111,8 +111,8 @@ def test_form_render() -> None:
 
     form = cheese.render()
     assert (
-        form == '<label for="name">name</label><input name="name" type="text" id="name" />'
-        '<label for="age">age</label><input name="age" type="number" id="age" />'
+        form == '<label for="name">name</label><input name="name" type="text" id="name">'
+        '<label for="age">age</label><input name="age" type="number" id="age">'
     )
 
 
@@ -127,8 +127,8 @@ def test_form_render_with_values() -> None:
     cheese = CheeseForm({"name": "Cheddar", "age": 3})
 
     assert (
-        cheese.render() == '<label for="name">name</label><input name="name" type="text" value="Cheddar" id="name" />'
-        '<label for="age">age</label><input name="age" type="number" value="3" id="age" />'
+        cheese.render() == '<label for="name">name</label><input name="name" type="text" value="Cheddar" id="name">'
+        '<label for="age">age</label><input name="age" type="number" value="3" id="age">'
     )
 
 
@@ -154,8 +154,8 @@ def test_form_render_in_view() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
-        response.text == '<form><label for="name">name</label><input name="name" type="text" id="name" />'
-        '<label for="age">age</label><input name="age" type="number" id="age" /></form>'
+        response.text == '<form><label for="name">name</label><input name="name" type="text" id="name">'
+        '<label for="age">age</label><input name="age" type="number" id="age"></form>'
     )
 
 
@@ -178,9 +178,9 @@ def test_form_render_with_errors() -> None:
     html = cheese.render()
 
     assert (
-        html == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" id="name" />'
+        html == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" id="name">'
         '<small id="name-error">This field is required.</small><label for="age">age</label>'
-        '<input aria-invalid="true" name="age" type="number" id="age" />'
+        '<input aria-invalid="true" name="age" type="number" id="age">'
         '<small id="age-error">This field is required.</small>'
     )
 
@@ -212,10 +212,10 @@ def test_air_field() -> None:
     contact_form = ContactForm()
     html = contact_form.render()
     assert (
-        html == '<label for="name">name</label><input name="name" type="text" id="name" />'
-        '<label for="email">Email</label><input name="email" type="email" id="email" />'
+        html == '<label for="name">name</label><input name="name" type="text" id="name">'
+        '<label for="email">Email</label><input name="email" type="email" id="email">'
         '<label for="date_and_time">Date and Time</label>'
-        '<input name="date_and_time" type="datedatetime-local" id="date_and_time" />'
+        '<input name="date_and_time" type="datedatetime-local" id="date_and_time">'
     )
 
 
@@ -274,7 +274,7 @@ def test_air_field_json_schema_extra() -> None:
         model = CheeseModel
 
     html = CheeseForm().render()
-    assert '<input name="name" type="text" autofocus id="name" />' in html
+    assert '<input name="name" type="text" autofocus id="name">' in html
     assert '<label for="age">my-age</label>' in html
 
 
@@ -290,7 +290,7 @@ def test_field_includes() -> None:
         model = PlaneModel
 
     html = PlaneForm().render()
-    assert '<label for="id">id</label><input name="id" type="number" id="id" />' in html
+    assert '<label for="id">id</label><input name="id" type="number" id="id">' in html
 
     # Test with includes active, removing id field
     class PlaneForm(air.AirForm):
@@ -298,7 +298,7 @@ def test_field_includes() -> None:
         includes = ("name", "year_released", "max_airspeed")
 
     html = PlaneForm().render()
-    assert '<label for="id">id</label><input name="id" type="number" id="id" />' not in html
+    assert '<label for="id">id</label><input name="id" type="number" id="id">' not in html
 
 
 def test_default_form_widget_basic():
@@ -384,9 +384,9 @@ def test_default_form_widget_includes():
 
     # Ensure included fields are present
     assert '<label for="name">name</label>' in html
-    assert '<input name="name" type="text" id="name" />' in html
+    assert '<input name="name" type="text" id="name">' in html
     assert '<label for="age">age</label>' in html
-    assert '<input name="age" type="number" id="age" />' in html
+    assert '<input name="age" type="number" id="age">' in html
 
 
 def test_default_form_widget_optional_fields():
@@ -398,7 +398,7 @@ def test_default_form_widget_optional_fields():
     html = air.forms.default_form_widget(AnotherInterestingTestModel)
     # Ensure fields are present but not marked as required
     assert '<label for="name">name</label>' in html
-    assert '<input name="name" type="text" id="name" />' in html
+    assert '<input name="name" type="text" id="name">' in html
     assert "required" not in html
 
 
