@@ -1,22 +1,23 @@
 """Tools for building layouts and several simple layouts for quick prototyping."""
 
+from collections.abc import Sequence
 from typing import Any
 
 from .tags import Body, Children, Head, Header, Html, Link, Main, Script, Style
 from .tags.types import HEAD_TAG_TYPES, AttributesType
 
 
-def filter_body_tags(tags: list[Any]) -> list:
+def filter_body_tags(tags: Sequence[Any]) -> list[Any]:
     """Given a list of tags, only list the ones that belong in body of an HTML document."""
     return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]
 
 
-def filter_head_tags(tags: list[Any]) -> list:
+def filter_head_tags(tags: Sequence[Any]) -> list[Any]:
     """Given a list of tags, only list the ones that belong in head of an HTML document."""
     return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]
 
 
-def _header(tags: list[Any]) -> Header | str:
+def _header(tags: Sequence[Any]) -> Header | str:
     """Extracts the air.Header tag from a set of tags."""
     for tag in tags:
         if isinstance(tag, Header):
@@ -102,7 +103,7 @@ def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> 
         feature of HTMX
 
     Note: `PicoCSS` is a quick prototyping tool. It isn't designed to be extensible.
-        Rather the `picocss` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
+        Rather the `pico` layout function makes it easy to roll out quick demonstrations and proofs-of-concept.
         For more advanced layouts like Eidos or a full-fledged PicoCSS implementation,
         you'll have to create your own layouts.
 
