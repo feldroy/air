@@ -506,7 +506,8 @@ asyncio_mode = "auto"
 # Custom markers
 markers = [
     "memory: marks tests as memory-focused (deselect with '-m \"not memory\"')",
-    "current: mark test as currently being focused on"
+    "current: mark tests as part of the tests that currently being focused on",
+    "solo: mark tests as the single test to be run."
 ]
 addopts = [
     "--color=yes",

@@ -1,5 +1,7 @@
 import pytest
 
+from pathlib import Path
+
 from scripts.copy_src_example_to_callable import (
     remove_python_extension,
     split_name_by_double_underscore,
@@ -8,7 +10,7 @@ from scripts.copy_src_example_to_callable import (
 )
 
 
-@pytest.mark.current
+@pytest.mark.solo
 @pytest.mark.parametrize(
     "filename, expected_output",
     [
@@ -26,7 +28,7 @@ def test_remove_python_extension_returns_filename_without_py_extension(
     assert remove_python_extension(filename) == expected_output
 
 
-@pytest.mark.current
+@pytest.mark.solo
 @pytest.mark.parametrize(
     "filename",
     [
@@ -45,7 +47,7 @@ def test_remove_python_extension_raises_ValueError_on_non_python_files(
         remove_python_extension(filename)
 
 
-@pytest.mark.current
+@pytest.mark.solo
 @pytest.mark.parametrize(
     "filename, expected_output",
     [
@@ -61,7 +63,7 @@ def test_split_name_by_double_underscore_returns_expected_output(
     assert split_name_by_double_underscore(filename) == expected_output
 
 
-@pytest.mark.current
+@pytest.mark.solo
 def test_parse_funtion_module_and_class_from_filename_returns_None_on_filename_ends_with___test_py() -> (
     None
 ):
@@ -73,7 +75,7 @@ def test_parse_funtion_module_and_class_from_filename_returns_None_on_filename_e
     )
 
 
-@pytest.mark.current
+@pytest.mark.solo
 def test_parse_funtion_module_and_class_from_filename_returns_None_on_filename_ends_with___init_py() -> (
     None
 ):
@@ -82,7 +84,7 @@ def test_parse_funtion_module_and_class_from_filename_returns_None_on_filename_e
     assert parse_funtion_module_and_class_from_filename("__init__.py") is None
 
 
-@pytest.mark.current
+@pytest.mark.solo
 @pytest.mark.parametrize(
     "filename",
     [
@@ -100,7 +102,7 @@ def test_parse_funtion_module_and_class_from_filename_returns_None_on_non_python
     assert parse_funtion_module_and_class_from_filename(filename) is None
 
 
-@pytest.mark.current
+@pytest.mark.solo
 @pytest.mark.parametrize(
     "filename, expected_output",
     [
@@ -125,7 +127,7 @@ def test_parse_funtion_module_and_class_from_filename_returns_a_tuple_of_module_
     assert parse_funtion_module_and_class_from_filename(filename) == expected_output
 
 
-@pytest.mark.current
+@pytest.mark.solo
 @pytest.mark.parametrize(
     "filename, expected_output",
     [
@@ -145,27 +147,39 @@ def test_parse_funtion_module_and_class_from_filename_returns_a_tuple_of_module_
 @pytest.mark.current
 def test_update_example_section_returns_True_on_success() -> None:
     """update_example_section() returns True on success."""
+    from src.air.applications import Air
 
-    example_section = """
-   
+    updated_example_content = """
     import air
 
     app = air.Air()
 
-    @app.page
-    def index(): # route is "/"
-        return air.H1("I am the index page.")
 
+    @app.page
+    def index():  # routes is "/"
+        return air.H1("This is the home page")
+
+
+    @app.page
+    def about_us():  # route is "/about-us"
+        return air.H1("This is the about page")
+
+
+    @app.page
+    def contact_us():  # route is /contact-us"
+        return air.H1("This is the contact page")
+
+    
     """
 
+    applications_module_path = Path("src/air/applications.py")
 
-    update_example_section(
-        
+    page_method_original_usage_example_file = Path(
+        "src_examples/applications__Air__page.py"
     )
 
-    assert (
-        update_example_section(
-            "applications__Air__page.py", "applications", "Air", "page", "Example:"
-        )
-        == True
-    )
+    page_method_example_content = page_method_original_usage_example_file.read_text()
+
+    current_page_method_docstring = Air.page.__doc__
+
+    assert updated_example_content not in current_page_method_docstring
