@@ -363,7 +363,7 @@ class Air(FastAPI):
 
         self.router.route_class = AirRoute
 
-    def page(self, func: FunctionType) -> FunctionType:
+    def page(self, func: FunctionType) -> RouteCallable:
         """Decorator that creates a GET route using the function name as the path.
 
         If the name of the function is "index", then the route is "/".

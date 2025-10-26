@@ -320,7 +320,7 @@ class AirRouter(APIRouter):
             assert prefix.startswith("/"), "A path prefix must start with '/'"
             assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
 
-    def page(self, func: FunctionType) -> FunctionType:
+    def page(self, func: FunctionType) -> RouteCallable:
         """Decorator that creates a GET route using the function name as the path.
 
         If the name of the function is "index", then the route is "/".
