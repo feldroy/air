@@ -87,12 +87,18 @@ class GitHubOAuthClientFactory:
 
         @router.get("/account/github/login")
         async def github_login(request: Request):
-            assert hasattr(request, "session")
+            # assert hasattr(request, "session")
+            if not hasattr(request, "session"):
+                msg = "SessionMiddleware required for OAuth. Add it with: app.add_middleware(air.SessionMiddleware, secret_key='your-secret')"
+                raise RuntimeError(msg)
             return await self.client.authorize_redirect(request, self.github_redirect_uri)
 
         @router.get("/account/github/callback")
         async def github_callback(request: Request):
-            assert hasattr(request, "session")
+            # assert hasattr(request, "session")
+            if not hasattr(request, "session"):
+                msg = "SessionMiddleware required for OAuth. Add it with: app.add_middleware(air.SessionMiddleware, secret_key='your-secret')"
+                raise RuntimeError(msg)
             token = await self.client.authorize_access_token(request)
 
             await github_process_callable(request=request, token=token, client=self.client)
