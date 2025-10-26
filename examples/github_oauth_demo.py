@@ -14,7 +14,8 @@ from rich import print
 
 import air
 
-database = {} # dict to simulate a database for demo purposes only
+database = {}  # dict to simulate a database for demo purposes only
+
 
 async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
     access_token = token["access_token"]
