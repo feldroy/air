@@ -311,7 +311,6 @@ class AirRouter(APIRouter):
             if not prefix.startswith("/"):
                 msg = f"Invalid path prefix {prefix!r}: must start with '/'"
                 raise ValueError(msg)
-            # assert prefix.startswith("/"), "A path prefix must start with '/'"
             if prefix.endswith("/"):
                 msg = f"Invalid path prefix {prefix!r}: must END with '/'"
                 raise ValueError(msg)
