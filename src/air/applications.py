@@ -22,7 +22,7 @@ from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
-from .routing import AirRoute
+from .routing import AirRoute, RouteCallable
 from .types import MaybeAwaitable
 from .utils import compute_page_path
 
@@ -743,7 +743,7 @@ class Air(FastAPI):
         ```
         """
 
-        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
             @wraps(func)
             async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
@@ -754,7 +754,7 @@ class Air(FastAPI):
                 # Force HTML for non-Response results
                 return response_class(result)
 
-            return super(Air, self).get(
+            decorated = super(Air, self).get(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -779,6 +779,9 @@ class Air(FastAPI):
                 openapi_extra=openapi_extra,
                 generate_unique_id_function=generate_unique_id_function,
             )(endpoint)
+
+            decorated.url = self._url_helper(name or endpoint.__name__)
+            return decorated
 
         return decorator
 
@@ -1118,7 +1121,7 @@ class Air(FastAPI):
         Add a *path operation* using an HTTP POST operation.
         """
 
-        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
             @wraps(func)
             async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
@@ -1129,7 +1132,7 @@ class Air(FastAPI):
                 # Force HTML for non-Response results
                 return response_class(result)
 
-            return super(Air, self).post(
+            decorated = super(Air, self).post(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -1155,4 +1158,17 @@ class Air(FastAPI):
                 generate_unique_id_function=generate_unique_id_function,
             )(endpoint)
 
+            decorated.url = self._url_helper(name or endpoint.__name__)
+            return decorated
+
         return decorator
+
+    def _url_helper(self, name: str) -> Callable[..., str]:
+        """
+        Helper function to generate the URL for a given path operation name. Wraps around Starlette's `url_path_for`.
+        """
+
+        def helper_function(**params: Any) -> str:
+            return self.url_path_for(name, **params)
+
+        return helper_function

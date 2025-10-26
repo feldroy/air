@@ -9,6 +9,7 @@ from typing import (
     Annotated,
     Any,
     Literal,
+    Protocol,
     override,
 )
 from warnings import deprecated
@@ -29,6 +30,14 @@ from .requests import AirRequest
 from .responses import AirResponse
 from .types import MaybeAwaitable
 from .utils import compute_page_path, default_generate_unique_id
+
+
+class RouteCallable(Protocol):
+    __call__: Callable[..., Any]
+    __name__: str
+
+    def url(self, **path_params: Any) -> str:
+        return ""
 
 
 class AirRoute(APIRoute):
@@ -695,7 +704,7 @@ class AirRouter(APIRouter):
         ```
         """
 
-        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
             @wraps(func)
             async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
@@ -706,7 +715,7 @@ class AirRouter(APIRouter):
                 # Force HTML for non-Response results
                 return response_class(result)
 
-            return super(AirRouter, self).get(
+            decorated = super(AirRouter, self).get(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -731,6 +740,9 @@ class AirRouter(APIRouter):
                 openapi_extra=openapi_extra,
                 generate_unique_id_function=generate_unique_id_function,
             )(endpoint)
+
+            decorated.url = self._url_helper(name or endpoint.__name__)
+            return decorated
 
         return decorator
 
@@ -1070,7 +1082,7 @@ class AirRouter(APIRouter):
         Add a *path operation* using an HTTP POST operation.
         """
 
-        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> Callable[..., Any]:
+        def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
             @wraps(func)
             async def endpoint(*args: P.args, **kw: P.kwargs) -> Response:
                 result = func(*args, **kw)
@@ -1081,7 +1093,7 @@ class AirRouter(APIRouter):
                 # Force HTML for non-Response results
                 return response_class(result)
 
-            return super(AirRouter, self).post(
+            decorated = super(AirRouter, self).post(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -1107,4 +1119,17 @@ class AirRouter(APIRouter):
                 generate_unique_id_function=generate_unique_id_function,
             )(endpoint)
 
+            decorated.url = self._url_helper(name or endpoint.__name__)
+            return decorated
+
         return decorator
+
+    def _url_helper(self, name: str) -> Callable[..., str]:
+        """
+        Helper function to generate the URL for a given path operation name. Wraps around Starlette's `url_path_for`.
+        """
+
+        def helper_function(**params: Any) -> str:
+            return self.url_path_for(name, **params)
+
+        return helper_function
