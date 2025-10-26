@@ -98,7 +98,7 @@ def landing_page():
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
-# Combining the Air and and FastAPI apps into one
+# Combining the Air and FastAPI apps into one
 app.mount("/api", api)
 ```
 
