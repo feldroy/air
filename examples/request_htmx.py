@@ -30,3 +30,4 @@ def table(request: air.AirRequest):
             air.Tr(air.Td("request.htmx.target"), air.Td(request.htmx.target)),
             air.Tr(air.Td("request.htmx.trigger"), air.Td(request.htmx.trigger)),
         )
+
