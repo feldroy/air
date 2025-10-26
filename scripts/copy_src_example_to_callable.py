@@ -12,7 +12,7 @@ import typer
 
 
 def is_filename_not_parseable(filename: str) -> bool:
-    """Check if filename is not parseable for `parse_filename_class` function."""
+    """Check if filename is not parseable for `parse_module_class_function_names_from_filename` function."""
 
     not_a_python_file = not filename.endswith(".py")
     is__init__py = filename == "__init__.py"
@@ -86,7 +86,9 @@ def is_name_a_module_class_method(name_parts: list[str]) -> bool:
     return len(name_parts) >= 3
 
 
-def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
+def parse_module_class_function_names_from_filename(
+    filename: str,
+) -> tuple[str, str | None, str] | None:
     """Parse filename like 'applications__Air__page.py' into (module, class, method).
 
     Also supports 'module__function.py' format for module-level functions.
@@ -257,7 +259,7 @@ def main():
 
     # Process each file in src_examples
     for example_file in src_examples_dir.glob("*.py"):
-        parsed = parse_filename_class(example_file.name)
+        parsed = parse_module_class_function_names_from_filename(example_file.name)
         if not parsed:
             continue
 
