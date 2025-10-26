@@ -1,8 +1,27 @@
 import pytest
 
 from scripts.copy_src_example_to_callable import (
+    remove_python_extension,
     parse_module_class_function_names_from_filename,
 )
+
+
+@pytest.mark.current
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "applications.py",
+        "requests.py",
+        "utils.py",
+        "template_tags.py",
+        "session_management.py",
+    ],
+)
+def test_remove_python_extension_returns_filename_without_py_extension(
+    filename: str,
+) -> None:
+    """remove_python_extension() returns filename without .py extension."""
+    assert remove_python_extension(filename) == filename[:-3]
 
 
 @pytest.mark.current
