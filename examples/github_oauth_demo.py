@@ -14,7 +14,6 @@ from rich import print
 
 import air
 
-database = {}
 
 
 async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
