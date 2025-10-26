@@ -376,7 +376,7 @@ class Air(FastAPI):
 
 
             @app.page
-            def index():  # route is "/"
+            def index():  # routes is "/"
                 return air.H1("I am the home page")
 
 
