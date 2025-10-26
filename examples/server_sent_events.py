@@ -31,5 +31,5 @@ async def lottery_generator():  # (6)!
 
 
 @app.page
-async def lottery_numbers():
+def lottery_numbers():
     return air.SSEResponse(lottery_generator())  # (9)!

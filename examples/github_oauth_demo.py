@@ -17,7 +17,7 @@ import air
 database = {}  # dict to simulate a database for demo purposes only
 
 
-async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
+def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
     access_token = token["access_token"]
     print(access_token)
     if access_token in database:
@@ -45,7 +45,7 @@ app.include_router(github_oauth_client.router)
 
 
 @app.page
-async def index(request: air.Request):
+def index(request: air.Request):
     return air.layouts.mvpcss(
         air.H1("GitHub OAuth Login Demo"),
         air.P(air.A("Login to Github", href="/account/github/login")),

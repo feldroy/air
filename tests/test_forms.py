@@ -41,7 +41,7 @@ def test_form_validation_dependency_injection() -> None:
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(
+    def cheese_form(
         cheese: Annotated[CheeseForm, Depends(CheeseForm.from_request)],
     ):
         if cheese.is_valid:
@@ -143,7 +143,7 @@ def test_form_render_in_view() -> None:
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(request: Request):
+    def cheese_form(request: Request):
         cheese = CheeseForm()
         return air.Form(cheese.render())
 
