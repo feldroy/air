@@ -1,10 +1,10 @@
-import tempfile
 import pathlib
+import tempfile
 from collections import defaultdict
 
 from scripts.missing_examples import (
-    extract_callables_from_file,
     check_docstring_for_example,
+    extract_callables_from_file,
 )
 
 
@@ -56,7 +56,7 @@ class ClassWithExample:
         missing_examples = defaultdict(list)
         extract_callables_from_file(temp_path, missing_examples)
 
-        results = missing_examples[temp_path.relative_to(temp_path.parent)]
+        results = missing_examples[temp_path]
 
         assert "function: function_without_example" in results
         assert "method: ClassWithExample.method_without_example" in results
@@ -65,4 +65,3 @@ class ClassWithExample:
 
     finally:
         temp_path.unlink()
-

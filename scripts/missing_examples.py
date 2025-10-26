@@ -21,7 +21,11 @@ def check_docstring_for_example(docstring: str | None) -> bool:
     return "Example:" in docstring
 
 
-def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict, base_path: pathlib.Path = None):
+def extract_callables_from_file(
+    file_path: pathlib.Path,
+    missing_examples: dict,
+    base_path: pathlib.Path | None = None,
+):
     """Extract all callables from a Python file."""
     try:
         with pathlib.Path(file_path).open("r", encoding="utf-8") as f:
@@ -30,10 +34,7 @@ def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict,
         return
 
     # Determine the key for missing_examples dict
-    if base_path and file_path.is_relative_to(base_path):
-        key = file_path.relative_to(base_path)
-    else:
-        key = file_path
+    key = file_path.relative_to(base_path) if base_path and file_path.is_relative_to(base_path) else file_path
 
     for node in ast.walk(tree):
         if isinstance(node, ast.FunctionDef):
