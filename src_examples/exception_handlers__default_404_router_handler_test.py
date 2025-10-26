@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
-from main import app
+
+from .exception_handlers__default_404_router_handler import app
 
 def test_default_404_router_handler() -> None:
     client = TestClient(app)

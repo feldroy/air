@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from .dependencies___is_htmx_request import app
+from .exception_handlers__default_404_exception_handler import app
 
 def test_exception_handling_404() -> None:
     client = TestClient(app)
