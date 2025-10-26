@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from starlette.requests import Request
 
 import air
+from air.exception_handlers import DEFAULT_EXCEPTION_HANDLERS, default_500_exception_handler
 
 
 def test_air_app_factory() -> None:
@@ -135,10 +137,6 @@ def test_air_404_response() -> None:
 
 
 def test_default_500_exception_handler() -> None:
-    from starlette.requests import Request
-
-    from air.exception_handlers import default_500_exception_handler
-
     # Create a mock request and exception
     scope = {
         "type": "http",
@@ -167,8 +165,6 @@ def test_default_500_exception_handler() -> None:
 
 
 def test_injection_of_default_exception_handlers() -> None:
-    from air.exception_handlers import DEFAULT_EXCEPTION_HANDLERS
-
     def handler(request: air.Request, exc: Exception) -> air.AirResponse:
         return air.AirResponse()
 

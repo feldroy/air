@@ -307,6 +307,7 @@ select = [
     "F", # https://docs.astral.sh/ruff/rules/#pyflakes-f
     "PGH", # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
     #    "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
+    "PLC", # https://docs.astral.sh/ruff/rules/#convention-plc
     "UP", # https://docs.astral.sh/ruff/rules/#pyupgrade-up
     "FURB", # https://docs.astral.sh/ruff/rules/#refurb-furb
     "RUF", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
@@ -327,6 +328,7 @@ ignore = [
     "D206", # docstring-tab-indentation (formatter handles indentation)
     "D300", # triple-single-quotes (formatter enforces double quotes)
     "ERA001", # commented-out code
+    "PLC0414", # keep explicit alias
     # TODO -> Remove the rules below this line
     "E501", # Line too long
     "PGH004", # Use specific rule codes when using `noqa` or `ruff: noqa`
