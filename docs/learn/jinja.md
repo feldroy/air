@@ -1,6 +1,6 @@
 # Using Jinja with Air
 
-We love Jinja. Proven and fast, its our go-to for when we want to manually craft templates containing programmatic content. To that end, we've ensured Air works great at combining Jinja and Air Tags together.
+We love Jinja. Proven and fast, it's our go-to for when we want to manually craft templates containing programmatic content. To that end, we've ensured Air works great at combining Jinja and Air Tags together.
 
 !!! note
     This document covers the concepts and how Jinja2 works in Air. The full reference for the tooling can be found at the [Templates API Reference](https://feldroy.github.io/air/api/templates/).
@@ -15,7 +15,7 @@ We love Jinja. Proven and fast, its our go-to for when we want to manually craft
 
 ## Using Jinja for the HTML Layout
 
-Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes its easy to construct layouts using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is easier.
+Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes it's easy to construct layouts using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is easier.
 
 Here's a simple Jinja layout file:
 
