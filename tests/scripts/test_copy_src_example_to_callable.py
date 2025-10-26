@@ -2,6 +2,7 @@ import pytest
 
 from scripts.copy_src_example_to_callable import (
     remove_python_extension,
+    split_name_by_double_underscore,
     parse_module_class_function_names_from_filename,
 )
 
@@ -41,6 +42,22 @@ def test_remove_python_extension_raises_ValueError_on_non_python_files(
     """remove_python_extension() raises ValueError when filename is not a python file name."""
     with pytest.raises(ValueError):
         remove_python_extension(filename)
+
+
+@pytest.mark.current
+@pytest.mark.parametrize(
+    "filename, expected_output",
+    [
+        ("applications__Air__get", ["applications", "Air", "get"]),
+        ("applications__Air__page", ["applications", "Air", "page"]),
+        ("applications__Air__post", ["applications", "Air", "post"]),
+    ],
+)
+def test_split_name_by_double_underscore_returns_expected_output(
+    filename: str, expected_output: list[str]
+) -> None:
+    """split_name_by_double_underscore() returns expected list of strings from double underscore split."""
+    assert split_name_by_double_underscore(filename) == expected_output
 
 
 @pytest.mark.current
