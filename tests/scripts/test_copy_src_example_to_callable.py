@@ -157,7 +157,7 @@ def run_teardown_function_for_test_update_example_section_returns_True_on_succes
     subprocess.run(["uv", "run", "scripts/copy_src_example_to_callable.py"], check=True)
 
 
-@pytest.mark.original
+@pytest.mark.current
 def test_update_example_section_returns_True_on_success() -> None:
     """update_example_section() returns True on success."""
     from src.air.applications import Air
