@@ -7,4 +7,4 @@ def test_exception_handling_500() -> None:
 
     response = client.get("/")
     assert response.status_code == 500
-    assert response.text == "<h1>500 Internal Server Error</h1>"
+    assert response.text == "<p>500 Internal Server Error</p>"
