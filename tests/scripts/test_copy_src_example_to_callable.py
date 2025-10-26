@@ -1,3 +1,8 @@
+import time
+
+import subprocess
+
+
 import pytest
 
 from pathlib import Path
@@ -144,6 +149,12 @@ def test_parse_funtion_module_and_class_from_filename_returns_a_tuple_of_module_
     assert parse_funtion_module_and_class_from_filename(filename) == expected_output
 
 
+def run_teardown_function_for_test_update_example_section_returns_True_on_success():
+    """Function to call after test_update_example_section_returns_True_on_success() is ran."""
+
+    subprocess.run(["uv", "run", "scripts/copy_src_example_to_callable.py"], check=True)
+
+
 @pytest.mark.current
 def test_update_example_section_returns_True_on_success() -> None:
     """update_example_section() returns True on success."""
@@ -183,3 +194,7 @@ def test_update_example_section_returns_True_on_success() -> None:
     current_page_method_docstring = Air.page.__doc__
 
     assert updated_example_content not in current_page_method_docstring
+
+    time.sleep(5)
+
+    run_teardown_function_for_test_update_example_section_returns_True_on_success()
