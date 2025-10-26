@@ -263,6 +263,27 @@ def test_air_router_get_with_url_method_throws_error():
     assert response.text == "<h1>Error: NoMatchFound</h1>"
 
 
+def test_air_router_get_url_method_different_path():
+    """Test GET method with url helper function using different path"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/")
+    def index() -> H1:
+        return air.H1(f"Profile URL: {profile_page.url(username='johndoe')}")
+
+    @router.get("/profile/{username}")
+    def profile_page(username: str) -> H1:
+        return air.H1(f"Profile page {username}")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.text == "<h1>Profile URL: /profile/johndoe</h1>"
+
+
 def test_air_router_post_with_url_method() -> None:
     """Test POST method with url helper function"""
     app = air.Air()
@@ -307,3 +328,24 @@ def test_air_router_post_with_url_method_throws_error():
 
     response = client.post("/post-url-helper-error-test")
     assert response.text == "<h1>Error: NoMatchFound</h1>"
+
+
+def test_air_router_post_url_method_different_path():
+    """Test POST method with url helper function using different path"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/")
+    def index() -> air.P:
+        return air.P(save_profile_details.url(username="johndoe2"))
+
+    @router.post("/save-profile/{username}")
+    def save_profile_details(username: str) -> H1:
+        return air.H1(f"Profile for {username} saved successfully")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.text == "<p>/save-profile/johndoe2</p>"
