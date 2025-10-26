@@ -11,41 +11,108 @@ from pathlib import Path
 import typer
 
 
-def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
+def is_filename_not_parseable(filename: str) -> bool:
+    """Check if filename is not parseable for `parse_funtion_module_and_class_from_filename` function."""
+
+    not_a_python_file = not filename.endswith(".py")
+    is__init__py = filename == "__init__.py"
+    ends_with__test_py = filename.endswith("__test.py")
+
+    return not_a_python_file or is__init__py or ends_with__test_py
+
+
+def remove_python_extension(filename: str) -> str:
+    """Remove .py extension from filename."""
+    if not filename.endswith(".py"):
+        raise ValueError(f"Filename {filename} does not end with .py")
+
+    return filename[:-3]
+
+
+def split_name_by_double_underscore(name: str) -> list[str]:
+    """Split name by double underscore."""
+    return name.split("__")
+
+
+def get_module_level_function_name_parts(
+    name_parts: list[str, str],
+) -> tuple[str, None, str]:
+    """Get (module, None, function) tuple from module-level function name parts
+
+
+    Example: ["requests", "get"] from requests__get.py filename.
+    """
+
+    assert len(name_parts) == 2
+
+    module_name = name_parts[0]
+    class_name = None
+    function_name = name_parts[1]
+
+    return (module_name, class_name, function_name)
+
+
+def get_module_class_method_name_parts(
+    name_parts: list[str, str, str],
+) -> tuple[str, str, str]:
+    """Get (module, class, method) tuple from name_parts list of strings.
+
+
+    Example: ["applications", "Air", "page"] from applications__Air__page.py filename
+    """
+
+    assert len(name_parts) >= 3
+
+    module_name = name_parts[0]
+    class_name = name_parts[1]
+    method_name = name_parts[2]
+
+    return (module_name, class_name, method_name)
+
+
+def is_name_a_module_level_function(name_parts: list[str]) -> bool:
+    """Check if name_parts is a 2 itemed list representing a module-level function name split by double underscore.
+
+    Example: ["request", "get"] from requests__get.py filename.
+    """
+    return len(name_parts) == 2
+
+
+def is_name_a_module_class_method(name_parts: list[str]) -> bool:
+    """Check if name_parts is a 3 itemed list representing a module-class-method name split by double underscore.
+
+    Example: ["applications", "Air", "get"] from applications__Air__get.py filename.
+    """
+    return len(name_parts) >= 3
+
+
+def parse_funtion_module_and_class_from_filename(
+    filename: str,
+) -> tuple[str, str | None, str] | None:
     """Parse filename like 'applications__Air__page.py' into (module, class, method).
 
     Also supports 'module__function.py' format for module-level functions.
     Returns (module, class_name, method_name) or (module, None, function_name).
     Returns None if filename is a test file or doesn't match expected pattern.
     """
-    if filename.endswith("__test.py") or filename == "__init__.py":
+    if is_filename_not_parseable(filename):
         return None
 
-    if not filename.endswith(".py"):
+    name = remove_python_extension(filename)
+
+    name_parts = split_name_by_double_underscore(name)
+
+    if is_name_a_module_level_function(name_parts):
+        return get_module_level_function_name_parts(name_parts)
+    elif is_name_a_module_class_method(name_parts):
+        return get_module_class_method_name_parts(name_parts)
+    else:
         return None
 
-    # Remove .py extension
-    name = filename[:-3]
 
-    # Split by double underscore
-    parts = name.split("__")
-
-    if len(parts) == 2:
-        # Module-level function: module__function
-        module = parts[0]
-        function_name = parts[1]
-        return module, None, function_name
-    if len(parts) >= 3:
-        # Class method: module__class__method
-        module = parts[0]
-        class_name = parts[1]
-        method_name = parts[2]
-        return module, class_name, method_name
-
-    return None
-
-
-def update_example_section(file_path: Path, class_name: str | None, method_name: str, example_content: str) -> bool:
+def update_example_section(
+    file_path: Path, class_name: str | None, method_name: str, example_content: str
+) -> bool:
     """Update the Example section in the specified method or function's docstring.
 
     Returns True if successful, False otherwise.
@@ -91,7 +158,9 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
                 break
 
         if not target_method:
-            typer.secho(f"Method {method_name} not found in class {class_name} in {file_path}")
+            typer.secho(
+                f"Method {method_name} not found in class {class_name} in {file_path}"
+            )
             return False
 
     # Get the docstring
@@ -127,7 +196,9 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
 
     # Build the new example section with proper indentation
     example_lines = example_content.strip().split("\n")
-    indented_example_lines = [code_indent + line if line.strip() else "" for line in example_lines]
+    indented_example_lines = [
+        code_indent + line if line.strip() else "" for line in example_lines
+    ]
     new_example = "\n\n" + "\n".join(indented_example_lines) + "\n" + docstring_indent
 
     # Split the docstring at "Example:"
@@ -149,7 +220,13 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
             # Empty lines - no indent
             indented_docstring_lines.append("")
 
-    new_docstring_content = "\n".join(indented_docstring_lines) + "\n\n" + docstring_indent + "Example:" + new_example
+    new_docstring_content = (
+        "\n".join(indented_docstring_lines)
+        + "\n\n"
+        + docstring_indent
+        + "Example:"
+        + new_example
+    )
 
     # Reconstruct the file
     docstring_end_line = docstring_node.end_lineno - 1  # pyrefly: ignore
@@ -157,7 +234,9 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
     after_docstring = "\n".join(lines[docstring_end_line + 1 :])
 
     triple_quote = '"""'
-    new_docstring_full = f"{docstring_indent}{triple_quote}{new_docstring_content}{triple_quote}"
+    new_docstring_full = (
+        f"{docstring_indent}{triple_quote}{new_docstring_content}{triple_quote}"
+    )
 
     new_content = before_docstring + "\n" + new_docstring_full + "\n" + after_docstring
 
@@ -180,7 +259,7 @@ def main():
 
     # Process each file in src_examples
     for example_file in src_examples_dir.glob("*.py"):
-        parsed = parse_filename_class(example_file.name)
+        parsed = parse_funtion_module_and_class_from_filename(example_file.name)
         if not parsed:
             continue
 

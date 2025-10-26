@@ -226,6 +226,7 @@ test-coverage:
 # Build, store and open the HTML coverage report
 [group('coverage')]
 coverage-html:
+    coverage erase
     just run -- pytest -vvv --cov --cov-fail-under=0 --cov-report=html
     open ./htmlcov/index.html
 
