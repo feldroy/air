@@ -289,7 +289,7 @@ def test_RedirectResponse() -> None:
 
     client = TestClient(app)
     response = client.get("/test", follow_redirects=False)
-    assert response.status_code == 303
+    assert response.status_code == 307
 
     # check if redirect works
     response = client.get("/test", follow_redirects=True)

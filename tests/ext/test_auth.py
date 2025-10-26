@@ -80,6 +80,6 @@ def test_github_callback_route() -> None:
 
         response = client.get("/account/github/callback")
 
-        assert response.history[0].status_code == 303
+        assert response.history[0].status_code == 307
         assert response.status_code == 200
         assert "Hello" in response.text

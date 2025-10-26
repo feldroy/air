@@ -101,7 +101,7 @@ class RedirectResponse(StarletteRedirectResponse):
     def __init__(
         self,
         url: str | URL,
-        status_code: int = 303,
+        status_code: int = 307,
         headers: Mapping[str, str] | None = None,
         background: BackgroundTask | None = None,
     ) -> None:
