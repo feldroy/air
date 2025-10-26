@@ -45,7 +45,9 @@ def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
     return None
 
 
-def update_example_section(file_path: Path, class_name: str | None, method_name: str, example_content: str) -> bool:
+def update_example_section(
+    file_path: Path, class_name: str | None, method_name: str, example_content: str
+) -> bool:
     """Update the Example section in the specified method or function's docstring.
 
     Returns True if successful, False otherwise.
@@ -91,7 +93,9 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
                 break
 
         if not target_method:
-            typer.secho(f"Method {method_name} not found in class {class_name} in {file_path}")
+            typer.secho(
+                f"Method {method_name} not found in class {class_name} in {file_path}"
+            )
             return False
 
     # Get the docstring
@@ -127,7 +131,9 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
 
     # Build the new example section with proper indentation
     example_lines = example_content.strip().split("\n")
-    indented_example_lines = [code_indent + line if line.strip() else "" for line in example_lines]
+    indented_example_lines = [
+        code_indent + line if line.strip() else "" for line in example_lines
+    ]
     new_example = "\n\n" + "\n".join(indented_example_lines) + "\n" + docstring_indent
 
     # Split the docstring at "Example:"
@@ -149,7 +155,13 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
             # Empty lines - no indent
             indented_docstring_lines.append("")
 
-    new_docstring_content = "\n".join(indented_docstring_lines) + "\n\n" + docstring_indent + "Example:" + new_example
+    new_docstring_content = (
+        "\n".join(indented_docstring_lines)
+        + "\n\n"
+        + docstring_indent
+        + "Example:"
+        + new_example
+    )
 
     # Reconstruct the file
     docstring_end_line = docstring_node.end_lineno - 1  # pyrefly: ignore
@@ -157,7 +169,9 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
     after_docstring = "\n".join(lines[docstring_end_line + 1 :])
 
     triple_quote = '"""'
-    new_docstring_full = f"{docstring_indent}{triple_quote}{new_docstring_content}{triple_quote}"
+    new_docstring_full = (
+        f"{docstring_indent}{triple_quote}{new_docstring_content}{triple_quote}"
+    )
 
     new_content = before_docstring + "\n" + new_docstring_full + "\n" + after_docstring
 
