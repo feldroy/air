@@ -349,6 +349,8 @@ ignore = [
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
 ]
+"src_examples/dependencies___is_htmx_request.py" = ["FBT001"]
+"scripts/copy_src_example_to_callable.py" = ["C901"]
 
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
@@ -496,7 +498,7 @@ missing-attribute = false
 # Keep imports simple (src/ layout)
 pythonpath = ["src"]
 # Only look here for tests
-testpaths = ["tests"]
+testpaths = ["tests", "src_examples"]
 # Fail on any warning
 filterwarnings = ["error"]  # equals: -W error
 # pytest-asyncio
