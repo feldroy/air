@@ -525,6 +525,7 @@ def test_html5_validation_with_standard_field() -> None:
 
 def test_html5_validation_with_annotated() -> None:
     """Test HTML5 validation with Annotated type constraints."""
+    from typing import Annotated
     import annotated_types
 
     class AnnotatedModel(BaseModel):
@@ -543,6 +544,7 @@ def test_html5_validation_with_annotated() -> None:
 
 def test_html5_validation_optional_with_constraints() -> None:
     """Test that optional fields with constraints get minlength/maxlength but not required."""
+    from typing import Annotated
     import annotated_types
 
     class OptionalConstrainedModel(BaseModel):

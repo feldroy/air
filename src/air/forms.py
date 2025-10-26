@@ -192,14 +192,7 @@ def default_form_widget(
     for field_name, field_info in model.model_fields.items():
         if includes is not None and field_name not in includes:
             continue
-        field_type = field_info.annotation
-        origin = get_origin(field_type)
-
-        # Handle optional types (Union with None)
-        if (origin is Union or origin is UnionType) and type(None) in get_args(field_type):
-            # This is a Union type, get the non-None type
-            args = get_args(field_type)
-            field_type = next((arg for arg in args if arg is not type(None)), str)
+        
         input_type = pydantic_type_to_html_type(field_info)
         kwargs = {}
         # Inject values
@@ -214,20 +207,32 @@ def default_form_widget(
             kwargs["autofocus"] = True
         
         # Add HTML5 validation attributes from Pydantic constraints
-        # Handle required fields - only add required if field has no default and is truly required
-        # Check if the field type accepts None (use original annotation, not modified field_type)
-        is_optional = (origin is Union or origin is UnionType) and type(None) in get_args(field_info.annotation)
+        # Check if field is optional (Union with None)
+        annotation = field_info.annotation
+        origin = get_origin(annotation)
+        is_optional = (origin is Union or origin is UnionType) and type(None) in get_args(annotation)
+        
+        # Add required attribute for non-optional required fields
         if field_info.is_required() and not is_optional:
             kwargs["required"] = True
         
-        # Extract min_length and max_length from metadata
-        if hasattr(field_info, 'metadata') and field_info.metadata:
-            for constraint in field_info.metadata:
-                constraint_type = type(constraint).__name__
-                if constraint_type == 'MinLen' and hasattr(constraint, 'min_length'):
-                    kwargs["minlength"] = constraint.min_length
-                elif constraint_type == 'MaxLen' and hasattr(constraint, 'max_length'):
-                    kwargs["maxlength"] = constraint.max_length
+        # Extract min_length and max_length from field metadata
+        for meta in getattr(field_info, 'metadata', []):
+            if isinstance(meta, annotated_types.MinLen):
+                kwargs["minlength"] = meta.min_length
+            elif isinstance(meta, annotated_types.MaxLen):
+                kwargs["maxlength"] = meta.max_length
+            elif hasattr(annotated_types, 'Len') and isinstance(meta, annotated_types.Len):
+                if getattr(meta, 'min_length', None) is not None:
+                    kwargs["minlength"] = meta.min_length
+                if getattr(meta, 'max_length', None) is not None:
+                    kwargs["maxlength"] = meta.max_length
+        
+        # Fallback to field_info attributes if present
+        if hasattr(field_info, 'min_length') and field_info.min_length is not None:
+            kwargs.setdefault("minlength", field_info.min_length)
+        if hasattr(field_info, 'max_length') and field_info.max_length is not None:
+            kwargs.setdefault("maxlength", field_info.max_length)
         
         fields.append(
             tags.Tags(
