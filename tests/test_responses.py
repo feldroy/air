@@ -1,5 +1,6 @@
 from typing import Any
 
+from fastapi import status
 from fastapi.testclient import TestClient
 
 import air
@@ -289,7 +290,7 @@ def test_RedirectResponse() -> None:
 
     client = TestClient(app)
     response = client.get("/test", follow_redirects=False)
-    assert response.status_code == 303
+    assert response.status_code == status.HTTP_307_TEMPORARY_REDIRECT
 
     # check if redirect works
     response = client.get("/test", follow_redirects=True)

@@ -56,8 +56,10 @@ def create_sync_engine(
         echo: Enables logging of all SQL statements executed by the engine, which can be useful for debugging.
 
     Example:
-
-        TODO
+        engine = create_sync_engine(
+            "mysql+mysqldb://aang:password123!@avatar/air_temple",
+            echo=True,
+        )
     """
     return _create_engine(url=url, echo=echo)
 
