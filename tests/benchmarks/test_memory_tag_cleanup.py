@@ -5,6 +5,7 @@ garbage collected and don't leak memory during typical usage patterns.
 """
 
 import gc
+import logging
 import tracemalloc
 
 import pytest
@@ -179,10 +180,23 @@ def test_tag_creation_memory_scaling() -> None:
 
     tracemalloc.stop()
 
-    # TODO:
-    #   Print memory scaling results
-    #   for scale, _total_memory, _per_tag_memory in memory_measurements:
-    #       pass
+    # Memory scaling logs
+    logger = logging.getLogger(__name__)
+    logger.propagate = True
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+    divider_size = 62
+
+    lines = [
+        "\nMemory Scaling Results:",
+        f"{'Scale (No. of Tags)':>18} | {'Total Used (bytes)':>20} | {'Per Tag (bytes)':>16}",
+        "-" * divider_size,
+    ]
+    for scale, _total_memory, _per_tag_memory in memory_measurements:
+        lines.append(f"{scale:>19} | {_total_memory:>20,.0f} | {_per_tag_memory:>16.1f}")
+    lines.append("-" * divider_size)
+
+    logger.info("\n".join(lines))
 
     # Check that memory per tag is relatively consistent (within 50% variance)
     per_tag_memories = [measurement[2] for measurement in memory_measurements]
