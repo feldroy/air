@@ -14,7 +14,7 @@ def _is_htmx_request(hx_request: str = Header(default=None)) -> bool:
         import air
         from fastapi import Depends
 
-        app = air.App()
+        app = air.Air()
 
         @app.get("/")
         def index(is_htmx: bool = Depends(air.is_htmx_request)):
