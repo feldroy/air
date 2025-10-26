@@ -176,7 +176,7 @@ def user_detail(username: str): # (1)!
     )
 ```
 
-1. We have defined a function argument named `username`, which is identical to the variable specified in the decorator. We also specified the Python type in this definition.
+1. We have defined a function argument named `username`. Because `username` is not part of the decorator's URL path ('/users'), Air automatically treats it as a query parameter.
 
 Try it out by going to <http://localhost:8000/users/?username=Aang>
 
