@@ -39,7 +39,7 @@ def test_TagResponse_compatibility() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<div><h1>Hi from TagResponse!</h1><br /></div>"
+    assert response.text == "<div><h1>Hi from TagResponse!</h1><br></div>"
 
 
 def test_AirResponse() -> None:
