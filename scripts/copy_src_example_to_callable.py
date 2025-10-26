@@ -35,8 +35,13 @@ def split_name_by_double_underscore(name: str) -> list[str]:
 
 
 def get_module_level_function_name_parts(
-    name_parts: list[str],
+    name_parts: list[str, str],
 ) -> tuple[str, None, str]:
+    """Get (module, None, function) tuple from module-level function name parts
+
+
+    Example: ["requests", "get"] from requests__get.py filename.
+    """
 
     assert len(name_parts) == 2
 
@@ -47,8 +52,16 @@ def get_module_level_function_name_parts(
     return (module_name, class_name, function_name)
 
 
-def get_module_class_method_name_parts(name_parts: list[str]) -> tuple[str, str, str]:
-    assert len(name_parts) == 3
+def get_module_class_method_name_parts(
+    name_parts: list[str, str, str],
+) -> tuple[str, str, str]:
+    """Get (module, class, method) tuple from name_parts list of strings.
+
+
+    Example: ["applications", "Air", "page"] from applications__Air__page.py filename
+    """
+
+    assert len(name_parts) >= 3
 
     module_name = name_parts[0]
     class_name = name_parts[1]
