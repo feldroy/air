@@ -8,20 +8,20 @@ from scripts.copy_src_example_to_callable import (
 
 @pytest.mark.current
 @pytest.mark.parametrize(
-    "filename",
+    "filename, expected_output",
     [
-        "applications.py",
-        "requests.py",
-        "utils.py",
-        "template_tags.py",
-        "session_management.py",
+        ("applications.py", "applications"),
+        ("requests.py", "requests"),
+        ("utils.py", "utils"),
+        ("template_tags.py", "template_tags"),
+        ("session_management.py", "session_management"),
     ],
 )
 def test_remove_python_extension_returns_filename_without_py_extension(
-    filename: str,
+    filename: str, expected_output: str
 ) -> None:
     """remove_python_extension() returns filename without .py extension."""
-    assert remove_python_extension(filename) == filename[:-3]
+    assert remove_python_extension(filename) == expected_output
 
 
 @pytest.mark.current
