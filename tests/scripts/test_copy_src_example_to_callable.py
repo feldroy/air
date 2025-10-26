@@ -40,12 +40,20 @@ def test_parse_filename_class_returns_None_on_non_python_files(filename: str) ->
         ("applications__Air__get.py", ("applications", "Air", "get")),
         ("applications__Air__page.py", ("applications", "Air", "page")),
         ("applications__Air__post.py", ("applications", "Air", "post")),
+        (
+            "applications__Requests__get_response.py",
+            ("applications", "Requests", "get_response"),
+        ),
+        (
+            "applications__Requests__sanitize_data.py",
+            ("applications", "Requests", "sanitize_data"),
+        ),
     ],
 )
 def test_parse_filename_class_returns_a_tuple_of_module_class_and_method(
     filename: str, expected_output: tuple[str, str, str]
 ) -> None:
-    """parse_filename_class() returns a tuple of (module, class,  method) for a valid class method on a module."""
+    """parse_filename_class() returns a tuple of (module, class, method) for a valid class method on a module."""
 
     assert parse_filename_class(filename) == expected_output
 
@@ -59,9 +67,9 @@ def test_parse_filename_class_returns_a_tuple_of_module_class_and_method(
         ("requests__post.py", ("requests", None, "post")),
     ],
 )
-def test_parse_filename_class_returns_a_tuple_of_module_class_and_method(
+def test_parse_filename_class_returns_a_tuple_of_module_None_and_function_on_a_module_level_function(
     filename: str, expected_output: tuple[str, str, str]
 ) -> None:
-    """parse_filename_class() returns a tuple of (module, None,  method) for a valid module-level function."""
+    """parse_filename_class() returns a tuple of (module, None, function) for a valid module-level function."""
 
     assert parse_filename_class(filename) == expected_output

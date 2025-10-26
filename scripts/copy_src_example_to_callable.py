@@ -11,6 +11,68 @@ from pathlib import Path
 import typer
 
 
+def is_filename_not_parseable(filename: str) -> bool:
+    """Check if filename is not parseable for `parse_filename_class` function."""
+
+    not_a_python_file = not filename.endswith(".py")
+    is__init__py = filename == "__init__.py"
+    ends_with__test_py = filename.endswith("__test.py")
+
+    return not_a_python_file or is__init__py or ends_with__test_py
+
+
+def remove_python_extension(filename: str) -> str:
+    """Remove .py extension from filename."""
+    if not filename.endswith(".py"):
+        raise ValueError(f"Filename {filename} does not end with .py")
+
+    return filename[:-3]
+
+
+def split_name_by_double_underscore(name: str) -> list[str]:
+    """Split name by double underscore."""
+    return name.split("__")
+
+
+def get_module_level_function_name_parts(
+    name_parts: list[str],
+) -> tuple[str, None, str]:
+
+    assert len(name_parts) == 2
+
+    module_name = name_parts[0]
+    class_name = None
+    function_name = name_parts[1]
+
+    return (module_name, class_name, function_name)
+
+
+def get_module_class_method_name_parts(name_parts: list[str]) -> tuple[str, str, str]:
+    assert len(name_parts) == 3
+
+    module_name = name_parts[0]
+    class_name = name_parts[1]
+    method_name = name_parts[2]
+
+    return (module_name, class_name, method_name)
+
+
+def is_name_a_module_level_function(name_parts: list[str]) -> bool:
+    """Check if name_parts is a 2 itemed list representing a module-level function name split by double underscore.
+
+    Example: ["request", "get"] from requests__get.py filename.
+    """
+    return len(name_parts) == 2
+
+
+def is_name_a_module_class_method(name_parts: list[str]) -> bool:
+    """Check if name_parts is a 3 itemed list representing a module-class-method name split by double underscore.
+
+    Example: ["applications", "Air", "get"] from applications__Air__get.py filename.
+    """
+    return len(name_parts) >= 3
+
+
 def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
     """Parse filename like 'applications__Air__page.py' into (module, class, method).
 
@@ -18,31 +80,19 @@ def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
     Returns (module, class_name, method_name) or (module, None, function_name).
     Returns None if filename is a test file or doesn't match expected pattern.
     """
-    if filename.endswith("__test.py") or filename == "__init__.py":
+    if is_filename_not_parseable(filename):
         return None
 
-    if not filename.endswith(".py"):
+    name = remove_python_extension(filename)
+
+    name_parts = split_name_by_double_underscore(name)
+
+    if is_name_a_module_level_function(name_parts):
+        return get_module_level_function_name_parts(name_parts)
+    elif is_name_a_module_class_method(name_parts):
+        return get_module_class_method_name_parts(name_parts)
+    else:
         return None
-
-    # Remove .py extension
-    name = filename[:-3]
-
-    # Split by double underscore
-    parts = name.split("__")
-
-    if len(parts) == 2:
-        # Module-level function: module__function
-        module = parts[0]
-        function_name = parts[1]
-        return module, None, function_name
-    if len(parts) >= 3:
-        # Class method: module__class__method
-        module = parts[0]
-        class_name = parts[1]
-        method_name = parts[2]
-        return module, class_name, method_name
-
-    return None
 
 
 def update_example_section(
