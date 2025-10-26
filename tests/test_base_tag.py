@@ -174,7 +174,7 @@ def test_pretty_display_in_the_browser_delegates(monkeypatch: pytest.MonkeyPatch
 def test_render_helpers_cover_void_and_paired_output() -> None:
     tag = SampleTag("void-test")
 
-    assert tag._render_void() == "<sampletag />"
+    assert tag._render_void() == "<sampletag>"
     assert tag._render_paired() == "<sampletag>void-test</sampletag>"
 
 

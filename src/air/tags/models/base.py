@@ -224,9 +224,8 @@ class BaseTag:
 
         Note:
             HTML5 does not require a trailing slash for void elements.
-            TODO: consider returning f"<{self.name}{self.attrs}>" instead.
         """
-        return f"<{self.name}{self.attrs} />"
+        return f"<{self.name}{self.attrs}>"
 
     def _render_paired(self) -> str:
         """Render a standard paired tag with children.

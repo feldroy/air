@@ -14,7 +14,7 @@ from rich import print
 
 import air
 
-database = {}
+database = {}  # dict to simulate a database for demo purposes only
 
 
 async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
@@ -42,9 +42,6 @@ github_oauth_client = air.ext.auth.GitHubOAuthClientFactory(
 app = air.Air()
 app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 app.include_router(github_oauth_client.router)
-
-
-database = {}
 
 
 @app.page
