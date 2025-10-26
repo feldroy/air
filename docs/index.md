@@ -204,7 +204,7 @@ app.mount("/api", api)
 Don't forget the Jinja template!
 
 ```html
-<!doctype html
+<!doctype html>
 <html>
     <head>
         <title>Awesome SaaS</title>
