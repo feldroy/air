@@ -12,12 +12,12 @@ def _is_htmx_request(hx_request: str = Header(default=None)) -> bool:
     Example:
 
         import air
-        from fastapi import Depends
 
-        app = air.App()
+        app = air.Air()
+
 
         @app.get("/")
-        def index(is_htmx: bool = Depends(air.is_htmx_request)):
+        def index(is_htmx: bool = air.is_htmx_request):
             return air.H1(f"Is HTMX request?: {is_htmx}")
     """
     return hx_request is not None and hx_request.lower() == "true"

@@ -4,6 +4,7 @@ from scripts.copy_src_example_to_callable import (
     remove_python_extension,
     split_name_by_double_underscore,
     parse_funtion_module_and_class_from_filename,
+    update_example_section,
 )
 
 
@@ -139,3 +140,32 @@ def test_parse_funtion_module_and_class_from_filename_returns_a_tuple_of_module_
     """parse_funtion_module_and_class_from_filename() returns a tuple of (module, None, function) for a valid module-level function."""
 
     assert parse_funtion_module_and_class_from_filename(filename) == expected_output
+
+
+@pytest.mark.current
+def test_update_example_section_returns_True_on_success() -> None:
+    """update_example_section() returns True on success."""
+
+    example_section = """
+   
+    import air
+
+    app = air.Air()
+
+    @app.page
+    def index(): # route is "/"
+        return air.H1("I am the index page.")
+
+    """
+
+
+    update_example_section(
+        
+    )
+
+    assert (
+        update_example_section(
+            "applications__Air__page.py", "applications", "Air", "page", "Example:"
+        )
+        == True
+    )
