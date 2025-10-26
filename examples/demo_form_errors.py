@@ -21,7 +21,7 @@ app = air.Air()
 
 
 @app.get("/")
-async def show_form():
+def show_form():
     """Show the form initially."""
     form = ContactForm()
     return air.layouts.picocss(

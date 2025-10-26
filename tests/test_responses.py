@@ -197,12 +197,12 @@ def test_SSEResponse() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
-    async def event_generator():
+    def event_generator():
         yield air.P("Hello")
         yield air.P("World")
 
     @app.get("/test")
-    async def test_endpoint():
+    def test_endpoint():
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -217,12 +217,12 @@ def test_SSEResponse_multiline_tag_content() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
-    async def event_generator():
+    def event_generator():
         yield air.P("Hello\nWorld")
         yield air.P("World\nHello")
 
     @app.get("/test")
-    async def test_endpoint():
+    def test_endpoint():
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -239,12 +239,12 @@ def test_SSEResponse_multiline_tag_content() -> None:
 def test_SSEResponse_string_content() -> None:
     app = air.Air()
 
-    async def event_generator():
+    def event_generator():
         yield "Hello\nWorld"
         yield "Air is cool\nTry it out!"
 
     @app.get("/test")
-    async def test_endpoint():
+    def test_endpoint():
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -261,11 +261,11 @@ def test_SSEResponse_string_content() -> None:
 def test_SSEResponse_bytes_content() -> None:
     app = air.Air()
 
-    async def event_generator():
+    def event_generator():
         yield b"already encoded"
 
     @app.get("/test")
-    async def test_endpoint():
+    def test_endpoint():
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -281,11 +281,11 @@ def test_RedirectResponse() -> None:
     app = air.Air()
 
     @app.get("/test2")
-    async def another_test_endpoint():
+    def another_test_endpoint():
         return air.AirResponse()
 
     @app.get("/test")
-    async def test_endpoint():
+    def test_endpoint():
         return air.RedirectResponse("/test2")
 
     client = TestClient(app)
