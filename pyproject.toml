@@ -505,7 +505,8 @@ filterwarnings = ["error"]  # equals: -W error
 asyncio_mode = "auto"
 # Custom markers
 markers = [
-    "memory: marks tests as memory-focused (deselect with '-m \"not memory\"')"
+    "memory: marks tests as memory-focused (deselect with '-m \"not memory\"')",
+    "current: mark test as currently being focused on"
 ]
 addopts = [
     "--color=yes",
@@ -539,6 +540,7 @@ omit = ["tests/*", ".venv/*", "venv/*"]
 fail_under = 95
 show_missing = true
 skip_covered = true
+skip_empty = true
 ignore_errors = true
 precision = 0
 sort = "miss"
