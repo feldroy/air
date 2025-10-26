@@ -25,6 +25,25 @@ def test_remove_python_extension_returns_filename_without_py_extension(
 
 
 @pytest.mark.current
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "getCallable.js",
+        "example.txt",
+        "data.json",
+        "script.sh",
+        "README.md",
+    ],
+)
+def test_remove_python_extension_raises_ValueError_on_non_python_files(
+    filename: str,
+) -> None:
+    """remove_python_extension() raises ValueError when filename is not a python file name."""
+    with pytest.raises(ValueError):
+        remove_python_extension(filename)
+
+
+@pytest.mark.current
 def test_parse_module_class_function_names_from_filename_returns_None_on_filename_ends_with___test_py() -> (
     None
 ):
