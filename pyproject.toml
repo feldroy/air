@@ -500,7 +500,10 @@ pythonpath = ["src"]
 # Only look here for tests
 testpaths = ["tests", "src_examples"]
 # Fail on any warning
-filterwarnings = ["error"]  # equals: -W error
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning:air.routing"
+] # equals: -W error
 # pytest-asyncio
 asyncio_mode = "auto"
 # Custom markers

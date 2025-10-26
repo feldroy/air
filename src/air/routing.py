@@ -11,7 +11,7 @@ from typing import (
     Literal,
     override,
 )
-from warnings import deprecated
+import warnings
 
 from fastapi import params
 from fastapi.routing import APIRoute, APIRouter
@@ -152,14 +152,15 @@ class AirRouter(APIRouter):
                 A list of routes to serve incoming HTTP and WebSocket requests.
                 """
             ),
-            deprecated(
+            warnings.warn(
                 """
                 You normally wouldn't use this parameter with FastAPI, it is inherited
                 from Starlette and supported for compatibility.
 
                 In FastAPI, you normally would use the *path operation methods*,
                 like `router.get()`, `router.post()`, etc.
-                """
+                """,
+                DeprecationWarning,
             ),
         ] = None,
         redirect_slashes: Annotated[
