@@ -1164,8 +1164,29 @@ class Air(FastAPI):
         return decorator
 
     def _url_helper(self, name: str) -> Callable[..., str]:
-        """
-        Helper function to generate the URL for a given path operation name. Wraps around Starlette's `url_path_for`.
+        """Helper function to generate URLs for route operations.
+
+        Creates a callable that generates URLs for a specific route by wrapping
+        Starlette's `url_path_for` method.
+
+        Args:
+            name: The route operation name (usually the function name or custom name).
+
+        Returns:
+            A function that accepts **params (path parameters) and returns the
+            generated URL string.
+
+        Raises:
+            NoMatchFound: If the route name doesn't exist or if the provided
+                parameters don't match the route's path parameters.
+
+        Example:
+            @app.get("/users/{user_id}")
+            def get_user(user_id: int):
+                return air.H1(f"User {user_id}")
+
+            # The .url() method is created by this helper
+            url = get_user.url(user_id=123)  # Returns: "/users/123"
         """
 
         def helper_function(**params: Any) -> str:
