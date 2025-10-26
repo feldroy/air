@@ -1,6 +1,7 @@
 import pathlib
 import tempfile
 from collections import defaultdict
+from unittest.mock import patch
 
 from scripts.missing_examples import (
     check_docstring_for_example,
@@ -54,9 +55,12 @@ class ClassWithExample:
 
     try:
         missing_examples = defaultdict(list)
-        extract_callables_from_file(temp_path, missing_examples)
 
-        results = missing_examples[temp_path]
+        # Mock the relative_to call to return a simple path
+        with patch.object(pathlib.Path, "relative_to", return_value=pathlib.Path("test_file.py")):
+            extract_callables_from_file(temp_path, missing_examples)
+
+        results = missing_examples[pathlib.Path("test_file.py")]
 
         assert "function: function_without_example" in results
         assert "method: ClassWithExample.method_without_example" in results

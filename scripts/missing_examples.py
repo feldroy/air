@@ -21,11 +21,7 @@ def check_docstring_for_example(docstring: str | None) -> bool:
     return "Example:" in docstring
 
 
-def extract_callables_from_file(
-    file_path: pathlib.Path,
-    missing_examples: dict,
-    base_path: pathlib.Path | None = None,
-):
+def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict):
     """Extract all callables from a Python file."""
     try:
         with pathlib.Path(file_path).open("r", encoding="utf-8") as f:
@@ -33,19 +29,16 @@ def extract_callables_from_file(
     except (SyntaxError, UnicodeDecodeError):
         return
 
-    # Determine the key for missing_examples dict
-    key = file_path.relative_to(base_path) if base_path and file_path.is_relative_to(base_path) else file_path
-
     for node in ast.walk(tree):
         if isinstance(node, ast.FunctionDef):
             # Function or method
             if not check_docstring_for_example(ast.get_docstring(node)):
-                missing_examples[key].append(f"function: {node.name}")
+                missing_examples[file_path.relative_to("src")].append(f"function: {node.name}")
 
         elif isinstance(node, ast.ClassDef):
             # Class
             if not check_docstring_for_example(ast.get_docstring(node)):
-                missing_examples[key].append(f"class: {node.name}")
+                missing_examples[file_path.relative_to("src")].append(f"class: {node.name}")
 
             # Check methods in class
             for item in node.body:
@@ -55,7 +48,7 @@ def extract_callables_from_file(
                     and not check_docstring_for_example(ast.get_docstring(item))
                 ):
                     # Skip private methods (start with _)
-                    missing_examples[key].append(f"method: {node.name}.{item.name}")
+                    missing_examples[file_path.relative_to("src")].append(f"method: {node.name}.{item.name}")
 
 
 def main():
@@ -80,7 +73,7 @@ def main():
             # Check if this file should be excluded
             relative_path = str(file_path.relative_to("src/air"))
             if relative_path not in excluded_paths:
-                extract_callables_from_file(file_path, missing_examples, pathlib.Path("src"))
+                extract_callables_from_file(file_path, missing_examples)
             else:
                 excluded_files.append(relative_path)
 
