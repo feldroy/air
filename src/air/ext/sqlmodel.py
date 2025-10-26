@@ -57,7 +57,7 @@ def create_sync_engine(
 
     Example:
         engine = create_sync_engine(
-            "mysql+mysqldb://aang:password123!@aang/air_temple",
+            "mysql+mysqldb://aang:password123!@avatar/air_temple",
             echo=True,
         )
     """
