@@ -152,28 +152,25 @@ def test_parse_funtion_module_and_class_from_filename_returns_a_tuple_of_module_
 def run_teardown_function_for_test_update_example_section_returns_True_on_success():
     """Function to call after test_update_example_section_returns_True_on_success() is ran."""
 
+    # NOTE: TODO remove this sleep after unit tests are done
+    time.sleep(7)
     subprocess.run(["uv", "run", "scripts/copy_src_example_to_callable.py"], check=True)
 
 
-@pytest.mark.current
+@pytest.mark.original
 def test_update_example_section_returns_True_on_success() -> None:
     """update_example_section() returns True on success."""
     from src.air.applications import Air
 
-    updated_example_content = """
+    new_example_content = """
     import air
 
     app = air.Air()
 
 
     @app.page
-    def index():  # routes is "/"
+    def home():  # routes is "/"
         return air.H1("This is the home page")
-
-
-    @app.page
-    def about_us():  # route is "/about-us"
-        return air.H1("This is the about page")
 
 
     @app.page
@@ -189,12 +186,27 @@ def test_update_example_section_returns_True_on_success() -> None:
         "src_examples/applications__Air__page.py"
     )
 
-    page_method_example_content = page_method_original_usage_example_file.read_text()
+    page_method_original_example_content = (
+        page_method_original_usage_example_file.read_text()
+    )
 
-    current_page_method_docstring = Air.page.__doc__
+    original_page_method_docstring = Air.page.__doc__
 
-    assert updated_example_content not in current_page_method_docstring
+    assert page_method_original_example_content in original_page_method_docstring
+    assert new_example_content not in original_page_method_docstring
 
-    time.sleep(5)
+    update_result = update_example_section(
+        file_path=applications_module_path,
+        class_name="Air",
+        method_name="page",
+        example_content=new_example_content,
+    )
+
+    assert update_result is True
+
+    new_page_method_docstring = Air.page.__doc__
+
+    assert page_method_original_example_content not in new_page_method_docstring
+    assert new_example_content in new_page_method_docstring
 
     run_teardown_function_for_test_update_example_section_returns_True_on_success()
