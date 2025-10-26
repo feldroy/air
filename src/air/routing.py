@@ -308,8 +308,13 @@ class AirRouter(APIRouter):
             generate_unique_id_function=generate_unique_id_function,
         )
         if prefix:
-            assert prefix.startswith("/"), "A path prefix must start with '/'"
-            assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
+            if not prefix.startswith("/"):
+                msg = f"Invalid path prefix {prefix!r}: must start with '/'"
+                raise ValueError(msg)
+            # assert prefix.startswith("/"), "A path prefix must start with '/'"
+            if prefix.endswith("/"):
+                msg = f"Invalid path prefix {prefix!r}: must END with '/'"
+                raise ValueError(msg)
 
     def page(self, func: FunctionType) -> FunctionType:
         """Decorator that creates a GET route using the function name as the path.
