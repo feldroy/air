@@ -181,6 +181,7 @@ class Renderer:
         if not isinstance(name, str):
             msg = f"Expected template name as string or callable, got {type(name).__name__}"
             raise TypeError(msg)
+
         if name.endswith((".html", ".jinja")):
             return self._render_template(name, request, context)
 
