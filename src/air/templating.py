@@ -167,7 +167,9 @@ class Renderer:
         context = self._prepare_context(context, kwargs)
 
         if callable(name):
-            assert not isinstance(name, str)
+            if isinstance(name, str):
+                msg = "Callable name must be as string"
+                raise TypeError(msg)
             result = name(**context)
             if isinstance(result, str):
                 return result
@@ -176,8 +178,9 @@ class Renderer:
             msg = "Callable in name arg must a string or object with a render method."
             raise TypeError(msg)
 
-        assert isinstance(name, str)
-
+        if not isinstance(name, str):
+            msg = f"Expected template name as string or callable, got {type(name).__name__}"
+            raise TypeError(msg)
         if name.endswith((".html", ".jinja")):
             return self._render_template(name, request, context)
 
