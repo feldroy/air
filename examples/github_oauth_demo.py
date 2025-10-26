@@ -15,7 +15,6 @@ from rich import print
 import air
 
 
-
 async def github_process_callable(request: air.Request, token: dict, client: str = "") -> None:
     access_token = token["access_token"]
     print(access_token)
