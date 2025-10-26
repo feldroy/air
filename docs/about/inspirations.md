@@ -8,7 +8,7 @@ Air was built on the shoulders of giants. Here we discuss what inspired Air and 
 
 Generally tied with FastAPI for popularity, Django comes with the stability of 20 years of use.
 
-Django is tightly coupled to relational databases (MySQL, PostgreSQL, SQLite, etc). Notably, third-party bridges to non-SQL engineers tend to have relatively short lifespans, typically measuring a few years.
+Django is tightly coupled to relational databases (MySQL, PostgreSQL, SQLite, etc). Notably, third-party bridges to non-SQL databases tend to have relatively short lifespans, typically measuring a few years.
 
 Django pioneered high-quality, accessible documentation. That and its pluggable SQL-powered design really helped in the development of a vibrant ecosystem of third-party packages.
 
@@ -57,7 +57,7 @@ The creators of Air have contributed a lot to FastHTML and elements of its ecosy
 
 !!! note "FastHTML inspires Air to"
     1. Support HTMX as a first class citizen of the framework
-    2. Focus on syntactal sugar
+    2. Focus on syntactic sugar
     3. Know that we can build our own web framework
 
 ## Used by Air
@@ -71,7 +71,7 @@ FastAPI uses types to provide an intuitive and explicit API. Behaviors are somet
 The FastAPI project has superlative, engaging documentation. There's a sense of positivity in the prose that is infectious. Of note is how the project explains its inspiration, which in turn inspired this document.
 
 !!! note "Air uses FastAPI to"
-    1. Provide an really nice layer on top of Starlette
+    1. Provide a really nice layer on top of Starlette
     2. Inspire us to have superlative documentation
     3. Stay positive - we're in this to support each other and have fun
     4. Lean into types for better IDE and AI integrations.
@@ -94,7 +94,7 @@ A light ASGI framework/toolkit, Starlette is the HTTP server that Air (and FastA
 
 !!! note "Air uses Starlette to"
     Provide a solid foundation for being a web application server
-    
+
     Anything you can do with Starlette, you can do with Air. In essence, Air builds off the idea of FastAPI being Starlette on steroids.
 
 ### [Pydantic](https://docs.pydantic.dev/)

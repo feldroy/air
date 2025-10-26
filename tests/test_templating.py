@@ -244,7 +244,7 @@ def test_renderer_with_installed_package_and_children() -> None:
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
         response.text
-        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet" /><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
+        == '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet"><style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script><title>Test Page</title></head><body><main><h1>Hello, World</h1></main></body></html>'
     )
 
     response = client.get("/airtag-without-request")
