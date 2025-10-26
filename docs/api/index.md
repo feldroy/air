@@ -15,7 +15,7 @@ Here is the Air reference documentation. It explains how to do things, as well a
 - [Requests](../api/requests.md) - HTMX utility function that can be used with dependency injection
 - [Responses](../api/responses.md) - AirResponse for normal responses and SSEResponse for Server Sent Events
 - [Routing](../api/routing.md) - For compositing multiple apps inside each other
-- [SVG](../api/svg/index.md) - Reference for all the entire SVG tags specification, all of which are supported by Air
-- [Tags](../api/tags/index.md) - Reference for all the entire HTML tags specification, all of which are supported by Air
+- [SVG](../api/svg/index.md) - Reference for the entire SVG tags specification, all of which are supported by Air
+- [Tags](../api/tags/index.md) - Reference for the entire HTML tags specification, all of which are supported by Air
 - [Templating](../api/templating.md) - Describes Jinja and Air Tag renderers for use in both projects and third-party installable packages
 - [Utils](../api/utils.md) - Utilities that don't fall into one of the above categories
