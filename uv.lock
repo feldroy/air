@@ -60,6 +60,7 @@ standard = [
 [package.dev-dependencies]
 dev = [
     { name = "aiosqlite" },
+    { name = "air" },
     { name = "codespell" },
     { name = "coverage", marker = "extra == 'group-3-air-dev' or (extra == 'extra-3-air-standard' and extra == 'group-3-air-devtools')" },
     { name = "diff-cover" },
@@ -160,6 +161,7 @@ provides-extras = ["standard", "pretty", "sqlmodel", "auth", "all"]
 [package.metadata.requires-dev]
 dev = [
     { name = "aiosqlite", specifier = ">=0.21.0" },
+    { name = "air", editable = "." },
     { name = "codespell", specifier = ">=2.4.1" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.8.2" },
     { name = "diff-cover", specifier = ">=9.6.0" },

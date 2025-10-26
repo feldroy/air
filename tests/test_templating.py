@@ -154,7 +154,7 @@ def test_JinjaRenderer_with_env() -> None:
     # Create environment with loader since we can't pass directory and env together
     from jinja2 import FileSystemLoader
 
-    env = jinja2.Environment(loader=FileSystemLoader("tests/templates"))
+    env = jinja2.Environment(loader=FileSystemLoader("tests/templates"), autoescape=True)
     jinja = JinjaRenderer(directory=None, env=env)
 
     # Just test that it initializes correctly
