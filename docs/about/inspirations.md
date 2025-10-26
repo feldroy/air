@@ -8,7 +8,7 @@ Air was built on the shoulders of giants. Here we discuss what inspired Air and 
 
 Generally tied with FastAPI for popularity, Django comes with the stability of 20 years of use.
 
-Django is tightly coupled to relational databases (MySQL, PostgreSQL, SQLite, etc). Notably, third-party bridges to non-SQL engineers tend to have relatively short lifespans, typically measuring a few years.
+Django is tightly coupled to relational databases (MySQL, PostgreSQL, SQLite, etc). Notably, third-party bridges to non-SQL databases tend to have relatively short lifespans, typically measuring a few years.
 
 Django pioneered high-quality, accessible documentation. That and its pluggable SQL-powered design really helped in the development of a vibrant ecosystem of third-party packages.
 
