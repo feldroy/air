@@ -2,8 +2,6 @@
 Instantiating Air applications.
 """
 
-import warnings
-
 import inspect
 from collections.abc import Callable, Sequence
 from enum import Enum

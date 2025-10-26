@@ -1,11 +1,13 @@
 """Example of using Air.post decorator."""
 
-import air
 from pydantic import BaseModel
+
+import air
 
 
 class UserCreate(BaseModel):
     """User creation model."""
+
     name: str
     email: str
 
@@ -34,4 +36,5 @@ def create_user(user: UserCreate):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,6 +1,7 @@
 """Use routing if you want a single cohesive app where all routes share middlewares and error handling."""
 
 import inspect
+import warnings
 from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
@@ -11,7 +12,6 @@ from typing import (
     Literal,
     override,
 )
-import warnings
 
 from fastapi import params
 from fastapi.routing import APIRoute, APIRouter
@@ -161,6 +161,7 @@ class AirRouter(APIRouter):
                 like `router.get()`, `router.post()`, etc.
                 """,
                 DeprecationWarning,
+                stacklevel=2,
             ),
         ] = None,
         redirect_slashes: Annotated[
