@@ -85,6 +85,7 @@ dev = [
     { include-group = "lint" }, # linting and type-checking toolchain
     { include-group = "test" }, # test runner and helpers
     { include-group = "docs" }, # documentation build toolchain
+    "air",
 ]
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
@@ -186,9 +187,6 @@ conflicts = [
 
 # Control where uv resolves packages from.
 [tool.uv.sources]
-# Always use the local workspace copy of "air" instead of a PyPI release.
-# In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
-# uv uses your checked-out code.
 air = { workspace = true }
 # -------- uv build backend --------
 # PEP 517/518: tells installers (pip/uv) how to build/install this project.
@@ -276,7 +274,7 @@ select = [
     "FAST", # https://docs.astral.sh/ruff/rules/#fastapi-fast
     "ANN", # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
     "ASYNC", # https://docs.astral.sh/ruff/rules/#flake8-async-async
-    #    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
     "BLE", # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
     "FBT", # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
     "B", # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
@@ -345,9 +343,24 @@ ignore = [
 "examples/html_sample.py" = [
     "F403", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star
     "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
+    "S101", # https://docs.astral.sh/ruff/rules/assert/ - assert is fine on tests
+
 ]
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "S101", # https://docs.astral.sh/ruff/rules/assert/
+    "S106", # https://docs.astral.sh/ruff/rules/hardcoded-password-func-arg/
+    "S311", # https://docs.astral.sh/ruff/rules/suspicious-non-cryptographic-random-usage/
+
+]
+"tests/**.py" = [
+    "S101", # https://docs.astral.sh/ruff/rules/assert/ 
+    "S106", # https://docs.astral.sh/ruff/rules/hardcoded-password-func-arg/
+    "S311", # https://docs.astral.sh/ruff/rules/suspicious-non-cryptographic-random-usage/
+    
+]
+"src_examples/*test.py" = [
+    "S101", # https://docs.astral.sh/ruff/rules/assert/ 
 ]
 "src_examples/dependencies___is_htmx_request.py" = ["FBT001"]
 "scripts/copy_src_example_to_callable.py" = ["C901"]
@@ -574,7 +587,7 @@ exclude_lines = [
     '^\s*except\s+ImportError\s+as\s+_import_error\s*:', # optional import shim branch
     '^\s*pass$', # no-op pass
     '^\s*assert\s+False\b', # hard stop assertion
-    # Ellipsis placeholders:
+    # Ellipsis placeholders:assert
     '^\s*\.\.\.\s*(#.*)?$', # bare ellipsis
     '^\s*return\s+\.\.\.\s*(#.*)?$', # return ellipsis
     '^\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*[^=]+=\s*\.\.\.\s*$', # annotated ellipsis assignment
