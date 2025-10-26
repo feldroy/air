@@ -187,9 +187,6 @@ conflicts = [
 
 # Control where uv resolves packages from.
 [tool.uv.sources]
-# Always use the local workspace copy of "air" instead of a PyPI release.
-# In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
-# uv uses your checked-out code.
 air = { workspace = true }
 # -------- uv build backend --------
 # PEP 517/518: tells installers (pip/uv) how to build/install this project.
