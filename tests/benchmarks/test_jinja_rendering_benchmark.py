@@ -6,6 +6,7 @@ equivalent HTML generation using Jinja2 templates.
 
 import tempfile
 from pathlib import Path
+from typing import Any
 
 from starlette.requests import Request
 from starlette.templating import _TemplateResponse
@@ -13,7 +14,7 @@ from starlette.templating import _TemplateResponse
 from air.templating import JinjaRenderer
 
 
-def test_jinja_complex_page_rendering_benchmark(benchmark) -> None:
+def test_jinja_complex_page_rendering_benchmark(benchmark: Any) -> None:
     """Benchmark Jinja2 template rendering for complex HTML structure."""
 
     template_content = """<html>

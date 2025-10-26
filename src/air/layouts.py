@@ -6,17 +6,17 @@ from .tags import Body, Children, Head, Header, Html, Link, Main, Script, Style
 from .tags.types import HEAD_TAG_TYPES, AttributesType
 
 
-def filter_body_tags(tags) -> list:
+def filter_body_tags(tags: list[Any]) -> list:
     """Given a list of tags, only list the ones that belong in body of an HTML document."""
     return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]
 
 
-def filter_head_tags(tags) -> list:
+def filter_head_tags(tags: list[Any]) -> list:
     """Given a list of tags, only list the ones that belong in head of an HTML document."""
     return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]
 
 
-def _header(tags) -> Header | str:
+def _header(tags: list[Any]) -> Header | str:
     """Extracts the air.Header tag from a set of tags."""
     for tag in tags:
         if isinstance(tag, Header):

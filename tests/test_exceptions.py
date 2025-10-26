@@ -1,4 +1,4 @@
-from typing import NoReturn
+from typing import Any, NoReturn
 
 import pytest
 from fastapi.exceptions import HTTPException as FastAPIHTTPException
@@ -22,7 +22,7 @@ def test_init_signature_compat() -> None:
         (422, {"errors": [{"loc": ["q"], "msg": "invalid"}]}),
     ],
 )
-def test_fastapi_integration_various_details(status, detail) -> None:
+def test_fastapi_integration_various_details(status: int, detail: Any) -> None:
     app = air.Air()
 
     @app.get("/boom")
@@ -71,7 +71,7 @@ def test_custom_exception_handler_compat() -> None:
     app = air.Air()
 
     @app.exception_handler(FastAPIHTTPException)
-    async def custom_http_exception_handler(_, exc: FastAPIHTTPException):
+    async def custom_http_exception_handler(_request: Any, exc: FastAPIHTTPException):
         return air.responses.PlainTextResponse(f"oops:{exc.status_code}:{exc.detail}", status_code=exc.status_code)
 
     @app.get("/handled")

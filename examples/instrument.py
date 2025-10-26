@@ -5,6 +5,8 @@ included in the dependencies of the Air project.
 Call pyinstrument by adding '?profile=1' after any URL
 """
 
+from collections.abc import Awaitable, Callable
+
 from pyinstrument import Profiler
 
 import air
@@ -14,7 +16,7 @@ app = air.Air()
 
 
 @app.middleware("http")
-async def profile_request(request: air.Request, call_next):
+async def profile_request(request: air.Request, call_next: Callable[[air.Request], Awaitable[air.responses.Response]]):
     profiling = request.query_params.get("profile", False)
     if profiling:
         profiler = Profiler()

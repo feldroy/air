@@ -4,10 +4,12 @@ This is intentionally lightweight and intended as an example. Use pytest-benchma
 to run and save/compare results over time.
 """
 
+from typing import Any
+
 import air
 
 
-def test_create_tags_benchmark(benchmark) -> None:
+def test_create_tags_benchmark(benchmark: Any) -> None:
     """Benchmark creating a number of `air.A` tag objects.
 
     The `benchmark` fixture will run the callable multiple times and report

@@ -102,7 +102,7 @@ async def async_db_lifespan(app: _AirApp):
 async def create_async_session(
     url: str = ASYNC_DATABASE_URL,  # Database URL
     echo: _EchoEnum = _EchoEnum.TRUE if DEBUG else _EchoEnum.FALSE,
-    async_engine=None,
+    async_engine: AsyncEngine | None = None,
 ):
     """
     Create an async SQLAlchemy session factory.
