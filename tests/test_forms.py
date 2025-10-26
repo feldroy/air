@@ -127,7 +127,8 @@ def test_form_render_with_values() -> None:
     cheese = CheeseForm({"name": "Cheddar", "age": 3})
 
     assert (
-        cheese.render() == '<label for="name">name</label><input name="name" type="text" value="Cheddar" required id="name">'
+        cheese.render()
+        == '<label for="name">name</label><input name="name" type="text" value="Cheddar" required id="name">'
         '<label for="age">age</label><input name="age" type="number" value="3" required id="age">'
     )
 
@@ -474,16 +475,16 @@ def test_html5_validation_attributes() -> None:
         model = ContactModel
 
     html = ContactForm().render()
-    
+
     # Check minlength and maxlength attributes
     assert 'minlength="2"' in html
     assert 'maxlength="50"' in html
     assert 'minlength="10"' in html
     assert 'maxlength="500"' in html
-    
+
     # Check required attribute (all fields are required since they don't have defaults)
-    assert html.count('required') == 3
-    
+    assert html.count("required") == 3
+
     # Check email type is preserved
     assert 'type="email"' in html
 
@@ -499,9 +500,9 @@ def test_html5_validation_optional_fields() -> None:
         model = OptionalModel
 
     html = OptionalForm().render()
-    
+
     # Only the name field should have required attribute
-    assert 'name="name"' in html and 'required' in html
+    assert 'name="name"' in html and "required" in html
     assert 'name="nickname"' in html and '<input name="nickname" type="text" id="nickname">' in html
 
 
@@ -516,16 +517,17 @@ def test_html5_validation_with_standard_field() -> None:
         model = StandardModel
 
     html = StandardForm().render()
-    
+
     # Check that constraints from standard Field are also applied
     assert 'minlength="3"' in html
     assert 'maxlength="20"' in html
-    assert html.count('required') == 2  # Both fields required
+    assert html.count("required") == 2  # Both fields required
 
 
 def test_html5_validation_with_annotated() -> None:
     """Test HTML5 validation with Annotated type constraints."""
     from typing import Annotated
+
     import annotated_types
 
     class AnnotatedModel(BaseModel):
@@ -536,7 +538,7 @@ def test_html5_validation_with_annotated() -> None:
         model = AnnotatedModel
 
     html = AnnotatedForm().render()
-    
+
     # Check that Annotated constraints are applied
     assert 'minlength="2"' in html
     assert 'maxlength="50"' in html
@@ -545,6 +547,7 @@ def test_html5_validation_with_annotated() -> None:
 def test_html5_validation_optional_with_constraints() -> None:
     """Test that optional fields with constraints get minlength/maxlength but not required."""
     from typing import Annotated
+
     import annotated_types
 
     class OptionalConstrainedModel(BaseModel):
@@ -554,10 +557,10 @@ def test_html5_validation_optional_with_constraints() -> None:
         model = OptionalConstrainedModel
 
     html = OptionalConstrainedForm().render()
-    
+
     # Should have minlength but not required
     assert 'minlength="2"' in html
-    assert 'required' not in html
+    assert "required" not in html
 
 
 def test_html5_validation_field_with_default() -> None:
@@ -571,8 +574,8 @@ def test_html5_validation_field_with_default() -> None:
         model = DefaultedModel
 
     html = DefaultedForm().render()
-    
+
     # Should have minlength/maxlength but not required
     assert 'minlength="2"' in html
     assert 'maxlength="20"' in html
-    assert 'required' not in html
+    assert "required" not in html
