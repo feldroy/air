@@ -212,6 +212,23 @@ def default_form_widget(
         json_schema_extra: dict = field_info.json_schema_extra or {}
         if json_schema_extra.get("autofocus"):
             kwargs["autofocus"] = True
+        
+        # Add HTML5 validation attributes from Pydantic constraints
+        # Handle required fields - only add required if field has no default and is truly required
+        # Check if the field type accepts None (use original annotation, not modified field_type)
+        is_optional = (origin is Union or origin is UnionType) and type(None) in get_args(field_info.annotation)
+        if field_info.is_required() and not is_optional:
+            kwargs["required"] = True
+        
+        # Extract min_length and max_length from metadata
+        if hasattr(field_info, 'metadata') and field_info.metadata:
+            for constraint in field_info.metadata:
+                constraint_type = type(constraint).__name__
+                if constraint_type == 'MinLen' and hasattr(constraint, 'min_length'):
+                    kwargs["minlength"] = constraint.min_length
+                elif constraint_type == 'MaxLen' and hasattr(constraint, 'max_length'):
+                    kwargs["maxlength"] = constraint.max_length
+        
         fields.append(
             tags.Tags(
                 tags.Label(
