@@ -7,4 +7,4 @@ def test_exception_handling_404() -> None:
 
     response = client.get("/")
     assert response.status_code == 404
-    response.text == "<h1>404 Not Found</h1>"
+    assert response.text == "<h1>404 Not Found</h1>"
