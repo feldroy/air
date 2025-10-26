@@ -1,6 +1,7 @@
 from unittest.mock import AsyncMock, patch
 
 import pytest
+from fastapi import status
 from fastapi.testclient import TestClient
 
 import air
@@ -80,6 +81,6 @@ def test_github_callback_route() -> None:
 
         response = client.get("/account/github/callback")
 
-        assert response.history[0].status_code == 303
+        assert response.history[0].status_code == status.HTTP_307_TEMPORARY_REDIRECT
         assert response.status_code == 200
         assert "Hello" in response.text
