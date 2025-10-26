@@ -99,7 +99,7 @@ async def async_db_lifespan(app: _AirApp):
     await async_engine.dispose()
 
 
-async def create_async_session(
+async def create_async_session(  # noqa: RUF029
     url: str = ASYNC_DATABASE_URL,  # Database URL
     echo: _EchoEnum = _EchoEnum.TRUE if DEBUG else _EchoEnum.FALSE,
     async_engine=None,
