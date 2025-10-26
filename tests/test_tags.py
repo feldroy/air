@@ -178,7 +178,7 @@ def test_tags_head_tag_injection() -> None:
 
     assert (
         html
-        == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title" /><meta property="og:description" content="Test Description" /></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'
+        == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title"><meta property="og:description" content="Test Description"></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'
     )
 
 
@@ -219,7 +219,7 @@ def test_bool_attributes() -> None:
 
 def test_self_closing_tags() -> None:
     html = _r(air.Area(shape="rect", coords="10,20,30,40", alt="Box", href="/box"))
-    assert html == '<area alt="Box" coords="10,20,30,40" href="/box" shape="rect" />'
+    assert html == '<area alt="Box" coords="10,20,30,40" href="/box" shape="rect">'
 
 
 def test_children_tag() -> None:
@@ -266,7 +266,7 @@ def test_tag_label_for() -> None:
 
 def test_tag_label_as() -> None:
     html = _r(air.Link(as_="fred"))
-    assert html == '<link as="fred" />'
+    assert html == '<link as="fred">'
 
 
 def test_tag_bool_tag() -> None:
@@ -281,39 +281,39 @@ def test_input_boolean_attributes() -> None:
 
     # Test autofocus=True renders as boolean attribute
     html = _r(air.Input(name="q", autofocus=True))
-    assert html == '<input name="q" autofocus />'
+    assert html == '<input name="q" autofocus>'
 
     # Test autofocus=False doesn't render the attribute
     html = _r(air.Input(name="q", autofocus=False))
-    assert html == '<input name="q" />'
+    assert html == '<input name="q">'
 
     # Test autofocus=None doesn't render the attribute
     html = _r(air.Input(name="q", autofocus=None))
-    assert html == '<input name="q" />'
+    assert html == '<input name="q">'
 
     # Test checked=True renders as boolean attribute
     html = _r(air.Input(type="checkbox", name="agree", checked=True))
-    assert html == '<input name="agree" type="checkbox" checked />'
+    assert html == '<input name="agree" type="checkbox" checked>'
 
     # Test checked=False doesn't render the attribute
     html = _r(air.Input(type="checkbox", name="agree", checked=False))
-    assert html == '<input name="agree" type="checkbox" />'
+    assert html == '<input name="agree" type="checkbox">'
 
     # Test disabled=True renders as boolean attribute
     html = _r(air.Input(name="q", disabled=True))
-    assert html == '<input name="q" disabled />'
+    assert html == '<input name="q" disabled>'
 
     # Test disabled=False doesn't render the attribute
     html = _r(air.Input(name="q", disabled=False))
-    assert html == '<input name="q" />'
+    assert html == '<input name="q">'
 
     # Test required=True renders as boolean attribute
     html = _r(air.Input(name="email", required=True))
-    assert html == '<input name="email" required />'
+    assert html == '<input name="email" required>'
 
     # Test required=False doesn't render the attribute
     html = _r(air.Input(name="email", required=False))
-    assert html == '<input name="email" />'
+    assert html == '<input name="email">'
 
 
 def test_input_boolean_attributes_combinations() -> None:
@@ -321,15 +321,15 @@ def test_input_boolean_attributes_combinations() -> None:
 
     # Test multiple boolean attributes together
     html = _r(air.Input(name="email", type="email", required=True, autofocus=True, disabled=False))
-    assert html == '<input name="email" type="email" required autofocus />'
+    assert html == '<input name="email" type="email" required autofocus>'
 
     # Test with some True and some False
     html = _r(air.Input(name="q", autofocus=True, disabled=False, required=True))
-    assert html == '<input name="q" required autofocus />'
+    assert html == '<input name="q" required autofocus>'
 
     # Test with checkbox and checked
     html = _r(air.Input(type="checkbox", name="terms", checked=True, required=True))
-    assert html == '<input name="terms" type="checkbox" required checked />'
+    assert html == '<input name="terms" type="checkbox" required checked>'
 
 
 def test_input_boolean_attributes_with_other_attrs() -> None:
@@ -337,8 +337,8 @@ def test_input_boolean_attributes_with_other_attrs() -> None:
 
     # Test autofocus with other attributes
     html = _r(air.Input(name="search", type="text", placeholder="Search...", autofocus=True, class_="search-input"))
-    assert html == '<input name="search" type="text" autofocus placeholder="Search..." class="search-input" />'
+    assert html == '<input name="search" type="text" autofocus placeholder="Search..." class="search-input">'
 
     # Test disabled with other attributes
     html = _r(air.Input(name="readonly", type="text", value="Can't change me", disabled=True, readonly=True))
-    assert html == '<input name="readonly" type="text" value="Can\'t change me" readonly disabled />'
+    assert html == '<input name="readonly" type="text" value="Can\'t change me" readonly disabled>'
