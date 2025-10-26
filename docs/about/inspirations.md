@@ -57,7 +57,7 @@ The creators of Air have contributed a lot to FastHTML and elements of its ecosy
 
 !!! note "FastHTML inspires Air to"
     1. Support HTMX as a first class citizen of the framework
-    2. Focus on syntactal sugar
+    2. Focus on syntactic sugar
     3. Know that we can build our own web framework
 
 ## Used by Air
@@ -94,7 +94,7 @@ A light ASGI framework/toolkit, Starlette is the HTTP server that Air (and FastA
 
 !!! note "Air uses Starlette to"
     Provide a solid foundation for being a web application server
-    
+
     Anything you can do with Starlette, you can do with Air. In essence, Air builds off the idea of FastAPI being Starlette on steroids.
 
 ### [Pydantic](https://docs.pydantic.dev/)
