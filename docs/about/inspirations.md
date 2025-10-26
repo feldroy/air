@@ -71,7 +71,7 @@ FastAPI uses types to provide an intuitive and explicit API. Behaviors are somet
 The FastAPI project has superlative, engaging documentation. There's a sense of positivity in the prose that is infectious. Of note is how the project explains its inspiration, which in turn inspired this document.
 
 !!! note "Air uses FastAPI to"
-    1. Provide an really nice layer on top of Starlette
+    1. Provide a really nice layer on top of Starlette
     2. Inspire us to have superlative documentation
     3. Stay positive - we're in this to support each other and have fun
     4. Lean into types for better IDE and AI integrations.
