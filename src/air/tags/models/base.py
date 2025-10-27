@@ -272,7 +272,7 @@ class BaseTag:
             otherwise the standard string form of the mapping.
         """
         try:
-            from rich.pretty import pretty_repr  # noqa: PLC0415
+            from rich.pretty import pretty_repr
 
             return pretty_repr(self.to_dict(), max_width=170, max_length=7, max_depth=4, max_string=25)
         except ModuleNotFoundError:

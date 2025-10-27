@@ -99,7 +99,7 @@ def format_html(
         ModuleNotFoundError: If the optional `lxml` dependency is unavailable.
     """
     try:
-        from lxml import (  # noqa: PLC0415
+        from lxml import (
             etree,  # ty: ignore[unresolved-import]
             html as l_html,
         )
@@ -273,11 +273,11 @@ def _get_pretty_html_console(
         ModuleNotFoundError: The optional Rich dependency is unavailable.
     """
     try:
-        from rich import box  # noqa: PLC0415
-        from rich.console import Console  # noqa: PLC0415
-        from rich.panel import Panel  # noqa: PLC0415
-        from rich.syntax import Syntax  # noqa: PLC0415
-        from rich.text import Text  # noqa: PLC0415
+        from rich import box
+        from rich.console import Console
+        from rich.panel import Panel
+        from rich.syntax import Syntax
+        from rich.text import Text
     except ModuleNotFoundError:
         raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
     else:

@@ -353,6 +353,8 @@ ignore = [
 ]
 "src_examples/dependencies___is_htmx_request.py" = ["FBT001"]
 "scripts/copy_src_example_to_callable.py" = ["C901"]
+"src/air/tags/utils.py" = ["PLC0415"]
+"src/air/tags/models/base.py" = ["PLC0415"]
 
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
