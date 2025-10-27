@@ -6,7 +6,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from jinja2 import FileSystemLoader
-from starlette.templating import _TemplateResponse  # noqa: PLC2701
+from starlette.templating import _TemplateResponse
 
 import air
 from air import Air, JinjaRenderer, Request

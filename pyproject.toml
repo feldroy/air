@@ -355,6 +355,8 @@ ignore = [
 "scripts/copy_src_example_to_callable.py" = ["C901"]
 "src/air/tags/utils.py" = ["PLC0415"]
 "src/air/tags/models/base.py" = ["PLC0415"]
+"tests/test_templating.py" = ["PLC2701"]
+"tests/test_responses.py" = ["PLC0415"]
 
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
