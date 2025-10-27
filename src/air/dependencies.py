@@ -13,7 +13,7 @@ def _is_htmx_request(hx_request: str = Header(default=None)) -> bool:
 
         import air
 
-        app = air.Air()
+        app = air.App()
 
 
         @app.get("/")

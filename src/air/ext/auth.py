@@ -15,7 +15,7 @@ class GitHubOAuthClientFactory:
         github_process_callable: Callable,
         github_redirect_uri: str = "http://localhost:8000/account/github/callback",
         login_redirect_to: str = "/",
-        scope="user:email",
+        scope: str = "user:email",
     ) -> None:
         """Creates an `air.AirRouter` affiliated with the supplied credentials.
 

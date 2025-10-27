@@ -138,7 +138,7 @@ def test_jinja_plus_airtags_autorender() -> None:
 def test_JinjaRenderer_with_context_processors() -> None:
     """Test JinjaRenderer with context_processors parameter"""
 
-    def add_globals(request) -> dict[str, str]:
+    def add_globals(request: Request) -> dict[str, str]:
         return {"global_var": "test_value"}
 
     jinja = JinjaRenderer(directory="tests/templates", context_processors=[add_globals])
@@ -303,7 +303,7 @@ def test_render_callable_wrong_type() -> None:
 def test_Renderer_with_context_processors() -> None:
     """Test Renderer with context_processors parameter to cover the else branch"""
 
-    def add_globals(request) -> dict[str, str]:
+    def add_globals(request: Request) -> dict[str, str]:
         return {"global_var": "test_value"}
 
     render = air.Renderer(directory="tests/templates", context_processors=[add_globals])
@@ -338,7 +338,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
     render = air.Renderer(directory="tests/templates", package="tests")
 
     # Function that can be called with only keyword args to test the specific line 205
-    def test_callable(title=None) -> str:
+    def test_callable(title: str | None = None) -> str:
         return f"<p>{title}</p>"
 
     # Create a test module to simulate the import
@@ -395,7 +395,7 @@ def test_Renderer_filter_context_with_request() -> None:
     """Test _filter_context_for_callable when callable expects request parameter"""
     render = air.Renderer(directory="tests/templates")
 
-    def test_callable(request, title) -> str:
+    def test_callable(request: Request, title: str) -> str:
         return f"<p>{title}</p>"
 
     context = {"title": "Test", "extra": "ignored"}

@@ -87,7 +87,7 @@ def test_nested_tag_memory_efficiency() -> None:
     tracemalloc.start()
 
     # Create deeply nested structure
-    def create_nested_structure(depth=10) -> Div | Span:
+    def create_nested_structure(depth: int = 10) -> Div | Span:
         if depth == 0:
             return air.Span("Deep content", class_="leaf")
 
