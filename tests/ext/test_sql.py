@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import pytest
-from sqlalchemy import Engine
-from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
+from sqlalchemy import Engine, text
+from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
+from sqlmodel import Field, SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from air.applications import Air
+from air.exceptions import ObjectDoesNotExist
 from air.ext import sqlmodel
+from air.ext.sqlmodel import create_async_session
 
 
 def test_create_sync_engine() -> None:
@@ -34,7 +37,6 @@ async def test_get_async_session() -> None:
         assert isinstance(session, AsyncSession)
         assert session.is_active is True
         # Test that we can use the session
-        from sqlalchemy import text
 
         await session.exec(text("SELECT 1"))
         # Let the async for complete naturally to trigger the finally block
@@ -52,11 +54,6 @@ async def test_get_async_session_with_custom_params() -> None:
 @pytest.mark.asyncio
 async def test_get_object_or_404():
     """Use sqlite in memory to test the quality of the get_object_or_404 function."""
-    from sqlalchemy.ext.asyncio import create_async_engine
-    from sqlmodel import Field, SQLModel
-
-    from air.exceptions import ObjectDoesNotExist
-    from air.ext.sqlmodel import create_async_session
 
     # Define a simple test model
     class TestUser(SQLModel, table=True):

@@ -6,7 +6,9 @@ equivalent HTML generation using Jinja2 templates.
 
 import tempfile
 from pathlib import Path
+from unittest.mock import Mock
 
+from starlette.datastructures import URL
 from starlette.requests import Request
 from starlette.templating import _TemplateResponse
 
@@ -60,10 +62,6 @@ def test_jinja_complex_page_rendering_benchmark(benchmark) -> None:
         jinja_renderer = JinjaRenderer(directory=temp_dir)
 
         # Create minimal mock request object
-        from unittest.mock import Mock
-
-        from starlette.datastructures import URL
-
         mock_request = Mock(spec=Request)
         mock_request.url = URL("http://localhost/test")
 
