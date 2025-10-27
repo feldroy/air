@@ -10,7 +10,9 @@ New to Air or open source? **Welcome!** Friendly mentors are available to help y
 
 ## 📅 Sprint Schedule & Logistics
 
-Today's sprint details:
+Currently there are no sprints scheduled. Anyone is welcome to organize a sprint: just mention it in Discord and we'll help you!
+
+Past sprint details:
 
 - Date: October 26, 2025
 - Hours: 9:00 AM – 5:00 PM
