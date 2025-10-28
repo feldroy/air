@@ -129,7 +129,7 @@ def test_air_router_prefix_validation() -> None:
 def test_air_router_no_prefix() -> None:
     """Test AirRouter when no prefix is provided (covers other branch of prefix check)"""
     router = air.AirRouter()  # No prefix
-    assert router.prefix == ""
+    assert not router.prefix
 
 
 def test_air_router_get_with_awaitable_result() -> None:

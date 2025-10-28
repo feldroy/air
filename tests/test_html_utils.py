@@ -5,6 +5,7 @@ import builtins
 from collections.abc import Callable
 
 import pytest
+from lxml.etree import ParserError
 
 # Adjust this import path if needed for your project layout.
 from air.tags.utils import (
@@ -112,16 +113,12 @@ def test_pretty_format_html_all_parameter_combinations(*, with_body: bool, with_
 
 
 def test_format_html_empty_raises_parser_error() -> None:
-    from lxml.etree import ParserError
-
     with pytest.raises(ParserError) as exc:
         _ = format_html("")  # no defaults passed
     assert exc.type.__name__ == "ParserError"
 
 
 def test_pretty_format_html_empty_raises_parser_error() -> None:
-    from lxml.etree import ParserError
-
     with pytest.raises(ParserError) as exc:
         _ = pretty_format_html("")  # no defaults passed
     assert exc.type.__name__ == "ParserError"

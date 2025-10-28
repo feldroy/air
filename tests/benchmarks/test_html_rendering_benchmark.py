@@ -8,6 +8,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import Mock
 
+from starlette.datastructures import URL
 from starlette.requests import Request
 from starlette.templating import _TemplateResponse
 
@@ -124,10 +125,6 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark) -> None:
         jinja_renderer = JinjaRenderer(directory=temp_dir)
 
         # Create minimal mock request object
-        from unittest.mock import Mock
-
-        from starlette.datastructures import URL
-
         mock_request = Mock(spec=Request)
         mock_request.url = URL("http://localhost/test")
 
