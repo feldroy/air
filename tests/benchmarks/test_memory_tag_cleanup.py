@@ -13,6 +13,8 @@ import pytest
 import air
 from air import Div, Span
 
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
 
 @pytest.mark.memory
 def test_tag_object_memory_cleanup() -> None:
@@ -183,7 +185,6 @@ def test_tag_creation_memory_scaling() -> None:
     # Memory scaling logs
     logger = logging.getLogger(__name__)
     logger.propagate = True
-    logging.basicConfig(level=logging.INFO, format="%(message)s")
 
     divider_size = 62
 
