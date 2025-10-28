@@ -184,13 +184,12 @@ def test_tag_creation_memory_scaling() -> None:
 
     # Memory scaling logs
     logger = logging.getLogger(__name__)
-    logger.propagate = True
 
     divider_size = 62
 
     lines = [
         "\nMemory Scaling Results:",
-        f"{'Scale (No. of Tags)':>18} | {'Total Used (bytes)':>20} | {'Per Tag (bytes)':>16}",
+        f"{'Scale (Num. of Tags)':>18} | {'Total Used (bytes)':>20} | {'Per Tag (bytes)':>16}",
         "-" * divider_size,
     ]
     for scale, _total_memory, _per_tag_memory in memory_measurements:
