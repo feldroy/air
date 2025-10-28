@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from starlette.requests import Request
 
 import air
+from air.exception_handlers import DEFAULT_EXCEPTION_HANDLERS, default_500_exception_handler
 
 
 def test_air_app_factory() -> None:
@@ -135,10 +137,6 @@ def test_air_404_response() -> None:
 
 
 def test_default_500_exception_handler() -> None:
-    from starlette.requests import Request
-
-    from air.exception_handlers import default_500_exception_handler
-
     # Create a mock request and exception
     scope = {
         "type": "http",
@@ -167,8 +165,6 @@ def test_default_500_exception_handler() -> None:
 
 
 def test_injection_of_default_exception_handlers() -> None:
-    from air.exception_handlers import DEFAULT_EXCEPTION_HANDLERS
-
     def handler(request: air.Request, exc: Exception) -> air.AirResponse:
         return air.AirResponse()
 
@@ -182,3 +178,25 @@ def test_injection_of_default_exception_handlers() -> None:
     expected_handlers = {**DEFAULT_EXCEPTION_HANDLERS, **CUSTOM_EXCEPTION_HANDLERS}
     assert set(expected_handlers) <= set(app.exception_handlers)
     assert app.exception_handlers[405] is handler
+
+
+def test_url_helper_method() -> None:
+    """Test that route decorators have .url() method for URL generation."""
+    app = air.Air()
+
+    @app.get("/users/{user_id}/posts/{post_id}")
+    def get_post(user_id: int, post_id: int) -> air.H1:
+        return air.H1(f"User {user_id}, Post {post_id}")
+
+    @app.page
+    def about() -> air.H1:
+        return air.H1("About")
+
+    assert get_post.url(user_id=123, post_id=456) == "/users/123/posts/456"
+    assert about.url() == "/about"
+
+    client = TestClient(app)
+    url = get_post.url(user_id=1, post_id=2)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<h1>User 1, Post 2</h1>"

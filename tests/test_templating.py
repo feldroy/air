@@ -1,6 +1,11 @@
+import sys
+import types
+
+import jinja2
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from jinja2 import FileSystemLoader
 from starlette.templating import _TemplateResponse
 
 import air
@@ -149,11 +154,8 @@ def test_JinjaRenderer_with_context_processors() -> None:
 
 def test_JinjaRenderer_with_env() -> None:
     """Test JinjaRenderer with custom env parameter"""
-    import jinja2
 
     # Create environment with loader since we can't pass directory and env together
-    from jinja2 import FileSystemLoader
-
     env = jinja2.Environment(loader=FileSystemLoader("tests/templates"))
     jinja = JinjaRenderer(directory=None, env=env)
 
@@ -342,9 +344,6 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
         return f"<p>{title}</p>"
 
     # Create a test module to simulate the import
-    import sys
-    import types
-
     test_module = types.ModuleType("test_module")
     test_module.test_func = test_callable
     sys.modules["tests.test_module"] = test_module
@@ -371,9 +370,6 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
 
 def test_Renderer_import_module_fallback() -> None:
     """Test the ModuleNotFoundError fallback in _import_module"""
-    import sys
-    import types
-
     # Create a mock module that exists as a relative import but not absolute
     mock_module = types.ModuleType("mock_module")
     mock_module.test_func = lambda: "test"

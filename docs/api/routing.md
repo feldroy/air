@@ -1,4 +1,4 @@
-Routing 
+Routing
 
 If you need to knit several Python modules with their own Air views into one, that's where Routing is used. They allow the near seamless combination of multiple Air apps into one. Larger sites are often built from multiple routers.
 
@@ -31,6 +31,22 @@ def index():
 
 Note that the router allows sharing of sessions and other application states.
 
+In addition, we can add links through the `.url()` method available on route functions, which generates URLs programmatically:
+
+```python
+import air
+from cart import router as cart_router, cart
+
+app = air.Air()
+app.include_router(cart_router)
+
+@app.page
+def index():
+    return air.Div(
+        air.H1('Home page'),
+        air.A('View cart', href=cart.url())
+    )
+```
 
 ---
 
