@@ -30,6 +30,11 @@ Memory checks
 ```bash
 uv run -q -- pytest tests/benchmarks -m memory
 ```
+- Print results for memory scaling (bytes per tag)
+
+```bash
+uv run -- pytest -s tests/benchmarks -m memory --log-cli-level=INFO
+```
 
 CI recommendations
 
