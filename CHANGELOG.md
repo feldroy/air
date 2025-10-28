@@ -1,5 +1,68 @@
 ### Latest Changes
 
+# 0.39.0 - 2025-10-28
+
+## What's changed by new contributors
+* feat: add .url() method to route functions by @nedpals in https://github.com/feldroy/air/pull/706
+* docs: removed one slash in the link preview, and added one slash in the link url (issue #613) by @kindadailybren in https://github.com/feldroy/air/pull/671
+* docs: issue 618 - Change 'Reference for all the entire' to 'Reference for the entire' by @edchelstephens in https://github.com/feldroy/air/pull/670
+* docs: fix inspirations grammatical error by @gabbyxiane in https://github.com/feldroy/air/pull/672
+* docs: Correct example usage from  'app = air.App()' to  'app = air.Air()'. by @edchelstephens in https://github.com/feldroy/air/pull/674
+* fix: remove self-closing slashes from void elements by @alasdiel in https://github.com/feldroy/air/pull/673
+* docs: fix (line 11) word from engineer to databases by @oreocapybara in https://github.com/feldroy/air/pull/677
+* fix: grammatical errors in jinja.md by @chalorejo in https://github.com/feldroy/air/pull/680
+* docs: Update badges and improve index.md formatting by @zorexsalvo in https://github.com/feldroy/air/pull/683
+* docs: change syntactal to syntactic from docs/about/inspirations.md by @dkeithdj in https://github.com/feldroy/air/pull/682
+* Fix/docs/readme comment error by @gabbyxiane in https://github.com/feldroy/air/pull/684
+* docs: fixed pluralization issue on the word routes by @alasdiel in https://github.com/feldroy/air/pull/685
+* test: add tests for compute_page_path by @ouattararomuald in https://github.com/feldroy/air/pull/663
+* docs: README comment typo by @ouattararomuald in https://github.com/feldroy/air/pull/664
+* Update github oath demo removed the duplicateof databases = {} by @aaronjalapon in https://github.com/feldroy/air/pull/676
+* replaced pico to picocss by @aaronjalapon in https://github.com/feldroy/air/pull/691
+* Tests: missing_examples.py script tests for functions by @kindadailybren in https://github.com/feldroy/air/pull/692
+* docs: fixed checkbox formatting on roadmap.md by @alasdiel in https://github.com/feldroy/air/pull/693
+* docs: fixed code shadowing on air = air.Air() by @RMRizal-UP in https://github.com/feldroy/air/pull/696
+* docs: fix missing closing > in Jinja example (#609) by @ogbinar in https://github.com/feldroy/air/pull/695
+* chore: address inconsistent default response by @dkeithdj in https://github.com/feldroy/air/pull/686
+* Fixed deprecated issues and passed all Air test by @joohhhnnnny in https://github.com/feldroy/air/pull/698
+* DOC: add missing space before parenthesis on CONTRIBUTING.md by @KevsterAmp in https://github.com/feldroy/air/pull/700
+* docs: clarify explanation for Variables in URLs by @RMRizal-UP in https://github.com/feldroy/air/pull/703
+* refac(src_examples): add samples and tests for other htmx requests besides get request by @jlorion in https://github.com/feldroy/air/pull/702
+* add create_sync_engine example by @KevsterAmp in https://github.com/feldroy/air/pull/715
+* Sprint day updates by @trbyte in https://github.com/feldroy/air/pull/713
+* Feat(benchmarks)/print memory scaling results by @alasdiel in https://github.com/feldroy/air/pull/711
+
+## What's changed by existing contributors
+* Addition of sponsor and contributor acknowledgments to the `README.md`. by @pygarap in https://github.com/feldroy/air/pull/607
+* Add Community page by @Isaac-Flath in https://github.com/feldroy/air/pull/632
+* Consolidate doc links by @pydanny in https://github.com/feldroy/air/pull/656
+* Add Libraries to Community Page by @Isaac-Flath in https://github.com/feldroy/air/pull/662
+* Add sprinter instructions by @audreyfeldroy in https://github.com/feldroy/air/pull/665
+* src_example directory with example and script by @pydanny in https://github.com/feldroy/air/pull/659
+* Explain how to contribute to src_examples/ by @audreyfeldroy in https://github.com/feldroy/air/pull/694
+* chore(deps): update astral-sh/setup-uv digest to 8585678 by @renovate[bot] in https://github.com/feldroy/air/pull/717
+* chore: enable PLC rules and update files that break it by @zorexsalvo in https://github.com/feldroy/air/pull/705
+
+## New Contributors
+* @kindadailybren made their first contribution in https://github.com/feldroy/air/pull/671
+* @edchelstephens made their first contribution in https://github.com/feldroy/air/pull/670
+* @gabbyxiane made their first contribution in https://github.com/feldroy/air/pull/672
+* @alasdiel made their first contribution in https://github.com/feldroy/air/pull/673
+* @oreocapybara made their first contribution in https://github.com/feldroy/air/pull/677
+* @chalorejo made their first contribution in https://github.com/feldroy/air/pull/680
+* @dkeithdj made their first contribution in https://github.com/feldroy/air/pull/682
+* @ouattararomuald made their first contribution in https://github.com/feldroy/air/pull/663
+* @aaronjalapon made their first contribution in https://github.com/feldroy/air/pull/676
+* @RMRizal-UP made their first contribution in https://github.com/feldroy/air/pull/696
+* @ogbinar made their first contribution in https://github.com/feldroy/air/pull/695
+* @joohhhnnnny made their first contribution in https://github.com/feldroy/air/pull/698
+* @KevsterAmp made their first contribution in https://github.com/feldroy/air/pull/700
+* @jlorion made their first contribution in https://github.com/feldroy/air/pull/702
+* @nedpals made their first contribution in https://github.com/feldroy/air/pull/706
+* @trbyte made their first contribution in https://github.com/feldroy/air/pull/713
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.38.1...v0.39.0
+
 # 0.38.1 - 2025-10-22
 
 ## What's Changed
