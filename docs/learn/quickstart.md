@@ -97,10 +97,10 @@ def air_is_grounded():
 
 @app.post('/form-handler')
 async def form_handler(request: air.Request): # (1)!
-    ...
+    ...      
 ```
 
-1. Form handling in Air requires `async` functions and usually an `air.Request` argument. We cover forms later on this page as well as in numerous places across the Air documentation.
+1. Form handling in Air requires `async` functions and usually an `air.Request` argument. We cover forms later on this page as well as in numerous places across the Air documentation. 
 
 ### app.page decorator
 
@@ -204,6 +204,35 @@ def index():
         air.A("View user profile", href=user_detail.url(username="Aang"))
     )
 ```
+
+### Other HTTP Methods
+
+!!! warning
+
+    By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else, like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX allows you to send other HTTP methods from forms and links.
+
+
+Air supports the `PUT`, `PATCH`, or `DELETE` methods natively:
+
+```python hl_lines="1 5 9"
+@app.patch('/partial-update/{slug}')
+async def partial_update(request: air.Request, slug: str): # (1)!
+    ...    
+
+@app.put('/create-item')
+async def create_item(request: air.Request): # (2)!
+    ...        
+
+@app.delete('/delete/{slug}')
+async def delete_item(request: air.Request, slug: str): # (3)!
+    ...      
+```
+
+1. `PATCH` requests are used for partial updates of resources, such as one field being update. The `slug` variable in the URL is passed as an argument to the function. While `POST` requests can be used for updates and is the classic method, `PATCH` is more specific to the action being taken.
+
+2. `PUT` requests are used for creating or replacing resources. The function can handle the incoming data, typically from the request body. Like `POST`, `PUT` requests usually require `async` functions and an `air.Request` argument.
+
+3. `DELETE` requests are used to delete resources. Similar to `PATCH`, the `slug` variable in the URL is passed as an argument to the function.
 
 ## Air Tags
 
