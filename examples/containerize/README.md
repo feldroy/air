@@ -21,10 +21,11 @@ You can copy the provided sample Dockerfile and put it in your project folder.
 Before attempting to build, ensure that you have installed the dependencies required by Air and your application. The following dependencies are for the sample airblog app:
 
 ```
-uv add uvicorn
-uv add frontmatter
-uv add mistletoe
-uv add fastapi[standard]
+uv add "air[standard]"
+uv add "uvicorn"
+uv add "frontmatter"
+uv add "mistletoe"
+uv add "fastapi[standard]"
 ```
 
 By running the previous uv commands, the dependencies are added by uv to pyproject.toml and will be referenced during Docker build.
