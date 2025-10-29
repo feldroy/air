@@ -1,11 +1,10 @@
 from typing import Annotated, cast
 import annotated_types
+import air
 import pytest
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
 from pydantic import BaseModel, Field
-
-import air
 
 
 def test_form_sync_check() -> None:
