@@ -4,8 +4,14 @@
 #
 # REMINDER: make sure to double check, verify, and test the
 # base image that you will be using. 
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
+FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim AS builder
 
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+    
 WORKDIR /app
 
 # Enable bytecode compilation for better startup performance
@@ -30,7 +36,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
 # Final stage - minimal runtime image
-FROM python:3.12-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 # Create non-root user for security
 RUN groupadd -r appuser && \
