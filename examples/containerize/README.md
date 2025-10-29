@@ -4,7 +4,7 @@ Air applications are closely similar to FastAPI applications. Building a Docker 
 
 ### Why build a container image? 
 
-There are many advantages to building a container image for your Air application. For one, the container image you generate becomes a discreet deployable unit making your application more portable. You can then run your container image on Docker Engine, Docker Desktop, other platforms that support Docker images, or deploy your container image into any flavor of Kubernetes.
+There are many advantages to building a container image for your Air application. For one, the container image you generate becomes a discrete deployable unit making your application more portable. You can then run your container image on Docker Engine, Docker Desktop, other platforms that support Docker images, or deploy your container image into any flavor of Kubernetes.
 
 ### The Dockerfile
 
