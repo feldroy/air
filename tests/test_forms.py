@@ -1,5 +1,6 @@
 from typing import Annotated, cast
 
+import annotated_types
 import pytest
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
@@ -111,8 +112,8 @@ def test_form_render() -> None:
 
     form = cheese.render()
     assert (
-        form == '<label for="name">name</label><input name="name" type="text" id="name">'
-        '<label for="age">age</label><input name="age" type="number" id="age">'
+        form == '<label for="name">name</label><input name="name" type="text" required id="name">'
+        '<label for="age">age</label><input name="age" type="number" required id="age">'
     )
 
 
@@ -127,8 +128,9 @@ def test_form_render_with_values() -> None:
     cheese = CheeseForm({"name": "Cheddar", "age": 3})
 
     assert (
-        cheese.render() == '<label for="name">name</label><input name="name" type="text" value="Cheddar" id="name">'
-        '<label for="age">age</label><input name="age" type="number" value="3" id="age">'
+        cheese.render()
+        == '<label for="name">name</label><input name="name" type="text" value="Cheddar" required id="name">'
+        '<label for="age">age</label><input name="age" type="number" value="3" required id="age">'
     )
 
 
@@ -154,8 +156,8 @@ def test_form_render_in_view() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
-        response.text == '<form><label for="name">name</label><input name="name" type="text" id="name">'
-        '<label for="age">age</label><input name="age" type="number" id="age"></form>'
+        response.text == '<form><label for="name">name</label><input name="name" type="text" required id="name">'
+        '<label for="age">age</label><input name="age" type="number" required id="age"></form>'
     )
 
 
@@ -178,9 +180,9 @@ def test_form_render_with_errors() -> None:
     html = cheese.render()
 
     assert (
-        html == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" id="name">'
+        html == '<label for="name">name</label><input aria-invalid="true" name="name" type="text" required id="name">'
         '<small id="name-error">This field is required.</small><label for="age">age</label>'
-        '<input aria-invalid="true" name="age" type="number" id="age">'
+        '<input aria-invalid="true" name="age" type="number" required id="age">'
         '<small id="age-error">This field is required.</small>'
     )
 
@@ -212,10 +214,10 @@ def test_air_field() -> None:
     contact_form = ContactForm()
     html = contact_form.render()
     assert (
-        html == '<label for="name">name</label><input name="name" type="text" id="name">'
-        '<label for="email">Email</label><input name="email" type="email" id="email">'
+        html == '<label for="name">name</label><input name="name" type="text" required id="name">'
+        '<label for="email">Email</label><input name="email" type="email" required id="email">'
         '<label for="date_and_time">Date and Time</label>'
-        '<input name="date_and_time" type="datedatetime-local" id="date_and_time">'
+        '<input name="date_and_time" type="datedatetime-local" required id="date_and_time">'
     )
 
 
@@ -274,7 +276,7 @@ def test_air_field_json_schema_extra() -> None:
         model = CheeseModel
 
     html = CheeseForm().render()
-    assert '<input name="name" type="text" autofocus id="name">' in html
+    assert '<input name="name" type="text" required autofocus id="name">' in html
     assert '<label for="age">my-age</label>' in html
 
 
@@ -290,7 +292,7 @@ def test_field_includes() -> None:
         model = PlaneModel
 
     html = PlaneForm().render()
-    assert '<label for="id">id</label><input name="id" type="number" id="id">' in html
+    assert '<label for="id">id</label><input name="id" type="number" required id="id">' in html
 
     # Test with includes active, removing id field
     class PlaneForm(air.AirForm):
@@ -298,7 +300,7 @@ def test_field_includes() -> None:
         includes = ("name", "year_released", "max_airspeed")
 
     html = PlaneForm().render()
-    assert '<label for="id">id</label><input name="id" type="number" id="id">' not in html
+    assert '<label for="id">id</label><input name="id" type="number" required id="id">' not in html
 
 
 def test_default_form_widget_basic():
@@ -313,9 +315,9 @@ def test_default_form_widget_basic():
     html = air.forms.default_form_widget(TestModel)
     # Check that the generated HTML contains the expected input fields
     assert '<label for="name">name</label>' in html
-    assert '<input name="name" type="text" id="name"' in html
+    assert '<input name="name" type="text" required id="name"' in html
     assert '<label for="age">age</label>' in html
-    assert '<input name="age" type="number" id="age"' in html
+    assert '<input name="age" type="number" required id="age"' in html
 
     # Check no errors and invalid states
     assert 'aria-invalid="true"' not in html
@@ -384,9 +386,9 @@ def test_default_form_widget_includes():
 
     # Ensure included fields are present
     assert '<label for="name">name</label>' in html
-    assert '<input name="name" type="text" id="name">' in html
+    assert '<input name="name" type="text" required id="name">' in html
     assert '<label for="age">age</label>' in html
-    assert '<input name="age" type="number" id="age">' in html
+    assert '<input name="age" type="number" required id="age">' in html
 
 
 def test_default_form_widget_optional_fields():
@@ -460,3 +462,115 @@ def test_air_field_with_default_value() -> None:
     instance = TestModel()
     assert instance.name == "default_name"
     assert instance.age == 25
+
+
+def test_html5_validation_attributes() -> None:
+    """Test that HTML5 validation attributes are generated from Pydantic constraints."""
+
+    class ContactModel(BaseModel):
+        name: str = air.AirField(min_length=2, max_length=50)
+        email: str = air.AirField(type="email", label="Email Address")
+        message: str = air.AirField(min_length=10, max_length=500)
+
+    class ContactForm(air.AirForm):
+        model = ContactModel
+
+    html = ContactForm().render()
+
+    # Check minlength and maxlength attributes
+    assert 'minlength="2"' in html
+    assert 'maxlength="50"' in html
+    assert 'minlength="10"' in html
+    assert 'maxlength="500"' in html
+
+    # Check required attribute (all fields are required since they don't have defaults)
+    assert html.count("required") == 3
+
+    # Check email type is preserved
+    assert 'type="email"' in html
+
+
+def test_html5_validation_optional_fields() -> None:
+    """Test that optional fields don't get required attribute."""
+
+    class OptionalModel(BaseModel):
+        name: str
+        nickname: str | None = None
+
+    class OptionalForm(air.AirForm):
+        model = OptionalModel
+
+    html = OptionalForm().render()
+
+    # Only the name field should have required attribute
+    assert 'name="name"' in html and "required" in html
+    assert 'name="nickname"' in html and '<input name="nickname" type="text" id="nickname">' in html
+
+
+def test_html5_validation_with_standard_field() -> None:
+    """Test HTML5 validation with standard Pydantic Field (not AirField)."""
+
+    class StandardModel(BaseModel):
+        name: str = Field(min_length=3, max_length=20)
+        age: int
+
+    class StandardForm(air.AirForm):
+        model = StandardModel
+
+    html = StandardForm().render()
+
+    # Check that constraints from standard Field are also applied
+    assert 'minlength="3"' in html
+    assert 'maxlength="20"' in html
+    assert html.count("required") == 2  # Both fields required
+
+
+def test_html5_validation_with_annotated() -> None:
+    """Test HTML5 validation with Annotated type constraints."""
+
+    class AnnotatedModel(BaseModel):
+        name: Annotated[str, annotated_types.MinLen(2), annotated_types.MaxLen(50)]
+        age: int
+
+    class AnnotatedForm(air.AirForm):
+        model = AnnotatedModel
+
+    html = AnnotatedForm().render()
+
+    # Check that Annotated constraints are applied
+    assert 'minlength="2"' in html
+    assert 'maxlength="50"' in html
+
+
+def test_html5_validation_optional_with_constraints() -> None:
+    """Test that optional fields with constraints get minlength/maxlength but not required."""
+
+    class OptionalConstrainedModel(BaseModel):
+        nickname: Annotated[str | None, annotated_types.MinLen(2)] = None
+
+    class OptionalConstrainedForm(air.AirForm):
+        model = OptionalConstrainedModel
+
+    html = OptionalConstrainedForm().render()
+
+    # Should have minlength but not required
+    assert 'minlength="2"' in html
+    assert "required" not in html
+
+
+def test_html5_validation_field_with_default() -> None:
+    """Test that fields with defaults don't get required attribute."""
+
+    class DefaultedModel(BaseModel):
+        name: str = Field("default_name", min_length=2, max_length=20)
+        age: int = 25
+
+    class DefaultedForm(air.AirForm):
+        model = DefaultedModel
+
+    html = DefaultedForm().render()
+
+    # Should have minlength/maxlength but not required
+    assert 'minlength="2"' in html
+    assert 'maxlength="20"' in html
+    assert "required" not in html

@@ -169,7 +169,7 @@ def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
     return {error["loc"][0]: error for error in errors}
 
 
-def default_form_widget(
+def default_form_widget(  # noqa: C901
     model: type[BaseModel],
     data: dict | None = None,
     errors: list | None = None,
@@ -192,14 +192,7 @@ def default_form_widget(
     for field_name, field_info in model.model_fields.items():
         if includes is not None and field_name not in includes:
             continue
-        field_type = field_info.annotation
-        origin = get_origin(field_type)
 
-        # Handle optional types (Union with None)
-        if (origin is Union or origin is UnionType) and type(None) in get_args(field_type):
-            # This is a Union type, get the non-None type
-            args = get_args(field_type)
-            field_type = next((arg for arg in args if arg is not type(None)), str)
         input_type = pydantic_type_to_html_type(field_info)
         kwargs = {}
         # Inject values
@@ -212,6 +205,35 @@ def default_form_widget(
         json_schema_extra: dict = field_info.json_schema_extra or {}
         if json_schema_extra.get("autofocus"):
             kwargs["autofocus"] = True
+
+        # Add HTML5 validation attributes from Pydantic constraints
+        # Check if field is optional (Union with None)
+        annotation = field_info.annotation
+        origin = get_origin(annotation)
+        is_optional = (origin is Union or origin is UnionType) and type(None) in get_args(annotation)
+
+        # Add required attribute for non-optional required fields
+        if field_info.is_required() and not is_optional:
+            kwargs["required"] = True
+
+        # Extract min_length and max_length from field metadata
+        for meta in getattr(field_info, "metadata", []):
+            if isinstance(meta, annotated_types.MinLen):
+                kwargs["minlength"] = meta.min_length
+            elif isinstance(meta, annotated_types.MaxLen):
+                kwargs["maxlength"] = meta.max_length
+            elif hasattr(annotated_types, "Len") and isinstance(meta, annotated_types.Len):
+                if getattr(meta, "min_length", None) is not None:
+                    kwargs["minlength"] = meta.min_length
+                if getattr(meta, "max_length", None) is not None:
+                    kwargs["maxlength"] = meta.max_length
+
+        # Fallback to field_info attributes if present
+        if hasattr(field_info, "min_length") and field_info.min_length is not None:
+            kwargs.setdefault("minlength", field_info.min_length)
+        if hasattr(field_info, "max_length") and field_info.max_length is not None:
+            kwargs.setdefault("maxlength", field_info.max_length)
+
         fields.append(
             tags.Tags(
                 tags.Label(
