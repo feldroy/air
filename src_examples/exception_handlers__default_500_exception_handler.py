@@ -5,7 +5,4 @@ app = air.Air()
 
 @app.get("/")
 def index():
-    return air.AirResponse(
-        air.P("500 Internal Server Error"),
-        status_code=500
-    )
+    return air.AirResponse(air.P("500 Internal Server Error"), status_code=500)

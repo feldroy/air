@@ -6,10 +6,7 @@ router = air.AirRouter()
 
 @router.get("/example")
 def index():
-    return air.AirResponse(
-        air.P("I am an example route."),
-        status_code=404
-    )
+    return air.AirResponse(air.P("I am an example route."), status_code=404)
 
 
 app.include_router(router)

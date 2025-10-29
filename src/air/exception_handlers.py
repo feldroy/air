@@ -11,7 +11,23 @@ from .tags import H1, P, Title
 
 
 def default_404_router_handler(router_name: str) -> ASGIApp:
-    """Build an ASGI app that delegates the 404 to the default_404_exception_handler."""
+    """Build an ASGI app that delegates the 404 to the default_404_exception_handler.
+
+    Example:
+
+        import air
+
+        app = air.Air()
+        router = air.AirRouter()
+
+
+        @router.get("/example")
+        def index():
+            return air.AirResponse(air.P("I am an example route."), status_code=404)
+
+
+        app.include_router(router)
+    """
 
     async def app(scope: Scope, receive: Receive, send: Send) -> None:
         # Create a Request so router handler can render URL and other context.
@@ -33,7 +49,19 @@ def default_404_router_handler(router_name: str) -> ASGIApp:
 
 
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
-    """Default 404 exception handler. Can be overloaded."""
+    """Default 404 exception handler. Can be overloaded.
+
+    Example:
+
+        import air
+
+        app = air.Air()
+
+
+        @app.get("/")
+        def index():
+            return air.AirResponse(air.P("404 Not Found"), status_code=404)
+    """
     return AirResponse(
         mvpcss(
             Title("404 Not Found"),
@@ -46,7 +74,19 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
 
 
 def default_500_exception_handler(request: Request, exc: Exception) -> AirResponse:
-    """Default 500 exception handler. Can be overloaded."""
+    """Default 500 exception handler. Can be overloaded.
+
+    Example:
+
+        import air
+
+        app = air.Air()
+
+
+        @app.get("/")
+        def index():
+            return air.AirResponse(air.P("500 Internal Server Error"), status_code=500)
+    """
     return AirResponse(
         mvpcss(
             Title("500 Internal Server Error"),
