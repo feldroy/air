@@ -1,6 +1,6 @@
 # Containerizing an Air application
 
-Air applications are closely similar to FastAPI applications. Building a Docker image for your Air app is very much straightforward as you would building a Docker image for a FastAPI application, with some minor differences.
+Air applications are closely similar to FastAPI applications. Building a Docker image for your Air app is straightforward. You build a Docker image for a FastAPI application, with some minor differences.
 
 ### Why build a container image? 
 
