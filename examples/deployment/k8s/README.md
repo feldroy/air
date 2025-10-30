@@ -59,12 +59,44 @@ Modify `containers.image` to reference your application container image. The `im
 
 ```
 containers:
-      - name: air
-        image: hardwyrd/air-blogdemo:0.39.0
-        imagePullPolicy: Always
+  - name: air
+    image: hardwyrd/air-blogdemo:0.39.0
+    imagePullPolicy: Always
 ```
 
+Kubernetes is very keen on performing liveness probes and readiness probes for your application. Ensure that your application is able to handle these probes by having endpoints for liveness and readiness. The sample deployment.yaml have the following:
+
+```
+livenessProbe:
+  httpGet:
+    path: /
+    port: 8000
+```
+
+```
+readinessProbe:
+  httpGet:
+    path: /
+    port: 8000
+```
+
+`httpGet.path` on the sample YAML was set to `/` which will need to be modified to `/health` or `/healthz` and `/ready` respectively. Or if you prefer, you can set it to whichever endpoint you have prepared in your application. 
+
 Modify the rest of the deployment.yaml as you see fit for your application.
+
+### Ingress
+
+The Ingress section of the sample YAML file shows Traefik-specific ingress configuration this is largely because this was tested out using K3d which utilizes Traefik by default. You may need to modify this section if you plan on using a different Ingress like Nginx or Istio.
+
+```
+kind: Ingress
+metadata:
+  name: air-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+```
 
 ### Running the deployment
 
