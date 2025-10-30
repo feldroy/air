@@ -20,6 +20,10 @@ from .exceptions import (
 from .forms import (
     AirField as AirField,
     AirForm as AirForm,
+    model_form as model_form,
+)
+from .models import (
+    AirModel as AirModel,
 )
 from .middleware import SessionMiddleware as SessionMiddleware
 from .requests import (
