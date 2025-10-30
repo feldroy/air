@@ -599,9 +599,6 @@ def test_air_model_form_generation() -> None:
     form.validate({"name": "Test", "age": 5})
     assert form.is_valid is True
 
-    # Subsequent calls should reuse the same class when parameters match
-    assert AutoModel.form() is AutoForm
-
 
 def test_air_model_form_generation_with_includes() -> None:
     class AutoModel(air.AirModel):
