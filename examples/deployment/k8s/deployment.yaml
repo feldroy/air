@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: air-app
+  labels:
+    app: air-app
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: air-app
+  template:
+    metadata:
+      labels:
+        app: air-app
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: air
+        image: hardwyrd/air-blogdemo:0.39.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        env:
+        - name: ENVIRONMENT
+          value: "production"
+        - name: LOG_LEVEL
+          value: "info"
+        envFrom:
+        - configMapRef:
+            name: air-config
+            optional: true
+        - secretRef:
+            name: air-secrets
+            optional: true
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: air-service
+  labels:
+    app: air-app
+spec:
+  type: ClusterIP
+  selector:
+    app: air-app
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  sessionAffinity: None
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: air-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: air.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: air-service
+            port:
+              number: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: air-config
+data:
+  APP_NAME: "Air Application"
+  WORKERS: "4"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: air-secrets
+type: Opaque
+stringData:
+  # Add your secrets here
+  # DATABASE_URL: "postgresql://user:pass@host:5432/db"
+  # SECRET_KEY: "your-secret-key-here"
