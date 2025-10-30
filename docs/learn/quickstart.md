@@ -212,7 +212,7 @@ def index():
     By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else, like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX allows you to send other HTTP methods from forms and links.
 
 
-Air supports the `PUT`, `PATCH`, or `DELETE` methods natively:
+Air supports the `PATCH`, `PUT`, or `DELETE` methods natively:
 
 ```python hl_lines="1 5 9"
 @app.patch('/partial-update/{slug}')
