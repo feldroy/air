@@ -228,7 +228,7 @@ async def delete_item(request: air.Request, slug: str): # (3)!
     ...
 ```
 
-1. `PATCH` requests are used for partial updates of resources, such as one field being update. The `slug` variable in the URL is passed as an argument to the function. While `POST` requests can be used for updates and is the classic method, `PATCH` is more specific to the action being taken.
+1. `PATCH` requests are used for partial updates of resources, such as one field being updated. The `slug` variable in the URL is passed as an argument to the function. While `POST` requests can be used for updates and is the classic method, `PATCH` is more specific to the action being taken.
 
 2. `PUT` requests are used for creating or replacing resources. The function can handle the incoming data, typically from the request body. Like `POST`, `PUT` requests usually require `async` functions and an `air.Request` argument.
 
