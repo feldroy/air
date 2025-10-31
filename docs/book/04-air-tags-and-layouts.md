@@ -1,9 +1,5 @@
 # Air Tags and Layouts
 
-!!! warning "First draft!"
-    
-    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
-
 ## Air Tags: An Approachable Entry Point to Air
 
 Air Tags are strongly-typed Python classes that generate HTML elements. Instead of working with separate Jinja templates, you work with Python objects that provide type safety and IDE autocompletion. They really shine in the HTMX-era need to send small fragments of HTML from views, reducing the need to have dozens of tiny Jinja templates. By being written in Python they mean developers don't need leave Python and context switch to Jinja, reducing cognitive load and allowing for more fluid development. 
