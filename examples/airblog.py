@@ -126,9 +126,7 @@ def tags(request: air.Request):
             air.H1("Tags"),
             air.P("All the tags"),
         ),
-        air.Article(
-            air.Ul(*[air.Li(air.A(k, f" ({v})", href=tag.url(slug=k))) for k, v in get_tags().items()])
-        ),
+        air.Article(air.Ul(*[air.Li(air.A(k, f" ({v})", href=tag.url(slug=k))) for k, v in get_tags().items()])),
         air.Footer(
             air.P(
                 air.A("← Home", href=index.url()),
