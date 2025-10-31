@@ -54,7 +54,7 @@ def get_tags() -> dict[str, int]:
 def NavBar(request):
     return air.Nav(
         air.A("Home", href=request.url_for("index")),
-        air.A("Tags", href="/tags"),
+        air.A("Tags", href=tags.url()),
     )
 
 
@@ -111,7 +111,7 @@ async def article_detail(slug: str, request: air.Request):
             *[air.Span(air.A(x, href=request.url_for("tag", slug=x)), " ") for x in article["attributes"]["tags"]],
             air.Br(),
             air.P(
-                air.A("← Home", href="/"),
+                air.A("← Home", href=index.url()),
             ),
         ),
     )
@@ -127,11 +127,11 @@ def tags(request: air.Request):
             air.P("All the tags"),
         ),
         air.Article(
-            air.Ul(*[air.Li(air.A(k, f" ({v})", href=request.url_for("tag", slug=k))) for k, v in get_tags().items()])
+            air.Ul(*[air.Li(air.A(k, f" ({v})", href=tag.url(slug=k))) for k, v in get_tags().items()])
         ),
         air.Footer(
             air.P(
-                air.A("← Home", href="/"),
+                air.A("← Home", href=index.url()),
             )
         ),
     )
@@ -149,7 +149,7 @@ def tag(slug: str, request: air.Request):
         air.Section(*[BlogPostPreview(x, request) for x in articles]),
         air.Footer(
             air.P(
-                air.A("← Home", href="/"),
+                air.A("← Home", href=index.url()),
             )
         ),
     )
