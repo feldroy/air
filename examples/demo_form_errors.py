@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """Demo script to show enhanced form error messages."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 from rich import print
 
 import air
 
 
-class ContactModel(BaseModel):
+class ContactModel(air.AirModel):
     name: str = Field(min_length=2, max_length=50)
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
 
 
-class ContactForm(air.AirForm):
-    model = ContactModel
+ContactForm = ContactModel.form()
 
 
 app = air.Air()
