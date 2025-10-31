@@ -1,9 +1,5 @@
 # Building Our Blog Application
 
-!!! warning "First draft!"
-    
-    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
-
 ## Project My Personal Blog
 
 We're going to create a markdown file-powered blogging platform called My Personal Blog. It will have:

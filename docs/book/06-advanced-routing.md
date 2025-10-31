@@ -1,9 +1,5 @@
 # Advanced Routing and URL Management
 
-!!! warning "First draft!"
-
-    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
-
 Air provides multiple ways to define routes, making it easy to handle various URL patterns and request methods.
 
 ## HTTP Methods
