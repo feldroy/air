@@ -18,7 +18,7 @@ First, let's create a directory to store our blog articles and some sample conte
 
 Create a new directory called `articles` in the root of your project. Inside this directory, create a new file called `hello-world.md` with the following content:
 
-```markdown title="articles/hello-world.md"
+````markdown title="articles/hello-world.md"
 ---
 title: Hello World
 description: Welcome to my personal blog - my first post!
@@ -40,9 +40,10 @@ I'm excited to share my thoughts and projects with you through this blog.
 for i in range(10):
     print("Hello, World!")
 ```
+````
 
 
-The file has two sections:
+The `hello-world.md` file has two sections:
 
 - **Frontmatter**: Delimited by `---` lines, contains metadata like title, description, slug, etc.
 - **Content**: The main body of the article, written in Markdown format
@@ -224,7 +225,7 @@ def index():
                 air.Li(
                     air.A(
                         article["attributes"]["title"],
-                        href=f'/{article["attributes"]["slug"]}',
+                        href=article_detail.url(slug=article["attributes"]["slug"]),
                         style="font-size: 1.2em; font-weight: bold;"
                     ),
                     air.Br(),
@@ -267,7 +268,7 @@ def article_detail(slug: str):
             air.Div(air.Raw(html_content))
         ),
         air.Nav(
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Home", href=index.url())
         )
     )
 ```
@@ -322,9 +323,8 @@ def index():
     return air.layouts.mvpcss(
         air.Header(
             air.Nav(
-                air.A("My Personal Blog", href="/", style="font-size: 1.5em; font-weight: bold;"),
-                air.Span(" | ", style="margin: 0 10px;"),
-                air.A("Contact", href="/contact")
+                air.A("My Personal Blog", href=index.url(), style="font-size: 1.5em; font-weight: bold;"),
+                air.A("Contact", href=contact.url())
             )
         ),
         air.Head(air.Title(title)),
@@ -336,7 +336,7 @@ def index():
                 air.Li(
                     air.A(
                         article["attributes"]["title"],
-                        href=f'/{article["attributes"]["slug"]}',
+                        href=article_detail.url(slug=article["attributes"]["slug"]),
                         style="font-size: 1.2em; font-weight: bold;"
                     ),
                     air.Br(),
@@ -350,36 +350,6 @@ def index():
                 )
                 for article in articles
             ]
-        )
-    )
-
-
-@app.get("/{slug}")
-def article_detail(slug: str):
-    """Display a single article."""
-    article = get_article(slug)
-    if not article:
-        return air.layouts.mvpcss(
-            air.H1("Article not found"),
-            air.P("The requested article could not be found.")
-        )
-    
-    # Convert markdown content to HTML
-    html_content = markdown.markdown(article["body"])
-    
-    return air.layouts.mvpcss(
-        air.Title(article["attributes"]["title"]),
-        air.Article(
-            air.H1(article["attributes"]["title"]),
-            air.Time(
-                f'Published: {article["attributes"]["date"]}',
-                datetime=str(article["attributes"]["date"])
-            ),
-            air.P(f"By {article['attributes']['author']}"),
-            air.Div(air.Raw(html_content))
-        ),
-        air.Nav(
-            air.A("← Back to Home", href="/")
         )
     )
 
@@ -405,11 +375,11 @@ def contact():
             ),
             air.Button("Submit", type="submit"),
             method="POST",
-            action="/contact",
+            action=contact_handler.url(),
             style="display: flex; flex-direction: column; gap: 1rem;"
         ),
         air.Nav(
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Home", href=index.url())
         )
     )
 
@@ -431,11 +401,40 @@ async def contact_handler(request: air.Request):
         air.P(f"We have received your message, {name}!"),
         air.P("We'll get back to you soon."),
         air.Nav(
-            air.A("← Back to Home", href="/"),
-            air.Span(" | ", style="margin: 0 10px;"),
-            air.A("Send Another Message", href="/contact")
+            air.A("← Back to Home", href=index.url()),
+            air.A("Send Another Message", href=contact.url())
         )
     )
+# Last view in the project so article slugs don't
+# collide with other view names
+@app.get("/{slug}")
+def article_detail(slug: str):
+    """Display a single article."""
+    article = get_article(slug)
+    if not article:
+        return air.layouts.mvpcss(
+            air.H1("Article not found"),
+            air.P("The requested article could not be found.")
+        )
+    
+    # Convert markdown content to HTML
+    html_content = markdown.markdown(article["body"])
+    
+    return air.layouts.mvpcss(
+        air.Title(article["attributes"]["title"]),
+        air.Article(
+            air.H1(article["attributes"]["title"]),
+            air.Time(
+                f'Published: {article["attributes"]["date"]}',
+                datetime=str(article["attributes"]["date"])
+            ),
+            air.P(f"By {article['attributes']['author']}"),
+            air.Div(air.Raw(html_content))
+        ),
+        air.Nav(
+            air.A("← Back to Home", href=index.url())
+        )
+    )   
 ```
 
 Now would be a good time to commit your work:
@@ -455,6 +454,7 @@ from frontmatter import Frontmatter
 import markdown
 from datetime import datetime
 from typing import List
+import air
 import fastapi
 
 
@@ -484,10 +484,8 @@ def index():
     return air.layouts.mvpcss(
         air.Header(
             air.Nav(
-                air.A("My Personal Blog", href="/", style="font-size: 1.5em; font-weight: bold;"),
-                air.Span(" | ", style="margin: 0 10px;"),
-                air.A("Contact", href="/contact"),
-                air.Span(" | ", style="margin: 0 10px;"),
+                air.A("My Personal Blog", href=index.url(), style="font-size: 1.5em; font-weight: bold;"),
+                air.A("Contact", href=contact.url()),
                 air.A("API", href="/api/docs", target="_blank")
             )
         ),
@@ -518,36 +516,6 @@ def index():
     )
 
 
-@app.get("/{slug}")
-def article_detail(slug: str):
-    """Display a single article."""
-    article = get_article(slug)
-    if not article:
-        return air.layouts.mvpcss(
-            air.H1("Article not found"),
-            air.P("The requested article could not be found.")
-        )
-    
-    # Convert markdown content to HTML
-    html_content = markdown.markdown(article["body"])
-    
-    return air.layouts.mvpcss(
-        air.Title(article["attributes"]["title"]),
-        air.Article(
-            air.H1(article["attributes"]["title"]),
-            air.Time(
-                f'Published: {article["attributes"]["date"]}',
-                datetime=str(article["attributes"]["date"])
-            ),
-            air.P(f"By {article['attributes']['author']}"),
-            air.Div(air.Raw(html_content))
-        ),
-        air.Nav(
-            air.A("← Back to Home", href="/")
-        )
-    )
-
-
 @app.page
 def contact():
     """Contact form page."""
@@ -573,7 +541,7 @@ def contact():
             style="display: flex; flex-direction: column; gap: 1rem;"
         ),
         air.Nav(
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Home", href=index.url())
         )
     )
 
@@ -592,9 +560,8 @@ async def contact_handler(request: air.Request):
         air.P(f"We have received your message, {name}!"),
         air.P("We'll get back to you soon."),
         air.Nav(
-            air.A("← Back to Home", href="/"),
-            air.Span(" | ", style="margin: 0 10px;"),
-            air.A("Send Another Message", href="/contact")
+            air.A("← Back to Home", href=index.url()),
+            air.A("Send Another Message", href=contact.url())
         )
     )
 
@@ -638,6 +605,37 @@ def api_article_detail(slug: str):
 
 # Mounting the API into the APP
 app.mount("/api", api)
+
+# Last view in the project so article slugs don't
+# collide with other view names
+@app.get("/{slug}")
+def article_detail(slug: str):
+    """Display a single article."""
+    article = get_article(slug)
+    if not article:
+        return air.layouts.mvpcss(
+            air.H1("Article not found"),
+            air.P("The requested article could not be found.")
+        )
+    
+    # Convert markdown content to HTML
+    html_content = markdown.markdown(article["body"])
+    
+    return air.layouts.mvpcss(
+        air.Title(article["attributes"]["title"]),
+        air.Article(
+            air.H1(article["attributes"]["title"]),
+            air.Time(
+                f'Published: {article["attributes"]["date"]}',
+                datetime=str(article["attributes"]["date"])
+            ),
+            air.P(f"By {article['attributes']['author']}"),
+            air.Div(air.Raw(html_content))
+        ),
+        air.Nav(
+            air.A("← Back to Home", href=index.url())
+        )
+    )
 ```
 
 Now would be a good time to commit your work:
@@ -719,13 +717,10 @@ def index():
         air.Title(title),
         air.Header(
             air.Nav(
-                air.A("My Personal Blog", href="/", style="font-size: 1.5em; font-weight: bold;"),
-                air.Span(" | ", style="margin: 0 10px;"),
-                air.A("Contact", href="/contact"),
-                air.Span(" | ", style="margin: 0 10px;"),
+                air.A("My Personal Blog", href=index.url(), style="font-size: 1.5em; font-weight: bold;"),
+                air.A("Contact", href=contact.url()),
                 air.A("API Docs", href="/docs", target="_blank") if app.docs_url else "",
-                air.Span(" | ", style="margin: 0 10px;"),
-                air.A("Admin", href="/admin") if is_admin else air.A("Login", href="/login")
+                air.A("Admin", href=admin.url()) if is_admin else air.A("Login", href=login.url())
             )
         ),
         air.H1(title),
@@ -755,44 +750,6 @@ def index():
     )
 
 
-@app.get("/{slug}")
-def article_detail(slug: str):
-    """Display a single article with full details."""
-    article = get_article(slug)
-    if not article:
-        return air.layouts.mvpcss(
-            air.H1("Article not found"),
-            air.P("The requested article could not be found."),
-            air.A("← Back to Home", href="/")
-        )
-    
-    # Convert markdown content to HTML
-    html_content = markdown.markdown(article["body"])
-    
-    return air.layouts.mvpcss(
-        air.Title(article["attributes"]["title"]),
-        air.Article(
-            air.H1(article["attributes"]["title"]),
-            air.Div(
-                air.Time(
-                    f'Published: {article["attributes"]["date"]}',
-                    datetime=str(article["attributes"]["date"])
-                ),
-                air.P(f"By {article['attributes']['author']}"),
-                style="color: #666; margin-bottom: 1rem;"
-            ),
-            air.Div(air.Raw(html_content), style="line-height: 1.6;"),
-            air.Div(
-                *[air.Span(f"#{tag}", style="margin-right: 0.5rem;") for tag in article['attributes']['tags']],
-                style="margin-top: 1rem; color: #666;"
-            )
-        ),
-        air.Nav(
-            air.A("← Back to Home", href="/")
-        )
-    )
-
-
 # Contact Form
 class ContactForm(AirForm):
     class model(BaseModel):
@@ -818,7 +775,7 @@ def contact():
             style="display: flex; flex-direction: column; gap: 1rem; max-width: 500px;"
         ),
         air.Nav(
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Home", href=index.url())
         )
     )
 
@@ -841,9 +798,8 @@ async def contact_handler(request: air.Request):
             air.P(f"Your message has been sent, {validated_data['name']}!"),
             air.P("We'll get back to you soon."),
             air.Nav(
-                air.A("← Back to Home", href="/"),
-                air.Span(" | ", style="margin: 0 10px;"),
-                air.A("Send Another Message", href="/contact")
+                air.A("← Back to Home", href=index.url()),
+                air.A("Send Another Message", href=contact.url())
             )
         )
     else:
@@ -859,7 +815,7 @@ async def contact_handler(request: air.Request):
                 style="display: flex; flex-direction: column; gap: 1rem; max-width: 500px;"
             ),
             air.Nav(
-                air.A("← Back to Home", href="/")
+                air.A("← Back to Home", href=index.url())
             )
         )
 
@@ -953,7 +909,7 @@ def htmx_demo():
         ),
         
         air.Nav(
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Home", href=index.url())
         )
     )
 
@@ -1036,7 +992,7 @@ def login():
             style="display: flex; flex-direction: column; gap: 1rem; max-width: 300px;"
         ),
         air.Nav(
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Home", href=index.url())
         )
     )
 
@@ -1061,7 +1017,7 @@ async def login_handler(request: air.Request):
         return air.layouts.mvpcss(
             air.H1("Login Failed"),
             air.P("Invalid credentials. Please try again."),
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Home", href=index.url())
         )
 
 
@@ -1089,9 +1045,8 @@ def admin():
         air.Header(
             air.H1("Admin Dashboard"),
             air.Nav(
-                air.A("← Back to Home", href="/"),
-                air.Span(" | ", style="margin: 0 10px;"),
-                air.A("Logout", href="/logout")
+                air.A("← Back to Home", href=index.url()),
+                air.A("Logout", href=logout.url())
             )
         ),
         air.H2("Manage Articles"),
@@ -1139,13 +1094,12 @@ def admin_new():
             ),
             air.Button("Create Article", type="submit"),
             method="POST",
-            action="/admin/new",
+            action=admin_new_handler.url(),
             style="display: flex; flex-direction: column; gap: 1rem;"
         ),
         air.Nav(
-            air.A("← Back to Admin", href="/admin"),
-            air.Span(" | ", style="margin: 0 10px;"),
-            air.A("← Back to Home", href="/")
+            air.A("← Back to Admin", href=admin.url()),
+            air.A("← Back to Home", href=index.url())
         )
     )
 
@@ -1185,10 +1139,8 @@ tags:
         air.P(f"Article '{title}' has been created successfully."),
         air.Div(
             air.A("View Article", href=f"/{slug}", class_="button primary"),
-            air.Span(" | ", style="margin: 0 10px;"),
-            air.A("Back to Admin", href="/admin"),
-            air.Span(" | ", style="margin: 0 10px;"),
-            air.A("← Back to Home", href="/")
+            air.A("Back to Admin", href=admin.url()),
+            air.A("← Back to Home", href=index.url())
         )
     )
 
@@ -1207,7 +1159,7 @@ async def not_found(request, exc):
     return air.layouts.mvpcss(
         air.H1("Page Not Found"),
         air.P("The requested page could not be found."),
-        air.A("← Back to Home", href="/")
+        air.A("← Back to Home", href=index.url())
     )
 
 
@@ -1216,8 +1168,48 @@ async def server_error(request, exc):
     return air.layouts.mvpcss(
         air.H1("Server Error"),
         air.P("An internal server error occurred."),
-        air.A("← Back to Home", href="/")
+        air.A("← Back to Home", href=index.url())
     )
+
+
+# Last view in the project so article slugs don't
+# collide with other view names
+@app.get("/{slug}")
+def article_detail(slug: str):
+    """Display a single article with full details."""
+    article = get_article(slug)
+    if not article:
+        return air.layouts.mvpcss(
+            air.H1("Article not found"),
+            air.P("The requested article could not be found."),
+            air.A("← Back to Home", href=index.url())
+        )
+    
+    # Convert markdown content to HTML
+    html_content = markdown.markdown(article["body"])
+    
+    return air.layouts.mvpcss(
+        air.Title(article["attributes"]["title"]),
+        air.Article(
+            air.H1(article["attributes"]["title"]),
+            air.Div(
+                air.Time(
+                    f'Published: {article["attributes"]["date"]}',
+                    datetime=str(article["attributes"]["date"])
+                ),
+                air.P(f"By {article['attributes']['author']}"),
+                style="color: #666; margin-bottom: 1rem;"
+            ),
+            air.Div(air.Raw(html_content), style="line-height: 1.6;"),
+            air.Div(
+                *[air.Span(f"#{tag}", style="margin-right: 0.5rem;") for tag in article['attributes']['tags']],
+                style="margin-top: 1rem; color: #666;"
+            )
+        ),
+        air.Nav(
+            air.A("← Back to Home", href=index.url())
+        )
+    )    
 ```
 
 Now would be a good time to commit your work:
