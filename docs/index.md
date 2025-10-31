@@ -122,6 +122,7 @@ For `uv` users, just create a virtualenv and install the air package, like:
 ```sh
 uv venv
 source .venv/bin/activate
+uv init
 uv add air
 uv add "fastapi[standard]"
 ```
