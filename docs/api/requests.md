@@ -56,7 +56,7 @@ async def create_item(request: Request):
 ### Reading Form Data
 ```python
 import air
-from air.requests import AirRequest
+from air.requests import Request
 from air.responses import JSONResponse
 
 app = air.Air()
@@ -74,15 +74,13 @@ async def login(request: Request):
 
 ### Accessing the HTMX object
 
-This requires use of the `air.requests.AirRequest` object.
-
 ```python
 import air
 
 app = air.Air()
 
 @app.page
-def index(request: air.AirRequest):
+def index(request: air.Request):
     return air.layouts.mvpcss(
         air.H1(f'From HTMX?'),
         air.P(f"This request came from an HTMX element on a page: {request.htmx}")
@@ -93,6 +91,7 @@ def index(request: air.AirRequest):
 ::: air.requests
     options:
       group_by_category: false
-      members:
-        - AirRequest
-        - HtmxDetails      
+      members: 
+        - AirRequest        
+        - HtmxDetails             
+        - Request        
