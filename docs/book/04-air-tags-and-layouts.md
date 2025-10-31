@@ -6,11 +6,17 @@
 
 ## Air Tags: An Approachable Entry Point to Air
 
-Air Tags are strongly-typed Python classes that generate HTML elements. Instead of writing HTML strings, you work with Python objects that provide type safety and IDE autocompletion. Air Tags provide a beginner-friendly entry point to creating web interfaces in Air, but Air's architecture extends far beyond just tags to include routing, middleware, database integration, and API capabilities built on FastAPI and Starlette.
+Air Tags are strongly-typed Python classes that generate HTML elements. Instead of working with separate Jinja templates, you work with Python objects that provide type safety and IDE autocompletion. They really shine in the HTMX-era need to send small fragments of HTML from views, reducing the need to have dozens of tiny Jinja templates. By being written in Python they mean developers don't need leave Python and context switch to Jinja, reducing cognitive load and allowing for more fluid development. 
+
+!!! note "What about Jinja?"
+
+    While Air Tags are the preferred way to build HTML in Air, Air also supports Jinja templates for teams that prefer that approach. In fact, a popular Air pattern that has emerged is to use Jinja for page layouts while Air Tags are used for individual view responses.
 
 ### Basic Tag Usage
 
 ```python
+import air
+
 # Simple tags
 air.H1("Main Header")
 air.P("This is a paragraph")
@@ -46,6 +52,35 @@ In Air Tags, HTML attributes that conflict with Python keywords are suffixed wit
 ```python
 air.Label("Username", for_="username-field")
 air.Div(class_="container", id="main-content")
+```
+
+### Special Characters in Attributes
+
+To get around that in Python we can't begin function arguments with special characters, we lean into how **Air Tags** is kwargs friendly.
+
+```python
+air.P('Hello', class_='plain', **{'@data': 6})
+```
+
+### Boolean Attributes
+
+Boolean attributes in HTML can be represented in Air Tags by using `True`, `False`, or the strings `"true"` or `"false"`.
+
+|Value|Behavior|
+|---|---|---|
+|True|Renders attribute name only (boolean style)|
+|False|Omits attribute entirely|
+|"true" (string)|Renders as attr="true"|
+
+```python
+# Renders as <option selected>Choice 1</option>
+air.Option("Choice 1", selected=True)  
+# Renders as <option>Choice 2</option>
+air.Option("Choice 2", selected=False)  
+# Renders as <option selected="true">Choice 3</option>
+# Note: this isn't correct HTML for this tag,
+#   but sometimes needed for specific use cases
+air.Option("Choice 3", selected="true")  
 ```
 
 ## Layouts: Structuring Complete Documents
@@ -86,7 +121,7 @@ air.layouts.mvpcss(
 Air provides several built-in layouts for rapid prototyping:
 
 1. **mvpcss**: Uses MVP.css for minimal styling
-2. **picocss**: Uses PicoCSS for slightly more sophisticated styling
+2. **picocss**: Uses PicoCSS for slightly more sophisticated styling, deprecated
 
 Both layouts include HTMX by default for interactive features.
 
@@ -116,19 +151,4 @@ def my_custom_layout(*children):
             air.Footer("© 2024 My App")
         ),
     )
-```
-
-## The App Object
-
-The `air.Air()` object is the core of every Air application. It inherits from FastAPI but is configured with Air-specific defaults.
-
-### Common Configuration Options
-
-```python
-app = air.Air(
-    debug=True,  # Enable debug mode
-    docs_url="/docs",  # Swagger UI endpoint
-    redoc_url="/redoc",  # ReDoc endpoint
-    path_separator="-"  # How to convert function names to URLs
-)
 ```
