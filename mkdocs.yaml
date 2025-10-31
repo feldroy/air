@@ -53,6 +53,7 @@ nav:
     - Forms: api/forms.md
     - Layouts: api/layouts.md
     - Middleware: api/middleware.md
+    - Models: api/models.md
     - Requests: api/requests.md
     - Responses: api/responses.md
     - Routing: api/routing.md

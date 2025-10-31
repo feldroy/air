@@ -14,7 +14,7 @@ from .forms import AirForm, to_form
 
 
 class AirModel(BaseModel):
-    """Base class for models that should integrate tightly with Air forms."""
+    """Base class for models that integrate tightly with Air forms."""
 
     @classmethod
     def form(
