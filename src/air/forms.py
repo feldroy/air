@@ -371,7 +371,7 @@ def AirField(
     )  # ty: ignore[no-matching-overload]
 
 
-def model_form(
+def to_form(
     model: type[BaseModel],
     *,
     name: str | None = None,

@@ -576,19 +576,19 @@ def test_html5_validation_field_with_default() -> None:
     assert "required" not in html
 
 
-def test_model_form_helper_generates_form() -> None:
+def test_to_form_helper_generates_form() -> None:
     class AutoModel(BaseModel):
         name: str
         age: int
 
-    AutoForm = air.model_form(AutoModel)
+    AutoForm = air.to_form(AutoModel)
 
     form = AutoForm()
     form.validate({"name": "Test", "age": 3})
     assert form.is_valid is True
 
 
-def test_air_model_form_generation() -> None:
+def test_air_to_form_generation() -> None:
     class AutoModel(air.AirModel):
         name: str
         age: int
@@ -600,7 +600,7 @@ def test_air_model_form_generation() -> None:
     assert form.is_valid is True
 
 
-def test_air_model_form_generation_with_includes() -> None:
+def test_air_to_form_generation_with_includes() -> None:
     class AutoModel(air.AirModel):
         id: int
         name: str
@@ -614,11 +614,11 @@ def test_air_model_form_generation_with_includes() -> None:
     assert "name" in html and "age" in html
 
 
-def test_air_model_form_generation_with_custom_widget() -> None:
+def test_air_to_form_generation_with_custom_widget() -> None:
     class AutoModel(air.AirModel):
         name: str
 
-    def custom_widget(*, model, data, errors, includes):  # type: ignore[unused-argument]
+    def custom_widget(*, model, data, errors, includes):
         return "<custom>"
 
     AutoForm = AutoModel.form(widget=custom_widget)

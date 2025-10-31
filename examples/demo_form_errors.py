@@ -12,6 +12,7 @@ class ContactModel(air.AirModel):
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
 
+
 ContactForm = ContactModel.form()
 
 

@@ -10,7 +10,7 @@ from collections.abc import Callable, Sequence
 
 from pydantic import BaseModel
 
-from .forms import AirForm, model_form
+from .forms import AirForm, to_form
 
 
 class AirModel(BaseModel):
@@ -35,4 +35,4 @@ class AirModel(BaseModel):
             A subclass of :class:`AirForm` that validates against ``cls``.
         """
 
-        return model_form(cls, name=name, includes=includes, widget=widget)
+        return to_form(cls, name=name, includes=includes, widget=widget)
