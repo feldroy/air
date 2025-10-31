@@ -23,7 +23,7 @@ Key concepts:
 
 5. **HTMX Integration**: Native support for HTMX's progressive enhancement approach, enabling dynamic interfaces without client-side JavaScript frameworks.
 
-6. **Jinja Compatibility**: Seamless integration with Jinja2 templating for teams preferring traditional server-side rendering.
+6. **Jinja Compatibility**: Seamless integration with Jinja2 templating for teams preferring traditional Jinja templates HTML generation.
 
 7. **Database Agnostic**: Works with any Python database library (SQLAlchemy, Tortoise ORM, etc.)
 
@@ -33,7 +33,7 @@ Key concepts:
 
 Air is ideal for developers who want to:
 
-- Build modern, interactive web applications quickly
+- Build modern, interactive web applications quickly without heavy frontend frameworks
 - Leverage FastAPI's ecosystem without HTML response boilerplate
 - Create unified applications serving both UI and API clients
 - Maintain type safety and IDE support throughout development
@@ -43,8 +43,10 @@ Air is ideal for developers who want to:
 
 Air prioritizes these principles:
 
-1. **Developer Experience**: Intuitive, discoverable APIs that follow Python conventions
+1. **Developer Experience**: Intuitive, discoverable APIs that follow Python conventions 
 2. **Pythonic Design**: Leverages Python's natural syntax and type system
 3. **Type Safety**: Full type hinting for better development tooling and error prevention  
 4. **Flexibility**: Accommodates various architectural patterns and team preferences
 5. **Productivity**: Reduces boilerplate while preserving power for complex applications
+6. **Frontend Simplicity**: Embrace modern web practices without heavy client-side dependencies
+6. **Documentation**: Comprehensive yet well tested guides and references to support developers at all levels
