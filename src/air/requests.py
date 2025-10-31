@@ -6,7 +6,7 @@ from typing import Any, Final
 from urllib.parse import urlsplit, urlunsplit
 
 from starlette.datastructures import Headers as Headers
-from starlette.requests import Request as Request
+from starlette.requests import Request as _Request
 
 # HTMX Header names as constants
 HX_REQUEST: Final = "HX-Request"
@@ -151,7 +151,7 @@ class HtmxDetails:
         return None
 
 
-class AirRequest(Request):
+class AirRequest(_Request):
     """A wrapper around `starlette.requests.Request` that includes the `HtmxDetails` object.
 
     !!! note
@@ -162,3 +162,6 @@ class AirRequest(Request):
     @property
     def htmx(self) -> HtmxDetails:
         return HtmxDetails(headers=self.headers, url=self.url)
+
+
+Request = AirRequest
