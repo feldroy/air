@@ -183,6 +183,7 @@ Want to use Jinja2 instead of Air Tags? We've got you covered.
 ```python
 import air
 from fastapi import FastAPI
+from starlette.requests import Request
 
 app = air.Air()
 api = FastAPI()
