@@ -205,6 +205,57 @@ def index():
     )
 ```
 
+### Other HTTP Methods
+
+!!! warning
+
+    By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else, like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX allows you to send other HTTP methods from forms and links.
+
+Air supports the `PATCH`, `PUT`, or `DELETE` methods natively:
+
+```python hl_lines="6 11 15"
+import air
+
+app = air.Air()
+
+@app.patch('/partial-update/{slug}')
+async def partial_update(request: air.Request, slug: str): # (1)!
+    ...
+
+@app.put('/create-item')
+async def create_item(request: air.Request): # (2)!
+    ...
+
+@app.delete('/delete/{slug}')
+async def delete_item(request: air.Request, slug: str): # (3)!
+    ...
+```
+
+1. `PATCH` requests are used for partial updates of resources, such as one field being updated. The `slug` variable in the URL is passed as an argument to the function. While `POST` requests can be used for updates and is the classic method, `PATCH` is more specific to the action being taken.
+
+2. `PUT` requests are used for creating or replacing resources. The function can handle the incoming data, typically from the request body. Like `POST`, `PUT` requests usually require `async` functions and an `air.Request` argument.
+
+3. `DELETE` requests are used to delete resources. Similar to `PATCH`, the `slug` variable in the URL is passed as an argument to the function.
+
+Calling these can be done via HTMX or other methods that support these HTTP verbs. Here are examples using HTMX in Air:
+
+```python
+air.Form(
+    # form elements here
+    hx_patch=partial_update.url(slug='airbook'),
+)
+
+air.Form(
+    # form elements here
+    hx_put=create_item.url(),
+)
+
+air.Form(
+    # form elements here
+    hx_delete=delete_item.url(slug='firebook'),
+)
+```
+
 ## Air Tags
 
 [Air Tags](../learn/air_tags.md) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.

@@ -349,3 +349,54 @@ def test_air_router_post_url_method_different_path():
     response = client.get("/")
     assert response.status_code == 200
     assert response.text == "<p>/save-profile/johndoe2</p>"
+
+
+def test_air_router_patch_endpoint() -> None:
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.patch("/items/{item_id}")
+    def update_item(item_id: int) -> air.H1:
+        return air.H1(f"Updated item {item_id}")
+
+    app.include_router(router)
+
+    client = TestClient(app)
+    response = client.patch("/items/42")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Updated item 42</h1>"
+
+
+def test_air_router_put_endpoint() -> None:
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.put("/items/{item_id}")
+    def update_item(item_id: int) -> air.H1:
+        return air.H1(f"Updated item {item_id}")
+
+    app.include_router(router)
+
+    client = TestClient(app)
+    response = client.put("/items/42")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Updated item 42</h1>"
+
+
+def test_air_router_delete_endpoint() -> None:
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.delete("/items/{item_id}")
+    def update_item(item_id: int) -> air.H1:
+        return air.H1(f"Updated item {item_id}")
+
+    app.include_router(router)
+
+    client = TestClient(app)
+    response = client.delete("/items/42")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Updated item 42</h1>"
