@@ -146,6 +146,11 @@ the [github.com/feldroy/airdocs](https://github.com/feldroy/airdocs) project. Al
 require complete docstrings. This will help us maintain a high-quality documentation site. Rules for writing docstrings:
 
 - Every function, class, and method should have a docstring
+- Every new public callable (function, class, or method) **must include at least one working example** in its docstring.
+  - This helps ensure all code is:
+    - easy to understand and test,
+    - automatically verifiable through doctests or example tests, and
+    - consistent across the documentation site.
 - Docstrings should be clear, concise, and informative
 - Docstrings are written in Markdown format
 - HTML tags are not allowed in docstrings unless surrounded by backticks (e.g., `<tag>` should be written as
