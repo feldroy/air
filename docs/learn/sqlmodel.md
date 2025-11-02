@@ -1,15 +1,7 @@
 # SQLModel
 
-!!! note "This feature is for Air 0.30.0 or later."
-
-!!! info "air.ext.sqlmodel"
-    The SQLModel support in Air is provided by the `air.ext.sqlmodel` module, which is an optional extension (currently in core Air but to be moved to an external package shortly). To use it, you need to install Air with the `sqlmodel` extra:
-
-    ```bash
-    pip install "air[sqlmodel]"
-    ```
-
-    The full reference for the tooling can be found at the [SQL API Reference](../api/ext/sqlmodel.md).
+!!! warning "air.ext.sqlmodel"
+    This module is deprecated and will be removed very soon. Please use the new [airsqlmodel](https://pypi.org/project/airsqlmodel) package instead, which provides the same functionality.
 
 Thanks to the power of SQLModel and SQLAlchemy **Air** works with relational databases. Right now we have verified it supports PostgreSQL and SQLite. Our vision is for the community to build packages for all relational databases that allow for asynchronous connections through SQLAlchemy. 
 
@@ -18,6 +10,12 @@ Thanks to the power of SQLModel and SQLAlchemy **Air** works with relational dat
 [SQLModel](https://sqlmodel.tiangolo.com/) is a wrapper around the venerable and proven SQLAlchemy library. Like Typer, FastAPI, pydantic, and Air, SQLModel allows for definition of critical objects with type annotations - in this case database tables. SQLModel makes SQLAlchemy a bit easier to use, although it's possible to drop down to the raw power of SQLAlchemy at any time.
 
 Using Air's SQL module requires an understanding of SQLModel. Fortunately, it's an easy library to learn.
+
+## Installing Air with SQLModel Support
+
+```bash
+pip install "air[sqlmodel]"
+```
 
 ## Configuring Air for SQL
 
