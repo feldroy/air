@@ -1,14 +1,10 @@
 # Advanced Routing and URL Management
 
-!!! warning "First draft!"
-
-    Please treat this as a very early draft, and be careful with anything that this chapter says! We welcome your pull requests to help refine the material so it actually becomes useful.
-
 Air provides multiple ways to define routes, making it easy to handle various URL patterns and request methods.
 
 ## HTTP Methods
 
-In addition to `@app.get`, Air supports all standard HTTP methods:
+In addition to `@app.get`, Air supports other standard HTTP methods:
 
 ```python
 @app.get("/{slug}")          # GET requests
@@ -17,7 +13,6 @@ In addition to `@app.get`, Air supports all standard HTTP methods:
 @app.delete("/{slug}")       # DELETE requests
 @app.patch("/{slug}")        # PATCH requests
 @app.head("/{slug}")         # HEAD requests
-@app.options("/{slug}")      # OPTIONS requests
 ```
 
 ## Path Parameters
@@ -119,7 +114,7 @@ def redirect_example():
     return air.RedirectResponse(post_detail.url(user_id=1, post_id=2))
 ```
 
-### Using .url() in Templates
+### Using .url() in Air Tags
 
 ```python
 @app.page

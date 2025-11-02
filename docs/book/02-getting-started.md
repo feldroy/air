@@ -142,20 +142,20 @@ Let's break down what's happening in this code:
 1. **Import**: `import air` imports the Air framework
 2. **App Creation**: `app = air.Air()` creates a new Air application instance
 3. **Decorator**: `@app.page` is a decorator that tells Air to handle requests to the root path (`/`)
-4. **Function**: `index()` is the function that processes the request and returns the response
+4. **Function**: `index()` is the function that processes the request and returns the response. `index` is a special name that Air recognizes as the handler for the root URL, otherwise it converts it to the path based on the function name. So a function named `about_me` would handle requests to `/about-me`.
 5. **Layout**: `air.layouts.mvpcss()` provides a complete HTML document structure with basic styling
 
 The `mvpcss` layout function automatically:
 
 - Wraps content in proper HTML structure
-- Includes MVP.css for basic styling
+- Includes `MVP.css` for basic styling
 - Includes HTMX for interactive features
 - Separates head and body content automatically
 
 !!! info "More on Layouts"
     We'll explore layouts in much more detail in the [Air Tags and Layouts](04-air-tags-and-layouts.md) section, including how to create your own custom layouts.
 
-**Air Tags**: The HTML elements you see in the code (`H1`, `P`, etc.) are called "Air Tags". These are Python classes that generate HTML. Each tag (like `H1`, `P`, `Div`) corresponds to an HTML element. When you create an instance of an Air Tag, it renders to the corresponding HTML:
+**Air Tags**: The HTML elements you see in the code (`air.H1`, `air.P`, etc.) are called "Air Tags". These are Python classes that generate HTML. Each tag (like `air.H1`, `air.P`, `air.Div`) corresponds to an HTML element. When you create an instance of an Air Tag, it renders to the corresponding HTML:
 
 ```python
 air.H1("Hello, World!")  # Renders as <h1>Hello, World!</h1>

@@ -67,7 +67,7 @@ ruff format .
 
 Air's configuration for Ruff is defined in its `pyproject.toml` file, at https://github.com/feldroy/air/blob/main/pyproject.toml
 
-To start, most people won't need custom Ruff configuration. If you do, add a `[tool.ruff]` section to your own project's `pyproject.toml` file. See the [Ruff documentation](https://docs.ruff.rs/) for configuration options.
+To start, most people won't need custom Ruff configuration. If you do, add a `[tool.ruff]` section to your own project's `pyproject.toml` file. See the [Ruff documentation](https://docs.astral.sh/ruff/) for configuration options.
 
 After setting up Ruff and running the commands, commit these changes:
 
@@ -78,7 +78,7 @@ git commit -m "Add Ruff, and have it auto-fix issues and format code"
 
 ## Type Checkers: Ty and Pyrefly
 
-Air recommends using `ty` and `pyrefly` instead of MyPy for type checking. `ty` and `pyrefly` are tools built specifically for Air projects that provide helpful type checking without the noise that MyPy produces on Air projects. This is because MyPy will print errors that are not helpful if you run it on the current main.py file.
+Air recommends using `ty` and `pyrefly` instead of `MyPy` for type checking. Besides being much faster than the venerable `mypy` library, `ty` and `pyrefly` provide helpful type checking without the noise that MyPy produces sometimes on Air projects.
 
 Install both tools as dev dependencies with uv:
 
@@ -187,6 +187,7 @@ Here is a sample AGENTS.md file for Air projects:
 - This is an Air web framework project (https://github.com/feldroy/air)
 - Air is a high-level layer over FastAPI that streamlines web interface and API development
 - Air emphasizes developer experience with Pythonic approaches
+- Air's primary llms.txt file can be found at https://feldroy.github.io/air/llms-full.txt
 
 ## Code Style & Conventions
 
