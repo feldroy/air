@@ -581,9 +581,8 @@ def test_to_form_helper_generates_form() -> None:
         name: str
         age: int
 
-    AutoForm = air.to_form(AutoModel)
+    form = air.to_form(AutoModel)
 
-    form = AutoForm()
     form.validate({"name": "Test", "age": 3})
     assert form.is_valid is True
 
@@ -593,9 +592,8 @@ def test_air_to_form_generation() -> None:
         name: str
         age: int
 
-    AutoForm = AutoModel.form()
+    form = AutoModel.to_form()
 
-    form = AutoForm()
     form.validate({"name": "Test", "age": 5})
     assert form.is_valid is True
 
@@ -606,9 +604,9 @@ def test_air_to_form_generation_with_includes() -> None:
         name: str
         age: int
 
-    AutoForm = AutoModel.form(includes=("name", "age"))
+    autoform = AutoModel.to_form(includes=("name", "age"))
 
-    html = AutoForm().render()
+    html = autoform.render()
     assert 'name="id"' not in html
     assert 'for="id"' not in html
     assert "name" in html and "age" in html
@@ -621,7 +619,7 @@ def test_air_to_form_generation_with_custom_widget() -> None:
     def custom_widget(*, model, data, errors, includes):
         return "<custom>"
 
-    AutoForm = AutoModel.form(widget=custom_widget)
+    autoform = AutoModel.to_form(widget=custom_widget)
 
-    rendered = AutoForm().render()
+    rendered = autoform.render()
     assert str(rendered) == "<custom>"
