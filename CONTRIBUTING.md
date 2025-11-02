@@ -1,45 +1,107 @@
 # Contributing to the Air 💨 Web Framework!
 
-##### Prerequisites:
+We’re thrilled that you want to contribute to **Air**!  
+This guide explains how to set up a development environment and make your first contribution — whether it’s code, docs, or ideas.
 
-1. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
-2. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
+---
 
-#### 1. Create the fork on GitHub, clone it locally, and wire remotes correctly.
+## Prerequisites
 
-###### Autoconfigure the remotes(origin[your fork = your_github_username/air], upstream[original repo = feldroy/air]).
+1. **Install [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv)**  
+   Air uses `uv` for managing Python versions, dependencies, and reproducible virtual environments.
+
+2. **Install [gh](https://github.com/cli/cli#installation)**  
+   The GitHub CLI simplifies forking, authentication, and pull requests.
+
+3. **Install Python 3.13 or higher**  
+   Air currently supports Python `>=3.13,<3.15`.
+
+    ```bash
+    uv python install 3.13
+    uv python list       # confirm installation
+    uv python default 3.13 # optional: set as default
+    ```
+
+
+## Setting up Air locally
+### 1. (Recommended) Create a workspace folder
+
+```bash
+mkdir ~/code
+cd ~/code
+```
+
+### 2. Create the fork on GitHub, clone it locally, and wire remotes correctly.
 
 ```bash
 gh repo fork feldroy/air --clone --remote
 ```
 
-#### 2. Move into the new project directory.
+> **These commands:**
+  - Creates your fork on GitHub
+  - Clones it locally
+  - Sets:
+    - origin → your fork
+    - upstream → the main repo (feldroy/air)
+  
+  You can verify with:
+
+  ```bash
+  git remote -v
+  ```
+
+  You should see both origin (your fork) and upstream (the main repo).
+
+
+
+### 3. Move into the new project directory.
 
 ```bash
 cd air
 ```
 
-#### 3. Fetch the latest changes from upstream.
+### 4. Fetch the latest changes from upstream.
 
 ```bash
 git fetch upstream
 ```
 
-#### 4. Create and switch to a new feature branch starting from upstream/main.
+### 5. Create and switch to a new feature branch (based on upstream/main)
 
 ```bash
 git switch -c your-new-branch-name upstream/main
 ```
 
-#### 5. Update the project's environment (ensures that all project dependencies are installed and up-to-date with the lockfile).
+Use clear, short branch names, e.g. **docs-improve-contributing** or **fix-h2-style**
+
+### 6. Sync the environment
+Install dependencies according the project lockfile:
 
 ```bash
 uv sync --frozen --extra all
 ```
 
-#### 6. Configure your IDE with the uv environment:
+This will:
+  - Create a .venv virtual environment
+  - Install all runtime, development, and testing dependencies.
+  - Ensure your environment matches the dependencies used in CI.
 
-###### 1. VS Code (macOS, Linux, Windows):
+### 7. Activate the virtual environment before running commands:
+#### macOS / Linux
+
+```bash
+source .venv/bin/activate
+```
+
+#### Windows (PowerShell)
+
+```bash
+.venv\Scripts\Activate.ps1
+```
+
+### 8. Configure your IDE with the uv environment:
+
+#### a. VS Code (macOS, Linux, Windows)
 
 > 1. Open the project folder (air) in VS Code.
 > 2. Open the Command Palette (Cmd+Shift+P on macOS, Ctrl+Shift+P on Windows/Linux) → “Python: Select Interpreter”.
@@ -48,34 +110,46 @@ uv sync --frozen --extra all
 >     - macOS/Linux: ./.venv/bin/python
 >     - Windows: .\.venv\Scripts\python.exe
 
-###### 2. PyCharm (macOS, Linux, Windows):
+#### b. PyCharm (macOS, Linux, Windows)
 
 > 1. Open the project folder (air) in PyCharm → Settings → Python → Interpreter → "Add Interpreter"
 >    → "Add Local Interpreter" → "select existing" → "select existing" → "select existing":
 >    - "Type": `uv`.
 >    - "Path to uv": `$ which uv`
 >    - "uv env use": `<project>/air/.venv/bin/python`.
-> 2. Click OK/Apply. More details: https://www.jetbrains.com/help/pycharm/uv.html
+> 2. Click OK/Apply. 
+See: [More details](https://www.jetbrains.com/help/pycharm/uv.html)
 
-#### 7. Make your code changes and write/adjust tests to cover them (keep changes focused and small).
+### 9. Make your change
 
-#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty and pyrefly.
+  - Keep the scope of each pull request small. 
+  - Write or update tests as needed.
+  - Run local checks before committing.
+
+### 10. Run quality checks
 
 ```bash
 just qa
 ```
 
-Make sure `just qa` does not produce any errors before you open a PR!
+> This command:
 
-#### 9. Run the full pytest test suite
+  - Runs Ruff (linting + formatting)
+  - Runs static type checks (`ty, pyrefly`)
+  - Ensures everything matches CI expectations
+  - `just qa` must pass cleanly before you open a PR.
+
+**Make sure `just qa` does not produce any errors before you open a PR!**
+
+### 11. Run the full pytest test suite
 
 ```bash
 just test
 ```
 
-Make sure `just test` does not produce any errors before you open a PR!
+**Both `just qa` and `just test` must pass cleanly before opening a PR!**
 
-#### 10. Make a single commit that includes your tracked file changes with a clear message.
+### 12. Make a single commit that includes your tracked file changes with a clear message.
 
 ```bash
 git commit -am "<type>(<optional scope>): <description><optional body><optional footer>"
@@ -83,13 +157,13 @@ git commit -am "<type>(<optional scope>): <description><optional body><optional 
 
 For more info, see: [Conventional Commits Cheatsheet](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)
 
-#### 11. Push your branch to your fork and set the remote tracking.
+### 13. Push your branch to your fork and set the remote tracking.
 
 ```bash
 git push -u origin your-new-branch-name
 ```
 
-#### 12. Open a Pull Request back to feldroy/air with a prefilled title and body (edit as needed).
+### 14. Open a Pull Request back to feldroy/air with a prefilled title and body (edit as needed).
 
 ```bash
 gh pr create --fill --repo feldroy/air
@@ -176,3 +250,11 @@ If you run into issues, try the following:
 * If code changes do not seem to apply, run via `uv run <command>` (which auto-syncs), or re-run `uv sync`.
 * Upgrade uv if needed: `uv self update`.
 * Still stuck? File a GitHub issue with details.
+
+## Need Help?
+* Join the [Discord channel](https://discord.gg/9VcFqSFzkn)
+* Open a [GitHub discussion](https://github.com/feldroy/air/discussions)
+
+## Thank you
+* You’re now part of the [Air](https://feldroy.github.io/air/) project.
+* Every improvement — no matter how small — makes Air better for everyone.
