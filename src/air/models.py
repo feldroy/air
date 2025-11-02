@@ -17,14 +17,14 @@ class AirModel(BaseModel):
     """Base class for models that integrate tightly with Air forms."""
 
     @classmethod
-    def form(
+    def to_form(
         cls,
         *,
         name: str | None = None,
         includes: Sequence[str] | None = None,
         widget: Callable | None = None,
-    ) -> type[AirForm]:
-        """Return an :class:`AirForm` subclass bound to ``cls``.
+    ) -> AirForm:
+        """Return an :class:`AirForm` instance bound to ``cls``.
 
         Args:
             name: Optional explicit class name for the generated form.
@@ -32,7 +32,7 @@ class AirModel(BaseModel):
             widget: Optional custom rendering callable.
 
         Returns:
-            A subclass of :class:`AirForm` that validates against ``cls``.
+            An instance of :class:`AirForm` that validates against ``cls``.
         """
 
         return to_form(cls, name=name, includes=includes, widget=widget)

@@ -377,8 +377,8 @@ def to_form(
     name: str | None = None,
     includes: Sequence[str] | None = None,
     widget: Callable | None = None,
-) -> type["AirForm"]:
-    """Generate an :class:`AirForm` subclass for the given Pydantic model.
+) -> "AirForm":
+    """Generate an :class:`AirForm` instance for the given Pydantic model.
 
     Args:
         model: The Pydantic model class the form should validate against.
@@ -387,7 +387,7 @@ def to_form(
         widget: Optional callable to render the form. Falls back to :func:`default_form_widget`.
 
     Returns:
-        A new :class:`AirForm` subclass bound to ``model``.
+        A new :class:`AirForm` instance bound to ``model``.
     """
 
     attrs: dict[str, Any] = {"model": model, "__module__": model.__module__}
@@ -405,4 +405,4 @@ def to_form(
     form_name = name or f"{model.__name__}Form"
     generated_form = type(form_name, (AirForm,), attrs)
     generated_form.__doc__ = f"Auto-generated AirForm for {model.__module__}.{model.__name__}."
-    return generated_form
+    return generated_form()
