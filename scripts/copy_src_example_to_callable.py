@@ -11,11 +11,14 @@ from pathlib import Path
 import typer
 
 
-def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
+def parse_filename_class(filename: str) -> tuple[str, str | None, str | None] | None:
     """Parse filename like 'applications__Air__page.py' into (module, class, method).
 
-    Also supports 'module__function.py' format for module-level functions.
-    Returns (module, class_name, method_name) or (module, None, function_name).
+    Also supports:
+    - 'module__Class.py' format for class-level examples (capitalized second part)
+    - 'module__function.py' format for module-level functions (lowercase second part)
+
+    Returns (module, class_name, method_name), (module, class_name, None), or (module, None, function_name).
     Returns None if filename is a test file or doesn't match expected pattern.
     """
     if filename.endswith("__test.py") or filename == "__init__.py":
@@ -31,10 +34,14 @@ def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
     parts = name.split("__")
 
     if len(parts) == 2:
-        # Module-level function: module__function
         module = parts[0]
-        function_name = parts[1]
-        return module, None, function_name
+        second_part = parts[1]
+
+        # If second part starts with uppercase, it's a class
+        if second_part and second_part[0].isupper():
+            return module, second_part, None
+        # Module-level function
+        return module, None, second_part
     if len(parts) >= 3:
         # Class method: module__class__method
         module = parts[0]
@@ -45,8 +52,10 @@ def parse_filename_class(filename: str) -> tuple[str, str | None, str] | None:
     return None
 
 
-def update_example_section(file_path: Path, class_name: str | None, method_name: str, example_content: str) -> bool:
-    """Update the Example section in the specified method or function's docstring.
+def update_example_section(
+    file_path: Path, class_name: str | None, method_name: str | None, example_content: str
+) -> bool:
+    """Update the Example section in the specified class, method, or function's docstring.
 
     Returns True if successful, False otherwise.
     """
@@ -59,17 +68,27 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
         typer.secho(f"Error parsing {file_path}")
         return False
 
-    target_method = None
+    target_node = None
 
     if class_name is None:
         # Module-level function
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef) and node.name == method_name:
-                target_method = node
+                target_node = node
                 break
 
-        if not target_method:
+        if not target_node:
             typer.secho(f"Function {method_name} not found in {file_path}")
+            return False
+    elif method_name is None:
+        # Class-level docstring
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name == class_name:
+                target_node = node
+                break
+
+        if not target_node:
+            typer.secho(f"Class {class_name} not found in {file_path}")
             return False
     else:
         # Class method
@@ -87,26 +106,31 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
         # Find the method
         for node in target_class.body:
             if isinstance(node, ast.FunctionDef) and node.name == method_name:
-                target_method = node
+                target_node = node
                 break
 
-        if not target_method:
+        if not target_node:
             typer.secho(f"Method {method_name} not found in class {class_name} in {file_path}")
             return False
 
     # Get the docstring
-    docstring = ast.get_docstring(target_method)
+    docstring = ast.get_docstring(target_node)
     if not docstring or "Example:" not in docstring:
-        callable_name = f"{class_name}.{method_name}" if class_name else method_name
+        if class_name and method_name:
+            callable_name = f"{class_name}.{method_name}"
+        elif class_name:
+            callable_name = class_name
+        else:
+            callable_name = method_name
         typer.secho(f"No Example section found in {callable_name}")
         return False
 
     # Find the actual position of the docstring in the source
-    # The docstring is the first statement in the function
-    if not target_method.body or not isinstance(target_method.body[0], ast.Expr):
+    # The docstring is the first statement in the function/class
+    if not target_node.body or not isinstance(target_node.body[0], ast.Expr):
         return False
 
-    docstring_node = target_method.body[0].value
+    docstring_node = target_node.body[0].value
     if not isinstance(docstring_node, ast.Constant):
         return False
 
@@ -114,13 +138,13 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
     lines = content.split("\n")
     docstring_start_line = docstring_node.lineno - 1
 
-    # Find the indentation by looking at the function definition line
-    func_line = lines[target_method.lineno - 1]
-    func_indent_match = re.match(r"^(\s*)", func_line)
-    func_indent = func_indent_match.group(1) if func_indent_match else ""
+    # Find the indentation by looking at the function/class definition line
+    def_line = lines[target_node.lineno - 1]
+    def_indent_match = re.match(r"^(\s*)", def_line)
+    def_indent = def_indent_match.group(1) if def_indent_match else ""
 
-    # Docstring content indent is function indent + 4 spaces (standard Python)
-    docstring_indent = func_indent + "    "
+    # Docstring content indent is definition indent + 4 spaces (standard Python)
+    docstring_indent = def_indent + "    "
 
     # Code examples within docstring get an additional 4 spaces
     code_indent = docstring_indent + "    "
@@ -163,7 +187,12 @@ def update_example_section(file_path: Path, class_name: str | None, method_name:
 
     # Write back
     file_path.write_text(new_content)
-    callable_name = f"{class_name}.{method_name}" if class_name else method_name
+    if class_name and method_name:
+        callable_name = f"{class_name}.{method_name}"
+    elif class_name:
+        callable_name = class_name
+    else:
+        callable_name = method_name
     typer.secho(f"Updated {callable_name} in {file_path}")
     return True
 
