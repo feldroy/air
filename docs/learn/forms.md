@@ -56,11 +56,8 @@ class ContactModel(AirModel):
     name: str
     email: str = AirField(type="email", label="Email")
 
-# Create the Air Form class from the Air Model
-ContactForm = ContactModel.form()
-
-# Instantiate the Air Form
-contact_form = ContactForm()
+# Create an Air Form instance from the Air Model
+contact_form = ContactModel.to_form()
 ```
 
 ### Displaying an Air Form
