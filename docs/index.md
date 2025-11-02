@@ -183,7 +183,6 @@ Want to use Jinja2 instead of Air Tags? We've got you covered.
 ```python
 import air
 from fastapi import FastAPI
-from starlette.requests import Request
 
 app = air.Air()
 api = FastAPI()
@@ -192,7 +191,7 @@ api = FastAPI()
 jinja = air.JinjaRenderer(directory="templates")
 
 @app.get("/")
-def index(request: Request):
+def index(request: air.Request):
     return jinja(request, name="home.html")
 
 @api.get("/")
