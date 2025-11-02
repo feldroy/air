@@ -1,12 +1,10 @@
+<!-- A summary of the changes made here. -->
+<!-- Add any links to other issues or secondary material. --> 
+
 # Issue(s)
 
 <!-- A link to an issue(s) on GitHub. If there isn't an issue(s), remove this section. -->
 <!-- Note: Oversized pull requests will be requested to be broken up by the maintainers. -->
-
-## Description
-
-<!-- A summary of the changes made. -->
-<!-- Add any links to other issues or secondary material. --> 
 
 ## Pull request type
 <!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. -->

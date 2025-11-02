@@ -1,5 +1,8 @@
 # ext.sql
 
+!!! warning "air.ext.sqlmodel"
+    This module is deprecated and will be removed very soon. Please use the new [airsqlmodel](https://pypi.org/project/airsqlmodel) package instead, which provides the same functionality.
+
 This module includes utility functions for using SQLModel with AIR. This allows for connecting to relational databases like PostgreSQL, MySQL, and SQLite for use with SQLModel. SQLAlchemy can also be used through this module, but this does require the `sqlmodel` dependency.
 
 ## Package requirements

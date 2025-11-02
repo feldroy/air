@@ -1,3 +1,4 @@
+import warnings
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from enum import IntEnum as _IntEnum
@@ -20,6 +21,13 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ..applications import Air as _AirApp
 from ..exceptions import ObjectDoesNotExist
+
+warnings.warn(
+    "air.ext.sqlmodel is deprecated and will be removed in a future version. "
+    "Use the https://pypi.org/project/airsqlmodel package instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 DEBUG = _getenv("DEBUG", "false").lower() in ("1", "true", "yes")
 """Environment variable for setting DEBUG loglevel."""
@@ -56,8 +64,10 @@ def create_sync_engine(
         echo: Enables logging of all SQL statements executed by the engine, which can be useful for debugging.
 
     Example:
-
-        TODO
+        engine = create_sync_engine(
+            "mysql+mysqldb://aang:password123!@avatar/air_temple",
+            echo=True,
+        )
     """
     return _create_engine(url=url, echo=echo)
 

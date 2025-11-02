@@ -23,7 +23,7 @@ uv add "fastapi[standard]"
     pip install -U air "fastapi[standard]"
     ```
 
-    or even 
+    or even
 
     ```sh
     conda install air -c conda-forge
@@ -130,14 +130,14 @@ def air_is_grounded(): # (2)!
             air.Li('Jinja'),
         )
     )
-```  
+```
 
 1. `app.page` used over functions named `index` are converted to the `/` route.
-2. `app.page` used over functions are converted to a route based on their name, with underscores converted to dashes. 
+2. `app.page` used over functions are converted to a route based on their name, with underscores converted to dashes.
 
 ### Variables in Paths
 
-Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete`  function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function. 
+Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete`  function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function.
 
 ```python hl_lines="5-6"
 import air
@@ -159,9 +159,9 @@ Try it out by going to <http://localhost:8000/users/Aang>
 
 ### Variables in URLs
 
-If you specify variables in in the function definition but not the function decorator, those become URL parameters. 
+If you specify variables in in the function definition but not the function decorator, those become URL parameters.
 
-The function receives the `{variable}` so long as it is the correct type specified by the function. 
+The function receives the `{variable}` so long as it is the correct type specified by the function.
 
 ```python hl_lines="6"
 import air
@@ -176,10 +176,34 @@ def user_detail(username: str): # (1)!
     )
 ```
 
-1. We have defined a function argument named `username`, which is identical to the variable specified in the decorator. We also specified the Python type in this definition.
+1. We have defined a function argument named `username`. Because `username` is not part of the decorator's URL path ('/users'), Air automatically treats it as a query parameter.
 
 Try it out by going to <http://localhost:8000/users/?username=Aang>
 
+### Generating URLs
+
+Air allows you to generate URLs programmatically through the `.url()` method accessible on route functions:
+
+```python
+@app.get('/users/{username}')
+def user_detail(username: str):
+    return air.H1(username)
+
+# Generate URL with path parameters
+url = user_detail.url(username="Aang")
+# Returns: "/users/Aang"
+```
+
+This is useful for creating links and redirects without hardcoding URLs:
+
+```python
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.H1("Home"),
+        air.A("View user profile", href=user_detail.url(username="Aang"))
+    )
+```
 
 ## Air Tags
 
@@ -357,7 +381,7 @@ def avatar(request: air.Request):
 
 ## Forms
 
-In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet workable example of receiving data using a `Request` object. 
+In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet workable example of receiving data using a `Request` object.
 
 ```python hl_lines="19 20"
 import air
@@ -391,7 +415,7 @@ async def email_handler(request: air.Request): #(1)!
 ```
 
 1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the form data is contained within the `air.Request` object.
-2.Form data needs to be received via an `await` keyword on `request.form()`. 
+2.Form data needs to be received via an `await` keyword on `request.form()`.
 
 
 !!! tip "FormData is a dict-like object"
@@ -428,7 +452,7 @@ async def index():
             air.Button("Submit", type="submit"),
             method="post",
             action="/submit",
-        )     
+        )
     )
 
 @app.post("/submit")
@@ -466,16 +490,16 @@ async def handle_form(request: air.Request):
 ```
 
 1. `ContactModel` is a pydantic model that represents data we want to collect from the user.
-2. `ContactForm` is an `AirForm` whose model is the `ContactModel`. 
+2. `ContactForm` is an `AirForm` whose model is the `ContactModel`.
 3. This instantiates the form without data.
 4. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
-5. AirForms have `.from_request()` method which takes the form from an `air.Request` and loads it into the form. 
+5. AirForms have `.from_request()` method which takes the form from an `air.Request` and loads it into the form.
 6. The `.is_valid` property of an AirForm is powered by pydantic. It returns a `bool` that can be used to control logic of what to do with form successes or failures.
 7. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
 
 ## Server-Sent Events
 
-Part of the HTTP specification, Server-Sent Events (SSE) allow the server to push things to the user. Air makes SSE easy to implement and maintain. Here's an example of using it to generate random lottery numbers every second. 
+Part of the HTTP specification, Server-Sent Events (SSE) allow the server to push things to the user. Air makes SSE easy to implement and maintain. Here's an example of using it to generate random lottery numbers every second.
 
 ```python hl_lines="11 16 17 18 19 23 27 33"
 import random
@@ -536,14 +560,15 @@ What we plan to include in the Quick Start:
 
 - [x] Jinja
     - [x] The Jinja + Air Tags pattern the core devs love to use
-- [x] Forms: 
+- [x] Forms:
     - [x] Using Pydantic-powered AirForms for validation of incoming data
     - [ ] `HTTP GET` forms, like those used in search forms
-    - [ ] File uploads (part of forms)    
+    - [ ] File uploads (part of forms)
 - [ ] HTMX basics
 - [x] Routing
     - [x] Variables in URLs
     - [x] Variables in paths
+    - [x] Generating URLs
 - [ ] Custom exception handlers
 - [ ] Sessions
 - [ ] Cookies

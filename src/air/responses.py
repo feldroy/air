@@ -3,6 +3,7 @@
 from collections.abc import Mapping
 from typing import override
 
+from fastapi import status
 from starlette.background import BackgroundTask
 from starlette.datastructures import URL
 from starlette.responses import (
@@ -101,7 +102,7 @@ class RedirectResponse(StarletteRedirectResponse):
     def __init__(
         self,
         url: str | URL,
-        status_code: int = 303,
+        status_code: int = status.HTTP_307_TEMPORARY_REDIRECT,
         headers: Mapping[str, str] | None = None,
         background: BackgroundTask | None = None,
     ) -> None:

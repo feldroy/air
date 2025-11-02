@@ -1,6 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
+from starlette.routing import NoMatchFound
 
 import air
 from air import H1
@@ -128,7 +129,7 @@ def test_air_router_prefix_validation() -> None:
 def test_air_router_no_prefix() -> None:
     """Test AirRouter when no prefix is provided (covers other branch of prefix check)"""
     router = air.AirRouter()  # No prefix
-    assert router.prefix == ""
+    assert not router.prefix
 
 
 def test_air_router_get_with_awaitable_result() -> None:
@@ -214,3 +215,137 @@ def test_air_router_post_with_response_object() -> None:
     response = client.post("/post-response-test")
     assert response.status_code == 200
     assert response.text == "<p>Custom POST Response</p>"
+
+
+def test_air_router_get_with_url_method() -> None:
+    """Test GET method with url helper function"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/url-helper-test")
+    def url_helper_endpoint() -> H1:
+        return air.H1(f"Item URL: {url_helper_endpoint_with_params.url(item_id=42)}")
+
+    @router.get("/url-helper-test-with-params/{item_id}")
+    def url_helper_endpoint_with_params(item_id: int) -> H1:
+        return air.H1("Item URL with params")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.get("/url-helper-test")
+    assert response.status_code == 200
+    assert response.text == "<h1>Item URL: /url-helper-test-with-params/42</h1>"
+
+
+def test_air_router_get_with_url_method_throws_error():
+    """Test GET method with url helper function throwing error on missing params"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/url-helper-error-test")
+    def url_helper_error_endpoint() -> H1:
+        try:
+            return air.H1(f"Item URL: {url_helper_error_endpoint_with_params.url()}")
+        except NoMatchFound as e:
+            return air.H1(f"Error: {type(e).__name__}")
+        except Exception:  # noqa
+            return air.H1("Error: Should not appear.")
+
+    @router.get("/url-helper-error-test-with-params/{item_id}")
+    def url_helper_error_endpoint_with_params(item_id: int) -> H1:
+        return air.H1("Item URL with params")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.get("/url-helper-error-test")
+    assert response.text == "<h1>Error: NoMatchFound</h1>"
+
+
+def test_air_router_get_url_method_different_path():
+    """Test GET method with url helper function using different path"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/")
+    def index() -> H1:
+        return air.H1(f"Profile URL: {profile_page.url(username='johndoe')}")
+
+    @router.get("/profile/{username}")
+    def profile_page(username: str) -> H1:
+        return air.H1(f"Profile page {username}")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.text == "<h1>Profile URL: /profile/johndoe</h1>"
+
+
+def test_air_router_post_with_url_method() -> None:
+    """Test POST method with url helper function"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.post("/post-url-helper-test")
+    def post_url_helper_endpoint() -> H1:
+        return air.H1(f"Item URL: {post_url_helper_endpoint_with_params.url(item_id=99)}")
+
+    @router.post("/post-url-helper-test-with-params/{item_id}")
+    def post_url_helper_endpoint_with_params(item_id: int) -> H1:
+        return air.H1("POST Item URL with params")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.post("/post-url-helper-test")
+    assert response.status_code == 200
+    assert response.text == "<h1>Item URL: /post-url-helper-test-with-params/99</h1>"
+
+
+def test_air_router_post_with_url_method_throws_error():
+    """Test POST method with url helper function throwing error on missing params"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.post("/post-url-helper-error-test")
+    def post_url_helper_error_endpoint() -> H1:
+        try:
+            return air.H1(f"Item URL: {post_url_helper_error_endpoint_with_params.url()}")
+        except NoMatchFound as e:
+            return air.H1(f"Error: {type(e).__name__}")
+        except Exception:  # noqa
+            return air.H1("Error: Should not appear.")
+
+    @router.post("/post-url-helper-error-test-with-params/{item_id}")
+    def post_url_helper_error_endpoint_with_params(item_id: int) -> H1:
+        return air.H1("POST Item URL with params")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.post("/post-url-helper-error-test")
+    assert response.text == "<h1>Error: NoMatchFound</h1>"
+
+
+def test_air_router_post_url_method_different_path():
+    """Test POST method with url helper function using different path"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/")
+    def index() -> air.P:
+        return air.P(save_profile_details.url(username="johndoe2"))
+
+    @router.post("/save-profile/{username}")
+    def save_profile_details(username: str) -> H1:
+        return air.H1(f"Profile for {username} saved successfully")
+
+    app.include_router(router)
+    client = TestClient(app)
+
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.text == "<p>/save-profile/johndoe2</p>"
