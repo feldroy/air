@@ -574,3 +574,52 @@ def test_html5_validation_field_with_default() -> None:
     assert 'minlength="2"' in html
     assert 'maxlength="20"' in html
     assert "required" not in html
+
+
+def test_to_form_helper_generates_form() -> None:
+    class AutoModel(BaseModel):
+        name: str
+        age: int
+
+    form = air.to_form(AutoModel)
+
+    form.validate({"name": "Test", "age": 3})
+    assert form.is_valid is True
+
+
+def test_air_to_form_generation() -> None:
+    class AutoModel(air.AirModel):
+        name: str
+        age: int
+
+    form = AutoModel.to_form()
+
+    form.validate({"name": "Test", "age": 5})
+    assert form.is_valid is True
+
+
+def test_air_to_form_generation_with_includes() -> None:
+    class AutoModel(air.AirModel):
+        id: int
+        name: str
+        age: int
+
+    autoform = AutoModel.to_form(includes=("name", "age"))
+
+    html = autoform.render()
+    assert 'name="id"' not in html
+    assert 'for="id"' not in html
+    assert "name" in html and "age" in html
+
+
+def test_air_to_form_generation_with_custom_widget() -> None:
+    class AutoModel(air.AirModel):
+        name: str
+
+    def custom_widget(*, model, data, errors, includes):
+        return "<custom>"
+
+    autoform = AutoModel.to_form(widget=custom_widget)
+
+    rendered = autoform.render()
+    assert str(rendered) == "<custom>"

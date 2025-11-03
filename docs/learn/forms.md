@@ -45,23 +45,19 @@ async def add(request: air.Request):
 
 ## Air Forms
 
-Air Forms are powered by Pydantic. That includes both their display and validation of data. If you have any experience with Pydantic, that will go a long way towards helping your understanding of Air Forms.
+Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. That includes both their display and validation of data. If you have any experience with Pydantic, that will go a long way towards helping your understanding of Air Forms.
 
 ### A Sample Contact Air Form
 
 ```python
-from pydantic import BaseModel, Field
-from air import AirForm, AirField
+from air import AirForm, AirField, AirModel
 
-class ContactModel(BaseModel):
+class ContactModel(AirModel):
     name: str
     email: str = AirField(type="email", label="Email")
 
-class ContactForm(AirForm):
-    model = ContactModel
-
-
-contact_form = ContactForm()
+# Create an Air Form instance from the Air Model
+contact_form = ContactModel.to_form()
 ```
 
 ### Displaying an Air Form
@@ -109,6 +105,22 @@ contact_form.render()
         <small id="email-error">This field is required.</small>
     </label>
 </fieldset>
+```
+
+## Converting Pydantic Models to Air Forms
+
+You can easily convert any Pydantic model into an Air Form using the `to_form` function:
+
+```python
+from pydantic import BaseModel, EmailStr
+
+class ContactModel(BaseModel):
+    name: str
+    email: EmailStr
+
+ContactForm = air.to_form(ContactModel)
+
+contact_form = ContactForm()
 ```
 
 ## Enhanced Error Messages

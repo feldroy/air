@@ -1,20 +1,26 @@
-#!/usr/bin/env python3
-"""Demo script to show enhanced form error messages."""
+# /// script
+# dependencies = [
+#   "air",
+#   "rich",
+#   "uvicorn"
+# ]
+# ///
+"""Demo script to show enhanced form error messages.
 
-from pydantic import BaseModel, Field
+Usage:
+    uv run demo_form_errors.py
+"""
+
+from pydantic import Field
 from rich import print
 
 import air
 
 
-class ContactModel(BaseModel):
+class ContactModel(air.AirModel):
     name: str = Field(min_length=2, max_length=50)
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
-
-
-class ContactForm(air.AirForm):
-    model = ContactModel
 
 
 app = air.Air()
@@ -23,12 +29,12 @@ app = air.Air()
 @app.get("/")
 async def show_form():
     """Show the form initially."""
-    form = ContactForm()
+    contact_form = ContactModel.to_form()
     return air.layouts.picocss(
         air.Title("Enhanced Form Errors Demo"),
         air.H1("Contact Form - Error Message Demo"),
         air.Form(
-            form.render(),
+            contact_form.render(),
             air.Button("Submit", type="submit"),
             method="post",
             action="/submit",
@@ -39,7 +45,8 @@ async def show_form():
 @app.post("/submit")
 async def handle_form(request: air.Request):
     """Handle form submission and show errors."""
-    form = await ContactForm.from_request(request)
+    contact_form = ContactModel.to_form()
+    form = await contact_form.from_request(request)
 
     if form.is_valid:
         return air.layouts.picocss(
@@ -64,7 +71,7 @@ async def handle_form(request: air.Request):
         ),
         air.Hr(),
         air.Details(
-            air.Summary("Technical Error Details (for developers)"),
+            air.Summary("Click to see error details (for developers)"),
             air.P(str(form.errors)) if form.errors else "No errors",
         ),
     )
