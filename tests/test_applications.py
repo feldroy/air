@@ -200,3 +200,45 @@ def test_url_helper_method() -> None:
     response = client.get(url)
     assert response.status_code == 200
     assert response.text == "<h1>User 1, Post 2</h1>"
+
+
+def test_patch_endpoint() -> None:
+    app = air.Air()
+
+    @app.patch("/items/{item_id}")
+    def update_item(item_id: int) -> air.H1:
+        return air.H1(f"Updated item {item_id}")
+
+    client = TestClient(app)
+    response = client.patch("/items/42")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Updated item 42</h1>"
+
+
+def test_put_endpoint() -> None:
+    app = air.Air()
+
+    @app.put("/items/{item_id}")
+    def replace_item(item_id: int) -> air.H1:
+        return air.H1(f"Replaced item {item_id}")
+
+    client = TestClient(app)
+    response = client.put("/items/42")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Replaced item 42</h1>"
+
+
+def test_delete_endpoint() -> None:
+    app = air.Air()
+
+    @app.delete("/items/{item_id}")
+    def delete_item(item_id: int) -> air.H1:
+        return air.H1(f"Deleted item {item_id}")
+
+    client = TestClient(app)
+    response = client.delete("/items/42")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Deleted item 42</h1>"
