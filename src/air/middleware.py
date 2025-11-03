@@ -18,11 +18,13 @@ class SessionMiddleware(StarletteSessionMiddleware):
 
     Example:
 
-        import air
         from time import time
+
+        import air
 
         app = air.Air()
         app.add_middleware(air.SessionMiddleware, secret_key="change-me")
+
 
         @app.page
         async def index(request: air.Request):
@@ -33,6 +35,7 @@ class SessionMiddleware(StarletteSessionMiddleware):
                 air.P("Refresh the page and the timestamp won't change"),
                 air.P(air.A("Reset the time stamp", href="/reset")),
             )
+
 
         @app.page
         async def reset(request: air.Request):
