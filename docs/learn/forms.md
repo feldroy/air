@@ -114,7 +114,7 @@ You can easily convert any Pydantic model into an Air Form using the `to_form` f
 ```python
 from pydantic import BaseModel, EmailStr
 
-class ContactModel(AirModel):
+class ContactModel(BaseModel):
     name: str
     email: EmailStr
 
