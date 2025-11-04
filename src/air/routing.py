@@ -70,7 +70,7 @@ class AirRoute(APIRoute):
         return custom_route_handler
 
 
-class HttpMethodMixin:
+class RouterMixin:
     def page(self, func: FunctionType) -> RouteCallable:
         """Decorator that creates a GET route using the function name as the path.
 
@@ -134,7 +134,7 @@ class HttpMethodMixin:
         return helper_function
 
 
-class AirRouter(APIRouter, HttpMethodMixin):
+class AirRouter(APIRouter, RouterMixin):
     """
     `AirRouter` class, used to group *path operations*, for example to structure
     an app in multiple files. It would then be included in the `App` app, or

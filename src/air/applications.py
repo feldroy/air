@@ -21,13 +21,13 @@ from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
-from .routing import AirRoute, HttpMethodMixin, RouteCallable
+from .routing import AirRoute, RouteCallable, RouterMixin
 from .types import MaybeAwaitable
 
 AppType = TypeVar("AppType", bound="Air")
 
 
-class Air(FastAPI, HttpMethodMixin):
+class Air(FastAPI, RouterMixin):
     """FastAPI wrapper class with AirResponse as the default response class.
 
     Args:
