@@ -1,5 +1,34 @@
 ### Latest Changes
 
+# 0.40.0 - 2025-11-03
+
+## Contributions from new contributors
+
+* feat: docs-only src_example for exceptionhandlers.py by @elliedel in https://github.com/feldroy/air/pull/714
+* sample Dockerfile and README.md for containerization how-to by @hardwyrd in https://github.com/feldroy/air/pull/722
+* sample deployment YAML and README for k8s deployment how-to by @hardwyrd in https://github.com/feldroy/air/pull/726
+* docs(contributing): require working examples for all new callables (#241) by @sankarebarri in https://github.com/feldroy/air/pull/740
+
+## What's Changed
+* feat: Add HTML5 validation attributes from Pydantic constraints by @hamelsmu in https://github.com/feldroy/air/pull/689
+* add missing uv init on the installation step of index.md by @KevsterAmp in https://github.com/feldroy/air/pull/730
+* Proxy Request to AirRequest by @pydanny in https://github.com/feldroy/air/pull/739
+* Air Book improvements chapters 1 through 4 by @pydanny in https://github.com/feldroy/air/pull/735
+* Improvements to Air Book chapters 5+ by @pydanny in https://github.com/feldroy/air/pull/738
+* DOC: import starlette.requests.Request on Jinja example by @KevsterAmp in https://github.com/feldroy/air/pull/734
+* Deprecation of sqlmodel by @pydanny in https://github.com/feldroy/air/pull/736
+* Enhance example script parsing and add SessionMiddleware example by @pydanny in https://github.com/feldroy/air/pull/675
+* Add SessionMiddleware example test by @pydanny in https://github.com/feldroy/air/pull/742
+* AirModel with .form() by @audreyfeldroy in https://github.com/feldroy/air/pull/727
+* Add patch, put, and delete route decorators to Air by @pydanny in https://github.com/feldroy/air/pull/747
+
+## New Contributors
+* @elliedel made their first contribution in https://github.com/feldroy/air/pull/714
+* @hardwyrd made their first contribution in https://github.com/feldroy/air/pull/722
+* @sankarebarri made their first contribution in https://github.com/feldroy/air/pull/740
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.39.0...v0.40.0
+
 # 0.39.0 - 2025-10-28
 
 ## What's changed by new contributors
