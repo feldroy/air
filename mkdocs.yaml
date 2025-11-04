@@ -68,6 +68,9 @@ nav:
       - sprint/index.md
       - Source Examples: sprint/src_examples.md
 
+  - Deployment: deployment/index.md
+
+
 theme:
   name: material
   features:
