@@ -84,7 +84,7 @@ class RouterMixin:
             router = air.AirRouter()
 
             @app.page
-            def index(): # routes is "/"
+            def index(): # route is "/"
                 return H1("I am the home page")
 
             @router.page
@@ -92,7 +92,7 @@ class RouterMixin:
                 return H1("I am the home page")
 
             @router.page
-            def about_us(): # routes is "/about-us"
+            def about_us(): # route is "/about-us"
                 return H1("I am the about page")
 
             app.include_router(router)
