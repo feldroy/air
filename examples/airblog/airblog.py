@@ -1,15 +1,3 @@
-# /// script
-# dependencies = [
-#   "air",
-#   "frontmatter",
-#   "mistletoe",
-#   "rich",
-#   "uvicorn"
-# ]
-# ///
-# ruff: noqa
-# type: ignore
-# pyrefly: ignore
 """
 A markdown-powered blog for Air.
 
@@ -33,7 +21,7 @@ app = air.Air()
 
 @cache
 def get_articles() -> list[dict]:
-    articles = [Frontmatter.read_file(path) for path in Path("airblog").glob("*.md")]
+    articles = [Frontmatter.read_file(path) for path in Path("posts").glob("*.md")]
     return sorted(articles, key=lambda x: x["attributes"]["date"], reverse=True)
 
 

@@ -1,0 +1,25 @@
+[project]
+name = "example-tests"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "air",
+    "frontmatter",
+    "mistletoe",
+    "pytest",
+    "playwright",
+    "pytest-playwright",
+    "uvicorn",
+    "httpx",
+    "rich",
+]
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=7.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["."]
