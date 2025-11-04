@@ -1,6 +1,7 @@
 # /// script
 # dependencies = [
 #   "air[standard]",
+#   "asyncpg",
 #   "tortoise-orm[asyncpg]",
 # ]
 # ///
@@ -8,32 +9,32 @@
 The Tortoise ORM demo from https://tortoise.github.io/getting_started.html#tutorial adapted for Air.
 
 Usage:
-    Change username to your local Postgres user in main(), then:
+    # Change username to your local Postgres user in main(), then:
     createdb tortoisedemo
     uv run tortoiseorm_demo.py
+
+    # To setup migrations with Aerich, which creates pyproject.toml and migrations/ folder:
+    uvx --with asyncpg "aerich[toml]" init -t config.TORTOISE_ORM
+
+    # To create initial migration:
+    uvx --with asyncpg "aerich[toml]" init-db
 """
 
-import uvicorn
 import air
 from tortoise import Tortoise, run_async
-from tortoise.models import Model
-from tortoise import fields
+from models import Tournament, Event, Team
 
 app = air.Air()
 
-
-class Tournament(Model):
-    name = fields.CharField(max_length=255)
-
-
-class Event(Model):
-    name = fields.CharField(max_length=255)
-    tournament = fields.ForeignKeyField("models.Tournament", related_name="events")
-    participants = fields.ManyToManyField("models.Team", related_name="events", through="event_team")
-
-
-class Team(Model):
-    name = fields.CharField(max_length=255)
+TORTOISE_ORM = {
+    "connections": {"default": "postgres://arg@localhost:5432/tortoisedemo"},
+    "apps": {
+        "models": {
+            "models": ["models"],
+            "default_connection": "default",
+        }
+    },
+}
 
 
 @app.page
@@ -99,5 +100,6 @@ async def seed_data():
 
 
 if __name__ == "__main__":
+    import uvicorn
     run_async(main())
     uvicorn.run(app)
