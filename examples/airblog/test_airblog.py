@@ -2,49 +2,52 @@
 Minimal tests for airblog.py - demonstrating different test types.
 """
 
+import multiprocessing
+import socket
+import time
+
 import pytest
 import uvicorn
-import multiprocessing
-import time
-from starlette.testclient import TestClient
-from playwright.sync_api import Page, expect
-
 from airblog import app, get_article
-import socket
+from playwright.sync_api import Page, expect
+from starlette.testclient import TestClient
+
 
 def get_free_port() -> int:
     """
-    Finds a free port on localhost for the live server.  
-    
-    This is only neccesary for parallel end to end tests to avoid port conflicts.
+    Finds a free port on localhost for the live server.
+
+    This is only necessary for parallel end to end tests to avoid port conflicts.
     """
     sock = socket.socket()
-    sock.bind(('', 0))
+    sock.bind(("", 0))
     port = sock.getsockname()[1]
     sock.close()
     return port
+
 
 def run_server(port_queue):
     "Runs the AirBlog server on a free port and communicates the port back via a queue."
     # Get an available port number from the operating system
     port = get_free_port()
-    
+
     # Send the port number back to the parent process via the queue
     # This allows the test to know which port the server is running on
     port_queue.put(port)
-    
+
     # Start the uvicorn server on the allocated port
     uvicorn.run("airblog:app", host="127.0.0.1", port=port, log_level="error")
+
 
 @pytest.fixture(scope="function")
 def live_server():
     """
     A generator function that starts a live server in a separate process.
 
-    This function creates a multiprocessing queue to communicate the port 
-    number on which the server is running. It starts the server process, 
-    waits for the port to be available, and yields the port number for 
-    use in tests. After the tests are done, it terminates the server 
+    This function creates a multiprocessing queue to communicate the port
+    number on which the server is running. It starts the server process,
+    waits for the port to be available, and yields the port number for
+    use in tests. After the tests are done, it terminates the server
     process and ensures it has finished executing.
 
     Yields:
@@ -64,7 +67,7 @@ def live_server():
 def test_get_article_returns_article():
     article = get_article("hello-world")
     assert article is not None
-    assert "Daniel" in article['frontmatter']
+    assert "Daniel" in article["frontmatter"]
     assert article["attributes"]["slug"] == "hello-world"
 
 
@@ -91,4 +94,3 @@ def test_page_accessibility(page: Page, live_server):
     expect(page.locator("h1")).to_be_visible()
     expect(page.locator("nav")).to_be_visible()
     expect(page.locator("header")).to_be_visible()
-
