@@ -196,3 +196,17 @@ class Style(UnSafeTag):
         **kwargs: AttributesType,
     ) -> None:
         super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+
+
+class Comment(UnSafeTag):
+    @override
+    def __init__(
+        self,
+        text_child: str = "",
+        /,
+    ) -> None:
+        super().__init__(text_child)
+
+    @override
+    def _render(self) -> str:
+        return f"<!-- {self.children} -->"
