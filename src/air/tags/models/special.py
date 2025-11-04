@@ -1,4 +1,4 @@
-"""Special Air Tags that aren't find in any other category."""
+"""Special Air Tags that are not found in any other category."""
 
 from typing import Literal, override
 
@@ -40,22 +40,24 @@ class Transparent(BaseTag):
 
 
 class Children(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class Tag(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class Tags(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class Fragment(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class SelfClosingTag(BaseTag):
+    """Base class for void tags that render as self-closing HTML."""
+
     def __init__(
         self,
         **kwargs: AttributesType,
@@ -68,6 +70,8 @@ class SelfClosingTag(BaseTag):
 
 
 class UnSafeTag(BaseTag):
+    """Tag base that bypasses HTML escaping for its content."""
+
     @override
     def __init__(self, text_child: str = "", /, **kwargs: AttributesType) -> None:
         super().__init__(text_child, **kwargs)
@@ -199,14 +203,26 @@ class Style(UnSafeTag):
 
 
 class Comment(UnSafeTag):
+    """Represents an HTML comment node."""
+
     @override
     def __init__(
         self,
         text_child: str = "",
         /,
     ) -> None:
+        """Initializes the comment with the raw text payload.
+
+        Args:
+            text_child: Text inserted inside the comment delimiters.
+        """
         super().__init__(text_child)
 
     @override
     def _render(self) -> str:
+        """Wraps the comment text with HTML comment delimiters.
+
+        Returns:
+            The serialized comment node.
+        """
         return f"<!-- {self.children} -->"
