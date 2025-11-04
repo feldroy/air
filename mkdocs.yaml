@@ -88,11 +88,14 @@ nav:
 
   - Tools: tools.md
 
+  - Deployment: deployment/index.md
+
+
 theme:
   name: material
   features:
     - content.code.copy
-    - content.code.annotate    
+    - content.code.annotate
     - content.tabs.link
     - navigation.indexes
     - navigation.instant
@@ -102,7 +105,7 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
-    - navigation.tabs    
+    - navigation.tabs
   icon:
     repo: fontawesome/brands/github
   palette:
@@ -159,13 +162,12 @@ plugins:
         - index.md
         - learn/quickstart.md
         - learn/air_tags.md
-        - learn/escaping_html.md        
-        - learn/forms.md                
-        - learn/jinja.md                
+        - learn/escaping_html.md
+        - learn/forms.md
+        - learn/jinja.md
         - learn/layouts.md
-        - learn/cookbook/*.md   
+        - learn/cookbook/*.md
         - api/*.md
         - api/tags/*.md
         - api/svg/*.md
         - tools.md
-        
