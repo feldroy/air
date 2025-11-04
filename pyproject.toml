@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.39.0"
+version = "0.40.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -115,6 +115,7 @@ test = [
     "pytest-env>=1.1.5", # for setting env vars in tests
     "pyinstrument>=5.1.1",
     "sqlmodel>=0.0.24",
+    "full-match>=0.0.3",
 ]
 docs = [
     "greenlet>=3.2.4",

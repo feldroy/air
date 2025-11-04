@@ -1,8 +1,11 @@
 from typing import Any
 
 import pytest
+from full_match import match as full_match
 
 import air
+
+from .utils import clean_doc
 
 
 def _r(tag: air.BaseTag):
@@ -342,3 +345,77 @@ def test_input_boolean_attributes_with_other_attrs() -> None:
     # Test disabled with other attributes
     html = _r(air.Input(name="readonly", type="text", value="Can't change me", disabled=True, readonly=True))
     assert html == '<input name="readonly" type="text" value="Can\'t change me" readonly disabled>'
+
+
+def test_comment_tag() -> None:
+    actual_html = air.Html(
+        air.Head(
+            air.Meta(charset="utf-8"),
+            air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
+            air.Title("Title!"),
+            air.Comment("My crazy comment"),
+        ),
+        lang="en",
+    ).pretty_render()
+    expected_html = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width,initial-scale=1" name="viewport">
+            <title>Title!</title>
+            <!-- My crazy comment -->
+          </head>
+        </html>
+        """
+    )
+    assert actual_html == expected_html
+
+
+def test_multi_comment_tags() -> None:
+    actual_html = air.Html(
+        air.Body(
+            air.Meta(charset="utf-8"),
+            air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
+            air.Title("Title!"),
+            air.Div(
+                air.Div(
+                    air.Comment("My crazy comment1"),
+                    air.Comment("My crazy comment2"),
+                    air.Comment("My crazy comment3"),
+                )
+            ),
+        ),
+        lang="en",
+    ).pretty_render()
+    expected_html = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <body>
+            <meta charset="utf-8">
+            <meta content="width=device-width,initial-scale=1" name="viewport">
+            <title>Title!</title>
+            <div>
+              <div>
+                <!-- My crazy comment1 -->
+                <!-- My crazy comment2 -->
+                <!-- My crazy comment3 -->
+              </div>
+            </div>
+          </body>
+        </html>
+        """
+    )
+    assert actual_html == expected_html
+
+
+def test_multi_line_comment_fails() -> None:
+    with pytest.raises(
+        TypeError,
+        match=full_match('<air.Comment("Represents an HTML comment node.")>, does not support multi-line comments!'),
+    ):
+        air.Comment(
+            "My crazy comment1\nMy crazy comment2\nMy crazy comment3",
+        )

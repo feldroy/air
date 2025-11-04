@@ -6,6 +6,7 @@ from .base import (
 )
 from .special import (
     Children as Children,
+    Comment as Comment,
     Fragment as Fragment,
     Html as Html,
     Raw as Raw,
