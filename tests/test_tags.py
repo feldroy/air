@@ -342,3 +342,20 @@ def test_input_boolean_attributes_with_other_attrs() -> None:
     # Test disabled with other attributes
     html = _r(air.Input(name="readonly", type="text", value="Can't change me", disabled=True, readonly=True))
     assert html == '<input name="readonly" type="text" value="Can\'t change me" readonly disabled>'
+
+
+def test_comment_tag() -> None:
+    html = air.Html(
+        air.Head(
+            air.Meta(charset="utf-8"),
+            air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
+            air.Title("Title!"),
+            air.Comment("My crazy comment"),
+        ),
+        lang="en",
+    )
+    assert (
+        html.render() == '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<meta content="width=device-width,initial-scale=1" name="viewport">'
+        "<title>Title!</title><!-- My crazy comment --></head></html>"
+    )
