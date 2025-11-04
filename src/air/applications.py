@@ -725,7 +725,7 @@ class Air(FastAPI):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    ) -> Callable[[Callable[..., Any]], RouteCallable]:
         """
         Add a *path operation* using an HTTP GET operation.
 

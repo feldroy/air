@@ -136,7 +136,8 @@ class HtmxDetails:
         if url is None:
             return None
         split = urlsplit(url)
-        if split.scheme == self.url.scheme and split.netloc == self.url.netloc:
+        request_url = urlsplit(self.url)
+        if split.scheme == request_url.scheme and split.netloc == request_url.netloc:
             return urlunsplit(split._replace(scheme="", netloc=""))
         return None
 

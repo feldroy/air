@@ -294,7 +294,7 @@ class AirRouter(APIRouter):
             ),
         ] = True,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -684,7 +684,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -698,7 +698,7 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    ) -> Callable[[Callable[..., Any]], RouteCallable]:
         """
         Add a *path operation* using an HTTP GET operation.
 
@@ -1079,7 +1079,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -1093,7 +1093,7 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    ) -> Callable[[Callable[..., Any]], RouteCallable]:
         """
         Add a *path operation* using an HTTP POST operation.
         """
@@ -1471,7 +1471,7 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    ) -> Callable[[Callable[..., Any]], RouteCallable]:
         """
         Add a *path operation* using an HTTP PATCH operation.
         """
@@ -1848,7 +1848,7 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    ) -> Callable[[Callable[..., Any]], RouteCallable]:
         """
         Add a *path operation* using an HTTP PUT operation.
         """
@@ -2225,7 +2225,7 @@ class AirRouter(APIRouter):
                 """
             ),
         ] = generate_unique_id,
-    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+    ) -> Callable[[Callable[..., Any]], RouteCallable]:
         """
         Add a *path operation* using an HTTP DELETE operation.
         """

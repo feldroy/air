@@ -70,6 +70,9 @@ class AirForm:
     def validate(self, form_data: dict[Any, Any] | FormData) -> bool:
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
+        if self.model is None:
+            msg = "model must be set before calling validate"
+            raise ValueError(msg)
         try:
             self.data = self.model(**form_data)
             self.is_valid = True

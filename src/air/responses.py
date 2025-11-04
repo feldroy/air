@@ -26,7 +26,9 @@ class AirResponse(HTMLResponse):
     @override
     def render(self, tag: BaseTag | str) -> bytes:
         """Render Tag elements to bytes of HTML."""
-        return super().render(str(tag))
+        result = super().render(str(tag))
+        assert isinstance(result, bytes)
+        return result
 
 
 TagResponse = AirResponse  # Alias for clarity
