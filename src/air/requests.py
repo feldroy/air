@@ -5,7 +5,10 @@ from dataclasses import dataclass, field
 from typing import Any, Final
 from urllib.parse import urlsplit, urlunsplit
 
-from starlette.datastructures import Headers as Headers
+from starlette.datastructures import (
+    URL as URL,
+    Headers as Headers,
+)
 from starlette.requests import Request as _Request
 
 # HTMX Header names as constants
@@ -31,7 +34,7 @@ class HtmxDetails:
 
     # fields
     headers: Headers
-    url: str
+    url: str | URL
 
     # Derived fields (formerly properties)
     is_hx_request: bool = field(init=False)
@@ -136,7 +139,7 @@ class HtmxDetails:
         if url is None:
             return None
         split = urlsplit(url)
-        request_url = urlsplit(self.url)
+        request_url = urlsplit(self.url) if isinstance(self.url, str) else self.url
         if split.scheme == request_url.scheme and split.netloc == request_url.netloc:
             return urlunsplit(split._replace(scheme="", netloc=""))
         return None
