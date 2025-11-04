@@ -242,7 +242,7 @@ class BaseTag:
     def __repr__(self) -> str:
         """Return a concise representation showing the tag name and summary."""
         summary = f'("{self._doc_summary}")' if self._doc_summary else ""
-        return f"<air.{self._name}{summary}>"
+        return f"<air.{self.__class__.__name__}{summary}>"
 
     @property
     def _doc_summary(self) -> str:

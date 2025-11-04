@@ -74,10 +74,10 @@ class UnSafeTag(BaseTag):
 
     @override
     def __init__(self, text_child: str = "", /, **kwargs: AttributesType) -> None:
-        super().__init__(text_child, **kwargs)
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
+        super().__init__(text_child, **kwargs)
 
     @override
     @staticmethod
@@ -216,6 +216,9 @@ class Comment(UnSafeTag):
         Args:
             text_child: Text inserted inside the comment delimiters.
         """
+        if "\n" in text_child:
+            msg = f"{self!r}, does not support multi-line comments!"
+            raise TypeError(msg)
         super().__init__(text_child)
 
     @override

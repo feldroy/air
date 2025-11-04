@@ -115,6 +115,7 @@ test = [
     "pytest-env>=1.1.5", # for setting env vars in tests
     "pyinstrument>=5.1.1",
     "sqlmodel>=0.0.24",
+    "full-match>=0.0.3",
 ]
 docs = [
     "greenlet>=3.2.4",
