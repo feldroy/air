@@ -5,8 +5,8 @@ Separated from the main demo file so aerich can import models without
 requiring air, uvicorn, or other dependencies.
 """
 
-from tortoise.models import Model
 from tortoise import fields
+from tortoise.models import Model
 
 
 class Tournament(Model):

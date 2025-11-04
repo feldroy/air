@@ -20,9 +20,10 @@ Usage:
     uvx --with asyncpg "aerich[toml]" init-db
 """
 
-import air
+from models import Event, Team, Tournament
 from tortoise import Tortoise, run_async
-from models import Tournament, Event, Team
+
+import air
 
 app = air.Air()
 
@@ -101,5 +102,6 @@ async def seed_data():
 
 if __name__ == "__main__":
     import uvicorn
+
     run_async(main())
     uvicorn.run(app)
