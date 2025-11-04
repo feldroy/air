@@ -448,7 +448,7 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 
 # Tests often import optional dev deps or use dynamic patterns.
 [[tool.ty.overrides]]
-include = ["tests/**", "**/test_*.py", "**/*_test.py"]
+include = ["tests/**", "**/test_*.py", "**/*_test.py", "examples/**"]
 [tool.ty.overrides.rules]
 # TODO -> Remove all error code below
 unresolved-import = "ignore"
@@ -509,9 +509,9 @@ testpaths = ["tests", "src_examples"]
 filterwarnings = [
     # TODO: restore failing of all warnings after
     #       air.ext.sqlmodel is extracted
-    # "error", # equals: -W error 
+    # "error", # equals: -W error
     "ignore::DeprecationWarning:air\\.ext\\.sqlmodel"
-]  
+]
 # pytest-asyncio
 asyncio_mode = "auto"
 # Custom markers
