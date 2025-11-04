@@ -70,7 +70,40 @@ class AirRoute(APIRoute):
         return custom_route_handler
 
 
-class AirRouter(APIRouter):
+class HttpMethodMixin:
+    def page(self, func: FunctionType) -> RouteCallable:
+        """Decorator that creates a GET route using the function name as the path.
+
+        If the name of the function is "index", then the route is "/".
+
+        Example:
+
+            import air
+
+            app = air.Air()
+            router = air.AirRouter()
+
+            @app.page
+            def index(): # routes is "/"
+                return H1("I am the home page")
+
+            @router.page
+            def data(): # route is "/data"
+                return H1("I am the home page")
+
+            @router.page
+            def about_us(): # routes is "/about-us"
+                return H1("I am the about page")
+
+            app.include_router(router)
+        """
+        page_path = compute_page_path(func.__name__, separator=self.path_separator)
+
+        # Pin the route's response_class for belt-and-suspenders robustness
+        return self.get(page_path)(func)
+
+
+class AirRouter(APIRouter, HttpMethodMixin):
     """
     `AirRouter` class, used to group *path operations*, for example to structure
     an app in multiple files. It would then be included in the `App` app, or
@@ -335,37 +368,6 @@ class AirRouter(APIRouter):
         if prefix:
             assert prefix.startswith("/"), "A path prefix must start with '/'"
             assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
-
-    def page(self, func: FunctionType) -> RouteCallable:
-        """Decorator that creates a GET route using the function name as the path.
-
-        If the name of the function is "index", then the route is "/".
-
-        Example:
-
-            import air
-
-            app = air.Air()
-            router = air.AirRouter()
-
-            @router.page
-            def index(): # routes is "/"
-                return H1("I am the home page")
-
-            @router.page
-            def data(): # route is "/data"
-                return H1("I am the home page")
-
-            @router.page
-            def about_us(): # routes is "/about-us"
-                return H1("I am the about page")
-
-            app.include_router(router)
-        """
-        page_path = compute_page_path(func.__name__, separator=self.path_separator)
-
-        # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(page_path)(func)
 
     def get(
         self,

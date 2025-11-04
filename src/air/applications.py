@@ -6,7 +6,6 @@ import inspect
 from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
-from types import FunctionType
 from typing import Annotated, Any, Literal, TypeVar
 from warnings import deprecated
 
@@ -22,14 +21,13 @@ from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
-from .routing import AirRoute, RouteCallable
+from .routing import AirRoute, HttpMethodMixin, RouteCallable
 from .types import MaybeAwaitable
-from .utils import compute_page_path
 
 AppType = TypeVar("AppType", bound="Air")
 
 
-class Air(FastAPI):
+class Air(FastAPI, HttpMethodMixin):
     """FastAPI wrapper class with AirResponse as the default response class.
 
     Args:
@@ -362,37 +360,6 @@ class Air(FastAPI):
         )
 
         self.router.route_class = AirRoute
-
-    def page(self, func: FunctionType) -> RouteCallable:
-        """Decorator that creates a GET route using the function name as the path.
-
-        If the name of the function is "index", then the route is "/".
-
-        Example:
-
-            import air
-
-            app = air.Air()
-
-
-            @app.page
-            def index():  # routes is "/"
-                return air.H1("I am the home page")
-
-
-            @app.page
-            def data():  # route is "/data"
-                return air.H1("I am the data page")
-
-
-            @app.page
-            def about_us():  # route is "/about-us"
-                return air.H1("I am the about page")
-        """
-        page_path = compute_page_path(func.__name__, separator=self.path_separator)
-
-        # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(page_path)(func)
 
     def get(
         self,
