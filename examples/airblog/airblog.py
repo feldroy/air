@@ -1,15 +1,3 @@
-# /// script
-# dependencies = [
-#   "air",
-#   "frontmatter",
-#   "mistletoe",
-#   "rich",
-#   "uvicorn"
-# ]
-# ///
-# ruff: noqa
-# type: ignore
-# pyrefly: ignore
 """
 A markdown-powered blog for Air.
 
@@ -33,7 +21,7 @@ app = air.Air()
 
 @cache
 def get_articles() -> list[dict]:
-    articles = [Frontmatter.read_file(path) for path in Path("airblog").glob("*.md")]
+    articles = [Frontmatter.read_file(path) for path in Path("posts").glob("*.md")]
     return sorted(articles, key=lambda x: x["attributes"]["date"], reverse=True)
 
 
@@ -97,6 +85,8 @@ def get_article(slug: str) -> dict | None:
 @app.get("/article/{slug}")
 async def article_detail(slug: str, request: air.Request):
     article = get_article(slug)
+    if article is None:
+        return air.P("Article not found")
     return air.layouts.mvpcss(
         air.Title(article["attributes"]["title"]),
         air.Header(
@@ -108,7 +98,7 @@ async def article_detail(slug: str, request: air.Request):
         air.Article(air.Raw(mistletoe.markdown(article["body"]))),
         air.Footer(
             "Tags: ",
-            *[air.Span(air.A(x, href=request.url_for("tag", slug=x)), " ") for x in article["attributes"]["tags"]],
+            *[air.Span(air.A(x, href=str(request.url_for("tag", slug=x))), " ") for x in article["attributes"]["tags"]],
             air.Br(),
             air.P(
                 air.A("← Home", href=index.url()),
@@ -126,7 +116,11 @@ def tags(request: air.Request):
             air.H1("Tags"),
             air.P("All the tags"),
         ),
-        air.Article(air.Ul(*[air.Li(air.A(k, f" ({v})", href=tag.url(slug=k))) for k, v in get_tags().items()])),
+        air.Article(
+            air.Ul(*[
+                air.Li(air.A(k, f" ({v})", href=str(request.url_for("tag", slug=k)))) for k, v in get_tags().items()
+            ])
+        ),
         air.Footer(
             air.P(
                 air.A("← Home", href=index.url()),
@@ -154,6 +148,6 @@ def tag(slug: str, request: air.Request):
 
 
 if __name__ == "__main__":
-    print("[bold]Demo server starting...[/bold]")  # noqa
+    print("[bold]Demo server starting...[/bold]")
     print("[bold]Open http://localhost:8005 in your browser[/bold]")
     uvicorn.run("airblog:app", host="127.0.0.1", port=8005, reload=True)
