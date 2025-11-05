@@ -2398,7 +2398,15 @@ class Sup(BaseTag):
 
 
 class Table(BaseTag):
-    """Defines a table"""
+    """Defines a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2412,7 +2420,15 @@ class Table(BaseTag):
 
 
 class Tbody(BaseTag):
-    """Groups the body content in a table"""
+    """Groups the body content in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2426,7 +2442,18 @@ class Tbody(BaseTag):
 
 
 class Td(BaseTag):
-    """Defines a cell in a table"""
+    """Defines a cell in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        colspan: Defines the number of columns a cell should span.
+        rowspan: Defines the number of rows a cell should span.
+        headers: list of string ids of the `<th>` elements that apply to the cell
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2443,7 +2470,18 @@ class Td(BaseTag):
 
 
 class Template(BaseTag):
-    """Defines a container for content that should be hidden when the page loads"""
+    """Defines a container for content that should be hidden when the page loads
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        shadowrootmode: Creates a shadow root for the parent element.
+        shadowrootdelegatesfocus: Sets whether the shadow root created delegates focus.
+        shadowrootclonable: Sets the value of the 'cloneable' property on the shadow root.
+        shadowrootserializable: Sets the value of the 'serializable' property on the shadow root.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2460,7 +2498,32 @@ class Template(BaseTag):
 
 
 class Textarea(BaseTag):
-    """Defines a multiline input control (text area)"""
+    """Defines a multiline input control (text area)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        autocapitalize: Determines whether inputted text is automatically capitalized.
+        autocomplete: Controls whether inputted text can be automatically completed by the browser.
+        autocorrect: Controls whether autocorrect is enabled on the input text.
+        autofocus: Indicates that the text area should have input focus when the page loads.
+        cols: Defines the visible width of the text area in average character widths.
+        dirname: Indicates text directionality of the element contents.
+        disabled: Determines if the user can interact with the text area.
+        form: Associates the text area with a form element.
+        maxlength: Defines the maximum number of characters allowed in the text area.
+        minlength: Defines the minimum number of characters required in the text area.
+        name: The name of the element.
+        placeholder: Provides a hint to the user of what can be entered in the text area.
+        readonly: Indicates that the user may not edit the value of the text area.
+        required: Specifies that the text area must be filled out before submitting the form.
+        rows: Defines the visible number of lines for the control.
+        spellcheck: Specifies if the element is subject to browser or OS spell-check.
+        wrap: Indicates how the text area handles line wrapping.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
