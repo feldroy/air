@@ -11,8 +11,9 @@ from typing import Any, cast
 import pytest
 
 import air.tags.models.base as base_module
-from air.tags.models.base import BaseTag, TagDictType
-from air.tags.utils import SafeStr
+from air import BaseTag, TagDictType, SafeStr
+
+from examples.html_sample import HTML_SAMPLE
 
 
 class SampleTag(BaseTag):
@@ -299,3 +300,20 @@ def test_init_subclass_registers_new_tag() -> None:
         """Temporary tag for registry tests."""
 
     assert BaseTag.registry["EphemeralTag"] is EphemeralTag
+
+def test_from_dict_and_from_json_roundtrip() -> None:
+    """This test encodes the intended behavior for from_dict/from_json."""
+    original = HTML_SAMPLE
+    original_type = type(original)
+    original_dict = original.to_dict()
+    original_json = original.to_json()
+
+    rebuilt_from_dict = original_type.from_dict(original_dict)
+    assert isinstance(rebuilt_from_dict, original_type)
+    assert rebuilt_from_dict.to_dict() == original_dict
+    assert rebuilt_from_dict.render() == original.render()
+
+    rebuilt_from_json = original_type.from_json(original_json)
+    assert isinstance(rebuilt_from_json, original_type)
+    assert rebuilt_from_json.to_dict() == original_dict
+    assert rebuilt_from_json.render() == original.render()
