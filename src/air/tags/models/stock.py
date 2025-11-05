@@ -2499,7 +2499,7 @@ class Template(BaseTag):
 
 class Textarea(BaseTag):
     """Defines a multiline input control (text area)
-    
+
     Args:
         children: Tags, strings, or other rendered content.
         autocapitalize: Determines whether inputted text is automatically capitalized.
