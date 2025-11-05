@@ -1,4 +1,6 @@
 # Contributing to the Air 💨 Web Framework!
+Welcome! 
+We’re glad you’re here — every contribution, no matter how small, helps make **Air** better for everyone.
 
 ##### Prerequisites:
 
