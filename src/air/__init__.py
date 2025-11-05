@@ -67,6 +67,7 @@ from .tags import (
     Code as Code,
     Col as Col,
     Colgroup as Colgroup,
+    Comment as Comment,
     Data as Data,
     Datalist as Datalist,
     Dd as Dd,
