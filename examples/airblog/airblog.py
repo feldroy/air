@@ -9,9 +9,9 @@ from functools import cache
 from operator import itemgetter
 from pathlib import Path
 
-import mistletoe  # type: ignore[import-untyped]
+import mistletoe
 import uvicorn
-from frontmatter import Frontmatter  # type: ignore[import-untyped]
+from frontmatter import Frontmatter
 from rich import print
 
 import air

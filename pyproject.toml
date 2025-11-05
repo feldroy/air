@@ -450,7 +450,7 @@ unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/r
 
 # Tests often import optional dev deps or use dynamic patterns.
 [[tool.ty.overrides]]
-include = ["tests/**", "**/test_*.py", "**/*_test.py"]
+include = ["tests/**", "**/test_*.py", "**/*_test.py", "examples/airblog/**"]
 [tool.ty.overrides.rules]
 # TODO -> Remove all error code below
 unresolved-import = "ignore"
