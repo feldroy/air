@@ -8,7 +8,9 @@ from collections.abc import Mapping
 from functools import cached_property
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any, ClassVar, Final, Self, TypedDict
+from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
+
+from typing_extensions import Doc
 
 from ..utils import (
     SafeStr,
@@ -20,13 +22,34 @@ from ..utils import (
     pretty_print_html,
 )
 
-# Type hint for renderable content
-# Excludes types like None (renders as "None"), bool ("True"/"False"),
-# complex ("(1+2j)"), bytes ("b'...'"), and others that produce
-# undesirable or unintended HTML output.
-type Renderable = str | BaseTag | SafeStr | int | float
-type AttributeType = str | int | float | bool
-type TagAttributesType = dict[str, AttributeType]
+type Renderable = Annotated[
+    str | BaseTag | SafeStr | int | float,
+    Doc(
+        """
+        The type for any renderable content(a child of a tag)
+        Excludes types like None (renders as "None"), bool ("True"/"False"),
+        complex ("(1+2j)"), bytes ("b'...'"), and others that produce
+        undesirable or unintended HTML output.
+        """
+    ),
+]
+type AttributeType = Annotated[
+    str | int | float | bool,
+    Doc(
+        """
+        The type for any HTML attribute value.
+        """
+    ),
+]
+type TagAttributesType = Annotated[
+    dict[str, AttributeType],
+    Doc(
+        """
+        The type for a dictionary of HTML attributes.
+        """
+    ),
+]
+
 
 class TagDictType(TypedDict):
     name: str
