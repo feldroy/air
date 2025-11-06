@@ -116,7 +116,7 @@ test = [
     "pyinstrument>=5.1.1",
     "sqlmodel>=0.0.24",
     "full-match>=0.0.3",
-    "inline-snapshot>=0.9.0",
+    "inline-snapshot>=0.31.0",
 ]
 docs = [
     "greenlet>=3.2.4",
@@ -513,9 +513,9 @@ testpaths = ["tests", "src_examples"]
 filterwarnings = [
     # TODO: restore failing of all warnings after
     #       air.ext.sqlmodel is extracted
-    # "error", # equals: -W error 
+    # "error", # equals: -W error
     "ignore::DeprecationWarning:air\\.ext\\.sqlmodel"
-]  
+]
 # pytest-asyncio
 asyncio_mode = "auto"
 # Custom markers

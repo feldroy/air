@@ -1,4 +1,5 @@
 from full_match import match as full_match
+from inline_snapshot import snapshot
 
 import air
 
@@ -49,13 +50,9 @@ def test_pico_layout_htmx() -> None:
 def test_mvpcss_layout() -> None:
     actual_html = air.layouts.mvpcss(
         air.H1("Cheese Monger"), air.Title("Cheese Monger")
-    ).pretty_render()
-    expected_html = clean_doc(
-        """
-
-        """
     )
-    assert actual_html == expected_html
+    # expected_html = snapshot()
+    assert actual_html == snapshot()
 
 
 def test_mvpcss_layout_header() -> None:
