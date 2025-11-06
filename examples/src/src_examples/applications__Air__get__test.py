@@ -2,7 +2,7 @@
 
 from fastapi.testclient import TestClient
 
-from src_examples.applications__Air__get import app
+from examples.src.src_examples.applications__Air__get import app
 
 client = TestClient(app)
 

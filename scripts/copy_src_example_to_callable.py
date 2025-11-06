@@ -200,7 +200,7 @@ def update_example_section(
 def main():
     """Main function to process all src_examples files."""
     project_root = Path(__file__).parent.parent
-    src_examples_dir = project_root / "src_examples"
+    src_examples_dir = project_root / "examples/src"
     src_dir = project_root / "src" / "air"
 
     if not src_examples_dir.exists():
