@@ -9,11 +9,10 @@ from pathlib import Path
 from typing import Any, cast
 
 import pytest
+from examples.html_sample import HTML_SAMPLE
 
 import air.tags.models.base as base_module
-from air import BaseTag, TagDictType, SafeStr
-
-from examples.html_sample import HTML_SAMPLE
+from air import BaseTag, SafeStr, TagDictType
 
 
 class SampleTag(BaseTag):
@@ -300,6 +299,7 @@ def test_init_subclass_registers_new_tag() -> None:
         """Temporary tag for registry tests."""
 
     assert BaseTag.registry["EphemeralTag"] is EphemeralTag
+
 
 def test_from_dict_and_from_json_roundtrip() -> None:
     """This test encodes the intended behavior for from_dict/from_json."""
