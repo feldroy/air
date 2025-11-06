@@ -8,7 +8,9 @@ from collections.abc import Mapping
 from functools import cached_property
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any, ClassVar, Final, Self, TypedDict
+from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
+
+from typing_extensions import Doc
 
 from ..utils import (
     SafeStr,
@@ -20,18 +22,38 @@ from ..utils import (
     pretty_print_html,
 )
 
-type AttributesType = str | int | float | bool
-
-# Type hint for renderable content
-# Excludes types like None (renders as "None"), bool ("True"/"False"),
-# complex ("(1+2j)"), bytes ("b'...'"), and others that produce
-# undesirable or unintended HTML output.
-type Renderable = str | BaseTag | SafeStr | int | float
+type Renderable = Annotated[
+    str | BaseTag | SafeStr | int | float,
+    Doc(
+        """
+        The type for any renderable content(a child of a tag)
+        Excludes types like None (renders as "None"), bool ("True"/"False"),
+        complex ("(1+2j)"), bytes ("b'...'"), and others that produce
+        undesirable or unintended HTML output.
+        """
+    ),
+]
+type AttributeType = Annotated[
+    str | int | float | bool,
+    Doc(
+        """
+        The type for any HTML attribute value.
+        """
+    ),
+]
+type TagAttributesType = Annotated[
+    dict[str, AttributeType],
+    Doc(
+        """
+        The type for a dictionary of HTML attributes.
+        """
+    ),
+]
 
 
 class TagDictType(TypedDict):
     name: str
-    attributes: dict[str, AttributesType]
+    attributes: TagAttributesType
     children: tuple[Renderable, ...]
 
 
@@ -53,7 +75,7 @@ class BaseTag:
     _registry: ClassVar[dict[str, type[BaseTag]]] = {}
     registry: ClassVar[Mapping[str, type[BaseTag]]] = MappingProxyType(_registry)  # read-only view
 
-    def __init__(self, *children: Renderable, **kwargs: AttributesType) -> None:
+    def __init__(self, *children: Renderable, **kwargs: AttributeType) -> None:
         """Initialize a tag with renderable children and HTML attributes.
 
         Args:
@@ -63,7 +85,7 @@ class BaseTag:
         self._name = self.__class__.__name__
         self._module = self.__class__.__module__
         self._children: tuple[Renderable, ...] = children
-        self._attrs: dict[str, AttributesType] = kwargs
+        self._attrs: TagAttributesType = kwargs
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         """Create a tag instance while preventing direct BaseTag instantiation.
