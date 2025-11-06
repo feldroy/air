@@ -68,7 +68,7 @@ auth = [
 # All optional packages (combined list of every extra above)
 all = [
     "lxml>=6.0.1",
-    "rich>=12.6.0",
+    "rich>=14.2.0",
     "greenlet>=3.2.4",
     "sqlmodel>=0.0.24",
     "authlib>=1.6.3",

@@ -143,7 +143,7 @@ requires-dist = [
     { name = "lxml", marker = "extra == 'all'", specifier = ">=6.0.1" },
     { name = "lxml", marker = "extra == 'pretty'", specifier = ">=6.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
-    { name = "rich", marker = "extra == 'all'", specifier = ">=12.6.0" },
+    { name = "rich", marker = "extra == 'all'", specifier = ">=14.2.0" },
     { name = "rich", marker = "extra == 'pretty'", specifier = ">=14.2.0" },
     { name = "sqlmodel", marker = "extra == 'all'", specifier = ">=0.0.24" },
     { name = "sqlmodel", marker = "extra == 'sqlmodel'", specifier = ">=0.0.24" },
