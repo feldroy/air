@@ -51,8 +51,8 @@ def test_mvpcss_layout() -> None:
     actual_html = air.layouts.mvpcss(
         air.H1("Cheese Monger"), air.Title("Cheese Monger")
     )
-    # expected_html = snapshot()
-    assert actual_html == snapshot()
+    expected_html = snapshot()
+    assert actual_html == expected_html
 
 
 def test_mvpcss_layout_header() -> None:
