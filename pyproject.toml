@@ -54,7 +54,7 @@ standard = [
 # Add a "pretty" extra for tree-formatted HTML support
 pretty = [
     "lxml>=6.0.1",
-    "rich>=12.6.0",
+    "rich>=14.2.0",
 ]
 # Used for interacting with sqlmodel and sqlalchemy
 sqlmodel = [
@@ -65,13 +65,14 @@ sqlmodel = [
 auth = [
     "authlib>=1.6.3", # OAuth clients
 ]
-# All optional packages (combined list of every extra above, except 'standard')
+# All optional packages (combined list of every extra above)
 all = [
     "lxml>=6.0.1",
     "rich>=12.6.0",
     "greenlet>=3.2.4",
     "sqlmodel>=0.0.24",
     "authlib>=1.6.3",
+    "fastapi[standard]>=0.119.1",
 ]
 
 # Groups are for contributors; install with: uv sync --group NAME
@@ -89,7 +90,6 @@ dev = [
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
     "uvicorn>=0.34.0", # run full example apps
-    "rich-cli>=1.8.1", # Command Line Interface to Rich
     "typer>=0.19.1" # For running of scripts
 ]
 lint = [
@@ -173,11 +173,7 @@ cache-keys = [
 
 # Declare rules that block certain dependency combos,
 # This lets one lockfile cover both setups while resolving them separately.
-conflicts = [
-    # Block installing the "standard" extra (air[standard] → fastapi[standard]),
-    # together with the "devtools" group (contains rich-cli)
-    [{ extra = "standard" }, { group = "devtools" }],
-]
+conflicts = []
 
 # uv group metadata (constraints, conflicts) — disabled for now
 # Dev tools may require modern Python, while the library itself can support older
