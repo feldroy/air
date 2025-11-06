@@ -116,7 +116,6 @@ test = [
     "pyinstrument>=5.1.1",
     "sqlmodel>=0.0.24",
     "full-match>=0.0.3",
-    "inline-snapshot>=0.31.0",
 ]
 docs = [
     "greenlet>=3.2.4",
@@ -131,13 +130,20 @@ docs = [
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
     "sqlmodel>=0.0.24",
 ]
+inline-snapshot = [
+    "inline-snapshot>=0.31.0",
+]
+insiders = [
+    "inline-snapshot @ git+https://github.com/15r10nk-insiders/inline-snapshot@main",
+]
+
 # endregion dependencies
 
 # region ----> uv <----
 
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
-required-version = ">=0.8.0"
+required-version = ">=0.9.5"
 # Whether to enable experimental, preview features.
 preview = true
 # Treat this repo as an installable *package*, not just a “virtual” project.
@@ -173,7 +179,9 @@ cache-keys = [
 
 # Declare rules that block certain dependency combos,
 # This lets one lockfile cover both setups while resolving them separately.
-conflicts = []
+conflicts = [
+    [{ group = "inline-snapshot" }, { group = "insiders" }],
+]
 
 # uv group metadata (constraints, conflicts) — disabled for now
 # Dev tools may require modern Python, while the library itself can support older
@@ -188,6 +196,7 @@ conflicts = []
 # In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
 # uv uses your checked-out code.
 air = { workspace = true }
+
 # -------- uv build backend --------
 # PEP 517/518: tells installers (pip/uv) how to build/install this project.
 # For Python libraries, an editable install is the standard:
