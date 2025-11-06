@@ -3,7 +3,7 @@
 from typing import Literal, override
 
 from ..utils import HTML_DOCTYPE, locals_cleanup
-from .base import AttributesType, BaseTag, Renderable
+from .base import AttributeType, BaseTag, Renderable
 
 
 class Html(BaseTag):
@@ -60,7 +60,7 @@ class SelfClosingTag(BaseTag):
 
     def __init__(
         self,
-        **kwargs: AttributesType,
+        **kwargs: AttributeType,
     ) -> None:
         super().__init__(**kwargs)
 
@@ -73,7 +73,7 @@ class UnSafeTag(BaseTag):
     """Tag base that bypasses HTML escaping for its content."""
 
     @override
-    def __init__(self, text_child: str = "", /, **kwargs: AttributesType) -> None:
+    def __init__(self, text_child: str = "", /, **kwargs: AttributeType) -> None:
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
@@ -161,7 +161,7 @@ class Script(UnSafeTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **kwargs: AttributeType,
     ) -> None:
         super().__init__(text_child, **kwargs | locals_cleanup(locals()))
 
@@ -197,7 +197,7 @@ class Style(UnSafeTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **kwargs: AttributeType,
     ) -> None:
         super().__init__(text_child, **kwargs | locals_cleanup(locals()))
 
