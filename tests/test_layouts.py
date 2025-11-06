@@ -50,7 +50,7 @@ def test_pico_layout_htmx() -> None:
 def test_mvpcss_layout() -> None:
     actual_html = air.layouts.mvpcss(
         air.H1("Cheese Monger"), air.Title("Cheese Monger")
-    )
+    ).pretty_render()
     expected_html = snapshot()
     assert actual_html == expected_html
 
