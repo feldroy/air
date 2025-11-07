@@ -2,6 +2,10 @@
 
 Railway is a platform for deploying web applications with automatic scaling, built-in databases, and zero-config deployments. This guide shows how to deploy an Air application to Railway using Nixpacks for builds and Hypercorn for serving.
 
+!!! note
+
+    We use Hypercorn instead of Uvicorn here because one of the prerequisites for deploying Starlette apps to Railway is Hypercorn as a dependency in the pyproject.toml.
+
 ## Prerequisites
 
 - An Air project with a `main.py` file containing your app.
