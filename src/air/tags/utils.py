@@ -44,7 +44,7 @@ def clean_html_attr_key(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as"}.get(key, key)
+    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_":"async"}.get(key, key)
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
 
