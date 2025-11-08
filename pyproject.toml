@@ -7,6 +7,9 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
+maintainers = [
+    { name = "pygarap", email = "pygarap@gmail.com" }
+]
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.13,<3.15"
