@@ -130,6 +130,7 @@ docs = [
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
     "sqlmodel>=0.0.24",
+    "zensical>=0.0.5",
 ]
 # endregion dependencies
 

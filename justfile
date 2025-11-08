@@ -285,12 +285,12 @@ coverage-md: coverage-xml
 # Serve docs locally
 [group('docs')]
 doc:
-    just run -- mkdocs serve -a localhost:3000 --livereload
+    just run -- zensical serve -a localhost:3000 --open
 
 # Build docs
 [group('docs')]
 doc-build:
-    just run -- mkdocs gh-deploy --force
+    just run -- zensical build --clean
 
 # endregion Docs
 
