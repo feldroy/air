@@ -98,6 +98,11 @@ run-with-relative-paths +CMD:
 upgrade-dependencies:
     uv sync --extra all -U
 
+# Sync all dependencies using uv
+[group('uv')]
+sync:
+    uv sync --frozen --extra all
+
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 

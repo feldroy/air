@@ -88,7 +88,6 @@ dev = [
     { include-group = "docs" }, # documentation build toolchain
 ]
 devtools = [
-    "rust-just>=1.42.3", # Justfile tasks
     "uvicorn>=0.34.0", # run full example apps
     "typer>=0.19.1" # For running of scripts
 ]

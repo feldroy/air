@@ -5,9 +5,10 @@ We’re glad you’re here — every contribution, no matter how small, helps ma
 
 ##### Prerequisites:
 
-1. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
-2. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
-3. Make sure you have [rich-cli](https://github.com/Textualize/rich-cli/tree/main#installation) installed.
+1. Make sure you have [just](https://just.systems/man/en/packages.html) installed.
+2. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
+3. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
+4. Make sure you have [rich-cli](https://github.com/Textualize/rich-cli/tree/main#installation) installed.
 
 #### 1. Create the fork on GitHub, clone it locally, and wire remotes correctly.
 
@@ -38,7 +39,7 @@ git switch -c your-new-branch-name upstream/main
 #### 5. Update the project's environment (ensures that all project dependencies are installed and up-to-date with the lockfile).
 
 ```bash
-uv sync --frozen --extra all
+just sync
 ```
 
 #### 6. Configure your IDE with the uv environment:
