@@ -1,15 +1,11 @@
 # tests/test_html_utils.py
 from __future__ import annotations
 
-import builtins
-from collections.abc import Callable
-
 import pytest
 from lxml.etree import ParserError
 
 # Adjust this import path if needed for your project layout.
 from air.tags.utils import (
-    EXTRA_FEATURE_PRETTY_ERROR_MESSAGE,
     HTML_DOCTYPE,
     format_html,
     pretty_format_html,

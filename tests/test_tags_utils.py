@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import builtins
 import sys
 import types
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 import pytest
 
@@ -168,12 +167,13 @@ def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) 
 def test_format_html_uses_lxml_document_path(stub_lxml: dict[str, Any]) -> None:
     result = utils.format_html("<p/>", with_body=True, with_head=True, with_doctype=True, pretty=True)
 
-    assert result == '<!doctype html>\n<html>\n  <head></head>\n  <body>\n    <p></p>\n  </body>\n</html>\n'
+    assert result == "<!doctype html>\n<html>\n  <head></head>\n  <body>\n    <p></p>\n  </body>\n</html>\n"
+
 
 def test_format_html_uses_lxml_fragment_path(stub_lxml: dict[str, Any]) -> None:
     result = utils.format_html("<span/>", with_body=False, pretty=False)
 
-    assert result == '<span></span>'
+    assert result == "<span></span>"
 
 
 def test_open_local_file_in_the_browser_accepts_files(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -351,6 +351,7 @@ def test_pretty_print_html_delegates_to_console(monkeypatch: pytest.MonkeyPatch)
     utils.pretty_print_html("<html/>", theme="default", record=True)
 
     assert captured == [{"source": "<html/>", "theme": "default", "record": True}]
+
 
 def test_locals_cleanup_filters_values() -> None:
     data = {
