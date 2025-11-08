@@ -284,7 +284,7 @@ coverage-md: coverage-xml
 
 # Serve docs locally
 [group('docs')]
-doc:
+doc-serve:
     just run -- zensical serve -a localhost:3000 --open
 
 # Build docs
