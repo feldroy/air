@@ -55,6 +55,34 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+keywords = [
+    "air",
+    "air-tags",
+    "api",
+    "async",
+    "backend",
+    "css",
+    "fastapi",
+    "fasthtml",
+    "framework",
+    "frontend",
+    "fullstack",
+    "html",
+    "javascript",
+    "jinja",
+    "jinja2",
+    "openapi",
+    "pydantic",
+    "python",
+    "rest",
+    "restapi",
+    "restful",
+    "server",
+    "templates",
+    "uvicorn",
+    "web",
+]
+
 dependencies = [
     "fastapi>=0.119.1",
     "itsdangerous>=2.2.0",
