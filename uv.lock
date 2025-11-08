@@ -22,7 +22,9 @@ dependencies = [
     { name = "fastapi" },
     { name = "itsdangerous" },
     { name = "jinja2" },
+    { name = "lxml" },
     { name = "python-multipart" },
+    { name = "rich" },
 ]
 
 [package.optional-dependencies]
@@ -30,16 +32,10 @@ all = [
     { name = "authlib" },
     { name = "fastapi", extra = ["standard"] },
     { name = "greenlet" },
-    { name = "lxml" },
-    { name = "rich" },
     { name = "sqlmodel" },
 ]
 auth = [
     { name = "authlib" },
-]
-pretty = [
-    { name = "lxml" },
-    { name = "rich" },
 ]
 sqlmodel = [
     { name = "greenlet" },
@@ -142,15 +138,13 @@ requires-dist = [
     { name = "greenlet", marker = "extra == 'sqlmodel'", specifier = ">=3.2.4" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
-    { name = "lxml", marker = "extra == 'all'", specifier = ">=6.0.1" },
-    { name = "lxml", marker = "extra == 'pretty'", specifier = ">=6.0.1" },
+    { name = "lxml", specifier = ">=6.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
-    { name = "rich", marker = "extra == 'all'", specifier = ">=14.2.0" },
-    { name = "rich", marker = "extra == 'pretty'", specifier = ">=14.2.0" },
+    { name = "rich", specifier = ">=14.2.0" },
     { name = "sqlmodel", marker = "extra == 'all'", specifier = ">=0.0.24" },
     { name = "sqlmodel", marker = "extra == 'sqlmodel'", specifier = ">=0.0.24" },
 ]
-provides-extras = ["standard", "pretty", "sqlmodel", "auth", "all"]
+provides-extras = ["standard", "sqlmodel", "auth", "all"]
 
 [package.metadata.requires-dev]
 dev = [
