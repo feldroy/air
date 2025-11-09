@@ -118,6 +118,7 @@ docs = [
     "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
+    "zensical>=0.0.5",
 ]
 # endregion dependencies
 
@@ -607,7 +608,7 @@ hard-encoding-detection = true
 builtin = 'clear,rare,usage,informal,names,code'
 # Avoid noisy or binary paths, but keep the set lean so we still catch issues
 skip = '''
-.idea,.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
+.idea,.git,.svn,.hg,site,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
 coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
 *.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage,.cov_html,.benchmarks,.cache
 '''
