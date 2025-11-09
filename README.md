@@ -248,4 +248,4 @@ Thanks to all the contributors to the Air 💨 web framework!
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=feldroy/air&type=timeline&logscale&legend=top-left)](https://www.star-history.com/#feldroy/air&type=timeline&logscale&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left)](https://www.star-history.com/#feldroy/air&type=date&legend=top-left)
