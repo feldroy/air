@@ -2,8 +2,10 @@
 
 Implementing the User model with GitHub OAuth.
 
-!!! note "Coming Soon: More authentication methods!"
-    We chose GitHub OAuth because configuring it is straightforward. Our plan is to expand to other OAuth providers as well as other registration and authentication mechanisms.
+!!! warning "Deprecated"
+    This page is going away in the near future.
+
+    We're moving authentication functionality to separate packages. The first is by the core devs and is called [airclerk](https://github.com/feldroy/airclerk). This package will be maintained separately from Air, and will provide more authentication options in the future. Please consider using airclerk or other external packages for new projects.
 
 ## Step 1: Get client ID and secret
 

@@ -1,3 +1,4 @@
+import warnings
 from collections.abc import Callable
 
 from authlib.integrations.starlette_client import OAuth
@@ -5,6 +6,13 @@ from authlib.integrations.starlette_client import OAuth
 from ..requests import Request
 from ..responses import RedirectResponse
 from ..routing import AirRouter
+
+warnings.warn(
+    "air.ext.auth is deprecated and will be removed in a future version. "
+    "Use the https://pypi.org/project/airclerk package instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 class GitHubOAuthClientFactory:
