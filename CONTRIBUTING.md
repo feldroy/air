@@ -1,11 +1,13 @@
 # Contributing to the Air 💨 Web Framework!
-Welcome! 
+
+Welcome!
 We’re glad you’re here — every contribution, no matter how small, helps make **Air** better for everyone.
 
 ##### Prerequisites:
 
 1. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
 2. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
+3. Make sure you have [rich-cli](https://github.com/Textualize/rich-cli/tree/main#installation) installed.
 
 #### 1. Create the fork on GitHub, clone it locally, and wire remotes correctly.
 
@@ -97,7 +99,7 @@ git push -u origin your-new-branch-name
 gh pr create --fill --repo feldroy/air
 ```
 [!IMPORTANT]
-> When opening a pull request, make sure to fill out the **Pull Request Template** completely.  
+> When opening a pull request, make sure to fill out the **Pull Request Template** completely.
 > This helps maintainers review your contribution quickly and keeps the process consistent.
 
 ---
@@ -122,24 +124,24 @@ We have the following categories for features. All new features will be assigned
 
 |Category|Label|
 |---|---|
-|Core Air Feature|Feature: Core| 
+|Core Air Feature|Feature: Core|
 |Optional Air Feature|Feature: Optional|
 |Third-Party Integrated Feature|Feature: Third-Party Integrated|
 |Out-of-Scope Feature|Feature: Out-of-Scope|
 
-    
+
 #### Core Air Feature
 
 Implemented and maintained in the main Air repository; enabled by default. Fully documented and covered by tests; receives security and bug fixes promptly. Examples include Air Tags and FastAPI integration controls.
-    
+
 #### Optional Air Feature
 
 Implemented in the Air repository but off by default; installed via extras. Documented and tested, but opt-in to keep the core small and fast. Receives updates together with Air releases and follows the same support policy. Examples include authentication and CSRF validation.
-    
+
 #### Third-Party Integrated Feature
 
 Not implemented by Air; we provide official guides and examples for integrating an external library. Docs may include minimal glue code and recommended settings, but ownership stays with the third party. An example would be SQL integration or a quick guide on using a frontend library that isn't HTMX.
-    
+
 #### Out-of-Scope Feature
 
 Not implemented, not documented, and not supported by the project. Requests are redirected to community solutions or closed as "out of scope."

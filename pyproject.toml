@@ -54,24 +54,18 @@ standard = [
 # Add a "pretty" extra for tree-formatted HTML support
 pretty = [
     "lxml>=6.0.1",
-    "rich>=12.6.0",
-]
-# Used for interacting with sqlmodel and sqlalchemy
-sqlmodel = [
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
-    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
+    "rich>=14.2.0",
 ]
 # Used for authentication
 auth = [
     "authlib>=1.6.3", # OAuth clients
 ]
-# All optional packages (combined list of every extra above, except 'standard')
+# All optional packages (combined list of every extra above)
 all = [
     "lxml>=6.0.1",
-    "rich>=12.6.0",
-    "greenlet>=3.2.4",
-    "sqlmodel>=0.0.24",
+    "rich>=14.2.0",
     "authlib>=1.6.3",
+    "fastapi[standard]>=0.119.1",
 ]
 
 # Groups are for contributors; install with: uv sync --group NAME
@@ -89,7 +83,6 @@ dev = [
 devtools = [
     "rust-just>=1.42.3", # Justfile tasks
     "uvicorn>=0.34.0", # run full example apps
-    "rich-cli>=1.8.1", # Command Line Interface to Rich
     "typer>=0.19.1" # For running of scripts
 ]
 lint = [
@@ -101,9 +94,7 @@ lint = [
     "typos>=1.38.1",
 ]
 test = [
-    "aiosqlite>=0.21.0",
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "httpx>=0.28.1", # For the test client
     "pytest>=8.4.0", # The pytest framework
     "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
@@ -114,11 +105,10 @@ test = [
     "pytest-benchmark>=5.1.0",
     "pytest-env>=1.1.5", # for setting env vars in tests
     "pyinstrument>=5.1.1",
-    "sqlmodel>=0.0.24",
     "full-match>=0.0.3",
 ]
 docs = [
-    "greenlet>=3.2.4",
+    "click==8.2.1", # Necessary to allow live reload to work
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
     "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
@@ -128,7 +118,6 @@ docs = [
     "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
-    "sqlmodel>=0.0.24",
 ]
 # endregion dependencies
 
@@ -172,11 +161,7 @@ cache-keys = [
 
 # Declare rules that block certain dependency combos,
 # This lets one lockfile cover both setups while resolving them separately.
-conflicts = [
-    # Block installing the "standard" extra (air[standard] → fastapi[standard]),
-    # together with the "devtools" group (contains rich-cli)
-    [{ extra = "standard" }, { group = "devtools" }],
-]
+conflicts = []
 
 # uv group metadata (constraints, conflicts) — disabled for now
 # Dev tools may require modern Python, while the library itself can support older
@@ -510,11 +495,8 @@ pythonpath = ["src"]
 testpaths = ["tests", "examples/src"]
 # Fail on most warnings
 filterwarnings = [
-    # TODO: restore failing of all warnings after
-    #       air.ext.sqlmodel is extracted
-    # "error", # equals: -W error 
-    "ignore::DeprecationWarning:air\\.ext\\.sqlmodel"
-]  
+    "error", # equals: -W error
+]
 # pytest-asyncio
 asyncio_mode = "auto"
 # Custom markers

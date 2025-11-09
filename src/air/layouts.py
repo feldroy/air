@@ -3,7 +3,7 @@
 from typing import Any
 
 from .tags import Body, Children, Head, Header, Html, Link, Main, Script, Style
-from .tags.types import HEAD_TAG_TYPES, AttributesType
+from .tags.types import HEAD_TAG_TYPES, AttributeType
 
 
 def filter_body_tags(tags) -> list:
@@ -24,7 +24,7 @@ def _header(tags) -> Header | str:
     return ""
 
 
-def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> Html | Children:
+def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Html | Children:
     """Renders the basic layout with MVP.css and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -93,7 +93,7 @@ def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> H
     )
 
 
-def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> Html | Children:
+def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Html | Children:
     """Renders the basic layout with PicoCSS and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag

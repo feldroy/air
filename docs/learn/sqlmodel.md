@@ -1,21 +1,20 @@
 # SQLModel
-
-!!! warning "air.ext.sqlmodel"
-    This module is deprecated and will be removed very soon. Please use the new [airsqlmodel](https://pypi.org/project/airsqlmodel) package instead, which provides the same functionality.
-
-Thanks to the power of SQLModel and SQLAlchemy **Air** works with relational databases. Right now we have verified it supports PostgreSQL and SQLite. Our vision is for the community to build packages for all relational databases that allow for asynchronous connections through SQLAlchemy. 
-
-## Air loves SQLModel
-
 [SQLModel](https://sqlmodel.tiangolo.com/) is a wrapper around the venerable and proven SQLAlchemy library. Like Typer, FastAPI, pydantic, and Air, SQLModel allows for definition of critical objects with type annotations - in this case database tables. SQLModel makes SQLAlchemy a bit easier to use, although it's possible to drop down to the raw power of SQLAlchemy at any time.
 
-Using Air's SQL module requires an understanding of SQLModel. Fortunately, it's an easy library to learn.
+Using the [AirSQLModel](https://github.com/pydanny/airsqlmodel) package requires an understanding of SQLModel. Fortunately, it's an easy library to learn.
 
-## Installing Air with SQLModel Support
+## Installing AirSQLModel
 
 ```bash
-pip install "air[sqlmodel]"
+uv add airsqlmodel
 ```
+
+Or if you are on pip:
+
+```bash
+pip install airsqlmodel
+```
+
 
 ## Configuring Air for SQL
 
@@ -27,19 +26,21 @@ So when instantiating your project's root 'app':
 
 ```python title="main.py"
 import air
+import airsqlmodel as sql
 
-app = air.Air(lifespan=air.ext.sqlmodel.async_db_lifespan)
+app = air.Air(lifespan=sql.async_db_lifespan)
 ```
 
 ## Making SQL Queries inside Air Views
 
-Most of the time, you'll be using SQLModel inside your Air views. The easiest way to do this is to use the `air.ext.sqlmodel.async_session_dependency` dependency, which requires that the `DATABASE_URL` environment variable be set. This will provide you with an asynchronous session connected to your database.
+Most of the time, you'll be using SQLModel inside your Air views. The easiest way to do this is to use the `airsqlmodel.async_session_dependency` dependency, which requires that the `DATABASE_URL` environment variable be set. This will provide you with an asynchronous session connected to your database.
 
 ```python title="main.py"
 import air
-sql = air.ext.sqlmodel
+import airsqlmodel as sql
+from sqlmodel import SQLModel, Field, select
 
-app = air.Air(lifespan=air.ext.sqlmodel.async_db_lifespan)
+app = air.Air(lifespan=sql.async_db_lifespan)
 
 @app.page
 async def index(request: Request, session: sql.AsyncSession = air.Depends(sql.async_session_dependency)):
@@ -60,7 +61,8 @@ Sometimes you may want to make SQL queries outside of Air views, for example in 
 
 ```python title="tasks.py"
 import air
-sql = air.ext.sqlmodel
+import airsqlmodel as sql
+from sqlmodel import SQLModel, Field, select
 
 async def some_background_task():
     async with sql.get_async_session() as session:
