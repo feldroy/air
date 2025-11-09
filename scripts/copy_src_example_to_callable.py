@@ -1,4 +1,4 @@
-"""Script to copy src_examples content into corresponding docstring Example sections.
+"""Script to copy examples/src content into corresponding docstring Example sections.
 
 Run:
     uv run scripts/copy_src_example_to_callable.py
@@ -198,16 +198,16 @@ def update_example_section(
 
 
 def main():
-    """Main function to process all src_examples files."""
+    """Main function to process all examples/src files."""
     project_root = Path(__file__).parent.parent
-    src_examples_dir = project_root / "src_examples"
+    src_examples_dir = project_root / "examples/src"
     src_dir = project_root / "src" / "air"
 
     if not src_examples_dir.exists():
         typer.secho(f"src_examples directory not found: {src_examples_dir}")
         return
 
-    # Process each file in src_examples
+    # Process each file in examples/src
     for example_file in src_examples_dir.glob("*.py"):
         parsed = parse_filename_class(example_file.name)
         if not parsed:
