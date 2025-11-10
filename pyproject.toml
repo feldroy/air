@@ -7,6 +7,9 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
+maintainers = [
+    { name = "pygarap", email = "pygarap@gmail.com" }
+]
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.13,<3.15"
@@ -16,22 +19,67 @@ urls.Issues = "https://github.com/feldroy/air/issues"
 urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
 
 classifiers = [
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python",
-    "Topic :: Internet",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Software Development :: Libraries",
-    "Topic :: Software Development",
-    "Typing :: Typed",
     "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "Framework :: FastAPI",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: OS Independent",
+    "Operating System :: Unix",
+    "Programming Language :: JavaScript",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP :: WSGI",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
+]
+
+keywords = [
+    "air",
+    "air-tags",
+    "api",
+    "async",
+    "backend",
+    "css",
+    "fastapi",
+    "framework",
+    "frontend",
+    "fullstack",
+    "html",
+    "javascript",
+    "jinja",
+    "jinja2",
+    "openapi",
+    "pydantic",
+    "python",
+    "rest",
+    "restapi",
+    "restful",
+    "server",
+    "templates",
+    "uvicorn",
+    "web",
 ]
 
 dependencies = [
