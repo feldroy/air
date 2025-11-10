@@ -242,11 +242,9 @@ Thanks to all the contributors to the Air 💨 web framework!
 
 ## PyPI Stats
 
-[pypistats](https://pypistats.org/packages/air)
-[libraries.io](https://libraries.io/pypi/air)
-[deps.dev](https://deps.dev/pypi/air)
-
-## Star History
+- [pypistats](https://pypistats.org/packages/air)
+- [libraries.io](https://libraries.io/pypi/air)
+- [deps.dev](https://deps.dev/pypi/air)
 
 ## Star History
 
