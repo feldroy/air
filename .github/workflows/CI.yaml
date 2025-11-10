@@ -84,7 +84,7 @@ jobs:
       - name: Run all the tests
         env:
           UV_RESOLUTION: ${{ matrix.resolution-strategy }}
-        run: just test
+        run: just test-ci
   coverage-xml:
     if: github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]'
     name: Send Coverage to Codecov
