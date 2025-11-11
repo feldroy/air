@@ -92,12 +92,12 @@ run-with-relative-paths +CMD:
 [private]
 [group('uv')]
 @uv-run +ARGS:
-    just run-with-relative-paths uv run -q --extra all {{ ARGS }}
+    just run-with-relative-paths uv run --extra all {{ ARGS }}
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
 @run +ARGS:
-    just uv-run --frozen {{ ARGS }}
+    just uv-run -q --frozen {{ ARGS }}
 
 # Run a command or script using uv, in an isolated virtual environment.
 [group('uv')]
