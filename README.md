@@ -82,24 +82,20 @@ You can install each optional feature (extras) like this:
    ```sh
    uv add "air[standard]"
    ```
-2. **Pretty** — Beautiful HTML Rendering (lxml, rich)
-   ```sh
-   uv add "air[pretty]"
-   ```
-3. **SQL** — SQLModel / SQLAlchemy support
+2. **SQL** — SQLModel / SQLAlchemy support
    ```sh
    uv add "air[sqlmodel]"
    ```
-4. **Auth** — OAuth clients via Authlib
+3. **Auth** — OAuth clients via Authlib
    ```sh
    uv add "air[auth]"
    ```
-5. **All** — everything above in one go
+4. **All** — everything above in one go
    ```sh
    uv add "air[all]"
    ```
 > Tip: you can also combine extras in one command, for example:
-> `uv add "air[pretty,sql]"`
+> `uv add "air[sqlmodel,sql]"`
 
 ## A Simple Example
 
@@ -238,4 +234,20 @@ Thanks to all the contributors to the Air 💨 web framework!
 
 <a href="https://github.com/feldroy/air/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=feldroy/air" />
+</a>
+
+## PyPI Stats
+
+- [pypistats](https://pypistats.org/packages/air)
+- [libraries.io](https://libraries.io/pypi/air)
+- [deps.dev](https://deps.dev/pypi/air)
+
+## Star History
+
+<a href="https://www.star-history.com/#feldroy/air&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
+ </picture>
 </a>

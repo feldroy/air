@@ -2554,7 +2554,15 @@ class Textarea(BaseTag):
 
 
 class Tfoot(BaseTag):
-    """Groups the footer content in a table"""
+    """Groups the footer content in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2568,7 +2576,20 @@ class Tfoot(BaseTag):
 
 
 class Th(BaseTag):
-    """Defines a header cell in a table"""
+    """Defines a header cell in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        abbr: An abbreviated description of the header cell content.
+        colspan: Defines the number of columns a header cell should span.
+        headers: list of string ids of the `<th>` elements that provide the headers for the cell.
+        rowspan: Defines the number of rows a header cell should span.
+        scope: Specifies whether the header cell is a header for a column, row, or group of columns or rows.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2587,7 +2608,15 @@ class Th(BaseTag):
 
 
 class Thead(BaseTag):
-    """Groups the header content in a table"""
+    """Groups the header content in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2601,7 +2630,16 @@ class Thead(BaseTag):
 
 
 class Time(BaseTag):
-    """Defines a specific time (or datetime)"""
+    """Defines a specific time (or datetime)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        datetime: Specifies the date and/or time format.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2616,7 +2654,15 @@ class Time(BaseTag):
 
 
 class Title(BaseTag):
-    """Defines a title for the document"""
+    """Defines a title for the document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2630,7 +2676,15 @@ class Title(BaseTag):
 
 
 class Tr(BaseTag):
-    """Defines a row in a table"""
+    """Defines a row in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2644,7 +2698,19 @@ class Tr(BaseTag):
 
 
 class Track(SelfClosingTag):
-    """Defines text tracks for media elements (<video> and <audio>)"""
+    """Defines text tracks for media elements (<video> and <audio>)
+
+    Args:
+        default: Indicates that the track is to be enabled if the user's preferences do not indicate any.
+        kind: Specifies how the text track is meant to be used.
+        label: Provides a user-readable title for the text track.
+        srclang: Specifies the language of the text track data.
+        src: Specifies the URL of the track file.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        kwargs: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,

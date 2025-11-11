@@ -9,15 +9,22 @@ import webbrowser
 from io import StringIO
 from os import PathLike
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Final
+from typing import Any, Final
 from urllib.error import URLError
+
+from lxml import (
+    etree,  # ty: ignore[unresolved-import]
+    html as l_html,
+)
+from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.syntax import Syntax
+from rich.text import Text
 
 from air.exceptions import BrowserOpenError
 
 type StrPath = PathLike | Path | str
-
-if TYPE_CHECKING:
-    from rich.console import Console
 
 EXTRA_FEATURE_PRETTY_ERROR_MESSAGE: Final = (
     "Extra feature 'pretty' is not installed. Install with: `uv add air[pretty]`"
@@ -44,7 +51,7 @@ def clean_html_attr_key(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as"}.get(key, key)
+    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"}.get(key, key)
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
 
@@ -94,26 +101,12 @@ def format_html(
 
     Returns:
         The serialized HTML produced by `lxml.html.tostring`.
-
-    Raises:
-        ModuleNotFoundError: If the optional `lxml` dependency is unavailable.
     """
-    try:
-        from lxml import (
-            etree,  # ty: ignore[unresolved-import]
-            html as l_html,
-        )
-    except ModuleNotFoundError:
-        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
-    else:
-        if with_body:
-            source = l_html.document_fromstring(source, ensure_head_body=with_head)
-        else:
-            source = l_html.fromstring(source)
-        if pretty:
-            etree.indent(source)  # pretty indentation
-        doctype = HTML_DOCTYPE if with_doctype else None
-        return l_html.tostring(source, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
+    source = l_html.document_fromstring(source, ensure_head_body=with_head) if with_body else l_html.fromstring(source)
+    if pretty:
+        etree.indent(source)  # pretty indentation
+    doctype = HTML_DOCTYPE if with_doctype else None
+    return l_html.tostring(source, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
 
 
 def open_local_file_in_the_browser(path: StrPath) -> None:
@@ -268,31 +261,19 @@ def _get_pretty_html_console(
 
     Returns:
         A configured Rich console instance.
-
-    Raises:
-        ModuleNotFoundError: The optional Rich dependency is unavailable.
     """
-    try:
-        from rich import box
-        from rich.console import Console
-        from rich.panel import Panel
-        from rich.syntax import Syntax
-        from rich.text import Text
-    except ModuleNotFoundError:
-        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
-    else:
-        syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
-        title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
-        panel = Panel.fit(
-            syntax,
-            box=box.HEAVY,
-            border_style=PANEL_BORDER_STYLE,
-            title=title,
-        )
-        buffer = StringIO() if record else None
-        console = Console(record=record, file=buffer)
-        console.print(panel, soft_wrap=False)
-        return console
+    syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
+    title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
+    panel = Panel.fit(
+        syntax,
+        box=box.HEAVY,
+        border_style=PANEL_BORDER_STYLE,
+        title=title,
+    )
+    buffer = StringIO() if record else None
+    console = Console(record=record, file=buffer)
+    console.print(panel, soft_wrap=False)
+    return console
 
 
 def locals_cleanup(

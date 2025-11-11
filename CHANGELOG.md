@@ -1,5 +1,40 @@
 ### Latest Changes
 
+# 0.41.0 - 2025-11-11
+
+## Breaking change
+
+* Removed ext sqlmodel by @pydanny in https://github.com/feldroy/air/pull/769
+
+## Other things that have changed
+* Add support for HTML comments in the Air tag system! by @pygarap in https://github.com/feldroy/air/pull/750
+* docs(contributing): add short welcoming intro by @sankarebarri in https://github.com/feldroy/air/pull/756
+* Airblog test example by @Isaac-Flath in https://github.com/feldroy/air/pull/752
+* docs(contributing): emphasise using the PR template when opening pull requests by @sankarebarri in https://github.com/feldroy/air/pull/757
+* docs: add docstrings for base tags Table to Textarea by @vanessapigwin in https://github.com/feldroy/air/pull/758
+* Some type annotation improvements by @pygarap in https://github.com/feldroy/air/pull/759
+* Making `rich-cli` a separate tool and not part of the dev dependencies! by @pygarap in https://github.com/feldroy/air/pull/760
+* Live reload for docs by @pydanny in https://github.com/feldroy/air/pull/766
+* docs(examples): move src_examples to examples/src and update paths (#743) by @sankarebarri in https://github.com/feldroy/air/pull/764
+* Add support for 'async_' key in HTML attributes by @Isaac-Flath in https://github.com/feldroy/air/pull/772
+* Add deprecation working for ext.auth by @pydanny in https://github.com/feldroy/air/pull/771
+* Added a link to "What makes documentation good?" to the documentation section in `CONTRIBUTING.md` by @pygarap in https://github.com/feldroy/air/pull/782
+* Migrate from Material for MkDocs to Zensical! Stage 1! by @pygarap in https://github.com/feldroy/air/pull/777
+* Fix broken pages deployment by @pydanny in https://github.com/feldroy/air/pull/786
+* docs: add PyPI stats and star history sections to README by @pygarap in https://github.com/feldroy/air/pull/788
+* Updates repository ownership and funding information to reflect current maintainers. by @pygarap in https://github.com/feldroy/air/pull/773
+* docs: Small README fix by @pygarap in https://github.com/feldroy/air/pull/790
+* Updates the `pyproject.toml` file to improve project metadata and discoverability by @pygarap in https://github.com/feldroy/air/pull/774
+* add args to docstrings for T elements by @vanessapigwin in https://github.com/feldroy/air/pull/791
+* When publishing libraries, it is recommended to separately run tests with --resolution lowest or --resolution lowest-direct in continuous integration to ensure compatibility with the declared lower bounds. by @pygarap in https://github.com/feldroy/air/pull/795
+* refactor: simplify `pretty` implementation and Integrated `lxml` and `rich` as default dependencies for improved usability. by @pygarap in https://github.com/feldroy/air/pull/784
+* Update air tag docs for all reserved Python words by @pydanny in https://github.com/feldroy/air/pull/798
+* Refactor duplicated methods from applications.Air and router.AirRouter into one by @pydanny in https://github.com/feldroy/air/pull/749
+* chore(deps): update astral-sh/setup-uv digest to 5a7eac6 by @renovate[bot] in https://github.com/feldroy/air/pull/793
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.40.0...v0.41.0
+
 # 0.40.0 - 2025-11-03
 
 ## Contributions from new contributors
