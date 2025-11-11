@@ -92,7 +92,7 @@ run-with-relative-paths +CMD:
 [private]
 [group('uv')]
 @uv-run +ARGS:
-    just run-with-relative-paths uv run --extra all {{ ARGS }}
+    just run-with-relative-paths uv run --extra all --group inline-snapshot {{ ARGS }}
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
@@ -107,7 +107,7 @@ run-with-relative-paths +CMD:
 # Upgrade all dependencies using uv (uv don't support pyproject.toml update yet)
 [group('uv')]
 upgrade-dependencies:
-    uv sync --extra all -U
+    uv sync --extra all --group inline-snapshot -U
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----

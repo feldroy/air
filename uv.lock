@@ -1,10 +1,14 @@
 version = 1
 revision = 3
 requires-python = ">=3.13, <3.15"
+conflicts = [[
+    { package = "air", group = "inline-snapshot" },
+    { package = "air", group = "insiders" },
+]]
 
 [[package]]
 name = "air"
-version = "0.40.0"
+version = "0.41.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -39,6 +43,7 @@ dev = [
     { name = "codespell" },
     { name = "coverage" },
     { name = "diff-cover" },
+    { name = "format-dedent" },
     { name = "full-match" },
     { name = "httpx" },
     { name = "mkdocs" },
@@ -86,6 +91,12 @@ docs = [
     { name = "mkdocstrings-python" },
     { name = "zensical" },
 ]
+inline-snapshot = [
+    { name = "inline-snapshot", version = "0.31.1", source = { registry = "https://pypi.org/simple" } },
+]
+insiders = [
+    { name = "inline-snapshot", version = "0.31.1.0.0.4", source = { git = "https://github.com/15r10nk-insiders/inline-snapshot?rev=main#dcedea359bd41555fa68057b2d2d82d51f973ea8" } },
+]
 lint = [
     { name = "codespell" },
     { name = "pyrefly" },
@@ -97,6 +108,7 @@ lint = [
 test = [
     { name = "coverage" },
     { name = "diff-cover" },
+    { name = "format-dedent" },
     { name = "full-match" },
     { name = "httpx" },
     { name = "pyinstrument" },
@@ -119,7 +131,10 @@ requires-dist = [
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "lxml", specifier = ">=6.0.1" },
+    { name = "lxml", marker = "extra == 'all'", specifier = ">=6.0.1" },
+    { name = "lxml", marker = "extra == 'pretty'", specifier = ">=6.0.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
+    { name = "rich", specifier = ">=14.2.0" },
     { name = "rich", marker = "extra == 'all'", specifier = ">=14.2.0" },
     { name = "rich", marker = "extra == 'pretty'", specifier = ">=14.2.0" },
 ]
@@ -131,6 +146,7 @@ dev = [
     { name = "codespell", specifier = ">=2.4.1" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.8.2" },
     { name = "diff-cover", specifier = ">=9.6.0" },
+    { name = "format-dedent", specifier = ">=0.1.1" },
     { name = "full-match", specifier = ">=0.0.3" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "mkdocs", specifier = ">=1.6.1" },
@@ -178,6 +194,8 @@ docs = [
     { name = "mkdocstrings-python", specifier = ">=1.16.12" },
     { name = "zensical", specifier = ">=0.0.5" },
 ]
+inline-snapshot = [{ name = "inline-snapshot", specifier = ">=0.31.0" }]
+insiders = [{ name = "inline-snapshot", git = "https://github.com/15r10nk-insiders/inline-snapshot?rev=main" }]
 lint = [
     { name = "codespell", specifier = ">=2.4.1" },
     { name = "pyrefly", specifier = ">=0.29.1" },
@@ -189,6 +207,7 @@ lint = [
 test = [
     { name = "coverage", extras = ["toml"], specifier = ">=7.8.2" },
     { name = "diff-cover", specifier = ">=9.6.0" },
+    { name = "format-dedent", specifier = ">=0.1.1" },
     { name = "full-match", specifier = ">=0.0.3" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "pyinstrument", specifier = ">=5.1.1" },
@@ -366,7 +385,7 @@ name = "cffi"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pycparser", marker = "implementation_name != 'PyPy'" },
+    { name = "pycparser", marker = "implementation_name != 'PyPy' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/eb/56/b1ba7935a17738ae8453301356628e8147c79dbb825bcbc73dc7401f9846/cffi-2.0.0.tar.gz", hash = "sha256:44d1b5909021139fe36001ae048dbdde8214afa20200eda0f64c068cac5d5529", size = 523588, upload-time = "2025-09-08T23:24:04.541Z" }
 wheels = [
@@ -461,7 +480,7 @@ name = "click"
 version = "8.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/60/6c/8ca2efa64cf75a977a0d7fac081354553ebe483345c734fb6b6515d96bbc/click-8.2.1.tar.gz", hash = "sha256:27c491cc05d968d271d5a1db13e3b5a184636d9d930f148c50b038f0d0646202", size = 286342, upload-time = "2025-05-20T23:19:49.832Z" }
 wheels = [
@@ -561,7 +580,7 @@ name = "cryptography"
 version = "46.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "platform_python_implementation != 'PyPy'" },
+    { name = "cffi", marker = "platform_python_implementation != 'PyPy' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9f/33/c00162f49c0e2fe8064a62cb92b93e50c74a72bc370ab92f86112b33ff62/cryptography-46.0.3.tar.gz", hash = "sha256:a8b17438104fed022ce745b362294d9ce35b4c2e45c1d958ad4a4b019285f4a1", size = 749258, upload-time = "2025-10-15T23:18:31.74Z" }
 wheels = [
@@ -788,6 +807,15 @@ wheels = [
 ]
 
 [[package]]
+name = "format-dedent"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/50/28/a325598ee3c35d075f65166817bc0e4858705133fc6928d839bdee05521b/format_dedent-0.1.1.tar.gz", hash = "sha256:7083bee13baa0218913fd47c55973b677ee58bbc56b8742be8ede4a87c64c2e0", size = 20256, upload-time = "2025-11-11T22:36:22.486Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/98/23da7b172727585f77caef46255d3ad19acc905c39a9137cec49b9fe89d1/format_dedent-0.1.1-py3-none-any.whl", hash = "sha256:14eae90481e2c3498e9591a2f9849377f76364575d18166ca1a76f7c2eb32d37", size = 12234, upload-time = "2025-11-11T22:36:21.209Z" },
+]
+
+[[package]]
 name = "full-match"
 version = "0.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -898,11 +926,37 @@ wheels = [
 ]
 
 [[package]]
+name = "inline-snapshot"
+version = "0.31.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "asttokens" },
+    { name = "executing" },
+    { name = "pytest" },
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1c/b1/52b5ee59f73ed31d5fe21b10881bf2d121d07d54b23c0b6b74186792e620/inline_snapshot-0.31.1.tar.gz", hash = "sha256:4ea5ed70aa1d652713bbfd750606b94bd8a42483f7d3680433b3e92994495f64", size = 2606338, upload-time = "2025-11-07T07:36:18.932Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ba/52/945db420380efbda8c69a7a4a16c53df9d7ac50d8217286b9d41e5d825ff/inline_snapshot-0.31.1-py3-none-any.whl", hash = "sha256:7875a73c986a03388c7e758fb5cb8a43d2c3a20328aa1d851bfb4ed536c4496f", size = 71965, upload-time = "2025-11-07T07:36:16.836Z" },
+]
+
+[[package]]
+name = "inline-snapshot"
+version = "0.31.1.0.0.4"
+source = { git = "https://github.com/15r10nk-insiders/inline-snapshot?rev=main#dcedea359bd41555fa68057b2d2d82d51f973ea8" }
+dependencies = [
+    { name = "asttokens" },
+    { name = "executing" },
+    { name = "pytest" },
+    { name = "rich" },
+]
+
+[[package]]
 name = "ipykernel"
 version = "6.31.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "sys_platform == 'darwin'" },
+    { name = "appnope", marker = "sys_platform == 'darwin' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
     { name = "comm" },
     { name = "debugpy" },
     { name = "ipython" },
@@ -926,12 +980,12 @@ name = "ipython"
 version = "9.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
     { name = "decorator" },
     { name = "ipython-pygments-lexers" },
     { name = "jedi" },
     { name = "matplotlib-inline" },
-    { name = "pexpect", marker = "sys_platform != 'emscripten' and sys_platform != 'win32'" },
+    { name = "pexpect", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32') or (sys_platform == 'emscripten' and extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders') or (sys_platform == 'win32' and extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
     { name = "prompt-toolkit" },
     { name = "pygments" },
     { name = "stack-data" },
@@ -1298,7 +1352,7 @@ version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
     { name = "ghp-import" },
     { name = "jinja2" },
     { name = "markdown" },
@@ -1886,7 +1940,7 @@ name = "pytest"
 version = "8.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
@@ -2056,7 +2110,7 @@ name = "pyzmq"
 version = "27.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "implementation_name == 'pypy'" },
+    { name = "cffi", marker = "implementation_name == 'pypy' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/0b/3c9baedbdf613ecaa7aa07027780b8867f57b6293b6ee50de316c9f3222b/pyzmq-27.1.0.tar.gz", hash = "sha256:ac0765e3d44455adb6ddbf4417dcce460fc40a05978c08efdf2948072f6db540", size = 281750, upload-time = "2025-09-08T23:10:18.157Z" }
 wheels = [
@@ -2542,11 +2596,11 @@ wheels = [
 
 [package.optional-dependencies]
 standard = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
     { name = "httptools" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
-    { name = "uvloop", marker = "platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32'" },
+    { name = "uvloop", marker = "(platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32') or (platform_python_implementation == 'PyPy' and extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders') or (sys_platform == 'cygwin' and extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders') or (sys_platform == 'win32' and extra == 'group-3-air-inline-snapshot' and extra == 'group-3-air-insiders')" },
     { name = "watchfiles" },
     { name = "websockets" },
 ]
