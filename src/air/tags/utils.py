@@ -13,7 +13,6 @@ from typing import Any, Final
 from urllib.error import URLError
 
 import minify_html
-
 from lxml import (
     etree,  # ty: ignore[unresolved-import]
     html as l_html,

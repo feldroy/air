@@ -18,11 +18,11 @@ from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 if __name__ == "__main__":
     print(compact_format_html("<div><div/>"))
-    print(SMALL_HTML_SAMPLE.compact_format_html())
+    print(SMALL_HTML_SAMPLE.compact_render())
     print("----------------------------------------------")
     print(SMALL_HTML_SAMPLE.render())
     print("----------------------------------------------")
-    print(len(HTML_SAMPLE.compact_format_html()))
+    print(len(HTML_SAMPLE.compact_render()))
     print(len(HTML_SAMPLE.render()))
     # Print pretty-formatted HTML to the terminal when debugging layouts
     if False:
