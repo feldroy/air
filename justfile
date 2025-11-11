@@ -205,7 +205,7 @@ test-ci:
 # Run tests with lowest compatible versions for direct dependencies and highest compatible versions for indirect ones.
 [group('test')]
 test-lowest-direct-resolution:
-    just run-isolated --resolution=lowest-direct -- pytest
+    just run-isolated --no-dev --group test --resolution=lowest-direct -- pytest
 
 # Run all the tests on a specified Python version
 [group('test')]
