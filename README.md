@@ -82,24 +82,20 @@ You can install each optional feature (extras) like this:
    ```sh
    uv add "air[standard]"
    ```
-2. **Pretty** — Beautiful HTML Rendering (lxml, rich)
-   ```sh
-   uv add "air[pretty]"
-   ```
-3. **SQL** — SQLModel / SQLAlchemy support
+2. **SQL** — SQLModel / SQLAlchemy support
    ```sh
    uv add "air[sqlmodel]"
    ```
-4. **Auth** — OAuth clients via Authlib
+3. **Auth** — OAuth clients via Authlib
    ```sh
    uv add "air[auth]"
    ```
-5. **All** — everything above in one go
+4. **All** — everything above in one go
    ```sh
    uv add "air[all]"
    ```
 > Tip: you can also combine extras in one command, for example:
-> `uv add "air[pretty,sql]"`
+> `uv add "air[sqlmodel,sql]"`
 
 ## A Simple Example
 
