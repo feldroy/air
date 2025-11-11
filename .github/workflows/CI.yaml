@@ -17,7 +17,6 @@ on:
 
 env:
   COLUMNS: 150
-  UV_FROZEN: true
   FORCE_COLOR: 1
   RUFF_OUTPUT_FORMAT: github
   RUFF_NO_CACHE: true
