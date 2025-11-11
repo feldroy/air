@@ -86,6 +86,7 @@ dependencies = [
     "fastapi>=0.119.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
+    "minify-html>=0.18.1",
     "python-multipart>=0.0.20",
 ]
 # endregion project
