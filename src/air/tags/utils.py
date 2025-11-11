@@ -57,19 +57,19 @@ def compact_format_html(source: str) -> str:
         source,  # your HTML string
         allow_noncompliant_unquoted_attribute_values=False,  # keep spec-legal quoting
         allow_optimal_entities=False,  # avoid entity tweaks that fail validation
-        allow_removing_spaces_between_attributes=False,  # keep required inter-attribute space
+        allow_removing_spaces_between_attributes=False,  # keep the required inter-attribute space
         keep_closing_tags=False,  # drop optional closing tags
         keep_comments=False,  # remove comments
         keep_html_and_head_opening_tags=False,  # drop optional <html>/<head> openings
         keep_input_type_text_attr=False,  # drop default type="text"
         keep_ssi_comments=False,  # remove SSI comments
         minify_css=True,  # minify <style>/style=""
-        minify_doctype=False,  # don’t over-minify DOCTYPE (can be non-spec)
+        minify_doctype=False,  # don't over-minify DOCTYPE (can be non-spec)
         minify_js=True,  # minify inline <script>
         preserve_brace_template_syntax=False,  # assume real HTML, not templates
         preserve_chevron_percent_template_syntax=False,  # assume real HTML, not templates
         remove_bangs=False,  # keep “!” so declarations stay valid
-        remove_processing_instructions=True,  # strip stray PIs (meaning: ‘<?…?>’)
+        remove_processing_instructions=True,  # strip stray PIs (<?…?>)
     )
 
 
