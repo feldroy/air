@@ -16,7 +16,7 @@ from ..utils import (
     SafeStr,
     StrPath,
     clean_html_attr_key,
-    display_pretty_html_in_the_browser,
+    compact_format_html, display_pretty_html_in_the_browser,
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
@@ -205,6 +205,9 @@ class BaseTag:
             The pretty-formatted HTML string.
         """
         return pretty_format_html(self._render(), with_body=with_body, with_head=with_head, with_doctype=with_doctype)
+
+    def compact_render(self) -> str:
+        return compact_format_html(self._render())
 
     def pretty_print(self) -> None:
         """Display pretty-formatted HTML in the console with syntax highlighting."""
