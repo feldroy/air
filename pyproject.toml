@@ -116,6 +116,7 @@ test = [
     "pyinstrument>=5.1.1",
     "sqlmodel>=0.0.24",
     "full-match>=0.0.3",
+    "format-dedent>=0.1.1",
 ]
 docs = [
     "click==8.2.1", # Necessary to allow live reload to work
@@ -671,4 +672,4 @@ locale = "en-us"
 # endregion spell checker
 
 [tool.inline-snapshot]
-format-command = "ruff check --fix-only --stdin-filename {filename} | ruff format --stdin-filename {filename}"
+format-command = "ruff check --fix-only --stdin-filename {filename} | ruff format --stdin-filename {filename} | format-dedent --add-dedent"

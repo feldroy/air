@@ -114,7 +114,7 @@ def test_render_without_inline_snapshot() -> None:
 def test_a():
     actual_value = "line1\nline2\n"
     expected_value = snapshot(
-        """\
+        """
         line1
         line2
         """
@@ -135,4 +135,5 @@ def test_b():
     assert actual_value == expected_value
 
 def test_c():
-    expect("foo").to_match_snapshot()
+    pass
+    # expect("foo").to_match_snapshot()

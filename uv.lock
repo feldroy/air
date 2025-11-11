@@ -60,6 +60,7 @@ dev = [
     { name = "codespell" },
     { name = "coverage" },
     { name = "diff-cover" },
+    { name = "format-dedent" },
     { name = "full-match" },
     { name = "greenlet" },
     { name = "httpx" },
@@ -127,6 +128,7 @@ test = [
     { name = "aiosqlite" },
     { name = "coverage" },
     { name = "diff-cover" },
+    { name = "format-dedent" },
     { name = "full-match" },
     { name = "greenlet" },
     { name = "httpx" },
@@ -169,6 +171,7 @@ dev = [
     { name = "codespell", specifier = ">=2.4.1" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.8.2" },
     { name = "diff-cover", specifier = ">=9.6.0" },
+    { name = "format-dedent", specifier = ">=0.1.1" },
     { name = "full-match", specifier = ">=0.0.3" },
     { name = "greenlet", specifier = ">=3.2.4" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -232,6 +235,7 @@ test = [
     { name = "aiosqlite", specifier = ">=0.21.0" },
     { name = "coverage", extras = ["toml"], specifier = ">=7.8.2" },
     { name = "diff-cover", specifier = ">=9.6.0" },
+    { name = "format-dedent", specifier = ">=0.1.1" },
     { name = "full-match", specifier = ">=0.0.3" },
     { name = "greenlet", specifier = ">=3.2.4" },
     { name = "httpx", specifier = ">=0.28.1" },
@@ -821,6 +825,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/20/b5/23b216d9d985a956623b6bd12d4086b60f0059b27799f23016af04a74ea1/fastjsonschema-2.21.2.tar.gz", hash = "sha256:b1eb43748041c880796cd077f1a07c3d94e93ae84bba5ed36800a33554ae05de", size = 374130, upload-time = "2025-08-14T18:49:36.666Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/cb/a8/20d0723294217e47de6d9e2e40fd4a9d2f7c4b6ef974babd482a59743694/fastjsonschema-2.21.2-py3-none-any.whl", hash = "sha256:1c797122d0a86c5cace2e54bf4e819c36223b552017172f32c5c024a6b77e463", size = 24024, upload-time = "2025-08-14T18:49:34.776Z" },
+]
+
+[[package]]
+name = "format-dedent"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/50/28/a325598ee3c35d075f65166817bc0e4858705133fc6928d839bdee05521b/format_dedent-0.1.1.tar.gz", hash = "sha256:7083bee13baa0218913fd47c55973b677ee58bbc56b8742be8ede4a87c64c2e0", size = 20256, upload-time = "2025-11-11T22:36:22.486Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/98/23da7b172727585f77caef46255d3ad19acc905c39a9137cec49b9fe89d1/format_dedent-0.1.1-py3-none-any.whl", hash = "sha256:14eae90481e2c3498e9591a2f9849377f76364575d18166ca1a76f7c2eb32d37", size = 12234, upload-time = "2025-11-11T22:36:21.209Z" },
 ]
 
 [[package]]
