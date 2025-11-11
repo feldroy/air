@@ -19,7 +19,7 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/checkout@v5
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7
+      - uses: astral-sh/setup-uv@5a7eac68fb9809dea845d802897dc5c723910fa3 # v7
       - run: just doc-build
       - uses: actions/upload-pages-artifact@v4
         with:

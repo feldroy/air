@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.40.0"
+version = "0.41.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -88,6 +88,8 @@ dependencies = [
     "Jinja2>=3.1.6",
     "minify-html>=0.18.1",
     "python-multipart>=0.0.20",
+    "lxml>=6.0.1",
+    "rich>=14.2.0",
 ]
 # endregion project
 
