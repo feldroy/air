@@ -235,3 +235,19 @@ Thanks to all the contributors to the Air 💨 web framework!
 <a href="https://github.com/feldroy/air/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=feldroy/air" />
 </a>
+
+## PyPI Stats
+
+- [pypistats](https://pypistats.org/packages/air)
+- [libraries.io](https://libraries.io/pypi/air)
+- [deps.dev](https://deps.dev/pypi/air)
+
+## Star History
+
+<a href="https://www.star-history.com/#feldroy/air&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
+ </picture>
+</a>

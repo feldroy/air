@@ -13,7 +13,7 @@ nav:
     - Forms: learn/forms.md
     - Jinja: learn/jinja.md
     - Layouts: learn/layouts.md
-    - SQL: learn/sqlmodel.md
+    - SQLModel + Air: learn/sqlmodel.md
     - Cookbook:
       - learn/cookbook/index.md
       - app.page decorator: learn/cookbook/page-decorator.md
@@ -49,7 +49,6 @@ nav:
     - Ext:
       - Ext: api/ext/index.md
       - Auth: api/ext/auth.md
-      - SQLModel: api/ext/sqlmodel.md
     - Forms: api/forms.md
     - Layouts: api/layouts.md
     - Middleware: api/middleware.md

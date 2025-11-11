@@ -17,7 +17,6 @@ on:
 
 env:
   COLUMNS: 150
-  UV_FROZEN: true
   FORCE_COLOR: 1
   RUFF_OUTPUT_FORMAT: github
   RUFF_NO_CACHE: true
@@ -70,7 +69,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         python-version: [ "3.13", "3.14" ]
-        resolution-strategy: [ "highest", "lowest" ]
+        resolution-strategy: [ "highest", "lowest-direct" ]
     name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }}
       • resolution-strategy ${{ matrix.resolution-strategy }} (via just, uv, pytest, pytest-pretty)
     runs-on: ${{ matrix.os }}
@@ -84,7 +83,7 @@ jobs:
       - name: Run all the tests
         env:
           UV_RESOLUTION: ${{ matrix.resolution-strategy }}
-        run: just test
+        run: just test-ci
   coverage-xml:
     if: github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]'
     name: Send Coverage to Codecov
