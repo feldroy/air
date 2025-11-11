@@ -200,7 +200,7 @@ test:
 [private]
 [group('test')]
 test-ci:
-    just uv-run -- pytest
+    just uv-run --no-dev --group test -- pytest
 
 # Run tests with lowest compatible versions for direct dependencies and highest compatible versions for indirect ones.
 [group('test')]
