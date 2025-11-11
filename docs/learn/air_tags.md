@@ -95,7 +95,23 @@ renders as:
 
 Let's take a look at some additional scenarios.
 
-### Setting the `class` attribute
+### Python reserved words as attributes
+
+Some HTML attributes are reserved words in Python. To get around that, **Air Tags** uses specific keyword arguments for these reserved words.
+
+|Reserved Word|Use This Keyword Argument|
+|-------------|------------------------|
+|class        |class_                  |
+|for          |for_                    |
+|async        |async_                  |
+|id        |id_                  |
+|as        |as_                  |
+
+!!! note
+
+    These are the reserved words that we've discocevered that conflict with HTML attributes. If you run into others, please open an issue on GitHub.
+
+#### Setting the `class` attribute
 
 In Python `class` is a protected word. To set the `class` attribute in **Air Tags**, use the `class_` keyword.
 
@@ -109,7 +125,7 @@ renders as
 <p class="plain">Hello</p>
 ```
 
-### Setting the `for` attribute
+#### Setting the `for` attribute
 
 In Python `for` is a protected word. To set the `for` attribute in **Air Tags**, use the `for_` keyword.
 
@@ -125,6 +141,23 @@ renders as
 
 ```html
 <label for="email">Email<input name="email" type="email"></label>
+```
+
+#### Setting the `async` attribute
+
+In Python `async` is a protected word. To set the `async` attribute in **Air Tags**, use the `async_` keyword.
+
+```python
+air.Script(
+    'console.log("Hello, world!");',
+    async_=True,
+)
+```
+
+renders as
+
+```html
+<script async>console.log("Hello, world!");</script>
 ```
 
 ### Attributes starting with special characters
