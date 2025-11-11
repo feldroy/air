@@ -18,8 +18,8 @@ def index(request: air.Request):
     This page:
 
     - Loads the table automatically into the #display div via HTMX on page load.
-    - Lets you reload the table via a normal HTMX request.
-    - Lets you trigger a table load from a different element (to show trigger/target behavior).
+    - Let's you reload the table via a normal HTMX request.
+    - Let's you trigger a table load from a different element (to show trigger/target behavior).
     """
     return air.layouts.mvpcss(
         air.H1("Example: request.htmx"),
