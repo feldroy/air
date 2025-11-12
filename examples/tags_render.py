@@ -13,7 +13,6 @@ from __future__ import annotations
 
 from rich import print
 
-from air.tags.utils import compact_format_html
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 if __name__ == "__main__":
