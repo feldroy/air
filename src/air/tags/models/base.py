@@ -173,7 +173,7 @@ class BaseTag:
         return html.escape(text)
 
     def render(self) -> str:
-        """Render the tag into HTML.
+        """Render the HTML representation of the tag.
 
         Returns:
             The rendered HTML string.
@@ -195,7 +195,7 @@ class BaseTag:
         with_head: bool = False,
         with_doctype: bool = False,
     ) -> str:
-        """Render pretty-formatted HTML without escaping.
+        """Render the prettified-formatted HTML representation of the tag.
 
         Args:
             with_body: Whether to wrap the HTML inside a `<body>` element.
@@ -208,7 +208,7 @@ class BaseTag:
         return pretty_format_html(self._render(), with_body=with_body, with_head=with_head, with_doctype=with_doctype)
 
     def compact_render(self) -> str:
-        """Render and minify the tag for compact delivery.
+        """Render the compact-formatted HTML representation of the tag.
 
         Returns:
             A minimized HTML string produced by `minify_html.minify`.
@@ -268,7 +268,11 @@ class BaseTag:
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
     def __str__(self) -> str:
-        """Return the rendered HTML string."""
+        """Render the HTML representation of the tag.
+
+        Returns:
+            The rendered HTML string.
+        """
         return self.render()
 
     def __repr__(self) -> str:
