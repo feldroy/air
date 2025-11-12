@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 import air.tags.utils as utils
 from air.exceptions import BrowserOpenError
@@ -162,6 +163,44 @@ def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) 
     result = utils.pretty_format_html("<div/>", with_body=True, with_doctype=True)
 
     assert result == "<div>text</div>"
+
+
+def test_compact_format_html_minifies() -> None:
+    assert len(utils.compact_format_html(SMALL_HTML_SAMPLE.render())) == 754
+    assert len(utils.compact_format_html(HTML_SAMPLE.render())) == 7530
+
+
+def test_compact_format_html_minifies_with_safe_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, Any] = {}
+
+    def fake_minify(source: str, **options: Any) -> str:
+        captured["source"] = source
+        captured["options"] = options
+        return "minified"
+
+    monkeypatch.setattr(utils.minify_html, "minify", fake_minify)
+
+    result = utils.compact_format_html("<p> spaced </p>")
+
+    assert result == "minified"
+    assert captured["source"] == "<p> spaced </p>"
+    assert captured["options"] == {
+        "allow_noncompliant_unquoted_attribute_values": False,
+        "allow_optimal_entities": False,
+        "allow_removing_spaces_between_attributes": False,
+        "keep_closing_tags": False,
+        "keep_comments": False,
+        "keep_html_and_head_opening_tags": False,
+        "keep_input_type_text_attr": False,
+        "keep_ssi_comments": False,
+        "minify_css": True,
+        "minify_doctype": False,
+        "minify_js": True,
+        "preserve_brace_template_syntax": False,
+        "preserve_chevron_percent_template_syntax": False,
+        "remove_bangs": False,
+        "remove_processing_instructions": True,
+    }
 
 
 def test_format_html_uses_lxml_document_path(stub_lxml: dict[str, Any]) -> None:

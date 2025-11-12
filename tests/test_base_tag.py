@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, cast
 
 import pytest
+from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag, TagDictType
@@ -118,6 +119,26 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
             "kwargs": {"with_body": True, "with_head": True, "with_doctype": True},
         }
     ]
+
+
+def test_compact_format_html_minifies() -> None:
+    assert len(SMALL_HTML_SAMPLE.compact_render()) == 754
+    assert len(HTML_SAMPLE.compact_render()) == 7530
+
+
+def test_compact_render_passes_html_to_compact_formatter(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: list[str] = []
+
+    def fake_compact_formatter(html: str) -> str:
+        captured.append(html)
+        return "minified"
+
+    monkeypatch.setattr(base_module, "compact_format_html", fake_compact_formatter)
+
+    result = SampleTag("body").compact_render()
+
+    assert result == "minified"
+    assert captured == ["<sampletag>body</sampletag>"]
 
 
 def test_pretty_print_delegates_to_helper(monkeypatch: pytest.MonkeyPatch) -> None:
