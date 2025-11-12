@@ -208,6 +208,12 @@ class BaseTag:
         return pretty_format_html(self._render(), with_body=with_body, with_head=with_head, with_doctype=with_doctype)
 
     def compact_render(self) -> str:
+        """Render and minify the tag for compact delivery.
+
+        Returns:
+            A minimized HTML string produced by `minify_html.minify`.
+        """
+
         return compact_format_html(self._render())
 
     def pretty_print(self) -> None:

@@ -58,6 +58,19 @@ def clean_html_attr_key(key: str) -> str:
 
 
 def compact_format_html(source: str) -> str:
+    """Minify HTML markup with safe defaults.
+
+    Args:
+        source: Raw HTML markup to compress.
+
+    Returns:
+        Space-efficient HTML suitable for inline embedding or network transfer.
+
+    Note:
+        Configuration opts into standards-safe options from ``minify_html`` to
+        retain required attribute spacing while stripping comments, optional
+        closing tags, and excess whitespace, and to minify inline CSS/JS.
+    """
     # noinspection PyArgumentEqualDefault
     return minify_html.minify(
         source,  # your HTML string
