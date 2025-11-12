@@ -10,6 +10,7 @@ from typing import Any, cast
 
 import pytest
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
+
 import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag, TagDictType
