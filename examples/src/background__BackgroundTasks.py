@@ -16,9 +16,3 @@ def send_notification(email: str, background_tasks: air.BackgroundTasks):
     message = "some notification"
     background_tasks.add_task(write_notification, email, message=message)
     return air.P(f"Notification sent to {email}")
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)
