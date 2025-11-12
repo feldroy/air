@@ -10,7 +10,7 @@ from typing import Any, cast
 
 import pytest
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
-
+import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag, TagDictType
 from air.tags.utils import SafeStr
@@ -124,6 +124,7 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
 def test_compact_format_html_minifies() -> None:
     assert len(SMALL_HTML_SAMPLE.compact_render()) == 754
     assert len(HTML_SAMPLE.compact_render()) == 7530
+    assert len(air.Html(*([HTML_SAMPLE.children] * 100)).compact_render()) == 883315
 
 
 def test_compact_render_passes_html_to_compact_formatter(monkeypatch: pytest.MonkeyPatch) -> None:
