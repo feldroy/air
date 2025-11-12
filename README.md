@@ -4,10 +4,12 @@
 
 ## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
 
-<img src="img/github_trending_day.svg" width="375" height="82.5"/>
-<img src="img/github_trending_week.svg" width="375" height="82.5"/>
-<img src="img/github_trending_month.svg" width="375" height="82.5"/>
-<img src="img/github_trending_year.svg" width="375" height="82.5"/>
+<p>
+  <img src="img/github_trending_day.svg" width="375" height="82.5"/>
+  <img src="img/github_trending_week.svg" width="375" height="82.5"/>
+  <img src="img/github_trending_month.svg" width="375" height="82.5"/>
+  <img src="img/github_trending_year.svg" width="375" height="82.5"/>
+</p>
 
 [![CI - main](https://img.shields.io/github/actions/workflow/status/feldroy/air/CI.yaml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions/workflows/CI.yaml?query=branch%3Amain+event%3Apush)
 [![CI - Latest Tag](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions&label=CI%20Tag)](https://github.com/feldroy/air/actions/workflows/python-package.yml?query=tag%3Alatest+event%3Apush)
