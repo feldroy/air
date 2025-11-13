@@ -82,10 +82,6 @@ You can install each optional feature (extras) like this:
    ```sh
    uv add "air[standard]"
    ```
-2. **All** — everything above in one go
-   ```sh
-   uv add "air[all]"
-   ```
 
 ## A Simple Example
 

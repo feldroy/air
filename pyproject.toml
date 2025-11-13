@@ -103,10 +103,6 @@ standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.119.1",
 ]
-# All optional packages (combined list of every extra above)
-all = [
-    "fastapi[standard]>=0.119.1",
-]
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],
