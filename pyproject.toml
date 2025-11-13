@@ -682,7 +682,7 @@ ignore-vcs = true                    # skip .git/
 ignore-global = true                 # respect global ignores
 ignore-parent = true                 # respect parent ignores
 extend-exclude = [
-    ".git", ".svn", ".hg",
+    ".git", ".svn", ".hg", "CHANGELOG.md",
     ".tox", ".venv", "venv",
     "node_modules", "dist", "build", "target", "out",
     ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",
