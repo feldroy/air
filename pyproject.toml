@@ -63,6 +63,7 @@ keywords = [
     "backend",
     "css",
     "fastapi",
+    "fasthtml",
     "framework",
     "frontend",
     "fullstack",
@@ -100,22 +101,6 @@ dependencies = [
 # so *users* can do: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
-    "fastapi[standard]>=0.119.1",
-]
-# Add a "pretty" extra for tree-formatted HTML support
-pretty = [
-    "lxml>=6.0.1",
-    "rich>=14.2.0",
-]
-# Used for authentication
-auth = [
-    "authlib>=1.6.3", # OAuth clients
-]
-# All optional packages (combined list of every extra above)
-all = [
-    "lxml>=6.0.1",
-    "rich>=14.2.0",
-    "authlib>=1.6.3",
     "fastapi[standard]>=0.119.1",
 ]
 

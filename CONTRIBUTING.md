@@ -38,7 +38,7 @@ git switch -c your-new-branch-name upstream/main
 #### 5. Update the project's environment (ensures that all project dependencies are installed and up-to-date with the lockfile).
 
 ```bash
-uv sync --frozen --extra all
+uv sync --all-extras --all-packages --frozen
 ```
 
 #### 6. Configure your IDE with the uv environment:

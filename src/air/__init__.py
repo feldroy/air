@@ -3,7 +3,6 @@
 from starlette.staticfiles import StaticFiles as StaticFiles
 
 from . import (
-    ext as ext,
     layouts as layouts,
     responses as responses,
 )
