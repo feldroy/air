@@ -87,6 +87,7 @@ dependencies = [
     "fastapi>=0.119.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
+    "minify-html>=0.18.1",
     "python-multipart>=0.0.20",
     "lxml>=6.0.1",
     "rich>=14.2.0",
@@ -670,7 +671,7 @@ ignore-vcs = true                    # skip .git/
 ignore-global = true                 # respect global ignores
 ignore-parent = true                 # respect parent ignores
 extend-exclude = [
-    ".git", ".svn", ".hg",
+    ".git", ".svn", ".hg", "CHANGELOG.md",
     ".tox", ".venv", "venv",
     "node_modules", "dist", "build", "target", "out",
     ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",
