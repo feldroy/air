@@ -326,7 +326,7 @@ class BaseTag:
             TagKeys.CHILDREN: tuple(self._to_child_dict()),
         }
 
-    def _to_child_dict(self) -> list[TagDictType]:
+    def _to_child_dict(self) -> list[TagDictType | Renderable]:
         """Convert child nodes into serializable objects.
 
         Returns:
@@ -370,7 +370,7 @@ class BaseTag:
         return tag
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagDictType) -> list[Self]:
+    def _from_child_dict(cls, children_dict: TagDictType) -> list[Self | Renderable]:
         """Restore serialized children into tag instances or raw values.
 
         Args:
