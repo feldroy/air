@@ -10,7 +10,7 @@
 * Add support for HTML comments in the Air tag system! by @pygarap in https://github.com/feldroy/air/pull/750
 * docs(contributing): add short welcoming intro by @sankarebarri in https://github.com/feldroy/air/pull/756
 * Airblog test example by @Isaac-Flath in https://github.com/feldroy/air/pull/752
-* docs(contributing): emphasise using the PR template when opening pull requests by @sankarebarri in https://github.com/feldroy/air/pull/757
+* docs(contributing): emphasize using the PR template when opening pull requests by @sankarebarri in https://github.com/feldroy/air/pull/757
 * docs: add docstrings for base tags Table to Textarea by @vanessapigwin in https://github.com/feldroy/air/pull/758
 * Some type annotation improvements by @pygarap in https://github.com/feldroy/air/pull/759
 * Making `rich-cli` a separate tool and not part of the dev dependencies! by @pygarap in https://github.com/feldroy/air/pull/760
