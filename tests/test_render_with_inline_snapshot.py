@@ -1,9 +1,10 @@
 from inline_snapshot import snapshot
-from inline_snapshot.extra import transformation
+from inline_snapshot.extra import transformation, Transformed
 
 from air import Html, H1
 from textwrap import dedent
 from inspect import cleandoc
+
 
 @transformation
 def clean_doc_with_transformation(text: str) -> str:
@@ -57,23 +58,29 @@ def test_doc_with_inline_snapshot_and_transformation() -> None:
     assert actual_html == clean_doc(expected_html)
 
 
+def clean_doc(text: str) -> str:
+    return dedent(text).lstrip()
+
+
 def test_doc_with_inline_snapshot() -> None:
-    actual_html = """
-<!doctype html>
-<html>
-  <body>
-    <h1>Cheese Monger</h1>
-  </body>
-</html>
+    actual_html = clean_doc(
         """
+        <!doctype html>
+        <html>
+          <body>
+            <h1>Cheese Monger</h1>
+          </body>
+        </html>
+        """
+    )
     expected_html = snapshot(
         """
-<!doctype html>
-<html>
-  <body>
-    <h1>Cheese Monger</h1>
-  </body>
-</html>
+        <!doctype html>
+        <html>
+          <body>
+            <h1>Cheese Monger</h1>
+          </body>
+        </html>
         """
     )
     assert actual_html == expected_html
@@ -96,9 +103,8 @@ def test_render_with_inline_snapshot() -> None:
 
 
 # The test passed successfully
-def test_render_without_inline_snapshot() -> None:
-    actual_html = Html(H1("Cheese Monger")).pretty_render()
-    expected_html = clean_doc(
+def test_html_with_inline_snapshot() -> None:
+    actual_html = clean_doc(
         """
         <!doctype html>
         <html>
@@ -108,6 +114,18 @@ def test_render_without_inline_snapshot() -> None:
         </html>
         """
     )
+    expected_html = snapshot(
+        clean_doc,
+        """
+        <!doctype html>
+        <html>
+          <body>
+            <h1>Cheese Monger</h1>
+          </body>
+        </html>
+        """
+    )
+
     assert actual_html == expected_html
 
 
@@ -133,6 +151,7 @@ def test_b():
         )
     )
     assert actual_value == expected_value
+
 
 def test_c():
     pass
