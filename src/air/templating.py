@@ -160,7 +160,7 @@ class Renderer:
         request: Request | None = None,
         context: dict[Any, Any] | None = None,
         **kwargs: Any,
-    ) -> str:
+    ) -> str | _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
         """
@@ -198,7 +198,7 @@ class Renderer:
     def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> _TemplateResponse:
         """Render Jinja template with Air Tag support."""
         context = {k: _jinja_context_item(v) for k, v in context.items()}
-        return self.templates.TemplateResponse(request=request, name=name, context=context)
+        return self.templates.TemplateResponse(request=request, name=name, context=context)  # type: ignore[arg-type]
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:
         """Import and render a tag callable from module."""

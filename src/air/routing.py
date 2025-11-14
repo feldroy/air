@@ -71,6 +71,16 @@ class AirRoute(APIRoute):
 
 
 class RouterMixin:
+    path_separator: Literal["/", "-"]
+
+    def get(self, *args: Any, **kwargs: Any) -> Any:
+        """Stub for type checking - implemented by subclasses."""
+        raise NotImplementedError
+
+    def url_path_for(self, name: str, **params: Any) -> str:
+        """Stub for type checking - implemented by subclasses."""
+        raise NotImplementedError
+
     def page(self, func: FunctionType) -> RouteCallable:
         """Decorator that creates a GET route using the function name as the path.
 
@@ -358,7 +368,7 @@ class AirRouter(APIRouter, RouterMixin):
             ),
         ] = True,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -717,7 +727,7 @@ class AirRouter(APIRouter, RouterMixin):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -1112,7 +1122,7 @@ class AirRouter(APIRouter, RouterMixin):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
