@@ -20,7 +20,7 @@ from ..utils import (
     clean_html_attr_key,
     compact_format_html,
     display_pretty_html_in_the_browser,
-    open_html_in_the_browser,
+    migrate_html_key_to_air_tag, open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
 )
@@ -78,17 +78,17 @@ class BaseTag:
     _registry: ClassVar[dict[str, type[BaseTag]]] = {}
     registry: ClassVar[Mapping[str, type[BaseTag]]] = MappingProxyType(_registry)  # read-only view
 
-    def __init__(self, *children: Renderable, **kwargs: AttributeType) -> None:
+    def __init__(self, *children: Renderable, **attributes: AttributeType) -> None:
         """Initialize a tag with renderable children and HTML attributes.
 
         Args:
             children: Renderable objects that become the tag's inner content.
-            kwargs: Attribute names and values applied to the tag element.
+            attributes: Attribute names and values applied to the tag element.
         """
         self._name = self.__class__.__name__
         self._module = self.__class__.__module__
         self._children: tuple[Renderable, ...] = children
-        self._attrs: TagAttributesType = kwargs
+        self._attrs: TagAttributesType = attributes
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
         """Create a tag instance while preventing direct BaseTag instantiation.
@@ -356,7 +356,7 @@ class BaseTag:
         return self.to_json(indent=4)
 
     @classmethod
-    def from_dict(cls, source_dict: TagDictType) -> Self:
+    def from_dict(cls, source_dict: TagDictType) -> BaseTag:
         """Instantiate a tag hierarchy from serialized data.
 
         Args:
@@ -366,13 +366,12 @@ class BaseTag:
             The restored tag instance.
         """
         name, attributes, children_dict = source_dict.values()
-        children: tuple[Self, ...] = tuple(cls._from_child_dict(children_dict))
-        tag = cls.registry[name](*children, **attributes)  # ty: ignore[invalid-argument-type]
-        tag._name = name
-        return tag
+        children: tuple[BaseTag, ...] = tuple(cls._from_child_dict(children_dict))
+        air_tag = cls._create_tag(name, *children, **attributes)
+        return air_tag
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagDictType) -> list[Self | Renderable]:
+    def _from_child_dict(cls, children_dict: TagDictType) -> list[BaseTag | Renderable]:
         """Restore serialized children into tag instances or raw values.
 
         Args:
@@ -386,7 +385,7 @@ class BaseTag:
         ]
 
     @classmethod
-    def from_json(cls, source_json: str) -> Self:
+    def from_json(cls, source_json: str) -> BaseTag:
         """Instantiate a tag hierarchy from JSON.
 
         Args:
@@ -398,7 +397,7 @@ class BaseTag:
         return cls.from_dict(json.loads(source_json))
 
     @classmethod
-    def from_html(cls, html_source: str) -> Self:
+    def from_html(cls, html_source: str) -> BaseTag:
         if not isinstance(html_source, str):
             raise TypeError(f"{cls.__name__}.from_html() expects a string argument.")
         if not nh3.is_html(html_source):
@@ -407,11 +406,29 @@ class BaseTag:
         return cls._from_html(parser.root)
 
     @classmethod
-    def _from_html(cls, node: LexborNode | None) -> Self:
-        children: tuple[Self, ...] = tuple([cls._from_html(child) for child in node.iter(include_text=True)])
-        air_tag = cls.registry[node.tag](*children, **node.attributes)  # ty: ignore[invalid-argument-type]
-        air_tag._name = node.tag
+    def _from_html(cls, node: LexborNode) -> BaseTag:
+        children: tuple[BaseTag, ...] = tuple(
+            [
+                child.text_content if child.text_content else cls._from_html(child)
+                for child in node.iter(include_text=True)
+            ]
+        )
+        attributes: TagAttributesType = {
+            migrate_html_key_to_air_tag(key): value
+            for key, value in node.attributes.items()
+        }
+        # if node.tag.endswith("-text"):
+        #     node.text_content
+        # if node.tag.endswith("-document"):
+        #     pass
+        # if node.tag.endswith("-comment"):
+        #     pass
+        air_tag = cls._create_tag(node.tag, *children, **attributes)
         return air_tag
+
+    @classmethod
+    def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
+        return cls.registry[name.title()](*children, **attributes)  # ty: ignore[invalid-argument-type]
 
     def __init_subclass__(cls) -> None:
         """Register subclasses so they can be restored from serialized data."""

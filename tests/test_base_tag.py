@@ -15,6 +15,7 @@ import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag, TagDictType
 from air.tags.utils import SafeStr
+from utils import clean_doc
 
 
 class SampleTag(BaseTag):
@@ -322,3 +323,28 @@ def test_init_subclass_registers_new_tag() -> None:
         """Temporary tag for registry tests."""
 
     assert BaseTag.registry["EphemeralTag"] is EphemeralTag
+
+def test_from_html() -> None:
+    actual_html = air.Html(
+        air.Head(
+            air.Meta(charset="utf-8"),
+            air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
+            air.Title("Title!"),
+            air.Comment("My crazy comment"),
+        ),
+        lang="en",
+    ).pretty_render()
+    expected_html = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width,initial-scale=1" name="viewport">
+            <title>Title!</title>
+            <!-- My crazy comment -->
+          </head>
+        </html>
+        """
+    )
+    assert actual_html == expected_html

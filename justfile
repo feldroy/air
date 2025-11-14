@@ -94,6 +94,13 @@ run-with-relative-paths +CMD:
 @uv-run +ARGS:
     just run-with-relative-paths uv run --all-extras --all-packages --refresh --reinstall-package air {{ ARGS }}
 
+# Run ipython using uv.
+[doc]
+[private]
+[group('uv')]
+ipython:
+    uv run --all-extras --all-packages --refresh --reinstall-package air -- ipython
+
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
 @run +ARGS:
