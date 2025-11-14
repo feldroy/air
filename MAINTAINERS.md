@@ -47,8 +47,7 @@ just type-check-concise
 Fix any type errors that arise, then run the tests and qa to ensure nothing is broken.
 
 ```sh
-just test
-just qa
+just qa-plus
 ```
 
 Finally, commit the changes:
