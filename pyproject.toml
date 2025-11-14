@@ -91,6 +91,8 @@ dependencies = [
     "python-multipart>=0.0.20",
     "lxml>=6.0.1",
     "rich>=14.2.0",
+    "selectolax>=0.4.0",
+    "nh3>=0.3.2",
 ]
 # endregion project
 

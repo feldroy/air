@@ -12,12 +12,14 @@ Run:
 from __future__ import annotations
 
 from rich import print
-
+import air
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 if __name__ == "__main__":
+    # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
+    print(air.BaseTag.from_html(SMALL_HTML_SAMPLE.pretty_render()))
     # Print pretty-formatted HTML to the terminal when debugging layouts
-    if True:
+    if False:
         SMALL_HTML_SAMPLE.pretty_print()
     # Print a concise representation of the tag.
     if False:

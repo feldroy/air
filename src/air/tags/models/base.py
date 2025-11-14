@@ -10,6 +10,8 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
 
+import nh3
+from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
 from ..utils import (
@@ -394,6 +396,22 @@ class BaseTag:
             The restored tag instance.
         """
         return cls.from_dict(json.loads(source_json))
+
+    @classmethod
+    def from_html(cls, html_source: str) -> Self:
+        if not isinstance(html_source, str):
+            raise TypeError(f"{cls.__name__}.from_html() expects a string argument.")
+        if not nh3.is_html(html_source):
+            raise ValueError(f"{cls.__name__}.from_html() expects a valid HTML string.")
+        parser = LexborHTMLParser(html_source)
+        return cls._from_html(parser.root)
+
+    @classmethod
+    def _from_html(cls, node: LexborNode | None) -> Self:
+        children: tuple[Self, ...] = tuple([cls._from_html(child) for child in node.iter(include_text=True)])
+        air_tag = cls.registry[node.tag](*children, **node.attributes)  # ty: ignore[invalid-argument-type]
+        air_tag._name = node.tag
+        return air_tag
 
     def __init_subclass__(cls) -> None:
         """Register subclasses so they can be restored from serialized data."""

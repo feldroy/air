@@ -92,7 +92,7 @@ run-with-relative-paths +CMD:
 [private]
 [group('uv')]
 @uv-run +ARGS:
-    just run-with-relative-paths uv run --all-extras --all-packages --refresh {{ ARGS }}
+    just run-with-relative-paths uv run --all-extras --all-packages --refresh --reinstall-package air {{ ARGS }}
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
