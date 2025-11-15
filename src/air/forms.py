@@ -79,6 +79,45 @@ class AirForm:
         return self
 
     def validate(self, form_data: dict[Any, Any] | FormData) -> bool:
+        """Validate form data against the model.
+
+        Args:
+            form_data: Dictionary or FormData containing the form fields to validate
+
+        Returns:
+            True if validation succeeds, False otherwise
+
+        Example:
+
+            import air
+
+            app = air.Air()
+
+
+            class FlightModel(air.AirModel):
+                flight_number: str
+                destination: str
+
+
+            @app.post("/flight")
+            async def submit_flight(request: air.Request):
+                form_data = await request.form()
+                flight_form = FlightModel.to_form()
+
+                if flight_form.validate(form_data):
+                    # Form is valid
+                    return air.Html(
+                        air.H1("Flight Submitted"),
+                        air.P(f"Flight: {flight_form.data.flight_number}"),
+                        air.P(f"Destination: {flight_form.data.destination}"),
+                    )
+
+                # Form has errors
+                return air.Html(
+                    air.H1("Validation Failed"),
+                    air.P(f"Errors: {len(flight_form.errors or [])}"),
+                )
+        """
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
         try:
