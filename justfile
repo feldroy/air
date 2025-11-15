@@ -317,12 +317,12 @@ coverage-md: coverage-xml
 # Serve docs locally.
 [group('docs')]
 doc-serve:
-    just run -- zensical serve
+    just run -- zensical serve -a localhost:3000
 
 # Serve docs locally and open them in a new tab.
 [group('docs')]
 doc-serve-open:
-    just run -- zensical serve --open -a localhost:3222
+    just run -- zensical serve --open -a localhost:3000
 
 # Build docs
 [group('docs')]
