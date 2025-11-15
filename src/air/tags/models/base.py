@@ -13,14 +13,16 @@ from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
 import nh3
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
+from rich.pretty import pretty_repr
+from textwrap import indent as tw_indent
 
 from ..utils import (
     SafeStr,
     StrPath,
-    clean_html_attr_key,
+    _fmt_value, clean_html_attr_key,
     compact_format_html,
     display_pretty_html_in_the_browser,
-    migrate_html_key_to_air_tag, open_html_in_the_browser,
+    extract_html_comment, migrate_html_key_to_air_tag, open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
 )
@@ -302,6 +304,75 @@ class BaseTag:
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
+    def to_source(self) -> str:
+        attributes = [f"{key}={value}" for key, value in self._attrs.items()] if self._attrs else []
+        children = [
+            child.to_source() if isinstance(child, BaseTag) else child for child in self._children
+        ] if self._children else []
+        return f"{self._name}({", ".join(children + attributes)})"
+
+
+    def to_source3(self, level: int = 0) -> str:
+        indent_unit = " " * 4
+        prefix = indent_unit * level
+
+        # children first, then attributes
+        args: list[str] = []
+
+        for child in self._children:
+            if isinstance(child, BaseTag):
+                # child starts at column 0, parent will indent the block
+                args.append(child.to_source3(level=0))
+            else:
+                args.append(_fmt_value(child))
+
+        for key, value in self._attrs.items():
+            args.append(f"{key}={_fmt_value(value)}")
+
+        if not args:
+            return f"{prefix}{self._name}()".expandtabs(4)
+
+        # one line if simple
+        if len(args) == 1 and "\n" not in args[0]:
+            inner = args[0]
+            return f"{prefix}{self._name}({inner})".expandtabs(4)
+
+        # pretty multi line
+        inner = ",\n".join(args)
+        inner = tw_indent(inner, indent_unit * (level + 1))
+
+        result = (
+            f"{prefix}{self._name}(\n"
+            f"{inner},\n"
+            f"{prefix})"
+        )
+        return result.expandtabs(4)
+
+    def to_source2(self) -> str:
+        # attributes like: lang="en"
+        attributes = [
+            f"{key}={value}"
+            for key, value in self._attrs.items()
+        ] if self._attrs else []
+
+        # children are either BaseTag instances or strings
+        children = [
+            (
+                child.to_source()
+                if isinstance(child, BaseTag)
+                else str(child)
+            ).expandtabs()
+            for child in self._children
+        ] if self._children else []
+
+        # combine children and attributes in order
+        parts = children + attributes
+        inner = ", ".join(parts)
+
+        # expand tabs in the final string too
+        return f"{self._name}({inner})".expandtabs()
+
+
     def to_pretty_dict(self) -> str:
         """Produce a human-friendly mapping view of the tag.
 
@@ -309,12 +380,8 @@ class BaseTag:
             A formatted string produced by the rich pretty printer when available,
             otherwise the standard string form of the mapping.
         """
-        try:
-            from rich.pretty import pretty_repr
+        return pretty_repr(self.to_dict(), max_width=170, max_length=7, max_depth=4, max_string=25)
 
-            return pretty_repr(self.to_dict(), max_width=170, max_length=7, max_depth=4, max_string=25)
-        except ModuleNotFoundError:
-            return str(self.to_dict())
 
     def to_dict(self) -> TagDictType:
         """Convert the tag into a JSON-serializable dictionary.
@@ -407,24 +474,23 @@ class BaseTag:
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
-        children: tuple[BaseTag, ...] = tuple(
-            [
-                child.text_content if child.text_content else cls._from_html(child)
-                for child in node.iter(include_text=True)
-            ]
-        )
+        children: tuple[BaseTag, ...] = tuple([cls._from_child_html(child) for child in node.iter(include_text=True)])
         attributes: TagAttributesType = {
             migrate_html_key_to_air_tag(key): value
             for key, value in node.attributes.items()
         }
-        # if node.tag.endswith("-text"):
-        #     node.text_content
-        # if node.tag.endswith("-document"):
-        #     pass
-        # if node.tag.endswith("-comment"):
-        #     pass
         air_tag = cls._create_tag(node.tag, *children, **attributes)
         return air_tag
+
+    @classmethod
+    def _from_child_html(cls, node: LexborNode) -> BaseTag | str:
+        if node.tag.endswith("-text"):
+            return node.text_content
+        if node.tag.endswith("-document"):
+            raise NotImplementedError
+        if node.tag.endswith("-comment"):
+            return cls._create_tag("Comment", extract_html_comment(node.html))
+        return cls._from_html(node)
 
     @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
@@ -434,3 +500,8 @@ class BaseTag:
         """Register subclasses so they can be restored from serialized data."""
         super().__init_subclass__()
         BaseTag._registry[cls.__name__] = cls
+
+    def __eq__(self, other: Self, /) -> bool:
+        if isinstance(other, BaseTag):
+            return self.render() == other.render()
+        raise TypeError(f"<{self.name}> is comparable only to other air-tags.")

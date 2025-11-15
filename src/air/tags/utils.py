@@ -20,6 +20,7 @@ from lxml import (
 from rich import box
 from rich.console import Console
 from rich.panel import Panel
+from rich.pretty import pretty_repr
 from rich.syntax import Syntax
 from rich.text import Text
 
@@ -73,6 +74,28 @@ def migrate_html_key_to_air_tag(key: str) -> str:
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
 
+
+def extract_html_comment(text: str) -> str:
+    """
+    Extract the inner content of an HTML comment string.
+
+    Example:
+        "<!-- xxx -->" -> "xxx"
+    """
+    s = text.strip()
+    if s.startswith("<!--") and s.endswith("-->"):
+        # Remove the opening "<!--" and closing "-->"
+        inner = s[4:-3]
+        return inner.strip()
+    raise ValueError("Input is not a valid HTML comment")
+
+def _fmt_value(value: Any) -> str:
+    if isinstance(value, str):
+        # double quotes for strings, with basic escaping
+        escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+        return f'"{escaped}"'
+    # nicer repr (meaning: "string form") for other values
+    return pretty_repr(value)
 
 def compact_format_html(source: str) -> str:
     """Minify HTML markup with safe defaults.

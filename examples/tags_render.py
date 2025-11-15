@@ -12,6 +12,8 @@ Run:
 from __future__ import annotations
 
 from rich import print
+from rich.pretty import pretty_repr
+
 import air
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
@@ -20,9 +22,19 @@ from rich.traceback import install
 # install(show_locals=True)
 
 if __name__ == "__main__":
+    html = air.Html(
+        air.Head(
+            air.Meta(charset="utf-8"),
+            air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
+            air.Title("Title!"),
+            air.Comment("My crazy comment"),
+        ),
+        lang="en",
+    )
+    print(SMALL_HTML_SAMPLE.to_source3())
     # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
-    print(repr(air.BaseTag.from_html(SMALL_HTML_SAMPLE.pretty_render())))
-    air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_print()
+    # print(repr(air.BaseTag.from_html(SMALL_HTML_SAMPLE.pretty_render())))
+    # air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_print()
     # Print pretty-formatted HTML to the terminal when debugging layouts
     if False:
         SMALL_HTML_SAMPLE.pretty_print()

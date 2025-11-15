@@ -98,7 +98,7 @@ def test_pretty_render_in_the_browser_uses_pretty_render(monkeypatch: pytest.Mon
         {
             "html": "<sampletag>content</sampletag>",
             "kwargs": {"with_body": True, "with_head": False, "with_doctype": True},
-        }
+        },
     ]
     assert browser_calls == ["formatted"]
 
@@ -119,7 +119,7 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
         {
             "html": "<sampletag>body</sampletag>",
             "kwargs": {"with_body": True, "with_head": True, "with_doctype": True},
-        }
+        },
     ]
 
 
@@ -324,8 +324,24 @@ def test_init_subclass_registers_new_tag() -> None:
 
     assert BaseTag.registry["EphemeralTag"] is EphemeralTag
 
+
 def test_from_html() -> None:
-    actual_html = air.Html(
+    actual_html = air.Tag.from_html(
+        clean_doc(
+            """
+            <!doctype html>
+            <html lang="en">
+              <head>
+                <meta charset="utf-8">
+                <meta content="width=device-width,initial-scale=1" name="viewport">
+                <title>Title!</title>
+                <!-- My crazy comment -->
+              </head>
+            </html>
+            """
+        )
+    )
+    expected_html = air.Html(
         air.Head(
             air.Meta(charset="utf-8"),
             air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
@@ -333,18 +349,5 @@ def test_from_html() -> None:
             air.Comment("My crazy comment"),
         ),
         lang="en",
-    ).pretty_render()
-    expected_html = clean_doc(
-        """
-        <!doctype html>
-        <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <meta content="width=device-width,initial-scale=1" name="viewport">
-            <title>Title!</title>
-            <!-- My crazy comment -->
-          </head>
-        </html>
-        """
     )
-    assert actual_html == expected_html
+    assert actual_html.pretty_render() == expected_html.pretty_render()
