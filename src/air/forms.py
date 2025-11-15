@@ -71,6 +71,7 @@ class AirForm:
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
         try:
+            assert self.model is not None
             self.data = self.model(**form_data)
             self.is_valid = True
         except ValidationError as e:
