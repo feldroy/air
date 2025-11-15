@@ -37,3 +37,21 @@ Finally, create a new release on GitHub:
 
 In the `Features: Categories` section of CONTRIBUTING.md there are four categories, each should be assigned to feature issues and pull requests.
 
+## Updating Dependencies
+
+```sh
+just upgrade-dependencies
+just type-check-concise
+```
+
+Fix any type errors that arise, then run the tests and qa to ensure nothing is broken.
+
+```sh
+just qa-plus
+```
+
+Finally, commit the changes:
+
+```sh
+git commit -am "Upgrade dependencies"
+```

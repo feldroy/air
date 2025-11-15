@@ -19,17 +19,28 @@ from .tags import SafeStr
 
 
 class AirForm:
-    """
-    A form handler that validates incoming form data against a Pydantic model. Can be used with awaited form data or with FastAPI's dependency injection system.
+    """A form handler that validates incoming form data against a Pydantic model. Can be used with awaited form data or with FastAPI's dependency injection system.
 
     Example:
+
+        from typing import Annotated
+
+        from fastapi import Depends
+        from pydantic import BaseModel
+
+        import air
+
+        app = air.Air()
+
 
         class FlightModel(BaseModel):
             flight_number: str
             destination: str
 
+
         class FlightForm(air.AirForm):
             model = FlightModel
+
 
         @app.post("/flight")
         async def flight_form(request: air.Request):
@@ -37,17 +48,17 @@ class AirForm:
             flight = await FlightForm.from_request(request)
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
+            errors = len(flight.errors or [])
+            return air.Html(air.H1(air.Raw(str(errors))))
+
 
         @app.post("/flight-depends")
-        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm())]):
+        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm.from_request)]):
             "Dependency injection"
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
-
-
-    NOTE: This is named AirForm to avoid collisions with tags.Form
+            errors = len(flight.errors or [])
+            return air.Html(air.H1(air.Raw(str(errors))))
     """
 
     model: type[BaseModel] | None = None
@@ -71,6 +82,7 @@ class AirForm:
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
         try:
+            assert self.model is not None
             self.data = self.model(**form_data)
             self.is_valid = True
         except ValidationError as e:

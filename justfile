@@ -111,15 +111,20 @@ ipython:
 @run-isolated +ARGS:
     just uv-run --isolated {{ ARGS }}
 
-# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet)
+# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
 upgrade-dependencies:
     uv sync -U {{ UV_CLI_FLAGS }}
 
-# Sync all dependencies using uv.
+# Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
 sync:
     uv sync --frozen {{ UV_CLI_FLAGS }}
+
+# Sync all dependencies using uv, and updating the uv.lock file. <Don’t use! For maintainers only!>
+[group('uv')]
+sync-lock:
+    uv sync {{ UV_CLI_FLAGS }}
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----

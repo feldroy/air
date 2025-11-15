@@ -119,7 +119,6 @@ dev = [
     { include-group = "docs" }, # documentation build toolchain
 ]
 devtools = [
-    "rust-just>=1.42.3", # Justfile tasks
     "uvicorn>=0.34.0", # run full example apps
     "typer>=0.19.1" # For running of scripts
 ]
@@ -464,7 +463,7 @@ possibly-missing-implicit-call = "error" # https://docs.astral.sh/ty/reference/r
 possibly-missing-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-missing-import
 redundant-cast = "error"                 # https://docs.astral.sh/ty/reference/rules/#redundant-cast
 undefined-reveal = "error"               # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
-unknown-rule = "error"    # https://docs.astral.sh/ty/reference/rules/#unknown-rule
+ignore-comment-unknown-rule = "error"    # https://docs.astral.sh/ty/reference/rules/#ignore-comment-unknown-rule
 unresolved-global = "error"              # https://docs.astral.sh/ty/reference/rules/#unresolved-global
 unsupported-base = "error"               # https://docs.astral.sh/ty/reference/rules/#unsupported-base
 useless-overload-body = "error"          # https://docs.astral.sh/ty/reference/rules/#useless-overload-body
