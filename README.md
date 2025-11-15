@@ -40,30 +40,22 @@
 ---
 
 > [!CAUTION]
-> Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and
-> everything could change.
+> Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
 
 
 > [!IMPORTANT]
-> If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand
-> that we are working to remove features from core, and for new features you will almost always create your own package
-> that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package
-> ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
+> If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
 
 ## Why use Air?
 
 - **Powered by FastAPI** - Designed to work with FastAPI so you can serve your API and web pages from one app
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
 - **Air Tags** - Easy to write and performant HTML content generation using Python classes to render HTML
-- **Jinja Friendly** - No need to write `response_class=HtmlResponse` and `templates.TemplateResponse` for every HTML
-  view
+- **Jinja Friendly** - No need to write `response_class=HtmlResponse` and `templates.TemplateResponse` for every HTML view
 - **Mix Jinja and Air Tags** - Jinja and Air Tags both are first class citizens. Use either or both in the same view!
 - **HTMX friendly** - We love HTMX and provide utilities to use it with Air
-- **HTML form validation powered by pydantic** - We love using pydantic to validate incoming data. Air Forms provide two
-  ways to use pydantic with HTML forms (dependency injection or from within views)
-- **Easy to learn yet well documented** - Hopefully Air is so intuitive and well-typed you'll barely need to use the
-  documentation. In case you do need to look something up we're taking our experience writing technical books and using
-  it to make documentation worth boasting about
+- **HTML form validation powered by pydantic** - We love using pydantic to validate incoming data. Air Forms provide two ways to use pydantic with HTML forms (dependency injection or from within views)
+- **Easy to learn yet well documented** - Hopefully Air is so intuitive and well-typed you'll barely need to use the documentation. In case you do need to look something up we're taking our experience writing technical books and using it to make documentation worth boasting about
 
 ---
 
@@ -143,8 +135,7 @@ uv run fastapi dev
 ```
 
 > [!NOTE]
-> This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed
-> to work well with any code completion tool.
+> This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
 > You can also run this with `uv run uvicorn main:app --reload` if you prefer using Uvicorn directly.
 
 Then open your browser to <http://127.0.0.1:8000> to see the result.
@@ -160,7 +151,6 @@ from fastapi import FastAPI
 app = air.Air()
 api = FastAPI()
 
-
 @app.get("/")
 def landing_page():
     return air.Html(
@@ -175,7 +165,6 @@ def landing_page():
 @api.get("/")
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
-
 
 # Combining the Air and FastAPI apps into one
 app.mount("/api", api)
@@ -196,16 +185,13 @@ api = FastAPI()
 # Air's JinjaRenderer is a shortcut for using Jinja templates
 jinja = air.JinjaRenderer(directory="templates")
 
-
 @app.get("/")
 def index(request: Request):
     return jinja(request, name="home.html")
 
-
 @api.get("/")
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
-
 
 # Combining the Air and and FastAPI apps into one
 app.mount("/api", api)
@@ -216,15 +202,15 @@ Don't forget the Jinja template!
 ```html
 <!doctype html>
 <html>
-<head>
-    <title>Awesome SaaS</title>
-</head>
-<body>
-<h1>Awesome SaaS</h1>
-<p>
-    <a target="_blank" href="/api/docs">API Docs</a>
-</p>
-</body>
+    <head>
+        <title>Awesome SaaS</title>
+    </head>
+    <body>
+        <h1>Awesome SaaS</h1>
+        <p>
+            <a target="_blank" href="/api/docs">API Docs</a>
+        </p>
+    </body>
 </html>
 ```
 
