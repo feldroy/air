@@ -63,6 +63,7 @@ keywords = [
     "backend",
     "css",
     "fastapi",
+    "fasthtml",
     "framework",
     "frontend",
     "fullstack",
@@ -86,6 +87,7 @@ dependencies = [
     "fastapi>=0.119.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
+    "minify-html>=0.18.1",
     "python-multipart>=0.0.20",
     "lxml>=6.0.1",
     "rich>=14.2.0",
@@ -99,22 +101,6 @@ dependencies = [
 # so *users* can do: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
-    "fastapi[standard]>=0.119.1",
-]
-# Add a "pretty" extra for tree-formatted HTML support
-pretty = [
-    "lxml>=6.0.1",
-    "rich>=14.2.0",
-]
-# Used for authentication
-auth = [
-    "authlib>=1.6.3", # OAuth clients
-]
-# All optional packages (combined list of every extra above)
-all = [
-    "lxml>=6.0.1",
-    "rich>=14.2.0",
-    "authlib>=1.6.3",
     "fastapi[standard]>=0.119.1",
 ]
 
@@ -131,7 +117,6 @@ dev = [
     { include-group = "docs" }, # documentation build toolchain
 ]
 devtools = [
-    "rust-just>=1.42.3", # Justfile tasks
     "uvicorn>=0.34.0", # run full example apps
     "typer>=0.19.1" # For running of scripts
 ]
@@ -158,7 +143,7 @@ test = [
     "full-match>=0.0.3",
 ]
 docs = [
-    "click==8.2.1", # Necessary to allow live reload to work
+    "click==8.3.1", # Necessary to allow live reload to work
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
     "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
@@ -476,7 +461,7 @@ possibly-missing-implicit-call = "error" # https://docs.astral.sh/ty/reference/r
 possibly-missing-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-missing-import
 redundant-cast = "error"                 # https://docs.astral.sh/ty/reference/rules/#redundant-cast
 undefined-reveal = "error"               # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
-unknown-rule = "error"                   # https://docs.astral.sh/ty/reference/rules/#unknown-rule
+ignore-comment-unknown-rule = "error"    # https://docs.astral.sh/ty/reference/rules/#ignore-comment-unknown-rule
 unresolved-global = "error"              # https://docs.astral.sh/ty/reference/rules/#unresolved-global
 unsupported-base = "error"               # https://docs.astral.sh/ty/reference/rules/#unsupported-base
 useless-overload-body = "error"          # https://docs.astral.sh/ty/reference/rules/#useless-overload-body
@@ -681,7 +666,7 @@ ignore-vcs = true                    # skip .git/
 ignore-global = true                 # respect global ignores
 ignore-parent = true                 # respect parent ignores
 extend-exclude = [
-    ".git", ".svn", ".hg",
+    ".git", ".svn", ".hg", "CHANGELOG.md",
     ".tox", ".venv", "venv",
     "node_modules", "dist", "build", "target", "out",
     ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",

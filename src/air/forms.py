@@ -19,17 +19,28 @@ from .tags import SafeStr
 
 
 class AirForm:
-    """
-    A form handler that validates incoming form data against a Pydantic model. Can be used with awaited form data or with FastAPI's dependency injection system.
+    """A form handler that validates incoming form data against a Pydantic model. Can be used with awaited form data or with FastAPI's dependency injection system.
 
     Example:
+
+        from typing import Annotated
+
+        from fastapi import Depends
+        from pydantic import BaseModel
+
+        import air
+
+        app = air.Air()
+
 
         class FlightModel(BaseModel):
             flight_number: str
             destination: str
 
+
         class FlightForm(air.AirForm):
             model = FlightModel
+
 
         @app.post("/flight")
         async def flight_form(request: air.Request):
@@ -37,17 +48,17 @@ class AirForm:
             flight = await FlightForm.from_request(request)
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
+            errors = len(flight.errors or [])
+            return air.Html(air.H1(air.Raw(str(errors))))
+
 
         @app.post("/flight-depends")
-        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm())]):
+        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm.from_request)]):
             "Dependency injection"
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
-
-
-    NOTE: This is named AirForm to avoid collisions with tags.Form
+            errors = len(flight.errors or [])
+            return air.Html(air.H1(air.Raw(str(errors))))
     """
 
     model: type[BaseModel] | None = None
@@ -68,9 +79,49 @@ class AirForm:
         return self
 
     def validate(self, form_data: dict[Any, Any] | FormData) -> bool:
+        """Validate form data against the model.
+
+        Args:
+            form_data: Dictionary or FormData containing the form fields to validate
+
+        Returns:
+            True if validation succeeds, False otherwise
+
+        Example:
+
+            import air
+
+            app = air.Air()
+
+
+            class FlightModel(air.AirModel):
+                flight_number: str
+                destination: str
+
+
+            @app.post("/flight")
+            async def submit_flight(request: air.Request):
+                form_data = await request.form()
+                flight_form = FlightModel.to_form()
+
+                if flight_form.validate(form_data):
+                    # Form is valid
+                    return air.Html(
+                        air.H1("Flight Submitted"),
+                        air.P(f"Flight: {flight_form.data.flight_number}"),
+                        air.P(f"Destination: {flight_form.data.destination}"),
+                    )
+
+                # Form has errors
+                return air.Html(
+                    air.H1("Validation Failed"),
+                    air.P(f"Errors: {len(flight_form.errors or [])}"),
+                )
+        """
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
         try:
+            assert self.model is not None
             self.data = self.model(**form_data)
             self.is_valid = True
         except ValidationError as e:

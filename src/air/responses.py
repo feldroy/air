@@ -24,7 +24,7 @@ class AirResponse(HTMLResponse):
     """Response class to handle air.tags.Tags or HTML (from Jinja2)."""
 
     @override
-    def render(self, tag: BaseTag | str) -> bytes:
+    def render(self, tag: BaseTag | str) -> bytes | memoryview:
         """Render Tag elements to bytes of HTML."""
         return super().render(str(tag))
 
