@@ -304,15 +304,15 @@ class BaseTag:
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
-    def to_source(self) -> str:
-        attributes = [f"{key}={value}" for key, value in self._attrs.items()] if self._attrs else []
+    def to_source3(self) -> str:
+        attributes = [f'{key}="{value}"' for key, value in self._attrs.items()] if self._attrs else []
         children = [
-            child.to_source() if isinstance(child, BaseTag) else child for child in self._children
+            child.to_source3() if isinstance(child, BaseTag) else child for child in self._children
         ] if self._children else []
         return f"{self._name}({", ".join(children + attributes)})"
 
 
-    def to_source3(self, level: int = 0) -> str:
+    def to_source(self, level: int = 0) -> str:
         indent_unit = " " * 4
         prefix = indent_unit * level
 
@@ -322,7 +322,7 @@ class BaseTag:
         for child in self._children:
             if isinstance(child, BaseTag):
                 # child starts at column 0, parent will indent the block
-                args.append(child.to_source3(level=0))
+                args.append(child.to_source(level=0))
             else:
                 args.append(_fmt_value(child))
 
@@ -495,6 +495,10 @@ class BaseTag:
     @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
         return cls.registry[name.title()](*children, **attributes)  # ty: ignore[invalid-argument-type]
+
+    @classmethod
+    def from_html_to_source(cls, html_source: str) -> str:
+        return cls.from_html(html_source).to_source()
 
     def __init_subclass__(cls) -> None:
         """Register subclasses so they can be restored from serialized data."""

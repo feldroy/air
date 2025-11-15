@@ -19,6 +19,8 @@ from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 from rich.traceback import install
 
+from tests.utils import clean_doc
+
 # install(show_locals=True)
 
 if __name__ == "__main__":
@@ -31,7 +33,22 @@ if __name__ == "__main__":
         ),
         lang="en",
     )
-    print(SMALL_HTML_SAMPLE.to_source3())
+    html_source = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta content="width=device-width,initial-scale=1" name="viewport">
+            <title>Title!</title>
+            <!-- My crazy comment -->
+          </head>
+        </html>
+        """
+    )
+    print(air.Tag.from_html(html_source).render())
+    # print(air.Tag.from_html_to_source(html_source))
+    # print(SMALL_HTML_SAMPLE.to_source())
     # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
     # print(repr(air.BaseTag.from_html(SMALL_HTML_SAMPLE.pretty_render())))
     # air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_print()
