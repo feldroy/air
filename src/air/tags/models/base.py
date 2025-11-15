@@ -467,11 +467,11 @@ class BaseTag:
     @classmethod
     def from_html(cls, html_source: str) -> BaseTag:
         if not isinstance(html_source, str):
-            raise TypeError(f"{cls.__name__}.from_html() expects a string argument.")
+            raise TypeError(f"{cls.__name__}.from_html(html_source) expects a string argument.")
         if not nh3.is_html(html_source):
-            raise ValueError(f"{cls.__name__}.from_html() expects a valid HTML string.")
-        if has_all_top_level_tags(html_source):
-            raise ValueError(f"{cls.__name__}.from_html() expects am HTML string with all top level tags.")
+            raise ValueError(f"{cls.__name__}.from_html(html_source) expects a valid HTML string.")
+        # if not has_all_top_level_tags(html_source):
+        #     raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
         parser = LexborHTMLParser(html_source)
         return cls._from_html(parser.root)
 

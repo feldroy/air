@@ -26,8 +26,8 @@ LOCALS_CLEANUP_EXCLUDED_KEYS: Final[frozenset[str]] = frozenset(
 TOP_LEVEL_HTML_TAGS: Final[frozenset[str]] = frozenset(
     {
         HTML_DOCTYPE,
-        "<html>",
-        "<head>",
-        "<body>",
+        "<html",
+        "<head",
+        "<body",
     }
 )

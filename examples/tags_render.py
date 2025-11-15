@@ -31,6 +31,7 @@ if __name__ == "__main__":
             air.Title("Title!"),
             air.Comment("My crazy comment"),
         ),
+        air.Body(),
         lang="en",
     )
     html_source = clean_doc(
@@ -43,13 +44,18 @@ if __name__ == "__main__":
             <title>Title!</title>
             <!-- My crazy comment -->
           </head>
+          <body></body>
         </html>
         """
     )
     # print(air.Tag.from_html(html_source).render())
-    print(air.Tag.from_html(air.Title("xxx").render()).render())
-    print(air.Title("xxx").render())
+    # print(air.Tag.from_html(air.Title("xxx").pretty_render()).render())
+    # print(html.pretty_render())
     # print(air.Tag.from_html_to_source(html_source))
+    # print(air.Tag.from_html_to_source(html.pretty_render()))
+    # print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE.pretty_render()))
+    print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
+    # print(air.Tag.from_html_to_source(HTML_SAMPLE.pretty_render()))
     # print(SMALL_HTML_SAMPLE.to_source())
     # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
     # print(repr(air.BaseTag.from_html(SMALL_HTML_SAMPLE.pretty_render())))
