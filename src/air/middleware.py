@@ -23,7 +23,7 @@ class SessionMiddleware(StarletteSessionMiddleware):
         import air
 
         app = air.Air()
-        app.add_middleware(air.SessionMiddleware, secret_key="change-me")
+        app.add_middleware(air.SessionMiddleware, secret_key="change-me")  # type: ignore[arg-type]
 
 
         @app.page
@@ -31,7 +31,7 @@ class SessionMiddleware(StarletteSessionMiddleware):
             if "first-visited" not in request.session:
                 request.session["first-visited"] = time()
             return air.layouts.mvpcss(
-                air.H1(request.session.get("first-visited")),
+                air.H1(str(request.session.get("first-visited"))),
                 air.P("Refresh the page and the timestamp won't change"),
                 air.P(air.A("Reset the time stamp", href="/reset")),
             )
