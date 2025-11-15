@@ -75,13 +75,29 @@ source .venv/bin/activate
 uv init
 uv add air
 ```
+
 ### Install optional features (with `uv add`)
 
 You can install each optional feature (extras) like this:
+
 1. **Standard** — FastAPI’s recommended extras
    ```sh
    uv add "air[standard]"
    ```
+
+## Agentic Coding
+
+The library and its dependencies are available through [Context7](https://context7.com/feldroy/air).
+For effective AI assistance, register the Context7 MCP server in your coding environment and configure your agent to use
+it.
+
+You can also use:
+
+- [Code Wiki by Google](https://codewiki.google/github.com/feldroy/air)
+- [DeepWiki powered by Devin](https://deepwiki.com/feldroy/air)
+
+For the canonical long-form context, please use: [llms-full.txt](https://feldroy.github.io/air/llms-full.txt), it
+follows the [llmstxt](https://llmstxt.org/#format) format.
 
 ## A Simple Example
 
@@ -105,12 +121,15 @@ fastapi dev
 ```
 
 If you have fastapi installed globally, you may see an error:
+
 ```sh
 To use the fastapi command, please install "fastapi[standard]":
 
 	pip install "fastapi[standard]"
 ```
+
 In that case, run the app with:
+
 ```sh
 uv run fastapi dev
 ```
@@ -200,8 +219,11 @@ Don't forget the Jinja template!
 
 ## Sponsors
 
-Maintenance of this project is made possible by all the [contributors](https://github.com/feldroy/air/graphs/contributors) and [sponsors](https://github.com/sponsors/feldroy).
-If you would like to support this project and have your avatar or company logo appear below, please [sponsor us](https://github.com/sponsors/feldroy). 💖💨
+Maintenance of this project is made possible by all
+the [contributors](https://github.com/feldroy/air/graphs/contributors)
+and [sponsors](https://github.com/sponsors/feldroy).
+If you would like to support this project and have your avatar or company logo appear below,
+please [sponsor us](https://github.com/sponsors/feldroy). 💖💨
 
 <!-- SPONSORS -->
 
@@ -212,7 +234,8 @@ Your [support](https://github.com/sponsors/feldroy) is much appreciated.
 
 ## Contributing
 
-For guidance on setting up a development environment and how to make a contribution to Air, see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).
+For guidance on setting up a development environment and how to make a contribution to Air,
+see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).
 
 ## Contributors
 
