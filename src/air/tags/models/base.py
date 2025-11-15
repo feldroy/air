@@ -16,13 +16,14 @@ from typing_extensions import Doc
 from rich.pretty import pretty_repr
 from textwrap import indent as tw_indent
 
+from ..constants import TOP_LEVEL_HTML_TAGS
 from ..utils import (
     SafeStr,
     StrPath,
     _fmt_value, clean_html_attr_key,
     compact_format_html,
     display_pretty_html_in_the_browser,
-    extract_html_comment, migrate_html_key_to_air_tag, open_html_in_the_browser,
+    extract_html_comment, has_all_top_level_tags, migrate_html_key_to_air_tag, open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
 )
@@ -469,18 +470,18 @@ class BaseTag:
             raise TypeError(f"{cls.__name__}.from_html() expects a string argument.")
         if not nh3.is_html(html_source):
             raise ValueError(f"{cls.__name__}.from_html() expects a valid HTML string.")
+        if has_all_top_level_tags(html_source):
+            raise ValueError(f"{cls.__name__}.from_html() expects am HTML string with all top level tags.")
         parser = LexborHTMLParser(html_source)
-        return cls._from_html(parser.root, html_source)
+        return cls._from_html(parser.root)
 
     @classmethod
-    def _from_html(cls, node: LexborNode, html_source: str) -> BaseTag:
+    def _from_html(cls, node: LexborNode) -> BaseTag:
         children: tuple[BaseTag, ...] = tuple(
-            filter(
-                None, [
-                    cls._from_child_html(child, html_source)
-                    for child in node.iter(include_text=True)
-                ]
-            )
+            [
+                cls._from_child_html(child)
+                for child in node.iter(include_text=True)
+            ]
         )
         attributes: TagAttributesType = {
             migrate_html_key_to_air_tag(key): value
@@ -490,16 +491,14 @@ class BaseTag:
         return air_tag
 
     @classmethod
-    def _from_child_html(cls, node: LexborNode, html_source: str) -> BaseTag | str | None:
-        if node.tag not in html_source:
-            return None
+    def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
         if node.tag.endswith("-text"):
             return node.text_content
         if node.tag.endswith("-document"):
             raise NotImplementedError
         if node.tag.endswith("-comment"):
             return cls._create_tag("Comment", extract_html_comment(node.html))
-        return cls._from_html(node, html_source)
+        return cls._from_html(node)
 
     @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:

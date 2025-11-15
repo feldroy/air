@@ -28,10 +28,18 @@ from air.exceptions import BrowserOpenError
 from air.tags.constants import (
     BLOB_URL_PRESET, DATA_URL_MAX, DEFAULT_THEME, FORMAT_HTML_ENCODING, HTML_DOCTYPE, LOCALS_CLEANUP_EXCLUDED_KEYS,
     PANEL_BORDER_STYLE, PANEL_TITLE,
-    PANEL_TITLE_STYLE, SYNTAX_LEXER
+    PANEL_TITLE_STYLE, SYNTAX_LEXER, TOP_LEVEL_HTML_TAGS
 )
 
 type StrPath = PathLike | Path | str
+
+
+def has_all_top_level_tags(html_source: str) -> bool:
+    for top_level_tag in TOP_LEVEL_HTML_TAGS:
+        if top_level_tag not in html_source:
+            return False
+    return True
+
 
 def clean_html_attr_key(key: str) -> str:
     """Normalize attribute names to align with HTML conventions.
