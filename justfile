@@ -28,7 +28,7 @@ VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
 PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
-
+UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -92,7 +92,14 @@ run-with-relative-paths +CMD:
 [private]
 [group('uv')]
 @uv-run +ARGS:
-    just run-with-relative-paths uv run --all-extras --all-packages --refresh {{ ARGS }}
+    just run-with-relative-paths uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
+
+# Run ipython using uv.
+[doc]
+[private]
+[group('uv')]
+ipython:
+    uv run {{ UV_CLI_FLAGS }} -- ipython
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
@@ -107,12 +114,12 @@ run-with-relative-paths +CMD:
 # Upgrade all dependencies using uv (uv don't support pyproject.toml update yet)
 [group('uv')]
 upgrade-dependencies:
-    uv sync --all-extras --all-packages --refresh -U
+    uv sync -U {{ UV_CLI_FLAGS }}
 
-# Sync all dependencies using uv
+# Sync all dependencies using uv.
 [group('uv')]
 sync:
-    uv sync --frozen --extra all
+    uv sync --frozen {{ UV_CLI_FLAGS }}
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
