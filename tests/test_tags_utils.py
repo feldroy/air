@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+
+import air.tags.constants
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 import air.tags.utils as utils
@@ -287,7 +289,7 @@ def test_open_html_blob_in_the_browser_uses_data_url(monkeypatch: pytest.MonkeyP
 
     utils.open_html_blob_in_the_browser("<p>hi</p>")
 
-    assert opened[0].startswith(utils.BLOB_URL_PRESET)
+    assert opened[0].startswith(air.tags.constants.BLOB_URL_PRESET)
 
 
 def test_open_html_blob_in_the_browser_limits_size(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -297,7 +299,7 @@ def test_open_html_blob_in_the_browser_limits_size(monkeypatch: pytest.MonkeyPat
     monkeypatch.setattr(utils, "_open_new_tab", noop)
 
     with pytest.raises(utils.URLError):
-        utils.open_html_blob_in_the_browser("x", data_url_max=len(utils.BLOB_URL_PRESET) + 1)
+        utils.open_html_blob_in_the_browser("x", data_url_max=len(air.tags.constants.BLOB_URL_PRESET) + 1)
 
 
 def test_open_html_in_the_browser_writes_temp_file(monkeypatch: pytest.MonkeyPatch) -> None:

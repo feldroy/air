@@ -6,10 +6,11 @@ from lxml.etree import ParserError
 
 # Adjust this import path if needed for your project layout.
 from air.tags.utils import (
-    HTML_DOCTYPE,
     format_html,
     pretty_format_html,
 )
+from air.tags.constants import HTML_DOCTYPE
+
 
 # -----------------------
 # Helpers for expectations

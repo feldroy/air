@@ -2,7 +2,8 @@
 
 from typing import Literal, override
 
-from ..utils import HTML_DOCTYPE, locals_cleanup
+from ..utils import locals_cleanup
+from ..constants import HTML_DOCTYPE
 from .base import AttributeType, BaseTag, Renderable
 
 

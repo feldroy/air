@@ -9,7 +9,7 @@ import webbrowser
 from io import StringIO
 from os import PathLike
 from pathlib import Path
-from typing import Any, Final
+from typing import Any
 from urllib.error import URLError
 
 import minify_html
@@ -25,22 +25,13 @@ from rich.syntax import Syntax
 from rich.text import Text
 
 from air.exceptions import BrowserOpenError
+from air.tags.constants import (
+    BLOB_URL_PRESET, DATA_URL_MAX, DEFAULT_THEME, FORMAT_HTML_ENCODING, HTML_DOCTYPE, LOCALS_CLEANUP_EXCLUDED_KEYS,
+    PANEL_BORDER_STYLE, PANEL_TITLE,
+    PANEL_TITLE_STYLE, SYNTAX_LEXER
+)
 
 type StrPath = PathLike | Path | str
-
-EXTRA_FEATURE_PRETTY_ERROR_MESSAGE: Final = (
-    "Extra feature 'pretty' is not installed. Install with: `uv add air[pretty]`"
-)
-FORMAT_HTML_ENCODING: Final = "unicode"
-HTML_DOCTYPE: Final = "<!doctype html>"
-DEFAULT_THEME: Final = "dracula"
-PANEL_TITLE: Final = "Air → HTML"
-PANEL_TITLE_STYLE: Final = "italic bold"
-PANEL_BORDER_STYLE: Final = "bright_magenta"
-SYNTAX_LEXER: Final = "html"
-DATA_URL_MAX: Final[int] = 32_000
-BLOB_URL_PRESET = "data:text/html;charset=utf-8;base64,"
-
 
 def clean_html_attr_key(key: str) -> str:
     """Normalize attribute names to align with HTML conventions.
@@ -89,6 +80,7 @@ def extract_html_comment(text: str) -> str:
         return inner.strip()
     raise ValueError("Input is not a valid HTML comment")
 
+
 def _fmt_value(value: Any) -> str:
     if isinstance(value, str):
         # double quotes for strings, with basic escaping
@@ -96,6 +88,7 @@ def _fmt_value(value: Any) -> str:
         return f'"{escaped}"'
     # nicer repr (meaning: "string form") for other values
     return pretty_repr(value)
+
 
 def compact_format_html(source: str) -> str:
     """Minify HTML markup with safe defaults.
@@ -354,7 +347,7 @@ def _get_pretty_html_console(
 
 def locals_cleanup(
     data: dict[str, Any],
-    _skip: frozenset[str] = frozenset({"self", "children", "text_child", "args", "kwargs"}),
+    _skip: frozenset[str] = LOCALS_CLEANUP_EXCLUDED_KEYS,
 ) -> dict[str, Any]:
     """Filter local variables for keyword argument construction.
 
