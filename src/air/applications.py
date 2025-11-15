@@ -6,7 +6,6 @@ import inspect
 from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
-from types import FunctionType
 from typing import Annotated, Any, Literal, TypeVar
 from warnings import deprecated
 
@@ -22,14 +21,13 @@ from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
-from .routing import AirRoute, RouteCallable
+from .routing import AirRoute, RouteCallable, RouterMixin
 from .types import MaybeAwaitable
-from .utils import compute_page_path
 
 AppType = TypeVar("AppType", bound="Air")
 
 
-class Air(FastAPI):
+class Air(FastAPI, RouterMixin):
     """FastAPI wrapper class with AirResponse as the default response class.
 
     Args:
@@ -362,37 +360,6 @@ class Air(FastAPI):
         )
 
         self.router.route_class = AirRoute
-
-    def page(self, func: FunctionType) -> RouteCallable:
-        """Decorator that creates a GET route using the function name as the path.
-
-        If the name of the function is "index", then the route is "/".
-
-        Example:
-
-            import air
-
-            app = air.Air()
-
-
-            @app.page
-            def index():  # routes is "/"
-                return air.H1("I am the home page")
-
-
-            @app.page
-            def data():  # route is "/data"
-                return air.H1("I am the data page")
-
-
-            @app.page
-            def about_us():  # route is "/about-us"
-                return air.H1("I am the about page")
-        """
-        page_path = compute_page_path(func.__name__, separator=self.path_separator)
-
-        # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(page_path)(func)
 
     def get(
         self,
@@ -2293,34 +2260,3 @@ class Air(FastAPI):
             return decorated
 
         return decorator
-
-    def _url_helper(self, name: str) -> Callable[..., str]:
-        """Helper function to generate URLs for route operations.
-
-        Creates a callable that generates URLs for a specific route by wrapping
-        Starlette's `url_path_for` method.
-
-        Args:
-            name: The route operation name (usually the function name or custom name).
-
-        Returns:
-            A function that accepts **params (path parameters) and returns the
-            generated URL string.
-
-        Raises:
-            NoMatchFound: If the route name doesn't exist or if the provided
-                parameters don't match the route's path parameters.
-
-        Example:
-            @app.get("/users/{user_id}")
-            def get_user(user_id: int):
-                return air.H1(f"User {user_id}")
-
-            # The .url() method is created by this helper
-            url = get_user.url(user_id=123)  # Returns: "/users/123"
-        """
-
-        def helper_function(**params: Any) -> str:
-            return self.url_path_for(name, **params)
-
-        return helper_function

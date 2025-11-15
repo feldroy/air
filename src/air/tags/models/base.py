@@ -16,6 +16,7 @@ from ..utils import (
     SafeStr,
     StrPath,
     clean_html_attr_key,
+    compact_format_html,
     display_pretty_html_in_the_browser,
     open_html_in_the_browser,
     pretty_format_html,
@@ -172,7 +173,7 @@ class BaseTag:
         return html.escape(text)
 
     def render(self) -> str:
-        """Render the tag into HTML.
+        """Render the HTML representation of the tag.
 
         Returns:
             The rendered HTML string.
@@ -194,7 +195,7 @@ class BaseTag:
         with_head: bool = False,
         with_doctype: bool = False,
     ) -> str:
-        """Render pretty-formatted HTML without escaping.
+        """Render the prettified-formatted HTML representation of the tag.
 
         Args:
             with_body: Whether to wrap the HTML inside a `<body>` element.
@@ -205,6 +206,15 @@ class BaseTag:
             The pretty-formatted HTML string.
         """
         return pretty_format_html(self._render(), with_body=with_body, with_head=with_head, with_doctype=with_doctype)
+
+    def compact_render(self) -> str:
+        """Render the compact-formatted HTML representation of the tag.
+
+        Returns:
+            A minimized HTML string produced by `minify_html.minify`.
+        """
+
+        return compact_format_html(self._render())
 
     def pretty_print(self) -> None:
         """Display pretty-formatted HTML in the console with syntax highlighting."""
@@ -258,7 +268,11 @@ class BaseTag:
         return f"<{self.name}{self.attrs}>{self.children}</{self.name}>"
 
     def __str__(self) -> str:
-        """Return the rendered HTML string."""
+        """Render the HTML representation of the tag.
+
+        Returns:
+            The rendered HTML string.
+        """
         return self.render()
 
     def __repr__(self) -> str:
@@ -312,7 +326,7 @@ class BaseTag:
             TagKeys.CHILDREN: tuple(self._to_child_dict()),
         }
 
-    def _to_child_dict(self) -> list[TagDictType]:
+    def _to_child_dict(self) -> list[TagDictType | Renderable]:
         """Convert child nodes into serializable objects.
 
         Returns:
@@ -356,7 +370,7 @@ class BaseTag:
         return tag
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagDictType) -> list[Self]:
+    def _from_child_dict(cls, children_dict: TagDictType) -> list[Self | Renderable]:
         """Restore serialized children into tag instances or raw values.
 
         Args:

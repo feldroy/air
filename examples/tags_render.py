@@ -34,6 +34,15 @@ if __name__ == "__main__":
     # Print the prettified-formatted rendered HTML representation of the tag.
     if False:
         print(SMALL_HTML_SAMPLE.pretty_render())
+    # Print the compact-formatted rendered HTML representation of the tag.
+    if False:
+        print(SMALL_HTML_SAMPLE.compact_render())
+    # Compare the sizes of different render formats for the HTML representation of the tag.
+    if False:
+        compact_size = len(HTML_SAMPLE.compact_render())
+        regular_size = len(HTML_SAMPLE.render())
+        pretty_size = len(HTML_SAMPLE.pretty_render())
+        print(f"{compact_size=}, {regular_size=}, {pretty_size=}")
     # Open the rendered HTML representation of the tag in a browser tab.
     if False:
         HTML_SAMPLE.render_in_the_browser()

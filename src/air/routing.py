@@ -70,7 +70,81 @@ class AirRoute(APIRoute):
         return custom_route_handler
 
 
-class AirRouter(APIRouter):
+class RouterMixin:
+    path_separator: Literal["/", "-"]
+
+    def get(self, *args: Any, **kwargs: Any) -> Any:
+        """Stub for type checking - implemented by subclasses."""
+        raise NotImplementedError
+
+    def url_path_for(self, name: str, **params: Any) -> str:
+        """Stub for type checking - implemented by subclasses."""
+        raise NotImplementedError
+
+    def page(self, func: FunctionType) -> RouteCallable:
+        """Decorator that creates a GET route using the function name as the path.
+
+        If the name of the function is "index", then the route is "/".
+
+        Example:
+
+            import air
+
+            app = air.Air()
+            router = air.AirRouter()
+
+            @app.page
+            def index(): # route is "/"
+                return H1("I am the home page")
+
+            @router.page
+            def data(): # route is "/data"
+                return H1("I am the home page")
+
+            @router.page
+            def about_us(): # route is "/about-us"
+                return H1("I am the about page")
+
+            app.include_router(router)
+        """
+        page_path = compute_page_path(func.__name__, separator=self.path_separator)
+
+        # Pin the route's response_class for belt-and-suspenders robustness
+        return self.get(page_path)(func)
+
+    def _url_helper(self, name: str) -> Callable[..., str]:
+        """Helper function to generate URLs for route operations.
+
+        Creates a callable that generates URLs for a specific route by wrapping
+        Starlette's `url_path_for` method.
+
+        Args:
+            name: The route operation name (usually the function name or custom name).
+
+        Returns:
+            A function that accepts **params (path parameters) and returns the
+            generated URL string.
+
+        Raises:
+            NoMatchFound: If the route name doesn't exist or if the provided
+                parameters don't match the route's path parameters.
+
+        Example:
+            @app.get("/users/{user_id}")
+            def get_user(user_id: int):
+                return air.H1(f"User {user_id}")
+
+            # The .url() method is created by this helper
+            url = get_user.url(user_id=123)  # Returns: "/users/123"
+        """
+
+        def helper_function(**params: Any) -> str:
+            return self.url_path_for(name, **params)
+
+        return helper_function
+
+
+class AirRouter(APIRouter, RouterMixin):
     """
     `AirRouter` class, used to group *path operations*, for example to structure
     an app in multiple files. It would then be included in the `App` app, or
@@ -294,7 +368,7 @@ class AirRouter(APIRouter):
             ),
         ] = True,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -335,37 +409,6 @@ class AirRouter(APIRouter):
         if prefix:
             assert prefix.startswith("/"), "A path prefix must start with '/'"
             assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
-
-    def page(self, func: FunctionType) -> RouteCallable:
-        """Decorator that creates a GET route using the function name as the path.
-
-        If the name of the function is "index", then the route is "/".
-
-        Example:
-
-            import air
-
-            app = air.Air()
-            router = air.AirRouter()
-
-            @router.page
-            def index(): # routes is "/"
-                return H1("I am the home page")
-
-            @router.page
-            def data(): # route is "/data"
-                return H1("I am the home page")
-
-            @router.page
-            def about_us(): # routes is "/about-us"
-                return H1("I am the about page")
-
-            app.include_router(router)
-        """
-        page_path = compute_page_path(func.__name__, separator=self.path_separator)
-
-        # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(page_path)(func)
 
     def get(
         self,
@@ -684,7 +727,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -1079,7 +1122,7 @@ class AirRouter(APIRouter):
             ),
         ] = None,
         generate_unique_id_function: Annotated[
-            Callable[[AirRoute], str],
+            Callable[[APIRoute], str],
             Doc(
                 """
                 Customize the function used to generate unique IDs for the *path
@@ -2269,34 +2312,3 @@ class AirRouter(APIRouter):
             return decorated
 
         return decorator
-
-    def _url_helper(self, name: str) -> Callable[..., str]:
-        """Helper function to generate URLs for route operations.
-
-        Creates a callable that generates URLs for a specific route by wrapping
-        Starlette's `url_path_for` method.
-
-        Args:
-            name: The route operation name (usually the function name or custom name).
-
-        Returns:
-            A function that accepts **params (path parameters) and returns the
-            generated URL string.
-
-        Raises:
-            NoMatchFound: If the route name doesn't exist or if the provided
-                parameters don't match the route's path parameters.
-
-        Example:
-            @app.get("/users/{user_id}")
-            def get_user(user_id: int):
-                return air.H1(f"User {user_id}")
-
-            # The .url() method is created by this helper
-            url = get_user.url(user_id=123)  # Returns: "/users/123"
-        """
-
-        def helper_function(**params: Any) -> str:
-            return self.url_path_for(name, **params)
-
-        return helper_function

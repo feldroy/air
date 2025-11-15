@@ -9,15 +9,23 @@ import webbrowser
 from io import StringIO
 from os import PathLike
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Final
+from typing import Any, Final
 from urllib.error import URLError
+
+import minify_html
+from lxml import (
+    etree,  # ty: ignore[unresolved-import]
+    html as l_html,
+)
+from rich import box
+from rich.console import Console
+from rich.panel import Panel
+from rich.syntax import Syntax
+from rich.text import Text
 
 from air.exceptions import BrowserOpenError
 
 type StrPath = PathLike | Path | str
-
-if TYPE_CHECKING:
-    from rich.console import Console
 
 EXTRA_FEATURE_PRETTY_ERROR_MESSAGE: Final = (
     "Extra feature 'pretty' is not installed. Install with: `uv add air[pretty]`"
@@ -44,9 +52,44 @@ def clean_html_attr_key(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as"}.get(key, key)
+    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"}.get(key, key)
     # Remove leading underscores and replace underscores with dashes
     return key.lstrip("_").replace("_", "-")
+
+
+def compact_format_html(source: str) -> str:
+    """Minify HTML markup with safe defaults.
+
+    Args:
+        source: Raw HTML markup to compress.
+
+    Returns:
+        Space-efficient HTML suitable for inline embedding or network transfer.
+
+    Note:
+        Configuration opts into standards-safe options from ``minify_html`` to
+        retain required attribute spacing while stripping comments, optional
+        closing tags, and excess whitespace, and to minify inline CSS/JS.
+    """
+    # noinspection PyArgumentEqualDefault
+    return minify_html.minify(
+        source,  # your HTML string
+        allow_noncompliant_unquoted_attribute_values=False,  # keep spec-legal quoting
+        allow_optimal_entities=False,  # avoid entity tweaks that fail validation
+        allow_removing_spaces_between_attributes=False,  # keep the required inter-attribute space
+        keep_closing_tags=False,  # drop optional closing tags
+        keep_comments=False,  # remove comments
+        keep_html_and_head_opening_tags=False,  # drop optional <html>/<head> openings
+        keep_input_type_text_attr=False,  # drop default type="text"
+        keep_ssi_comments=False,  # remove SSI comments
+        minify_css=True,  # minify <style>/style=""
+        minify_doctype=False,  # don't over-minify DOCTYPE (can be non-spec)
+        minify_js=True,  # minify inline <script>
+        preserve_brace_template_syntax=False,  # assume real HTML, not templates
+        preserve_chevron_percent_template_syntax=False,  # assume real HTML, not templates
+        remove_bangs=False,  # keep “!” so declarations stay valid
+        remove_processing_instructions=True,  # strip stray PIs (<?…?>)
+    )
 
 
 def pretty_format_html(
@@ -94,26 +137,12 @@ def format_html(
 
     Returns:
         The serialized HTML produced by `lxml.html.tostring`.
-
-    Raises:
-        ModuleNotFoundError: If the optional `lxml` dependency is unavailable.
     """
-    try:
-        from lxml import (
-            etree,  # ty: ignore[unresolved-import]
-            html as l_html,
-        )
-    except ModuleNotFoundError:
-        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
-    else:
-        if with_body:
-            source = l_html.document_fromstring(source, ensure_head_body=with_head)
-        else:
-            source = l_html.fromstring(source)
-        if pretty:
-            etree.indent(source)  # pretty indentation
-        doctype = HTML_DOCTYPE if with_doctype else None
-        return l_html.tostring(source, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
+    source = l_html.document_fromstring(source, ensure_head_body=with_head) if with_body else l_html.fromstring(source)
+    if pretty:
+        etree.indent(source)  # pretty indentation
+    doctype = HTML_DOCTYPE if with_doctype else None
+    return l_html.tostring(source, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
 
 
 def open_local_file_in_the_browser(path: StrPath) -> None:
@@ -268,31 +297,19 @@ def _get_pretty_html_console(
 
     Returns:
         A configured Rich console instance.
-
-    Raises:
-        ModuleNotFoundError: The optional Rich dependency is unavailable.
     """
-    try:
-        from rich import box
-        from rich.console import Console
-        from rich.panel import Panel
-        from rich.syntax import Syntax
-        from rich.text import Text
-    except ModuleNotFoundError:
-        raise ModuleNotFoundError(EXTRA_FEATURE_PRETTY_ERROR_MESSAGE) from None
-    else:
-        syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
-        title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
-        panel = Panel.fit(
-            syntax,
-            box=box.HEAVY,
-            border_style=PANEL_BORDER_STYLE,
-            title=title,
-        )
-        buffer = StringIO() if record else None
-        console = Console(record=record, file=buffer)
-        console.print(panel, soft_wrap=False)
-        return console
+    syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
+    title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
+    panel = Panel.fit(
+        syntax,
+        box=box.HEAVY,
+        border_style=PANEL_BORDER_STYLE,
+        title=title,
+    )
+    buffer = StringIO() if record else None
+    console = Console(record=record, file=buffer)
+    console.print(panel, soft_wrap=False)
+    return console
 
 
 def locals_cleanup(

@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-import builtins
 import sys
 import types
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 import pytest
+from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 import air.tags.utils as utils
 from air.exceptions import BrowserOpenError
@@ -165,40 +165,54 @@ def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) 
     assert result == "<div>text</div>"
 
 
+def test_compact_format_html_minifies() -> None:
+    assert len(utils.compact_format_html(SMALL_HTML_SAMPLE.render())) == 754
+    assert len(utils.compact_format_html(HTML_SAMPLE.render())) == 7530
+
+
+def test_compact_format_html_minifies_with_safe_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, Any] = {}
+
+    def fake_minify(source: str, **options: Any) -> str:
+        captured["source"] = source
+        captured["options"] = options
+        return "minified"
+
+    monkeypatch.setattr(utils.minify_html, "minify", fake_minify)
+
+    result = utils.compact_format_html("<p> spaced </p>")
+
+    assert result == "minified"
+    assert captured["source"] == "<p> spaced </p>"
+    assert captured["options"] == {
+        "allow_noncompliant_unquoted_attribute_values": False,
+        "allow_optimal_entities": False,
+        "allow_removing_spaces_between_attributes": False,
+        "keep_closing_tags": False,
+        "keep_comments": False,
+        "keep_html_and_head_opening_tags": False,
+        "keep_input_type_text_attr": False,
+        "keep_ssi_comments": False,
+        "minify_css": True,
+        "minify_doctype": False,
+        "minify_js": True,
+        "preserve_brace_template_syntax": False,
+        "preserve_chevron_percent_template_syntax": False,
+        "remove_bangs": False,
+        "remove_processing_instructions": True,
+    }
+
+
 def test_format_html_uses_lxml_document_path(stub_lxml: dict[str, Any]) -> None:
     result = utils.format_html("<p/>", with_body=True, with_head=True, with_doctype=True, pretty=True)
 
-    assert result == "serialized::doc::<p/>::True::unicode::True::<!doctype html>"
-    assert stub_lxml["document"].indented is True
+    assert result == "<!doctype html>\n<html>\n  <head></head>\n  <body>\n    <p></p>\n  </body>\n</html>\n"
 
 
 def test_format_html_uses_lxml_fragment_path(stub_lxml: dict[str, Any]) -> None:
     result = utils.format_html("<span/>", with_body=False, pretty=False)
 
-    assert result == "serialized::node::<span/>::unicode::False::None"
-    assert stub_lxml["node"].indented is False
-
-
-def test_format_html_requires_lxml(monkeypatch: pytest.MonkeyPatch) -> None:
-    original_import = builtins.__import__
-
-    def fake_import(
-        name: str,
-        globals_: dict[str, Any] | None = None,
-        locals_: dict[str, Any] | None = None,
-        fromlist: tuple[str, ...] = (),
-        level: int = 0,
-    ) -> Any:
-        if name.startswith("lxml"):
-            raise ModuleNotFoundError
-        return original_import(name, globals_, locals_, fromlist, level)
-
-    monkeypatch.setattr(builtins, "__import__", fake_import)
-
-    with pytest.raises(ModuleNotFoundError) as exc:
-        utils.format_html("<p/>")
-
-    assert "Extra feature 'pretty'" in str(exc.value)
+    assert result == "<span></span>"
 
 
 def test_open_local_file_in_the_browser_accepts_files(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -376,37 +390,6 @@ def test_pretty_print_html_delegates_to_console(monkeypatch: pytest.MonkeyPatch)
     utils.pretty_print_html("<html/>", theme="default", record=True)
 
     assert captured == [{"source": "<html/>", "theme": "default", "record": True}]
-
-
-def test_get_pretty_html_console_builds_panel(stub_rich: dict[str, Any]) -> None:
-    console = utils._get_pretty_html_console("<p/>", theme="monokai", record=True)
-
-    assert isinstance(console, stub_rich["Console"])
-    assert console.record is True
-    printed = cast(list[dict[str, Any]], stub_rich["printed"])
-    assert printed
-    panel_info = printed[0]
-    assert panel_info["soft_wrap"] is False
-
-
-def test_get_pretty_html_console_requires_rich(monkeypatch: pytest.MonkeyPatch) -> None:
-    original_import = builtins.__import__
-
-    def fake_import(
-        name: str,
-        globals_: dict[str, Any] | None = None,
-        locals_: dict[str, Any] | None = None,
-        fromlist: tuple[str, ...] = (),
-        level: int = 0,
-    ) -> Any:
-        if name.startswith("rich"):
-            raise ModuleNotFoundError
-        return original_import(name, globals_, locals_, fromlist, level)
-
-    monkeypatch.setattr(builtins, "__import__", fake_import)
-
-    with pytest.raises(ModuleNotFoundError):
-        utils._get_pretty_html_console("<p/>", theme="monokai", record=False)
 
 
 def test_locals_cleanup_filters_values() -> None:

@@ -1,15 +1,11 @@
 # tests/test_html_utils.py
 from __future__ import annotations
 
-import builtins
-from collections.abc import Callable
-
 import pytest
 from lxml.etree import ParserError
 
 # Adjust this import path if needed for your project layout.
 from air.tags.utils import (
-    EXTRA_FEATURE_PRETTY_ERROR_MESSAGE,
     HTML_DOCTYPE,
     format_html,
     pretty_format_html,
@@ -122,38 +118,3 @@ def test_pretty_format_html_empty_raises_parser_error() -> None:
     with pytest.raises(ParserError) as exc:
         _ = pretty_format_html("")  # no defaults passed
     assert exc.type.__name__ == "ParserError"
-
-
-# ------------------------------------------
-# Edge case: missing lxml -> helpful message
-# ------------------------------------------
-
-
-def test_format_html_missing_lxml_message(monkeypatch: pytest.MonkeyPatch) -> None:
-    real_import: Callable[..., object] = builtins.__import__
-
-    def fake_import(name: str, *args: object, **kwargs: object) -> object:
-        if name == "lxml" or name.startswith("lxml."):
-            msg = "fake-missing-lxml"
-            raise ModuleNotFoundError(msg)
-        return real_import(name, *args, **kwargs)
-
-    monkeypatch.setattr(builtins, "__import__", fake_import)
-    with pytest.raises(ModuleNotFoundError) as exc:
-        _ = format_html("<p>Hi</p>")  # no defaults passed
-    assert str(exc.value) == EXTRA_FEATURE_PRETTY_ERROR_MESSAGE
-
-
-def test_pretty_format_html_missing_lxml_message(monkeypatch: pytest.MonkeyPatch) -> None:
-    real_import: Callable[..., object] = builtins.__import__
-
-    def fake_import(name: str, *args: object, **kwargs: object) -> object:
-        if name == "lxml" or name.startswith("lxml."):
-            msg = "fake-missing-lxml"
-            raise ModuleNotFoundError(msg)
-        return real_import(name, *args, **kwargs)
-
-    monkeypatch.setattr(builtins, "__import__", fake_import)
-    with pytest.raises(ModuleNotFoundError) as exc:
-        _ = pretty_format_html("<p>Hi</p>")  # no defaults passed
-    assert str(exc.value) == EXTRA_FEATURE_PRETTY_ERROR_MESSAGE

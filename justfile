@@ -87,16 +87,27 @@ run-with-relative-paths +CMD:
 @run-py-script TARGET=".":
     just run --script "{{ TARGET }}"
 
-# uv run helper
+# Run a command or script using uv.
 [doc]
+[private]
+[group('uv')]
+@uv-run +ARGS:
+    just run-with-relative-paths uv run --all-extras --all-packages --refresh {{ ARGS }}
+
+# Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
 @run +ARGS:
-    just run-with-relative-paths uv run -q --extra all --frozen {{ ARGS }}
+    just uv-run -q --frozen {{ ARGS }}
+
+# Run a command or script using uv, in an isolated virtual environment.
+[group('uv')]
+@run-isolated +ARGS:
+    just uv-run --isolated {{ ARGS }}
 
 # Upgrade all dependencies using uv (uv don't support pyproject.toml update yet)
 [group('uv')]
 upgrade-dependencies:
-    uv sync --extra all -U
+    uv sync --all-extras --all-packages --refresh -U
 
 # Sync all dependencies using uv
 [group('uv')]
@@ -190,15 +201,21 @@ qa-plus: qa test
 test:
     just run -- pytest
 
-# Run all the tests for the lowest compatible version of each package.
+# Run all the tests, for CI.
+[private]
 [group('test')]
-test-lowest-resolution:
-    just run --resolution=lowest -- pytest
+test-ci:
+    just uv-run --no-dev --group test -- pytest
+
+# Run tests with lowest compatible versions for direct dependencies and highest compatible versions for indirect ones.
+[group('test')]
+test-lowest-direct-resolution:
+    just run-isolated --no-dev --group test --resolution=lowest-direct -- pytest
 
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
-    just run --python={{ PY_VERSION }} --isolated -- pytest
+    just run-isolated --python={{ PY_VERSION }} -- pytest
 
 # Run all the tests for all the supported Python versions
 [group('test')]
@@ -289,13 +306,13 @@ coverage-md: coverage-xml
 
 # Serve docs locally
 [group('docs')]
-doc:
-    just run -- mkdocs serve -a localhost:3000 --livereload
+doc-serve:
+    just run -- zensical serve -a localhost:3000 --open
 
 # Build docs
 [group('docs')]
 doc-build:
-    just run -- mkdocs gh-deploy --force
+    just run -- zensical build --clean
 
 # endregion Docs
 

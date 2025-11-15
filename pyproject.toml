@@ -1,11 +1,14 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.40.0"
+version = "0.41.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
+]
+maintainers = [
+    { name = "pygarap", email = "pygarap@gmail.com" }
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -16,29 +19,78 @@ urls.Issues = "https://github.com/feldroy/air/issues"
 urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
 
 classifiers = [
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python",
-    "Topic :: Internet",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Software Development :: Libraries",
-    "Topic :: Software Development",
-    "Typing :: Typed",
     "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "Framework :: FastAPI",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: OS Independent",
+    "Operating System :: Unix",
+    "Programming Language :: JavaScript",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP :: WSGI",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
+]
+
+keywords = [
+    "air",
+    "air-tags",
+    "api",
+    "async",
+    "backend",
+    "css",
+    "fastapi",
+    "fasthtml",
+    "framework",
+    "frontend",
+    "fullstack",
+    "html",
+    "javascript",
+    "jinja",
+    "jinja2",
+    "openapi",
+    "pydantic",
+    "python",
+    "rest",
+    "restapi",
+    "restful",
+    "server",
+    "templates",
+    "uvicorn",
+    "web",
 ]
 
 dependencies = [
     "fastapi>=0.119.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
+    "minify-html>=0.18.1",
     "python-multipart>=0.0.20",
+    "lxml>=6.0.1",
+    "rich>=14.2.0",
 ]
 # endregion project
 
@@ -49,29 +101,6 @@ dependencies = [
 # so *users* can do: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
-    "fastapi[standard]>=0.119.1",
-]
-# Add a "pretty" extra for tree-formatted HTML support
-pretty = [
-    "lxml>=6.0.1",
-    "rich>=14.2.0",
-]
-# Used for interacting with sqlmodel and sqlalchemy
-sqlmodel = [
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
-    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
-]
-# Used for authentication
-auth = [
-    "authlib>=1.6.3", # OAuth clients
-]
-# All optional packages (combined list of every extra above)
-all = [
-    "lxml>=6.0.1",
-    "rich>=14.2.0",
-    "greenlet>=3.2.4",
-    "sqlmodel>=0.0.24",
-    "authlib>=1.6.3",
     "fastapi[standard]>=0.119.1",
 ]
 
@@ -100,9 +129,7 @@ lint = [
     "typos>=1.38.1",
 ]
 test = [
-    "aiosqlite>=0.21.0",
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
     "httpx>=0.28.1", # For the test client
     "pytest>=8.4.0", # The pytest framework
     "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
@@ -113,12 +140,10 @@ test = [
     "pytest-benchmark>=5.1.0",
     "pytest-env>=1.1.5", # for setting env vars in tests
     "pyinstrument>=5.1.1",
-    "sqlmodel>=0.0.24",
     "full-match>=0.0.3",
 ]
 docs = [
-    "click==8.2.1", # Necessary to allow live reload to work
-    "greenlet>=3.2.4",
+    "click==8.3.0", # Necessary to allow live reload to work
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
     "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
@@ -128,7 +153,7 @@ docs = [
     "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
-    "sqlmodel>=0.0.24",
+    "zensical>=0.0.5",
 ]
 # endregion dependencies
 
@@ -348,7 +373,7 @@ ignore = [
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
 ]
-"src_examples/dependencies___is_htmx_request.py" = ["FBT001"]
+"examples/src/dependencies___is_htmx_request.py" = ["FBT001"]
 "scripts/copy_src_example_to_callable.py" = ["C901"]
 "src/air/tags/utils.py" = ["PLC0415"]
 "src/air/tags/models/base.py" = ["PLC0415"]
@@ -436,7 +461,7 @@ possibly-missing-implicit-call = "error" # https://docs.astral.sh/ty/reference/r
 possibly-missing-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-missing-import
 redundant-cast = "error"                 # https://docs.astral.sh/ty/reference/rules/#redundant-cast
 undefined-reveal = "error"               # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
-unknown-rule = "error"                   # https://docs.astral.sh/ty/reference/rules/#unknown-rule
+ignore-comment-unknown-rule = "error"    # https://docs.astral.sh/ty/reference/rules/#ignore-comment-unknown-rule
 unresolved-global = "error"              # https://docs.astral.sh/ty/reference/rules/#unresolved-global
 unsupported-base = "error"               # https://docs.astral.sh/ty/reference/rules/#unsupported-base
 useless-overload-body = "error"          # https://docs.astral.sh/ty/reference/rules/#useless-overload-body
@@ -503,13 +528,13 @@ missing-attribute = false
 # Keep imports simple (src/ layout)
 pythonpath = ["src"]
 # Only look here for tests
-testpaths = ["tests", "src_examples"]
+testpaths = ["tests", "examples/src"]
 # Fail on most warnings
 filterwarnings = [
     # TODO: restore failing of all warnings after
     #       air.ext.sqlmodel is extracted
     # "error", # equals: -W error
-    "ignore::DeprecationWarning:air\\.ext\\.sqlmodel"
+    "ignore::DeprecationWarning:air\\.ext\\.auth"
 ]
 # pytest-asyncio
 asyncio_mode = "auto"
@@ -618,7 +643,7 @@ hard-encoding-detection = true
 builtin = 'clear,rare,usage,informal,names,code'
 # Avoid noisy or binary paths, but keep the set lean so we still catch issues
 skip = '''
-.idea,.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
+.idea,.git,.svn,.hg,site,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
 coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
 *.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage,.cov_html,.benchmarks,.cache
 '''
@@ -641,7 +666,7 @@ ignore-vcs = true                    # skip .git/
 ignore-global = true                 # respect global ignores
 ignore-parent = true                 # respect parent ignores
 extend-exclude = [
-    ".git", ".svn", ".hg",
+    ".git", ".svn", ".hg", "CHANGELOG.md",
     ".tox", ".venv", "venv",
     "node_modules", "dist", "build", "target", "out",
     ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",

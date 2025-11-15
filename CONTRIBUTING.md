@@ -167,6 +167,7 @@ require complete docstrings. This will help us maintain a high-quality documenta
   public functions, classes, and methods.
     - Use the `Args:` and `Return:` (or `Yields:` for generators) directives to document parameters and return values
     - Use the `Example:` directive to document how to use the function, class, or method being documented.
+- [What makes documentation good?](https://github.com/openai/openai-cookbook/blob/main/articles/what_makes_documentation_good.md)
 
 ## Plugins vs. Core Features
 
