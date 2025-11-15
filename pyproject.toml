@@ -143,7 +143,7 @@ test = [
     "full-match>=0.0.3",
 ]
 docs = [
-    "click==8.3.0", # Necessary to allow live reload to work
+    "click==8.3.1", # Necessary to allow live reload to work
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
     "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
