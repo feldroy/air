@@ -9,7 +9,7 @@ This example demonstrates:
 
 Run:
 
-    uv run python examples/src/forms__AirField.py
+    uv run examples/src/forms__AirField.py
 
 Then visit http://127.0.0.1:8000/ in your browser.
 """
@@ -92,7 +92,7 @@ async def submit(request: air.Request) -> air.Html:
 
 if __name__ == "__main__":
     # Run this example with:
-    #   uv run python examples/src/forms__AirField.py
+    #   uv run examples/src/forms__AirField.py
     import uvicorn
 
     uvicorn.run(app, host="127.0.0.1", port=8000)
