@@ -47,7 +47,7 @@ if __name__ == "__main__":
         """
     )
     # print(air.Tag.from_html(html_source).render())
-    print(air.Tag.from_html(air.Title("xxx")).render())
+    print(air.Tag.from_html(air.Title("xxx").render()).render())
     # print(air.Tag.from_html_to_source(html_source))
     # print(SMALL_HTML_SAMPLE.to_source())
     # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
