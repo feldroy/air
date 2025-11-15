@@ -8,30 +8,29 @@ from typing_extensions import Doc
 
 
 class BackgroundTasks(FastAPIBackgroundTasks):
-    """
-    A collection of background tasks that will be called after a response has been
+    """A collection of background tasks that will be called after a response has been
     sent to the client.
 
     Example:
 
-        from air import BackgroundTasks, Air
+        import pathlib
 
-        app = Air()
+        import air
+
+        app = air.Air()
 
 
         def write_notification(email: str, message=""):
-            with open("log.txt", mode="w") as email_file:
+            with pathlib.Path("log.txt").open(mode="w") as email_file:
                 content = f"notification for {email}: {message}"
                 email_file.write(content)
 
 
         @app.post("/send-notification/{email}")
-        async def send_notification(email: str, background_tasks: BackgroundTasks):
+        def send_notification(email: str, background_tasks: air.BackgroundTasks):
             message = "some notification"
             background_tasks.add_task(write_notification, email, message=message)
-            content = f"notification for {email}: {message}"
-            return air.layouts.picocss(air.Title(content), air.H1(content))
-
+            return air.P(f"Notification sent to {email}")
     """
 
     def add_task[**P, T](
@@ -49,7 +48,5 @@ class BackgroundTasks(FastAPIBackgroundTasks):
         *args: P.args,
         **kwargs: P.kwargs,
     ) -> None:
-        """
-        Add a function to be called in the background after the response is sent.
-        """
+        """Add a function to be called in the background after the response is sent."""
         return super().add_task(func, *args, **kwargs)
