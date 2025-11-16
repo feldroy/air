@@ -177,13 +177,22 @@ class BaseTag:
         """
         return html.escape(text)
 
-    def render(self) -> str:
+    @cached_property
+    def html(self) -> str:
         """Render the HTML representation of the tag.
 
         Returns:
             The rendered HTML string.
         """
         return self._render()
+
+    def render(self) -> str:
+        """Render the HTML representation of the tag.
+
+        Returns:
+            The rendered HTML string.
+        """
+        return self.html
 
     def render_in_the_browser(self) -> None:
         """Render the tag and open the result in a browser tab."""
@@ -305,15 +314,14 @@ class BaseTag:
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
-    def to_source3(self) -> str:
+    def to_source2(self) -> str:
         attributes = [f'{key}="{value}"' for key, value in self._attrs.items()] if self._attrs else []
         children = [
-            child.to_source3() if isinstance(child, BaseTag) else child for child in self._children
+            child.to_source2() if isinstance(child, BaseTag) else child for child in self._children
         ] if self._children else []
-        return f"{self._name}({", ".join(children + attributes)})"
+        return f"air.{self._name}({", ".join(children + attributes)})"
 
-
-    def to_source(self, level: int = 0) -> str:
+    def to_source44(self, level: int = 0) -> str:
         indent_unit = " " * 4
         prefix = indent_unit * level
 
@@ -323,7 +331,7 @@ class BaseTag:
         for child in self._children:
             if isinstance(child, BaseTag):
                 # child starts at column 0, parent will indent the block
-                args.append(child.to_source(level=0))
+                args.append(child.to_source44(level=0))
             else:
                 args.append(_fmt_value(child))
 
@@ -349,7 +357,7 @@ class BaseTag:
         )
         return result.expandtabs(4)
 
-    def to_source2(self) -> str:
+    def to_source(self) -> str:
         # attributes like: lang="en"
         attributes = [
             f"{key}={value}"
@@ -470,8 +478,8 @@ class BaseTag:
             raise TypeError(f"{cls.__name__}.from_html(html_source) expects a string argument.")
         if not nh3.is_html(html_source):
             raise ValueError(f"{cls.__name__}.from_html(html_source) expects a valid HTML string.")
-        # if not has_all_top_level_tags(html_source):
-        #     raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
+        if not has_all_top_level_tags(html_source):
+            raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
         parser = LexborHTMLParser(html_source)
         return cls._from_html(parser.root)
 
@@ -480,7 +488,7 @@ class BaseTag:
         children: tuple[BaseTag, ...] = tuple(
             [
                 cls._from_child_html(child)
-                for child in node.iter(include_text=True)
+                for child in node.iter(include_text=False)
             ]
         )
         attributes: TagAttributesType = {
@@ -492,6 +500,17 @@ class BaseTag:
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
+        if node.first_child and node.first_child == node.last_child and node.first_child.text_content:
+            # TODO -> Can be: node.first_child.text_content
+            return cls._create_tag(node.tag, node.inner_html)
+        if node.tag.endswith("-document"):
+            raise NotImplementedError
+        if node.tag.endswith("-comment"):
+            return cls._create_tag("Comment", extract_html_comment(node.html))
+        return cls._from_html(node)
+
+    @classmethod
+    def _from_child_html_old(cls, node: LexborNode) -> BaseTag | str | None:
         if node.tag.endswith("-text"):
             return node.text_content
         if node.tag.endswith("-document"):

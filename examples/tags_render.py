@@ -11,7 +11,7 @@ Run:
 
 from __future__ import annotations
 
-from rich import print
+# from rich import print
 from rich.pretty import pretty_repr
 
 import air
@@ -48,13 +48,20 @@ if __name__ == "__main__":
         </html>
         """
     )
+    print(air.Tag.from_html(html_source).render())
+
     # print(air.Tag.from_html(html_source).render())
     # print(air.Tag.from_html(air.Title("xxx").pretty_render()).render())
     # print(html.pretty_render())
     # print(air.Tag.from_html_to_source(html_source))
     # print(air.Tag.from_html_to_source(html.pretty_render()))
-    # print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE.pretty_render()))
-    print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
+    # print(HTML_SAMPLE.html)
+
+    # r = HTML_SAMPLE.pretty_render()
+    # print(r)
+    # print(air.Tag.from_html(r).render())
+
+    # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
     # print(air.Tag.from_html_to_source(HTML_SAMPLE.pretty_render()))
     # print(SMALL_HTML_SAMPLE.to_source())
     # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
