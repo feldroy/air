@@ -11,7 +11,7 @@ Run:
 
 from __future__ import annotations
 
-# from rich import print
+from rich import print
 from rich.pretty import pretty_repr
 
 import air
@@ -43,12 +43,13 @@ if __name__ == "__main__":
             <meta content="width=device-width,initial-scale=1" name="viewport">
             <title>Title!</title>
             <!-- My crazy comment -->
+            <p>Hello <strong>World</strong>!</p>
           </head>
-          <body></body>
         </html>
         """
     )
-    print(air.Tag.from_html(html_source).render())
+    # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
+    print(air.Tag.from_html(html_source).pretty_render())
 
     # print(air.Tag.from_html(html_source).render())
     # print(air.Tag.from_html(air.Title("xxx").pretty_render()).render())

@@ -478,10 +478,22 @@ class BaseTag:
             raise TypeError(f"{cls.__name__}.from_html(html_source) expects a string argument.")
         if not nh3.is_html(html_source):
             raise ValueError(f"{cls.__name__}.from_html(html_source) expects a valid HTML string.")
-        if not has_all_top_level_tags(html_source):
-            raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
+        # if not has_all_top_level_tags(html_source):
+        #     raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
         parser = LexborHTMLParser(html_source)
+        # TODO -> Use unwrap_tags for tags without any top_level_tags
+        # parser.unwrap_tags(["body", "head"])
+        parser.strip_tags(cls.tags_to_strip(html_source))
         return cls._from_html(parser.root)
+
+    @staticmethod
+    def tags_to_strip(html_source: str) -> list[str]:
+        tags_to_strip = []
+        if "<head" not in html_source:
+            tags_to_strip.append("head")
+        if "<body" not in html_source:
+            tags_to_strip.append("body")
+        return tags_to_strip
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
@@ -503,8 +515,6 @@ class BaseTag:
         if node.first_child and node.first_child == node.last_child and node.first_child.text_content:
             # TODO -> Can be: node.first_child.text_content
             return cls._create_tag(node.tag, node.inner_html)
-        if node.tag.endswith("-document"):
-            raise NotImplementedError
         if node.tag.endswith("-comment"):
             return cls._create_tag("Comment", extract_html_comment(node.html))
         return cls._from_html(node)
