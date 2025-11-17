@@ -73,7 +73,7 @@ def update_example_section(
     if class_name is None:
         # Module-level function
         for node in ast.walk(tree):
-            if isinstance(node, ast.FunctionDef) and node.name == method_name:
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == method_name:
                 target_node = node
                 break
 
@@ -105,7 +105,7 @@ def update_example_section(
 
         # Find the method
         for node in target_class.body:
-            if isinstance(node, ast.FunctionDef) and node.name == method_name:
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == method_name:
                 target_node = node
                 break
 
