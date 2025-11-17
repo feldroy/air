@@ -693,21 +693,34 @@ class Air(FastAPI, RouterMixin):
             ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """
-        Add a *path operation* using an HTTP GET operation.
+        """Add a *path operation* using an HTTP GET operation.
 
-        ## Example
+        Example:
 
-        ```python
-        from air import Air
+            import air
 
-        app = Air()
+            app = air.Air()
 
 
-        @app.get("/hello")
-        def hello_world():
-            return air.H1("Hello, World!")
-        ```
+            @app.get("/hello")
+            def hello_world():
+                # Simple GET endpoint returning HTML.
+                return air.H1("Hello, World!")
+
+
+            @app.get("/users/{user_id}")
+            def get_user(user_id: int):
+                # GET endpoint with path parameter.
+                return air.Div(
+                    air.H2(f"User ID: {user_id}"),
+                    air.P("This is a user profile page"),
+                )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="0.0.0.0", port=8000)
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
