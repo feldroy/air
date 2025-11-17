@@ -163,7 +163,7 @@ docs = [
 
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
-required-version = ">=0.8.0"
+required-version = ">=0.9.8"
 # Whether to enable experimental, preview features.
 preview = true
 # Treat this repo as an installable *package*, not just a “virtual” project.
@@ -172,7 +172,6 @@ preview = true
 # This enables entry points (meaning: auto-created CLI scripts), plugin discovery,
 # and proper distribution metadata (meaning: standard package info used by tools).
 package = true
-
 # Use uv’s default: include the "dev" group by default.
 # 'uv run' will auto-install and use dev (unless you choose groups yourself).
 # 'uv sync' also includes dev by default; change this by passing explicit --group flags.
