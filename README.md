@@ -250,6 +250,7 @@ Thanks to all the contributors to the Air 💨 web framework!
 - [pypistats](https://pypistats.org/packages/air)
 - [libraries.io](https://libraries.io/pypi/air)
 - [deps.dev](https://deps.dev/pypi/air)
+- [PePy](https://pepy.tech/projects/air)
 
 ## Star History
 

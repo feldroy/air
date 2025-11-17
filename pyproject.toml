@@ -14,9 +14,11 @@ readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.13,<3.15"
 urls.Homepage = "https://github.com/feldroy/air"
+urls.Repository = "https://github.com/feldroy/air"
 urls.Docs = "https://feldroy.github.io/air/"
 urls.Issues = "https://github.com/feldroy/air/issues"
 urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
+urls.Sponsor = "https://github.com/sponsors/feldroy"
 
 classifiers = [
     "Development Status :: 3 - Alpha",
