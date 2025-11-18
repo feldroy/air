@@ -323,6 +323,7 @@ def test_init_subclass_registers_new_tag() -> None:
 
     assert BaseTag.registry["EphemeralTag"] is EphemeralTag
 
+
 def test_from_dict_and_from_json_roundtrip() -> None:
     """This test encodes the intended behavior for from_dict/from_json."""
     original = HTML_SAMPLE

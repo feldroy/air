@@ -1,11 +1,10 @@
 import air
+
 from .utils import clean_doc
 
 
 def test_pico_layout() -> None:
-    actual_html = air.layouts.picocss(
-        air.H1("Cheese Monger"), air.Title("Cheese Monger")
-    ).pretty_render()
+    actual_html = air.layouts.picocss(air.H1("Cheese Monger"), air.Title("Cheese Monger")).pretty_render()
     expected_html = clean_doc(
         """
         <!doctype html>
@@ -27,10 +26,7 @@ def test_pico_layout() -> None:
 
 
 def test_pico_layout_htmx() -> None:
-    actual_html = air.layouts.picocss(
-        air.H1("Hello, Air"),
-        is_htmx=True
-    ).pretty_render()
+    actual_html = air.layouts.picocss(air.H1("Hello, Air"), is_htmx=True).pretty_render()
     expected_html = clean_doc(
         """
         <main class="container">
@@ -42,9 +38,7 @@ def test_pico_layout_htmx() -> None:
 
 
 def test_mvpcss_layout() -> None:
-    actual_html = air.layouts.mvpcss(
-        air.H1("Cheese Monger"), air.Title("Cheese Monger")
-    ).pretty_render()
+    actual_html = air.layouts.mvpcss(air.H1("Cheese Monger"), air.Title("Cheese Monger")).pretty_render()
     expected_html = clean_doc(
         """
         <!doctype html>
@@ -97,10 +91,7 @@ def test_mvpcss_layout_header() -> None:
 
 
 def test_mvpcss_layout_htmx() -> None:
-    actual_html = air.layouts.mvpcss(
-        air.H1("Hello, Air"),
-        is_htmx=True
-    ).pretty_render()
+    actual_html = air.layouts.mvpcss(air.H1("Hello, Air"), is_htmx=True).pretty_render()
     expected_html = clean_doc(
         """
         <main>
