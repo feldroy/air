@@ -13,8 +13,8 @@ from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
 import nh3
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
-from rich.pretty import pretty_repr
-from textwrap import indent as tw_indent
+from rich.pretty import _Line, pretty_repr
+from textwrap import indent
 
 from ..constants import TOP_LEVEL_HTML_TAGS
 from ..utils import (
@@ -27,6 +27,8 @@ from ..utils import (
     pretty_format_html,
     pretty_print_html,
 )
+
+INDENT_UNIT: Final = " " * 4
 
 type Renderable = Annotated[
     str | BaseTag | SafeStr | int | float,
@@ -314,6 +316,12 @@ class BaseTag:
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
+    # TODO:
+    #   def to_init_repr(self, n: int = 1000) -> str:
+    #         """
+    #         Convert DataFrame to instantiable string representation.
+    #         Convert AirTag to the instantiable-formatted representation of the tag.
+
     def to_source2(self) -> str:
         attributes = [f'{key}="{value}"' for key, value in self._attrs.items()] if self._attrs else []
         children = [
@@ -321,7 +329,89 @@ class BaseTag:
         ] if self._children else []
         return f"air.{self._name}({", ".join(children + attributes)})"
 
-    def to_source44(self, level: int = 0) -> str:
+    def to_source78(self, level: int = 0) -> str:
+        attributes = [
+            f'{key}="{value}"'
+            for key, value in self._attrs.items()
+        ] if self._attrs else []
+        children = [
+            child.to_source78(level + 1) if isinstance(child, BaseTag) else str(child)
+            for child in self._children
+        ] if self._children else []
+        parts = children + attributes
+        inner = f",\n".join(parts)
+        inner = indent(inner, INDENT_UNIT * level)
+        return f"air.{self._name}(\n{INDENT_UNIT * (level + 1)}{inner}\n)"
+
+    def to_source(self, level: int = 0) -> str:
+        outer_padding = INDENT_UNIT * level
+        inner_padding = INDENT_UNIT * (level + 1)
+
+        lines = [
+                    (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{inner_padding}{child!r}")
+                    for child in self._children
+                ] + [
+                    f'{inner_padding}{name}="{value}"'
+                    for name, value in self._attrs.items()
+                ]
+
+        if not lines:
+            return f"{outer_padding}air.{self._name}()"
+
+        if not self._attrs and len(self._children) == 1 and not isinstance(self._children[0], BaseTag):
+            return f'{outer_padding}air.{self._name}("{self._children[0]}")'
+
+        body = ",\n".join(lines)
+        return f"{outer_padding}air.{self._name}(\n{body},\n{outer_padding})"
+
+
+    def to_source32(self, level: int = 0) -> str:
+        indent = INDENT_UNIT * level
+        inner = INDENT_UNIT * (level + 1)
+
+        # Single non-tag child, no attributes: air.Tag("text")
+        # if (
+        #     self._children
+        #     and len(self._children) == 1
+        #     and not isinstance(self._children[0], BaseTag)
+        #     and not self._attrs
+        # ):
+        #     return f"{indent}air.{self._name}({self._children[0]!r})"
+
+        lines = []
+
+        for child in self._children or []:
+            if isinstance(child, BaseTag):
+                lines.append(child.to_source32(level + 1))
+            else:
+                lines.append(f"{inner}{child!r}")
+
+        for key, value in (self._attrs or {}).items():
+            lines.append(f"{inner}{key}={value!r}")
+
+        if not lines:
+            return f"{indent}air.{self._name}()"
+
+        body = ",\n".join(lines)
+        return f"{indent}air.{self._name}(\n{body},\n{indent})"
+
+
+    def to_init_repr(
+        self, max_width: int = 80, indent_size: int = 4, expand_all: bool = False,
+    ) -> str:
+        lines = [_Line(node=self, is_root=True)]
+        line_no = 0
+        while line_no < len(lines):
+            line = lines[line_no]
+            if line.expandable and not line.expanded:
+                if expand_all or not line.check_length(max_width):
+                    lines[line_no: line_no + 1] = line.expand(indent_size)
+            line_no += 1
+
+        repr_str = "\n".join(str(line) for line in lines)
+        return repr_str
+
+    def to_source77(self, level: int = 0) -> str:
         indent_unit = " " * 4
         prefix = indent_unit * level
 
@@ -331,7 +421,7 @@ class BaseTag:
         for child in self._children:
             if isinstance(child, BaseTag):
                 # child starts at column 0, parent will indent the block
-                args.append(child.to_source44(level=0))
+                args.append(child.to_source77(level=0))
             else:
                 args.append(_fmt_value(child))
 
@@ -348,7 +438,7 @@ class BaseTag:
 
         # pretty multi line
         inner = ",\n".join(args)
-        inner = tw_indent(inner, indent_unit * (level + 1))
+        inner = indent(inner, indent_unit * (level + 1))
 
         result = (
             f"{prefix}{self._name}(\n"
@@ -356,31 +446,6 @@ class BaseTag:
             f"{prefix})"
         )
         return result.expandtabs(4)
-
-    def to_source(self) -> str:
-        # attributes like: lang="en"
-        attributes = [
-            f"{key}={value}"
-            for key, value in self._attrs.items()
-        ] if self._attrs else []
-
-        # children are either BaseTag instances or strings
-        children = [
-            (
-                child.to_source()
-                if isinstance(child, BaseTag)
-                else str(child)
-            ).expandtabs()
-            for child in self._children
-        ] if self._children else []
-
-        # combine children and attributes in order
-        parts = children + attributes
-        inner = ", ".join(parts)
-
-        # expand tabs in the final string too
-        return f"{self._name}({inner})".expandtabs()
-
 
     def to_pretty_dict(self) -> str:
         """Produce a human-friendly mapping view of the tag.

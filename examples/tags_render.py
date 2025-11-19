@@ -48,8 +48,10 @@ if __name__ == "__main__":
         </html>
         """
     )
+    print(html.to_source())
+    # print(pretty_repr(html.to_source(), expand_all=True))
     # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
-    print(air.Tag.from_html(html_source).pretty_render())
+    # print(air.Tag.from_html(html_source).pretty_render())
 
     # print(air.Tag.from_html(html_source).render())
     # print(air.Tag.from_html(air.Title("xxx").pretty_render()).render())
