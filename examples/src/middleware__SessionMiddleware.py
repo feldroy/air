@@ -3,7 +3,7 @@ from time import time
 import air
 
 app = air.Air()
-app.add_middleware(air.SessionMiddleware, secret_key="change-me")  # type: ignore[arg-type]
+app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 
 
 @app.page

@@ -33,25 +33,39 @@ def test_divtag_yes_attrs_a_child() -> None:
 
 
 def test_divtag_yes_attrs_multiple_a_children() -> None:
-    html = air.Div(
+    actual_html = air.Div(
         air.A("Link here", href="/", class_="link"),
         air.A("Another link", href="/", class_="timid"),
-    ).render()
-    assert html == '<div><a href="/" class="link">Link here</a><a href="/" class="timid">Another link</a></div>'
+    ).pretty_render()
+    expected_html = clean_doc(
+        """
+        <div>
+          <a href="/" class="link">Link here</a>
+          <a href="/" class="timid">Another link</a>
+        </div>
+        """
+    )
+    assert actual_html == expected_html
 
 
 def test_divtag_yes_attrs_nested_children() -> None:
-    html = air.Div(
+    actual_html = air.Div(
         air.P(
             "Links are here",
             air.A("Link here", href="/", class_="link"),
             air.A("Another link", href="/", class_="timid"),
         ),
-    ).render()
-    assert (
-        html
-        == '<div><p>Links are here<a href="/" class="link">Link here</a><a href="/" class="timid">Another link</a></p></div>'
+    ).pretty_render()
+    expected_html = clean_doc(
+        """
+        <div>
+          <p>Links are here<a href="/" class="link">Link here</a>
+            <a href="/" class="timid">Another link</a>
+          </p>
+        </div>
+        """
     )
+    assert actual_html == expected_html
 
 
 def test_name_types() -> None:
@@ -150,16 +164,21 @@ def test_pico_card() -> None:
     def card(*children: Any, header: str, footer: str) -> air.Article:
         return air.Article(air.Header(header), *children, air.Footer(footer))
 
-    html = card(
+    actual_html = card(
         air.P("This is a card with some content."),
         header="Card Header",
         footer="Card Footer",
-    ).render()
-
-    assert (
-        html
-        == "<article><header>Card Header</header><p>This is a card with some content.</p><footer>Card Footer</footer></article>"
+    ).pretty_render()
+    expected_html = clean_doc(
+        """
+        <article>
+          <header>Card Header</header>
+          <p>This is a card with some content.</p>
+          <footer>Card Footer</footer>
+        </article>
+        """
     )
+    assert actual_html == expected_html
 
 
 def test_tags_head_tag_injection() -> None:
@@ -167,8 +186,7 @@ def test_tags_head_tag_injection() -> None:
         air.Meta(property="og:title", content="Test Title"),
         air.Meta(property="og:description", content="Test Description"),
     ]
-
-    html = air.Html(
+    actual_html = air.Html(
         air.Head(
             air.Title("Test Page"),
             *meta_tags,  # These should appear in <head>
@@ -177,12 +195,24 @@ def test_tags_head_tag_injection() -> None:
             air.H1("Check Page Source"),
             air.P("The meta tags should be in the head section."),
         ),
-    ).render()
-
-    assert (
-        html
-        == '<!doctype html><html><head><title>Test Page</title><meta property="og:title" content="Test Title"><meta property="og:description" content="Test Description"></head><body><h1>Check Page Source</h1><p>The meta tags should be in the head section.</p></body></html>'
+    ).pretty_render()
+    expected_html = clean_doc(
+        """
+        <!doctype html>
+        <html>
+          <head>
+            <title>Test Page</title>
+            <meta property="og:title" content="Test Title">
+            <meta property="og:description" content="Test Description">
+          </head>
+          <body>
+            <h1>Check Page Source</h1>
+            <p>The meta tags should be in the head section.</p>
+          </body>
+        </html>
+        """
     )
+    assert actual_html == expected_html
 
 
 def test_escape_html() -> None:

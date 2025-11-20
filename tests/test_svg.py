@@ -1,12 +1,14 @@
 import air
 
+from .utils import clean_doc_with_broken_lines
+
 
 def test_atag_no_attrs_no_children() -> None:
     assert air.svg.A().render() == "<a></a>"
 
 
 def test_atag_with_all_attributes() -> None:
-    link = air.svg.A(
+    actual_html = air.svg.A(
         "Link text",
         href="https://example.com",
         target="_blank",
@@ -16,9 +18,15 @@ def test_atag_with_all_attributes() -> None:
         referrerpolicy="no-referrer",
         rel="noopener",
         type="application/pdf",
+    ).pretty_render()
+    expected_html = clean_doc_with_broken_lines(
+        r"""
+        <a href="https://example.com" target="_blank" download="file.pdf" hreflang="en-US"\
+           ping="https://tracker.example.com" referrerpolicy="no-referrer" rel="noopener"\
+           type="application/pdf">Link text</a>
+        """
     )
-    expected = '<a href="https://example.com" target="_blank" download="file.pdf" hreflang="en-US" ping="https://tracker.example.com" referrerpolicy="no-referrer" rel="noopener" type="application/pdf">Link text</a>'
-    assert link.render() == expected
+    assert actual_html == expected_html
 
 
 def test_cased_tag_no_children() -> None:

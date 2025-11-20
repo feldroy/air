@@ -168,3 +168,4 @@ class AirRequest(_Request):
 
 
 Request = AirRequest
+"""Alias for the `AirRequest` Request class; use it if it improves clarity."""

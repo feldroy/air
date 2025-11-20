@@ -29,7 +29,8 @@ class AirResponse(HTMLResponse):
         return super().render(str(tag))
 
 
-TagResponse = AirResponse  # Alias for clarity
+TagResponse = AirResponse
+"""Alias for the `AirResponse` Response class; use it if it improves clarity."""
 
 
 class SSEResponse(StreamingResponse):
