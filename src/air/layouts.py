@@ -44,30 +44,41 @@ def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Ht
 
     Example:
 
-        from fastapi import Depends
         import air
 
         app = air.Air()
 
 
         @app.page
-        async def index(is_htmx: bool = Depends(air.is_htmx_request)):
+        async def index(request: air.Request):
             return air.layouts.mvpcss(
                 air.Title("Home"),
                 air.Article(
-                    air.H1("Welcome to Air"), air.P(air.A("Click to go to Dashboard", href="/dashboard")), hx_boost="true"
+                    air.H1("Welcome to Air"),
+                    air.P(air.A("Click to go to Dashboard", href="/dashboard")),
+                    hx_boost="true",
                 ),
-                is_htmx=is_htmx
+                is_htmx=request.htmx.is_hx_request,
             )
 
 
         @app.page
-        async def dashboard(is_htmx: bool = Depends(air.is_htmx_request)):
+        async def dashboard(request: air.Request):
             return air.layouts.mvpcss(
-                air.Title("Dashboard"), air.Article(air.H1("Dashboard"), air.P(air.A("Go home", href="/")), hx_boost="true"),
-                is_htmx=is_htmx
+                air.Title("Dashboard"),
+                air.Article(
+                    air.H1("Dashboard"),
+                    air.P(air.A("Go home", href="/")),
+                    hx_boost="true",
+                ),
+                is_htmx=request.htmx.is_hx_request,
             )
 
+
+        if __name__ == "__main__":
+            import uvicorn
+
+            uvicorn.run(app, host="127.0.0.1", port=8000)
     """
     body_tags = filter_body_tags(children)
     head_tags = filter_head_tags(children)
