@@ -346,24 +346,29 @@ class BaseTag:
     def to_source(self, level: int = 0) -> str:
         outer_padding = INDENT_UNIT * level
         inner_padding = INDENT_UNIT * (level + 1)
-
-        lines = [
-                    (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{inner_padding}{child!r}")
-                    for child in self._children
-                ] + [
-                    f'{inner_padding}{name}="{value}"'
-                    for name, value in self._attrs.items()
-                ]
-
-        if not lines:
+        children_source_lines = self.to_children_source(level=level, padding=inner_padding)
+        attributes_source_lines = self.to_attributes_source(level=level, padding=inner_padding)
+        source_lines = children_source_lines + attributes_source_lines
+        if not source_lines:
             return f"{outer_padding}air.{self._name}()"
 
         if not self._attrs and len(self._children) == 1 and not isinstance(self._children[0], BaseTag):
             return f'{outer_padding}air.{self._name}("{self._children[0]}")'
 
-        body = ",\n".join(lines)
+        body = ",\n".join(source_lines)
         return f"{outer_padding}air.{self._name}(\n{body},\n{outer_padding})"
 
+    def to_children_source(self, level: int, padding: str) -> list[str]:
+        return [
+            (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{padding}{child!r}")
+            for child in self._children
+        ]
+
+    def to_attributes_source(self, level: int, padding: str) -> list[str]:
+        return [
+            f'{padding}{name}="{value}"'
+            for name, value in self._attrs.items()
+        ]
 
     def to_source32(self, level: int = 0) -> str:
         indent = INDENT_UNIT * level
@@ -512,7 +517,7 @@ class BaseTag:
         return air_tag
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagDictType) -> list[BaseTag | Renderable]:
+    def _from_child_dict(cls, children_dict: TagDictType) -> list[Renderable]:
         """Restore serialized children into tag instances or raw values.
 
         Args:
@@ -538,13 +543,13 @@ class BaseTag:
         return cls.from_dict(json.loads(source_json))
 
     @classmethod
-    def from_html(cls, html_source: str) -> BaseTag:
+    def from_html(cls, html_source: str, with_top_level_tags: bool = True) -> BaseTag:
         if not isinstance(html_source, str):
             raise TypeError(f"{cls.__name__}.from_html(html_source) expects a string argument.")
         if not nh3.is_html(html_source):
             raise ValueError(f"{cls.__name__}.from_html(html_source) expects a valid HTML string.")
-        # if not has_all_top_level_tags(html_source):
-        #     raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
+        if with_top_level_tags and not has_all_top_level_tags(html_source):
+            raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
         parser = LexborHTMLParser(html_source)
         # TODO -> Use unwrap_tags for tags without any top_level_tags
         # parser.unwrap_tags(["body", "head"])
@@ -565,7 +570,7 @@ class BaseTag:
         children: tuple[BaseTag, ...] = tuple(
             [
                 cls._from_child_html(child)
-                for child in node.iter(include_text=False)
+                for child in node.iter(include_text=True, skip_empty=True)
             ]
         )
         attributes: TagAttributesType = {
