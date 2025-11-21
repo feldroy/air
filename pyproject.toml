@@ -154,8 +154,7 @@ docs = [
     "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
     "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
-    "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
-    "zensical>=0.0.5",
+    "mkdocs-jupyter>=0.25.1",
 ]
 # endregion dependencies
 
