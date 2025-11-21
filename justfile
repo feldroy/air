@@ -317,17 +317,17 @@ coverage-md: coverage-xml
 # Serve docs locally.
 [group('docs')]
 doc-serve:
-    just run -- zensical serve -a localhost:3000
+    just run -- mkdocs serve -a localhost:3000
 
 # Serve docs locally and open them in a new tab.
 [group('docs')]
 doc-serve-open:
-    just run -- zensical serve --open -a localhost:3000
+    just run -- mkdocs serve --open -a localhost:3000
 
 # Build docs
 [group('docs')]
 doc-build:
-    just run -- zensical build --clean
+    just run -- mkdocs gh-deploy --force
 
 # endregion Docs
 
