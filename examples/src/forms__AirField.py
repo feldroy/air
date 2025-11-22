@@ -1,18 +1,15 @@
-"""Example: Using AirField to control HTML form behavior.
+# This example demonstrates:
 
-This example demonstrates:
+# - How AirField customizes HTML input types (e.g. email, datetime-local)
+# - How labels and autofocus attributes appear in rendered forms
+# - How AirForm binds to a Pydantic model for validation
+# - How the form behaves when submitted with valid and invalid data
 
-- How AirField customizes HTML input types (e.g. email, datetime-local)
-- How labels and autofocus attributes appear in rendered forms
-- How AirForm binds to a Pydantic model for validation
-- How the form behaves when submitted with valid and invalid data
+# Run:
 
-Run:
+#     uv run examples/src/forms__AirField.py
 
-    uv run examples/src/forms__AirField.py
-
-Then visit http://127.0.0.1:8000/ in your browser.
-"""
+# Then visit http://127.0.0.1:8000/ in your browser.
 
 from pydantic import BaseModel
 
@@ -39,7 +36,7 @@ class ContactForm(air.AirForm):
 
 @app.page
 def index(request: air.Request):
-    """Render a simple page containing the contact form."""
+    # Render a simple page containing the contact form.
     form = ContactForm()
     return air.layouts.mvpcss(
         air.H1("Contact Form Example Using AirField"),
@@ -55,7 +52,7 @@ def index(request: air.Request):
 
 @app.post("/submit")
 async def submit(request: air.Request) -> air.Html:
-    """Handle POSTed form data and re-render with errors if invalid."""
+    # Handle POSTed form data and re-render with errors if invalid.
     form = ContactForm()
 
     # Parse form data from the incoming request and validate
