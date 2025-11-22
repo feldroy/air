@@ -9,6 +9,12 @@ import re
 from pathlib import Path
 
 import typer
+from rich.console import Console
+
+console = Console()
+
+ERROR_STYLE = "red"
+SUCCESS_STYLE = "green"
 
 
 def parse_filename_class(filename: str) -> tuple[str, str | None, str | None] | None:
@@ -65,7 +71,7 @@ def update_example_section(
     try:
         tree = ast.parse(content)
     except SyntaxError:
-        typer.secho(f"Error parsing {file_path}")
+        console.print(f"Error parsing {file_path}", style=ERROR_STYLE)
         return False
 
     target_node = None
@@ -78,7 +84,7 @@ def update_example_section(
                 break
 
         if not target_node:
-            typer.secho(f"Function {method_name} not found in {file_path}")
+            console.print(f"Function {method_name} not found in {file_path}", style=ERROR_STYLE)
             return False
     elif method_name is None:
         # Class-level docstring
@@ -87,8 +93,17 @@ def update_example_section(
                 target_node = node
                 break
 
+        # Fallback: if class not found, try as module-level function
         if not target_node:
-            typer.secho(f"Class {class_name} not found in {file_path}")
+            for node in ast.walk(tree):
+                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == class_name:
+                    target_node = node
+                    method_name = class_name
+                    class_name = None
+                    break
+
+        if not target_node:
+            console.print(f"Class or function {class_name} not found in {file_path}", style=ERROR_STYLE)
             return False
     else:
         # Class method
@@ -100,7 +115,7 @@ def update_example_section(
                 break
 
         if not target_class:
-            typer.secho(f"Class {class_name} not found in {file_path}")
+            console.print(f"Class {class_name} not found in {file_path}", style=ERROR_STYLE)
             return False
 
         # Find the method
@@ -110,19 +125,21 @@ def update_example_section(
                 break
 
         if not target_node:
-            typer.secho(f"Method {method_name} not found in class {class_name} in {file_path}")
+            console.print(f"Method {method_name} not found in class {class_name} in {file_path}", style=ERROR_STYLE)
             return False
+
+    # Build callable name for display
+    if class_name and method_name:
+        callable_name = f"{class_name}.{method_name}"
+    elif class_name:
+        callable_name = class_name
+    else:
+        callable_name = method_name
 
     # Get the docstring
     docstring = ast.get_docstring(target_node)
     if not docstring or "Example:" not in docstring:
-        if class_name and method_name:
-            callable_name = f"{class_name}.{method_name}"
-        elif class_name:
-            callable_name = class_name
-        else:
-            callable_name = method_name
-        typer.secho(f"No Example section found in {callable_name}")
+        console.print(f"No Example section found in {callable_name}", style=ERROR_STYLE)
         return False
 
     # Find the actual position of the docstring in the source
@@ -187,13 +204,7 @@ def update_example_section(
 
     # Write back
     file_path.write_text(new_content)
-    if class_name and method_name:
-        callable_name = f"{class_name}.{method_name}"
-    elif class_name:
-        callable_name = class_name
-    else:
-        callable_name = method_name
-    typer.secho(f"Updated {callable_name} in {file_path}")
+    console.print(f"Updated {callable_name} in {file_path}", style=SUCCESS_STYLE)
     return True
 
 
@@ -204,7 +215,7 @@ def main():
     src_dir = project_root / "src" / "air"
 
     if not src_examples_dir.exists():
-        typer.secho(f"src_examples directory not found: {src_examples_dir}")
+        console.print(f"src_examples directory not found: {src_examples_dir}", style=ERROR_STYLE)
         return
 
     # Process each file in examples/src
@@ -222,7 +233,7 @@ def main():
         source_file = src_dir / f"{module}.py"
 
         if not source_file.exists():
-            typer.secho(f"Source file not found: {source_file}")
+            console.print(f"Source file not found: {source_file}", style="ERROR_STYLE")
             continue
 
         # Update the example section
