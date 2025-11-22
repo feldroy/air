@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@5a7eac68fb9809dea845d802897dc5c723910fa3 # v7
+        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
 
       - name: Build with uv
         run: uv build

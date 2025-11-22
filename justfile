@@ -95,8 +95,6 @@ run-with-relative-paths +CMD:
     just run-with-relative-paths uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
 
 # Run ipython using uv.
-[doc]
-[private]
 [group('uv')]
 ipython:
     uv run {{ UV_CLI_FLAGS }} -- ipython
@@ -316,15 +314,20 @@ coverage-md: coverage-xml
 [group('docs')]
 @changelog: (readmd "CHANGELOG.md")
 
-# Serve docs locally
+# Serve docs locally.
 [group('docs')]
 doc-serve:
-    just run -- zensical serve -a localhost:3000 --open
+    just run -- mkdocs serve -a localhost:3000
+
+# Serve docs locally and open them in a new tab.
+[group('docs')]
+doc-serve-open:
+    just run -- mkdocs serve --open -a localhost:3000
 
 # Build docs
 [group('docs')]
 doc-build:
-    just run -- zensical build --clean
+    just run -- mkdocs gh-deploy --force
 
 # endregion Docs
 

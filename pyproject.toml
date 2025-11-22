@@ -14,9 +14,11 @@ readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.13,<3.15"
 urls.Homepage = "https://github.com/feldroy/air"
+urls.Repository = "https://github.com/feldroy/air"
 urls.Docs = "https://feldroy.github.io/air/"
 urls.Issues = "https://github.com/feldroy/air/issues"
 urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
+urls.Sponsor = "https://github.com/sponsors/feldroy"
 
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -145,7 +147,7 @@ test = [
     "full-match>=0.0.3",
 ]
 docs = [
-    "click==8.3.0", # Necessary to allow live reload to work
+    "click==8.3.1", # Necessary to allow live reload to work
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
     "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
@@ -154,8 +156,7 @@ docs = [
     "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
     "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
-    "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
-    "zensical>=0.0.5",
+    "mkdocs-jupyter>=0.25.1",
 ]
 # endregion dependencies
 
@@ -163,7 +164,7 @@ docs = [
 
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
-required-version = ">=0.8.0"
+required-version = ">=0.9.8"
 # Whether to enable experimental, preview features.
 preview = true
 # Treat this repo as an installable *package*, not just a “virtual” project.
@@ -172,7 +173,6 @@ preview = true
 # This enables entry points (meaning: auto-created CLI scripts), plugin discovery,
 # and proper distribution metadata (meaning: standard package info used by tools).
 package = true
-
 # Use uv’s default: include the "dev" group by default.
 # 'uv run' will auto-install and use dev (unless you choose groups yourself).
 # 'uv sync' also includes dev by default; change this by passing explicit --group flags.

@@ -693,21 +693,34 @@ class Air(FastAPI, RouterMixin):
             ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """
-        Add a *path operation* using an HTTP GET operation.
+        """Add a *path operation* using an HTTP GET operation.
 
-        ## Example
+        Example:
 
-        ```python
-        from air import Air
+            import air
 
-        app = Air()
+            app = air.Air()
 
 
-        @app.get("/hello")
-        def hello_world():
-            return air.H1("Hello, World!")
-        ```
+            @app.get("/hello")
+            def hello_world():
+                # Simple GET endpoint returning HTML.
+                return air.H1("Hello, World!")
+
+
+            @app.get("/users/{user_id}")
+            def get_user(user_id: int):
+                # GET endpoint with path parameter.
+                return air.Div(
+                    air.H2(f"User ID: {user_id}"),
+                    air.P("This is a user profile page"),
+                )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="0.0.0.0", port=8000)
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1084,8 +1097,48 @@ class Air(FastAPI, RouterMixin):
             ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """
-        Add a *path operation* using an HTTP POST operation.
+        """Add a *path operation* using an HTTP POST operation.
+
+        Example:
+
+            from pydantic import BaseModel
+
+            import air
+
+
+            class UserCreate(BaseModel):
+                # User creation model.
+
+                name: str
+                email: str
+
+
+            app = air.Air()
+
+
+            @app.post("/submit")
+            def submit_form():
+                # Simple POST endpoint.
+                return air.Div(
+                    air.H2("Form Submitted!"),
+                    air.P("Thank you for your submission"),
+                )
+
+
+            @app.post("/users")
+            def create_user(user: UserCreate):
+                # POST endpoint with request body.
+                return air.Div(
+                    air.H2("User Created"),
+                    air.P(f"Name: {user.name}"),
+                    air.P(f"Email: {user.email}"),
+                )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="0.0.0.0", port=8000)
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:

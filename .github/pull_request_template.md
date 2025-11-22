@@ -18,6 +18,7 @@ Please check the type of change your PR introduces:
     - [ ] **Third-Party Integrated** (Cookbook documentation on using Air databases or a task manager, etc)
     - [ ] **Out-of-Scope** (Formal integration with databases, external task managers, or commercial services etc - won't be accepted, please create a separate project)
 - [ ] **Refactoring** (no functional changes, no api changes)
+- [ ] **Chore**: Dependency updates, Python version changes, etc.
 - [ ] **Build related changes**
 - [ ] **Documentation content changes**
 - [ ] **Other** (please describe):

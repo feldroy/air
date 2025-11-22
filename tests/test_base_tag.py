@@ -98,7 +98,7 @@ def test_pretty_render_in_the_browser_uses_pretty_render(monkeypatch: pytest.Mon
         {
             "html": "<sampletag>content</sampletag>",
             "kwargs": {"with_body": True, "with_head": False, "with_doctype": True},
-        },
+        }
     ]
     assert browser_calls == ["formatted"]
 
@@ -119,7 +119,7 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
         {
             "html": "<sampletag>body</sampletag>",
             "kwargs": {"with_body": True, "with_head": True, "with_doctype": True},
-        },
+        }
     ]
 
 
@@ -323,6 +323,24 @@ def test_init_subclass_registers_new_tag() -> None:
         """Temporary tag for registry tests."""
 
     assert BaseTag.registry["EphemeralTag"] is EphemeralTag
+
+
+def test_from_dict_and_from_json_roundtrip() -> None:
+    """This test encodes the intended behavior for from_dict/from_json."""
+    original = HTML_SAMPLE
+    original_type = type(original)
+    original_dict = original.to_dict()
+    original_json = original.to_json()
+
+    rebuilt_from_dict = original_type.from_dict(original_dict)
+    assert isinstance(rebuilt_from_dict, original_type)
+    assert rebuilt_from_dict.to_dict() == original_dict
+    assert rebuilt_from_dict.render() == original.render()
+
+    rebuilt_from_json = original_type.from_json(original_json)
+    assert isinstance(rebuilt_from_json, original_type)
+    assert rebuilt_from_json.to_dict() == original_dict
+    assert rebuilt_from_json.render() == original.render()
 
 
 def test_from_html() -> None:
