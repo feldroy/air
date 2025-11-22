@@ -343,32 +343,112 @@ class BaseTag:
         inner = indent(inner, INDENT_UNIT * level)
         return f"air.{self._name}(\n{INDENT_UNIT * (level + 1)}{inner}\n)"
 
+    # ------------------------------------------------------------
     def to_source(self, level: int = 0) -> str:
+        """Return a Python expression that rebuilds this tag.
+
+        Args:
+            level: The current indentation depth when nesting tags.
+
+        Returns:
+            The instantiation expression for this tag and its children.
+        """
+        outer_padding, inner_padding = self._get_paddings(level)
+        if len(self._children) == 0 and len(self._attrs) == 0:
+            inner_padding = ""
+            source_lines = self._source_lines(level, inner_padding)
+            parsed_lines = ""
+        # elif len(self._children) <= 1 and len(self._attrs) <= 1:
+        elif len(self._children) <= 1 and len(self._attrs) <= 1:
+            if isinstance(self.first_child, BaseTag):
+                if self.first_child.has_children:
+                    source_lines = self._source_lines(level, inner_padding)
+                    lines = ",\n".join(source_lines)
+                    parsed_lines = f"\n{lines},\n{outer_padding}"
+                else:
+                    inner_padding = ""
+                    source_lines = self._source_lines(level, inner_padding)
+                    parsed_lines = "".join(source_lines)
+            else:
+                inner_padding = ""
+                source_lines = self._source_lines(level, inner_padding)
+                parsed_lines = "".join(source_lines)
+        else:
+            source_lines = self._source_lines(level, inner_padding)
+            lines = ",\n".join(source_lines)
+            parsed_lines = f"\n{lines},\n{outer_padding}"
+        return f"{outer_padding}air.{self._name}({parsed_lines})"
+        # return self._render_source_lines(source_lines, outer_padding)
+
+    @staticmethod
+    def _get_paddings(level: int) -> tuple[str, str]:
         outer_padding = INDENT_UNIT * level
         inner_padding = INDENT_UNIT * (level + 1)
-        children_source_lines = self.to_children_source(level=level, padding=inner_padding)
-        attributes_source_lines = self.to_attributes_source(level=level, padding=inner_padding)
-        source_lines = children_source_lines + attributes_source_lines
-        if not source_lines:
-            return f"{outer_padding}air.{self._name}()"
+        return outer_padding, inner_padding
 
-        if not self._attrs and len(self._children) == 1 and not isinstance(self._children[0], BaseTag):
-            return f'{outer_padding}air.{self._name}("{self._children[0]}")'
+    def _source_lines(self, level: int, inner_padding: str) -> list[str]:
+        children_source_lines = self._to_children_source(level=level, padding=inner_padding)
+        attribute_source_lines = self._to_attributes_source(level=level, padding=inner_padding)
+        return children_source_lines + attribute_source_lines
 
+    def _render_attribute_free_void_element(self, outer_padding: str) -> str:
+        return f"{outer_padding}air.{self._name}()"
+
+    def _render_single_literal_child(self, outer_padding: str) -> str:
+        child = self._children[0]
+        return f'{outer_padding}air.{self._name}("{child}")'
+
+    def _render_source_lines(self, source_lines: list[str], padding: str) -> str:
         body = ",\n".join(source_lines)
-        return f"{outer_padding}air.{self._name}(\n{body},\n{outer_padding})"
+        return f"{padding}air.{self._name}(\n{body},\n{padding})"
 
-    def to_children_source(self, level: int, padding: str) -> list[str]:
+    def _render_all_source_lines(self, source_lines: list[str], padding: str) -> str:
+        body = ",\n".join(source_lines)
+        return f"{padding}air.{self._name}({f"\n{body},\n{padding}"})"
+        # return f"{outer_padding}air.{self._name}()"
+        # return f'{outer_padding}air.{self._name}("{child}")'
+
+    @property
+    def is_attribute_free_void_element(self) -> bool:
+        return not self._children and not self._attrs
+
+    @property
+    def first_child(self) -> Renderable | None:
+        return self._children and self._children[0]
+
+    @property
+    def last_child(self) -> Renderable | None:
+        return self._children and self._children[len(self._children) - 1]
+
+    @property
+    def has_children(self) -> bool:
+        return bool(self._children)
+
+    @property
+    def first_attribute(self) -> tuple[str, AttributeType] | None:
+        return self._attrs and list(self._attrs.items())[0]
+
+    @property
+    def last_attribute(self) -> tuple[str, AttributeType] | None:
+        return self._attrs and list(self._attrs.items())[len(self.attrs) - 1]
+
+    @property
+    def tag_id(self) -> str | None:
+        return self._attrs and self._attrs.get("id_")
+
+    def _to_children_source(self, level: int, padding: str) -> list[str]:
         return [
             (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{padding}{child!r}")
             for child in self._children
         ]
 
-    def to_attributes_source(self, level: int, padding: str) -> list[str]:
+    def _to_attributes_source(self, level: int, padding: str) -> list[str]:
         return [
-            f'{padding}{name}="{value}"'
+            f'{padding}{name}={value!r}'
             for name, value in self._attrs.items()
         ]
+
+    # ------------------------------------------------------------
 
     def to_source32(self, level: int = 0) -> str:
         indent = INDENT_UNIT * level

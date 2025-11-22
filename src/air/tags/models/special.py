@@ -18,8 +18,8 @@ class Html(BaseTag):
     def pretty_render(
         self,
         *,
-        with_body: bool = False,
-        with_head: bool = False,
+        with_body: bool | None = None,
+        with_head: bool | None = None,
         with_doctype: bool = True,
     ) -> str:
         """Pretty-print without escaping."""
@@ -74,11 +74,11 @@ class UnSafeTag(BaseTag):
     """Tag base that bypasses HTML escaping for its content."""
 
     @override
-    def __init__(self, text_child: str = "", /, **kwargs: AttributeType) -> None:
-        if not isinstance(text_child, str):
+    def __init__(self, *text_child: str, **kwargs: AttributeType) -> None:
+        if not all(isinstance(child, str) for child in text_child):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
-        super().__init__(text_child, **kwargs)
+        super().__init__(*text_child, **kwargs)
 
     @override
     @staticmethod
@@ -134,14 +134,12 @@ class Script(UnSafeTag):
     @override
     def __init__(
         self,
-        text_child: str = "",
-        /,
-        *,
+        *text_child: str,
         src: str | None = None,
         type: str | None = None,
-        async_: bool = False,
-        defer: bool = False,
-        nomodule: bool = False,
+        async_: bool | None = None,
+        defer: bool | None = None,
+        nomodule: bool | None = None,
         crossorigin: Literal["anonymous", "use-credentials"] | None = None,
         integrity: str | None = None,
         referrerpolicy: Literal[
@@ -164,7 +162,7 @@ class Script(UnSafeTag):
         style: str | None = None,
         **kwargs: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(*text_child, **kwargs | locals_cleanup(locals()))
 
 
 class Style(UnSafeTag):
@@ -187,9 +185,7 @@ class Style(UnSafeTag):
     @override
     def __init__(
         self,
-        text_child: str = "",
-        /,
-        *,
+        *text_child: str,
         media: str | None = None,
         title: str | None = None,
         blocking: Literal["render"] | None = None,
@@ -200,7 +196,7 @@ class Style(UnSafeTag):
         style: str | None = None,
         **kwargs: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(*text_child, **kwargs | locals_cleanup(locals()))
 
 
 class Comment(UnSafeTag):
@@ -209,18 +205,17 @@ class Comment(UnSafeTag):
     @override
     def __init__(
         self,
-        text_child: str = "",
-        /,
+        *text_child: str,
     ) -> None:
         """Initializes the comment with the raw text payload.
 
         Args:
             text_child: Text inserted inside the comment delimiters.
         """
-        if "\n" in text_child:
+        super().__init__(*text_child)
+        if "\n" in "".join(text_child):
             msg = f"{self!r}, does not support multi-line comments!"
             raise TypeError(msg)
-        super().__init__(text_child)
 
     @override
     def _render(self) -> str:
