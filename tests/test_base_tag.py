@@ -15,7 +15,7 @@ import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag, TagDictType
 from air.tags.utils import SafeStr
-from utils import clean_doc
+from .utils import clean_doc
 
 
 class SampleTag(BaseTag):
