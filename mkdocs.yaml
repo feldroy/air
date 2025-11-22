@@ -124,6 +124,8 @@ markdown_extensions:
   - md_in_html
   - pymdownx.emoji
   - pymdownx.details
+  - pymdownx.highlight:
+      default_lang: python
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
