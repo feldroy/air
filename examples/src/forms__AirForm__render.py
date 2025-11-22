@@ -1,11 +1,9 @@
-"""Example: Using AirForm.render to generate HTML for a simple contact form.
-
-Run:
-
-    uv run examples/src/forms__AirForm__render.py
-
-Then open http://127.0.0.1:8000/contact in your browser.
-"""
+# Example: Using AirForm.render to generate HTML for a simple contact form.
+#
+# Run:
+#     uv run examples/src/forms__AirForm__render.py
+#
+# Then open http://127.0.0.1:8000/contact in your browser.
 
 from pydantic import BaseModel
 
@@ -15,7 +13,7 @@ app = air.Air()
 
 
 class ContactModel(BaseModel):
-    """Pydantic model backing the contact form."""
+    # Pydantic model backing the contact form.
 
     name: str
     email: str
@@ -23,14 +21,14 @@ class ContactModel(BaseModel):
 
 
 class ContactForm(air.AirForm):
-    """AirForm that uses ContactModel for validation and rendering."""
+    # AirForm that uses ContactModel for validation and rendering.
 
     model = ContactModel
 
 
 @app.page
 def contact(request: air.Request):
-    """Render a page with a contact form built using AirForm.render()."""
+    # Render a page with a contact form built using AirForm.render()
     form = ContactForm()
     return air.layouts.mvpcss(
         air.H1("Contact us"),
@@ -46,7 +44,7 @@ def contact(request: air.Request):
 
 @app.post("/contact")
 async def submit(request: air.Request) -> air.Html:
-    """Handle form submission and re-render the form if there are errors."""
+    # Handle form submission and re-render the form if there are errors.
     form = ContactForm()
     form_data = await request.form()
 
