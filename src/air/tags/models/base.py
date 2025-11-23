@@ -660,15 +660,29 @@ class BaseTag:
         """
         return cls.from_dict(json.loads(source_json))
 
+        # TODO -> Add to `from_html` docstrings:
+        """
+        Args:
+            html_source: HTML content to parse.
+            is_fragment: Controls how the input is parsed. (optional)
+                * If ``False`` (default), the input is treated as a full HTML document.
+                  The parser also accepts HTML fragments and inserts any missing
+                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
+                  into the tree, according to the parsing rules in the HTML Standard.
+                  This matches how browsers build the DOM when they load an HTML page.
+                * If ``True``, the input is treated as an HTML fragment.
+                  The parser does not insert any missing required HTML elements.
+        """
+
     @classmethod
-    def from_html(cls, html_source: str, with_top_level_tags: bool = True) -> BaseTag:
+    def from_html(cls, html_source: str, is_fragment: bool = True) -> BaseTag:
         if not isinstance(html_source, str):
             msg = f"{cls.__name__}.from_html(html_source) expects a string argument."
             raise TypeError(msg)
         if not nh3.is_html(html_source):
             msg = f"{cls.__name__}.from_html(html_source) expects a valid HTML string."
             raise ValueError(msg)
-        if with_top_level_tags and not has_all_top_level_tags(html_source):
+        if is_fragment and not has_all_top_level_tags(html_source):
             msg = f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags."
             raise ValueError(msg)
         parser = LexborHTMLParser(html_source)
