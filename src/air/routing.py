@@ -390,7 +390,7 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> None:
         self.path_separator = path_separator
         if default is None:
-            default = default_404_router_handler
+            default = default_404_router_handler(prefix or "router")
         super().__init__(
             prefix=prefix,
             tags=tags,
