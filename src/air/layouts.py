@@ -121,6 +121,43 @@ def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> H
         children: These typically inherit from air.Tag but can be anything
         is_htmx: Whether or not HTMX sent the request from the page
 
+    Example:
+
+        import air
+
+        app = air.Air()
+
+
+        @app.page
+        async def index(request: air.Request):
+            return air.layouts.picocss(
+                air.Title("Home"),
+                air.Article(
+                    air.H1("Welcome to Air"),
+                    air.P(air.A("Click to go to Dashboard", href="/dashboard")),
+                    hx_boost="true",
+                ),
+                is_htmx=request.htmx.is_hx_request,
+            )
+
+
+        @app.page
+        async def dashboard(request: air.Request):
+            return air.layouts.picocss(
+                air.Title("Dashboard"),
+                air.Article(
+                    air.H1("Dashboard"),
+                    air.P(air.A("Go home", href="/")),
+                    hx_boost="true",
+                ),
+                is_htmx=request.htmx.is_hx_request,
+            )
+
+
+        if __name__ == "__main__":
+            import uvicorn
+
+            uvicorn.run(app, host="127.0.0.1", port=8000)
     """
     body_tags = filter_body_tags(children)
     head_tags = filter_head_tags(children)
