@@ -355,7 +355,8 @@ class BaseTag:
         return f"air.{self._name}(\n{INDENT_UNIT * (level + 1)}{inner}\n)"
 
     # ------------------------------------------------------------
-    def to_source(self, level: int = 0) -> str:
+    # The last good one:
+    def to_source_last(self, level: int = 0) -> str:
         """Return a Python expression that rebuilds this tag.
 
         Args:
@@ -390,6 +391,34 @@ class BaseTag:
             parsed_lines = f"\n{lines},\n{outer_padding}"
         return f"{outer_padding}air.{self._name}({parsed_lines})"
         # return self._render_source_lines(source_lines, outer_padding)
+
+    # My current method:
+    def to_source(self, level: int = 0) -> str:
+        """Return a Python expression that rebuilds this tag.
+
+        Args:
+            level: The current indentation depth when nesting tags.
+
+        Returns:
+            The instantiation expression for this tag and its children.
+        """
+        outer_padding, inner_padding = self._get_paddings(level)
+        parsed_lines = self.parsed_lines(level, outer_padding, inner_padding)
+        return f"{outer_padding}air.{self._name}({parsed_lines})"
+        # return self._render_source_lines(source_lines, outer_padding)
+
+    def parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
+        if len(self._children) == 0 and len(self._attrs) == 0:
+            return ""
+        if (len(self._children) <= 1 and len(self._attrs) <= 1 and
+            (not isinstance(self.first_child, BaseTag) or
+             (not self.first_child.has_children and not self.first_child.has_attributes))):
+            inner_padding = ""
+            source_lines = self._source_lines(level, inner_padding)
+            return "".join(source_lines)
+        source_lines = self._source_lines(level, inner_padding)
+        lines = ",\n".join(source_lines)
+        return f"\n{lines},\n{outer_padding}"
 
     @staticmethod
     def _get_paddings(level: int) -> tuple[str, str]:
@@ -434,6 +463,10 @@ class BaseTag:
     @property
     def has_children(self) -> bool:
         return bool(self._children)
+
+    @property
+    def has_attributes(self) -> bool:
+        return bool(self._attrs)
 
     @property
     def first_attribute(self) -> tuple[str, AttributeType] | None:
@@ -500,7 +533,7 @@ class BaseTag:
             line = lines[line_no]
             if line.expandable and not line.expanded:
                 if expand_all or not line.check_length(max_width):
-                    lines[line_no : line_no + 1] = line.expand(indent_size)
+                    lines[line_no: line_no + 1] = line.expand(indent_size)
             line_no += 1
 
         repr_str = "\n".join(str(line) for line in lines)
@@ -655,9 +688,11 @@ class BaseTag:
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
-        children: TagChildrenType = tuple([
-            cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
-        ])
+        children: TagChildrenType = tuple(
+            [
+                cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
+            ]
+        )
         attributes: TagAttributesType = {
             migrate_html_key_to_air_tag(key): value for key, value in node.attributes.items()
         }
