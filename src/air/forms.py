@@ -270,6 +270,82 @@ class AirForm:
         return default_form_widget
 
     def render(self) -> SafeStr:
+        """Return HTML representation of HTML widget
+
+        Example:
+
+            from pydantic import BaseModel
+
+            import air
+
+            app = air.Air()
+
+
+            class ContactModel(BaseModel):
+                # Pydantic model backing the contact form.
+
+                name: str
+                email: str
+                message: str
+
+
+            class ContactForm(air.AirForm):
+                # AirForm that uses ContactModel for validation and rendering.
+
+                model = ContactModel
+
+
+            @app.page
+            def contact(request: air.Request):
+                # Render a page with a contact form built using AirForm.render()
+                form = ContactForm()
+                return air.layouts.mvpcss(
+                    air.H1("Contact us"),
+                    air.P("This form is rendered using AirForm.render()."),
+                    air.Form(
+                        form.render(),
+                        air.Button("Send message", type="submit"),
+                        method="post",
+                        action=submit.url(),  # type: ignore[unresolved-attribute]
+                    ),
+                )
+
+
+            @app.post("/contact")
+            async def submit(request: air.Request) -> air.Html:
+                # Handle form submission and re-render the form if there are errors.
+                form = ContactForm()
+                form_data = await request.form()
+
+                # Validate incoming form data; AirForm.render() will then include errors
+                # and preserve submitted values when re-rendered.
+                form.validate(form_data)
+
+                if form.is_valid:
+                    return air.Html(
+                        air.H1("Thank you for your message!"),
+                        air.P("Your contact form was submitted successfully."),
+                    )
+
+                error_count = len(form.errors or [])
+                return air.Html(
+                    air.H1("Please fix the errors below."),
+                    air.P(f"Found {error_count} validation error(s)."),
+                    air.Form(
+                        form.render(),
+                        air.Button("Send message", type="submit"),
+                        method="post",
+                        action=submit.url(),  # type: ignore[unresolved-attribute]
+                    ),
+                )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="127.0.0.1", port=8000)
+        """
+
         # Use submitted data if available (preserves values on validation errors)
         render_data = getattr(self, "submitted_data", None) or self.initial_data
         return SafeStr(
@@ -561,19 +637,6 @@ def AirField(
     NOTE: This is named AirField to adhere to the same naming convention as AirForm.
 
     Example:
-
-        # This example demonstrates:
-
-        # - How AirField customizes HTML input types (e.g. email, datetime-local)
-        # - How labels and autofocus attributes appear in rendered forms
-        # - How AirForm binds to a Pydantic model for validation
-        # - How the form behaves when submitted with valid and invalid data
-
-        # Run:
-
-        #     uv run examples/src/forms__AirField.py
-
-        # Then visit http://127.0.0.1:8000/ in your browser.
 
         from pydantic import BaseModel
 

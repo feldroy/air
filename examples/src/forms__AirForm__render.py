@@ -1,10 +1,3 @@
-# Example: Using AirForm.render to generate HTML for a simple contact form.
-#
-# Run:
-#     uv run examples/src/forms__AirForm__render.py
-#
-# Then open http://127.0.0.1:8000/contact in your browser.
-
 from pydantic import BaseModel
 
 import air
