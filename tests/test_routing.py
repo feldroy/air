@@ -401,3 +401,17 @@ def test_air_router_delete_endpoint() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Updated item 42</h1>"
+
+
+def test_air_router_default_404_handler() -> None:
+    """Test that AirRouter correctly configures the default 404 handler."""
+    router = air.AirRouter(prefix="/api")
+
+    @router.get("/exists")
+    def exists() -> air.H1:
+        return air.H1("exists")
+
+    client = TestClient(router)
+    response = client.get("/api/not-found")
+    assert response.status_code == 404
+    assert "The requested resource was not found on this server." in response.text
