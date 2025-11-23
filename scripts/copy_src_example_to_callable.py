@@ -208,9 +208,10 @@ def update_example_section(
     return True
 
 
-def main():
+def main(project_root: Path | None = None):
     """Main function to process all examples/src files."""
-    project_root = Path(__file__).parent.parent
+    if project_root is None:
+        project_root = Path(__file__).parent.parent  # pragma: no cover
     src_examples_dir = project_root / "examples/src"
     src_dir = project_root / "src" / "air"
 
@@ -233,7 +234,7 @@ def main():
         source_file = src_dir / f"{module}.py"
 
         if not source_file.exists():
-            console.print(f"Source file not found: {source_file}", style="ERROR_STYLE")
+            console.print(f"Source file not found: {source_file}", style=ERROR_STYLE)
             continue
 
         # Update the example section

@@ -562,7 +562,7 @@ norecursedirs = [
 DATABASE_URL = "sqlite:///:memory:"
 
 [tool.coverage.run]
-source = ["src"]
+source = ["src", "scripts"]
 branch = true
 parallel = true
 sigterm = true
