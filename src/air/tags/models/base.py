@@ -7,23 +7,26 @@ import json
 from collections.abc import Mapping
 from functools import cached_property
 from pathlib import Path
+from textwrap import indent
 from types import MappingProxyType
 from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
 
 import nh3
+from rich.pretty import pretty_repr
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
-from rich.pretty import _Line, pretty_repr
-from textwrap import indent
 
-from ..constants import TOP_LEVEL_HTML_TAGS
 from ..utils import (
     SafeStr,
     StrPath,
-    _fmt_value, clean_html_attr_key,
+    _fmt_value,
+    clean_html_attr_key,
     compact_format_html,
     display_pretty_html_in_the_browser,
-    extract_html_comment, has_all_top_level_tags, migrate_html_key_to_air_tag, open_html_in_the_browser,
+    extract_html_comment,
+    has_all_top_level_tags,
+    migrate_html_key_to_air_tag,
+    open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
 )
@@ -57,12 +60,20 @@ type TagAttributesType = Annotated[
         """
     ),
 ]
+type TagChildrenType = Annotated[
+    tuple[Renderable, ...],
+    Doc(
+        """
+        The type for all the children of an HTML tag.
+        """
+    ),
+]
 
 
 class TagDictType(TypedDict):
     name: str
     attributes: TagAttributesType
-    children: tuple[Renderable, ...]
+    children: TagChildrenType
 
 
 class TagKeys:
@@ -92,7 +103,7 @@ class BaseTag:
         """
         self._name = self.__class__.__name__
         self._module = self.__class__.__module__
-        self._children: tuple[Renderable, ...] = children
+        self._children: TagChildrenType = children
         self._attrs: TagAttributesType = attributes
 
     def __new__(cls, *args: Any, **kwargs: Any) -> Self:
@@ -324,22 +335,22 @@ class BaseTag:
 
     def to_source2(self) -> str:
         attributes = [f'{key}="{value}"' for key, value in self._attrs.items()] if self._attrs else []
-        children = [
-            child.to_source2() if isinstance(child, BaseTag) else child for child in self._children
-        ] if self._children else []
-        return f"air.{self._name}({", ".join(children + attributes)})"
+        children = (
+            [child.to_source2() if isinstance(child, BaseTag) else child for child in self._children]
+            if self._children
+            else []
+        )
+        return f"air.{self._name}({', '.join(children + attributes)})"
 
     def to_source78(self, level: int = 0) -> str:
-        attributes = [
-            f'{key}="{value}"'
-            for key, value in self._attrs.items()
-        ] if self._attrs else []
-        children = [
-            child.to_source78(level + 1) if isinstance(child, BaseTag) else str(child)
-            for child in self._children
-        ] if self._children else []
+        attributes = [f'{key}="{value}"' for key, value in self._attrs.items()] if self._attrs else []
+        children = (
+            [child.to_source78(level + 1) if isinstance(child, BaseTag) else str(child) for child in self._children]
+            if self._children
+            else []
+        )
         parts = children + attributes
-        inner = f",\n".join(parts)
+        inner = ",\n".join(parts)
         inner = indent(inner, INDENT_UNIT * level)
         return f"air.{self._name}(\n{INDENT_UNIT * (level + 1)}{inner}\n)"
 
@@ -404,7 +415,7 @@ class BaseTag:
 
     def _render_all_source_lines(self, source_lines: list[str], padding: str) -> str:
         body = ",\n".join(source_lines)
-        return f"{padding}air.{self._name}({f"\n{body},\n{padding}"})"
+        return f"{padding}air.{self._name}({f'\n{body},\n{padding}'})"
         # return f"{outer_padding}air.{self._name}()"
         # return f'{outer_padding}air.{self._name}("{child}")'
 
@@ -443,10 +454,7 @@ class BaseTag:
         ]
 
     def _to_attributes_source(self, level: int, padding: str) -> list[str]:
-        return [
-            f'{padding}{name}={value!r}'
-            for name, value in self._attrs.items()
-        ]
+        return [f"{padding}{name}={value!r}" for name, value in self._attrs.items()]
 
     # ------------------------------------------------------------
 
@@ -480,9 +488,11 @@ class BaseTag:
         body = ",\n".join(lines)
         return f"{indent}air.{self._name}(\n{body},\n{indent})"
 
-
     def to_init_repr(
-        self, max_width: int = 80, indent_size: int = 4, expand_all: bool = False,
+        self,
+        max_width: int = 80,
+        indent_size: int = 4,
+        expand_all: bool = False,
     ) -> str:
         lines = [_Line(node=self, is_root=True)]
         line_no = 0
@@ -490,7 +500,7 @@ class BaseTag:
             line = lines[line_no]
             if line.expandable and not line.expanded:
                 if expand_all or not line.check_length(max_width):
-                    lines[line_no: line_no + 1] = line.expand(indent_size)
+                    lines[line_no : line_no + 1] = line.expand(indent_size)
             line_no += 1
 
         repr_str = "\n".join(str(line) for line in lines)
@@ -525,11 +535,7 @@ class BaseTag:
         inner = ",\n".join(args)
         inner = indent(inner, indent_unit * (level + 1))
 
-        result = (
-            f"{prefix}{self._name}(\n"
-            f"{inner},\n"
-            f"{prefix})"
-        )
+        result = f"{prefix}{self._name}(\n{inner},\n{prefix})"
         return result.expandtabs(4)
 
     def to_pretty_dict(self) -> str:
@@ -541,7 +547,6 @@ class BaseTag:
         """
         return pretty_repr(self.to_dict(), max_width=170, max_length=7, max_depth=4, max_string=25)
 
-
     def to_dict(self) -> TagDictType:
         """Convert the tag into a JSON-serializable dictionary.
 
@@ -551,16 +556,16 @@ class BaseTag:
         return {
             TagKeys.NAME: self._name,
             TagKeys.ATTRIBUTES: self._attrs,
-            TagKeys.CHILDREN: tuple(self._to_child_dict()),
+            TagKeys.CHILDREN: self._to_child_dict(),
         }
 
-    def _to_child_dict(self) -> list[TagDictType | Renderable]:
+    def _to_child_dict(self) -> tuple[TagDictType | Renderable, ...]:
         """Convert child nodes into serializable objects.
 
         Returns:
             A list containing serialized child tags or raw values.
         """
-        return [child.to_dict() if isinstance(child, BaseTag) else child for child in self._children]
+        return tuple(child.to_dict() if isinstance(child, BaseTag) else child for child in self._children)
 
     def to_json(self, indent: int | None = None) -> str:
         """Serialize the tag to JSON.
@@ -592,23 +597,23 @@ class BaseTag:
             The restored tag instance.
         """
         name, attributes, children_dict = source_dict.values()
-        children: tuple[BaseTag, ...] = tuple(cls._from_child_dict(children_dict))
+        children: TagChildrenType = cls._from_child_dict(children_dict)
         air_tag = cls._create_tag(name, *children, **attributes)
         return air_tag
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagDictType) -> list[Renderable]:
+    def _from_child_dict(cls, children_dict: TagDictType) -> tuple[TagDictType | Renderable, ...]:
         """Restore serialized children into tag instances or raw values.
 
         Args:
             children_dict: The serialized children sequence.
 
         Returns:
-            The restored children collection.
+            The restored children's collection.
         """
-        return [
+        return tuple(
             cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict for child_dict in children_dict
-        ]
+        )
 
     @classmethod
     def from_json(cls, source_json: str) -> BaseTag:
@@ -625,11 +630,14 @@ class BaseTag:
     @classmethod
     def from_html(cls, html_source: str, with_top_level_tags: bool = True) -> BaseTag:
         if not isinstance(html_source, str):
-            raise TypeError(f"{cls.__name__}.from_html(html_source) expects a string argument.")
+            msg = f"{cls.__name__}.from_html(html_source) expects a string argument."
+            raise TypeError(msg)
         if not nh3.is_html(html_source):
-            raise ValueError(f"{cls.__name__}.from_html(html_source) expects a valid HTML string.")
+            msg = f"{cls.__name__}.from_html(html_source) expects a valid HTML string."
+            raise ValueError(msg)
         if with_top_level_tags and not has_all_top_level_tags(html_source):
-            raise ValueError(f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags.")
+            msg = f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags."
+            raise ValueError(msg)
         parser = LexborHTMLParser(html_source)
         # TODO -> Use unwrap_tags for tags without any top_level_tags
         # parser.unwrap_tags(["body", "head"])
@@ -647,15 +655,11 @@ class BaseTag:
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
-        children: tuple[BaseTag, ...] = tuple(
-            [
-                cls._from_child_html(child)
-                for child in node.iter(include_text=True, skip_empty=True)
-            ]
-        )
+        children: TagChildrenType = tuple([
+            cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
+        ])
         attributes: TagAttributesType = {
-            migrate_html_key_to_air_tag(key): value
-            for key, value in node.attributes.items()
+            migrate_html_key_to_air_tag(key): value for key, value in node.attributes.items()
         }
         air_tag = cls._create_tag(node.tag, *children, **attributes)
         return air_tag
@@ -676,12 +680,20 @@ class BaseTag:
         if node.tag.endswith("-document"):
             raise NotImplementedError
         if node.tag.endswith("-comment"):
-            return cls._create_tag("Comment", extract_html_comment(node.html))
+            return cls._create_comment_tag(node)
         return cls._from_html(node)
 
     @classmethod
+    def _create_comment_tag(cls, node: LexborNode) -> BaseTag:
+        return cls._create_tag("comment", extract_html_comment(node.html))
+
+    @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
-        return cls.registry[name.title()](*children, **attributes)  # ty: ignore[invalid-argument-type]
+        try:
+            return cls.registry[name.lower()](*children, **attributes)  # ty: ignore[invalid-argument-type]
+        except KeyError as e:
+            msg = f"Unable to create a new air-tag, <{name}> is not a registered tag name."
+            raise TypeError(msg) from e
 
     @classmethod
     def from_html_to_source(cls, html_source: str) -> str:
@@ -690,9 +702,10 @@ class BaseTag:
     def __init_subclass__(cls) -> None:
         """Register subclasses so they can be restored from serialized data."""
         super().__init_subclass__()
-        BaseTag._registry[cls.__name__] = cls
+        BaseTag._registry[cls.__name__.lower()] = cls
 
     def __eq__(self, other: Self, /) -> bool:
         if isinstance(other, BaseTag):
             return self.render() == other.render()
-        raise TypeError(f"<{self.name}> is comparable only to other air-tags.")
+        msg = f"<{self.name}> is comparable only to other air-tags."
+        raise TypeError(msg)

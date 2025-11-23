@@ -2,8 +2,8 @@
 
 from typing import Literal, override
 
-from ..utils import locals_cleanup
 from ..constants import HTML_DOCTYPE
+from ..utils import locals_cleanup
 from .base import AttributeType, BaseTag, Renderable
 
 
@@ -148,16 +148,16 @@ class Script(UnSafeTag):
         crossorigin: Literal["anonymous", "use-credentials"] | None = None,
         integrity: str | None = None,
         referrerpolicy: Literal[
-                            "no-referrer",
-                            "no-referrer-when-downgrade",
-                            "origin",
-                            "origin-when-cross-origin",
-                            "same-origin",
-                            "strict-origin",
-                            "strict-origin-when-cross-origin",
-                            "unsafe-url",
-                        ]
-                        | None = None,
+            "no-referrer",
+            "no-referrer-when-downgrade",
+            "origin",
+            "origin-when-cross-origin",
+            "same-origin",
+            "strict-origin",
+            "strict-origin-when-cross-origin",
+            "unsafe-url",
+        ]
+        | None = None,
         fetchpriority: Literal["high", "low", "auto"] | None = None,
         blocking: Literal["render"] | None = None,
         attributionsrc: str | None = None,

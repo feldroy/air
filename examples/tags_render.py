@@ -12,14 +12,10 @@ Run:
 from __future__ import annotations
 
 from rich import print
-from rich.pretty import pretty_repr
+from tests.utils import clean_doc
 
 import air
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
-
-from rich.traceback import install
-
-from tests.utils import clean_doc
 
 # install(show_locals=True)
 

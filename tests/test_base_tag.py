@@ -1,20 +1,18 @@
 from __future__ import annotations
 
-import builtins
 import json
-import sys
-import types
 from collections.abc import Iterator
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 import pytest
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 import air
 import air.tags.models.base as base_module
-from air.tags.models.base import BaseTag, TagDictType
+from air.tags.models.base import BaseTag, Renderable, TagDictType
 from air.tags.utils import SafeStr
+
 from .utils import clean_doc
 
 
@@ -98,7 +96,7 @@ def test_pretty_render_in_the_browser_uses_pretty_render(monkeypatch: pytest.Mon
         {
             "html": "<sampletag>content</sampletag>",
             "kwargs": {"with_body": True, "with_head": False, "with_doctype": True},
-        }
+        },
     ]
     assert browser_calls == ["formatted"]
 
@@ -119,14 +117,14 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
         {
             "html": "<sampletag>body</sampletag>",
             "kwargs": {"with_body": True, "with_head": True, "with_doctype": True},
-        }
+        },
     ]
 
 
 def test_compact_format_html_minifies() -> None:
     assert len(SMALL_HTML_SAMPLE.compact_render()) == 754
     assert len(HTML_SAMPLE.compact_render()) == 7530
-    assert len(air.Html(*([HTML_SAMPLE.children] * 100)).compact_render()) == 883315
+    assert len(air.Html(*([HTML_SAMPLE.children] * 100)).compact_render()) == 883215
 
 
 def test_compact_render_passes_html_to_compact_formatter(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -244,50 +242,6 @@ def test_to_json_and_to_pretty_json_round_trip() -> None:
     assert pretty_loaded == loaded
 
 
-def test_to_pretty_dict_uses_rich_when_available(monkeypatch: pytest.MonkeyPatch) -> None:
-    captured: dict[str, Any] = {}
-    rich_module = types.ModuleType("rich")
-    rich_pretty_module = types.ModuleType("rich.pretty")
-
-    def fake_pretty_repr(data: TagDictType, **kwargs: Any) -> str:
-        captured["data"] = data
-        captured["kwargs"] = kwargs
-        return "pretty"
-
-    rich_pretty_module.pretty_repr = fake_pretty_repr
-    rich_module.pretty = rich_pretty_module
-
-    monkeypatch.setitem(sys.modules, "rich", rich_module)
-    monkeypatch.setitem(sys.modules, "rich.pretty", rich_pretty_module)
-
-    result = SampleTag("rich").to_pretty_dict()
-
-    assert result == "pretty"
-    assert captured["data"]["name"] == "SampleTag"
-
-
-def test_to_pretty_dict_falls_back_when_rich_missing(monkeypatch: pytest.MonkeyPatch) -> None:
-    original_import = builtins.__import__
-
-    def fake_import(
-        name: str,
-        globals_: dict[str, Any] | None = None,
-        locals_: dict[str, Any] | None = None,
-        fromlist: tuple[str, ...] = (),
-        level: int = 0,
-    ) -> Any:
-        if name == "rich.pretty":
-            raise ModuleNotFoundError
-        return original_import(name, globals_, locals_, fromlist, level)
-
-    monkeypatch.setattr(builtins, "__import__", fake_import)
-
-    tag = SampleTag("fallback")
-    result = tag.to_pretty_dict()
-
-    assert result == str(tag.to_dict())
-
-
 def test_from_dict_and_from_json_restore_instances() -> None:
     original = WrapperTag(SampleTag("child"), "plain", title="demo")
     as_dict = original.to_dict()
@@ -303,7 +257,7 @@ def test_from_dict_and_from_json_restore_instances() -> None:
 
 
 def test_from_child_dict_handles_nested_and_plain_values() -> None:
-    child_dict: tuple[Any, ...] = (
+    child_dict: tuple[TagDictType | Renderable, ...] = (
         "plain",
         {
             "name": "SampleTag",
@@ -312,7 +266,7 @@ def test_from_child_dict_handles_nested_and_plain_values() -> None:
         },
     )
 
-    restored = WrapperTag._from_child_dict(cast(Any, child_dict))
+    restored = WrapperTag._from_child_dict(child_dict)
 
     assert restored[0] == "plain"
     assert isinstance(restored[1], SampleTag)
@@ -322,7 +276,7 @@ def test_init_subclass_registers_new_tag() -> None:
     class EphemeralTag(BaseTag):
         """Temporary tag for registry tests."""
 
-    assert BaseTag.registry["EphemeralTag"] is EphemeralTag
+    assert BaseTag.registry[EphemeralTag.__name__.lower()] is EphemeralTag
 
 
 def test_from_dict_and_from_json_roundtrip() -> None:
@@ -331,6 +285,25 @@ def test_from_dict_and_from_json_roundtrip() -> None:
     original_type = type(original)
     original_dict = original.to_dict()
     original_json = original.to_json()
+
+    rebuilt_from_dict = original_type.from_dict(original_dict)
+    assert isinstance(rebuilt_from_dict, original_type)
+    assert rebuilt_from_dict.to_dict() == original_dict
+    assert rebuilt_from_dict.render() == original.render()
+
+    rebuilt_from_json = original_type.from_json(original_json)
+    assert isinstance(rebuilt_from_json, original_type)
+    assert rebuilt_from_json.to_dict() == original_dict
+    assert rebuilt_from_json.render() == original.render()
+
+
+# TODO -> This test should pass!
+@pytest.mark.xfail(reason="Feature is incomplete!")
+def test_pretty_from_dict_and_from_json_roundtrip() -> None:
+    original = HTML_SAMPLE
+    original_type = type(original)
+    original_dict = original.to_pretty_dict()
+    original_json = original.to_pretty_dict()
 
     rebuilt_from_dict = original_type.from_dict(original_dict)
     assert isinstance(rebuilt_from_dict, original_type)

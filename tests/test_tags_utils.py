@@ -8,10 +8,9 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-
-import air.tags.constants
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
+import air.tags.constants
 import air.tags.utils as utils
 from air.exceptions import BrowserOpenError
 from air.tags.utils import SafeStr

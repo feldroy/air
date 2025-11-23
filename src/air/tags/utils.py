@@ -26,9 +26,17 @@ from rich.text import Text
 
 from air.exceptions import BrowserOpenError
 from air.tags.constants import (
-    BLOB_URL_PRESET, DATA_URL_MAX, DEFAULT_THEME, FORMAT_HTML_ENCODING, HTML_DOCTYPE, LOCALS_CLEANUP_EXCLUDED_KEYS,
-    PANEL_BORDER_STYLE, PANEL_TITLE,
-    PANEL_TITLE_STYLE, SYNTAX_LEXER, TOP_LEVEL_HTML_TAGS
+    BLOB_URL_PRESET,
+    DATA_URL_MAX,
+    DEFAULT_THEME,
+    FORMAT_HTML_ENCODING,
+    HTML_DOCTYPE,
+    LOCALS_CLEANUP_EXCLUDED_KEYS,
+    PANEL_BORDER_STYLE,
+    PANEL_TITLE,
+    PANEL_TITLE_STYLE,
+    SYNTAX_LEXER,
+    TOP_LEVEL_HTML_TAGS,
 )
 
 type StrPath = PathLike | Path | str
@@ -86,7 +94,8 @@ def extract_html_comment(text: str) -> str:
         # Remove the opening "<!--" and closing "-->"
         inner = s[4:-3]
         return inner.strip()
-    raise ValueError("Input is not a valid HTML comment")
+    msg = "Input is not a valid HTML comment"
+    raise ValueError(msg)
 
 
 def _fmt_value(value: Any) -> str:
