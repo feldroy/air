@@ -93,8 +93,8 @@ dependencies = [
     "python-multipart>=0.0.20",
     "lxml>=6.0.1",
     "rich>=14.2.0",
-    "selectolax>=0.4.0",
     "nh3>=0.3.2",
+    "selectolax>=0.4.3",
 ]
 # endregion project
 
@@ -214,6 +214,7 @@ conflicts = []
 # In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
 # uv uses your checked-out code.
 air = { workspace = true }
+selectolax = { git = "https://github.com/rushter/selectolax" }
 # -------- uv build backend --------
 # PEP 517/518: tells installers (pip/uv) how to build/install this project.
 # For Python libraries, an editable install is the standard:
