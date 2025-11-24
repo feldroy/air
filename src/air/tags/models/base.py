@@ -12,7 +12,7 @@ from types import MappingProxyType
 from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
 
 import nh3
-from rich.pretty import pretty_repr
+from rich.pretty import _Line, pretty_repr
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
@@ -407,18 +407,45 @@ class BaseTag:
         return f"{outer_padding}air.{self._name}({parsed_lines})"
         # return self._render_source_lines(source_lines, outer_padding)
 
-    def parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
+    def parsed_linesold(self, level: int, outer_padding: str, inner_padding: str) -> str:
         if len(self._children) == 0 and len(self._attrs) == 0:
             return ""
-        if (len(self._children) <= 1 and len(self._attrs) <= 1 and
-            (not isinstance(self.first_child, BaseTag) or
-             (not self.first_child.has_children and not self.first_child.has_attributes))):
+        # if (len(self._children) <= 1 and len(self._attrs) <= 1 and
+        #     (not isinstance(self.first_child, BaseTag) or
+        #      (not self.first_child.has_children and not self.first_child.has_attributes))):
+        if len(self._children) <= 1 and len(self._attrs) <= 1 and not isinstance(self.first_child, BaseTag):
             inner_padding = ""
             source_lines = self._source_lines(level, inner_padding)
             return "".join(source_lines)
         source_lines = self._source_lines(level, inner_padding)
         lines = ",\n".join(source_lines)
         return f"\n{lines},\n{outer_padding}"
+
+    def parsed_linesnew(self, level: int, outer_padding: str, inner_padding: str) -> str:
+        if not self.has_children and not self.has_attributes:
+            return ""
+        if len(self._children) <= 1 and len(self._attrs) <= 1 and not isinstance(self.first_child, BaseTag):
+            inner_padding = ""
+            source_lines = self._source_lines(level, inner_padding)
+            lines_separator = ", "
+            return lines_separator.join(source_lines)
+        source_lines = self._source_lines(level, inner_padding)
+        lines_separator = ",\n"
+        lines = lines_separator.join(source_lines)
+        return f"\n{lines},\n{outer_padding}"
+
+    def parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
+        if not self.has_children and not self.has_attributes:
+            return ""
+        if len(self._children) > 1 or len(self._attrs) > 1 or isinstance(self.first_child, BaseTag):
+            source_lines = self._source_lines(level, inner_padding)
+            lines_separator = ",\n"
+            lines = lines_separator.join(source_lines)
+            return f"\n{lines},\n{outer_padding}"
+        inner_padding = ""
+        source_lines = self._source_lines(level, inner_padding)
+        lines_separator = ", "
+        return lines_separator.join(source_lines)
 
     @staticmethod
     def _get_paddings(level: int) -> tuple[str, str]:
@@ -450,7 +477,7 @@ class BaseTag:
 
     @property
     def is_attribute_free_void_element(self) -> bool:
-        return not self._children and not self._attrs
+        return not self.has_children and not self.has_attributes
 
     @property
     def first_child(self) -> Renderable | None:

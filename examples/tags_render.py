@@ -59,10 +59,16 @@ if __name__ == "__main__":
         air.Div(),
         air.Div("aaa"),
         air.Div(foo="bar"),
+        air.Div(air.Title("bla")),
+        air.Div(air.H6(air.H6(), bla1="aba1")),
+        air.Div(air.H6("bla", bla1="aba1")),
+        air.Div(air.H6(air.Title("bla2"), bla2="aba2")),
+        air.Div(air.H6()),
         href="/",
     )
     # print(html_test1.to_source())
     print(HTML_SAMPLE.to_source())
+    # print(air.H6(air.H3(), bla1="aba1").to_source())
     # print(pretty_repr(html.to_source(), expand_all=True))
     # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
     # print(air.Tag.from_html(html_source).pretty_render())
