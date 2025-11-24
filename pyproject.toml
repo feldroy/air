@@ -321,7 +321,6 @@ select = [
     "FLY", # https://docs.astral.sh/ruff/rules/#flynt-fly
     "I", # https://docs.astral.sh/ruff/rules/#isort-i
     "C90", # https://docs.astral.sh/ruff/rules/#mccabe-c90
-    #    "N", # https://docs.astral.sh/ruff/rules/#pep8-naming-n
     "PERF", # https://docs.astral.sh/ruff/rules/#perflint-perf
     "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
     #    "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
