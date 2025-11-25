@@ -6,6 +6,8 @@ from fastapi.testclient import TestClient
 import air
 from air import H1, AirResponse, Article, Body, Div, Html, Main
 
+from .utils import clean_doc
+
 
 def test_TagResponse_obj() -> None:
     """Test the TagResponse class."""
@@ -97,7 +99,7 @@ def test_AirResponse_html() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint() -> Html:
+    def test_endpoint() -> str:
         return air.Html(
             air.Head(),
             air.Body(
@@ -106,16 +108,26 @@ def test_AirResponse_html() -> None:
                     air.P("This is a paragraph in the response."),
                 )
             ),
-        )
+        ).pretty_render()
 
     client = TestClient(app)
     response = client.get("/test")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == (
-        "<!doctype html><html><head></head><body><main><h1>Hello, clean HTML response!</h1>"
-        "<p>This is a paragraph in the response.</p></main></body></html>"
+    assert response.text == clean_doc(
+        """
+        <!doctype html>
+        <html>
+          <head></head>
+          <body>
+            <main>
+              <h1>Hello, clean HTML response!</h1>
+              <p>This is a paragraph in the response.</p>
+            </main>
+          </body>
+        </html>
+        """
     )
 
 

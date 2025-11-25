@@ -1,19 +1,18 @@
 import air
 
-from .utils import clean_doc
+from .utils import clean_doc, clean_doc_with_broken_lines
 
 
 def test_pico_layout() -> None:
     actual_html = air.layouts.picocss(air.H1("Cheese Monger"), air.Title("Cheese Monger")).pretty_render()
-    expected_html = clean_doc(
-        """
+    expected_html = clean_doc_with_broken_lines(
+        r"""
         <!doctype html>
         <html>
           <head>
             <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet">
-            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" """
-        """crossorigin="anonymous" """
-        """integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
+            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" \
+                integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
             <title>Cheese Monger</title>
           </head>
           <body>
@@ -41,16 +40,15 @@ def test_pico_layout_htmx() -> None:
 
 def test_mvpcss_layout() -> None:
     actual_html = air.layouts.mvpcss(air.H1("Cheese Monger"), air.Title("Cheese Monger")).pretty_render()
-    expected_html = clean_doc(
-        """
+    expected_html = clean_doc_with_broken_lines(
+        r"""
         <!doctype html>
         <html>
           <head>
             <link href="https://unpkg.com/mvp.css" rel="stylesheet">
             <style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style>
-            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" """
-        """crossorigin="anonymous" """
-        """integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
+            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" \
+              integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
             <title>Cheese Monger</title>
           </head>
           <body>
@@ -71,16 +69,15 @@ def test_mvpcss_layout_header() -> None:
         ),
         air.P("This is in the main"),
     ).pretty_render()
-    expected_html = clean_doc(
-        """
+    expected_html = clean_doc_with_broken_lines(
+        r"""
         <!doctype html>
         <html>
           <head>
             <link href="https://unpkg.com/mvp.css" rel="stylesheet">
             <style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style>
-            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" """
-        """crossorigin="anonymous" """
-        """integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
+            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" \
+              integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
           </head>
           <body>
             <header>
