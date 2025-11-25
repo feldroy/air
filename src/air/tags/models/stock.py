@@ -20,7 +20,9 @@ class A(BaseTag):
         type: Specifies the media type of the linked document.
         referrerpolicy: Specifies which referrer information to send with the link.
         media: Specifies what media/device the linked document is optimized for.
-        ping: Specifies a space-separated list of URLs to which, when the link is followed, post requests with the body ping will be sent by the browser (in the background). Typically used for tracking.
+        ping: Specifies a space-separated list of URLs to which, when the link is followed, post
+            requests with the body ping will be sent by the browser (in the background).
+            Typically used for tracking.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
@@ -99,7 +101,9 @@ class Area(SelfClosingTag):
         coords: Specifies the coordinates of an area.
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
         href: Specifies the URL of the page the link goes to.
-        ping: Specifies a space-separated list of URLs to which, when the link is followed, post requests with the body ping will be sent by the browser (in the background). Typically used for tracking.
+        ping: Specifies a space-separated list of URLs to which, when the link is followed, post
+            requests with the body ping will be sent by the browser (in the background).
+            Typically used for tracking.
         referrerpolicy: Specifies which referrer information to send with the link.
         rel: Specifies the relationship between the current document and the linked document.
         shape: Specifies the shape of an area.
@@ -372,10 +376,12 @@ class Button(BaseTag):
         disabled: Specifies that a button should be disabled.
         form: Specifies which form the button belongs to.
         formaction: Specifies where to send the form-data when a form is submitted. Only for type="submit".
-        formenctype: Specifies how the form-data should be encoded before sending it to a server. Only for type="submit".
+        formenctype: Specifies how the form-data should be encoded before sending it to a
+            server. Only for type="submit".
         formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type="submit".
         formnovalidate: Specifies that the form-data should not be validated on submission. Only for type="submit".
-        formtarget: Specifies where to display the response that is received after submitting the form. Only for type="submit".
+        formtarget: Specifies where to display the response that is received after submitting
+            the form. Only for type="submit".
         popovertarget: Specifies which popover element to invoke.
         popovertargetaction: Specifies what action to perform on the popover element.
         class_: Substituted as the DOM `class` attribute.
@@ -1211,10 +1217,12 @@ class Iframe(BaseTag):
         height: Specifies the height of an `<iframe>`.
         allow: Specifies a feature policy for the `<iframe>`.
         allowfullscreen: Set to true if the `<iframe>` can activate fullscreen mode.
-        allowpaymentrequest: Set to true if a cross-origin `<iframe>` should be allowed to invoke the Payment Request API.
+        allowpaymentrequest: Set to true if a cross-origin `<iframe>` should be allowed to
+            invoke the Payment Request API.
         loading: Specifies the loading policy of the `<iframe>`.
         name: Specifies the name of an `<iframe>`.
-        referrerpolicy: Specifies which referrer information to send when fetching the iframe's content.
+        referrerpolicy: Specifies which referrer information to send when fetching the
+            iframe's content.
         sandbox: Enables an extra set of restrictions for the content in an `<iframe>`.
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.

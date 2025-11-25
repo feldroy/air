@@ -351,7 +351,6 @@ ignore = [
     "ERA001", # commented-out code
     "PLC0414", # keep explicit alias
     # TODO -> Remove the rules below this line
-    "E501", # Line too long
     "PGH004", # Use specific rule codes when using `noqa` or `ruff: noqa`
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "W505", # Doc line too long

@@ -11,7 +11,9 @@ def test_pico_layout() -> None:
         <html>
           <head>
             <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet">
-            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
+            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" """
+        """crossorigin="anonymous" """
+        """integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
             <title>Cheese Monger</title>
           </head>
           <body>
@@ -46,7 +48,9 @@ def test_mvpcss_layout() -> None:
           <head>
             <link href="https://unpkg.com/mvp.css" rel="stylesheet">
             <style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style>
-            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
+            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" """
+        """crossorigin="anonymous" """
+        """integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
             <title>Cheese Monger</title>
           </head>
           <body>
@@ -74,7 +78,9 @@ def test_mvpcss_layout_header() -> None:
           <head>
             <link href="https://unpkg.com/mvp.css" rel="stylesheet">
             <style>footer, header, main { padding: 1rem; } nav {margin-bottom: 1rem;}</style>
-            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
+            <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" """
+        """crossorigin="anonymous" """
+        """integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
           </head>
           <body>
             <header>

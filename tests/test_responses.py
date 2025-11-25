@@ -113,9 +113,9 @@ def test_AirResponse_html() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text
-        == "<!doctype html><html><head></head><body><main><h1>Hello, clean HTML response!</h1><p>This is a paragraph in the response.</p></main></body></html>"
+    assert response.text == (
+        "<!doctype html><html><head></head><body><main><h1>Hello, clean HTML response!</h1>"
+        "<p>This is a paragraph in the response.</p></main></body></html>"
     )
 
 

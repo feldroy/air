@@ -105,7 +105,10 @@ def test_linear_gradient_with_stops() -> None:
     stop1 = air.svg.Stop(offset="0%", stop_color="red")
     stop2 = air.svg.Stop(offset="100%", stop_color="blue", stop_opacity=0.8)
     gradient = air.svg.LinearGradient(stop1, stop2, x1="0%", y1="0%", x2="100%", y2="0%", id="myGradient")
-    expected = '<linearGradient x1="0%" y1="0%" x2="100%" y2="0%" id="myGradient"><stop offset="0%" stop-color="red"></stop><stop offset="100%" stop-color="blue" stop-opacity="0.8"></stop></linearGradient>'
+    expected = (
+        '<linearGradient x1="0%" y1="0%" x2="100%" y2="0%" id="myGradient"><stop offset="0%" stop-color="red">'
+        '</stop><stop offset="100%" stop-color="blue" stop-opacity="0.8"></stop></linearGradient>'
+    )
     assert gradient.render() == expected
 
 
@@ -118,7 +121,10 @@ def test_radial_gradient() -> None:
         fy="25%",
         gradientUnits="objectBoundingBox",
     )
-    expected = '<radialGradient cx="50%" cy="50%" r="50%" fx="25%" fy="25%" gradientUnits="objectBoundingBox"></radialGradient>'
+    expected = (
+        '<radialGradient cx="50%" cy="50%" r="50%" fx="25%" fy="25%" gradientUnits="objectBoundingBox">'
+        "</radialGradient>"
+    )
     assert gradient.render() == expected
 
 
@@ -127,7 +133,11 @@ def test_filter_with_effects() -> None:
     blur = air.svg.FeGaussianBlur(in_="SourceGraphic", stdDeviation=2, result="blur")
     offset = air.svg.FeOffset(in_="blur", dx=3, dy=3, result="offset")
     filter_elem = air.svg.Filter(blur, offset, x="-20%", y="-20%", width="140%", height="140%", id="drop-shadow")
-    expected = '<filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow"><feGaussianBlur in-="SourceGraphic" stdDeviation="2" result="blur"></feGaussianBlur><feOffset in-="blur" dx="3" dy="3" result="offset"></feOffset></filter>'
+    expected = (
+        '<filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow">'
+        '<feGaussianBlur in-="SourceGraphic" stdDeviation="2" result="blur"></feGaussianBlur>'
+        '<feOffset in-="blur" dx="3" dy="3" result="offset"></feOffset></filter>'
+    )
     assert filter_elem.render() == expected
 
 
@@ -167,7 +177,10 @@ def test_marker_definition() -> None:
         orient="auto",
         id="arrow",
     )
-    expected = '<marker markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto" id="arrow"><path d="M0,0 L10,5 L0,10 Z"></path></marker>'
+    expected = (
+        '<marker markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto" id="arrow">'
+        '<path d="M0,0 L10,5 L0,10 Z"></path></marker>'
+    )
     assert marker.render() == expected
 
 
@@ -177,7 +190,10 @@ def test_mask_with_content() -> None:
         air.svg.Circle(cx=50, cy=50, r=30, style="fill: black;"),
         id="hole-mask",
     )
-    expected = '<mask id="hole-mask"><rect width="100%" height="100%" style="fill: white;"></rect><circle cx="50" cy="50" r="30" style="fill: black;"></circle></mask>'
+    expected = (
+        '<mask id="hole-mask"><rect width="100%" height="100%" style="fill: white;"></rect>'
+        '<circle cx="50" cy="50" r="30" style="fill: black;"></circle></mask>'
+    )
     assert mask.render() == expected
 
 
@@ -207,7 +223,13 @@ def test_complex_svg_structure() -> None:
         xmlns="http://www.w3.org/2000/svg",
     )
 
-    expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><linearGradient id="grad1"><stop offset="0%" stop-color="red"></stop><stop offset="100%" stop-color="blue"></stop></linearGradient></defs><g class="main-content"><circle cx="50" cy="50" r="40" style="fill: url(#grad1);"></circle><text x="35" y="55" style="font-family: Arial;">SVG</text></g></svg>'
+    expected = (
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs>'
+        '<linearGradient id="grad1"><stop offset="0%" stop-color="red"></stop><stop offset="100%" '
+        'stop-color="blue"></stop></linearGradient></defs><g class="main-content"><circle cx="50" cy="50" '
+        'r="40" style="fill: url(#grad1);"></circle><text x="35" y="55" style="font-family: Arial;">SVG</text>'
+        "</g></svg>"
+    )
     assert svg.render() == expected
 
 
@@ -239,7 +261,10 @@ def test_image_with_experimental_attributes() -> None:
         fetchpriority="high",
         crossorigin="anonymous",
     )
-    expected = '<image x="10" y="20" width="100" height="80" href="image.jpg" crossorigin="anonymous" fetchpriority="high"></image>'
+    expected = (
+        '<image x="10" y="20" width="100" height="80" href="image.jpg" crossorigin="anonymous" '
+        'fetchpriority="high"></image>'
+    )
     assert image.render() == expected
 
 
@@ -251,7 +276,10 @@ def test_script_with_experimental_attributes() -> None:
         fetchpriority="low",
         crossorigin="use-credentials",
     )
-    expected = '<script type="application/javascript" href="script.js" crossorigin="use-credentials" fetchpriority="low"></script>'
+    expected = (
+        '<script type="application/javascript" href="script.js" crossorigin="use-credentials" '
+        'fetchpriority="low"></script>'
+    )
     assert script.render() == expected
 
 
@@ -270,7 +298,10 @@ def test_animate_with_extended_attributes() -> None:
         repeatDur="10s",
         calcMode="linear",
     )
-    expected = '<animate attributeName="opacity" attributeType="CSS" dur="2s" repeatCount="3" repeatDur="10s" from-="0" to="1" by="0.5" begin="1s" end="5s" calcMode="linear"></animate>'
+    expected = (
+        '<animate attributeName="opacity" attributeType="CSS" dur="2s" repeatCount="3" repeatDur="10s" '
+        'from-="0" to="1" by="0.5" begin="1s" end="5s" calcMode="linear"></animate>'
+    )
     assert animate.render() == expected
 
 
