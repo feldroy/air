@@ -702,20 +702,20 @@ class BaseTag:
         """
 
     @classmethod
-    def from_html(cls, html_source: str, is_fragment: bool = True) -> BaseTag:
+    def from_html(cls, html_source: str, is_fragment: bool = False) -> BaseTag:
         if not isinstance(html_source, str):
             msg = f"{cls.__name__}.from_html(html_source) expects a string argument."
             raise TypeError(msg)
         if not nh3.is_html(html_source):
             msg = f"{cls.__name__}.from_html(html_source) expects a valid HTML string."
             raise ValueError(msg)
-        if is_fragment and not has_all_top_level_tags(html_source):
-            msg = f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags."
-            raise ValueError(msg)
-        parser = LexborHTMLParser(html_source)
+        # if is_fragment and not has_all_top_level_tags(html_source):
+        #     msg = f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags."
+        #     raise ValueError(msg)
+        parser = LexborHTMLParser(html_source, is_fragment=is_fragment)
         # TODO -> Use unwrap_tags for tags without any top_level_tags
         # parser.unwrap_tags(["body", "head"])
-        parser.strip_tags(cls.tags_to_strip(html_source))
+        # parser.strip_tags(cls.tags_to_strip(html_source))
         return cls._from_html(parser.root)
 
     @staticmethod
@@ -741,23 +741,23 @@ class BaseTag:
         return air_tag
 
     @classmethod
-    def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
+    def _from_child_htmlold(cls, node: LexborNode) -> BaseTag | str | None:
         if node.first_child and node.first_child == node.last_child and node.first_child.text_content:
             # TODO -> Can be: node.first_child.text_content
             return cls._create_tag(node.tag, node.inner_html)
-        if node.tag.endswith("-comment"):
-            return cls._create_tag("Comment", extract_html_comment(node.html))
+        if node.is_comment_node:
+            return cls._create_tag("comment", extract_html_comment(node.html))
         return cls._from_html(node)
 
     @classmethod
-    def _from_child_html_old(cls, node: LexborNode) -> BaseTag | str | None:
-        if node.tag.endswith("-text"):
+    def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
+        if node.is_element_node:
+            return cls._from_html(node)
+        if node.is_text_node:
             return node.text_content
-        if node.tag.endswith("-document"):
-            raise NotImplementedError
-        if node.tag.endswith("-comment"):
+        if node.is_comment_node:
             return cls._create_comment_tag(node)
-        return cls._from_html(node)
+        raise NotImplementedError
 
     @classmethod
     def _create_comment_tag(cls, node: LexborNode) -> BaseTag:

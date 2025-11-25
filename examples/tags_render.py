@@ -44,6 +44,17 @@ if __name__ == "__main__":
         </html>
         """
     )
+    div_html = clean_doc(
+        """
+        <head>
+          <meta charset="utf-8">
+          <meta content="width=device-width,initial-scale=1" name="viewport">
+          <title>Title!</title>
+          <!-- My crazy comment -->
+          <p>Hello <strong>World</strong>!</p>
+        </head>
+        """
+    )
     # print(air.Div().to_source())
     # print(air.Div("bla").to_source())
     # print(air.Div(foo="bar").to_source())
@@ -67,7 +78,7 @@ if __name__ == "__main__":
         href="/",
     )
     # print(html_test1.to_source())
-    print(HTML_SAMPLE.to_source())
+    print(air.Tag.from_html(div_html.strip(), is_fragment=True).pretty_render())
     # print(air.H6(air.H3(), bla1="aba1").to_source())
     # print(pretty_repr(html.to_source(), expand_all=True))
     # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
