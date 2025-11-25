@@ -24,7 +24,6 @@ from ..utils import (
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
-    has_all_top_level_tags,
     migrate_html_key_to_air_tag,
     open_html_in_the_browser,
     pretty_format_html,
@@ -560,7 +559,7 @@ class BaseTag:
             line = lines[line_no]
             if line.expandable and not line.expanded:
                 if expand_all or not line.check_length(max_width):
-                    lines[line_no: line_no + 1] = line.expand(indent_size)
+                    lines[line_no : line_no + 1] = line.expand(indent_size)
             line_no += 1
 
         repr_str = "\n".join(str(line) for line in lines)
@@ -687,19 +686,19 @@ class BaseTag:
         """
         return cls.from_dict(json.loads(source_json))
 
-        # TODO -> Add to `from_html` docstrings:
-        """
-        Args:
-            html_source: HTML content to parse.
-            is_fragment: Controls how the input is parsed. (optional)
-                * If ``False`` (default), the input is treated as a full HTML document.
-                  The parser also accepts HTML fragments and inserts any missing
-                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
-                  into the tree, according to the parsing rules in the HTML Standard.
-                  This matches how browsers build the DOM when they load an HTML page.
-                * If ``True``, the input is treated as an HTML fragment.
-                  The parser does not insert any missing required HTML elements.
-        """
+    # TODO -> Add to `from_html` docstrings:
+    """
+    Args:
+        html_source: HTML content to parse.
+        is_fragment: Controls how the input is parsed. (optional)
+            * If ``False`` (default), the input is treated as a full HTML document.
+              The parser also accepts HTML fragments and inserts any missing
+              required elements (such as ``<html>``, ``<head>``, and ``<body>``)
+              into the tree, according to the parsing rules in the HTML Standard.
+              This matches how browsers build the DOM when they load an HTML page.
+            * If ``True``, the input is treated as an HTML fragment.
+              The parser does not insert any missing required HTML elements.
+    """
 
     @classmethod
     def from_html(cls, html_source: str, is_fragment: bool = False) -> BaseTag:
@@ -729,25 +728,14 @@ class BaseTag:
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
-        children: TagChildrenType = tuple(
-            [
-                cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
-            ]
-        )
+        children: TagChildrenType = tuple([
+            cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
+        ])
         attributes: TagAttributesType = {
             migrate_html_key_to_air_tag(key): value for key, value in node.attributes.items()
         }
         air_tag = cls._create_tag(node.tag, *children, **attributes)
         return air_tag
-
-    @classmethod
-    def _from_child_htmlold(cls, node: LexborNode) -> BaseTag | str | None:
-        if node.first_child and node.first_child == node.last_child and node.first_child.text_content:
-            # TODO -> Can be: node.first_child.text_content
-            return cls._create_tag(node.tag, node.inner_html)
-        if node.is_comment_node:
-            return cls._create_tag("comment", extract_html_comment(node.html))
-        return cls._from_html(node)
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
