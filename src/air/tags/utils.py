@@ -65,11 +65,11 @@ def clean_html_attr_key(key: str) -> str:
     return key.lstrip("_").replace("_", "-")
 
 
-def migrate_html_key_to_air_tag(key: str) -> str:
+def migrate_html_attribute_name_to_air_tag(attr_name: str) -> str:
     """Clean up HTML attribute keys to match the standard W3C HTML spec.
 
     Args:
-        key: An uncleaned HTML attribute key
+        attr_name: An uncleaned HTML attribute key
 
     Returns:
 
@@ -77,9 +77,9 @@ def migrate_html_key_to_air_tag(key: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = {"class": "class_", "for": "for_", "as": "as_", "async": "async_"}.get(key, key)
+    attr_name = {"class": "class_", "for": "for_", "as": "as_", "async": "async_"}.get(attr_name, attr_name)
     # Remove leading underscores and replace underscores with dashes
-    return key.lstrip("_").replace("_", "-")
+    return attr_name.lstrip("_").replace("_", "-")
 
 
 def extract_html_comment(text: str) -> str:

@@ -7,30 +7,27 @@ import json
 from collections.abc import Mapping
 from functools import cached_property
 from pathlib import Path
-from textwrap import indent
 from types import MappingProxyType
 from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
 
 import nh3
-from rich.pretty import _Line, pretty_repr
+from rich.pretty import pretty_repr
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
+from ..constants import DEFAULT_INDENTATION_SIZE, INDENT_UNIT
 from ..utils import (
     SafeStr,
     StrPath,
-    _fmt_value,
     clean_html_attr_key,
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
-    migrate_html_key_to_air_tag,
+    migrate_html_attribute_name_to_air_tag,
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
 )
-
-INDENT_UNIT: Final = " " * 4
 
 type Renderable = Annotated[
     str | BaseTag | SafeStr | int | float,
@@ -332,65 +329,6 @@ class BaseTag:
     #         Convert DataFrame to instantiable string representation.
     #         Convert AirTag to the instantiable-formatted representation of the tag.
 
-    def to_source2(self) -> str:
-        attributes = [f'{key}="{value}"' for key, value in self._attrs.items()] if self._attrs else []
-        children = (
-            [child.to_source2() if isinstance(child, BaseTag) else child for child in self._children]
-            if self._children
-            else []
-        )
-        return f"air.{self._name}({', '.join(children + attributes)})"
-
-    def to_source78(self, level: int = 0) -> str:
-        attributes = [f'{key}="{value}"' for key, value in self._attrs.items()] if self._attrs else []
-        children = (
-            [child.to_source78(level + 1) if isinstance(child, BaseTag) else str(child) for child in self._children]
-            if self._children
-            else []
-        )
-        parts = children + attributes
-        inner = ",\n".join(parts)
-        inner = indent(inner, INDENT_UNIT * level)
-        return f"air.{self._name}(\n{INDENT_UNIT * (level + 1)}{inner}\n)"
-
-    # ------------------------------------------------------------
-    # The last good one:
-    def to_source_last(self, level: int = 0) -> str:
-        """Return a Python expression that rebuilds this tag.
-
-        Args:
-            level: The current indentation depth when nesting tags.
-
-        Returns:
-            The instantiation expression for this tag and its children.
-        """
-        outer_padding, inner_padding = self._get_paddings(level)
-        if len(self._children) == 0 and len(self._attrs) == 0:
-            inner_padding = ""
-            source_lines = self._source_lines(level, inner_padding)
-            parsed_lines = ""
-        # elif len(self._children) <= 1 and len(self._attrs) <= 1:
-        elif len(self._children) <= 1 and len(self._attrs) <= 1:
-            if isinstance(self.first_child, BaseTag):
-                if self.first_child.has_children:
-                    source_lines = self._source_lines(level, inner_padding)
-                    lines = ",\n".join(source_lines)
-                    parsed_lines = f"\n{lines},\n{outer_padding}"
-                else:
-                    inner_padding = ""
-                    source_lines = self._source_lines(level, inner_padding)
-                    parsed_lines = "".join(source_lines)
-            else:
-                inner_padding = ""
-                source_lines = self._source_lines(level, inner_padding)
-                parsed_lines = "".join(source_lines)
-        else:
-            source_lines = self._source_lines(level, inner_padding)
-            lines = ",\n".join(source_lines)
-            parsed_lines = f"\n{lines},\n{outer_padding}"
-        return f"{outer_padding}air.{self._name}({parsed_lines})"
-        # return self._render_source_lines(source_lines, outer_padding)
-
     # My current method:
     def to_source(self, level: int = 0) -> str:
         """Return a Python expression that rebuilds this tag.
@@ -402,38 +340,10 @@ class BaseTag:
             The instantiation expression for this tag and its children.
         """
         outer_padding, inner_padding = self._get_paddings(level)
-        parsed_lines = self.parsed_lines(level, outer_padding, inner_padding)
-        return f"{outer_padding}air.{self._name}({parsed_lines})"
-        # return self._render_source_lines(source_lines, outer_padding)
+        parsed_lines = self.get_parsed_lines(level, outer_padding, inner_padding)
+        return self._render_parsed_lines(parsed_lines, outer_padding)
 
-    def parsed_linesold(self, level: int, outer_padding: str, inner_padding: str) -> str:
-        if len(self._children) == 0 and len(self._attrs) == 0:
-            return ""
-        # if (len(self._children) <= 1 and len(self._attrs) <= 1 and
-        #     (not isinstance(self.first_child, BaseTag) or
-        #      (not self.first_child.has_children and not self.first_child.has_attributes))):
-        if len(self._children) <= 1 and len(self._attrs) <= 1 and not isinstance(self.first_child, BaseTag):
-            inner_padding = ""
-            source_lines = self._source_lines(level, inner_padding)
-            return "".join(source_lines)
-        source_lines = self._source_lines(level, inner_padding)
-        lines = ",\n".join(source_lines)
-        return f"\n{lines},\n{outer_padding}"
-
-    def parsed_linesnew(self, level: int, outer_padding: str, inner_padding: str) -> str:
-        if not self.has_children and not self.has_attributes:
-            return ""
-        if len(self._children) <= 1 and len(self._attrs) <= 1 and not isinstance(self.first_child, BaseTag):
-            inner_padding = ""
-            source_lines = self._source_lines(level, inner_padding)
-            lines_separator = ", "
-            return lines_separator.join(source_lines)
-        source_lines = self._source_lines(level, inner_padding)
-        lines_separator = ",\n"
-        lines = lines_separator.join(source_lines)
-        return f"\n{lines},\n{outer_padding}"
-
-    def parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
+    def get_parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
         if not self.has_children and not self.has_attributes:
             return ""
         if len(self._children) > 1 or len(self._attrs) > 1 or isinstance(self.first_child, BaseTag):
@@ -457,34 +367,12 @@ class BaseTag:
         attribute_source_lines = self._to_attributes_source(level=level, padding=inner_padding)
         return children_source_lines + attribute_source_lines
 
-    def _render_attribute_free_void_element(self, outer_padding: str) -> str:
-        return f"{outer_padding}air.{self._name}()"
-
-    def _render_single_literal_child(self, outer_padding: str) -> str:
-        child = self._children[0]
-        return f'{outer_padding}air.{self._name}("{child}")'
-
-    def _render_source_lines(self, source_lines: list[str], padding: str) -> str:
-        body = ",\n".join(source_lines)
-        return f"{padding}air.{self._name}(\n{body},\n{padding})"
-
-    def _render_all_source_lines(self, source_lines: list[str], padding: str) -> str:
-        body = ",\n".join(source_lines)
-        return f"{padding}air.{self._name}({f'\n{body},\n{padding}'})"
-        # return f"{outer_padding}air.{self._name}()"
-        # return f'{outer_padding}air.{self._name}("{child}")'
+    def _render_parsed_lines(self, parsed_lines: str, outer_padding: str) -> str:
+        return f"{outer_padding}air.{self._name}({parsed_lines})"
 
     @property
     def is_attribute_free_void_element(self) -> bool:
         return not self.has_children and not self.has_attributes
-
-    @property
-    def first_child(self) -> Renderable | None:
-        return self._children and self._children[0]
-
-    @property
-    def last_child(self) -> Renderable | None:
-        return self._children and self._children[len(self._children) - 1]
 
     @property
     def has_children(self) -> bool:
@@ -493,6 +381,14 @@ class BaseTag:
     @property
     def has_attributes(self) -> bool:
         return bool(self._attrs)
+
+    @property
+    def first_child(self) -> Renderable | None:
+        return self._children and self._children[0]
+
+    @property
+    def last_child(self) -> Renderable | None:
+        return self._children and self._children[len(self._children) - 1]
 
     @property
     def first_attribute(self) -> tuple[str, AttributeType] | None:
@@ -514,88 +410,6 @@ class BaseTag:
 
     def _to_attributes_source(self, level: int, padding: str) -> list[str]:
         return [f"{padding}{name}={value!r}" for name, value in self._attrs.items()]
-
-    # ------------------------------------------------------------
-
-    def to_source32(self, level: int = 0) -> str:
-        indent = INDENT_UNIT * level
-        inner = INDENT_UNIT * (level + 1)
-
-        # Single non-tag child, no attributes: air.Tag("text")
-        # if (
-        #     self._children
-        #     and len(self._children) == 1
-        #     and not isinstance(self._children[0], BaseTag)
-        #     and not self._attrs
-        # ):
-        #     return f"{indent}air.{self._name}({self._children[0]!r})"
-
-        lines = []
-
-        for child in self._children or []:
-            if isinstance(child, BaseTag):
-                lines.append(child.to_source32(level + 1))
-            else:
-                lines.append(f"{inner}{child!r}")
-
-        for key, value in (self._attrs or {}).items():
-            lines.append(f"{inner}{key}={value!r}")
-
-        if not lines:
-            return f"{indent}air.{self._name}()"
-
-        body = ",\n".join(lines)
-        return f"{indent}air.{self._name}(\n{body},\n{indent})"
-
-    def to_init_repr(
-        self,
-        max_width: int = 80,
-        indent_size: int = 4,
-        expand_all: bool = False,
-    ) -> str:
-        lines = [_Line(node=self, is_root=True)]
-        line_no = 0
-        while line_no < len(lines):
-            line = lines[line_no]
-            if line.expandable and not line.expanded:
-                if expand_all or not line.check_length(max_width):
-                    lines[line_no : line_no + 1] = line.expand(indent_size)
-            line_no += 1
-
-        repr_str = "\n".join(str(line) for line in lines)
-        return repr_str
-
-    def to_source77(self, level: int = 0) -> str:
-        indent_unit = " " * 4
-        prefix = indent_unit * level
-
-        # children first, then attributes
-        args: list[str] = []
-
-        for child in self._children:
-            if isinstance(child, BaseTag):
-                # child starts at column 0, parent will indent the block
-                args.append(child.to_source77(level=0))
-            else:
-                args.append(_fmt_value(child))
-
-        for key, value in self._attrs.items():
-            args.append(f"{key}={_fmt_value(value)}")
-
-        if not args:
-            return f"{prefix}{self._name}()".expandtabs(4)
-
-        # one line if simple
-        if len(args) == 1 and "\n" not in args[0]:
-            inner = args[0]
-            return f"{prefix}{self._name}({inner})".expandtabs(4)
-
-        # pretty multi line
-        inner = ",\n".join(args)
-        inner = indent(inner, indent_unit * (level + 1))
-
-        result = f"{prefix}{self._name}(\n{inner},\n{prefix})"
-        return result.expandtabs(4)
 
     def to_pretty_dict(self) -> str:
         """Produce a human-friendly mapping view of the tag.
@@ -626,16 +440,16 @@ class BaseTag:
         """
         return tuple(child.to_dict() if isinstance(child, BaseTag) else child for child in self._children)
 
-    def to_json(self, indent: int | None = None) -> str:
+    def to_json(self, indent_size: int | None = None) -> str:
         """Serialize the tag to JSON.
 
         Args:
-            indent: Indentation width to use for pretty-printing.
+            indent_size: Indentation width to use for pretty-printing.
 
         Returns:
             The JSON string representation of the tag.
         """
-        return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent)
+        return json.dumps(self.to_dict(), ensure_ascii=False, indent=indent_size)
 
     def to_pretty_json(self) -> str:
         """Serialize the tag to formatted JSON.
@@ -643,7 +457,7 @@ class BaseTag:
         Returns:
             The indented JSON string representation of the tag.
         """
-        return self.to_json(indent=4)
+        return self.to_json(indent_size=DEFAULT_INDENTATION_SIZE)
 
     @classmethod
     def from_dict(cls, source_dict: TagDictType) -> BaseTag:
@@ -670,6 +484,7 @@ class BaseTag:
         Returns:
             The restored children's collection.
         """
+        # noinspection PyTypeChecker
         return tuple(
             cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict for child_dict in children_dict
         )
@@ -728,11 +543,11 @@ class BaseTag:
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
-        children: TagChildrenType = tuple([
+        children: TagChildrenType = tuple(
             cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
-        ])
+        )
         attributes: TagAttributesType = {
-            migrate_html_key_to_air_tag(key): value for key, value in node.attributes.items()
+            migrate_html_attribute_name_to_air_tag(name): value for name, value in node.attributes.items()
         }
         air_tag = cls._create_tag(node.tag, *children, **attributes)
         return air_tag
@@ -745,7 +560,7 @@ class BaseTag:
             return node.text_content
         if node.is_comment_node:
             return cls._create_comment_tag(node)
-        raise NotImplementedError
+        raise NotImplementedError(f"Unable to parse <{node.tag}>.")
 
     @classmethod
     def _create_comment_tag(cls, node: LexborNode) -> BaseTag:

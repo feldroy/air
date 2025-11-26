@@ -24,3 +24,5 @@ TOP_LEVEL_HTML_TAGS: Final[frozenset[str]] = frozenset({
     "<head",
     "<body",
 })
+DEFAULT_INDENTATION_SIZE = 4
+INDENT_UNIT: Final = " " * 4
