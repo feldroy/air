@@ -10,7 +10,7 @@ from air import H1, AirResponse, Article, BaseTag, Body, Div, Html, Main
 class CustomLayoutResponse(air.AirResponse):
     @override
     def render(self, tag: BaseTag | str) -> bytes | memoryview:  # ty: ignore[invalid-method-override]
-        return super().render(air.Html(tag))
+        return super().render(air.Html(air.Body(tag)))
 
 
 def test_TagResponse_obj() -> None:
@@ -171,7 +171,7 @@ def test_AirResponse_with_layout_strings() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html><body><h1>Custom Layout</h1>b'<main><h2>Hello, World!</h2></main>'</body></html>"
+    assert response.text == "<!doctype html><html><body><main><h2>Hello, World!</h2></main></body></html>"
 
 
 def test_AirResponse_with_layout_names() -> None:
@@ -179,7 +179,7 @@ def test_AirResponse_with_layout_names() -> None:
 
     @app.get("/test", response_class=CustomLayoutResponse)
     def test_endpoint() -> Body:
-        return air.Body(air.Main(air.H1("Hello, World!")))
+        return air.Main(air.H1("Hello, World!"))
 
     client = TestClient(app)
     response = client.get("/test")
