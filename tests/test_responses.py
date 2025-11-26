@@ -1,10 +1,10 @@
-from typing import Any, override
+from typing import override
 
 from fastapi import status
 from fastapi.testclient import TestClient
 
 import air
-from air import BaseTag, H1, AirResponse, Article, Body, Div, Html, Main
+from air import H1, AirResponse, Article, BaseTag, Body, Div, Html, Main
 
 
 class CustomLayoutResponse(air.AirResponse):
