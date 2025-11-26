@@ -20,7 +20,6 @@ from lxml import (
 from rich import box
 from rich.console import Console
 from rich.panel import Panel
-from rich.pretty import pretty_repr
 from rich.syntax import Syntax
 from rich.text import Text
 
@@ -28,6 +27,7 @@ from air.exceptions import BrowserOpenError
 from air.tags.constants import (
     BLOB_URL_PRESET,
     DATA_URL_MAX,
+    DEFAULT_ENCODING,
     DEFAULT_THEME,
     FORMAT_HTML_ENCODING,
     HTML_DOCTYPE,
@@ -43,10 +43,7 @@ type StrPath = PathLike | Path | str
 
 
 def has_all_top_level_tags(html_source: str) -> bool:
-    for top_level_tag in TOP_LEVEL_HTML_TAGS:
-        if top_level_tag not in html_source:
-            return False
-    return True
+    return all(top_level_tag in html_source for top_level_tag in TOP_LEVEL_HTML_TAGS)
 
 
 def migrate_html_attribute_name_from_air_tag_to_html(attr_name: str) -> str:
@@ -98,15 +95,6 @@ def extract_html_comment(text: str) -> str:
         return inner.strip()
     msg = "Input is not a valid HTML comment"
     raise ValueError(msg)
-
-
-def _fmt_value(value: Any) -> str:
-    if isinstance(value, str):
-        # double quotes for strings, with basic escaping
-        escaped = value.replace("\\", "\\\\").replace('"', '\\"')
-        return f'"{escaped}"'
-    # nicer repr (meaning: "string form") for other values
-    return pretty_repr(value)
 
 
 def compact_format_html(source: str) -> str:
@@ -259,11 +247,15 @@ def open_html_in_the_browser(html_source: str) -> None:
     Raises:
         BrowserOpenError: The browser command failed.
     """
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding="utf-8") as f:
+    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding=DEFAULT_ENCODING) as f:
         f.write(html_source)
         path = Path(f.name)
 
     _open_new_tab(path.as_uri())
+
+
+def save_text(text: str, file_path: StrPath) -> None:
+    Path(file_path).write_text(data=text, encoding=DEFAULT_ENCODING)
 
 
 def save_pretty_html(
@@ -327,9 +319,6 @@ def pretty_print_html(
         source: HTML markup to render.
         theme: Rich syntax highlighting theme name.
         record: Whether to buffer the output for later export.
-
-    Raises:
-        ModuleNotFoundError: The optional Rich dependency is unavailable.
     """
     _get_pretty_html_console(source, theme=theme, record=record)
 

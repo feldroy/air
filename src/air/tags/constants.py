@@ -10,7 +10,8 @@ PANEL_TITLE_STYLE: Final = "italic bold"
 PANEL_BORDER_STYLE: Final = "bright_magenta"
 SYNTAX_LEXER: Final = "html"
 DATA_URL_MAX: Final = 32_000
-BLOB_URL_PRESET = "data:text/html;charset=utf-8;base64,"
+DEFAULT_ENCODING = "utf-8"
+BLOB_URL_PRESET = f"data:text/html;charset={DEFAULT_ENCODING};base64,"
 LOCALS_CLEANUP_EXCLUDED_KEYS: Final[frozenset[str]] = frozenset({
     "self",
     "children",

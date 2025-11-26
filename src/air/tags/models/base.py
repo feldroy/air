@@ -6,16 +6,20 @@ import html
 import json
 from collections.abc import Mapping
 from functools import cached_property
-from pathlib import Path
 from types import MappingProxyType
-from typing import Annotated, Any, ClassVar, Final, Self, TypedDict
+from typing import Annotated, ClassVar, Final, Self, TypedDict
 
 import nh3
 from rich.pretty import pretty_repr
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
-from air.tags.constants import DEFAULT_INDENTATION_SIZE, INDENT_UNIT, INLINE_JOIN_SEPARATOR, MULTILINE_JOIN_SEPARATOR
+from air.tags.constants import (
+    DEFAULT_INDENTATION_SIZE,
+    INDENT_UNIT,
+    INLINE_JOIN_SEPARATOR,
+    MULTILINE_JOIN_SEPARATOR,
+)
 from air.tags.utils import (
     SafeStr,
     StrPath,
@@ -27,6 +31,7 @@ from air.tags.utils import (
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
+    save_text,
 )
 
 type Renderable = Annotated[
@@ -110,7 +115,7 @@ class BaseTag:
         self._children: TagChildrenType = children
         self._attrs: TagAttributesType = attributes
 
-    def __new__(cls, *args: Any, **kwargs: Any) -> Self:
+    def __new__(cls, *children: Renderable, **attributes: AttributeType) -> Self:
         """Create a tag instance while preventing direct BaseTag instantiation.
 
         Raises:
@@ -168,7 +173,7 @@ class BaseTag:
             return ""
         return "".join(self._render_child(child) for child in self._children)
 
-    def _render_child(self, child: Any) -> str:
+    def _render_child(self, child: Renderable) -> str:
         """Render a single child element.
 
         Args:
@@ -257,7 +262,7 @@ class BaseTag:
         Args:
             file_path: Destination path for the HTML file.
         """
-        Path(file_path).write_text(self.render())
+        save_text(text=self.render(), file_path=file_path)
 
     def pretty_save(self, file_path: StrPath) -> None:
         """Persist pretty-formatted HTML to disk.
@@ -265,7 +270,7 @@ class BaseTag:
         Args:
             file_path: Destination path for the pretty HTML file.
         """
-        Path(file_path).write_text(self.pretty_render())
+        save_text(text=self.pretty_render(), file_path=file_path)
 
     def pretty_display_in_the_browser(self) -> None:
         """Display pretty-formatted HTML in the browser."""
@@ -382,7 +387,7 @@ class BaseTag:
 
     def _get_instantiation_arguments(self, level: int, inner_padding: str) -> list[str]:
         children_instantiation_args = self._get_children_instantiation_arguments(level=level, padding=inner_padding)
-        attribute_instantiation_args = self._get_attributes_instantiation_arguments(level=level, padding=inner_padding)
+        attribute_instantiation_args = self._get_attributes_instantiation_arguments(padding=inner_padding)
         return children_instantiation_args + attribute_instantiation_args
 
     def _get_children_instantiation_arguments(self, level: int, padding: str) -> list[str]:
@@ -391,7 +396,7 @@ class BaseTag:
             for child in self._children
         ]
 
-    def _get_attributes_instantiation_arguments(self, level: int, padding: str) -> list[str]:
+    def _get_attributes_instantiation_arguments(self, padding: str) -> list[str]:
         return [f"{padding}{name}={value!r}" for name, value in self._attrs.items()]
 
     def _format_instantiation_call(self, parsed_lines: str, outer_padding: str) -> str:
@@ -415,15 +420,23 @@ class BaseTag:
 
     @property
     def last_child(self) -> Renderable | None:
-        return self._children and self._children[len(self._children) - 1]
+        return self._children and self._children[self.num_of_children - 1]
 
     @property
     def first_attribute(self) -> tuple[str, AttributeType] | None:
-        return self._attrs and list(self._attrs.items())[0]
+        return self._attrs and next(iter(self._attrs.items()))
 
     @property
     def last_attribute(self) -> tuple[str, AttributeType] | None:
-        return self._attrs and list(self._attrs.items())[len(self.attrs) - 1]
+        return self._attrs and list(self._attrs.items()).pop()
+
+    @property
+    def num_of_children(self) -> int:
+        return len(self._children)
+
+    @property
+    def num_of_attributes(self) -> int:
+        return len(self._attrs)
 
     @property
     def tag_id(self) -> str | None:
@@ -491,8 +504,7 @@ class BaseTag:
         attributes: TagAttributesType = source_dict[TagKeys.ATTRIBUTES]
         children_dict: TagChildrenTypeForDict = source_dict[TagKeys.CHILDREN]
         children: TagChildrenType = cls._from_child_dict(children_dict)
-        air_tag = cls._create_tag(name, *children, **attributes)
-        return air_tag
+        return cls._create_tag(name, *children, **attributes)
 
     @classmethod
     def _from_child_dict(cls, children_dict: TagChildrenTypeForDict) -> TagChildrenTypeForDict:
@@ -598,4 +610,7 @@ class BaseTag:
         if not isinstance(other, BaseTag):
             msg = f"<{self.name}> is comparable only to other air-tags."
             raise TypeError(msg)
-        return self.render() == other.render()
+        return self.html == other.html
+
+    def __hash__(self) -> int:
+        return hash(self.html)
