@@ -547,19 +547,7 @@ class BaseTag:
         #     msg = f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags."
         #     raise ValueError(msg)
         parser = LexborHTMLParser(html_source, is_fragment=is_fragment)
-        # TODO -> Use unwrap_tags for tags without any top_level_tags
-        # parser.unwrap_tags(["body", "head"])
-        # parser.strip_tags(cls.tags_to_strip(html_source))
         return cls._from_html(parser.root)
-
-    @staticmethod
-    def _tags_to_strip(html_source: str) -> list[str]:
-        tags_to_strip = []
-        if "<head" not in html_source:
-            tags_to_strip.append("head")
-        if "<body" not in html_source:
-            tags_to_strip.append("body")
-        return tags_to_strip
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
@@ -569,8 +557,7 @@ class BaseTag:
         attributes: TagAttributesType = {
             migrate_html_attribute_name_from_html_to_air_tag(name): value for name, value in node.attributes.items()
         }
-        air_tag = cls._create_tag(node.tag, *children, **attributes)
-        return air_tag
+        return cls._create_tag(node.tag, *children, **attributes)
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
@@ -580,12 +567,14 @@ class BaseTag:
             return node.text_content
         if node.is_comment_node:
             return cls._create_comment_tag(node)
-        raise ValueError(f"Unable to parse <{node.tag}>.")
+        msg = f"Unable to parse <{node.tag}>."
+        raise ValueError(msg)
 
     @classmethod
     def _create_comment_tag(cls, node: LexborNode) -> BaseTag:
         if node.html is None:
-            raise ValueError("Unable to create a comment tag.")
+            msg = "Unable to create a comment tag."
+            raise ValueError(msg)
         return cls._create_tag("comment", extract_html_comment(node.html))
 
     @classmethod
@@ -597,8 +586,8 @@ class BaseTag:
             raise TypeError(msg) from e
 
     @classmethod
-    def from_html_to_source(cls, html_source: str) -> str:
-        return cls.from_html(html_source).to_source()
+    def from_html_to_source(cls, html_source: str, is_fragment: bool = False) -> str:
+        return cls.from_html(html_source, is_fragment).to_source()
 
     def __init_subclass__(cls) -> None:
         """Register subclasses so they can be restored from serialized data."""
