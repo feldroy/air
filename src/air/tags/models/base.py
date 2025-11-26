@@ -584,16 +584,18 @@ class BaseTag:
             return node.text_content
         if node.is_comment_node:
             return cls._create_comment_tag(node)
-        raise NotImplementedError(f"Unable to parse <{node.tag}>.")
+        raise ValueError(f"Unable to parse <{node.tag}>.")
 
     @classmethod
     def _create_comment_tag(cls, node: LexborNode) -> BaseTag:
+        if node.html is None:
+            raise ValueError(f"Unable to create a comment tag.")
         return cls._create_tag("comment", extract_html_comment(node.html))
 
     @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
         try:
-            return cls.registry[name.lower()](*children, **attributes)  # ty: ignore[invalid-argument-type]
+            return cls.registry[name.lower()](*children, **attributes)
         except KeyError as e:
             msg = f"Unable to create a new air-tag, <{name}> is not a registered tag name."
             raise TypeError(msg) from e
