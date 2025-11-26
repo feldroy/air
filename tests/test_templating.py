@@ -12,6 +12,7 @@ import air
 from air import Air, JinjaRenderer, Request
 
 from .components import index as index_callable  # pyrefly: ignore
+from .utils import clean_doc, clean_doc_with_broken_lines
 
 
 def test_JinjaRenderer() -> None:
@@ -111,10 +112,21 @@ def test_jinja_plus_airtags() -> None:
     client = TestClient(app)
     response = client.get("/")
     assert response.status_code == 200
-    assert response.text == (
-        "<html>\n    <head>\n        <title>Jinja+Air Tags</title>\n    </head>\n    <body>\n        "
-        "<h1>Jinja+Air Tags</h1>\n        <main><p>Air Tags work great with Jinja</p></main>\n    </body>\n</html>"
+    actual_html = response.text
+    expected_html = clean_doc(
+        """
+        <html>
+            <head>
+                <title>Jinja+Air Tags</title>
+            </head>
+            <body>
+                <h1>Jinja+Air Tags</h1>
+                <main><p>Air Tags work great with Jinja</p></main>
+            </body>
+        </html>
+        """
     )
+    assert actual_html == expected_html.rstrip()
 
 
 def test_jinja_plus_airtags_autorender() -> None:
@@ -134,10 +146,21 @@ def test_jinja_plus_airtags_autorender() -> None:
     client = TestClient(app)
     response = client.get("/")
     assert response.status_code == 200
-    assert response.text == (
-        "<html>\n    <head>\n        <title>Jinja+Air Tags</title>\n    </head>\n    <body>\n        "
-        "<h1>Jinja+Air Tags</h1>\n        <main><p>Air Tags work great with Jinja</p></main>\n    </body>\n</html>"
+    actual_html = response.text
+    expected_html = clean_doc(
+        """
+        <html>
+            <head>
+                <title>Jinja+Air Tags</title>
+            </head>
+            <body>
+                <h1>Jinja+Air Tags</h1>
+                <main><p>Air Tags work great with Jinja</p></main>
+            </body>
+        </html>
+        """
     )
+    assert actual_html == expected_html.rstrip()
 
 
 def test_JinjaRenderer_with_context_processors() -> None:
@@ -244,13 +267,17 @@ def test_renderer_with_installed_package_and_children() -> None:
     response = client.get("/airtag")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == (
-        '<!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet"><style>footer, header,'
-        " main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script src="
-        '"https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfr'
-        'bj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script><title>Test Page</title></head><body>'
-        "<main><h1>Hello, World</h1></main></body></html>"
+    actual_html = response.text
+    expected_html = clean_doc_with_broken_lines(
+        r"""
+        <!doctype html><html><head><link href="https://unpkg.com/mvp.css" rel="stylesheet"><style>footer, header,\
+            main { padding: 1rem; } nav {margin-bottom: 1rem;}</style><script\
+            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"\
+            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script><title>Test\
+            Page</title></head><body><main><h1>Hello, World</h1></main></body></html>
+        """
     )
+    assert actual_html == expected_html.rstrip()
 
     response = client.get("/airtag-without-request")
     assert response.status_code == 200
