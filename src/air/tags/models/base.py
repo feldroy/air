@@ -348,22 +348,36 @@ class BaseTag:
             The instantiation expression for this tag and its children.
         """
         outer_padding, inner_padding = self._get_paddings(level)
-        parsed_lines = self.get_parsed_lines(level, outer_padding, inner_padding)
+        parsed_lines = self._get_parsed_lines(level, outer_padding, inner_padding)
         return self._render_parsed_lines(parsed_lines, outer_padding)
 
     # TODO -> Rename parsed_lines to something more meaningful
-    def get_parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
-        if not self.has_children and not self.has_attributes:
+    def _get_parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
+        if self.is_attribute_free_void_element:
             return ""
-        if len(self._children) > 1 or len(self._attrs) > 1 or isinstance(self.first_child, BaseTag):
-            source_lines = self._source_lines(level, inner_padding)
-            lines_separator = ",\n"
-            lines = lines_separator.join(source_lines)
-            return f"\n{lines},\n{outer_padding}"
-        inner_padding = ""
+        if self._should_render_multiline():
+            return self._render_multiline_parsed_lines(level, outer_padding, inner_padding)
+        return self._render_inline_parsed_lines(level)
+
+    def _should_render_multiline(self) -> bool:
+        return len(self._children) > 1 or len(self._attrs) > 1 or isinstance(self.first_child, BaseTag)
+
+    def _render_multiline_parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
         source_lines = self._source_lines(level, inner_padding)
-        lines_separator = ", "
-        return lines_separator.join(source_lines)
+        lines = self._join_source_lines(source_lines, separator=",\n")
+        return self._wrap_multiline_lines(lines, outer_padding)
+
+    def _render_inline_parsed_lines(self, level: int) -> str:
+        source_lines = self._source_lines(level, "")
+        return self._join_source_lines(source_lines, separator=", ")
+
+    @staticmethod
+    def _join_source_lines(source_lines: list[str], *, separator: str) -> str:
+        return separator.join(source_lines)
+
+    @staticmethod
+    def _wrap_multiline_lines(lines: str, outer_padding: str) -> str:
+        return f"\n{lines},\n{outer_padding}"
 
     @staticmethod
     def _get_paddings(level: int) -> tuple[str, str]:
@@ -544,7 +558,7 @@ class BaseTag:
         return cls._from_html(parser.root)
 
     @staticmethod
-    def tags_to_strip(html_source: str) -> list[str]:
+    def _tags_to_strip(html_source: str) -> list[str]:
         tags_to_strip = []
         if "<head" not in html_source:
             tags_to_strip.append("head")
