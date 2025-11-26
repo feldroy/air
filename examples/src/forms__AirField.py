@@ -1,16 +1,3 @@
-# This example demonstrates:
-
-# - How AirField customizes HTML input types (e.g. email, datetime-local)
-# - How labels and autofocus attributes appear in rendered forms
-# - How AirForm binds to a Pydantic model for validation
-# - How the form behaves when submitted with valid and invalid data
-
-# Run:
-
-#     uv run examples/src/forms__AirField.py
-
-# Then visit http://127.0.0.1:8000/ in your browser.
-
 from pydantic import BaseModel
 
 import air

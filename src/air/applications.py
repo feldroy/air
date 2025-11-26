@@ -248,7 +248,7 @@ class Air(FastAPI, RouterMixin):
             ),
         ] = None,
         lifespan: Annotated[
-            Lifespan[AppType] | None,
+            Lifespan[AppType] | None,  # ty: ignore[invalid-type-form]
             Doc(
                 """
                 A `Lifespan` context manager handler. This replaces `startup` and

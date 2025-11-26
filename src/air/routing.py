@@ -333,7 +333,7 @@ class AirRouter(APIRouter, RouterMixin):
         # the generic to Lifespan[AppType] is the type of the top level application
         # which the router cannot know statically, so we use typing.Any
         lifespan: Annotated[
-            Lifespan[Any] | None,
+            Lifespan[Any] | None,  # ty: ignore[invalid-type-form]
             Doc(
                 """
                 A `Lifespan` context manager handler. This replaces `startup` and
@@ -390,7 +390,7 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> None:
         self.path_separator = path_separator
         if default is None:
-            default = default_404_router_handler
+            default = default_404_router_handler(prefix or "router")
         super().__init__(
             prefix=prefix,
             tags=tags,

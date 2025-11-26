@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.41.0"
+version = "0.41.1"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -323,7 +323,6 @@ select = [
     "FLY", # https://docs.astral.sh/ruff/rules/#flynt-fly
     "I", # https://docs.astral.sh/ruff/rules/#isort-i
     "C90", # https://docs.astral.sh/ruff/rules/#mccabe-c90
-    #    "N", # https://docs.astral.sh/ruff/rules/#pep8-naming-n
     "PERF", # https://docs.astral.sh/ruff/rules/#perflint-perf
     "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
     #    "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
@@ -559,7 +558,7 @@ norecursedirs = [
 DATABASE_URL = "sqlite:///:memory:"
 
 [tool.coverage.run]
-source = ["src"]
+source = ["src", "scripts"]
 branch = true
 parallel = true
 sigterm = true
