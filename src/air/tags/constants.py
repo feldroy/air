@@ -26,3 +26,5 @@ TOP_LEVEL_HTML_TAGS: Final[frozenset[str]] = frozenset({
 })
 DEFAULT_INDENTATION_SIZE = 4
 INDENT_UNIT: Final = " " * 4
+INLINE_JOIN_SEPARATOR = ", "
+MULTILINE_JOIN_SEPARATOR = ",\n"

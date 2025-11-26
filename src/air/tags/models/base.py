@@ -15,7 +15,7 @@ from rich.pretty import pretty_repr
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
-from air.tags.constants import DEFAULT_INDENTATION_SIZE, INDENT_UNIT
+from air.tags.constants import DEFAULT_INDENTATION_SIZE, INDENT_UNIT, INLINE_JOIN_SEPARATOR, MULTILINE_JOIN_SEPARATOR
 from air.tags.utils import (
     SafeStr,
     StrPath,
@@ -348,35 +348,34 @@ class BaseTag:
             The instantiation expression for this tag and its children.
         """
         outer_padding, inner_padding = self._get_paddings(level)
-        parsed_lines = self._get_parsed_lines(level, outer_padding, inner_padding)
-        return self._render_parsed_lines(parsed_lines, outer_padding)
+        instantiation_args = self._format_instantiation_arguments(
+            level,
+            outer_padding,
+            inner_padding
+        )
+        return self._format_instantiation_call(instantiation_args, outer_padding)
 
-    # TODO -> Rename parsed_lines to something more meaningful
-    def _get_parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
+    def _format_instantiation_arguments(self, level: int, outer_padding: str, inner_padding: str) -> str:
         if self.is_attribute_free_void_element:
             return ""
-        if self._should_render_multiline():
-            return self._render_multiline_parsed_lines(level, outer_padding, inner_padding)
-        return self._render_inline_parsed_lines(level)
+        if self._should_format_multiline_arguments():
+            return self._format_multiline_instantiation_arguments(level, outer_padding, inner_padding)
+        return self._format_inline_instantiation_arguments(level)
 
-    def _should_render_multiline(self) -> bool:
+    def _should_format_multiline_arguments(self) -> bool:
         return len(self._children) > 1 or len(self._attrs) > 1 or isinstance(self.first_child, BaseTag)
 
-    def _render_multiline_parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
-        source_lines = self._source_lines(level, inner_padding)
-        lines = self._join_source_lines(source_lines, separator=",\n")
-        return self._wrap_multiline_lines(lines, outer_padding)
+    def _format_multiline_instantiation_arguments(self, level: int, outer_padding: str, inner_padding: str) -> str:
+        instantiation_args = self._get_instantiation_arguments(level, inner_padding)
+        multiline_instantiation_args = MULTILINE_JOIN_SEPARATOR.join(instantiation_args)
+        return self._wrap_multiline_instantiation_args(multiline_instantiation_args, outer_padding)
 
-    def _render_inline_parsed_lines(self, level: int) -> str:
-        source_lines = self._source_lines(level, "")
-        return self._join_source_lines(source_lines, separator=", ")
-
-    @staticmethod
-    def _join_source_lines(source_lines: list[str], *, separator: str) -> str:
-        return separator.join(source_lines)
+    def _format_inline_instantiation_arguments(self, level: int) -> str:
+        instantiation_args = self._get_instantiation_arguments(level, inner_padding="")
+        return INLINE_JOIN_SEPARATOR.join(instantiation_args)
 
     @staticmethod
-    def _wrap_multiline_lines(lines: str, outer_padding: str) -> str:
+    def _wrap_multiline_instantiation_args(lines: str, outer_padding: str) -> str:
         return f"\n{lines},\n{outer_padding}"
 
     @staticmethod
@@ -385,21 +384,21 @@ class BaseTag:
         inner_padding = INDENT_UNIT * (level + 1)
         return outer_padding, inner_padding
 
-    def _source_lines(self, level: int, inner_padding: str) -> list[str]:
-        children_source_lines = self._to_children_source(level=level, padding=inner_padding)
-        attribute_source_lines = self._to_attributes_source(level=level, padding=inner_padding)
-        return children_source_lines + attribute_source_lines
+    def _get_instantiation_arguments(self, level: int, inner_padding: str) -> list[str]:
+        children_instantiation_args = self._get_children_instantiation_arguments(level=level, padding=inner_padding)
+        attribute_instantiation_args = self._get_attributes_instantiation_arguments(level=level, padding=inner_padding)
+        return children_instantiation_args + attribute_instantiation_args
 
-    def _to_children_source(self, level: int, padding: str) -> list[str]:
+    def _get_children_instantiation_arguments(self, level: int, padding: str) -> list[str]:
         return [
             (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{padding}{child!r}")
             for child in self._children
         ]
 
-    def _to_attributes_source(self, level: int, padding: str) -> list[str]:
+    def _get_attributes_instantiation_arguments(self, level: int, padding: str) -> list[str]:
         return [f"{padding}{name}={value!r}" for name, value in self._attrs.items()]
 
-    def _render_parsed_lines(self, parsed_lines: str, outer_padding: str) -> str:
+    def _format_instantiation_call(self, parsed_lines: str, outer_padding: str) -> str:
         return f"{outer_padding}air.{self._name}({parsed_lines})"
 
     @property
