@@ -167,6 +167,7 @@ lint OUTPUT_FORMAT="full":
 # Check for lint violations for all rules!
 [group('qa')]
 ruff-check-all TARGET=".":
+    # TODO -> Remove: --ignore D
     just run -- ruff check --output-format=concise --select ALL --ignore D "{{TARGET}}"
 
 # [print diagnostics concisely, one per line]
