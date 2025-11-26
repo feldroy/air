@@ -49,24 +49,26 @@ def has_all_top_level_tags(html_source: str) -> bool:
     return True
 
 
-def clean_html_attr_key(key: str) -> str:
+def migrate_html_attribute_name_from_air_tag_to_html(attr_name: str) -> str:
     """Normalize attribute names to align with HTML conventions.
 
     Args:
-        key: Attribute name supplied by the caller.
+        attr_name: Attribute name supplied by the caller.
 
     Returns:
         The normalized attribute name compatible with HTML.
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    key = {"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"}.get(key, key)
+    attr_name = {"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"}.get(
+        attr_name, attr_name
+    )
     # Remove leading underscores and replace underscores with dashes
-    return key.lstrip("_").replace("_", "-")
+    return attr_name.lstrip("_").replace("_", "-")
 
 
-def migrate_html_attribute_name_to_air_tag(attr_name: str) -> str:
-    """Clean up HTML attribute keys to match the standard W3C HTML spec.
+def migrate_html_attribute_name_from_html_to_air_tag(attr_name: str) -> str:
+    """Clean up HTML attribute names to match the standard W3C HTML spec.
 
     Args:
         attr_name: An uncleaned HTML attribute key

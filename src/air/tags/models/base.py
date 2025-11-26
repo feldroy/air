@@ -15,15 +15,15 @@ from rich.pretty import pretty_repr
 from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
-from ..constants import DEFAULT_INDENTATION_SIZE, INDENT_UNIT
-from ..utils import (
+from air.tags.constants import DEFAULT_INDENTATION_SIZE, INDENT_UNIT
+from air.tags.utils import (
     SafeStr,
     StrPath,
-    clean_html_attr_key,
+    migrate_html_attribute_name_from_air_tag_to_html,
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
-    migrate_html_attribute_name_to_air_tag,
+    migrate_html_attribute_name_from_html_to_air_tag,
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
@@ -61,6 +61,14 @@ type TagChildrenType = Annotated[
     Doc(
         """
         The type for all the children of an HTML tag.
+        """
+    ),
+]
+type TagChildrenTypeForDict = Annotated[
+    tuple[TagDictType | Renderable, ...],
+    Doc(
+        """
+        The type of the children of the serialized dictionary representation of an air-tag.
         """
     ),
 ]
@@ -132,22 +140,22 @@ class BaseTag:
         """
         if not self._attrs:
             return ""
-        return " " + " ".join(self._format_attr(key) for key, value in self._attrs.items() if value is not False)
+        return " " + " ".join(self._format_attr(name) for name, value in self._attrs.items() if value is not False)
 
-    def _format_attr(self, key: str) -> str:
+    def _format_attr(self, name: str) -> str:
         """Convert a stored attribute into an HTML-safe representation.
 
         Args:
-            key: The original attribute key stored on the tag.
+            name: The original attribute name stored on the tag.
 
         Returns:
-            The attribute rendered as `key="value"` or a bare key for boolean attributes.
+            The attribute rendered as `name="value"` or a bare name for boolean attributes.
         """
-        value = self._attrs[key]
-        clean_key = clean_html_attr_key(key)
+        value = self._attrs[name]
+        clean_name = migrate_html_attribute_name_from_air_tag_to_html(name)
         if value is True:
-            return clean_key
-        return f'{clean_key}="{value}"'
+            return clean_name
+        return f'{clean_name}="{value}"'
 
     @cached_property
     def children(self) -> str:
@@ -343,6 +351,7 @@ class BaseTag:
         parsed_lines = self.get_parsed_lines(level, outer_padding, inner_padding)
         return self._render_parsed_lines(parsed_lines, outer_padding)
 
+    # TODO -> Rename parsed_lines to something more meaningful
     def get_parsed_lines(self, level: int, outer_padding: str, inner_padding: str) -> str:
         if not self.has_children and not self.has_attributes:
             return ""
@@ -432,7 +441,7 @@ class BaseTag:
             TagKeys.CHILDREN: self._to_child_dict(),
         }
 
-    def _to_child_dict(self) -> tuple[TagDictType | Renderable, ...]:
+    def _to_child_dict(self) -> TagChildrenTypeForDict:
         """Convert child nodes into serializable objects.
 
         Returns:
@@ -469,13 +478,15 @@ class BaseTag:
         Returns:
             The restored tag instance.
         """
-        name, attributes, children_dict = source_dict.values()
+        name: str = source_dict[TagKeys.NAME]
+        attributes: TagAttributesType = source_dict[TagKeys.ATTRIBUTES]
+        children_dict: TagChildrenTypeForDict = source_dict[TagKeys.CHILDREN]
         children: TagChildrenType = cls._from_child_dict(children_dict)
         air_tag = cls._create_tag(name, *children, **attributes)
         return air_tag
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagDictType) -> tuple[TagDictType | Renderable, ...]:
+    def _from_child_dict(cls, children_dict: TagChildrenTypeForDict) -> TagChildrenTypeForDict:
         """Restore serialized children into tag instances or raw values.
 
         Args:
@@ -547,7 +558,7 @@ class BaseTag:
             cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
         )
         attributes: TagAttributesType = {
-            migrate_html_attribute_name_to_air_tag(name): value for name, value in node.attributes.items()
+            migrate_html_attribute_name_from_html_to_air_tag(name): value for name, value in node.attributes.items()
         }
         air_tag = cls._create_tag(node.tag, *children, **attributes)
         return air_tag

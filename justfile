@@ -164,6 +164,11 @@ lint OUTPUT_FORMAT="full":
     just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell
 
+# Check for lint violations for all rules!
+[group('qa')]
+ruff-check-all TARGET=".":
+    just run -- ruff check --output-format=concise --select ALL "{{TARGET}}"
+
 # [print diagnostics concisely, one per line]
 [group('qa')]
 @lint-concise: && (lint "concise")

@@ -150,8 +150,8 @@ def stub_rich(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
 
 
 def test_clean_html_attr_key_transforms_special_suffixes() -> None:
-    assert utils.clean_html_attr_key("class_") == "class"
-    assert utils.clean_html_attr_key("__data_value") == "data-value"
+    assert utils.migrate_html_attribute_name_from_air_tag_to_html("class_") == "class"
+    assert utils.migrate_html_attribute_name_from_air_tag_to_html("__data_value") == "data-value"
 
 
 def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) -> None:
