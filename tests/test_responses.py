@@ -178,7 +178,7 @@ def test_AirResponse_with_layout_names() -> None:
     app = air.Air()
 
     @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint() -> Body:
+    def test_endpoint() -> air.Main:
         return air.Main(air.H1("Hello, World!"))
 
     client = TestClient(app)
