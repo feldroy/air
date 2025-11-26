@@ -376,6 +376,15 @@ class BaseTag:
         attribute_source_lines = self._to_attributes_source(level=level, padding=inner_padding)
         return children_source_lines + attribute_source_lines
 
+    def _to_children_source(self, level: int, padding: str) -> list[str]:
+        return [
+            (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{padding}{child!r}")
+            for child in self._children
+        ]
+
+    def _to_attributes_source(self, level: int, padding: str) -> list[str]:
+        return [f"{padding}{name}={value!r}" for name, value in self._attrs.items()]
+
     def _render_parsed_lines(self, parsed_lines: str, outer_padding: str) -> str:
         return f"{outer_padding}air.{self._name}({parsed_lines})"
 
@@ -410,15 +419,6 @@ class BaseTag:
     @property
     def tag_id(self) -> str | None:
         return self._attrs and self._attrs.get("id_")
-
-    def _to_children_source(self, level: int, padding: str) -> list[str]:
-        return [
-            (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{padding}{child!r}")
-            for child in self._children
-        ]
-
-    def _to_attributes_source(self, level: int, padding: str) -> list[str]:
-        return [f"{padding}{name}={value!r}" for name, value in self._attrs.items()]
 
     def to_pretty_dict(self) -> str:
         """Produce a human-friendly mapping view of the tag.
