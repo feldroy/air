@@ -4,7 +4,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 import air
-from air import H1, AirResponse, Article, BaseTag, Body, Div, Html, Main
+from air import H1, AirResponse, Article, BaseTag, Div, Html, Main
 
 
 class CustomLayoutResponse(air.AirResponse):

@@ -19,10 +19,10 @@ from air.tags.constants import DEFAULT_INDENTATION_SIZE, INDENT_UNIT, INLINE_JOI
 from air.tags.utils import (
     SafeStr,
     StrPath,
-    migrate_html_attribute_name_from_air_tag_to_html,
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
+    migrate_html_attribute_name_from_air_tag_to_html,
     migrate_html_attribute_name_from_html_to_air_tag,
     open_html_in_the_browser,
     pretty_format_html,
@@ -348,11 +348,7 @@ class BaseTag:
             The instantiation expression for this tag and its children.
         """
         outer_padding, inner_padding = self._get_paddings(level)
-        instantiation_args = self._format_instantiation_arguments(
-            level,
-            outer_padding,
-            inner_padding
-        )
+        instantiation_args = self._format_instantiation_arguments(level, outer_padding, inner_padding)
         return self._format_instantiation_call(instantiation_args, outer_padding)
 
     def _format_instantiation_arguments(self, level: int, outer_padding: str, inner_padding: str) -> str:
@@ -589,7 +585,7 @@ class BaseTag:
     @classmethod
     def _create_comment_tag(cls, node: LexborNode) -> BaseTag:
         if node.html is None:
-            raise ValueError(f"Unable to create a comment tag.")
+            raise ValueError("Unable to create a comment tag.")
         return cls._create_tag("comment", extract_html_comment(node.html))
 
     @classmethod
@@ -609,8 +605,8 @@ class BaseTag:
         super().__init_subclass__()
         BaseTag._registry[cls.__name__.lower()] = cls
 
-    def __eq__(self, other: Self, /) -> bool:
-        if isinstance(other, BaseTag):
-            return self.render() == other.render()
-        msg = f"<{self.name}> is comparable only to other air-tags."
-        raise TypeError(msg)
+    def __eq__(self, other: object, /) -> bool:
+        if not isinstance(other, BaseTag):
+            msg = f"<{self.name}> is comparable only to other air-tags."
+            raise TypeError(msg)
+        return self.render() == other.render()
