@@ -6,13 +6,13 @@ from fastapi.testclient import TestClient
 import air
 from air import H1, AirResponse, Article, BaseTag, Div, Html, Main
 
+from .utils import clean_doc
+
 
 class CustomLayoutResponse(air.AirResponse):
     @override
     def render(self, tag: BaseTag | str) -> bytes | memoryview:  # ty: ignore[invalid-method-override]
         return super().render(air.Html(air.Body(tag)))
-
-from .utils import clean_doc
 
 
 def test_TagResponse_obj() -> None:
