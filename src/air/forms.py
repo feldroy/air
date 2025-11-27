@@ -19,7 +19,8 @@ from .tags import SafeStr
 
 
 class AirForm:
-    """A form handler that validates incoming form data against a Pydantic model. Can be used with awaited form data or with FastAPI's dependency injection system.
+    """A form handler that validates incoming form data against a Pydantic model. Can be used with
+    awaited form data or with FastAPI's dependency injection system.
 
     Example:
 

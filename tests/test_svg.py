@@ -1,6 +1,6 @@
 import air
 
-from .utils import clean_doc_with_broken_lines
+from .utils import clean_doc, clean_doc_with_broken_lines
 
 
 def test_atag_no_attrs_no_children() -> None:
@@ -105,8 +105,15 @@ def test_linear_gradient_with_stops() -> None:
     stop1 = air.svg.Stop(offset="0%", stop_color="red")
     stop2 = air.svg.Stop(offset="100%", stop_color="blue", stop_opacity=0.8)
     gradient = air.svg.LinearGradient(stop1, stop2, x1="0%", y1="0%", x2="100%", y2="0%", id="myGradient")
-    expected = '<linearGradient x1="0%" y1="0%" x2="100%" y2="0%" id="myGradient"><stop offset="0%" stop-color="red"></stop><stop offset="100%" stop-color="blue" stop-opacity="0.8"></stop></linearGradient>'
-    assert gradient.render() == expected
+    expected = clean_doc(
+        """
+        <lineargradient x1="0%" y1="0%" x2="100%" y2="0%" id="myGradient">
+          <stop offset="0%" stop-color="red"></stop>
+          <stop offset="100%" stop-color="blue" stop-opacity="0.8"></stop>
+        </lineargradient>
+        """
+    )
+    assert gradient.pretty_render() == expected
 
 
 def test_radial_gradient() -> None:
@@ -118,8 +125,12 @@ def test_radial_gradient() -> None:
         fy="25%",
         gradientUnits="objectBoundingBox",
     )
-    expected = '<radialGradient cx="50%" cy="50%" r="50%" fx="25%" fy="25%" gradientUnits="objectBoundingBox"></radialGradient>'
-    assert gradient.render() == expected
+    expected = clean_doc(
+        """
+        <radialgradient cx="50%" cy="50%" r="50%" fx="25%" fy="25%" gradientunits="objectBoundingBox"></radialgradient>
+        """
+    )
+    assert gradient.pretty_render() == expected
 
 
 # Test filter elements
@@ -127,8 +138,15 @@ def test_filter_with_effects() -> None:
     blur = air.svg.FeGaussianBlur(in_="SourceGraphic", stdDeviation=2, result="blur")
     offset = air.svg.FeOffset(in_="blur", dx=3, dy=3, result="offset")
     filter_elem = air.svg.Filter(blur, offset, x="-20%", y="-20%", width="140%", height="140%", id="drop-shadow")
-    expected = '<filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow"><feGaussianBlur in-="SourceGraphic" stdDeviation="2" result="blur"></feGaussianBlur><feOffset in-="blur" dx="3" dy="3" result="offset"></feOffset></filter>'
-    assert filter_elem.render() == expected
+    expected = clean_doc(
+        """
+        <filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow">
+          <fegaussianblur in-="SourceGraphic" stddeviation="2" result="blur"></fegaussianblur>
+          <feoffset in-="blur" dx="3" dy="3" result="offset"></feoffset>
+        </filter>
+        """
+    )
+    assert filter_elem.pretty_render() == expected
 
 
 def test_fe_distant_light() -> None:
@@ -167,8 +185,14 @@ def test_marker_definition() -> None:
         orient="auto",
         id="arrow",
     )
-    expected = '<marker markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto" id="arrow"><path d="M0,0 L10,5 L0,10 Z"></path></marker>'
-    assert marker.render() == expected
+    expected = clean_doc(
+        """
+        <marker markerwidth="10" markerheight="10" refx="0" refy="5" orient="auto" id="arrow">
+          <path d="M0,0 L10,5 L0,10 Z"></path>
+        </marker>
+        """
+    )
+    assert marker.pretty_render() == expected
 
 
 def test_mask_with_content() -> None:
@@ -177,8 +201,15 @@ def test_mask_with_content() -> None:
         air.svg.Circle(cx=50, cy=50, r=30, style="fill: black;"),
         id="hole-mask",
     )
-    expected = '<mask id="hole-mask"><rect width="100%" height="100%" style="fill: white;"></rect><circle cx="50" cy="50" r="30" style="fill: black;"></circle></mask>'
-    assert mask.render() == expected
+    expected = clean_doc(
+        """
+        <mask id="hole-mask">
+          <rect width="100%" height="100%" style="fill: white;"></rect>
+          <circle cx="50" cy="50" r="30" style="fill: black;"></circle>
+        </mask>
+        """
+    )
+    assert mask.pretty_render() == expected
 
 
 # Test complex SVG structure
@@ -207,8 +238,23 @@ def test_complex_svg_structure() -> None:
         xmlns="http://www.w3.org/2000/svg",
     )
 
-    expected = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><linearGradient id="grad1"><stop offset="0%" stop-color="red"></stop><stop offset="100%" stop-color="blue"></stop></linearGradient></defs><g class="main-content"><circle cx="50" cy="50" r="40" style="fill: url(#grad1);"></circle><text x="35" y="55" style="font-family: Arial;">SVG</text></g></svg>'
-    assert svg.render() == expected
+    expected = clean_doc(
+        """
+        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewbox="0 0 100 100">
+          <defs>
+            <lineargradient id="grad1">
+              <stop offset="0%" stop-color="red"></stop>
+              <stop offset="100%" stop-color="blue"></stop>
+            </lineargradient>
+          </defs>
+          <g class="main-content">
+            <circle cx="50" cy="50" r="40" style="fill: url(#grad1);"></circle>
+            <text x="35" y="55" style="font-family: Arial;">SVG</text>
+          </g>
+        </svg>
+        """
+    )
+    assert svg.pretty_render() == expected
 
 
 # Test attribute handling with None values
@@ -239,8 +285,13 @@ def test_image_with_experimental_attributes() -> None:
         fetchpriority="high",
         crossorigin="anonymous",
     )
-    expected = '<image x="10" y="20" width="100" height="80" href="image.jpg" crossorigin="anonymous" fetchpriority="high"></image>'
-    assert image.render() == expected
+    expected = clean_doc_with_broken_lines(
+        r"""
+        <image x="10" y="20" width="100" height="80" href="image.jpg" crossorigin="anonymous"\
+            fetchpriority="high"></image>
+        """
+    )
+    assert image.pretty_render() == expected
 
 
 def test_script_with_experimental_attributes() -> None:
@@ -251,8 +302,17 @@ def test_script_with_experimental_attributes() -> None:
         fetchpriority="low",
         crossorigin="use-credentials",
     )
-    expected = '<script type="application/javascript" href="script.js" crossorigin="use-credentials" fetchpriority="low"></script>'
-    assert script.render() == expected
+    expected = clean_doc_with_broken_lines(
+        r"""
+        <html>
+          <head>
+            <script type="application/javascript" href="script.js"\
+                crossorigin="use-credentials" fetchpriority="low"></script>
+          </head>
+        </html>
+        """
+    )
+    assert script.pretty_render() == expected
 
 
 def test_animate_with_extended_attributes() -> None:
@@ -270,8 +330,13 @@ def test_animate_with_extended_attributes() -> None:
         repeatDur="10s",
         calcMode="linear",
     )
-    expected = '<animate attributeName="opacity" attributeType="CSS" dur="2s" repeatCount="3" repeatDur="10s" from-="0" to="1" by="0.5" begin="1s" end="5s" calcMode="linear"></animate>'
-    assert animate.render() == expected
+    expected = clean_doc_with_broken_lines(
+        r"""
+        <animate attributename="opacity" attributetype="CSS" dur="2s" repeatcount="3" repeatdur="10s" from-="0" to="1"\
+            by="0.5" begin="1s" end="5s" calcmode="linear"></animate>
+        """
+    )
+    assert animate.pretty_render() == expected
 
 
 # Test missing classes for coverage

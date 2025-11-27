@@ -37,8 +37,12 @@ class JinjaRenderer:
 
     Args:
         directory: The template directory where Jinja templates for the project are stored.
-        context_processors: A list of Jinja-style context processors, functions that automatically injects variables or functions into the template context so they're available in every rendered template without passing them explicitly.
-        env: The env is the central Jinja object that holds configuration, filters, globals, and template loading settings, and is responsible for compiling and rendering templates.
+        context_processors: A list of Jinja-style context processors, functions that
+            automatically injects variables or functions into the template context so they're
+            available in every rendered template without passing them explicitly.
+        env: The env is the central Jinja object that holds configuration, filters, globals,
+            and template loading settings, and is responsible for compiling and rendering
+            templates.
 
     Example:
 
@@ -104,8 +108,12 @@ class Renderer:
 
     Args:
         directory: The template directory where Jinja templates for the project are stored.
-        context_processors: A list of Jinja-style context processors, functions that automatically injects variables or functions into the template context so they're available in every rendered template without passing them explicitly.
-        env: The env is the central Jinja object that holds configuration, filters, globals, and template loading settings, and is responsible for compiling and rendering templates.
+        context_processors: A list of Jinja-style context processors, functions that
+            automatically injects variables or functions into the template context so they're
+            available in every rendered template without passing them explicitly.
+        env: The env is the central Jinja object that holds configuration, filters, globals,
+            and template loading settings, and is responsible for compiling and rendering
+            templates.
 
     Example:
 
