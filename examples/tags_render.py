@@ -3,7 +3,8 @@ Air 💨 Tags -> Method usage examples!
 
 This example script highlights the Air tag rendering helpers using SMALL_HTML_SAMPLE and HTML_SAMPLE.
 It demonstrates pretty-printing, terminal rendering, and browser preview flows guarded by simple if toggles.
-Additional scenarios cover exporting tags to dict/JSON, saving prettified HTML, and inspecting debugging representations.
+Additional scenarios cover exporting tags to dict/JSON, saving prettified HTML, and inspecting debugging
+representations.
 
 Run:
     `just run-py-module examples.tags_render`

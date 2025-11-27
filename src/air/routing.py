@@ -130,8 +130,8 @@ class RouterMixin:
             generated URL string.
 
         Raises:
-            NoMatchFound: If the route name doesn't exist or if the provided
-                parameters don't match the route's path parameters.
+            NoMatchFound: If the route name doesn't exist or if the provided parameters
+                don't match the route's path parameters.
 
         Example:
             @app.get("/users/{user_id}")
