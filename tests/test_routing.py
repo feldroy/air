@@ -249,8 +249,6 @@ def test_air_router_get_with_url_method_throws_error():
             return air.H1(f"Item URL: {url_helper_error_endpoint_with_params.url()}")
         except NoMatchFound as e:
             return air.H1(f"Error: {type(e).__name__}")
-        except Exception:  # noqa
-            return air.H1("Error: Should not appear.")
 
     @router.get("/url-helper-error-test-with-params/{item_id}")
     def url_helper_error_endpoint_with_params(item_id: int) -> H1:
@@ -316,8 +314,6 @@ def test_air_router_post_with_url_method_throws_error():
             return air.H1(f"Item URL: {post_url_helper_error_endpoint_with_params.url()}")
         except NoMatchFound as e:
             return air.H1(f"Error: {type(e).__name__}")
-        except Exception:  # noqa
-            return air.H1("Error: Should not appear.")
 
     @router.post("/post-url-helper-error-test-with-params/{item_id}")
     def post_url_helper_error_endpoint_with_params(item_id: int) -> H1:
