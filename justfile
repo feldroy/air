@@ -168,7 +168,7 @@ lint OUTPUT_FORMAT="full":
 [group('qa')]
 ruff-check-all TARGET=".":
     # TODO -> Remove: --ignore D
-    just run -- ruff check --output-format=concise --select ALL --ignore D,TD,FBT001,FBT002,TC003,COM812,ARG004,PLR0904,CPY001 "{{TARGET}}"
+    just run -- ruff check --output-format=concise --select ALL --ignore TD,FBT001,FBT002,TC003,COM812,ARG004,PLR0904,CPY001 "{{TARGET}}"
 
 # [print diagnostics concisely, one per line]
 [group('qa')]

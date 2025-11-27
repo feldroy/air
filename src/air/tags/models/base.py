@@ -16,6 +16,8 @@ from typing_extensions import Doc
 
 from air.tags.constants import (
     DEFAULT_INDENTATION_SIZE,
+    EMPTY_JOIN_SEPARATOR,
+    HTML_ATTRIBUTES_JOIN_SEPARATOR,
     INDENT_UNIT,
     INLINE_JOIN_SEPARATOR,
     MULTILINE_JOIN_SEPARATOR,
@@ -145,7 +147,9 @@ class BaseTag:
         """
         if not self._attrs:
             return ""
-        return " " + " ".join(self._format_attr(name) for name, value in self._attrs.items() if value is not False)
+        return " " + HTML_ATTRIBUTES_JOIN_SEPARATOR.join(
+            self._format_attr(name) for name, value in self._attrs.items() if value is not False
+        )
 
     def _format_attr(self, name: str) -> str:
         """Convert a stored attribute into an HTML-safe representation.
@@ -171,7 +175,7 @@ class BaseTag:
         """
         if not self._children:
             return ""
-        return "".join(self._render_child(child) for child in self._children)
+        return EMPTY_JOIN_SEPARATOR.join(self._render_child(child) for child in self._children)
 
     def _render_child(self, child: Renderable) -> str:
         """Render a single child element.
@@ -309,7 +313,7 @@ class BaseTag:
         Returns:
             The rendered HTML string.
         """
-        return self.render()
+        return self.html
 
     def __repr__(self) -> str:
         """Return a concise representation showing the tag name and summary."""
@@ -332,7 +336,9 @@ class BaseTag:
             The expanded string representation of the tag hierarchy.
         """
         attributes = f"{TagKeys.ATTRIBUTES}={self._attrs}" if self._attrs else ""
-        children = ", ".join(child.full_repr() if isinstance(child, BaseTag) else child for child in self._children)
+        children = INLINE_JOIN_SEPARATOR.join(
+            child.full_repr() if isinstance(child, BaseTag) else child for child in self._children
+        )
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
@@ -392,12 +398,22 @@ class BaseTag:
 
     def _get_children_instantiation_arguments(self, level: int, padding: str) -> list[str]:
         return [
-            (child.to_source(level + 1) if isinstance(child, BaseTag) else f"{padding}{child!r}")
+            child.to_source(level + 1)
+            if isinstance(child, BaseTag)
+            else self._format_child_instantiation(child, padding)
             for child in self._children
         ]
 
+    @staticmethod
+    def _format_child_instantiation(child: Renderable, padding: str) -> str:
+        return f"{padding}{child!r}"
+
     def _get_attributes_instantiation_arguments(self, padding: str) -> list[str]:
-        return [f"{padding}{name}={value!r}" for name, value in self._attrs.items()]
+        return [self._format_attribute_instantiation(name, value, padding) for name, value in self._attrs.items()]
+
+    @staticmethod
+    def _format_attribute_instantiation(attr_name: str, attr_value: AttributeType, padding: str = "") -> str:
+        return f"{padding}{attr_name}={attr_value!r}"
 
     def _format_instantiation_call(self, parsed_lines: str, outer_padding: str) -> str:
         return f"{outer_padding}air.{self._name}({parsed_lines})"
@@ -564,8 +580,12 @@ class BaseTag:
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
         children: TagChildrenType = tuple(
-            cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
+            cls._from_child_html(child)
+            for child in node.iter(include_text=True, skip_empty=True)
+            if not (child.is_text_node and child.text_content.isspace())
         )
+        # TODO ->
+        #  Extract to private method, handle hidden=None should hidden=False
         attributes: TagAttributesType = {
             migrate_html_attribute_name_from_html_to_air_tag(name): value for name, value in node.attributes.items()
         }
@@ -576,7 +596,7 @@ class BaseTag:
         if node.is_element_node:
             return cls._from_html(node)
         if node.is_text_node:
-            return node.text_content
+            return node.text_content.strip()
         if node.is_comment_node:
             return cls._create_comment_tag(node)
         msg = f"Unable to parse <{node.tag}>."

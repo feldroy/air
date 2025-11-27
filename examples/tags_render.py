@@ -30,7 +30,7 @@ if __name__ == "__main__":
         air.Body(),
         lang="en",
     )
-    html_source = clean_doc(
+    html_source_invalid = clean_doc(
         """
         <!doctype html>
         <html lang="en">
@@ -40,7 +40,11 @@ if __name__ == "__main__":
             <title>Title!</title>
             <!-- My crazy comment -->
             <p>Hello <strong>World</strong>!</p>
+            <div hidden draggable="true" translate="no" contenteditable="true" tabindex=3>
+              Div
+            </div>
           </head>
+          <body></body>
         </html>
         """
     )
@@ -77,9 +81,37 @@ if __name__ == "__main__":
         air.Div(air.H6()),
         href="/",
     )
-    # print(html_test1.to_source())
+
+    html_source = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>Title!</title>
+            <!-- My crazy comment -->
+          </head>
+          <body>
+            <p>Hello <strong>World</strong>!</p>
+            <div hidden draggable="true" translate="no" contenteditable="true" tabindex="3">
+              Div
+            </div>
+          </body>
+        </html>
+        """
+    )
+
     # print(air.Tag.from_html(div_html.strip(), is_fragment=True).pretty_render())
-    print(air.Tag.from_html_to_source(HTML_SAMPLE.render()))
+
+    # print(SMALL_HTML_SAMPLE.to_source())
+    # print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE.pretty_render()))
+    # print(air.Tag.from_html(html_source).html)
+    print(air.Tag.from_html_to_source(html_source))
+    # print(air.Tag.from_html(SMALL_HTML_SAMPLE.render()).pretty_render())
+    # print(air.Tag.from_html(html_source))
+    # print(air.Tag.from_html_to_source(html_source))
+
     # print(air.H6(air.H3(), bla1="aba1").to_source())
     # print(pretty_repr(html.to_source(), expand_all=True))
     # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
