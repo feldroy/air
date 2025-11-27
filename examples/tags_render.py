@@ -108,7 +108,7 @@ if __name__ == "__main__":
     # print(SMALL_HTML_SAMPLE.to_source())
     # print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE.pretty_render()))
     # print(air.Tag.from_html(html_source).html)
-    print(air.Tag.from_html_to_source(html_source))
+    print(air.Tag.from_html_to_source(HTML_SAMPLE.pretty_render()))
     # print(air.Tag.from_html(SMALL_HTML_SAMPLE.render()).pretty_render())
     # print(air.Tag.from_html(html_source))
     # print(air.Tag.from_html_to_source(html_source))

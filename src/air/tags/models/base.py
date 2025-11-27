@@ -584,12 +584,14 @@ class BaseTag:
             for child in node.iter(include_text=True, skip_empty=True)
             if not (child.is_text_node and child.text_content.isspace())
         )
-        # TODO ->
-        #  Extract to private method, handle hidden=None should hidden=False
-        attributes: TagAttributesType = {
+        attributes: TagAttributesType = cls._migrate_html_attributes_to_air_tag(node)
+        return cls._create_tag(node.tag, *children, **attributes)
+
+    @classmethod
+    def _migrate_html_attributes_to_air_tag(cls, node: LexborNode) -> TagAttributesType:
+        return {
             migrate_html_attribute_name_from_html_to_air_tag(name): value for name, value in node.attributes.items()
         }
-        return cls._create_tag(node.tag, *children, **attributes)
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
