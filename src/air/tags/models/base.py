@@ -398,8 +398,7 @@ class BaseTag:
 
     def _get_children_instantiation_arguments(self, level: int, padding: str) -> list[str]:
         return [
-            child.to_source(level + 1)
-            if isinstance(child, BaseTag)
+            child.to_source(level + 1) if isinstance(child, BaseTag)
             else self._format_child_instantiation(child, padding)
             for child in self._children
         ]
@@ -409,7 +408,10 @@ class BaseTag:
         return f"{padding}{child!r}"
 
     def _get_attributes_instantiation_arguments(self, padding: str) -> list[str]:
-        return [self._format_attribute_instantiation(name, value, padding) for name, value in self._attrs.items()]
+        return [
+            self._format_attribute_instantiation(attr_name=name, attr_value=value, padding=padding)
+            for name, value in self._attrs.items()
+        ]
 
     @staticmethod
     def _format_attribute_instantiation(attr_name: str, attr_value: AttributeType, padding: str = "") -> str:
