@@ -4,7 +4,8 @@ from fastapi import Depends, Header
 
 
 def _is_htmx_request(hx_request: str = Header(default=None)) -> bool:
-    """Dependency injection function used to determine if request is coming from HTMX. Checks if 'hx-request' header is in the HTTP request.
+    """Dependency injection function used to determine if request is coming from HTMX. Checks if
+    'hx-request' header is in the HTTP request.
 
     Returns:
         bool: Whether or not a request is coming from an HTMX action.

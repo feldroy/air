@@ -1,4 +1,5 @@
-"""Middleware are callables (functions, classes) that works with every request before it is processed by views. And also with every response before returning it.
+"""Middleware are callables (functions, classes) that works with every request before it is
+processed by views. And also with every response before returning it.
 
 - Middleware takes each request that comes to applications
 - It can then do something to that request or run code

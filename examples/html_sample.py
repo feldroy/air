@@ -145,7 +145,8 @@ HTML_SAMPLE: Final = Html(
                             ),
                         ),
                         P(
-                            "Keyword arguments can now be more narrowly typed by using typing.Unpack and typing.TypeDict.",
+                            "Keyword arguments can now be more narrowly typed by using typing.Unpack and "
+                            "typing.TypeDict.",
                             Br(),
                             Small(Time("July 27, 2025 at 4:55pm")),
                         ),
@@ -158,7 +159,8 @@ HTML_SAMPLE: Final = Html(
                             ),
                         ),
                         P(
-                            "Using uv run with make to replace tox or nox for testing multiple versions of Python locally.",
+                            "Using uv run with make to replace tox or nox for testing "
+                            "multiple versions of Python locally.",
                             Br(),
                             Small(Time("July 20, 2025 at 10:08am")),
                         ),
@@ -171,7 +173,8 @@ HTML_SAMPLE: Final = Html(
                             ),
                         ),
                         P(
-                            "In early May of 2025 Michael Ryabushkin (aka Goodwill) passed away. He was a great friend and an even better person. I will miss him dearly.",
+                            "In early May of 2025 Michael Ryabushkin (aka Goodwill) passed away. "
+                            "He was a great friend and an even better person. I will miss him dearly.",
                             Br(),
                             Small(Time("May 16, 2025 at 11:22am")),
                         ),
@@ -296,7 +299,9 @@ HTML_SAMPLE: Final = Html(
                             A("Code, Code, Code", href="/posts/code-code-code"),
                         ),
                         P(
-                            "I'm often asked by new programmers how they can forge a path into using their skills professionally. Or how they can get better at writing software. In this article I share the secret master-level method to improvement.",
+                            "I'm often asked by new programmers how they can forge a path into using "
+                            "their skills professionally. Or how they can get better at writing software. "
+                            "In this article I share the secret master-level method to improvement.",
                             Br(),
                             Small(Time("May 28, 2016 at 12:00am")),
                         ),
@@ -372,7 +377,20 @@ HTML_SAMPLE: Final = Html(
         ),
         Div(hx_trigger="keyup[key=='/'] from:body"),
         Script(
-            "document.body.addEventListener('keydown', e => {\n            if (e.key === '/') {\n                e.preventDefault();\n                document.getElementById('search-modal').style.display = 'block';\n                document.getElementById('search-input').focus();\n            }\n            if (e.key === 'Escape') {\n                document.getElementById('search-modal').style.display = 'none';\n            }\n            });\n\n            document.getElementById('search-input').addEventListener('input', e => {\n            htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});\n            });",
+            "document.body.addEventListener('keydown', e => {\n"
+            "            if (e.key === '/') {\n"
+            "                e.preventDefault();\n"
+            "                document.getElementById('search-modal').style.display = 'block';\n"
+            "                document.getElementById('search-input').focus();\n"
+            "            }\n"
+            "            if (e.key === 'Escape') {\n"
+            "                document.getElementById('search-modal').style.display = 'none';\n"
+            "            }\n"
+            "            });\n"
+            "\n"
+            "            document.getElementById('search-input').addEventListener('input', e => {\n"
+            "            htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});\n"
+            "            });",
         ),
         hx_boost="true",
     ),
