@@ -316,7 +316,11 @@ class BaseTag:
         return self.html
 
     def __repr__(self) -> str:
-        """Return a concise representation showing the tag name and summary."""
+        """Return a concise representation showing the tag name and summary.
+
+        Returns:
+            A readable string representation for debugging.
+        """
         summary = f'("{self._doc_summary}")' if self._doc_summary else ""
         return f"<air.{self.__class__.__name__}{summary}>"
 
@@ -343,11 +347,29 @@ class BaseTag:
         return f"{self._name}({attributes}{children_str})"
 
     def to_source(self, level: int = 0) -> str:
+        """Return Python source that reconstructs the tag hierarchy.
+
+        Args:
+            level: Indentation level applied to the resulting source.
+
+        Returns:
+            The formatted instantiation call for this tag and its children.
+        """
         outer_padding, inner_padding = self._get_paddings(level)
         instantiation_args = self._format_instantiation_arguments(level, outer_padding, inner_padding)
         return self._format_instantiation_call(instantiation_args, outer_padding)
 
     def _format_instantiation_arguments(self, level: int, outer_padding: str, inner_padding: str) -> str:
+        """Compose the argument list for the tag instantiation call.
+
+        Args:
+            level: Current indentation depth for nested tags.
+            outer_padding: Padding applied to the opening line of the call.
+            inner_padding: Padding applied to nested children and attributes.
+
+        Returns:
+            The formatted argument string, either inline or multiline.
+        """
         if self.is_attribute_free_void_element:
             return ""
         if self._should_format_multiline_arguments():
@@ -355,33 +377,91 @@ class BaseTag:
         return self._format_inline_instantiation_arguments(level)
 
     def _should_format_multiline_arguments(self) -> bool:
+        """Decide whether to expand constructor arguments across multiple lines.
+
+        Returns:
+            True when multiple children or attributes exist, or the first child is a tag.
+        """
         return len(self._children) > 1 or len(self._attrs) > 1 or isinstance(self.first_child, BaseTag)
 
     def _format_multiline_instantiation_arguments(self, level: int, outer_padding: str, inner_padding: str) -> str:
+        """Format constructor arguments on separate lines with indentation.
+
+        Args:
+            level: Current indentation depth for nested tags.
+            outer_padding: Padding for the opening and closing lines.
+            inner_padding: Padding for each argument line.
+
+        Returns:
+            A multiline argument string wrapped with surrounding padding.
+        """
         instantiation_args = self._get_instantiation_arguments(level, inner_padding)
         multiline_instantiation_args = MULTILINE_JOIN_SEPARATOR.join(instantiation_args)
         return self._wrap_multiline_instantiation_args(multiline_instantiation_args, outer_padding)
 
     def _format_inline_instantiation_arguments(self, level: int) -> str:
+        """Format constructor arguments on a single line.
+
+        Args:
+            level: Current indentation depth for nested tags.
+
+        Returns:
+            The inline argument string.
+        """
         instantiation_args = self._get_instantiation_arguments(level, inner_padding="")
         return INLINE_JOIN_SEPARATOR.join(instantiation_args)
 
     @staticmethod
     def _wrap_multiline_instantiation_args(lines: str, outer_padding: str) -> str:
+        """Wrap multiline arguments with newlines and outer padding.
+
+        Args:
+            lines: Joined multiline arguments.
+            outer_padding: Padding to reapply after the closing line.
+
+        Returns:
+            The wrapped multiline argument string.
+        """
         return f"\n{lines},\n{outer_padding}"
 
     @staticmethod
     def _get_paddings(level: int) -> tuple[str, str]:
+        """Return indentation paddings for the current depth.
+
+        Args:
+            level: Current indentation depth.
+
+        Returns:
+            Tuple containing the outer and inner padding strings.
+        """
         outer_padding = INDENT_UNIT * level
         inner_padding = INDENT_UNIT * (level + 1)
         return outer_padding, inner_padding
 
     def _get_instantiation_arguments(self, level: int, inner_padding: str) -> list[str]:
+        """Collect formatted children and attribute arguments.
+
+        Args:
+            level: Current indentation depth for nested tags.
+            inner_padding: Padding applied to nested argument lines.
+
+        Returns:
+            A list of formatted argument strings.
+        """
         children_instantiation_args = self._get_children_instantiation_arguments(level=level, padding=inner_padding)
         attribute_instantiation_args = self._get_attributes_instantiation_arguments(padding=inner_padding)
         return children_instantiation_args + attribute_instantiation_args
 
     def _get_children_instantiation_arguments(self, level: int, padding: str) -> list[str]:
+        """Format each child as an instantiation argument.
+
+        Args:
+            level: Current indentation depth for nested tags.
+            padding: Padding applied to each child line.
+
+        Returns:
+            Formatted child argument strings.
+        """
         return [
             child.to_source(level + 1)
             if isinstance(child, BaseTag)
@@ -391,9 +471,26 @@ class BaseTag:
 
     @staticmethod
     def _format_child_instantiation(child: Renderable, padding: str) -> str:
+        """Render a non-tag child argument with indentation applied.
+
+        Args:
+            child: The child value to render.
+            padding: Padding to prepend to the rendered value.
+
+        Returns:
+            The formatted child representation.
+        """
         return f"{padding}{child!r}"
 
     def _get_attributes_instantiation_arguments(self, padding: str) -> list[str]:
+        """Format each attribute as a keyword argument.
+
+        Args:
+            padding: Padding applied to each attribute line.
+
+        Returns:
+            Formatted attribute argument strings.
+        """
         return [
             self._format_attribute_instantiation(attr_name=name, attr_value=value, padding=padding)
             for name, value in self._attrs.items()
@@ -401,49 +498,118 @@ class BaseTag:
 
     @staticmethod
     def _format_attribute_instantiation(attr_name: str, attr_value: AttributeType, padding: str = "") -> str:
+        """Render a single attribute keyword argument with indentation applied.
+
+        Args:
+            attr_name: Attribute name to render.
+            attr_value: Attribute value to render.
+            padding: Padding to prepend to the rendered argument.
+
+        Returns:
+            The formatted keyword argument string.
+        """
         return f"{padding}{attr_name}={attr_value!r}"
 
     def _format_instantiation_call(self, parsed_lines: str, outer_padding: str) -> str:
+        """Wrap formatted arguments in a constructor call with module prefix.
+
+        Args:
+            parsed_lines: Prepared constructor arguments.
+            outer_padding: Padding to prepend to the call.
+
+        Returns:
+            The full constructor call string.
+        """
         return f"{outer_padding}air.{self._name}({parsed_lines})"
 
     @property
     def is_attribute_free_void_element(self) -> bool:
+        """Check whether the tag has neither attributes nor children.
+
+        Returns:
+            True when the tag has no attributes and no children.
+        """
         return not self.has_children and not self.has_attributes
 
     @property
     def has_children(self) -> bool:
+        """Return True when the tag contains one or more children.
+
+        Returns:
+            True when children are present; otherwise False.
+        """
         return bool(self._children)
 
     @property
     def has_attributes(self) -> bool:
+        """Return True when the tag defines one or more attributes.
+
+        Returns:
+            True when attributes are present; otherwise False.
+        """
         return bool(self._attrs)
 
     @property
     def first_child(self) -> Renderable | None:
+        """Return the first child or None when no children are present.
+
+        Returns:
+            The first child value, or None if there are no children.
+        """
         return self._children and self._children[0]
 
     @property
     def last_child(self) -> Renderable | None:
+        """Return the last child or None when no children are present.
+
+        Returns:
+            The last child value, or None if there are no children.
+        """
         return self._children and self._children[self.num_of_children - 1]
 
     @property
     def first_attribute(self) -> tuple[str, AttributeType] | None:
+        """Return the first attribute key-value pair or None when none exist.
+
+        Returns:
+            The first attribute pair, or None if no attributes are set.
+        """
         return self._attrs and next(iter(self._attrs.items()))
 
     @property
     def last_attribute(self) -> tuple[str, AttributeType] | None:
+        """Return the last attribute key-value pair or None when none exist.
+
+        Returns:
+            The last attribute pair, or None if no attributes are set.
+        """
         return self._attrs and list(self._attrs.items()).pop()
 
     @property
     def num_of_children(self) -> int:
+        """Return the number of child elements.
+
+        Returns:
+            The count of children.
+        """
         return len(self._children)
 
     @property
     def num_of_attributes(self) -> int:
+        """Return the number of defined attributes.
+
+        Returns:
+            The count of attributes.
+        """
         return len(self._attrs)
 
     @property
     def tag_id(self) -> str | None:
+        """Return the tag's `id_` attribute when present.
+
+        Returns:
+            The `id_` value or None if absent.
+        """
         return self._attrs and self._attrs.get("id_")
 
     def to_pretty_dict(self) -> str:
@@ -539,6 +705,20 @@ class BaseTag:
 
     @classmethod
     def from_html(cls, html_source: str, is_fragment: bool = False) -> BaseTag:
+        """Parse HTML and reconstruct the corresponding tag tree.
+
+        Args:
+            html_source: HTML markup to parse.
+            is_fragment: Whether to treat the input as an HTML fragment.
+
+        Returns:
+            The root tag built from the provided markup.
+
+        Raises:
+            TypeError: If ``html_source`` is not a string.
+            ValueError: If the markup is not valid HTML or, when ``is_fragment`` is True, lacks all
+                required top-level tags.
+        """
         if not isinstance(html_source, str):
             msg = f"{cls.__name__}.from_html(html_source) expects a string argument."
             raise TypeError(msg)
@@ -553,6 +733,14 @@ class BaseTag:
 
     @classmethod
     def _from_html(cls, node: LexborNode) -> BaseTag:
+        """Recursively build a tag tree from a parsed HTML node.
+
+        Args:
+            node: Parsed HTML element node.
+
+        Returns:
+            The reconstructed Air tag for the provided node.
+        """
         children: TagChildrenType = tuple(
             cls._from_child_html(child)
             for child in node.iter(include_text=True, skip_empty=True)
@@ -563,10 +751,30 @@ class BaseTag:
 
     @staticmethod
     def _migrate_html_attributes_to_air_tag(node: LexborNode) -> TagAttributesType:
+        """Convert parsed HTML attributes to Air tag attribute keys.
+
+        Args:
+            node: Parsed HTML element node.
+
+        Returns:
+            A mapping of normalized attribute names and values.
+        """
         return {migrate_attribute_name_to_air_tag(name): value for name, value in node.attributes.items()}
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
+        """Convert a parsed HTML child node into an Air tag, text, or comment.
+
+        Args:
+            node: Parsed HTML child node.
+
+        Returns:
+            An Air tag for element nodes, stripped text for text nodes, or a comment tag for comment
+            nodes.
+
+        Raises:
+            ValueError: If the node type cannot be handled.
+        """
         if node.is_element_node:
             return cls._from_html(node)
         if node.is_text_node:
@@ -578,6 +786,17 @@ class BaseTag:
 
     @classmethod
     def _create_comment_tag(cls, node: LexborNode) -> BaseTag:
+        """Create an Air comment tag from a parsed comment node.
+
+        Args:
+            node: Parsed HTML comment node.
+
+        Returns:
+            A comment Air tag containing the extracted comment text.
+
+        Raises:
+            ValueError: If the comment node has no HTML content.
+        """
         if node.html is None:
             msg = "Unable to create a comment tag."
             raise ValueError(msg)
@@ -585,6 +804,19 @@ class BaseTag:
 
     @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
+        """Instantiate a registered tag by name.
+
+        Args:
+            name: Tag name looked up in the registry.
+            children: Child content passed to the tag constructor.
+            attributes: Attributes passed to the tag constructor.
+
+        Returns:
+            The instantiated Air tag.
+
+        Raises:
+            TypeError: If the tag name is not registered.
+        """
         try:
             return cls.registry[name.lower()](*children, **attributes)
         except KeyError as e:
@@ -593,6 +825,15 @@ class BaseTag:
 
     @classmethod
     def from_html_to_source(cls, html_source: str, is_fragment: bool = False) -> str:
+        """Parse HTML and return Python source that recreates the tag tree.
+
+        Args:
+            html_source: HTML markup to parse.
+            is_fragment: Whether to treat the input as an HTML fragment.
+
+        Returns:
+            Python source that reconstructs the parsed tag structure.
+        """
         return cls.from_html(html_source, is_fragment).to_source()
 
     def __init_subclass__(cls) -> None:
@@ -601,10 +842,26 @@ class BaseTag:
         BaseTag._registry[cls.__name__.lower()] = cls
 
     def __eq__(self, other: object, /) -> bool:
+        """Compare tags by their rendered HTML.
+
+        Args:
+            other: Object to compare against.
+
+        Returns:
+            True when the rendered HTML matches.
+
+        Raises:
+            TypeError: If compared to a non-BaseTag object.
+        """
         if not isinstance(other, BaseTag):
             msg = f"<{self.name}> is comparable only to other air-tags."
             raise TypeError(msg)
         return self.html == other.html
 
     def __hash__(self) -> int:
+        """Return the hash of the rendered HTML representation.
+
+        Returns:
+            Hash derived from the rendered HTML string.
+        """
         return hash(self.html)
