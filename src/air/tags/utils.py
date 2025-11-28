@@ -46,6 +46,18 @@ type StrPath = PathLike | Path | str
 
 
 def has_all_top_level_tags(html_source: str) -> bool:
+    """Check whether required top-level HTML tags are present.
+
+    Args:
+        html_source: HTML markup to scan for top-level tags.
+
+    Returns:
+        True when every tag listed in ``TOP_LEVEL_HTML_TAGS`` appears in the source; otherwise False.
+
+    Notes:
+        This check relies on substring membership rather than parsing, so malformed markup or tags
+        inside comments may lead to false positives.
+    """
     return all(top_level_tag in html_source for top_level_tag in TOP_LEVEL_HTML_TAGS)
 
 
@@ -57,37 +69,49 @@ def migrate_attribute_name_to_html(attr_name: str) -> str:
 
     Returns:
         The normalized attribute name compatible with HTML.
+
+    Notes:
+        Proxies such as ``class_``, ``for_``, ``id_``, ``as_``, and ``async_`` are converted to their
+        standard HTML counterparts. Leading underscores are stripped and remaining underscores become
+        dashes to match HTML attribute naming rules.
     """
-    # If a "_"-suffixed proxy for "class", "for", or "id" is used,
-    # convert it to its normal HTML equivalent.
     attr_name = ATTRIBUTES_TO_HTML.get(attr_name, attr_name)
-    # Remove leading underscores and replace underscores with dashes
     return attr_name.lstrip("_").replace("_", "-")
 
 
 def migrate_attribute_name_to_air_tag(attr_name: str) -> str:
-    """Clean up HTML attribute names to match the standard W3C HTML spec.
+    """Normalize HTML attribute names for Air tag reconstruction.
 
     Args:
-        attr_name: An uncleaned HTML attribute key
+        attr_name: An uncleaned HTML attribute key.
 
     Returns:
+        Normalized attribute key compatible with Air tags.
 
-        Cleaned HTML attribute key
+    Notes:
+        HTML-reserved attribute names such as ``class``, ``for``, ``id``, ``as``, and ``async`` are
+        mapped to the underscore-suffixed proxies used by Air tags. Leading underscores are stripped
+        and remaining underscores become dashes to normalize the key.
     """
-    # If a "_"-suffixed proxy for "class", "for", or "id" is used,
-    # convert it to its normal HTML equivalent.
     attr_name = ATTRIBUTE_TO_AIR.get(attr_name, attr_name)
-    # Remove leading underscores and replace underscores with dashes
     return attr_name.lstrip("_").replace("_", "-")
 
 
 def extract_html_comment(text: str) -> str:
-    """
-    Extract the inner content of an HTML comment string.
+    """Extract the inner content of an HTML comment string.
 
-    Example:
-        "<!-- xxx -->" -> "xxx"
+    Args:
+        text: Raw HTML comment, including the ``<!--`` and ``-->`` markers.
+
+    Returns:
+        The comment body with surrounding whitespace stripped.
+
+    Raises:
+        ValueError: If the input is not a well-formed HTML comment.
+
+    Examples:
+        >>> extract_html_comment("<!-- hello -->")
+        'hello'
     """
     if match := re.fullmatch(r"\s*<!--\s*(.*?)\s*-->\s*", text, flags=re.DOTALL):
         return match.group(1).strip()
