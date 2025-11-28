@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from full_match import match as full_match
 import pytest
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
@@ -150,8 +151,17 @@ def stub_rich(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
 
 
 def test_clean_html_attr_key_transforms_special_suffixes() -> None:
-    assert utils.migrate_html_attribute_name_from_air_tag_to_html("class_") == "class"
-    assert utils.migrate_html_attribute_name_from_air_tag_to_html("__data_value") == "data-value"
+    assert utils.migrate_attribute_name_to_html("class_") == "class"
+    assert utils.migrate_attribute_name_to_html("__data_value") == "data-value"
+
+
+def test_extract_html_comment_with_whitespace() -> None:
+    assert utils.extract_html_comment("  <!-- hello world -->  ") == "hello world"
+
+
+def test_extract_html_comment_invalid_input() -> None:
+    with pytest.raises(ValueError, match=full_match("Input is not a valid HTML comment")):
+        utils.extract_html_comment("<p>no comment</p>")
 
 
 def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) -> None:

@@ -28,8 +28,8 @@ from air.tags.utils import (
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
-    migrate_html_attribute_name_from_air_tag_to_html,
-    migrate_html_attribute_name_from_html_to_air_tag,
+    migrate_attribute_name_to_html,
+    migrate_attribute_name_to_air_tag,
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
@@ -161,7 +161,7 @@ class BaseTag:
             The attribute rendered as `name="value"` or a bare name for boolean attributes.
         """
         value = self._attrs[name]
-        clean_name = migrate_html_attribute_name_from_air_tag_to_html(name)
+        clean_name = migrate_attribute_name_to_html(name)
         if value is True:
             return clean_name
         return f'{clean_name}="{value}"'
@@ -592,7 +592,7 @@ class BaseTag:
     @classmethod
     def _migrate_html_attributes_to_air_tag(cls, node: LexborNode) -> TagAttributesType:
         return {
-            migrate_html_attribute_name_from_html_to_air_tag(name): value for name, value in node.attributes.items()
+            migrate_attribute_name_to_air_tag(name): value for name, value in node.attributes.items()
         }
 
     @classmethod

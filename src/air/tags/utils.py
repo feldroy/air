@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import html
+import re
 import tempfile
 import webbrowser
 from io import StringIO
@@ -46,7 +47,7 @@ def has_all_top_level_tags(html_source: str) -> bool:
     return all(top_level_tag in html_source for top_level_tag in TOP_LEVEL_HTML_TAGS)
 
 
-def migrate_html_attribute_name_from_air_tag_to_html(attr_name: str) -> str:
+def migrate_attribute_name_to_html(attr_name: str) -> str:
     """Normalize attribute names to align with HTML conventions.
 
     Args:
@@ -64,7 +65,7 @@ def migrate_html_attribute_name_from_air_tag_to_html(attr_name: str) -> str:
     return attr_name.lstrip("_").replace("_", "-")
 
 
-def migrate_html_attribute_name_from_html_to_air_tag(attr_name: str) -> str:
+def migrate_attribute_name_to_air_tag(attr_name: str) -> str:
     """Clean up HTML attribute names to match the standard W3C HTML spec.
 
     Args:
@@ -88,11 +89,8 @@ def extract_html_comment(text: str) -> str:
     Example:
         "<!-- xxx -->" -> "xxx"
     """
-    s = text.strip()
-    if s.startswith("<!--") and s.endswith("-->"):
-        # Remove the opening "<!--" and closing "-->"
-        inner = s[4:-3]
-        return inner.strip()
+    if match := re.fullmatch(r"\s*<!--\s*(.*?)\s*-->\s*", text, flags=re.DOTALL):
+        return match.group(1).strip()
     msg = "Input is not a valid HTML comment"
     raise ValueError(msg)
 
