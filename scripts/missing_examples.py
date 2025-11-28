@@ -73,7 +73,7 @@ def main(project_root: pathlib.Path | None = None):
     for file_path in src_path.rglob("*.py"):
         if file_path.name != "__init__.py":  # Skip __init__.py files
             # Check if this file should be excluded
-            relative_path = str(file_path.relative_to(src_path))
+            relative_path = file_path.relative_to(src_path).as_posix()
             if relative_path not in excluded_paths:
                 extract_callables_from_file(file_path, missing_examples, src_path)
             else:
