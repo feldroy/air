@@ -27,11 +27,11 @@ TOP_LEVEL_HTML_TAGS: Final[frozenset[str]] = frozenset({
     "<head",
     "<body",
 })
-DEFAULT_INDENTATION_SIZE = 4
+DEFAULT_INDENTATION_SIZE: Final = 4
 INDENT_UNIT: Final = " " * 4
-INLINE_JOIN_SEPARATOR = ", "
-MULTILINE_JOIN_SEPARATOR = ",\n"
-HTML_ATTRIBUTES_JOIN_SEPARATOR = " "
-EMPTY_JOIN_SEPARATOR = ""
-ATTRIBUTE_TO_AIR = frozendict({"class": "class_", "for": "for_", "id": "id_", "as": "as_", "async": "async_"})
-ATTRIBUTES_TO_HTML = frozendict({"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"})
+INLINE_JOIN_SEPARATOR: Final = ", "
+MULTILINE_JOIN_SEPARATOR: Final = ",\n"
+HTML_ATTRIBUTES_JOIN_SEPARATOR: Final = " "
+EMPTY_JOIN_SEPARATOR: Final = ""
+ATTRIBUTE_TO_AIR: Final = frozendict({"class": "class_", "for": "for_", "id": "id_", "as": "as_", "async": "async_"})
+ATTRIBUTES_TO_HTML: Final = frozendict({"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"})
