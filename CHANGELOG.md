@@ -1,5 +1,76 @@
 ### Latest Changes
 
+# 0.41.2 - 2025-11-28
+
+## What's Changed
+* DOCS: Add source example for AirModel.to_form by @msaizar in https://github.com/feldroy/air/pull/864
+* CHORE: Remove dependabot by @pydanny in https://github.com/feldroy/air/pull/867
+* chore(deps): update actions/checkout action to v6 by @renovate[bot] in https://github.com/feldroy/air/pull/839
+* CHORE: Ruff rule: E501 by @msaizar in https://github.com/feldroy/air/pull/866
+* CHORE: remove PGH004 ruff rule by @msaizar in https://github.com/feldroy/air/pull/870
+* CHORE: remove W505 ruff rule by @msaizar in https://github.com/feldroy/air/pull/871
+* CHORE: Upgrade `ty`,and address its errors! by @pygarap in https://github.com/feldroy/air/pull/868
+* build(deps): lock file maintenance by @renovate[bot] in https://github.com/feldroy/air/pull/859
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.41.1...v0.41.2
+
+# 0.41.1 - 2025-11-24
+
+_Note: This should have been a feature release thanks to `compact_render`. Rather than yank the release, as `compact_render` is additive and not a behaviorial change, we decided to leave as-is._
+
+## Features & Bugs
+
+* BUG: Fix AirRouter default 404 handler by @msaizar in https://github.com/feldroy/air/pull/858
+* FEAT: compact_render: minified HTML rendering to the Air tag system by @pygarap in https://github.com/feldroy/air/pull/800
+* FEAT: async functions for copy_src_example_to_callable.py by @msaizar in https://github.com/feldroy/air/pull/829
+* FEAT: Add tests for copy_src_example_to_callable script by @msaizar in https://github.com/feldroy/air/pull/856
+
+## Documentation
+
+* DOC: Added `CHANGELOG.md` to the `extend-exclude` list of typos by @pygarap in https://github.com/feldroy/air/pull/803
+* DOC: Removes all code and documentation related to the optional authentication ("auth") feature by @pygarap in https://github.com/feldroy/air/pull/801
+* DOC: SRC/EXAMPLE for AirForm class by @pydanny in https://github.com/feldroy/air/pull/819
+* DOC: examples request htmx by @sankarebarri in https://github.com/feldroy/air/pull/799
+* DOC: Adds a new section on agentic coding to `README.md` by @pygarap in https://github.com/feldroy/air/pull/821
+* DOC: add src example for AirForm.validate by @msaizar in https://github.com/feldroy/air/pull/820
+* DOC: src example for src/air/background.py by @msaizar in https://github.com/feldroy/air/pull/805
+* DOC: Add chore PR checklist item by @pydanny in https://github.com/feldroy/air/pull/823
+* DOC: src example forms airfield by @sankarebarri in https://github.com/feldroy/air/pull/825
+* DOC: add src example for AirForm.from_request by @msaizar in https://github.com/feldroy/air/pull/824
+* DOC: add src example for default_form_widget by @msaizar in https://github.com/feldroy/air/pull/827
+* DOC: src_example(airform-widget): Add custom widget example for AirForm.widget by @sankarebarri in https://github.com/feldroy/air/pull/826
+* DOC: : update `README.md` with PePy reference and `pyproject.toml` with `Repository` and `Sponsor` URLs by @pygarap in https://github.com/feldroy/air/pull/828
+* DOC: Remove links to old docs by @pydanny in https://github.com/feldroy/air/pull/831
+* DOC: improving test readability! by @pygarap in https://github.com/feldroy/air/pull/836
+* DOC: : fix Air.get src example for copy_src_example_to_callable.py by @msaizar in https://github.com/feldroy/air/pull/832
+* DOC: Revert back to mkdocs by @pydanny in https://github.com/feldroy/air/pull/841
+* DOC: : fix Air.post src example for copy_src_example_to_callable.py by @msaizar in https://github.com/feldroy/air/pull/846
+* DOC: : fix src example test files names by @msaizar in https://github.com/feldroy/air/pull/847
+* DOC: Default lang for docs is python by @pydanny in https://github.com/feldroy/air/pull/849
+* DOC: feat: add src example for mvpcss by @msaizar in https://github.com/feldroy/air/pull/845
+* DOC: feat: support AirField edge case in copy_src_example_to_callable.py by @msaizar in https://github.com/feldroy/air/pull/851
+* DOC: docs(examples): add example and tests for AirForm.render by @sankarebarri in https://github.com/feldroy/air/pull/850
+* DOC: docs: fix Air.page src example by @msaizar in https://github.com/feldroy/air/pull/852
+* DOC: Remove docstring prefix from src examples by @pydanny in https://github.com/feldroy/air/pull/853
+* DOC: : add src example for picocss by @msaizar in https://github.com/feldroy/air/pull/854
+* DOC: : rename AirForm source example test file by @msaizar in https://github.com/feldroy/air/pull/855
+
+## Dependency Management
+
+* ⬆(deps): bump click from 8.2.1 to 8.3.0 in the python-dependencies group across 1 directory by @dependabot[bot] in https://github.com/feldroy/air/pull/807
+* DEPS: Update dependencies and describe the process by @pydanny in https://github.com/feldroy/air/pull/810
+* BUILD: Removed `rust-just` from the `devtools` section in `pyproject.toml` by @pygarap in https://github.com/feldroy/air/pull/783
+* chore(deps): update dependency click to v8.3.1 by @renovate[bot] in https://github.com/feldroy/air/pull/822
+* chore(deps): update actions/checkout digest to 93cb6ef by @renovate[bot] in https://github.com/feldroy/air/pull/834
+* ⬆(deps): bump astral-sh/setup-uv from 7.1.2 to 7.1.4 in the gha-minor-patch group by @dependabot[bot] in https://github.com/feldroy/air/pull/843
+* REFACTOR: Remove ruff rule 'n' by @pydanny in https://github.com/feldroy/air/pull/860
+
+## New Contributors
+* @msaizar made their first contribution in https://github.com/feldroy/air/pull/820
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.41.0...v0.41.1
+
 # 0.41.0 - 2025-11-11
 
 ## Breaking change
