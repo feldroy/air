@@ -296,7 +296,7 @@ class BaseTag:
             The expanded string representation of the tag hierarchy.
         """
         attributes = f"{TagKeys.ATTRIBUTES}={self._attrs}" if self._attrs else ""
-        children = ", ".join(child.full_repr() if isinstance(child, BaseTag) else child for child in self._children)
+        children = ", ".join(child.full_repr() if isinstance(child, BaseTag) else child for child in self._children)  # ty: ignore[no-matching-overload]
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
@@ -323,8 +323,8 @@ class BaseTag:
         return {
             TagKeys.NAME: self._name,
             TagKeys.ATTRIBUTES: self._attrs,
-            TagKeys.CHILDREN: tuple(self._to_child_dict()),
-        }
+            TagKeys.CHILDREN: tuple(self._to_child_dict()),  # ty: ignore[invalid-argument-type]
+        }  # ty: ignore[invalid-return-type]
 
     def _to_child_dict(self) -> list[TagDictType | Renderable]:
         """Convert child nodes into serializable objects.
