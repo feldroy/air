@@ -750,7 +750,7 @@ class BaseTag:
                 * If ``True``, the input is treated as an HTML fragment.
                   The parser does not insert any missing required HTML elements.
         Returns:
-            The root air-tag built from the provided markup.
+            The root air-tag built from the provided HTML content.
 
         Raises:
             TypeError: If ``html_source`` is not a string.
