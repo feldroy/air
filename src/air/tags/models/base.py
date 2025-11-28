@@ -28,7 +28,8 @@ from air.tags.utils import (
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
-    has_all_top_level_tags, migrate_attribute_name_to_air_tag,
+    has_all_top_level_tags,
+    migrate_attribute_name_to_air_tag,
     migrate_attribute_name_to_html,
     open_html_in_the_browser,
     pretty_format_html,
@@ -346,11 +347,21 @@ class BaseTag:
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
-    def to_source(self, level: int = 0) -> str:
-        """Return Python source that reconstructs the tag hierarchy.
+    def to_source(self) -> str:
+        """Return a Python expression that reconstructs this tag.
+        Convert this air-tag into the instantiable-formatted representation of the tag.
+
+        Returns:
+            The formatted instantiation call for this tag and its children.
+        """
+        return self._to_source()
+
+    def _to_source(self, level: int = 0) -> str:
+        """Return a Python expression that reconstructs this tag.
+        Convert this air-tag into the instantiable-formatted representation of the tag.
 
         Args:
-            level: Indentation level applied to the resulting source.
+            level: The current indentation depth when nesting tags.
 
         Returns:
             The formatted instantiation call for this tag and its children.
@@ -463,7 +474,7 @@ class BaseTag:
             Formatted child argument strings.
         """
         return [
-            child.to_source(level + 1)
+            child._to_source(level + 1)
             if isinstance(child, BaseTag)
             else self._format_child_instantiation(child, padding)
             for child in self._children
@@ -704,15 +715,42 @@ class BaseTag:
         return cls.from_dict(json.loads(source_json))
 
     @classmethod
-    def from_html(cls, html_source: str, is_fragment: bool = False) -> BaseTag:
-        """Parse HTML and reconstruct the corresponding tag tree.
+    def from_html_to_source(cls, html_source: str, is_fragment: bool = False) -> str:
+        """Reconstruct the corresponding air-tag tree from the given HTML content,
+           into the instantiable-formatted representation of the tag.
 
         Args:
-            html_source: HTML markup to parse.
+            html_source: HTML content to parse.
             is_fragment: Whether to treat the input as an HTML fragment.
+                * If ``False`` (default), the input is treated as a full HTML document.
+                  The parser also accepts HTML fragments and inserts any missing
+                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
+                  into the tree, according to the parsing rules in the HTML Standard.
+                  This matches how browsers build the DOM when they load an HTML page.
+                * If ``True``, the input is treated as an HTML fragment.
+                  The parser does not insert any missing required HTML elements.
 
         Returns:
-            The root tag built from the provided markup.
+            The formatted instantiation call for this tag and its children.
+        """
+        return cls.from_html(html_source, is_fragment).to_source()
+
+    @classmethod
+    def from_html(cls, html_source: str, is_fragment: bool = False) -> BaseTag:
+        """Reconstruct the corresponding air-tag tree from the given HTML content.
+
+        Args:
+            html_source: HTML content to parse.
+            is_fragment: Whether to treat the input as an HTML fragment.
+                * If ``False`` (default), the input is treated as a full HTML document.
+                  The parser also accepts HTML fragments and inserts any missing
+                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
+                  into the tree, according to the parsing rules in the HTML Standard.
+                  This matches how browsers build the DOM when they load an HTML page.
+                * If ``True``, the input is treated as an HTML fragment.
+                  The parser does not insert any missing required HTML elements.
+        Returns:
+            The root air-tag built from the provided markup.
 
         Raises:
             TypeError: If ``html_source`` is not a string.
@@ -822,19 +860,6 @@ class BaseTag:
         except KeyError as e:
             msg = f"Unable to create a new air-tag, <{name}> is not a registered tag name."
             raise TypeError(msg) from e
-
-    @classmethod
-    def from_html_to_source(cls, html_source: str, is_fragment: bool = False) -> str:
-        """Parse HTML and return Python source that recreates the tag tree.
-
-        Args:
-            html_source: HTML markup to parse.
-            is_fragment: Whether to treat the input as an HTML fragment.
-
-        Returns:
-            Python source that reconstructs the parsed tag structure.
-        """
-        return cls.from_html(html_source, is_fragment).to_source()
 
     def __init_subclass__(cls) -> None:
         """Register subclasses so they can be restored from serialized data."""
