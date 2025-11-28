@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.41.1"
+version = "0.41.2"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -355,7 +355,6 @@ ignore = [
     "PLC0414", # keep explicit alias
     # TODO -> Remove the rules below this line
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
-    "W505", # Doc line too long
     "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
     "ANN001", # https://docs.astral.sh/ruff/rules/missing-type-function-argument
     "ANN201", # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
