@@ -21,7 +21,7 @@ def check_docstring_for_example(docstring: str | None) -> bool:
     return "Example:" in docstring
 
 
-def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict):
+def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict, src_path: pathlib.Path):
     """Extract all callables from a Python file."""
     try:
         with pathlib.Path(file_path).open("r", encoding="utf-8") as f:
@@ -29,35 +29,37 @@ def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict)
     except (SyntaxError, UnicodeDecodeError):
         return
 
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            # Function or method
+    # Process top-level items only
+    for node in tree.body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            # Top-level function (sync or async)
             if not check_docstring_for_example(ast.get_docstring(node)):
-                missing_examples[file_path.relative_to("src")].append(f"function: {node.name}")
+                missing_examples[file_path.relative_to(src_path)].append(f"function: {node.name}")
 
         elif isinstance(node, ast.ClassDef):
             # Class
             if not check_docstring_for_example(ast.get_docstring(node)):
-                missing_examples[file_path.relative_to("src")].append(f"class: {node.name}")
+                missing_examples[file_path.relative_to(src_path)].append(f"class: {node.name}")
 
             # Check methods in class
             for item in node.body:
                 if (
-                    isinstance(item, ast.FunctionDef)
+                    isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef))
                     and not item.name.startswith("_")
                     and not check_docstring_for_example(ast.get_docstring(item))
                 ):
                     # Skip private methods (start with _)
-                    missing_examples[file_path.relative_to("src")].append(f"method: {node.name}.{item.name}")
+                    missing_examples[file_path.relative_to(src_path)].append(f"method: {node.name}.{item.name}")
 
 
-def main():
+def main(project_root: pathlib.Path | None = None):
     """This function looks for callables (functions, classes, and methods)
     and looks for those that don't have examples in them. It prints the results
     to the terminal using the `rich` library.
     """
-
-    src_path = pathlib.Path("src/air")
+    if project_root is None:
+        project_root = pathlib.Path.cwd()  # pragma: no cover
+    src_path = project_root / "src/air"
     missing_examples = defaultdict(list)
 
     # Paths to exclude from analysis (relative to src/air/)
@@ -71,9 +73,9 @@ def main():
     for file_path in src_path.rglob("*.py"):
         if file_path.name != "__init__.py":  # Skip __init__.py files
             # Check if this file should be excluded
-            relative_path = str(file_path.relative_to("src/air"))
+            relative_path = str(file_path.relative_to(src_path))
             if relative_path not in excluded_paths:
-                extract_callables_from_file(file_path, missing_examples)
+                extract_callables_from_file(file_path, missing_examples, src_path)
             else:
                 excluded_files.append(relative_path)
 
