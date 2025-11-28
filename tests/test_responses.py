@@ -1,12 +1,18 @@
-from typing import Any
+from typing import override
 
 from fastapi import status
 from fastapi.testclient import TestClient
 
 import air
-from air import H1, AirResponse, Article, Body, Div, Html, Main
+from air import H1, AirResponse, Article, BaseTag, Div, Html, Main
 
 from .utils import clean_doc
+
+
+class CustomLayoutResponse(air.AirResponse):
+    @override
+    def render(self, tag: BaseTag | str) -> bytes | memoryview:  # ty: ignore[invalid-method-override]
+        return super().render(air.Html(air.Body(tag)))
 
 
 def test_TagResponse_obj() -> None:
@@ -168,11 +174,6 @@ def test_custom_name_in_response() -> None:
 
 
 def test_AirResponse_with_layout_strings() -> None:
-    class CustomLayoutResponse(air.AirResponse):
-        def render(self, content: Any) -> bytes:
-            content = super().render(content)
-            return f"<html><body><h1>Custom Layout</h1>{content}</body></html>".encode()
-
     app = air.Air()
 
     @app.get("/test", response_class=CustomLayoutResponse)
@@ -184,20 +185,15 @@ def test_AirResponse_with_layout_strings() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html><body><h1>Custom Layout</h1>b'<main><h2>Hello, World!</h2></main>'</body></html>"
+    assert response.text == "<!doctype html><html><body><main><h2>Hello, World!</h2></main></body></html>"
 
 
 def test_AirResponse_with_layout_names() -> None:
-    class CustomLayoutResponse(air.AirResponse):
-        def render(self, content: Any) -> bytes:
-            content = super().render(content).decode("utf-8")
-            return air.Html(air.Raw(content)).render().encode("utf-8")
-
     app = air.Air()
 
     @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint() -> Body:
-        return air.Body(air.Main(air.H1("Hello, World!")))
+    def test_endpoint() -> air.Main:
+        return air.Main(air.H1("Hello, World!"))
 
     client = TestClient(app)
     response = client.get("/test")
