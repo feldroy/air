@@ -26,6 +26,8 @@ from rich.text import Text
 
 from air.exceptions import BrowserOpenError
 from air.tags.constants import (
+    ATTRIBUTE_TO_AIR,
+    ATTRIBUTES_TO_HTML,
     BLOB_URL_PRESET,
     DATA_URL_MAX,
     DEFAULT_ENCODING,
@@ -58,9 +60,7 @@ def migrate_attribute_name_to_html(attr_name: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    attr_name = {"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"}.get(
-        attr_name, attr_name
-    )
+    attr_name = ATTRIBUTES_TO_HTML.get(attr_name, attr_name)
     # Remove leading underscores and replace underscores with dashes
     return attr_name.lstrip("_").replace("_", "-")
 
@@ -77,7 +77,7 @@ def migrate_attribute_name_to_air_tag(attr_name: str) -> str:
     """
     # If a "_"-suffixed proxy for "class", "for", or "id" is used,
     # convert it to its normal HTML equivalent.
-    attr_name = {"class": "class_", "for": "for_", "as": "as_", "async": "async_"}.get(attr_name, attr_name)
+    attr_name = ATTRIBUTE_TO_AIR.get(attr_name, attr_name)
     # Remove leading underscores and replace underscores with dashes
     return attr_name.lstrip("_").replace("_", "-")
 

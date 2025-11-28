@@ -28,8 +28,8 @@ from air.tags.utils import (
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
-    migrate_attribute_name_to_html,
     migrate_attribute_name_to_air_tag,
+    migrate_attribute_name_to_html,
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
@@ -398,7 +398,8 @@ class BaseTag:
 
     def _get_children_instantiation_arguments(self, level: int, padding: str) -> list[str]:
         return [
-            child.to_source(level + 1) if isinstance(child, BaseTag)
+            child.to_source(level + 1)
+            if isinstance(child, BaseTag)
             else self._format_child_instantiation(child, padding)
             for child in self._children
         ]
@@ -591,9 +592,7 @@ class BaseTag:
 
     @classmethod
     def _migrate_html_attributes_to_air_tag(cls, node: LexborNode) -> TagAttributesType:
-        return {
-            migrate_attribute_name_to_air_tag(name): value for name, value in node.attributes.items()
-        }
+        return {migrate_attribute_name_to_air_tag(name): value for name, value in node.attributes.items()}
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:

@@ -7,9 +7,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from full_match import match as full_match
 import pytest
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
+from full_match import match as full_match
 
 import air.tags.constants
 import air.tags.utils as utils

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Final
 
+from frozendict import frozendict
+
 FORMAT_HTML_ENCODING: Final = "unicode"
 HTML_DOCTYPE: Final = "<!doctype html>"
 DEFAULT_THEME: Final = "dracula"
@@ -31,3 +33,5 @@ INLINE_JOIN_SEPARATOR = ", "
 MULTILINE_JOIN_SEPARATOR = ",\n"
 HTML_ATTRIBUTES_JOIN_SEPARATOR = " "
 EMPTY_JOIN_SEPARATOR = ""
+ATTRIBUTE_TO_AIR = frozendict({"class": "class_", "for": "for_", "id": "id_", "as": "as_", "async": "async_"})
+ATTRIBUTES_TO_HTML = frozendict({"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"})

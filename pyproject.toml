@@ -95,6 +95,7 @@ dependencies = [
     "rich>=14.2.0",
     "nh3>=0.3.2",
     "selectolax>=0.4.4",
+    "frozendict>=2.4.7",
 ]
 # endregion project
 
