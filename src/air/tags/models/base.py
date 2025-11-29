@@ -16,7 +16,8 @@ from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
 from air.tags.constants import (
-    AIR_PREFIX, DEFAULT_INDENTATION_SIZE,
+    AIR_PREFIX,
+    DEFAULT_INDENTATION_SIZE,
     EMPTY_JOIN_SEPARATOR,
     HTML_ATTRIBUTES_JOIN_SEPARATOR,
     INDENT_UNIT,
@@ -35,6 +36,7 @@ from air.tags.utils import (
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
+    pretty_print_python,
     save_text,
 )
 
@@ -744,8 +746,7 @@ class BaseTag:
         Returns:
             The formatted instantiation call for this tag and its children.
         """
-        # TODO -> Finish
-        pretty_print_html(cls.from_html(html_source, is_fragment).to_source())
+        pretty_print_python(cls.from_html(html_source, is_fragment).to_source())
 
     @classmethod
     def from_html_to_source(cls, html_source: str, is_fragment: bool = False) -> str:
@@ -814,8 +815,8 @@ class BaseTag:
         """
         children: TagChildrenType = tuple(
             cls._from_child_html(child)
-                for child in node.iter(include_text=True, skip_empty=True)
-                if not (child.is_text_node and child.text_content.isspace())
+            for child in node.iter(include_text=True, skip_empty=True)
+            if not (child.is_text_node and child.text_content.isspace())
         )
         attributes: TagAttributesType = cls._migrate_html_attributes_to_air_tag(node)
         return cls._create_tag(node.tag, *children, **attributes)

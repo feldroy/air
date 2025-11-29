@@ -15,10 +15,12 @@ from urllib.error import URLError
 
 import minify_html
 from lxml import (
-    etree,  # ty: ignore[unresolved-import]
+    etree,
     html as l_html,
 )
+from lxml.html import HtmlElement
 from pygments.lexers.html import HtmlLexer
+from pygments.lexers.python import PythonLexer
 from rich import box
 from rich.console import Console
 from rich.panel import Panel
@@ -26,7 +28,8 @@ from rich.syntax import Syntax
 from rich.text import Text
 
 from air.exceptions import BrowserOpenError
-from air.tags.constants import (
+
+from .constants import (
     ATTRIBUTE_TO_AIR,
     ATTRIBUTES_TO_HTML,
     BLOB_URL_PRESET,
@@ -35,12 +38,15 @@ from air.tags.constants import (
     DEFAULT_THEME,
     FORMAT_HTML_ENCODING,
     HTML_DOCTYPE,
+    HTML_LEXER,
+    HTML_PANEL_TITLE,
     LOCALS_CLEANUP_EXCLUDED_KEYS,
     PANEL_BORDER_STYLE,
-    PANEL_TITLE,
     PANEL_TITLE_STYLE,
-    SYNTAX_LEXER,
+    PYTHON_LEXER,
+    PYTHON_PANEL_TITLE,
     TOP_LEVEL_HTML_TAGS,
+    PanelTitleType,
 )
 
 type StrPath = PathLike | Path | str
@@ -201,11 +207,14 @@ def format_html(
     Returns:
         The serialized HTML produced by `lxml.html.tostring`.
     """
-    source = l_html.document_fromstring(source, ensure_head_body=with_head) if with_body else l_html.fromstring(source)
+    html_element: HtmlElement = (
+        l_html.document_fromstring(source, ensure_head_body=with_head) if with_body else l_html.fromstring(source)
+    )
     if pretty:
-        etree.indent(source)  # pretty indentation
+        etree.indent(html_element)  # pretty indentation
     doctype = HTML_DOCTYPE if with_doctype else None
-    return l_html.tostring(source, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
+    # noinspection PyTypeChecker
+    return l_html.tostring(doc=html_element, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
 
 
 def open_local_file_in_the_browser(path: StrPath) -> None:
@@ -330,6 +339,22 @@ def export_pretty_html(
     return console.export_html()
 
 
+def pretty_print_python(
+    source: str,
+    *,
+    theme: str = DEFAULT_THEME,
+    record: bool = False,
+) -> None:
+    """Render Python with syntax highlighting inside a styled terminal panel.
+
+    Args:
+        source: HTML markup to render.
+        theme: Rich syntax highlighting theme name.
+        record: Whether to buffer the output for later export.
+    """
+    _get_pretty_console(source, lexer=PYTHON_LEXER, panel_title=PYTHON_PANEL_TITLE, theme=theme, record=record)
+
+
 def pretty_print_html(
     source: str,
     *,
@@ -362,8 +387,30 @@ def _get_pretty_html_console(
     Returns:
         A configured Rich console instance.
     """
-    syntax = Syntax(source, HtmlLexer, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
-    title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
+    return _get_pretty_console(source, lexer=HTML_LEXER, panel_title=HTML_PANEL_TITLE, theme=theme, record=record)
+
+
+def _get_pretty_console(
+    source: str,
+    lexer: HtmlLexer | PythonLexer,
+    panel_title: PanelTitleType,
+    *,
+    theme: str = DEFAULT_THEME,
+    record: bool = False,
+) -> Console:
+    """Return a Rich console configured for HTML syntax highlighting.
+
+    Args:
+        source: HTML markup to render.
+        lexer: The syntax highlighter to use, either for HTML or Python code.
+        theme: Rich syntax highlighting theme name.
+        record: Whether to buffer the console output.
+
+    Returns:
+        A configured Rich console instance.
+    """
+    syntax = Syntax(code=source, lexer=lexer, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
+    title = Text(panel_title, style=PANEL_TITLE_STYLE)
     panel = Panel(
         syntax,
         box=box.HEAVY,

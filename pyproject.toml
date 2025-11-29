@@ -132,6 +132,7 @@ lint = [
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
+    "types-lxml>=2025.11.25",
     "types-Markdown>=3.8.0", # Types for the markdown library
     "types-pygments>=2.19.0.20251121",
     "typos>=1.38.1",

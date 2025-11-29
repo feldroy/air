@@ -1,13 +1,17 @@
 from __future__ import annotations
 
-from typing import Final
+from typing import Final, Literal
 
 from frozendict import frozendict
+from pygments.lexers.html import HtmlLexer
+from pygments.lexers.python import PythonLexer
 
 FORMAT_HTML_ENCODING: Final = "unicode"
 HTML_DOCTYPE: Final = "<!doctype html>"
 DEFAULT_THEME: Final = "dracula"
-PANEL_TITLE: Final = "Air → HTML"
+HTML_PANEL_TITLE: Final = "Air → HTML"
+PYTHON_PANEL_TITLE: Final = "HTML → Air"
+type PanelTitleType = Literal["Air → HTML", "HTML → Air"]
 PANEL_TITLE_STYLE: Final = "italic bold"
 PANEL_BORDER_STYLE: Final = "bright_magenta"
 SYNTAX_LEXER: Final = "python"
@@ -36,3 +40,5 @@ EMPTY_JOIN_SEPARATOR: Final = ""
 ATTRIBUTE_TO_AIR: Final = frozendict({"class": "class_", "for": "for_", "id": "id_", "as": "as_", "async": "async_"})
 ATTRIBUTES_TO_HTML: Final = frozendict({"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"})
 AIR_PREFIX: Final = "air."
+HTML_LEXER: Final = HtmlLexer()
+PYTHON_LEXER: Final = PythonLexer()
