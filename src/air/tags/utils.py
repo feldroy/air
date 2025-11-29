@@ -16,13 +16,15 @@ from urllib.error import URLError
 import minify_html
 from lxml import (
     etree,
-    html as l_html,
 )
 
 # noinspection PyProtectedMember
 from lxml.html import (
     HtmlElement,
-    _looks_like_full_html_unicode as looks_like_full_html,  # noqa: PLC2701
+    _looks_like_full_html_unicode as looks_like_full_html,  # noqa: PLC2701  # ty: ignore[unresolved-import]
+    document_fromstring as parse_html_document_from_string,
+    fromstring as parse_html_from_string,
+    tostring as serialize_document_to_html_string,
 )
 from rich import box
 from rich.console import Console
@@ -214,13 +216,17 @@ def format_html(
         The serialized HTML produced by `lxml.html.tostring`.
     """
     html_element: HtmlElement = (
-        l_html.document_fromstring(source, ensure_head_body=with_head) if with_body else l_html.fromstring(source)
+        parse_html_document_from_string(source, ensure_head_body=with_head)
+        if with_body
+        else parse_html_from_string(source)
     )
     if pretty:
         etree.indent(html_element)  # pretty indentation
     doctype = HTML_DOCTYPE if with_doctype else None
     # noinspection PyTypeChecker
-    return l_html.tostring(doc=html_element, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype)
+    return serialize_document_to_html_string(
+        doc=html_element, encoding=FORMAT_HTML_ENCODING, pretty_print=pretty, doctype=doctype
+    )
 
 
 def open_local_file_in_the_browser(path: StrPath) -> None:

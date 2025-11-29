@@ -121,7 +121,7 @@ if __name__ == "__main__":
     # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
     # print(air.Tag.from_html(html_source).pretty_render())
 
-    # print(air.Tag.from_html(html_source).render())
+    print(air.Tag.from_html(html.pretty_html).render())
     # print(air.Tag.from_html(air.Title("xxx").pretty_render()).render())
     # print(html.pretty_render())
     # print(air.Tag.from_html_to_source(html_source))
@@ -212,6 +212,6 @@ if __name__ == "__main__":
         html_source = SMALL_HTML_SAMPLE.pretty_render()
         print(air.Tag.from_html_to_source(html_source))
     # Display the instantiable-formatted representation of the tag in the console with syntax highlighting.
-    if True:
+    if False:
         html_source = HTML_SAMPLE.pretty_render()
         air.Tag.print_source(html_source)
