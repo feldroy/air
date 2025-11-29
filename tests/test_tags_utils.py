@@ -150,9 +150,14 @@ def stub_rich(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
     return {"Console": ConsoleStub, "printed": printed}
 
 
-def test_clean_html_attr_key_transforms_special_suffixes() -> None:
+def test_migrate_attribute_name_to_html() -> None:
     assert utils.migrate_attribute_name_to_html("class_") == "class"
     assert utils.migrate_attribute_name_to_html("__data_value") == "data-value"
+
+
+def test_migrate_attribute_name_to_air_tag() -> None:
+    assert utils.migrate_attribute_name_to_air_tag("class") == "class_"
+    assert utils.migrate_attribute_name_to_air_tag("data-value") == "__data_value"
 
 
 def test_extract_html_comment_with_whitespace() -> None:

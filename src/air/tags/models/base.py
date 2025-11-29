@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import html
 import json
 from collections.abc import Mapping
@@ -15,7 +16,7 @@ from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
 from air.tags.constants import (
-    DEFAULT_INDENTATION_SIZE,
+    AIR_PREFIX, DEFAULT_INDENTATION_SIZE,
     EMPTY_JOIN_SEPARATOR,
     HTML_ATTRIBUTES_JOIN_SEPARATOR,
     INDENT_UNIT,
@@ -212,6 +213,15 @@ class BaseTag:
             The rendered HTML string.
         """
         return self._render()
+
+    @cached_property
+    def pretty_html(self) -> str:
+        """Render prettified-formatted HTML representation of the tag.
+
+        Returns:
+            The prettified-formatted HTML string,
+        """
+        return self.pretty_render()
 
     def render(self) -> str:
         """Render the HTML representation of the tag.
@@ -423,17 +433,17 @@ class BaseTag:
         return INLINE_JOIN_SEPARATOR.join(instantiation_args)
 
     @staticmethod
-    def _wrap_multiline_instantiation_args(lines: str, outer_padding: str) -> str:
+    def _wrap_multiline_instantiation_args(instantiation_args: str, outer_padding: str) -> str:
         """Wrap multiline arguments with newlines and outer padding.
 
         Args:
-            lines: Joined multiline arguments.
+            instantiation_args: Joined multiline arguments.
             outer_padding: Padding to reapply after the closing line.
 
         Returns:
             The wrapped multiline argument string.
         """
-        return f"\n{lines},\n{outer_padding}"
+        return f"\n{instantiation_args},\n{outer_padding}"
 
     @staticmethod
     def _get_paddings(level: int) -> tuple[str, str]:
@@ -521,17 +531,17 @@ class BaseTag:
         """
         return f"{padding}{attr_name}={attr_value!r}"
 
-    def _format_instantiation_call(self, parsed_lines: str, outer_padding: str) -> str:
-        """Wrap formatted arguments in a constructor call with module prefix.
+    def _format_instantiation_call(self, instantiation_args: str, outer_padding: str) -> str:
+        """Wrap formatted arguments in a constructor call.
 
         Args:
-            parsed_lines: Prepared constructor arguments.
+            instantiation_args: Prepared constructor arguments.
             outer_padding: Padding to prepend to the call.
 
         Returns:
             The full constructor call string.
         """
-        return f"{outer_padding}air.{self._name}({parsed_lines})"
+        return f"{outer_padding}{AIR_PREFIX}{self._name}({instantiation_args})"
 
     @property
     def is_attribute_free_void_element(self) -> bool:
@@ -715,6 +725,29 @@ class BaseTag:
         return cls.from_dict(json.loads(source_json))
 
     @classmethod
+    def print_source(cls, html_source: str, is_fragment: bool = False) -> None:
+        """Display the instantiable-formatted representation of the tag in the console with syntax highlighting.
+        1. Reconstruct the corresponding air-tag tree from the given HTML content.
+        2. Convert air-tag tree into the instantiable-formatted representation of the tag.
+
+        Args:
+            html_source: HTML content to parse.
+            is_fragment: Whether to treat the input as an HTML fragment.
+                * If ``False`` (default), the input is treated as a full HTML document.
+                  The parser also accepts HTML fragments and inserts any missing
+                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
+                  into the tree, according to the parsing rules in the HTML Standard.
+                  This matches how browsers build the DOM when they load an HTML page.
+                * If ``True``, the input is treated as an HTML fragment.
+                  The parser does not insert any missing required HTML elements.
+
+        Returns:
+            The formatted instantiation call for this tag and its children.
+        """
+        # TODO -> Finish
+        pretty_print_html(cls.from_html(html_source, is_fragment).to_source())
+
+    @classmethod
     def from_html_to_source(cls, html_source: str, is_fragment: bool = False) -> str:
         """Reconstruct the corresponding air-tag tree from the given HTML content,
            into the instantiable-formatted representation of the tag.
@@ -781,8 +814,8 @@ class BaseTag:
         """
         children: TagChildrenType = tuple(
             cls._from_child_html(child)
-            for child in node.iter(include_text=True, skip_empty=True)
-            if not (child.is_text_node and child.text_content.isspace())
+                for child in node.iter(include_text=True, skip_empty=True)
+                if not (child.is_text_node and child.text_content.isspace())
         )
         attributes: TagAttributesType = cls._migrate_html_attributes_to_air_tag(node)
         return cls._create_tag(node.tag, *children, **attributes)
@@ -797,7 +830,21 @@ class BaseTag:
         Returns:
             A mapping of normalized attribute names and values.
         """
-        return {migrate_attribute_name_to_air_tag(name): value for name, value in node.attributes.items()}
+        return {
+            migrate_attribute_name_to_air_tag(name): BaseTag._evaluate_attribute_value_to_py(value)
+            for name, value in node.attributes.items()
+        }
+
+    @staticmethod
+    def _evaluate_attribute_value_to_py(attr_value: str | None) -> AttributeType | None:
+        if attr_value is None or attr_value.lower() == "true":
+            return True
+        if attr_value.lower() == "false":
+            return False
+        try:
+            return ast.literal_eval(attr_value)
+        except (ValueError, SyntaxError):
+            return attr_value
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:

@@ -18,8 +18,6 @@ from tests.utils import clean_doc
 import air
 from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
-# install(show_locals=True)
-
 if __name__ == "__main__":
     html = air.Html(
         air.Head(
@@ -95,7 +93,7 @@ if __name__ == "__main__":
           </head>
           <body>
             <p>Hello <strong>World</strong>!</p>
-            <div hidden draggable="true" translate="no" contenteditable="true" tabindex="3">
+            <div hidden draggable="true" show="false" translate="no" contenteditable="true" tabindex="3" width="12.34">
               Div
             </div>
           </body>
@@ -107,11 +105,16 @@ if __name__ == "__main__":
 
     # print(SMALL_HTML_SAMPLE.to_source())
     # print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE.pretty_render()))
-    print(air.Tag.from_html(html_source).pretty_render())
+    # print(air.Tag.from_html(html_source).pretty_render())
     # print(air.Tag.from_html_to_source(HTML_SAMPLE.pretty_render()))
     # print(air.Tag.from_html(SMALL_HTML_SAMPLE.render()).pretty_render())
     # print(air.Tag.from_html(html_source))
+
     # print(air.Tag.from_html_to_source(html_source))
+    # print(air.Div(a=True, b=False, c=123, d=45.67, e="dasdas").to_source())
+    # print(air.Tag.from_html(air.Div(a=True, b=False, c=123, d=45.67, e="dasdas").render()).to_source())
+
+    # SMALL_HTML_SAMPLE.print_source()
 
     # print(air.H6(air.H3(), bla1="aba1").to_source())
     # print(pretty_repr(html.to_source(), expand_all=True))
@@ -135,6 +138,7 @@ if __name__ == "__main__":
     # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
     # print(repr(air.BaseTag.from_html(SMALL_HTML_SAMPLE.pretty_render())))
     # air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_print()
+
     # Print pretty-formatted HTML to the terminal when debugging layouts
     if False:
         SMALL_HTML_SAMPLE.pretty_print()
@@ -195,3 +199,19 @@ if __name__ == "__main__":
     # Reconstruct a tag from a serialized JSON string.
     if False:
         print(repr(SMALL_HTML_SAMPLE.from_json(SMALL_HTML_SAMPLE.to_json())))
+    # Convert this air-tag into the instantiable-formatted representation of the tag.
+    if False:
+        print(SMALL_HTML_SAMPLE.to_source())
+    # Reconstruct the corresponding air-tag tree from the given HTML content.
+    if False:
+        html_source = SMALL_HTML_SAMPLE.pretty_render()
+        air.Tag.from_html(html_source).pretty_print()
+    # Reconstruct the corresponding air-tag tree from the given HTML content
+    # into the instantiable-formatted representation of the tag.
+    if False:
+        html_source = SMALL_HTML_SAMPLE.pretty_render()
+        print(air.Tag.from_html_to_source(html_source))
+    # Display the instantiable-formatted representation of the tag in the console with syntax highlighting.
+    if True:
+        html_source = HTML_SAMPLE.pretty_render()
+        air.Tag.print_source(html_source)

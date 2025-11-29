@@ -10,7 +10,7 @@ DEFAULT_THEME: Final = "dracula"
 PANEL_TITLE: Final = "Air → HTML"
 PANEL_TITLE_STYLE: Final = "italic bold"
 PANEL_BORDER_STYLE: Final = "bright_magenta"
-SYNTAX_LEXER: Final = "html"
+SYNTAX_LEXER: Final = "python"
 DATA_URL_MAX: Final = 32_000
 DEFAULT_ENCODING = "utf-8"
 BLOB_URL_PRESET = f"data:text/html;charset={DEFAULT_ENCODING};base64,"
@@ -35,3 +35,4 @@ HTML_ATTRIBUTES_JOIN_SEPARATOR: Final = " "
 EMPTY_JOIN_SEPARATOR: Final = ""
 ATTRIBUTE_TO_AIR: Final = frozendict({"class": "class_", "for": "for_", "id": "id_", "as": "as_", "async": "async_"})
 ATTRIBUTES_TO_HTML: Final = frozendict({"class_": "class", "for_": "for", "id_": "id", "as_": "as", "async_": "async"})
+AIR_PREFIX: Final = "air."

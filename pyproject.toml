@@ -96,6 +96,8 @@ dependencies = [
     "nh3>=0.3.2",
     "selectolax>=0.4.4",
     "frozendict>=2.4.7",
+    "air-convert>=0.3.0",
+    "pygments>=2.19.2",
 ]
 # endregion project
 
@@ -131,6 +133,7 @@ lint = [
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
     "types-Markdown>=3.8.0", # Types for the markdown library
+    "types-pygments>=2.19.0.20251121",
     "typos>=1.38.1",
 ]
 test = [

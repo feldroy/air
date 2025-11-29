@@ -18,6 +18,7 @@ from lxml import (
     etree,  # ty: ignore[unresolved-import]
     html as l_html,
 )
+from pygments.lexers.html import HtmlLexer
 from rich import box
 from rich.console import Console
 from rich.panel import Panel
@@ -361,9 +362,9 @@ def _get_pretty_html_console(
     Returns:
         A configured Rich console instance.
     """
-    syntax = Syntax(source, SYNTAX_LEXER, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
+    syntax = Syntax(source, HtmlLexer, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
     title = Text(PANEL_TITLE, style=PANEL_TITLE_STYLE)
-    panel = Panel.fit(
+    panel = Panel(
         syntax,
         box=box.HEAVY,
         border_style=PANEL_BORDER_STYLE,
