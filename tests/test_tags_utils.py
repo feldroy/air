@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 import types
+from collections import UserString
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
@@ -418,7 +419,11 @@ def test_locals_cleanup_respects_skip_override() -> None:
 
 
 def test_safestr_behaves_like_str() -> None:
-    safe = SafeStr("<strong>safe</strong>")
+    value = "<strong>safe</strong>"
 
-    assert isinstance(safe, str)
-    assert str(safe) == "<strong>safe</strong>"
+    safe = SafeStr(value)
+
+    assert isinstance(safe, UserString)
+    assert str(safe) == value
+    assert safe == value
+    assert safe.data == value
