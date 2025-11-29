@@ -434,6 +434,7 @@ class BaseTag:
         instantiation_args = self._get_instantiation_arguments(level, inner_padding="")
         return INLINE_JOIN_SEPARATOR.join(instantiation_args)
 
+    # TODO -> Move to utils
     @staticmethod
     def _wrap_multiline_instantiation_args(instantiation_args: str, outer_padding: str) -> str:
         """Wrap multiline arguments with newlines and outer padding.
@@ -447,6 +448,7 @@ class BaseTag:
         """
         return f"\n{instantiation_args},\n{outer_padding}"
 
+    # TODO -> Move to utils
     @staticmethod
     def _get_paddings(level: int) -> tuple[str, str]:
         """Return indentation paddings for the current depth.
@@ -492,6 +494,7 @@ class BaseTag:
             for child in self._children
         ]
 
+    # TODO -> Move to utils
     @staticmethod
     def _format_child_instantiation(child: Renderable, padding: str) -> str:
         """Render a non-tag child argument with indentation applied.
@@ -519,6 +522,7 @@ class BaseTag:
             for name, value in self._attrs.items()
         ]
 
+    # TODO -> Move to utils
     @staticmethod
     def _format_attribute_instantiation(attr_name: str, attr_value: AttributeType, padding: str = "") -> str:
         """Render a single attribute keyword argument with indentation applied.
@@ -727,69 +731,45 @@ class BaseTag:
         return cls.from_dict(json.loads(source_json))
 
     @classmethod
-    def print_source(cls, html_source: str, is_fragment: bool = False) -> None:
+    def print_source(cls, html_source: str) -> None:
         """Display the instantiable-formatted representation of the tag in the console with syntax highlighting.
         1. Reconstruct the corresponding air-tag tree from the given HTML content.
         2. Convert air-tag tree into the instantiable-formatted representation of the tag.
 
         Args:
             html_source: HTML content to parse.
-            is_fragment: Whether to treat the input as an HTML fragment.
-                * If ``False`` (default), the input is treated as a full HTML document.
-                  The parser also accepts HTML fragments and inserts any missing
-                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
-                  into the tree, according to the parsing rules in the HTML Standard.
-                  This matches how browsers build the DOM when they load an HTML page.
-                * If ``True``, the input is treated as an HTML fragment.
-                  The parser does not insert any missing required HTML elements.
 
         Returns:
             The formatted instantiation call for this tag and its children.
         """
-        pretty_print_python(cls.from_html(html_source, is_fragment).to_source())
+        pretty_print_python(cls.from_html(html_source).to_source())
 
     @classmethod
-    def from_html_to_source(cls, html_source: str, is_fragment: bool = False) -> str:
+    def from_html_to_source(cls, html_source: str) -> str:
         """Reconstruct the corresponding air-tag tree from the given HTML content,
            into the instantiable-formatted representation of the tag.
 
         Args:
             html_source: HTML content to parse.
-            is_fragment: Whether to treat the input as an HTML fragment.
-                * If ``False`` (default), the input is treated as a full HTML document.
-                  The parser also accepts HTML fragments and inserts any missing
-                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
-                  into the tree, according to the parsing rules in the HTML Standard.
-                  This matches how browsers build the DOM when they load an HTML page.
-                * If ``True``, the input is treated as an HTML fragment.
-                  The parser does not insert any missing required HTML elements.
 
         Returns:
             The formatted instantiation call for this tag and its children.
         """
-        return cls.from_html(html_source, is_fragment).to_source()
+        return cls.from_html(html_source).to_source()
 
     @classmethod
-    def from_html(cls, html_source: str, is_fragment: bool = False) -> BaseTag:
+    def from_html(cls, html_source: str) -> BaseTag:
         """Reconstruct the corresponding air-tag tree from the given HTML content.
 
         Args:
             html_source: HTML content to parse.
-            is_fragment: Whether to treat the input as an HTML fragment.
-                * If ``False`` (default), the input is treated as a full HTML document.
-                  The parser also accepts HTML fragments and inserts any missing
-                  required elements (such as ``<html>``, ``<head>``, and ``<body>``)
-                  into the tree, according to the parsing rules in the HTML Standard.
-                  This matches how browsers build the DOM when they load an HTML page.
-                * If ``True``, the input is treated as an HTML fragment.
-                  The parser does not insert any missing required HTML elements.
+
         Returns:
             The root air-tag built from the provided HTML content.
 
         Raises:
             TypeError: If ``html_source`` is not a string.
-            ValueError: If the markup is not valid HTML or, when ``is_fragment`` is True, lacks all
-                required top-level tags.
+            ValueError: If the markup is not valid HTML.
         """
         if not isinstance(html_source, str):
             msg = f"{cls.__name__}.from_html(html_source) expects a string argument."
@@ -797,9 +777,7 @@ class BaseTag:
         if not nh3.is_html(html_source):
             msg = f"{cls.__name__}.from_html(html_source) expects a valid HTML string."
             raise ValueError(msg)
-        if is_fragment and not has_all_top_level_tags(html_source):
-            msg = f"{cls.__name__}.from_html(html_source) expects an HTML string with all top level tags."
-            raise ValueError(msg)
+        is_fragment = not has_all_top_level_tags(html_source)
         parser = LexborHTMLParser(html_source, is_fragment=is_fragment)
         return cls._from_html(parser.root)
 
@@ -815,12 +793,13 @@ class BaseTag:
         """
         children: TagChildrenType = tuple(
             cls._from_child_html(child)
-            for child in node.iter(include_text=True, skip_empty=True)
-            if not (child.is_text_node and child.text_content.isspace())
+                for child in node.iter(include_text=True, skip_empty=True)
+                if not (child.is_text_node and child.text_content.isspace())
         )
         attributes: TagAttributesType = cls._migrate_html_attributes_to_air_tag(node)
         return cls._create_tag(node.tag, *children, **attributes)
 
+    # TODO -> Move to utils
     @staticmethod
     def _migrate_html_attributes_to_air_tag(node: LexborNode) -> TagAttributesType:
         """Convert parsed HTML attributes to Air tag attribute keys.
@@ -836,6 +815,7 @@ class BaseTag:
             for name, value in node.attributes.items()
         }
 
+    # TODO -> Move to utils
     @staticmethod
     def _evaluate_attribute_value_to_py(attr_value: str | None) -> AttributeType | None:
         if attr_value is None or attr_value.lower() == "true":

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import json
 from collections.abc import Iterator
 from pathlib import Path
@@ -298,12 +299,12 @@ def test_from_dict_and_from_json_roundtrip() -> None:
 
 
 # TODO -> This test should pass!
-@pytest.mark.xfail(reason="Feature is incomplete!")
+# @pytest.mark.xfail(reason="Feature is incomplete!")
 def test_pretty_from_dict_and_from_json_roundtrip() -> None:
     original = HTML_SAMPLE
     original_type = type(original)
-    original_dict = original.to_pretty_dict()
-    original_json = original.to_pretty_dict()
+    original_dict: dict = ast.literal_eval(original.to_pretty_dict())
+    original_json = original.to_pretty_json()
 
     rebuilt_from_dict = original_type.from_dict(original_dict)
     assert isinstance(rebuilt_from_dict, original_type)

@@ -18,9 +18,12 @@ from lxml import (
     etree,
     html as l_html,
 )
-from lxml.html import HtmlElement
-from pygments.lexers.html import HtmlLexer
-from pygments.lexers.python import PythonLexer
+
+# noinspection PyProtectedMember
+from lxml.html import (
+    HtmlElement,
+    _looks_like_full_html_unicode as looks_like_full_html,  # noqa: PLC2701
+)
 from rich import box
 from rich.console import Console
 from rich.panel import Panel
@@ -30,7 +33,7 @@ from rich.text import Text
 from air.exceptions import BrowserOpenError
 
 from .constants import (
-    ATTRIBUTE_TO_AIR,
+    ATTRIBUTES_TO_AIR,
     ATTRIBUTES_TO_HTML,
     BLOB_URL_PRESET,
     DATA_URL_MAX,
@@ -46,6 +49,7 @@ from .constants import (
     PYTHON_LEXER,
     PYTHON_PANEL_TITLE,
     TOP_LEVEL_HTML_TAGS,
+    LexerType,
     PanelTitleType,
 )
 
@@ -65,7 +69,9 @@ def has_all_top_level_tags(html_source: str) -> bool:
         This check relies on substring membership rather than parsing, so malformed markup or tags
         inside comments may lead to false positives.
     """
-    return all(top_level_tag in html_source for top_level_tag in TOP_LEVEL_HTML_TAGS)
+    return looks_like_full_html(html_source) and all(
+        top_level_tag in html_source for top_level_tag in TOP_LEVEL_HTML_TAGS
+    )
 
 
 def migrate_attribute_name_to_html(attr_name: str) -> str:
@@ -100,7 +106,7 @@ def migrate_attribute_name_to_air_tag(attr_name: str) -> str:
         mapped to the underscore-suffixed proxies used by Air tags. Leading underscores are stripped
         and remaining underscores become dashes to normalize the key.
     """
-    attr_name = ATTRIBUTE_TO_AIR.get(attr_name, attr_name)
+    attr_name = ATTRIBUTES_TO_AIR.get(attr_name, attr_name)
     return attr_name.lstrip("_").replace("_", "-")
 
 
@@ -392,7 +398,7 @@ def _get_pretty_html_console(
 
 def _get_pretty_console(
     source: str,
-    lexer: HtmlLexer | PythonLexer,
+    lexer: LexerType,
     panel_title: PanelTitleType,
     *,
     theme: str = DEFAULT_THEME,

@@ -165,10 +165,11 @@ lint OUTPUT_FORMAT="full":
     just run -- codespell
 
 # Check for lint violations for all rules!
+# --ignore TD,FBT001,FBT002,TC003,COM812,ARG004,PLR0904,CPY001
 [group('qa')]
 ruff-check-all TARGET=".":
     # TODO -> Remove: --ignore D
-    just run -- ruff check --output-format=concise --select ALL --ignore TD,FBT001,FBT002,TC003,COM812,ARG004,PLR0904,CPY001 "{{TARGET}}"
+    just run -- ruff check --output-format=concise --select ALL --ignore CPY001,TC003,COM812,TD "{{TARGET}}"
 
 # [print diagnostics concisely, one per line]
 [group('qa')]

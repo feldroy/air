@@ -101,7 +101,7 @@ if __name__ == "__main__":
         """
     )
 
-    # print(air.Tag.from_html(div_html.strip(), is_fragment=True).pretty_render())
+    # print(air.Tag.from_html(div_html.strip()).pretty_render())
 
     # print(SMALL_HTML_SAMPLE.to_source())
     # print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE.pretty_render()))
