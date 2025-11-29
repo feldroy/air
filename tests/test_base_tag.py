@@ -298,12 +298,12 @@ def test_from_dict_and_from_json_roundtrip() -> None:
     assert rebuilt_from_json.render() == original.render()
 
 
-# TODO -> This test should pass!
-# @pytest.mark.xfail(reason="Feature is incomplete!")
 def test_pretty_from_dict_and_from_json_roundtrip() -> None:
     original = HTML_SAMPLE
     original_type = type(original)
-    original_dict: dict = ast.literal_eval(original.to_pretty_dict())
+    original_dict: dict = ast.literal_eval(
+        original.to_pretty_dict(max_length=None, max_depth=None, max_string=None, expand_all=True)
+    )
     original_json = original.to_pretty_json()
 
     rebuilt_from_dict = original_type.from_dict(original_dict)
@@ -317,7 +317,9 @@ def test_pretty_from_dict_and_from_json_roundtrip() -> None:
     assert rebuilt_from_json.render() == original.render()
 
 
-def _todo_test_from_html() -> None:
+# TODO -> This test should pass!
+@pytest.mark.xfail(reason="TODO")
+def test_from_html() -> None:
     actual_html = air.Tag.from_html(
         clean_doc(
             """

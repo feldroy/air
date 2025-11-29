@@ -359,11 +359,13 @@ ignore = [
     "PLC0414", # keep explicit alias
     # TODO -> Remove the rules below this line
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
-    "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
+    "FURB189", # Subclassing `str` can be error-prone, use `collections.UserString` instead
     "ANN001", # https://docs.astral.sh/ruff/rules/missing-type-function-argument
     "ANN201", # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
     "ANN202", # https://docs.astral.sh/ruff/rules/missing-return-type-private-function
     "ANN401", # https://docs.astral.sh/ruff/rules/any-type
+    "FBT001", # https://docs.astral.sh/ruff/rules/boolean-default-value-positional-argument/
+    "FBT002", # https://docs.astral.sh/ruff/rules/boolean-type-hint-positional-argument
 ]
 
 # A list of mappings from file pattern to rule codes or prefixes to exclude,

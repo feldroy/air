@@ -152,12 +152,14 @@ def stub_rich(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
 
 def test_migrate_attribute_name_to_html() -> None:
     assert utils.migrate_attribute_name_to_html("class_") == "class"
+    assert utils.migrate_attribute_name_to_html("id_") == "id"
     assert utils.migrate_attribute_name_to_html("__data_value") == "data-value"
 
 
 def test_migrate_attribute_name_to_air_tag() -> None:
     assert utils.migrate_attribute_name_to_air_tag("class") == "class_"
-    assert utils.migrate_attribute_name_to_air_tag("data-value") == "__data_value"
+    assert utils.migrate_attribute_name_to_air_tag("id") == "id_"
+    assert utils.migrate_attribute_name_to_air_tag("-data-value-") == "_data_value_"
 
 
 def test_extract_html_comment_with_whitespace() -> None:

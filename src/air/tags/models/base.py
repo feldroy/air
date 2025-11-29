@@ -639,14 +639,28 @@ class BaseTag:
         """
         return self._attrs and self._attrs.get("id_")
 
-    def to_pretty_dict(self) -> str:
+    def to_pretty_dict(
+        self,
+        max_width: int = 170,
+        max_length: int = 7,
+        max_depth: int = 4,
+        max_string: int = 25,
+        expand_all: bool = False,
+    ) -> str:
         """Produce a human-friendly mapping view of the tag.
 
         Returns:
             A formatted string produced by the rich pretty printer when available,
             otherwise the standard string form of the mapping.
         """
-        return pretty_repr(self.to_dict(), max_width=170, max_length=7, max_depth=4, max_string=25)
+        return pretty_repr(
+            self.to_dict(),
+            max_width=max_width,
+            max_length=max_length,
+            max_depth=max_depth,
+            max_string=max_string,
+            expand_all=expand_all,
+        )
 
     def to_dict(self) -> TagDictType:
         """Convert the tag into a JSON-serializable dictionary.
@@ -793,8 +807,8 @@ class BaseTag:
         """
         children: TagChildrenType = tuple(
             cls._from_child_html(child)
-                for child in node.iter(include_text=True, skip_empty=True)
-                if not (child.is_text_node and child.text_content.isspace())
+            for child in node.iter(include_text=True, skip_empty=True)
+            if not (child.is_text_node and child.text_content.isspace())
         )
         attributes: TagAttributesType = cls._migrate_html_attributes_to_air_tag(node)
         return cls._create_tag(node.tag, *children, **attributes)

@@ -107,7 +107,7 @@ def migrate_attribute_name_to_air_tag(attr_name: str) -> str:
         and remaining underscores become dashes to normalize the key.
     """
     attr_name = ATTRIBUTES_TO_AIR.get(attr_name, attr_name)
-    return attr_name.lstrip("_").replace("_", "-")
+    return attr_name.replace("-", "_")
 
 
 def extract_html_comment(text: str) -> str:
