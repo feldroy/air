@@ -3,13 +3,12 @@ from __future__ import annotations
 import ast
 from typing import TYPE_CHECKING
 
-from selectolax.lexbor import LexborNode
-
 from air.tags.constants import AIR_PREFIX, INDENT_UNIT
-
-from ..utils import migrate_attribute_name_to_air_tag
+from air.tags.utils import migrate_attribute_name_to_air_tag
 
 if TYPE_CHECKING:
+    from selectolax.lexbor import LexborNode
+
     from .base import AttributeType, Renderable, TagAttributesType
 
 
@@ -31,6 +30,7 @@ def _format_instantiation_call(tag_name: str, instantiation_args: str, outer_pad
     """Wrap formatted arguments in a constructor call.
 
     Args:
+        tag_name: The name for the air-tag class.
         instantiation_args: Prepared constructor arguments.
         outer_padding: Padding to prepend to the call.
 

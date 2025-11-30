@@ -8,9 +8,8 @@ import re
 import tempfile
 import webbrowser
 from io import StringIO
-from os import PathLike
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from urllib.error import URLError
 
 import minify_html
@@ -51,11 +50,11 @@ from .constants import (
     PYTHON_LEXER,
     PYTHON_PANEL_TITLE,
     TOP_LEVEL_HTML_TAGS,
-    LexerType,
     PanelTitleType,
 )
 
-type StrPath = PathLike | Path | str
+if TYPE_CHECKING:
+    from .types import LexerType, StrPath
 
 
 def has_all_top_level_tags(html_source: str) -> bool:

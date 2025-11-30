@@ -2,8 +2,16 @@
 is supported.
 """
 
-from ..utils import locals_cleanup
-from .base import AttributeType, BaseTag, Renderable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from air.tags.utils import locals_cleanup
+
+from .base import BaseTag
+
+if TYPE_CHECKING:
+    from .types import AttributeType, Renderable
 
 
 class CaseTag(BaseTag):

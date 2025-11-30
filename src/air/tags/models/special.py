@@ -1,10 +1,17 @@
 """Special Air Tags that are not found in any other category."""
 
-from typing import Literal, override
+from __future__ import annotations
 
-from ..constants import HTML_DOCTYPE
-from ..utils import locals_cleanup
-from .base import AttributeType, BaseTag, Renderable
+from typing import TYPE_CHECKING, Literal, override
+
+from air.tags.constants import HTML_DOCTYPE
+from air.tags.utils import locals_cleanup
+
+from .base import BaseTag
+from .special import SelfClosingTag
+
+if TYPE_CHECKING:
+    from .types import AttributeType, Renderable
 
 
 class Html(BaseTag):

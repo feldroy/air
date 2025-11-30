@@ -1,18 +1,16 @@
-"""Root module for the Air Tags system."""
+"""Root module for the Base air-tag for all other tags."""
 
 from __future__ import annotations
 
 import html
 import json
-from collections.abc import Mapping
 from functools import cached_property
 from types import MappingProxyType
-from typing import Annotated, ClassVar, Final, Self, TypedDict
+from typing import TYPE_CHECKING, ClassVar, Self
 
 import nh3
 from rich.pretty import pretty_repr
 from selectolax.lexbor import LexborHTMLParser, LexborNode
-from typing_extensions import Doc
 
 from air.tags.constants import (
     DEFAULT_INDENTATION_SIZE,
@@ -20,10 +18,10 @@ from air.tags.constants import (
     HTML_ATTRIBUTES_JOIN_SEPARATOR,
     INLINE_JOIN_SEPARATOR,
     MULTILINE_JOIN_SEPARATOR,
+    TagKeys,
 )
 from air.tags.utils import (
     SafeStr,
-    StrPath,
     compact_format_html,
     display_pretty_html_in_the_browser,
     extract_html_comment,
@@ -39,66 +37,25 @@ from air.tags.utils import (
 from .utils import (
     _format_attribute_instantiation,
     _format_child_instantiation,
+    _format_instantiation_call,
     _get_paddings,
     _migrate_html_attributes_to_air_tag,
     _wrap_multiline_instantiation_args,
 )
 
-type Renderable = Annotated[
-    str | BaseTag | SafeStr | int | float,
-    Doc(
-        """
-        The type for any renderable content(a child of a tag)
-        Excludes types like None (renders as "None"), bool ("True"/"False"),
-        complex ("(1+2j)"), bytes ("b'...'"), and others that produce
-        undesirable or unintended HTML output.
-        """
-    ),
-]
-type AttributeType = Annotated[
-    str | int | float | bool,
-    Doc(
-        """
-        The type for any HTML attribute value.
-        """
-    ),
-]
-type TagAttributesType = Annotated[
-    dict[str, AttributeType],
-    Doc(
-        """
-        The type for a dictionary of HTML attributes.
-        """
-    ),
-]
-type TagChildrenType = Annotated[
-    tuple[Renderable, ...],
-    Doc(
-        """
-        The type for all the children of an HTML tag.
-        """
-    ),
-]
-type TagChildrenTypeForDict = Annotated[
-    tuple[TagDictType | Renderable, ...],
-    Doc(
-        """
-        The type of the children of the serialized dictionary representation of an air-tag.
-        """
-    ),
-]
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
+    from air.tags.types import StrPath
 
-class TagDictType(TypedDict):
-    name: str
-    attributes: TagAttributesType
-    children: TagChildrenType | TagChildrenTypeForDict
-
-
-class TagKeys:
-    NAME: Final = "name"
-    ATTRIBUTES: Final = "attributes"
-    CHILDREN: Final = "children"
+    from .types import (
+        AttributeType,
+        Renderable,
+        TagAttributesType,
+        TagChildrenType,
+        TagChildrenTypeForDict,
+        TagDictType,
+    )
 
 
 class BaseTag:
@@ -385,7 +342,7 @@ class BaseTag:
         """
         outer_padding, inner_padding = _get_paddings(level)
         instantiation_args = self._format_instantiation_arguments(level, outer_padding, inner_padding)
-        return self._format_instantiation_call(instantiation_args, outer_padding)
+        return _format_instantiation_call(instantiation_args, outer_padding)
 
     def _format_instantiation_arguments(self, level: int, outer_padding: str, inner_padding: str) -> str:
         """Compose the argument list for the tag instantiation call.
