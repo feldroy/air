@@ -3,11 +3,12 @@ from __future__ import annotations
 import ast
 import json
 from collections.abc import Iterator
+from inspect import cleandoc
 from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
+from examples.html_sample import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
 
 import air
 import air.tags.models.base as base_module
@@ -15,7 +16,7 @@ from air.tags.models.base import BaseTag
 from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
 
-from .utils import clean_doc
+from .utils import clean_doc, undent
 
 
 class SampleTag(BaseTag):
@@ -124,9 +125,9 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
 
 
 def test_compact_format_html_minifies() -> None:
-    assert len(SMALL_HTML_SAMPLE.compact_render()) == 754
-    assert len(HTML_SAMPLE.compact_render()) == 7530
-    assert len(air.Html(*([HTML_SAMPLE.children] * 100)).compact_render()) == 883215
+    assert len(SMALL_AIR_TAG_SAMPLE.compact_render()) == 754
+    assert len(AIR_TAG_SAMPLE.compact_render()) == 7530
+    assert len(air.Html(*([AIR_TAG_SAMPLE.children] * 100)).compact_render()) == 883215
 
 
 def test_compact_render_passes_html_to_compact_formatter(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -283,7 +284,7 @@ def test_init_subclass_registers_new_tag() -> None:
 
 def test_from_dict_and_from_json_roundtrip() -> None:
     """This test encodes the intended behavior for from_dict/from_json."""
-    original = HTML_SAMPLE
+    original = AIR_TAG_SAMPLE
     original_type = type(original)
     original_dict = original.to_dict()
     original_json = original.to_json()
@@ -300,7 +301,7 @@ def test_from_dict_and_from_json_roundtrip() -> None:
 
 
 def test_pretty_from_dict_and_from_json_roundtrip() -> None:
-    original = HTML_SAMPLE
+    original = AIR_TAG_SAMPLE
     original_type = type(original)
     original_dict: dict = ast.literal_eval(
         original.to_pretty_dict(max_length=None, max_depth=None, max_string=None, expand_all=True)
@@ -318,31 +319,93 @@ def test_pretty_from_dict_and_from_json_roundtrip() -> None:
     assert rebuilt_from_json.render() == original.render()
 
 
-# TODO -> This test should pass!
-@pytest.mark.xfail(reason="TODO")
 def test_from_html() -> None:
-    actual_html = air.Tag.from_html(
-        clean_doc(
-            """
-            <!doctype html>
-            <html lang="en">
-              <head>
-                <meta charset="utf-8">
-                <meta content="width=device-width,initial-scale=1" name="viewport">
-                <title>Title!</title>
-                <!-- My crazy comment -->
-              </head>
-            </html>
-            """
-        )
+    html_source = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>Title!</title>
+            <!-- My crazy comment -->
+          </head>
+          <body>
+            <p>Hello <strong>World</strong>!</p>
+            <div hidden draggable="true" show="false" translate="no" contenteditable="true" tabindex="3" width="12.34">
+              Div
+            </div>
+          </body>
+        </html>
+        """
     )
-    expected_html = air.Html(
+    actual_air_tag = air.Tag.from_html(html_source)
+    expected_air_tag = air.Html(
         air.Head(
-            air.Meta(charset="utf-8"),
-            air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
-            air.Title("Title!"),
-            air.Comment("My crazy comment"),
+            air.Meta(charset='utf-8'),
+            air.Meta(
+                content='width=device-width,initial-scale=1',
+                name='viewport',
+            ),
+            air.Title('Title!'),
+            air.Comment('My crazy comment'),
         ),
-        lang="en",
+        air.Body(
+            air.P(
+                'Hello',
+                air.Strong('World'),
+                '!',
+            ),
+            air.Div(
+                'Div',
+                hidden=True,
+                draggable=True,
+                show=False,
+                translate='no',
+                contenteditable=True,
+                tabindex=3,
+                width=12.34,
+            ),
+        ),
+        lang='en',
     )
-    assert actual_html.pretty_render() == expected_html.pretty_render()
+    assert actual_air_tag == expected_air_tag
+
+
+def test_to_source() -> None:
+    air_tag = TINY_AIR_TAG_SAMPLE
+    expected_source = cleandoc(
+        """
+        air.Html(
+            air.Head(
+                air.Meta(charset='utf-8'),
+                air.Meta(
+                    content='width=device-width,initial-scale=1',
+                    name='viewport',
+                ),
+                air.Title('Title!'),
+                air.Comment('My crazy comment'),
+            ),
+            air.Body(
+                air.P(
+                    'Hello',
+                    air.Strong('World'),
+                    '!',
+                ),
+                air.Div(
+                    'Div',
+                    hidden=True,
+                    draggable=True,
+                    show=False,
+                    translate='no',
+                    contenteditable=True,
+                    tabindex=3,
+                    width=12.34,
+                ),
+            ),
+            lang='en',
+        )
+        """
+    )
+    actual_source = air_tag.to_source()
+    assert actual_source == expected_source

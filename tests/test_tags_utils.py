@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
+from examples.html_sample import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
 from full_match import match as full_match
 
 import air.tags.constants
@@ -185,8 +185,8 @@ def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) 
 
 
 def test_compact_format_html_minifies() -> None:
-    assert len(utils.compact_format_html(SMALL_HTML_SAMPLE.render())) == 754
-    assert len(utils.compact_format_html(HTML_SAMPLE.render())) == 7530
+    assert len(utils.compact_format_html(SMALL_AIR_TAG_SAMPLE.render())) == 754
+    assert len(utils.compact_format_html(AIR_TAG_SAMPLE.render())) == 7530
 
 
 def test_compact_format_html_minifies_with_safe_defaults(monkeypatch: pytest.MonkeyPatch) -> None:

@@ -1,8 +1,39 @@
 from typing import Final
 
+import air
 from air import *
 
-SMALL_HTML_SAMPLE: Final = Html(
+TINY_AIR_TAG_SAMPLE: Final = air.Html(
+    air.Head(
+        air.Meta(charset='utf-8'),
+        air.Meta(
+            content='width=device-width,initial-scale=1',
+            name='viewport',
+        ),
+        air.Title('Title!'),
+        air.Comment('My crazy comment'),
+    ),
+    air.Body(
+        air.P(
+            'Hello',
+            air.Strong('World'),
+            '!',
+        ),
+        air.Div(
+            'Div',
+            hidden=True,
+            draggable=True,
+            show=False,
+            translate='no',
+            contenteditable=True,
+            tabindex=3,
+            width=12.34,
+        ),
+    ),
+    lang='en',
+)
+
+SMALL_AIR_TAG_SAMPLE: Final = Html(
     Div(
         Link(
             rel="stylesheet",
@@ -41,7 +72,7 @@ SMALL_HTML_SAMPLE: Final = Html(
     )
 )
 
-HTML_SAMPLE: Final = Html(
+AIR_TAG_SAMPLE: Final = Html(
     Head(
         Meta(
             property="og:image",
