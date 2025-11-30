@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.html_sample import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
+from examples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
 from full_match import match as full_match
 
 import air.tags.constants

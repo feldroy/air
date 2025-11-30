@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.html_sample import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
+from examples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
 
 import air
 import air.tags.models.base as base_module
@@ -340,40 +340,11 @@ def test_from_html() -> None:
         """
     )
     actual_air_tag = air.Tag.from_html(html_source)
-    expected_air_tag = air.Html(
-        air.Head(
-            air.Meta(charset='utf-8'),
-            air.Meta(
-                content='width=device-width,initial-scale=1',
-                name='viewport',
-            ),
-            air.Title('Title!'),
-            air.Comment('My crazy comment'),
-        ),
-        air.Body(
-            air.P(
-                'Hello',
-                air.Strong('World'),
-                '!',
-            ),
-            air.Div(
-                'Div',
-                hidden=True,
-                draggable=True,
-                show=False,
-                translate='no',
-                contenteditable=True,
-                tabindex=3,
-                width=12.34,
-            ),
-        ),
-        lang='en',
-    )
+    expected_air_tag = TINY_AIR_TAG_SAMPLE
     assert actual_air_tag == expected_air_tag
 
 
 def test_to_source() -> None:
-    air_tag = TINY_AIR_TAG_SAMPLE
     expected_source = cleandoc(
         """
         air.Html(
@@ -407,5 +378,61 @@ def test_to_source() -> None:
         )
         """
     )
-    actual_source = air_tag.to_source()
+    actual_source = TINY_AIR_TAG_SAMPLE.to_source()
+    assert actual_source == expected_source
+
+def test_from_html_to_source() -> None:
+    html_source = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <title>Title!</title>
+            <!-- My crazy comment -->
+          </head>
+          <body>
+            <p>Hello <strong>World</strong>!</p>
+            <div hidden draggable="true" show="false" translate="no" contenteditable="true" tabindex="3" width="12.34">
+              Div
+            </div>
+          </body>
+        </html>
+        """
+    )
+    expected_source = cleandoc(
+        """
+        air.Html(
+            air.Head(
+                air.Meta(charset='utf-8'),
+                air.Meta(
+                    content='width=device-width,initial-scale=1',
+                    name='viewport',
+                ),
+                air.Title('Title!'),
+                air.Comment('My crazy comment'),
+            ),
+            air.Body(
+                air.P(
+                    'Hello',
+                    air.Strong('World'),
+                    '!',
+                ),
+                air.Div(
+                    'Div',
+                    hidden=True,
+                    draggable=True,
+                    show=False,
+                    translate='no',
+                    contenteditable=True,
+                    tabindex=3,
+                    width=12.34,
+                ),
+            ),
+            lang='en',
+        )
+        """
+    )
+    actual_source = air.Tag.from_html_to_source(html_source)
     assert actual_source == expected_source
