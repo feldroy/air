@@ -7,6 +7,7 @@ import html
 import re
 import tempfile
 import webbrowser
+from collections import UserString
 from io import StringIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -460,5 +461,5 @@ def locals_cleanup(
     return {key: value for key, value in data.items() if value is not None and key[0] != "_" and key not in _skip}
 
 
-class SafeStr(str):
+class SafeStr(UserString):
     """String subclass that bypasses HTML escaping when rendered."""
