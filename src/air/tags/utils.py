@@ -56,7 +56,40 @@ if TYPE_CHECKING:
     from .types import LexerType, StrPath
 
 
-def has_all_top_level_tags(html_source: str) -> bool:
+_LOOKS_LIKE_FULL_HTML_UNICODE_RE = re.compile(
+    r"""
+    ^\s*
+    (?:<!doctype\s+html\b[^>]*>\s*)?
+    <html\b[^>]*>
+    (?=.*(?:<head\b[^>]*>.*?</head\s*>|<body\b[^>]*>.*?</body\s*>))
+    .*?</html\s*>
+    \s*$
+    """,
+    re.IGNORECASE | re.DOTALL | re.VERBOSE,
+)
+
+
+def is_full_html_document(text: str) -> re.Match[str] | None:
+    """Check if a string looks like a full HTML document using a simple heuristic
+
+    The check allows an optional <!doctype html> at the start, requires a root
+    <html>...</html> element that spans the whole input, and requires at least
+    one complete <head>...</head> or <body>...</body> pair somewhere inside the
+    <html> element. Whitespace anywhere in the input is ignored as far as HTML
+    normally ignores it.
+
+    Args:
+        text: HTML source string to test.
+
+    Returns:
+        A match object if the input looks like a full HTML document,
+        otherwise None.
+    """
+    return _LOOKS_LIKE_FULL_HTML_UNICODE_RE.match(text)
+
+
+# todo -> delete:
+def has_all_top_level_tagsold(html_source: str) -> bool:
     """Check whether required top-level HTML tags are present.
 
     Args:

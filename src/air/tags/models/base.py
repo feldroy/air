@@ -24,7 +24,7 @@ from air.tags.utils import (
     SafeStr,
     compact_format_html,
     display_pretty_html_in_the_browser,
-    has_all_top_level_tags,
+    is_full_html_document,
     migrate_attribute_name_to_html,
     open_html_in_the_browser,
     pretty_format_html,
@@ -398,10 +398,10 @@ class BaseTag:
         Returns:
             The inline argument string.
         """
-        instantiation_args = self._get_instantiation_arguments(level, inner_padding="")
+        instantiation_args = self._get_instantiation_arguments(level=level)
         return INLINE_JOIN_SEPARATOR.join(instantiation_args)
 
-    def _get_instantiation_arguments(self, level: int, inner_padding: str) -> list[str]:
+    def _get_instantiation_arguments(self, level: int, inner_padding: str = "") -> list[str]:
         """Collect formatted children and attribute arguments.
 
         Args:
@@ -687,7 +687,7 @@ class BaseTag:
         if not nh3.is_html(html_source):
             msg = f"{cls.__name__}.from_html(html_source) expects a valid HTML string."
             raise ValueError(msg)
-        is_fragment = not has_all_top_level_tags(html_source)
+        is_fragment = not is_full_html_document(html_source)
         parser = LexborHTMLParser(html_source, is_fragment=is_fragment)
         return cls._from_html(parser.root)
 
