@@ -11,7 +11,8 @@ from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
 
 import air
 import air.tags.models.base as base_module
-from air.tags.models.base import BaseTag, Renderable, TagDictType
+from air.tags.models.base import BaseTag
+from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
 
 from .utils import clean_doc

@@ -8,7 +8,6 @@ from air.tags.constants import HTML_DOCTYPE
 from air.tags.utils import locals_cleanup
 
 from .base import BaseTag
-from .special import SelfClosingTag
 
 if TYPE_CHECKING:
     from .types import AttributeType, Renderable

@@ -341,8 +341,12 @@ class BaseTag:
             The formatted instantiation call for this tag and its children.
         """
         outer_padding, inner_padding = _get_paddings(level)
-        instantiation_args = self._format_instantiation_arguments(level, outer_padding, inner_padding)
-        return _format_instantiation_call(instantiation_args, outer_padding)
+        instantiation_args = self._format_instantiation_arguments(
+            level=level, outer_padding=outer_padding, inner_padding=inner_padding
+        )
+        return _format_instantiation_call(
+            tag_name=self._name, instantiation_args=instantiation_args, outer_padding=outer_padding
+        )
 
     def _format_instantiation_arguments(self, level: int, outer_padding: str, inner_padding: str) -> str:
         """Compose the argument list for the tag instantiation call.
@@ -358,8 +362,10 @@ class BaseTag:
         if self.is_attribute_free_void_element:
             return ""
         if self._should_format_multiline_arguments():
-            return self._format_multiline_instantiation_arguments(level, outer_padding, inner_padding)
-        return self._format_inline_instantiation_arguments(level)
+            return self._format_multiline_instantiation_arguments(
+                level=level, outer_padding=outer_padding, inner_padding=inner_padding
+            )
+        return self._format_inline_instantiation_arguments(level=level)
 
     def _should_format_multiline_arguments(self) -> bool:
         """Decide whether to expand constructor arguments across multiple lines.

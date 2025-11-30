@@ -104,8 +104,6 @@ from .models import (
     Sup as Sup,
     Table as Table,
     Tag as Tag,
-    TagDictType as TagDictType,
-    TagKeys as TagKeys,
     Tags as Tags,
     Tbody as Tbody,
     Td as Td,
