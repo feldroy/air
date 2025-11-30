@@ -15,6 +15,7 @@ from urllib.error import URLError
 
 import minify_html
 from lxml.etree import indent as indent_element_tree
+
 # noinspection PyProtectedMember
 from lxml.html import (
     HtmlElement,

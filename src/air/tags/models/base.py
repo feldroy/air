@@ -24,7 +24,6 @@ from air.tags.utils import (
     SafeStr,
     compact_format_html,
     display_pretty_html_in_the_browser,
-    extract_html_comment,
     has_all_top_level_tags,
     migrate_attribute_name_to_html,
     open_html_in_the_browser,
@@ -703,9 +702,7 @@ class BaseTag:
             The reconstructed Air tag for the provided node.
         """
         children: TagChildrenType = tuple(
-            cls._from_child_html(child)
-            for child in node.iter(include_text=True, skip_empty=True)
-            if not (child.is_text_node and child.text_content.isspace())  # TODO -> Delete this line
+            cls._from_child_html(child) for child in node.iter(include_text=True, skip_empty=True)
         )
         attributes: TagAttributesType = _migrate_html_attributes_to_air_tag(node)
         return cls._create_tag(node.tag, *children, **attributes)
@@ -728,28 +725,10 @@ class BaseTag:
             return cls._from_html(node)
         if node.is_text_node and node.text_content:
             return node.text_content.strip()
-        if node.is_comment_node:
-            return cls._create_comment_tag(node)
+        if node.is_comment_node and node.comment_content:
+            return cls._create_tag("comment", node.comment_content)
         msg = f"Unable to parse <{node.tag}>."
         raise ValueError(msg)
-
-    @classmethod
-    def _create_comment_tag(cls, node: LexborNode) -> BaseTag:
-        """Create an Air comment tag from a parsed comment node.
-
-        Args:
-            node: Parsed HTML comment node.
-
-        Returns:
-            A comment Air tag containing the extracted comment text.
-
-        Raises:
-            ValueError: If the comment node has no HTML content.
-        """
-        if node.html is None:
-            msg = "Unable to create a comment tag."
-            raise ValueError(msg)
-        return cls._create_tag("comment", extract_html_comment(node.html))
 
     @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
