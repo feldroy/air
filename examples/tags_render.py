@@ -16,7 +16,7 @@ from rich import print
 from tests.utils import clean_doc
 
 import air
-from examples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
+from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
 
 if __name__ == "__main__":
     html = air.Html(

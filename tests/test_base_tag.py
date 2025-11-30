@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
+from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
 
 import air
 import air.tags.models.base as base_module
@@ -16,7 +16,7 @@ from air.tags.models.base import BaseTag
 from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
 
-from .utils import clean_doc, undent
+from .utils import clean_doc
 
 
 class SampleTag(BaseTag):
