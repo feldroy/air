@@ -14,10 +14,7 @@ from typing import TYPE_CHECKING, Any
 from urllib.error import URLError
 
 import minify_html
-from lxml import (
-    etree,
-)
-
+from lxml.etree import indent as indent_element_tree
 # noinspection PyProtectedMember
 from lxml.html import (
     HtmlElement,
@@ -221,7 +218,7 @@ def format_html(
         else parse_html_from_string(source)
     )
     if pretty:
-        etree.indent(html_element)  # pretty indentation
+        indent_element_tree(html_element)  # ty: ignore[invalid-argument-type]
     doctype = HTML_DOCTYPE if with_doctype else None
     # noinspection PyTypeChecker
     return serialize_document_to_html_string(

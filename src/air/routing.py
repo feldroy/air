@@ -333,7 +333,7 @@ class AirRouter(APIRouter, RouterMixin):
         # the generic to Lifespan[AppType] is the type of the top level application
         # which the router cannot know statically, so we use typing.Any
         lifespan: Annotated[
-            Lifespan[Any] | None,  # ty: ignore[invalid-type-form]
+            Lifespan[Any] | None,
             Doc(
                 """
                 A `Lifespan` context manager handler. This replaces `startup` and
