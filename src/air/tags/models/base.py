@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import ast
 import html
 import json
 from collections.abc import Mapping
@@ -16,11 +15,9 @@ from selectolax.lexbor import LexborHTMLParser, LexborNode
 from typing_extensions import Doc
 
 from air.tags.constants import (
-    AIR_PREFIX,
     DEFAULT_INDENTATION_SIZE,
     EMPTY_JOIN_SEPARATOR,
     HTML_ATTRIBUTES_JOIN_SEPARATOR,
-    INDENT_UNIT,
     INLINE_JOIN_SEPARATOR,
     MULTILINE_JOIN_SEPARATOR,
 )
@@ -31,13 +28,20 @@ from air.tags.utils import (
     display_pretty_html_in_the_browser,
     extract_html_comment,
     has_all_top_level_tags,
-    migrate_attribute_name_to_air_tag,
     migrate_attribute_name_to_html,
     open_html_in_the_browser,
     pretty_format_html,
     pretty_print_html,
     pretty_print_python,
     save_text,
+)
+
+from .utils import (
+    _format_attribute_instantiation,
+    _format_child_instantiation,
+    _get_paddings,
+    _migrate_html_attributes_to_air_tag,
+    _wrap_multiline_instantiation_args,
 )
 
 type Renderable = Annotated[
@@ -88,7 +92,7 @@ type TagChildrenTypeForDict = Annotated[
 class TagDictType(TypedDict):
     name: str
     attributes: TagAttributesType
-    children: TagChildrenType
+    children: TagChildrenType | TagChildrenTypeForDict
 
 
 class TagKeys:
@@ -266,7 +270,6 @@ class BaseTag:
         Returns:
             A minimized HTML string produced by `minify_html.minify`.
         """
-
         return compact_format_html(self._render())
 
     def pretty_print(self) -> None:
@@ -361,6 +364,7 @@ class BaseTag:
 
     def to_source(self) -> str:
         """Return a Python expression that reconstructs this tag.
+
         Convert this air-tag into the instantiable-formatted representation of the tag.
 
         Returns:
@@ -370,6 +374,7 @@ class BaseTag:
 
     def _to_source(self, level: int = 0) -> str:
         """Return a Python expression that reconstructs this tag.
+
         Convert this air-tag into the instantiable-formatted representation of the tag.
 
         Args:
@@ -378,7 +383,7 @@ class BaseTag:
         Returns:
             The formatted instantiation call for this tag and its children.
         """
-        outer_padding, inner_padding = self._get_paddings(level)
+        outer_padding, inner_padding = _get_paddings(level)
         instantiation_args = self._format_instantiation_arguments(level, outer_padding, inner_padding)
         return self._format_instantiation_call(instantiation_args, outer_padding)
 
@@ -420,7 +425,7 @@ class BaseTag:
         """
         instantiation_args = self._get_instantiation_arguments(level, inner_padding)
         multiline_instantiation_args = MULTILINE_JOIN_SEPARATOR.join(instantiation_args)
-        return self._wrap_multiline_instantiation_args(multiline_instantiation_args, outer_padding)
+        return _wrap_multiline_instantiation_args(multiline_instantiation_args, outer_padding)
 
     def _format_inline_instantiation_arguments(self, level: int) -> str:
         """Format constructor arguments on a single line.
@@ -433,35 +438,6 @@ class BaseTag:
         """
         instantiation_args = self._get_instantiation_arguments(level, inner_padding="")
         return INLINE_JOIN_SEPARATOR.join(instantiation_args)
-
-    # TODO -> Move to utils
-    @staticmethod
-    def _wrap_multiline_instantiation_args(instantiation_args: str, outer_padding: str) -> str:
-        """Wrap multiline arguments with newlines and outer padding.
-
-        Args:
-            instantiation_args: Joined multiline arguments.
-            outer_padding: Padding to reapply after the closing line.
-
-        Returns:
-            The wrapped multiline argument string.
-        """
-        return f"\n{instantiation_args},\n{outer_padding}"
-
-    # TODO -> Move to utils
-    @staticmethod
-    def _get_paddings(level: int) -> tuple[str, str]:
-        """Return indentation paddings for the current depth.
-
-        Args:
-            level: Current indentation depth.
-
-        Returns:
-            Tuple containing the outer and inner padding strings.
-        """
-        outer_padding = INDENT_UNIT * level
-        inner_padding = INDENT_UNIT * (level + 1)
-        return outer_padding, inner_padding
 
     def _get_instantiation_arguments(self, level: int, inner_padding: str) -> list[str]:
         """Collect formatted children and attribute arguments.
@@ -488,25 +464,9 @@ class BaseTag:
             Formatted child argument strings.
         """
         return [
-            child._to_source(level + 1)
-            if isinstance(child, BaseTag)
-            else self._format_child_instantiation(child, padding)
+            child._to_source(level + 1) if isinstance(child, BaseTag) else _format_child_instantiation(child, padding)
             for child in self._children
         ]
-
-    # TODO -> Move to utils
-    @staticmethod
-    def _format_child_instantiation(child: Renderable, padding: str) -> str:
-        """Render a non-tag child argument with indentation applied.
-
-        Args:
-            child: The child value to render.
-            padding: Padding to prepend to the rendered value.
-
-        Returns:
-            The formatted child representation.
-        """
-        return f"{padding}{child!r}"
 
     def _get_attributes_instantiation_arguments(self, padding: str) -> list[str]:
         """Format each attribute as a keyword argument.
@@ -518,36 +478,9 @@ class BaseTag:
             Formatted attribute argument strings.
         """
         return [
-            self._format_attribute_instantiation(attr_name=name, attr_value=value, padding=padding)
+            _format_attribute_instantiation(attr_name=name, attr_value=value, padding=padding)
             for name, value in self._attrs.items()
         ]
-
-    # TODO -> Move to utils
-    @staticmethod
-    def _format_attribute_instantiation(attr_name: str, attr_value: AttributeType, padding: str = "") -> str:
-        """Render a single attribute keyword argument with indentation applied.
-
-        Args:
-            attr_name: Attribute name to render.
-            attr_value: Attribute value to render.
-            padding: Padding to prepend to the rendered argument.
-
-        Returns:
-            The formatted keyword argument string.
-        """
-        return f"{padding}{attr_name}={attr_value!r}"
-
-    def _format_instantiation_call(self, instantiation_args: str, outer_padding: str) -> str:
-        """Wrap formatted arguments in a constructor call.
-
-        Args:
-            instantiation_args: Prepared constructor arguments.
-            outer_padding: Padding to prepend to the call.
-
-        Returns:
-            The full constructor call string.
-        """
-        return f"{outer_padding}{AIR_PREFIX}{self._name}({instantiation_args})"
 
     @property
     def is_attribute_free_void_element(self) -> bool:
@@ -583,7 +516,7 @@ class BaseTag:
         Returns:
             The first child value, or None if there are no children.
         """
-        return self._children and self._children[0]
+        return self._children and next(iter(self._children))
 
     @property
     def last_child(self) -> Renderable | None:
@@ -637,7 +570,7 @@ class BaseTag:
         Returns:
             The `id_` value or None if absent.
         """
-        return self._attrs and self._attrs.get("id_")
+        return self._attrs.get("id_")
 
     def to_pretty_dict(
         self,
@@ -747,21 +680,22 @@ class BaseTag:
     @classmethod
     def print_source(cls, html_source: str) -> None:
         """Display the instantiable-formatted representation of the tag in the console with syntax highlighting.
+
         1. Reconstruct the corresponding air-tag tree from the given HTML content.
         2. Convert air-tag tree into the instantiable-formatted representation of the tag.
+        3. Display it with syntax highlighting inside a styled terminal panel.
 
         Args:
             html_source: HTML content to parse.
-
-        Returns:
-            The formatted instantiation call for this tag and its children.
         """
         pretty_print_python(cls.from_html(html_source).to_source())
 
     @classmethod
     def from_html_to_source(cls, html_source: str) -> str:
-        """Reconstruct the corresponding air-tag tree from the given HTML content,
-           into the instantiable-formatted representation of the tag.
+        """Reconstruct the instantiable-formatted representation of the tag from the given HTML content.
+
+        For converting the corresponding air-tag tree from the given HTML content,
+        into the instantiable-formatted representation of the tag.
 
         Args:
             html_source: HTML content to parse.
@@ -808,38 +742,10 @@ class BaseTag:
         children: TagChildrenType = tuple(
             cls._from_child_html(child)
             for child in node.iter(include_text=True, skip_empty=True)
-            if not (child.is_text_node and child.text_content.isspace())
+            if not (child.is_text_node and child.text_content.isspace())  # TODO -> Delete this line
         )
-        attributes: TagAttributesType = cls._migrate_html_attributes_to_air_tag(node)
+        attributes: TagAttributesType = _migrate_html_attributes_to_air_tag(node)
         return cls._create_tag(node.tag, *children, **attributes)
-
-    # TODO -> Move to utils
-    @staticmethod
-    def _migrate_html_attributes_to_air_tag(node: LexborNode) -> TagAttributesType:
-        """Convert parsed HTML attributes to Air tag attribute keys.
-
-        Args:
-            node: Parsed HTML element node.
-
-        Returns:
-            A mapping of normalized attribute names and values.
-        """
-        return {
-            migrate_attribute_name_to_air_tag(name): BaseTag._evaluate_attribute_value_to_py(value)
-            for name, value in node.attributes.items()
-        }
-
-    # TODO -> Move to utils
-    @staticmethod
-    def _evaluate_attribute_value_to_py(attr_value: str | None) -> AttributeType | None:
-        if attr_value is None or attr_value.lower() == "true":
-            return True
-        if attr_value.lower() == "false":
-            return False
-        try:
-            return ast.literal_eval(attr_value)
-        except (ValueError, SyntaxError):
-            return attr_value
 
     @classmethod
     def _from_child_html(cls, node: LexborNode) -> BaseTag | str | None:
@@ -857,7 +763,7 @@ class BaseTag:
         """
         if node.is_element_node:
             return cls._from_html(node)
-        if node.is_text_node:
+        if node.is_text_node and node.text_content:
             return node.text_content.strip()
         if node.is_comment_node:
             return cls._create_comment_tag(node)

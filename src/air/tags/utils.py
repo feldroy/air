@@ -237,7 +237,6 @@ def open_local_file_in_the_browser(path: StrPath) -> None:
 
     Raises:
         FileNotFoundError: The path does not exist or `index.html` is missing.
-        BrowserOpenError: The browser command failed to launch.
     """
     path = Path(path)
     if path.is_dir():
@@ -287,9 +286,6 @@ def open_html_in_the_browser(html_source: str) -> None:
 
     Args:
         html_source: HTML markup to render in the browser.
-
-    Raises:
-        BrowserOpenError: The browser command failed.
     """
     with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding=DEFAULT_ENCODING) as f:
         f.write(html_source)
@@ -299,6 +295,15 @@ def open_html_in_the_browser(html_source: str) -> None:
 
 
 def save_text(text: str, file_path: StrPath) -> None:
+    """Saves the provided text to a specified file path.
+
+    This function writes the given string data to a file at the provided path
+    using a specified encoding.
+
+    Args:
+        text: The text content to be saved in the file.
+        file_path: The path to the file where the text will be saved.
+    """
     Path(file_path).write_text(data=text, encoding=DEFAULT_ENCODING)
 
 
@@ -410,16 +415,21 @@ def _get_pretty_console(
     theme: str = DEFAULT_THEME,
     record: bool = False,
 ) -> Console:
-    """Return a Rich console configured for HTML syntax highlighting.
+    """Generates a Rich console with formatted code syntax displayed within a styled panel.
+
+    The console object is configured to display source code syntax highlighting using the
+    specified lexer and theme within a panel with a title. Additionally, the console can
+    optionally record its output to a buffer.
 
     Args:
         source: HTML markup to render.
         lexer: The syntax highlighter to use, either for HTML or Python code.
+        panel_title: The title to display on the panel's border.
         theme: Rich syntax highlighting theme name.
         record: Whether to buffer the console output.
 
     Returns:
-        A configured Rich console instance.
+        A configured Console instance with the styled syntax and panel displayed.
     """
     syntax = Syntax(code=source, lexer=lexer, theme=theme, line_numbers=True, indent_guides=True, word_wrap=True)
     title = Text(panel_title, style=PANEL_TITLE_STYLE)
