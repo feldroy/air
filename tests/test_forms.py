@@ -618,7 +618,11 @@ def test_air_to_form_generation_with_custom_widget() -> None:
         name: str
 
     def custom_widget(
-        *, model: type[BaseModel], data: dict | None, errors: list | None, includes: Sequence[str] | None
+        *,
+        model: type[BaseModel],
+        data: dict | None = None,
+        errors: list | None = None,
+        includes: Sequence[str] | None = None,
     ):
         return "<custom>"
 

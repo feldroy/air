@@ -207,7 +207,14 @@ class AirForm:
                 message: str
 
 
-            def contact_widget(*, model: type[BaseModel], data: dict | None, errors: list | None, includes: Sequence[str] | None):
+            def contact_widget(
+                *,
+                model: type[BaseModel],
+                data: dict | None = None,
+                errors: list | None = None,
+                includes: Sequence[str] | None = None,
+            ):
+
                 base_html = default_form_widget(
                     model=model,
                     data=data,
