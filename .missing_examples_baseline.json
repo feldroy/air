@@ -1,0 +1,117 @@
+{
+  "applications.py": [
+    "method: Air.patch",
+    "method: Air.put",
+    "method: Air.delete"
+  ],
+  "background.py": [
+    "method: BackgroundTasks.add_task"
+  ],
+  "exceptions.py": [
+    "class: HTTPException",
+    "class: BaseAirException",
+    "class: RenderException",
+    "class: ObjectDoesNotExist",
+    "class: BrowserOpenError"
+  ],
+  "forms.py": [
+    "function: pydantic_type_to_html_type",
+    "function: get_user_error_message",
+    "function: errors_to_dict",
+    "function: to_form"
+  ],
+  "layouts.py": [
+    "function: filter_body_tags",
+    "function: filter_head_tags",
+    "function: _header"
+  ],
+  "models.py": [
+    "class: AirModel"
+  ],
+  "requests.py": [
+    "class: HtmxDetails",
+    "class: AirRequest",
+    "method: AirRequest.htmx"
+  ],
+  "responses.py": [
+    "class: AirResponse",
+    "method: AirResponse.render",
+    "method: SSEResponse.stream_response",
+    "class: RedirectResponse"
+  ],
+  "routing.py": [
+    "method: RouteCallable.url",
+    "class: AirRoute",
+    "method: AirRoute.get_route_handler",
+    "class: RouterMixin",
+    "method: RouterMixin.get",
+    "method: RouterMixin.url_path_for",
+    "class: AirRouter",
+    "method: AirRouter.get",
+    "method: AirRouter.post",
+    "method: AirRouter.patch",
+    "method: AirRouter.put",
+    "method: AirRouter.delete"
+  ],
+  "tags/models/base.py": [
+    "class: TagDictType",
+    "class: TagKeys",
+    "class: BaseTag",
+    "method: BaseTag.name",
+    "method: BaseTag.attrs",
+    "method: BaseTag.children",
+    "method: BaseTag.render",
+    "method: BaseTag.render_in_the_browser",
+    "method: BaseTag.pretty_render_in_the_browser",
+    "method: BaseTag.pretty_render",
+    "method: BaseTag.compact_render",
+    "method: BaseTag.pretty_print",
+    "method: BaseTag.save",
+    "method: BaseTag.pretty_save",
+    "method: BaseTag.pretty_display_in_the_browser",
+    "method: BaseTag.full_repr",
+    "method: BaseTag.to_pretty_dict",
+    "method: BaseTag.to_dict",
+    "method: BaseTag.to_json",
+    "method: BaseTag.to_pretty_json",
+    "method: BaseTag.from_dict",
+    "method: BaseTag.from_json"
+  ],
+  "tags/models/special.py": [
+    "class: Html",
+    "method: Html.pretty_render",
+    "class: Transparent",
+    "class: Children",
+    "class: Tag",
+    "class: Tags",
+    "class: Fragment",
+    "class: SelfClosingTag",
+    "class: UnSafeTag",
+    "class: Script",
+    "class: Style",
+    "class: Comment"
+  ],
+  "tags/utils.py": [
+    "function: clean_html_attr_key",
+    "function: compact_format_html",
+    "function: pretty_format_html",
+    "function: format_html",
+    "function: open_local_file_in_the_browser",
+    "function: _open_new_tab",
+    "function: open_html_blob_in_the_browser",
+    "function: open_html_in_the_browser",
+    "function: save_pretty_html",
+    "function: display_pretty_html_in_the_browser",
+    "function: export_pretty_html",
+    "function: pretty_print_html",
+    "function: _get_pretty_html_console",
+    "function: locals_cleanup",
+    "class: SafeStr"
+  ],
+  "templating.py": [
+    "function: _jinja_context_item"
+  ],
+  "utils.py": [
+    "function: compute_page_path"
+  ]
+}
