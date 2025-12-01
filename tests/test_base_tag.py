@@ -327,7 +327,7 @@ def test_from_html() -> None:
     # TODO:
     # actual_small_air_tag = air.Tag.from_html(SMALL_HTML_SAMPLE)
     # expected_small_air_tag = SMALL_AIR_TAG_SAMPLE
-    # assert actual_small_air_tag == expected_small_air_tag
+    # assert actual_small_air_tag.pretty_html == expected_small_air_tag.pretty_html
     # actual_air_tag = air.Tag.from_html(HTML_SAMPLE)
     # expected_air_tag = AIR_TAG_SAMPLE
     # assert actual_air_tag == expected_air_tag
