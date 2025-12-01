@@ -371,9 +371,10 @@ ignore = [
 # A list of mappings from file pattern to rule codes or prefixes to exclude,
 # when considering any matching files. An initial '!' negates the file pattern.
 [tool.ruff.lint.per-file-ignores]
-"examples/html_sample.py" = [
+"examples/samples/**.py" = [
     "F403", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star
     "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
+    "E501", # https://docs.astral.sh/ruff/rules/line-too-long
 ]
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20

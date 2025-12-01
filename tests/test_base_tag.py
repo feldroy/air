@@ -3,25 +3,21 @@ from __future__ import annotations
 import ast
 import json
 from collections.abc import Iterator
-from inspect import cleandoc
 from pathlib import Path
 from typing import Any
 
 import pytest
+from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
+from examples.samples.air_tag_source_samples import (
+    TINY_AIR_TAG_SOURCE_SAMPLE,
+)
+from examples.samples.html_samples import TINY_HTML_SAMPLE
 
 import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag
 from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
-from examples.samples.air_tag_source_samples import (
-    TINY_AIR_TAG_SOURCE_SAMPLE, SMALL_AIR_TAG_SOURCE_SAMPLE,
-    AIR_TAG_SOURCE_SAMPLE
-)
-from examples.samples.html_samples import TINY_HTML_SAMPLE, SMALL_HTML_SAMPLE, HTML_SAMPLE
-from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
-
-from .utils import clean_doc
 
 
 class SampleTag(BaseTag):
@@ -348,6 +344,7 @@ def test_to_source() -> None:
     # expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
     # actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
     # assert actual_air_tag_source == expected_air_tag_source
+
 
 def test_from_html_to_source() -> None:
     actual_tiny_air_tag_source = air.Tag.from_html_to_source(TINY_HTML_SAMPLE)

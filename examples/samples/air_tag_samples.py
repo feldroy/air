@@ -5,32 +5,32 @@ from air import *
 
 TINY_AIR_TAG_SAMPLE: Final = air.Html(
     air.Head(
-        air.Meta(charset='utf-8'),
+        air.Meta(charset="utf-8"),
         air.Meta(
-            content='width=device-width,initial-scale=1',
-            name='viewport',
+            content="width=device-width,initial-scale=1",
+            name="viewport",
         ),
-        air.Title('Title!'),
-        air.Comment('My crazy comment'),
+        air.Title("Title!"),
+        air.Comment("My crazy comment"),
     ),
     air.Body(
         air.P(
-            'Hello',
-            air.Strong('World'),
-            '!',
+            "Hello",
+            air.Strong("World"),
+            "!",
         ),
         air.Div(
-            'Div',
+            "Div",
             hidden=True,
             draggable=True,
             show=False,
-            translate='no',
+            translate="no",
             contenteditable=True,
             tabindex=3,
             width=12.34,
         ),
     ),
-    lang='en',
+    lang="en",
 )
 
 SMALL_AIR_TAG_SAMPLE: Final = Html(
