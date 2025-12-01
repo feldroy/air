@@ -1,4 +1,7 @@
+from pathlib import Path
+
 import pytest
+from pytest import CaptureFixture
 from scripts.copy_src_example_to_callable import (
     main,
     parse_filename_class,
@@ -7,7 +10,7 @@ from scripts.copy_src_example_to_callable import (
 
 
 @pytest.fixture
-def project_dirs(tmp_path):
+def project_dirs(tmp_path: Path) -> tuple[Path, Path, Path]:
     """Create the standard project directory structure for testing main()."""
     examples_src = tmp_path / "examples" / "src"
     examples_src.mkdir(parents=True)
@@ -57,7 +60,7 @@ def test_parse_filename_class_returns_none_for_single_part() -> None:
 # Tests for update_example_section
 
 
-def test_update_example_section_updates_function_docstring(tmp_path) -> None:
+def test_update_example_section_updates_function_docstring(tmp_path: Path) -> None:
     test_code = '''def my_function():
     """Function with example.
 
@@ -77,7 +80,7 @@ def test_update_example_section_updates_function_docstring(tmp_path) -> None:
     assert "old_example()" not in updated_content
 
 
-def test_update_example_section_updates_class_docstring(tmp_path) -> None:
+def test_update_example_section_updates_class_docstring(tmp_path: Path) -> None:
     test_code = '''class MyClass:
     """Class with example.
 
@@ -97,7 +100,7 @@ def test_update_example_section_updates_class_docstring(tmp_path) -> None:
     assert "old_example()" not in updated_content
 
 
-def test_update_example_section_updates_class_method_docstring(tmp_path) -> None:
+def test_update_example_section_updates_class_method_docstring(tmp_path: Path) -> None:
     test_code = '''class MyClass:
     """Class docstring."""
 
@@ -120,7 +123,9 @@ def test_update_example_section_updates_class_method_docstring(tmp_path) -> None
     assert "old_method_example()" not in updated_content
 
 
-def test_update_example_section_returns_false_for_missing_example_section(tmp_path, capsys) -> None:
+def test_update_example_section_returns_false_for_missing_example_section(
+    tmp_path: Path, capsys: CaptureFixture[str]
+) -> None:
     test_code = '''def my_function():
     """Function without example section."""
     pass
@@ -135,7 +140,9 @@ def test_update_example_section_returns_false_for_missing_example_section(tmp_pa
     assert "No Example section found in my_function" in captured.out
 
 
-def test_update_example_section_returns_false_for_missing_docstring(tmp_path, capsys) -> None:
+def test_update_example_section_returns_false_for_missing_docstring(
+    tmp_path: Path, capsys: CaptureFixture[str]
+) -> None:
     test_code = """def my_function():
     pass
 """
@@ -149,7 +156,9 @@ def test_update_example_section_returns_false_for_missing_docstring(tmp_path, ca
     assert "No Example section found in my_function" in captured.out
 
 
-def test_update_example_section_returns_false_for_missing_class_when_looking_for_method(tmp_path, capsys) -> None:
+def test_update_example_section_returns_false_for_missing_class_when_looking_for_method(
+    tmp_path: Path, capsys: CaptureFixture[str]
+) -> None:
     test_code = '''class OtherClass:
     """Other class."""
     pass
@@ -164,7 +173,7 @@ def test_update_example_section_returns_false_for_missing_class_when_looking_for
     assert "Class MyClass not found" in captured.out
 
 
-def test_update_example_section_returns_false_for_missing_method(tmp_path, capsys) -> None:
+def test_update_example_section_returns_false_for_missing_method(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
     test_code = '''class MyClass:
     """Class docstring."""
 
@@ -182,7 +191,7 @@ def test_update_example_section_returns_false_for_missing_method(tmp_path, capsy
     assert "Method my_method not found in class MyClass" in captured.out
 
 
-def test_update_example_section_returns_false_for_missing_function(tmp_path, capsys) -> None:
+def test_update_example_section_returns_false_for_missing_function(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
     test_code = '''def other_function():
     """Other function."""
     pass
@@ -197,7 +206,7 @@ def test_update_example_section_returns_false_for_missing_function(tmp_path, cap
     assert "Function my_function not found" in captured.out
 
 
-def test_update_example_section_returns_false_for_syntax_error(tmp_path, capsys) -> None:
+def test_update_example_section_returns_false_for_syntax_error(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
     test_code = '''def my_function(
     """Invalid syntax."""
     pass
@@ -212,7 +221,7 @@ def test_update_example_section_returns_false_for_syntax_error(tmp_path, capsys)
     assert "Error parsing" in captured.out
 
 
-def test_update_example_section_handles_async_function(tmp_path) -> None:
+def test_update_example_section_handles_async_function(tmp_path: Path) -> None:
     test_code = '''async def my_async_function():
     """Async function with example.
 
@@ -232,7 +241,7 @@ def test_update_example_section_handles_async_function(tmp_path) -> None:
     assert "old_example()" not in updated_content
 
 
-def test_update_example_section_with_multiline_example(tmp_path) -> None:
+def test_update_example_section_with_multiline_example(tmp_path: Path) -> None:
     test_code = '''def my_function():
     """Function with example.
 
@@ -259,7 +268,7 @@ for item in result:
     assert "print(item)" in updated_content
 
 
-def test_update_example_section_fallback_to_function_when_class_not_found(tmp_path) -> None:
+def test_update_example_section_fallback_to_function_when_class_not_found(tmp_path: Path) -> None:
     # When class_name is capitalized but it's actually a function
     test_code = '''def MyFunction():
     """Function with capital name.
@@ -280,7 +289,7 @@ def test_update_example_section_fallback_to_function_when_class_not_found(tmp_pa
     assert "new_example()" in updated_content
 
 
-def test_update_example_section_handles_decorated_method(tmp_path) -> None:
+def test_update_example_section_handles_decorated_method(tmp_path: Path) -> None:
     test_code = '''class MyClass:
     """Class docstring."""
 
@@ -306,7 +315,7 @@ def test_update_example_section_handles_decorated_method(tmp_path) -> None:
     assert "@property" in updated_content
 
 
-def test_update_example_section_replaces_everything_after_example_marker(tmp_path) -> None:
+def test_update_example_section_replaces_everything_after_example_marker(tmp_path: Path) -> None:
     # Everything after "Example:" is replaced, so place Example: last in docstrings
     test_code = '''def my_function():
     """Function with content after example.
@@ -335,7 +344,7 @@ def test_update_example_section_replaces_everything_after_example_marker(tmp_pat
 # Tests for main function
 
 
-def test_main_processes_example_files(project_dirs) -> None:
+def test_main_processes_example_files(project_dirs: tuple[Path, Path, Path]) -> None:
     tmp_path, examples_src, src_air = project_dirs
 
     # Create an example file
@@ -361,7 +370,7 @@ def test_main_processes_example_files(project_dirs) -> None:
     assert "old_example()" not in updated_content
 
 
-def test_main_handles_missing_examples_directory(tmp_path, capsys) -> None:
+def test_main_handles_missing_examples_directory(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
     # Don't create examples/src directory, it should not exist
     main(project_root=tmp_path)
 
@@ -369,7 +378,7 @@ def test_main_handles_missing_examples_directory(tmp_path, capsys) -> None:
     assert "src_examples directory not found" in captured.out
 
 
-def test_main_skips_unparsable_files(project_dirs, capsys) -> None:
+def test_main_skips_unparsable_files(project_dirs: tuple[Path, Path, Path], capsys: CaptureFixture[str]) -> None:
     tmp_path, examples_src, _ = project_dirs
 
     # Create a file that parse_filename_class will return None for
@@ -383,7 +392,7 @@ def test_main_skips_unparsable_files(project_dirs, capsys) -> None:
     assert not captured.out
 
 
-def test_main_handles_missing_source_file(project_dirs, capsys) -> None:
+def test_main_handles_missing_source_file(project_dirs: tuple[Path, Path, Path], capsys: CaptureFixture[str]) -> None:
     tmp_path, examples_src, _ = project_dirs
 
     # Create an example file that references a non-existent source

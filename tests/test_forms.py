@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Annotated, cast
 
 import annotated_types
@@ -616,7 +617,9 @@ def test_air_to_form_generation_with_custom_widget() -> None:
     class AutoModel(air.AirModel):
         name: str
 
-    def custom_widget(*, model, data, errors, includes):
+    def custom_widget(
+        *, model: type[BaseModel], data: dict | None, errors: list | None, includes: Sequence[str] | None
+    ):
         return "<custom>"
 
     autoform = AutoModel.to_form(widget=custom_widget)
