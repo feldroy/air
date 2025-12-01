@@ -19,7 +19,6 @@ from lxml.etree import indent as indent_element_tree
 # noinspection PyProtectedMember
 from lxml.html import (
     HtmlElement,
-    _looks_like_full_html_unicode as looks_like_full_html,  # noqa: PLC2701  # ty: ignore[unresolved-import]
     document_fromstring as parse_html_document_from_string,
     fromstring as parse_html_from_string,
     tostring as serialize_document_to_html_string,
@@ -33,6 +32,7 @@ from rich.text import Text
 from air.exceptions import BrowserOpenError
 
 from .constants import (
+    _LOOKS_LIKE_FULL_HTML_UNICODE_RE,
     ATTRIBUTES_TO_AIR,
     ATTRIBUTES_TO_HTML,
     BLOB_URL_PRESET,
@@ -48,7 +48,6 @@ from .constants import (
     PANEL_TITLE_STYLE,
     PYTHON_LEXER,
     PYTHON_PANEL_TITLE,
-    TOP_LEVEL_HTML_TAGS,
     PanelTitleType,
 )
 
@@ -56,20 +55,7 @@ if TYPE_CHECKING:
     from .types import LexerType, StrPath
 
 
-_LOOKS_LIKE_FULL_HTML_UNICODE_RE = re.compile(
-    r"""
-    ^\s*
-    (?:<!doctype\s+html\b[^>]*>\s*)?
-    <html\b[^>]*>
-    (?=.*(?:<head\b[^>]*>.*?</head\s*>|<body\b[^>]*>.*?</body\s*>))
-    .*?</html\s*>
-    \s*$
-    """,
-    re.IGNORECASE | re.DOTALL | re.VERBOSE,
-)
-
-
-def is_full_html_document(text: str) -> re.Match[str] | None:
+def is_full_html_document(text: str) -> bool:
     """Check if a string looks like a full HTML document using a simple heuristic
 
     The check allows an optional <!doctype html> at the start, requires a root
@@ -82,29 +68,10 @@ def is_full_html_document(text: str) -> re.Match[str] | None:
         text: HTML source string to test.
 
     Returns:
-        A match object if the input looks like a full HTML document,
-        otherwise None.
+        True if the input looks like a full HTML document,
+        otherwise False.
     """
     return _LOOKS_LIKE_FULL_HTML_UNICODE_RE.match(text)
-
-
-# todo -> delete:
-def has_all_top_level_tagsold(html_source: str) -> bool:
-    """Check whether required top-level HTML tags are present.
-
-    Args:
-        html_source: HTML markup to scan for top-level tags.
-
-    Returns:
-        True when every tag listed in ``TOP_LEVEL_HTML_TAGS`` appears in the source; otherwise False.
-
-    Notes:
-        This check relies on substring membership rather than parsing, so malformed markup or tags
-        inside comments may lead to false positives.
-    """
-    return looks_like_full_html(html_source) and all(
-        top_level_tag in html_source for top_level_tag in TOP_LEVEL_HTML_TAGS
-    )
 
 
 def migrate_attribute_name_to_html(attr_name: str) -> str:

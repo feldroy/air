@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Final, Literal
 
 from frozendict import frozendict
@@ -23,11 +24,6 @@ LOCALS_CLEANUP_EXCLUDED_KEYS: Final[frozenset[str]] = frozenset({
     "text_child",
     "args",
     "kwargs",
-})
-TOP_LEVEL_HTML_TAGS: Final[frozenset[str]] = frozenset({
-    "<html",
-    "<head",
-    "<body",
 })
 ATTRIBUTES_TO_AIR: Final = frozendict({
     "class": "class_",
@@ -64,3 +60,14 @@ EMPTY_JOIN_SEPARATOR: Final = ""
 AIR_PREFIX: Final = "air."
 HTML_LEXER: Final = HtmlLexer()
 PYTHON_LEXER: Final = PythonLexer()
+_LOOKS_LIKE_FULL_HTML_UNICODE_RE: Final = re.compile(
+    r"""
+    ^\s*
+    (?:<!doctype\s+html\b[^>]*>\s*)?
+    <html\b[^>]*>
+    (?=.*(?:<head\b[^>]*>.*?</head\s*>|<body\b[^>]*>.*?</body\s*>))
+    .*?</html\s*>
+    \s*$
+    """,
+    re.IGNORECASE | re.DOTALL | re.VERBOSE,
+)
