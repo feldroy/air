@@ -189,6 +189,10 @@ class AirForm:
 
         Example:
 
+            from collections.abc import Sequence
+
+            from pydantic import BaseModel
+
             import air
             from air.forms import default_form_widget
 
@@ -203,7 +207,7 @@ class AirForm:
                 message: str
 
 
-            def contact_widget(*, model, data, errors, includes):
+            def contact_widget(*, model: type[BaseModel], data: dict | None, errors: list | None, includes: Sequence[str] | None):
                 base_html = default_form_widget(
                     model=model,
                     data=data,

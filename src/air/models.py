@@ -36,6 +36,10 @@ class AirModel(BaseModel):
 
         Example:
 
+            from collections.abc import Sequence
+
+            from pydantic import BaseModel
+
             import air
             from air.forms import default_form_widget
 
@@ -48,7 +52,12 @@ class AirModel(BaseModel):
                 phone: str | None = None
 
 
-            def custom_widget(model, data=None, errors=None, includes=None):
+            def custom_widget(
+                model: type[BaseModel],
+                data: dict | None = None,
+                errors: list | None = None,
+                includes: Sequence[str] | None = None,
+            ):
                 return air.Div(
                     air.P("Custom form styling:"),
                     air.Raw(default_form_widget(model, data, errors, includes)),
