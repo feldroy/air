@@ -8,13 +8,18 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
 
 import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag
 from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
+from examples.samples.air_tag_source_samples import (
+    TINY_AIR_TAG_SOURCE_SAMPLE, SMALL_AIR_TAG_SOURCE_SAMPLE,
+    AIR_TAG_SOURCE_SAMPLE
+)
+from examples.samples.html_samples import TINY_HTML_SAMPLE, SMALL_HTML_SAMPLE, HTML_SAMPLE
+from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
 
 from .utils import clean_doc
 
@@ -320,119 +325,38 @@ def test_pretty_from_dict_and_from_json_roundtrip() -> None:
 
 
 def test_from_html() -> None:
-    html_source = clean_doc(
-        """
-        <!doctype html>
-        <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width,initial-scale=1">
-            <title>Title!</title>
-            <!-- My crazy comment -->
-          </head>
-          <body>
-            <p>Hello <strong>World</strong>!</p>
-            <div hidden draggable="true" show="false" translate="no" contenteditable="true" tabindex="3" width="12.34">
-              Div
-            </div>
-          </body>
-        </html>
-        """
-    )
-    actual_air_tag = air.Tag.from_html(html_source)
-    expected_air_tag = TINY_AIR_TAG_SAMPLE
-    assert actual_air_tag == expected_air_tag
+    actual_tiny_air_tag = air.Tag.from_html(TINY_HTML_SAMPLE)
+    expected_tiny_air_tag = TINY_AIR_TAG_SAMPLE
+    assert actual_tiny_air_tag == expected_tiny_air_tag
+    # TODO:
+    # actual_small_air_tag = air.Tag.from_html(SMALL_HTML_SAMPLE)
+    # expected_small_air_tag = SMALL_AIR_TAG_SAMPLE
+    # assert actual_small_air_tag == expected_small_air_tag
+    # actual_air_tag = air.Tag.from_html(HTML_SAMPLE)
+    # expected_air_tag = AIR_TAG_SAMPLE
+    # assert actual_air_tag == expected_air_tag
 
 
 def test_to_source() -> None:
-    expected_source = cleandoc(
-        """
-        air.Html(
-            air.Head(
-                air.Meta(charset='utf-8'),
-                air.Meta(
-                    content='width=device-width,initial-scale=1',
-                    name='viewport',
-                ),
-                air.Title('Title!'),
-                air.Comment('My crazy comment'),
-            ),
-            air.Body(
-                air.P(
-                    'Hello',
-                    air.Strong('World'),
-                    '!',
-                ),
-                air.Div(
-                    'Div',
-                    hidden=True,
-                    draggable=True,
-                    show=False,
-                    translate='no',
-                    contenteditable=True,
-                    tabindex=3,
-                    width=12.34,
-                ),
-            ),
-            lang='en',
-        )
-        """
-    )
-    actual_source = TINY_AIR_TAG_SAMPLE.to_source()
-    assert actual_source == expected_source
+    expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
+    actual_tiny_air_tag_source = TINY_AIR_TAG_SAMPLE.to_source()
+    assert actual_tiny_air_tag_source == expected_tiny_air_tag_source
+    # TODO:
+    # expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
+    # actual_small_air_tag_source = SMALL_AIR_TAG_SAMPLE.to_source()
+    # assert actual_small_air_tag_source == expected_small_air_tag_source
+    # expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
+    # actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
+    # assert actual_air_tag_source == expected_air_tag_source
 
 def test_from_html_to_source() -> None:
-    html_source = clean_doc(
-        """
-        <!doctype html>
-        <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width,initial-scale=1">
-            <title>Title!</title>
-            <!-- My crazy comment -->
-          </head>
-          <body>
-            <p>Hello <strong>World</strong>!</p>
-            <div hidden draggable="true" show="false" translate="no" contenteditable="true" tabindex="3" width="12.34">
-              Div
-            </div>
-          </body>
-        </html>
-        """
-    )
-    expected_source = cleandoc(
-        """
-        air.Html(
-            air.Head(
-                air.Meta(charset='utf-8'),
-                air.Meta(
-                    content='width=device-width,initial-scale=1',
-                    name='viewport',
-                ),
-                air.Title('Title!'),
-                air.Comment('My crazy comment'),
-            ),
-            air.Body(
-                air.P(
-                    'Hello',
-                    air.Strong('World'),
-                    '!',
-                ),
-                air.Div(
-                    'Div',
-                    hidden=True,
-                    draggable=True,
-                    show=False,
-                    translate='no',
-                    contenteditable=True,
-                    tabindex=3,
-                    width=12.34,
-                ),
-            ),
-            lang='en',
-        )
-        """
-    )
-    actual_source = air.Tag.from_html_to_source(html_source)
-    assert actual_source == expected_source
+    actual_tiny_air_tag_source = air.Tag.from_html_to_source(TINY_HTML_SAMPLE)
+    expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
+    assert actual_tiny_air_tag_source == expected_tiny_air_tag_source
+    # TODO:
+    # actual_small_air_tag_source = air.Tag.from_html_to_source(SMALL_HTML_SAMPLE)
+    # expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
+    # assert actual_small_air_tag_source == expected_small_air_tag_source
+    # actual_air_tag_source = air.Tag.from_html_to_source(HTML_SAMPLE)
+    # expected_air_tag_source = AIR_TAG_SAMPLE
+    # assert actual_air_tag_source == expected_air_tag_source
