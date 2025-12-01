@@ -38,53 +38,56 @@ TINY_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
 SMALL_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
     """
     air.Html(
-        air.Div(
-            air.Link(
-                href='https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css',
-                rel='stylesheet',
-            ),
-            air.Script(
-                src='https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js',
-                crossorigin='anonymous',
-                integrity='sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm',
-            ),
-            air.H1(
-                'H1',
-                data_cloud=True,
-                data_earth='true',
-            ),
-            air.H2(
-                'H1',
-                data_cloud=True,
-                data_earth='true',
-            ),
-            air.P(
-                air.A(
-                    'A',
+        air.Head(),
+        air.Body(
+            air.Div(
+                air.Link(
+                    href='https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css',
+                    rel='stylesheet',
+                ),
+                air.Script(
+                    src='https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js',
+                    crossorigin='anonymous',
+                    integrity='sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm',
+                ),
+                air.H1(
+                    'H1',
                     data_cloud=True,
                     data_earth='true',
                 ),
-                air.A(':root & > < { --pico-font-size: 100%; }', id='id1'),
-                'safe <> string',
-                air.A(':root & > < { --pico-font-size: 100%; }', id='id1'),
-                air.Img(
-                    checked=False,
-                    selected=True,
-                    bar='foo',
-                    src='https://cdn.jsdelivr.net/dist/img.png',
-                    width=250,
-                    height=100,
-                    alt='My Img',
+                air.H2(
+                    'H1',
+                    data_cloud=True,
+                    data_earth='true',
                 ),
-                '<>',
-                air.Script('safe <> Script', crossorigin='anonymous'),
+                air.P(
+                    air.A(
+                        'A',
+                        data_cloud=True,
+                        data_earth='true',
+                    ),
+                    air.A(':root & > < { --pico-font-size: 100%; }', id='id1'),
+                    'safe <> string',
+                    air.A(':root & > < { --pico-font-size: 100%; }', id='id1'),
+                    air.Img(
+                        checked=False,
+                        selected=True,
+                        bar='foo',
+                        src='https://cdn.jsdelivr.net/dist/img.png',
+                        width=250,
+                        height=100,
+                        alt='My Img',
+                    ),
+                    '<>',
+                    air.Script('safe <> Script', crossorigin='anonymous'),
+                ),
+                kwarg1='kwarg1',
+                kwarg2='kwarg2',
+                kwarg3='kwarg3',
+                class_='class1',
+                id='id1',
+                style='style1',
             ),
-            kwarg1='kwarg1',
-            kwarg2='kwarg2',
-            kwarg3='kwarg3',
-            class_='class1',
-            id='id1',
-            style='style1',
         ),
     )
     """

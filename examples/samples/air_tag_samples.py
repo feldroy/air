@@ -34,41 +34,44 @@ TINY_AIR_TAG_SAMPLE: Final = air.Html(
 )
 
 SMALL_AIR_TAG_SAMPLE: Final = Html(
-    Div(
-        Link(
-            rel="stylesheet",
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css",
-        ),
-        Script(
-            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js",
-            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm",
-            crossorigin="anonymous",
-        ),
-        H1("H1", data_cloud=True, data_earth="true"),
-        H2("H1", data_cloud=True, data_earth="true"),
-        P(
-            A("A", data_cloud=True, data_earth="true"),
-            A(SafeStr(":root & > < { --pico-font-size: 100%; }"), id="id1"),
-            SafeStr("safe <> string"),
-            A(":root & > < { --pico-font-size: 100%; }", id="id1"),
-            Img(
-                src="https://cdn.jsdelivr.net/dist/img.png",
-                width=250,
-                height=100,
-                alt="My Img",
-                checked=False,
-                selected=True,
-                bar="foo",
+    air.Head(),
+    air.Body(
+        Div(
+            Link(
+                rel="stylesheet",
+                href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css",
             ),
-            "<>",
-            Script("safe <> Script", crossorigin="anonymous"),
-        ),
-        class_="class1",
-        id="id1",
-        style="style1",
-        kwarg1="kwarg1",
-        kwarg2="kwarg2",
-        kwarg3="kwarg3",
+            Script(
+                src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js",
+                integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm",
+                crossorigin="anonymous",
+            ),
+            H1("H1", data_cloud=True, data_earth="true"),
+            H2("H1", data_cloud=True, data_earth="true"),
+            P(
+                A("A", data_cloud=True, data_earth="true"),
+                A(SafeStr(":root & > < { --pico-font-size: 100%; }"), id="id1"),
+                SafeStr("safe <> string"),
+                A(":root & > < { --pico-font-size: 100%; }", id="id1"),
+                Img(
+                    src="https://cdn.jsdelivr.net/dist/img.png",
+                    width=250,
+                    height=100,
+                    alt="My Img",
+                    checked=False,
+                    selected=True,
+                    bar="foo",
+                ),
+                "<>",
+                Script("safe <> Script", crossorigin="anonymous"),
+            ),
+            class_="class1",
+            id="id1",
+            style="style1",
+            kwarg1="kwarg1",
+            kwarg2="kwarg2",
+            kwarg3="kwarg3",
+        )
     )
 )
 

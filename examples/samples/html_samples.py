@@ -25,6 +25,7 @@ SMALL_HTML_SAMPLE: Final = cleandoc(
     """
     <!doctype html>
     <html>
+      <head></head>
       <body>
         <div kwarg1="kwarg1" kwarg2="kwarg2" kwarg3="kwarg3" class="class1" id="id1" style="style1">
           <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet">
