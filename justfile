@@ -121,8 +121,8 @@ sync:
 
 # Sync all dependencies using uv, and updating the uv.lock file. <Don’t use! For maintainers only!>
 [group('uv')]
-sync-lock:
-    uv sync {{ UV_CLI_FLAGS }}
+sync-lock *ARGS:
+    uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
@@ -165,10 +165,8 @@ lint OUTPUT_FORMAT="full":
     just run -- codespell
 
 # Check for lint violations for all rules!
-# --ignore TD,FBT001,FBT002,TC003,COM812,ARG004,PLR0904,CPY001
 [group('qa')]
 ruff-check-all TARGET=".":
-    # TODO -> Remove: --ignore D
     just run -- ruff check --output-format=concise --select ALL --ignore CPY001,TC003,COM812,TD,D101,PLR0904,ARG004,FBT001,FBT002,SLF001 "{{TARGET}}"
 
 # [print diagnostics concisely, one per line]

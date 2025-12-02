@@ -201,9 +201,7 @@ if __name__ == "__main__":
         print(repr(SMALL_AIR_TAG_SAMPLE.from_json(SMALL_AIR_TAG_SAMPLE.to_json())))
     # Convert this air-tag into the instantiable-formatted representation of the tag.
     if True:
-        print("---------------------------------")
         print(SMALL_AIR_TAG_SAMPLE.to_source())
-        print("---------------------------------")
     # Reconstruct the corresponding air-tag tree from the given HTML content.
     if False:
         html_source = SMALL_AIR_TAG_SAMPLE.pretty_render()

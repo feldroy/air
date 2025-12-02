@@ -185,6 +185,15 @@ class BaseTag:
         """
         return self.pretty_render()
 
+    @cached_property
+    def compact_html(self) -> str:
+        """Render the compact-formatted HTML representation of the tag.
+
+        Returns:
+            A minimized HTML string produced by `minify_html.minify`.
+        """
+        return self.compact_render()
+
     def render(self) -> str:
         """Render the HTML representation of the tag.
 

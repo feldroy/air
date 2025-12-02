@@ -72,7 +72,7 @@ SMALL_AIR_TAG_SAMPLE: Final = Html(
             kwarg2="kwarg2",
             kwarg3="kwarg3",
         )
-    )
+    ),
 )
 
 AIR_TAG_SAMPLE: Final = Html(
