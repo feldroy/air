@@ -241,7 +241,7 @@ class BaseTag:
         """Display pretty-formatted HTML in the console with syntax highlighting."""
         pretty_print_html(self.pretty_render())
 
-    def save(self, file_path: StrPath) -> None:
+    def save(self, *, file_path: StrPath) -> None:
         """Persist the rendered HTML to disk.
 
         Args:
@@ -249,7 +249,7 @@ class BaseTag:
         """
         save_text(text=self.render(), file_path=file_path)
 
-    def pretty_save(self, file_path: StrPath) -> None:
+    def pretty_save(self, *, file_path: StrPath) -> None:
         """Persist pretty-formatted HTML to disk.
 
         Args:
@@ -545,6 +545,7 @@ class BaseTag:
 
     def to_pretty_dict(
         self,
+        *,
         max_width: int = 170,
         max_length: int = 7,
         max_depth: int = 4,
@@ -586,7 +587,7 @@ class BaseTag:
         """
         return tuple(child.to_dict() if isinstance(child, BaseTag) else child for child in self._children)
 
-    def to_json(self, indent_size: int | None = None) -> str:
+    def to_json(self, *, indent_size: int | None = None) -> str:
         """Serialize the tag to JSON.
 
         Args:
