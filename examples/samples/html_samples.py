@@ -1,6 +1,18 @@
 from inspect import cleandoc
 from typing import Final
 
+FRAGMENT_HTML_SAMPLE: Final = cleandoc(
+    """
+    <div>
+      <meta charset="utf-8">
+      <meta content="width=device-width,initial-scale=1" name="viewport">
+      <title>Title!</title>
+      <!-- My crazy comment -->
+      <p>Hello <strong>World</strong>!</p>
+    </div>
+    """
+)
+
 TINY_HTML_SAMPLE: Final = cleandoc(
     """
     <!doctype html>

@@ -13,134 +13,13 @@ Run:
 from __future__ import annotations
 
 from rich import print
-from tests.utils import clean_doc
 
 import air
 from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
 
 if __name__ == "__main__":
-    html = air.Html(
-        air.Head(
-            air.Meta(charset="utf-8"),
-            air.Meta(name="viewport", content="width=device-width,initial-scale=1"),
-            air.Title("Title!"),
-            air.Comment("My crazy comment"),
-        ),
-        air.Body(),
-        lang="en",
-    )
-    html_source_invalid = clean_doc(
-        """
-        <!doctype html>
-        <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <meta content="width=device-width,initial-scale=1" name="viewport">
-            <title>Title!</title>
-            <!-- My crazy comment -->
-            <p>Hello <strong>World</strong>!</p>
-            <div hidden draggable="true" translate="no" contenteditable="true" tabindex=3>
-              Div
-            </div>
-          </head>
-          <body></body>
-        </html>
-        """
-    )
-    div_html = clean_doc(
-        """
-        <div>
-          <meta charset="utf-8">
-          <meta content="width=device-width,initial-scale=1" name="viewport">
-          <title>Title!</title>
-          <!-- My crazy comment -->
-          <p>Hello <strong>World</strong>!</p>
-        </div>
-        """
-    )
-    # print(air.Div().to_source())
-    # print(air.Div("bla").to_source())
-    # print(air.Div(foo="bar").to_source())
-    # print(html.to_source())
-    # print(SMALL_HTML_SAMPLE.to_source())
-    html_test1 = air.A(
-        air.Img(
-            src="https://f004.backblazeb2.com/file/daniel-feldroy-com/public/images/profile.jpg",
-            width="108",
-            alt="Daniel Roy Greenfeld",
-            class_="borderCircle",
-        ),
-        air.Div(),
-        air.Div("aaa"),
-        air.Div(foo="bar"),
-        air.Div(air.Title("bla")),
-        air.Div(air.H6(air.H6(), bla1="aba1")),
-        air.Div(air.H6("bla", bla1="aba1")),
-        air.Div(air.H6(air.Title("bla2"), bla2="aba2")),
-        air.Div(air.H6()),
-        href="/",
-    )
-
-    html_source = clean_doc(
-        """
-        <!doctype html>
-        <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width,initial-scale=1">
-            <title>Title!</title>
-            <!-- My crazy comment -->
-          </head>
-          <body>
-            <p>Hello <strong>World</strong>!</p>
-            <div hidden draggable="true" show="false" translate="no" contenteditable="true" tabindex="3" width="12.34">
-              Div
-            </div>
-          </body>
-        </html>
-        """
-    )
-
-    # print(air.Tag.from_html(div_html.strip()).pretty_render())
-
-    # print(SMALL_HTML_SAMPLE.to_source())
-    # print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE.pretty_render()))
-    # print(air.Tag.from_html(html_source).pretty_render())
-    # print(air.Tag.from_html_to_source(HTML_SAMPLE.pretty_render()))
-    # print(air.Tag.from_html(SMALL_HTML_SAMPLE.render()).pretty_render())
-    # print(air.Tag.from_html(html_source))
-
-    # print(air.Tag.from_html_to_source(html_source))
-    # print(air.Div(a=True, b=False, c=123, d=45.67, e="dasdas").to_source())
-    # print(air.Tag.from_html(air.Div(a=True, b=False, c=123, d=45.67, e="dasdas").render()).to_source())
-
-    # SMALL_HTML_SAMPLE.print_source()
-
-    # print(air.H6(air.H3(), bla1="aba1").to_source())
-    # print(pretty_repr(html.to_source(), expand_all=True))
-    # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
-    # print(air.Tag.from_html(html_source).pretty_render())
-
-    # print(air.Tag.from_html(html.pretty_html).render())
-    # print(air.Tag.from_html(air.Title("xxx").pretty_render()).render())
-    # print(html.pretty_render())
-    # print(air.Tag.from_html_to_source(html_source))
-    # print(air.Tag.from_html_to_source(html.pretty_render()))
-    # print(HTML_SAMPLE.html)
-
-    # r = HTML_SAMPLE.pretty_render()
-    # print(r)
-    # print(air.Tag.from_html(r).render())
-
-    # print(air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_render())
-    # print(air.Tag.from_html_to_source(HTML_SAMPLE.pretty_render()))
-    # print(SMALL_HTML_SAMPLE.to_source())
-    # print(SMALL_HTML_SAMPLE.from_html(HTML_SAMPLE.pretty_render()))
-    # print(repr(air.BaseTag.from_html(SMALL_HTML_SAMPLE.pretty_render())))
-    # air.Tag.from_html(SMALL_HTML_SAMPLE.pretty_render()).pretty_print()
-
     # Print pretty-formatted HTML to the terminal when debugging layouts
-    if False:
+    if True:
         SMALL_AIR_TAG_SAMPLE.pretty_print()
     # Print a concise representation of the tag.
     if False:
@@ -200,7 +79,7 @@ if __name__ == "__main__":
     if False:
         print(repr(SMALL_AIR_TAG_SAMPLE.from_json(SMALL_AIR_TAG_SAMPLE.to_json())))
     # Convert this air-tag into the instantiable-formatted representation of the tag.
-    if True:
+    if False:
         print(SMALL_AIR_TAG_SAMPLE.to_source())
     # Reconstruct the corresponding air-tag tree from the given HTML content.
     if False:

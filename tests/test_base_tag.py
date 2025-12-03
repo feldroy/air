@@ -7,11 +7,17 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE, TINY_AIR_TAG_SAMPLE
+from examples.samples.air_tag_samples import (
+    AIR_TAG_SAMPLE,
+    FRAGMENT_AIR_TAG_SAMPLE,
+    SMALL_AIR_TAG_SAMPLE,
+    TINY_AIR_TAG_SAMPLE,
+)
 from examples.samples.air_tag_source_samples import (
+    FRAGMENT_AIR_TAG_SOURCE_SAMPLE,
     TINY_AIR_TAG_SOURCE_SAMPLE,
 )
-from examples.samples.html_samples import TINY_HTML_SAMPLE
+from examples.samples.html_samples import FRAGMENT_HTML_SAMPLE, TINY_HTML_SAMPLE
 
 import air
 import air.tags.models.base as base_module
@@ -165,7 +171,7 @@ def test_pretty_print_delegates_to_helper(monkeypatch: pytest.MonkeyPatch) -> No
 
 def test_save_writes_rendered_html(tmp_path: Path) -> None:
     target = tmp_path / "tag.html"
-    SampleTag("saved").save(target)
+    SampleTag("saved").save(file_path=target)
 
     assert target.read_text() == "<sampletag>saved</sampletag>"
 
@@ -175,7 +181,7 @@ def test_pretty_save_writes_pretty_html(tmp_path: Path, monkeypatch: pytest.Monk
 
     monkeypatch.setattr(base_module, "pretty_format_html", lambda html, **_: "pretty")
 
-    SampleTag("pretty").pretty_save(target)
+    SampleTag("pretty").pretty_save(file_path=target)
 
     assert target.read_text() == "pretty"
 
@@ -321,6 +327,9 @@ def test_pretty_from_dict_and_from_json_roundtrip() -> None:
 
 
 def test_from_html() -> None:
+    actual_fragment_air_tag = air.Tag.from_html(FRAGMENT_HTML_SAMPLE)
+    expected_fragment_air_tag = FRAGMENT_AIR_TAG_SAMPLE
+    assert actual_fragment_air_tag == expected_fragment_air_tag
     actual_tiny_air_tag = air.Tag.from_html(TINY_HTML_SAMPLE)
     expected_tiny_air_tag = TINY_AIR_TAG_SAMPLE
     assert actual_tiny_air_tag == expected_tiny_air_tag
@@ -334,19 +343,25 @@ def test_from_html() -> None:
 
 
 def test_to_source() -> None:
-    expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
+    actual_fragment_air_tag_source = FRAGMENT_AIR_TAG_SAMPLE.to_source()
+    expected_fragment_air_tag_source = FRAGMENT_AIR_TAG_SOURCE_SAMPLE
+    assert actual_fragment_air_tag_source == expected_fragment_air_tag_source
     actual_tiny_air_tag_source = TINY_AIR_TAG_SAMPLE.to_source()
+    expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
     assert actual_tiny_air_tag_source == expected_tiny_air_tag_source
     # TODO:
-    # expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
     # actual_small_air_tag_source = SMALL_AIR_TAG_SAMPLE.to_source()
+    # expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
     # assert actual_small_air_tag_source == expected_small_air_tag_source
-    # expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
     # actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
+    # expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
     # assert actual_air_tag_source == expected_air_tag_source
 
 
 def test_from_html_to_source() -> None:
+    actual_fragment_air_tag_source = air.Tag.from_html_to_source(FRAGMENT_HTML_SAMPLE)
+    expected_fragment_air_tag_source = FRAGMENT_AIR_TAG_SOURCE_SAMPLE
+    assert actual_fragment_air_tag_source == expected_fragment_air_tag_source
     actual_tiny_air_tag_source = air.Tag.from_html_to_source(TINY_HTML_SAMPLE)
     expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
     assert actual_tiny_air_tag_source == expected_tiny_air_tag_source

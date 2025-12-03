@@ -3,6 +3,21 @@ from typing import Final
 import air
 from air import *
 
+FRAGMENT_AIR_TAG_SAMPLE: Final = air.Div(
+    air.Meta(charset="utf-8"),
+    air.Meta(
+        content="width=device-width,initial-scale=1",
+        name="viewport",
+    ),
+    air.Title("Title!"),
+    air.Comment("My crazy comment"),
+    air.P(
+        "Hello",
+        air.Strong("World"),
+        "!",
+    ),
+)
+
 TINY_AIR_TAG_SAMPLE: Final = air.Html(
     air.Head(
         air.Meta(charset="utf-8"),

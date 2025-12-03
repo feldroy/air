@@ -1,6 +1,25 @@
 from inspect import cleandoc
 from typing import Final
 
+FRAGMENT_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
+    """
+    air.Div(
+        air.Meta(charset='utf-8'),
+        air.Meta(
+            content='width=device-width,initial-scale=1',
+            name='viewport',
+        ),
+        air.Title('Title!'),
+        air.Comment('My crazy comment'),
+        air.P(
+            'Hello',
+            air.Strong('World'),
+            '!',
+        ),
+    )
+    """
+)
+
 TINY_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
     """
     air.Html(
