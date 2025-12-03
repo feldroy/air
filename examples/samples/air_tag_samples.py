@@ -64,15 +64,14 @@ SMALL_AIR_TAG_SAMPLE: Final = Html(
             H2("H1", data_cloud=True, data_earth="true"),
             P(
                 A("A", data_cloud=True, data_earth="true"),
-                A(SafeStr(":root & > < { --pico-font-size: 100%; }"), id="id1"),
+                A(SafeStr(":root & > < { --pico-font-size: 100%; }"), id_="id1"),
                 SafeStr("safe <> string"),
-                A(":root & > < { --pico-font-size: 100%; }", id="id1"),
+                A(":root & > < { --pico-font-size: 100%; }", id_="id1"),
                 Img(
                     src="https://cdn.jsdelivr.net/dist/img.png",
                     width=250,
                     height=100,
                     alt="My Img",
-                    checked=False,
                     selected=True,
                     bar="foo",
                 ),
