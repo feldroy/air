@@ -16,10 +16,11 @@ from rich import print
 
 import air
 from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
+from examples.samples.html_samples import SMALL_HTML_SAMPLE
 
 if __name__ == "__main__":
     # Print pretty-formatted HTML to the terminal when debugging layouts
-    if True:
+    if False:
         SMALL_AIR_TAG_SAMPLE.pretty_print()
     # Print a concise representation of the tag.
     if False:
@@ -83,14 +84,11 @@ if __name__ == "__main__":
         print(SMALL_AIR_TAG_SAMPLE.to_source())
     # Reconstruct the corresponding air-tag tree from the given HTML content.
     if False:
-        html_source = SMALL_AIR_TAG_SAMPLE.pretty_render()
-        air.Tag.from_html(html_source).pretty_print()
+        air.Tag.from_html(SMALL_HTML_SAMPLE).pretty_print()
     # Reconstruct the corresponding air-tag tree from the given HTML content
     # into the instantiable-formatted representation of the tag.
     if False:
-        html_source = SMALL_AIR_TAG_SAMPLE.pretty_render()
-        print(air.Tag.from_html_to_source(html_source))
+        print(air.Tag.from_html_to_source(SMALL_HTML_SAMPLE))
     # Display the instantiable-formatted representation of the tag in the console with syntax highlighting.
     if False:
-        html_source = AIR_TAG_SAMPLE.pretty_render()
-        air.Tag.print_source(html_source)
+        air.Tag.print_source(SMALL_HTML_SAMPLE)

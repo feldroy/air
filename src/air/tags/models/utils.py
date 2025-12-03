@@ -3,7 +3,7 @@ from __future__ import annotations
 import ast
 from typing import TYPE_CHECKING
 
-from air.tags.constants import AIR_PREFIX, INDENT_UNIT
+from air.tags.constants import AIR_PREFIX, BOOLEAN_HTML_ATTRIBUTES, INDENT_UNIT
 from air.tags.utils import migrate_attribute_name_to_air_tag
 
 if TYPE_CHECKING:
@@ -90,17 +90,81 @@ def _migrate_html_attributes_to_air_tag(node: LexborNode) -> TagAttributesType:
         A mapping of normalized attribute names and values.
     """
     return {
-        migrate_attribute_name_to_air_tag(attr_name): _evaluate_attribute_value_to_py(attr_value)
+        migrate_attribute_name_to_air_tag(attr_name): _evaluate_attribute_value_to_py(
+            tag_name=node.tag, attr_name=attr_name, attr_value=attr_value
+        )
         for attr_name, attr_value in node.attributes.items()
     }
 
 
-def _evaluate_attribute_value_to_py(attr_value: str | None) -> AttributeType:
-    if attr_value is None or attr_value.lower() == "true":
+def _evaluate_attribute_value_to_py(tag_name: str, attr_name: str, attr_value: str | None) -> AttributeType:
+    """
+    Evaluates the attribute value of an HTML tag and converts it into the appropriate type.
+
+    This function attempts to evaluate the provided attribute value to determine its
+    Python equivalent type (e.g., boolean, literal, or string).
+
+    Args:
+        tag_name: The name of the HTML tag being evaluated.
+        attr_name: The name of the attribute belonging to the tag.
+        attr_value: The value of the attribute to be evaluated. This can be a string
+            or None.
+
+    Returns:
+        The evaluated value of the given attribute. The type of the returned value
+        may vary depending on the input (e.g., boolean, literal value, or original string).
+    """
+    if attr_value is None:
         return True
-    if attr_value.lower() == "false":
-        return False
+    if attr_value.lower() == "true" or attr_value.lower() == "false":
+        return attr_value
+    if is_a_boolean_attribute(attr_name=attr_name, tag_name=tag_name):
+        return is_conforming_boolean_value(attr_name=attr_name, attr_value=attr_value)
     try:
         return ast.literal_eval(attr_value)
     except (ValueError, SyntaxError):
         return attr_value
+
+
+def is_a_boolean_attribute(attr_name: str, tag_name: str | None) -> bool:
+    """
+    Checks whether a given attribute is a boolean attribute for a specified HTML tag.
+
+    This function determines whether the provided attribute name corresponds to a
+    boolean HTML attribute for the specified tag. Boolean attributes are those that
+    represent fundamental binary states, such as `checked`, `disabled`, or `readonly`,
+    and their presence alone is sufficient to imply their values.
+
+    Args:
+        attr_name: The name of the HTML attribute to check.
+        tag_name: The name of the HTML tag associated with the attribute. It can be
+            None to indicate no specific tag.
+
+    Returns:
+        bool: True if the attribute is a boolean HTML attribute for the provided tag,
+        False otherwise.
+    """
+    return attr_name in BOOLEAN_HTML_ATTRIBUTES and tag_name in BOOLEAN_HTML_ATTRIBUTES[attr_name]
+
+
+def is_conforming_boolean_value(attr_name: str, attr_value: str | None) -> bool:
+    """
+    Determines if a given attribute value for a boolean attribute representation is spec conforming.
+
+    This function compares the provided attribute name and attribute value, checking if they match
+    in a case-insensitive manner. If the attribute value is `None` or evaluates to `False`, the
+    function will also return `True`. This utility is helpful when validating case-insensitive equality
+    or dealing with optional or empty values.
+
+    - Absent attribute is a valid false.
+    - Present attribute must have value "" or the canonical name (ASCII case-insensitive).
+
+    Args:
+        attr_name: The name of the attribute to compare (case insensitive).
+        attr_value: The value of the attribute to compare against, which can be `None`.
+
+    Returns:
+        bool: True if the attribute value either matches the attribute name in a case-insensitive
+        comparison or is `None`/evaluates to `False`. Otherwise, False.
+    """
+    return not attr_value or attr_name.casefold() == attr_value.casefold()

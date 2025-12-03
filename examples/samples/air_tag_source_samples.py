@@ -42,7 +42,6 @@ TINY_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                 'Div',
                 hidden=True,
                 draggable=True,
-                show=False,
                 translate='no',
                 contenteditable=True,
                 tabindex=3,
@@ -85,11 +84,10 @@ SMALL_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                         data_cloud=True,
                         data_earth='true',
                     ),
-                    air.A(':root & > < { --pico-font-size: 100%; }', id='id1'),
+                    air.A(':root & > < { --pico-font-size: 100%; }', id_='id1'),
                     'safe <> string',
-                    air.A(':root & > < { --pico-font-size: 100%; }', id='id1'),
+                    air.A(':root & > < { --pico-font-size: 100%; }', id_='id1'),
                     air.Img(
-                        checked=False,
                         selected=True,
                         bar='foo',
                         src='https://cdn.jsdelivr.net/dist/img.png',
@@ -104,7 +102,7 @@ SMALL_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                 kwarg2='kwarg2',
                 kwarg3='kwarg3',
                 class_='class1',
-                id='id1',
+                id_='id1',
                 style='style1',
             ),
         ),
@@ -475,22 +473,22 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                         name='q',
                         type='text',
                         placeholder='Enter your search query...',
-                        id='search-input',
+                        id_='search-input',
                     ),
                     air.Div(class_='search-results-modal'),
                     class_='modal-content',
                 ),
                 class_='modal overflow-auto',
-                id='search-modal',
+                id_='search-modal',
                 style='display:none;',
             ),
-            air.Div(hx_trigger="keyup from:body"),
-            air.Script("document.body.addEventListener('keydown', e => {\n            if (e.key === '/') {\n                e.preventDefault();\n
-    document.getElementById('search-modal').style.display = 'block';\n                document.getElementById('search-input').focus();\n
-    }\n            if (e.key === 'Escape') {\n                document.getElementById('search-modal').style.display = 'none';\n            }\n
-    });\n\n            document.getElementById('search-input').addEventListener('input', e => {\n            htmx.trigger('.search-results',
-    'htmx:trigger', {value: e.target.value});\n            });"),
-            hx_boost='true',
+            air.Div(hx_trigger="keyup[key=='/'] from:body"),
+        air.Script("document.body.addEventListener('keydown', e => {\n            if (e.key === '/') {\n                e.preventDefault();\n
+document.getElementById('search-modal').style.display = 'block';\n                document.getElementById('search-input').focus();\n
+}\n            if (e.key === 'Escape') {\n                document.getElementById('search-modal').style.display = 'none';\n            }\n
+});\n\n            document.getElementById('search-input').addEventListener('input', e => {\n            htmx.trigger('.search-results',
+'htmx:trigger', {value: e.target.value});\n            });"),
+        hx_boost='true',
         ),
     )
     """

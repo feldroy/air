@@ -718,7 +718,7 @@ class Dialog(BaseTag):
         *children: Renderable,
         open: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **kwargs: AttributeType,
     ) -> None:
@@ -740,7 +740,7 @@ class Div(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **kwargs: AttributeType,
     ) -> None:
