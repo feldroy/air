@@ -81,7 +81,7 @@ SMALL_AIR_TAG_SAMPLE: Final = Html(
                 Script("safe <> Script", crossorigin="anonymous"),
             ),
             class_="class1",
-            id="id1",
+            id_="id1",
             style="style1",
             kwarg1="kwarg1",
             kwarg2="kwarg2",

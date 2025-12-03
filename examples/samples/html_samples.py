@@ -39,13 +39,13 @@ SMALL_HTML_SAMPLE: Final = cleandoc(
     <html>
       <head></head>
       <body>
-        <div kwarg1="kwarg1" kwarg2="kwarg2" kwarg3="kwarg3" class="class1" id="id1" style="style1">
+        <div id="id1" kwarg1="kwarg1" kwarg2="kwarg2" kwarg3="kwarg3" class="class1" style="style1">
           <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet">
           <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
-          <h1 data-cloud data-earth="true">H1</h1>
-          <h2 data-cloud data-earth="true">H1</h2>
+          <h1 data-cloud data-earth>H1</h1>
+          <h2 data-cloud data-earth>H1</h2>
           <p>
-            <a data-cloud data-earth="true">A</a>
+            <a data-cloud data-earth>A</a>
             <a id="id1">:root & > < { --pico-font-size: 100%; }</a>safe <> string<a id="id1">:root & > < { --pico-font-size: 100%; }</a>
             <img selected bar="foo" src="https://cdn.jsdelivr.net/dist/img.png" width="250" height="100" alt="My Img"><><script crossorigin="anonymous">safe <> Script</script>
           </p>

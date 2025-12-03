@@ -124,11 +124,11 @@ class BaseTag:
         Returns:
             The attribute rendered as `name="value"` or a bare name for boolean attributes.
         """
-        value = self._attrs[name]
-        clean_name = migrate_attribute_name_to_html(name)
-        if value is True:
-            return clean_name
-        return f'{clean_name}="{value}"'
+        attr_value = self._attrs[name]
+        attr_name = migrate_attribute_name_to_html(name)
+        if attr_value is True:
+            return attr_name
+        return f'{attr_name}="{attr_value}"'
 
     @cached_property
     def children(self) -> str:

@@ -90,8 +90,8 @@ def _migrate_html_attributes_to_air_tag(node: LexborNode) -> TagAttributesType:
         A mapping of normalized attribute names and values.
     """
     return {
-        migrate_attribute_name_to_air_tag(name): _evaluate_attribute_value_to_py(value)
-        for name, value in node.attributes.items()
+        migrate_attribute_name_to_air_tag(attr_name): _evaluate_attribute_value_to_py(attr_value)
+        for attr_name, attr_value in node.attributes.items()
     }
 
 
