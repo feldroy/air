@@ -50,7 +50,7 @@ def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Ht
 
 
         @app.page
-        async def index(request: air.Request):
+        async def index(request: air.Request) -> air.Html | air.Children:
             return air.layouts.mvpcss(
                 air.Title("Home"),
                 air.Article(
@@ -63,7 +63,7 @@ def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Ht
 
 
         @app.page
-        async def dashboard(request: air.Request):
+        async def dashboard(request: air.Request) -> air.Html | air.Children:
             return air.layouts.mvpcss(
                 air.Title("Dashboard"),
                 air.Article(
@@ -129,7 +129,7 @@ def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> H
 
 
         @app.page
-        async def index(request: air.Request):
+        async def index(request: air.Request) -> air.Html | air.Children:
             return air.layouts.picocss(
                 air.Title("Home"),
                 air.Article(
@@ -142,7 +142,7 @@ def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> H
 
 
         @app.page
-        async def dashboard(request: air.Request):
+        async def dashboard(request: air.Request) -> air.Html | air.Children:
             return air.layouts.picocss(
                 air.Title("Dashboard"),
                 air.Article(
