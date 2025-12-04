@@ -5,6 +5,7 @@ Minimal tests for airblog.py - demonstrating different test types.
 import multiprocessing
 import socket
 import time
+from multiprocessing.queues import Queue
 
 import pytest
 import uvicorn
@@ -26,7 +27,7 @@ def get_free_port() -> int:
     return port
 
 
-def run_server(port_queue):
+def run_server(port_queue: Queue[int]) -> None:
     "Runs the AirBlog server on a free port and communicates the port back via a queue."
     # Get an available port number from the operating system
     port = get_free_port()
@@ -81,7 +82,7 @@ def test_index_route_renders():
 
 
 # END-TO-END TEST - Tests full application flow with real browser
-def test_navigate_to_article_via_click(page: Page, live_server):
+def test_navigate_to_article_via_click(page: Page, live_server: int) -> None:
     page.goto(f"http://localhost:{live_server}")
     page.click("text=Hello World")
     expect(page).to_have_url(f"http://localhost:{live_server}/article/hello-world")
@@ -89,7 +90,7 @@ def test_navigate_to_article_via_click(page: Page, live_server):
 
 
 # ACCESSIBILITY TEST - Verifies proper semantic structure
-def test_page_accessibility(page: Page, live_server):
+def test_page_accessibility(page: Page, live_server: int) -> None:
     page.goto(f"http://localhost:{live_server}")
     expect(page.locator("h1")).to_be_visible()
     expect(page.locator("nav")).to_be_visible()
