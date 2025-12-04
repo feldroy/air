@@ -95,7 +95,6 @@ dependencies = [
     "rich>=14.2.0",
     "nh3>=0.3.2",
     "frozendict>=2.4.7",
-    "air-convert>=0.3.0",
     "pygments>=2.19.2",
     "selectolax",
 ]

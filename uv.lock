@@ -7,7 +7,6 @@ name = "air"
 version = "0.41.2"
 source = { editable = "." }
 dependencies = [
-    { name = "air-convert" },
     { name = "fastapi" },
     { name = "frozendict" },
     { name = "itsdangerous" },
@@ -104,7 +103,6 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "air-convert", specifier = ">=0.3.0" },
     { name = "fastapi", specifier = ">=0.119.1" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.119.1" },
     { name = "frozendict", specifier = ">=2.4.7" },
@@ -194,21 +192,6 @@ test = [
     { name = "pytest-env", specifier = ">=1.1.5" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },
     { name = "pytest-pretty", specifier = ">=1.3.0" },
-]
-
-[[package]]
-name = "air-convert"
-version = "0.3.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "air" },
-    { name = "beautifulsoup4" },
-    { name = "lxml" },
-    { name = "typer" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/8b/f2/41180baabb64ccc5f19fc9956e6f6088819c9d0b2e243a38a16049bff9a9/air_convert-0.3.0.tar.gz", hash = "sha256:ca278f3cdb140009e1ec657ca349d8f6c63097c1a9af75f5f8aabc9f7bb5a835", size = 12237, upload-time = "2025-08-15T05:32:53.967Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/97/c9/838ab957393be304de348bd93004a86282ac69b6fdf67a07218a5989ceec/air_convert-0.3.0-py3-none-any.whl", hash = "sha256:986869fac6a303b25ab3dead5153fe554ac51ea9b55cf14f9c5e249696f399d2", size = 6589, upload-time = "2025-08-15T05:32:52.658Z" },
 ]
 
 [[package]]
