@@ -445,3 +445,36 @@ def test_safestr_behaves_like_str() -> None:
     assert str(safe) == value
     assert safe == value
     assert safe.data == value
+
+
+def test_is_full_html_document_detects_document() -> None:
+    html = "<!doctype html><html><head></head><body><p>ok</p></body></html>"
+
+    assert utils.is_full_html_document(html)
+
+
+def test_is_full_html_document_rejects_fragment() -> None:
+    html = "<div>fragment</div>"
+
+    assert not utils.is_full_html_document(html)
+
+
+def test_save_text_writes_content(tmp_path: Path) -> None:
+    target = tmp_path / "saved.txt"
+
+    utils.save_text("payload", target)
+
+    assert target.read_text() == "payload"
+
+
+def test_pretty_print_python_outputs_code(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: list[str] = []
+
+    def fake_pretty_console(source: str, **kwargs: object) -> None:  # pragma: no cover - trivial delegate
+        captured.append(source)
+
+    monkeypatch.setattr(utils, "_get_pretty_console", fake_pretty_console)
+
+    utils.pretty_print_python("x = 1")
+
+    assert captured == ["x = 1"]

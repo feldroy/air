@@ -170,6 +170,12 @@ def test_pretty_print_delegates_to_helper(monkeypatch: pytest.MonkeyPatch) -> No
     assert printed == ["formatted"]
 
 
+def test_compact_html_matches_compact_render() -> None:
+    tag = SampleTag("body")
+
+    assert tag.compact_html == tag.compact_render()
+
+
 def test_save_writes_rendered_html(tmp_path: Path) -> None:
     target = tmp_path / "tag.html"
     SampleTag("saved").save(file_path=target)
@@ -217,6 +223,53 @@ def test_doc_summary_and_repr_include_class_doc() -> None:
 
     assert summary == "Sample tag used in unit tests."
     assert representation.startswith('<air.SampleTag("Sample tag used in unit tests.")>')
+
+
+def test_last_child_returns_last_child() -> None:
+    tag = WrapperTag("first", SampleTag("inner"), "last")
+
+    assert tag.last_child == "last"
+
+
+def test_first_child_returns_first_child() -> None:
+    tag = WrapperTag("alpha", "beta")
+
+    assert tag.first_child == "alpha"
+
+
+def test_first_and_last_attribute_preserve_order() -> None:
+    tag = SampleTag("child", first="1", second="2")
+
+    assert tag.first_attribute == ("first", "1")
+    assert tag.last_attribute == ("second", "2")
+
+
+def test_counts_return_lengths() -> None:
+    tag = WrapperTag("one", "two")
+    tag_with_attrs = SampleTag(label="x", title="y")
+
+    assert tag.num_of_direct_children == 2
+    assert tag_with_attrs.num_of_attributes == 2
+
+
+def test_tag_id_returns_attribute() -> None:
+    tag = SampleTag(id_="identifier")
+
+    assert tag.tag_id == "identifier"
+
+
+def test_boolean_flags_for_children_and_attributes() -> None:
+    empty = SampleTag()
+    with_child = WrapperTag("kid")
+    with_attr = SampleTag(data_id="42")
+
+    assert not empty.has_children
+    assert not empty.has_attributes
+    assert empty.is_attribute_free_void_element
+    assert with_child.has_children
+    assert not with_child.is_attribute_free_void_element
+    assert with_attr.has_attributes
+    assert not with_attr.is_attribute_free_void_element
 
 
 def test_full_repr_includes_attributes_and_children() -> None:
@@ -325,6 +378,42 @@ def test_pretty_from_dict_and_from_json_roundtrip() -> None:
     assert isinstance(rebuilt_from_json, original_type)
     assert rebuilt_from_json.to_dict() == original_dict
     assert rebuilt_from_json.render() == original.render()
+
+
+def test_print_source_outputs_python(monkeypatch: pytest.MonkeyPatch) -> None:
+    html = "<div><p>hey</p></div>"
+    captured: list[str] = []
+
+    monkeypatch.setattr(base_module, "pretty_print_python", lambda source, **_: captured.append(source))
+
+    air.Tag.print_source(html)
+
+    assert captured == ["air.Div(\n    air.P('hey'),\n)"]
+
+
+def test_save_source_writes_python(tmp_path: Path) -> None:
+    html = "<div data-id='3'>ok</div>"
+    target = tmp_path / "tag_source.py"
+
+    air.Tag.save_source(file_path=target, html_source=html)
+
+    saved = target.read_text()
+
+    assert saved == "air.Div('ok', data_id=3)"
+
+
+def test_hash_depends_on_rendered_html() -> None:
+    first = SampleTag("x")
+    second = SampleTag("x")
+    third = SampleTag("y")
+
+    assert hash(first) == hash(second)
+    assert len({first, second, third}) == 2
+
+
+def test_eq_rejects_non_tag() -> None:
+    with pytest.raises(TypeError):
+        _ = SampleTag() == "not-a-tag"
 
 
 def test_from_html() -> None:
