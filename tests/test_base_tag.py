@@ -14,7 +14,7 @@ from examples.samples.air_tag_samples import (
     TINY_AIR_TAG_SAMPLE,
 )
 from examples.samples.air_tag_source_samples import (
-    FRAGMENT_AIR_TAG_SOURCE_SAMPLE,
+    AIR_TAG_SOURCE_SAMPLE, FRAGMENT_AIR_TAG_SOURCE_SAMPLE,
     SMALL_AIR_TAG_SOURCE_SAMPLE,
     TINY_AIR_TAG_SOURCE_SAMPLE,
 )
@@ -353,9 +353,9 @@ def test_to_source() -> None:
     expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
     assert actual_small_air_tag_source == expected_small_air_tag_source
     # TODO:
-    # actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
-    # expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
-    # assert actual_air_tag_source == expected_air_tag_source
+    actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
+    expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
+    assert actual_air_tag_source == expected_air_tag_source
 
 
 def test_from_html_to_source() -> None:

@@ -496,7 +496,7 @@ class BaseTag:
         Returns:
             The last child value, or None if there are no children.
         """
-        return self._children and self._children[self.num_of_children - 1]
+        return self._children and self._children[self.num_of_direct_children - 1]
 
     @property
     def first_attribute(self) -> tuple[str, AttributeType] | None:
@@ -517,8 +517,8 @@ class BaseTag:
         return self._attrs and list(self._attrs.items()).pop()
 
     @property
-    def num_of_children(self) -> int:
-        """Return the number of child elements.
+    def num_of_direct_children(self) -> int:
+        """Return the number of the direct children for an element.
 
         Returns:
             The count of children.
@@ -661,6 +661,20 @@ class BaseTag:
             html_source: HTML content to parse.
         """
         pretty_print_python(cls.from_html(html_source).to_source())
+
+    @classmethod
+    def save_source(cls, *, file_path: StrPath, html_source: str) -> None:
+        """Save the instantiable-formatted representation of the tag to disk.
+
+        1. Reconstruct the corresponding air-tag tree from the given HTML content.
+        2. Convert air-tag tree into the instantiable-formatted representation of the tag.
+        3. Save the Python expression that reconstructs this tag to disk.
+
+        Args:
+            html_source: HTML content to parse.
+            file_path: Destination path for the .py file.
+        """
+        save_text(text=cls.from_html(html_source).to_source(), file_path=file_path)
 
     @classmethod
     def from_html_to_source(cls, html_source: str) -> str:

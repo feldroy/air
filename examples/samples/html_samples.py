@@ -71,10 +71,13 @@ HTML_SAMPLE: Final = cleandoc(
         <meta content="Daniel Roy Greenfeld's personal blog" name="twitter:description">
         <link href="http://daniel.feldroy.com/" rel="canonical">
         <link href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous" integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"
+                integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"></script>
         <style>:root { --pico-font-size: 100%; }</style>
-        <link href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-light.css" media="(prefers-color-scheme: light)" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-dark.css"
+              media="(prefers-color-scheme: dark)" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/atom-one-light.css"
+              media="(prefers-color-scheme: light)" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/python.min.js"></script>
@@ -87,13 +90,15 @@ HTML_SAMPLE: Final = cleandoc(
       <body hx-boost="true">
         <header style="text-align: center;">
           <a href="/">
-            <img src="https://f004.backblazeb2.com/file/daniel-feldroy-com/public/images/profile.jpg" width="108" alt="Daniel Roy Greenfeld" class="borderCircle">
+            <img src="https://f004.backblazeb2.com/file/daniel-feldroy-com/public/images/profile.jpg" width=108
+                 alt="Daniel Roy Greenfeld" class="borderCircle">
           </a>
           <a href="/">
             <h2>Daniel Roy Greenfeld</h2>
           </a>
           <p>
-            <a href="/about">About</a>|<a href="/posts">Articles (715)</a>|<a href="/books">Books</a>|<a href="/jobs">Jobs</a>|<a href="/tags">Tags</a>|<a href="/search">Search</a>
+            <a href="/about">About</a>|<a href="/posts">Articles (715)</a>|<a href="/books">Books</a>|<a
+            href="/jobs">Jobs</a>|<a href="/tags">Tags</a>|<a href="/search">Search</a>
           </p>
         </header>
         <main class="container">
@@ -112,7 +117,8 @@ HTML_SAMPLE: Final = cleandoc(
               </span>
               <span>
                 <h2>
-                  <a href="/posts/2025-07-uv-run-for-testing-python-versions">uv run for running tests on versions of Python</a>
+                  <a
+                    href="/posts/2025-07-uv-run-for-testing-python-versions">uv run for running tests on versions of Python</a>
                 </h2>
                 <p>Using uv run with make to replace tox or nox for testing multiple versions of Python locally.<br>
                   <small>
@@ -269,14 +275,17 @@ HTML_SAMPLE: Final = cleandoc(
         <footer class="container">
           <hr>
           <p>
-            <a href="https://www.linkedin.com/in/danielfeldroy/" target="_blank">LinkedIn</a>|<a href="https://bsky.app/profile/daniel.feldroy.com" target="_blank">Bluesky</a>|<a href="https://twitter.com/pydanny" target="_blank">Twitter</a>|<a href="https://github.com/pydanny" target="_blank">Github</a>| Feeds:<a href="/feeds/atom.xml" target="_blank">All</a>,<a href="/feeds/python.atom.xml" target="_blank">Python</a>,<a href="/feeds/til.atom.xml" target="_blank">TIL</a>
+            <a href="https://www.linkedin.com/in/danielfeldroy/" target="_blank">LinkedIn</a>|<a
+            href="https://bsky.app/profile/daniel.feldroy.com" target="_blank">Bluesky</a>|<a href="https://twitter.com/pydanny" target="_blank">Twitter</a>|<a
+            href="https://github.com/pydanny" target="_blank">Github</a>| Feeds:<a href="/feeds/atom.xml" target="_blank">All</a>,<a
+            href="/feeds/python.atom.xml" target="_blank">Python</a>,<a href="/feeds/til.atom.xml" target="_blank">TIL</a>
           </p>
           <p>All rights reserved 2025, Daniel Roy Greenfeld</p>
         </footer>
-        <dialog id="search-modal" style="display:none;" class="modal overflow-auto">
+        <dialog class="modal overflow-auto" id="search-modal" style="display:none;">
           <header class="modal-content">
             <h2>Search</h2>
-            <input hx-trigger="keyup" hx-get="/search-results" hx-target=".search-results-modal" name="q" type="text" placeholder="Enter your search query..." id="search-input">
+            <input hx-trigger="keyup" hx-get="/search-results" hx-target=".search-results-modal" id="search-input" name="q" type="text" placeholder="Enter your search query...">
             <div class="search-results-modal"></div>
           </header>
         </dialog>
