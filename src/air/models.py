@@ -57,7 +57,7 @@ class AirModel(BaseModel):
                 data: dict | None = None,
                 errors: list | None = None,
                 includes: Sequence[str] | None = None,
-            ):
+            ) -> air.Div:
                 return air.Div(
                     air.P("Custom form styling:"),
                     air.Raw(default_form_widget(model, data, errors, includes)),
@@ -65,7 +65,7 @@ class AirModel(BaseModel):
                 )
 
 
-            def get_contact_form():
+            def get_contact_form() -> air.AirForm:
                 return ContactModel.to_form(
                     name="CustomContactForm",  # Custom form class name
                     includes=["name", "email"],  # Only render these fields
@@ -74,7 +74,7 @@ class AirModel(BaseModel):
 
 
             @app.page
-            def index():
+            def index() -> air.Html:
                 contact_form = get_contact_form()
                 return air.Html(
                     air.H1("Contact Form"),
@@ -89,7 +89,7 @@ class AirModel(BaseModel):
 
 
             @app.post("/submit")
-            async def submit(request: air.Request):
+            async def submit(request: air.Request) -> air.Html:
                 form_data = await request.form()
                 contact_form = get_contact_form()
 

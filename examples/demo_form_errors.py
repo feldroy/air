@@ -27,7 +27,7 @@ app = air.Air()
 
 
 @app.get("/")
-async def show_form():
+async def show_form() -> air.Html | air.Children:
     """Show the form initially."""
     contact_form = ContactModel.to_form()
     return air.layouts.picocss(
@@ -43,7 +43,7 @@ async def show_form():
 
 
 @app.post("/submit")
-async def handle_form(request: air.Request):
+async def handle_form(request: air.Request) -> air.Html | air.Children:
     """Handle form submission and show errors."""
     contact_form = ContactModel.to_form()
     form = await contact_form.from_request(request)

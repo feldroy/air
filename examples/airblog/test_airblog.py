@@ -5,6 +5,7 @@ Minimal tests for airblog.py - demonstrating different test types.
 import multiprocessing
 import socket
 import time
+from collections.abc import Generator
 from multiprocessing.queues import Queue
 
 import pytest
@@ -41,7 +42,7 @@ def run_server(port_queue: Queue[int]) -> None:
 
 
 @pytest.fixture(scope="function")
-def live_server():
+def live_server() -> Generator[int]:
     """
     A generator function that starts a live server in a separate process.
 
@@ -65,7 +66,7 @@ def live_server():
 
 
 # UNIT TEST - Tests a single function in isolation
-def test_get_article_returns_article():
+def test_get_article_returns_article() -> None:
     article = get_article("hello-world")
     assert article is not None
     assert "Daniel" in article["frontmatter"]
@@ -73,7 +74,7 @@ def test_get_article_returns_article():
 
 
 # INTEGRATION TEST - Tests route handler with Air app
-def test_index_route_renders():
+def test_index_route_renders() -> None:
     with TestClient(app) as client:
         response = client.get("/")
         assert response.status_code == 200

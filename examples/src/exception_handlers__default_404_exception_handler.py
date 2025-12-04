@@ -4,5 +4,5 @@ app = air.Air()
 
 
 @app.get("/")
-def index():
+def index() -> air.AirResponse:
     return air.AirResponse(air.P("404 Not Found"), status_code=404)

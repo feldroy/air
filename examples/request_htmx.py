@@ -12,7 +12,7 @@ app = air.Air()
 
 
 @app.page
-def index(request: air.Request):
+def index(request: air.Request) -> air.Html | air.Children:
     """ "Index page demonstrating request.htmx interaction.
 
     This page:
@@ -67,7 +67,7 @@ def index(request: air.Request):
 
 
 @app.page
-def table(request: air.Request):
+def table(request: air.Request) -> air.Table:
     """Render a table of key request.htmx attributes.
 
     This view is used as an HTMX target and shows:

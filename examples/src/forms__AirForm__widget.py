@@ -22,7 +22,7 @@ def contact_widget(
     data: dict | None = None,
     errors: list | None = None,
     includes: Sequence[str] | None = None,
-):
+) -> air.Div:
 
     base_html = default_form_widget(
         model=model,
@@ -43,7 +43,7 @@ def get_contact_form() -> air.AirForm:
 
 
 @app.page
-def contact(request: air.Request):
+def contact(request: air.Request) -> air.Html | air.Children:
 
     form = get_contact_form()
 
@@ -60,7 +60,7 @@ def contact(request: air.Request):
 
 
 @app.post("/contact")
-async def submit_contact(request: air.Request):
+async def submit_contact(request: air.Request) -> air.Html:
     form = get_contact_form()
     form_data = await request.form()
 

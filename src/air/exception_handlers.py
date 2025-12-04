@@ -22,7 +22,7 @@ def default_404_router_handler(router_name: str) -> ASGIApp:
 
 
         @router.get("/example")
-        def index():
+        def index() -> air.AirResponse:
             return air.AirResponse(air.P("I am an example route."), status_code=404)
 
 
@@ -59,7 +59,7 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
 
 
         @app.get("/")
-        def index():
+        def index() -> air.AirResponse:
             return air.AirResponse(air.P("404 Not Found"), status_code=404)
     """
     return AirResponse(
@@ -84,7 +84,7 @@ def default_500_exception_handler(request: Request, exc: Exception) -> AirRespon
 
 
         @app.get("/")
-        def index():
+        def index() -> air.AirResponse:
             return air.AirResponse(air.P("500 Internal Server Error"), status_code=500)
     """
     return AirResponse(

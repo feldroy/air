@@ -703,13 +703,13 @@ class Air(FastAPI, RouterMixin):
 
 
             @app.get("/hello")
-            def hello_world():
+            def hello_world() -> air.H1:
                 # Simple GET endpoint returning HTML.
                 return air.H1("Hello, World!")
 
 
             @app.get("/users/{user_id}")
-            def get_user(user_id: int):
+            def get_user(user_id: int) -> air.Div:
                 # GET endpoint with path parameter.
                 return air.Div(
                     air.H2(f"User ID: {user_id}"),
@@ -1117,7 +1117,7 @@ class Air(FastAPI, RouterMixin):
 
 
             @app.post("/submit")
-            def submit_form():
+            def submit_form() -> air.Div:
                 # Simple POST endpoint.
                 return air.Div(
                     air.H2("Form Submitted!"),
@@ -1126,7 +1126,7 @@ class Air(FastAPI, RouterMixin):
 
 
             @app.post("/users")
-            def create_user(user: UserCreate):
+            def create_user(user: UserCreate) -> air.Div:
                 # POST endpoint with request body.
                 return air.Div(
                     air.H2("User Created"),

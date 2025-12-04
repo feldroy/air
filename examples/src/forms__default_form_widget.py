@@ -11,7 +11,7 @@ class FlightModel(air.AirModel):
 
 
 @app.page
-def index(request: air.Request):
+def index(request: air.Request) -> air.Html:
     # Render different field groups separately using includes parameter
     basic_info = default_form_widget(
         model=FlightModel,
@@ -43,7 +43,7 @@ def index(request: air.Request):
 
 
 @app.post("/submit")
-async def submit(request: air.Request):
+async def submit(request: air.Request) -> air.Html:
     form_data = await request.form()
     flight_form = FlightModel.to_form()
 

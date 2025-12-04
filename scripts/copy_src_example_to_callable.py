@@ -208,7 +208,7 @@ def update_example_section(
     return True
 
 
-def main(project_root: Path | None = None):
+def main(project_root: Path | None = None) -> None:
     """Main function to process all examples/src files."""
     if project_root is None:
         project_root = Path(__file__).parent.parent  # pragma: no cover

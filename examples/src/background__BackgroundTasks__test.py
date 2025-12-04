@@ -7,7 +7,7 @@ from .background__BackgroundTasks import app
 client = TestClient(app)
 
 
-def test_send_notification():
+def test_send_notification() -> None:
     log_file = Path("log.txt")
     if log_file.exists():
         log_file.unlink()

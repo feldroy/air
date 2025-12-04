@@ -5,7 +5,7 @@ router = air.AirRouter()
 
 
 @router.get("/example")
-def index():
+def index() -> air.AirResponse:
     return air.AirResponse(air.P("I am an example route."), status_code=404)
 
 

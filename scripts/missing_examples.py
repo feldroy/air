@@ -96,7 +96,7 @@ def find_new_missing(current: dict, baseline: dict) -> dict[str, list[str]]:
     return new_missing
 
 
-def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict, src_path: pathlib.Path):
+def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict, src_path: pathlib.Path) -> None:
     """Extract all callables from a Python file."""
     try:
         with pathlib.Path(file_path).open("r", encoding="utf-8") as f:
@@ -136,7 +136,7 @@ def _print_missing_examples(missing_examples: dict) -> None:
         print()
 
 
-def main(project_root: pathlib.Path | None = None, mode: str = "report"):
+def main(project_root: pathlib.Path | None = None, mode: str = "report") -> None:
     """This function walks through all Python files in SRC_PATH, identifies callables
     without example sections in their docstrings, and prints the results to the
     terminal using the `rich` library.

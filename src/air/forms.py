@@ -44,7 +44,7 @@ class AirForm:
 
 
         @app.post("/flight")
-        async def flight_form(request: air.Request):
+        async def flight_form(request: air.Request) -> air.Html:
             "Awaited form data"
             flight = await FlightForm.from_request(request)
             if flight.is_valid:
@@ -54,7 +54,7 @@ class AirForm:
 
 
         @app.post("/flight-depends")
-        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm.from_request)]):
+        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm.from_request)]) -> air.Html:
             "Dependency injection"
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
@@ -101,7 +101,7 @@ class AirForm:
 
 
             @app.post("/flight")
-            async def submit_flight(request: air.Request):
+            async def submit_flight(request: air.Request) -> air.Html:
                 form_data = await request.form()
                 flight_form = FlightModel.to_form()
 
@@ -155,7 +155,7 @@ class AirForm:
 
 
             @app.post("/flight")
-            async def submit_flight(request: air.Request):
+            async def submit_flight(request: air.Request) -> air.Html:
                 flight = await FlightForm.from_request(request)
 
                 if flight.is_valid:
@@ -213,7 +213,7 @@ class AirForm:
                 data: dict | None = None,
                 errors: list | None = None,
                 includes: Sequence[str] | None = None,
-            ):
+            ) -> air.Div:
 
                 base_html = default_form_widget(
                     model=model,
@@ -234,7 +234,7 @@ class AirForm:
 
 
             @app.page
-            def contact(request: air.Request):
+            def contact(request: air.Request) -> air.Html | air.Children:
 
                 form = get_contact_form()
 
@@ -251,7 +251,7 @@ class AirForm:
 
 
             @app.post("/contact")
-            async def submit_contact(request: air.Request):
+            async def submit_contact(request: air.Request) -> air.Html:
                 form = get_contact_form()
                 form_data = await request.form()
 
@@ -308,7 +308,7 @@ class AirForm:
 
 
             @app.page
-            def contact(request: air.Request):
+            def contact(request: air.Request) -> air.Html | air.Children:
                 # Render a page with a contact form built using AirForm.render()
                 form = ContactForm()
                 return air.layouts.mvpcss(
@@ -462,7 +462,7 @@ def default_form_widget(  # noqa: C901
 
 
         @app.page
-        def index(request: air.Request):
+        def index(request: air.Request) -> air.Html:
             # Render different field groups separately using includes parameter
             basic_info = default_form_widget(
                 model=FlightModel,
@@ -494,7 +494,7 @@ def default_form_widget(  # noqa: C901
 
 
         @app.post("/submit")
-        async def submit(request: air.Request):
+        async def submit(request: air.Request) -> air.Html:
             form_data = await request.form()
             flight_form = FlightModel.to_form()
 
@@ -674,7 +674,7 @@ def AirField(
 
 
         @app.page
-        def index(request: air.Request):
+        def index(request: air.Request) -> air.Html | air.Children:
             # Render a simple page containing the contact form.
             form = ContactForm()
             return air.layouts.mvpcss(

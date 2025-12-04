@@ -22,7 +22,7 @@ class ContactForm(air.AirForm):
 
 
 @app.page
-def index(request: air.Request):
+def index(request: air.Request) -> air.Html | air.Children:
     # Render a simple page containing the contact form.
     form = ContactForm()
     return air.layouts.mvpcss(

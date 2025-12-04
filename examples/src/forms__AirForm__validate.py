@@ -9,7 +9,7 @@ class FlightModel(air.AirModel):
 
 
 @app.post("/flight")
-async def submit_flight(request: air.Request):
+async def submit_flight(request: air.Request) -> air.Html:
     form_data = await request.form()
     flight_form = FlightModel.to_form()
 

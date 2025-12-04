@@ -14,7 +14,7 @@ app = air.Air()
 
 
 @app.post("/submit")
-def submit_form():
+def submit_form() -> air.Div:
     # Simple POST endpoint.
     return air.Div(
         air.H2("Form Submitted!"),
@@ -23,7 +23,7 @@ def submit_form():
 
 
 @app.post("/users")
-def create_user(user: UserCreate):
+def create_user(user: UserCreate) -> air.Div:
     # POST endpoint with request body.
     return air.Div(
         air.H2("User Created"),
