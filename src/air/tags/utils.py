@@ -71,7 +71,7 @@ def is_full_html_document(text: str) -> bool:
         True if the input looks like a full HTML document,
         otherwise False.
     """
-    return _LOOKS_LIKE_FULL_HTML_UNICODE_RE.match(text)
+    return bool(_LOOKS_LIKE_FULL_HTML_UNICODE_RE.fullmatch(text))
 
 
 def migrate_attribute_name_to_html(attr_name: str) -> str:

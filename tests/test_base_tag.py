@@ -14,7 +14,7 @@ from examples.samples.air_tag_samples import (
     TINY_AIR_TAG_SAMPLE,
 )
 from examples.samples.air_tag_source_samples import (
-    AIR_TAG_SOURCE_SAMPLE, FRAGMENT_AIR_TAG_SOURCE_SAMPLE,
+    FRAGMENT_AIR_TAG_SOURCE_SAMPLE,
     SMALL_AIR_TAG_SOURCE_SAMPLE,
     TINY_AIR_TAG_SOURCE_SAMPLE,
 )

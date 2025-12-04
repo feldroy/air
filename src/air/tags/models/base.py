@@ -323,7 +323,7 @@ class BaseTag:
         attributes = f"{TagKeys.ATTRIBUTES}={self._attrs}" if self._attrs else ""
         children = INLINE_JOIN_SEPARATOR.join(
             child.full_repr() if isinstance(child, BaseTag) else child for child in self._children
-        )
+        )  # ty: ignore[no-matching-overload]
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
@@ -487,7 +487,9 @@ class BaseTag:
         Returns:
             The first child value, or None if there are no children.
         """
-        return self._children and next(iter(self._children))
+        if self._children:
+            return self._children[0]
+        return None
 
     @property
     def last_child(self) -> Renderable | None:
@@ -496,7 +498,9 @@ class BaseTag:
         Returns:
             The last child value, or None if there are no children.
         """
-        return self._children and self._children[self.num_of_direct_children - 1]
+        if self._children:
+            return self._children[self.num_of_direct_children - 1]
+        return None
 
     @property
     def first_attribute(self) -> tuple[str, AttributeType] | None:
@@ -505,7 +509,9 @@ class BaseTag:
         Returns:
             The first attribute pair, or None if no attributes are set.
         """
-        return self._attrs and next(iter(self._attrs.items()))
+        if self._attrs:
+            return next(iter(self._attrs.items()))
+        return None
 
     @property
     def last_attribute(self) -> tuple[str, AttributeType] | None:
@@ -514,7 +520,9 @@ class BaseTag:
         Returns:
             The last attribute pair, or None if no attributes are set.
         """
-        return self._attrs and list(self._attrs.items()).pop()
+        if self._attrs:
+            return list(self._attrs.items()).pop()
+        return None
 
     @property
     def num_of_direct_children(self) -> int:
@@ -535,7 +543,7 @@ class BaseTag:
         return len(self._attrs)
 
     @property
-    def tag_id(self) -> str | None:
+    def tag_id(self) -> AttributeType | None:
         """Return the tag's `id_` attribute when present.
 
         Returns:

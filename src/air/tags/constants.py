@@ -106,12 +106,12 @@ HTML_LEXER: Final = HtmlLexer()
 PYTHON_LEXER: Final = PythonLexer()
 _LOOKS_LIKE_FULL_HTML_UNICODE_RE: Final = re.compile(
     r"""
-    ^\s*
+    \s*
     (?:<!doctype\s+html\b[^>]*>\s*)?
     <html\b[^>]*>
     (?=.*(?:<head\b[^>]*>.*?</head\s*>|<body\b[^>]*>.*?</body\s*>))
     .*?</html\s*>
-    \s*$
+    \s*
     """,
     re.IGNORECASE | re.DOTALL | re.VERBOSE,
 )

@@ -97,7 +97,7 @@ def _migrate_html_attributes_to_air_tag(node: LexborNode) -> TagAttributesType:
     }
 
 
-def _evaluate_attribute_value_to_py(tag_name: str, attr_name: str, attr_value: str | None) -> AttributeType:
+def _evaluate_attribute_value_to_py(tag_name: str | None, attr_name: str, attr_value: str | None) -> AttributeType:
     """
     Evaluates the attribute value of an HTML tag and converts it into the appropriate type.
 
