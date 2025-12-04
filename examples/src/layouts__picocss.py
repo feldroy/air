@@ -4,7 +4,7 @@ app = air.Air()
 
 
 @app.page
-async def index(request: air.Request):
+async def index(request: air.Request) -> air.Html | air.Children:
     return air.layouts.picocss(
         air.Title("Home"),
         air.Article(
@@ -17,7 +17,7 @@ async def index(request: air.Request):
 
 
 @app.page
-async def dashboard(request: air.Request):
+async def dashboard(request: air.Request) -> air.Html | air.Children:
     return air.layouts.picocss(
         air.Title("Dashboard"),
         air.Article(

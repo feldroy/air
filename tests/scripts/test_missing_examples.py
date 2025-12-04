@@ -12,7 +12,7 @@ from scripts.missing_examples import (
 
 
 @pytest.fixture
-def project_dirs(tmp_path: Path):
+def project_dirs(tmp_path: Path) -> tuple[Path, Path]:
     """Create the standard project directory structure for testing main()."""
     src_air = tmp_path / "src" / "air"
     src_air.mkdir(parents=True)
@@ -22,7 +22,7 @@ def project_dirs(tmp_path: Path):
 # Tests for check_docstring_for_example
 
 
-def test_check_docstring_for_example():
+def test_check_docstring_for_example() -> None:
     assert check_docstring_for_example("Example: foo()") is True
     assert check_docstring_for_example("No example here") is False
     assert check_docstring_for_example(None) is False
@@ -31,7 +31,7 @@ def test_check_docstring_for_example():
 # Tests for extract_callables_from_file
 
 
-def test_extract_callables_from_file(tmp_path: Path):
+def test_extract_callables_from_file(tmp_path: Path) -> None:
     test_code = '''
 def function_with_example():
     """Function with example.
@@ -79,7 +79,7 @@ class ClassWithExample:
     assert "method: ClassWithExample.method_with_example" not in results
 
 
-def test_extract_callables_from_file_handles_syntax_error(tmp_path: Path):
+def test_extract_callables_from_file_handles_syntax_error(tmp_path: Path) -> None:
     """Test that extract_callables_from_file handles syntax errors gracefully."""
     test_code = '''def bad_function(
     """Invalid syntax."""
@@ -95,7 +95,7 @@ def test_extract_callables_from_file_handles_syntax_error(tmp_path: Path):
     assert len(missing_examples) == 0
 
 
-def test_extract_callables_from_file_handles_unicode_decode_error(tmp_path: Path):
+def test_extract_callables_from_file_handles_unicode_decode_error(tmp_path: Path) -> None:
     """Test that extract_callables_from_file handles unicode decode errors gracefully."""
     # Create a file with invalid UTF-8
     temp_file = tmp_path / "test.py"
@@ -108,7 +108,7 @@ def test_extract_callables_from_file_handles_unicode_decode_error(tmp_path: Path
     assert len(missing_examples) == 0
 
 
-def test_extract_callables_from_file_skips_private_methods(tmp_path: Path):
+def test_extract_callables_from_file_skips_private_methods(tmp_path: Path) -> None:
     """Test that private methods (starting with _) are skipped."""
     test_code = '''
 class MyClass:
@@ -138,7 +138,7 @@ class MyClass:
     assert "class: MyClass" in results
 
 
-def test_extract_callables_from_file_handles_async_functions(tmp_path: Path):
+def test_extract_callables_from_file_handles_async_functions(tmp_path: Path) -> None:
     """Test that async functions are properly detected."""
     test_code = '''
 async def async_function_with_example():
@@ -192,7 +192,7 @@ class MyClass:
     assert "class: MyClass" not in results
 
 
-def test_extract_callables_from_file_handles_file_with_only_imports(tmp_path: Path):
+def test_extract_callables_from_file_handles_file_with_only_imports(tmp_path: Path) -> None:
     """Test that extract_callables_from_file handles files with only imports/constants."""
     test_code = """
 import sys
@@ -214,7 +214,7 @@ another_constant = 42
 # Tests for main in default report mode
 
 
-def test_main_finds_missing_examples(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_finds_missing_examples(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that main() finds callables without examples."""
     tmp_path, src_air = project_dirs
 
@@ -239,7 +239,7 @@ class ClassWithoutExample:
     assert "Total missing examples:" in captured.out
 
 
-def test_main_all_callables_have_examples(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_all_callables_have_examples(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that main() reports success when all callables have examples."""
     tmp_path, src_air = project_dirs
 
@@ -261,7 +261,7 @@ def function_with_example():
     assert "All callables have examples!" in captured.out
 
 
-def test_main_excludes_excluded_paths(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_excludes_excluded_paths(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that main() excludes files in excluded_paths."""
     tmp_path, src_air = project_dirs
 
@@ -287,7 +287,7 @@ def function_without_example():
     assert "tags/models/stock.py" in captured.out
 
 
-def test_main_excludes_svg_file(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_excludes_svg_file(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that main() excludes tags/models/svg.py."""
     tmp_path, src_air = project_dirs
 
@@ -313,7 +313,7 @@ def function_without_example():
     assert "tags/models/svg.py" in captured.out
 
 
-def test_main_skips_init_files(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_skips_init_files(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that main() skips __init__.py files."""
     tmp_path, src_air = project_dirs
 
@@ -332,7 +332,7 @@ def function_without_example():
     assert "All callables have examples!" in captured.out
 
 
-def test_main_handles_empty_src_directory(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_handles_empty_src_directory(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that main() handles an empty src/air directory."""
     tmp_path, _src_air = project_dirs
 
@@ -346,7 +346,7 @@ def test_main_handles_empty_src_directory(project_dirs: tuple[Path, Path], capsy
 # Tests for main in baseline mode
 
 
-def test_main_baseline_mode_creates_file(project_dirs: tuple[Path, Path]):
+def test_main_baseline_mode_creates_file(project_dirs: tuple[Path, Path]) -> None:
     """Test that baseline mode creates a baseline file."""
     tmp_path, src_air = project_dirs
 
@@ -373,7 +373,7 @@ def function_without_example():
     assert "function: function_without_example" in baseline["test_module.py"]
 
 
-def test_main_baseline_mode_shows_excluded_files(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_baseline_mode_shows_excluded_files(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that baseline mode shows excluded files."""
     tmp_path, src_air = project_dirs
 
@@ -401,7 +401,7 @@ def function_without_example():
 # Tests for main in check mode
 
 
-def test_main_check_mode_passes_with_no_new_missing(project_dirs: tuple[Path, Path]):
+def test_main_check_mode_passes_with_no_new_missing(project_dirs: tuple[Path, Path]) -> None:
     """Test that check mode passes when no new missing examples."""
     tmp_path, src_air = project_dirs
 
@@ -420,7 +420,7 @@ def function_without_example():
     main(project_root=tmp_path, mode="check")
 
 
-def test_main_check_mode_fails_with_new_missing(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_check_mode_fails_with_new_missing(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that check mode fails when new missing examples are found."""
     tmp_path, src_air = project_dirs
 
@@ -456,7 +456,7 @@ def new_function():
     assert "New missing examples found" in captured.out
 
 
-def test_main_check_mode_fails_without_baseline(project_dirs: tuple[Path, Path]):
+def test_main_check_mode_fails_without_baseline(project_dirs: tuple[Path, Path]) -> None:
     """Test that check mode fails if no baseline exists."""
     tmp_path, _src_air = project_dirs
 
@@ -467,7 +467,7 @@ def test_main_check_mode_fails_without_baseline(project_dirs: tuple[Path, Path])
     assert exc_info.value.code == 1
 
 
-def test_main_check_mode_ignores_removed_missing(project_dirs: tuple[Path, Path]):
+def test_main_check_mode_ignores_removed_missing(project_dirs: tuple[Path, Path]) -> None:
     """Test that check mode doesn't fail if missing examples are fixed."""
     tmp_path, src_air = project_dirs
 
@@ -495,7 +495,7 @@ def function_without_example():
     main(project_root=tmp_path, mode="check")
 
 
-def test_main_check_mode_shows_excluded_files(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]):
+def test_main_check_mode_shows_excluded_files(project_dirs: tuple[Path, Path], capsys: CaptureFixture[str]) -> None:
     """Test that check mode shows excluded files when passing."""
     tmp_path, src_air = project_dirs
 

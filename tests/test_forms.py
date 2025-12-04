@@ -304,7 +304,7 @@ def test_field_includes() -> None:
     assert '<label for="id">id</label><input name="id" type="number" required id="id">' not in html
 
 
-def test_default_form_widget_basic():
+def test_default_form_widget_basic() -> None:
     """
     Test that the default form widget is applied correctly to all fields in a form.
     """
@@ -325,7 +325,7 @@ def test_default_form_widget_basic():
     assert "<small" not in html
 
 
-def test_default_form_widget_with_data():
+def test_default_form_widget_with_data() -> None:
     """
     Test form widget with pre-populated data.
     """
@@ -340,7 +340,7 @@ def test_default_form_widget_with_data():
     assert 'value="27"' in html
 
 
-def test_default_form_widget_with_errors():
+def test_default_form_widget_with_errors() -> None:
     """
     Test form widget rendering with validation errors.
     """
@@ -362,7 +362,7 @@ def test_default_form_widget_with_errors():
     assert "Please enter a valid number." in html
 
 
-def test_default_form_widget_bool_field():
+def test_default_form_widget_bool_field() -> None:
     """Test form widget with boolean field."""
 
     class TestModel(BaseModel):
@@ -372,7 +372,7 @@ def test_default_form_widget_bool_field():
     assert 'type="checkbox"' in html
 
 
-def test_default_form_widget_includes():
+def test_default_form_widget_includes() -> None:
     """Test form widget with includes."""
 
     class TestModel(BaseModel):
@@ -392,7 +392,7 @@ def test_default_form_widget_includes():
     assert '<input name="age" type="number" required id="age">' in html
 
 
-def test_default_form_widget_optional_fields():
+def test_default_form_widget_optional_fields() -> None:
     """Test form widget with optional fields."""
 
     class AnotherInterestingTestModel(BaseModel):
@@ -405,7 +405,7 @@ def test_default_form_widget_optional_fields():
     assert "required" not in html
 
 
-def test_default_form_widget_custom_label():
+def test_default_form_widget_custom_label() -> None:
     """Test form widget with custom label via json_schema_extra."""
 
     class CustomLabelTestModel(BaseModel):
@@ -415,7 +415,7 @@ def test_default_form_widget_custom_label():
     assert '<label for="name">Full Name</label>' in html
 
 
-def test_default_form_widget_autofocus():
+def test_default_form_widget_autofocus() -> None:
     """Test form widget with autofocus attribute via json_schema_extra."""
 
     class AutofocusTestModel(BaseModel):

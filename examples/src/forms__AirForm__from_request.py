@@ -12,7 +12,7 @@ FlightForm = FlightModel.to_form()
 
 
 @app.post("/flight")
-async def submit_flight(request: air.Request):
+async def submit_flight(request: air.Request) -> air.Html:
     flight = await FlightForm.from_request(request)
 
     if flight.is_valid:
