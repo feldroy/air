@@ -756,7 +756,7 @@ class BaseTag:
         if node.is_element_node:
             return cls._from_html(node)
         if node.is_text_node and node.text_content:
-            return node.text_content.strip()
+            return node.text_content
         if node.is_comment_node and node.comment_content:
             return cls._create_tag("comment", node.comment_content)
         msg = f"Unable to parse <{node.tag}>."

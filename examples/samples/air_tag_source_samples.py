@@ -12,7 +12,7 @@ FRAGMENT_AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
         air.Title('Title!'),
         air.Comment('My crazy comment'),
         air.P(
-            'Hello',
+            'Hello ',
             air.Strong('World'),
             '!',
         ),
