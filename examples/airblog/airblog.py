@@ -39,14 +39,14 @@ def get_tags() -> dict[str, int]:
     return tags
 
 
-def NavBar(request):
+def NavBar(request: air.Request):
     return air.Nav(
         air.A("Home", href=request.url_for("index")),
         air.A("Tags", href=tags.url()),
     )
 
 
-def BlogPostPreview(article, request):
+def BlogPostPreview(article: dict, request: air.Request):
     return air.Aside(
         air.H3(
             air.A(

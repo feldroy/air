@@ -20,7 +20,7 @@ class BackgroundTasks(FastAPIBackgroundTasks):
         app = air.Air()
 
 
-        def write_notification(email: str, message=""):
+        def write_notification(email: str, message: str = "") -> None:
             with pathlib.Path("log.txt").open(mode="w") as email_file:
                 content = f"notification for {email}: {message}"
                 email_file.write(content)
