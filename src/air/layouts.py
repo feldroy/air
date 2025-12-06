@@ -3,7 +3,7 @@
 from typing import Any
 
 from .tags import Body, Children, Head, Header, Html, Link, Main, Script, Style
-from .tags.types import HEAD_TAG_TYPES, AttributeType
+from .tags.models.types import HEAD_TAG_TYPES, AttributeType
 
 
 def filter_body_tags(tags: tuple) -> list:

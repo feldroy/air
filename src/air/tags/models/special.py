@@ -1,9 +1,16 @@
 """Special Air Tags that are not found in any other category."""
 
-from typing import Literal, override
+from __future__ import annotations
 
-from ..utils import HTML_DOCTYPE, locals_cleanup
-from .base import AttributeType, BaseTag, Renderable
+from typing import TYPE_CHECKING, Literal, override
+
+from air.tags.constants import HTML_DOCTYPE
+from air.tags.utils import locals_cleanup
+
+from .base import BaseTag
+
+if TYPE_CHECKING:
+    from .types import AttributeType, Renderable
 
 
 class Html(BaseTag):
@@ -77,7 +84,10 @@ class UnSafeTag(BaseTag):
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
-        super().__init__(text_child, **kwargs)
+        if text_child:
+            super().__init__(text_child, **kwargs)
+        else:
+            super().__init__(**kwargs)
 
     @override
     @staticmethod
@@ -138,9 +148,9 @@ class Script(UnSafeTag):
         *,
         src: str | None = None,
         type: str | None = None,
-        async_: bool = False,
-        defer: bool = False,
-        nomodule: bool = False,
+        async_: bool | None = None,
+        defer: bool | None = None,
+        nomodule: bool | None = None,
         crossorigin: Literal["anonymous", "use-credentials"] | None = None,
         integrity: str | None = None,
         referrerpolicy: Literal[

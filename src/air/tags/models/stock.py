@@ -2,9 +2,17 @@
 
 Script and Style tags can be found in the [air.tags.models.special](/reference/air.tags.models.special) page."""
 
-from ..utils import locals_cleanup
-from .base import AttributeType, BaseTag, Renderable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from air.tags.utils import locals_cleanup
+
+from .base import BaseTag
 from .special import SelfClosingTag
+
+if TYPE_CHECKING:
+    from .types import AttributeType, Renderable
 
 
 class A(BaseTag):
@@ -710,7 +718,7 @@ class Dialog(BaseTag):
         *children: Renderable,
         open: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **kwargs: AttributeType,
     ) -> None:
@@ -732,7 +740,7 @@ class Div(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **kwargs: AttributeType,
     ) -> None:

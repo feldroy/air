@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, override
 
 import pytest
 from full_match import match as full_match
@@ -76,7 +76,8 @@ def test_name_types() -> None:
 
 def test_subclassing() -> None:
     class AwesomeP(air.P):
-        def render(self) -> str:
+        @override
+        def _render(self) -> str:
             return f"<p{self.attrs}>AWESOME {self.children}!</p>"
 
     assert AwesomeP("library").render() == "<p>AWESOME library!</p>"
@@ -84,7 +85,8 @@ def test_subclassing() -> None:
 
 def test_subclassing_nested() -> None:
     class AwesomeP(air.P):
-        def render(self) -> str:
+        @override
+        def _render(self) -> str:
             return f"<p{self.attrs}>AWESOME {self.children}!</p>"
 
     html = air.Div(AwesomeP("library")).render()

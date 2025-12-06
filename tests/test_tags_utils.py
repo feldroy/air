@@ -9,8 +9,10 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
+from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
+from full_match import match as full_match
 
+import air.tags.constants
 import air.tags.utils as utils
 from air.exceptions import BrowserOpenError
 from air.tags.utils import SafeStr
@@ -149,9 +151,25 @@ def stub_rich(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
     return {"Console": ConsoleStub, "printed": printed}
 
 
-def test_clean_html_attr_key_transforms_special_suffixes() -> None:
-    assert utils.clean_html_attr_key("class_") == "class"
-    assert utils.clean_html_attr_key("__data_value") == "data-value"
+def test_migrate_attribute_name_to_html() -> None:
+    assert utils.migrate_attribute_name_to_html("class_") == "class"
+    assert utils.migrate_attribute_name_to_html("id_") == "id"
+    assert utils.migrate_attribute_name_to_html("__data_value") == "data-value"
+
+
+def test_migrate_attribute_name_to_air_tag() -> None:
+    assert utils.migrate_attribute_name_to_air_tag("class") == "class_"
+    assert utils.migrate_attribute_name_to_air_tag("id") == "id_"
+    assert utils.migrate_attribute_name_to_air_tag("-data-value-") == "_data_value_"
+
+
+def test_extract_html_comment_with_whitespace() -> None:
+    assert utils.extract_html_comment("  <!-- hello world -->  ") == "hello world"
+
+
+def test_extract_html_comment_invalid_input() -> None:
+    with pytest.raises(ValueError, match=full_match("Input is not a valid HTML comment")):
+        utils.extract_html_comment("<p>no comment</p>")
 
 
 def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -167,8 +185,8 @@ def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) 
 
 
 def test_compact_format_html_minifies() -> None:
-    assert len(utils.compact_format_html(SMALL_HTML_SAMPLE.render())) == 754
-    assert len(utils.compact_format_html(HTML_SAMPLE.render())) == 7530
+    assert len(utils.compact_format_html(SMALL_AIR_TAG_SAMPLE.render())) == 760
+    assert len(utils.compact_format_html(AIR_TAG_SAMPLE.render())) == 7530
 
 
 def test_compact_format_html_minifies_with_safe_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -288,7 +306,7 @@ def test_open_html_blob_in_the_browser_uses_data_url(monkeypatch: pytest.MonkeyP
 
     utils.open_html_blob_in_the_browser("<p>hi</p>")
 
-    assert opened[0].startswith(utils.BLOB_URL_PRESET)
+    assert opened[0].startswith(air.tags.constants.BLOB_URL_PRESET)
 
 
 def test_open_html_blob_in_the_browser_limits_size(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -298,7 +316,7 @@ def test_open_html_blob_in_the_browser_limits_size(monkeypatch: pytest.MonkeyPat
     monkeypatch.setattr(utils, "_open_new_tab", noop)
 
     with pytest.raises(utils.URLError):
-        utils.open_html_blob_in_the_browser("x", data_url_max=len(utils.BLOB_URL_PRESET) + 1)
+        utils.open_html_blob_in_the_browser("x", data_url_max=len(air.tags.constants.BLOB_URL_PRESET) + 1)
 
 
 def test_open_html_in_the_browser_writes_temp_file(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -427,3 +445,36 @@ def test_safestr_behaves_like_str() -> None:
     assert str(safe) == value
     assert safe == value
     assert safe.data == value
+
+
+def test_is_full_html_document_detects_document() -> None:
+    html = "<!doctype html><html><head></head><body><p>ok</p></body></html>"
+
+    assert utils.is_full_html_document(html)
+
+
+def test_is_full_html_document_rejects_fragment() -> None:
+    html = "<div>fragment</div>"
+
+    assert not utils.is_full_html_document(html)
+
+
+def test_save_text_writes_content(tmp_path: Path) -> None:
+    target = tmp_path / "saved.txt"
+
+    utils.save_text("payload", target)
+
+    assert target.read_text() == "payload"
+
+
+def test_pretty_print_python_outputs_code(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: list[str] = []
+
+    def fake_pretty_console(source: str, **kwargs: object) -> None:  # pragma: no cover - trivial delegate
+        captured.append(source)
+
+    monkeypatch.setattr(utils, "_get_pretty_console", fake_pretty_console)
+
+    utils.pretty_print_python("x = 1")
+
+    assert captured == ["x = 1"]
