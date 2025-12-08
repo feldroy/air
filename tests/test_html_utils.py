@@ -4,9 +4,10 @@ from __future__ import annotations
 import pytest
 from lxml.etree import ParserError
 
+from air.tags.constants import HTML_DOCTYPE
+
 # Adjust this import path if needed for your project layout.
 from air.tags.utils import (
-    HTML_DOCTYPE,
     format_html,
     pretty_format_html,
 )

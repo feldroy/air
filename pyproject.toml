@@ -93,6 +93,10 @@ dependencies = [
     "python-multipart>=0.0.20",
     "lxml>=6.0.1",
     "rich>=14.2.0",
+    "nh3>=0.3.2",
+    "frozendict>=2.4.7",
+    "pygments>=2.19.2",
+    "selectolax>=0.4.6",
 ]
 # endregion project
 
@@ -127,7 +131,9 @@ lint = [
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
+    "types-lxml>=2025.11.25",
     "types-Markdown>=3.8.0", # Types for the markdown library
+    "types-pygments>=2.19.0.20251121",
     "typos>=1.38.1",
 ]
 test = [
@@ -354,14 +360,17 @@ ignore = [
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "ANN202", # https://docs.astral.sh/ruff/rules/missing-return-type-private-function
     "ANN401", # https://docs.astral.sh/ruff/rules/any-type
+    "FBT001", # https://docs.astral.sh/ruff/rules/boolean-default-value-positional-argument/
+    "FBT002", # https://docs.astral.sh/ruff/rules/boolean-type-hint-positional-argument
 ]
 
 # A list of mappings from file pattern to rule codes or prefixes to exclude,
 # when considering any matching files. An initial '!' negates the file pattern.
 [tool.ruff.lint.per-file-ignores]
-"examples/html_sample.py" = [
+"examples/samples/**.py" = [
     "F403", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star
     "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
+    "E501", # https://docs.astral.sh/ruff/rules/line-too-long
 ]
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
@@ -374,6 +383,7 @@ ignore = [
 "tests/test_responses.py" = ["PLC0415"]
 "examples/airblog/airblog.py" = ["INP001"]
 "examples/airblog/test_airblog.py" = ["INP001"]
+"tests/benchmarks/test_memory_tag_cleanup.py" = ["RUF052"]
 
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
@@ -523,12 +533,7 @@ pythonpath = ["src"]
 # Only look here for tests
 testpaths = ["tests", "examples/src"]
 # Fail on most warnings
-filterwarnings = [
-    # TODO: restore failing of all warnings after
-    #       air.ext.sqlmodel is extracted
-    # "error", # equals: -W error
-    "ignore::DeprecationWarning:air\\.ext\\.auth"
-]
+filterwarnings = ["error"]  # equals: -W error
 # pytest-asyncio
 asyncio_mode = "auto"
 # Custom markers
