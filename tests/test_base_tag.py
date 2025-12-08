@@ -1,19 +1,29 @@
 from __future__ import annotations
 
-import builtins
+import ast
 import json
-import sys
-import types
 from collections.abc import Iterator
 from pathlib import Path
-from typing import Any, cast
+from typing import Any
 
 import pytest
-from examples.html_sample import HTML_SAMPLE, SMALL_HTML_SAMPLE
+from examples.samples.air_tag_samples import (
+    AIR_TAG_SAMPLE,
+    FRAGMENT_AIR_TAG_SAMPLE,
+    SMALL_AIR_TAG_SAMPLE,
+    TINY_AIR_TAG_SAMPLE,
+)
+from examples.samples.air_tag_source_samples import (
+    FRAGMENT_AIR_TAG_SOURCE_SAMPLE,
+    SMALL_AIR_TAG_SOURCE_SAMPLE,
+    TINY_AIR_TAG_SOURCE_SAMPLE,
+)
+from examples.samples.html_samples import FRAGMENT_HTML_SAMPLE, HTML_SAMPLE, SMALL_HTML_SAMPLE, TINY_HTML_SAMPLE
 
 import air
 import air.tags.models.base as base_module
-from air.tags.models.base import BaseTag, TagDictType
+from air.tags.models.base import BaseTag
+from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
 
 
@@ -97,7 +107,7 @@ def test_pretty_render_in_the_browser_uses_pretty_render(monkeypatch: pytest.Mon
         {
             "html": "<sampletag>content</sampletag>",
             "kwargs": {"with_body": True, "with_head": False, "with_doctype": True},
-        }
+        },
     ]
     assert browser_calls == ["formatted"]
 
@@ -118,14 +128,14 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
         {
             "html": "<sampletag>body</sampletag>",
             "kwargs": {"with_body": True, "with_head": True, "with_doctype": True},
-        }
+        },
     ]
 
 
 def test_compact_format_html_minifies() -> None:
-    assert len(SMALL_HTML_SAMPLE.compact_render()) == 754
-    assert len(HTML_SAMPLE.compact_render()) == 7530
-    assert len(air.Html(*([HTML_SAMPLE.children] * 100)).compact_render()) == 883315
+    assert len(SMALL_AIR_TAG_SAMPLE.compact_render()) == 760
+    assert len(AIR_TAG_SAMPLE.compact_render()) == 7530
+    assert len(air.Html(*([AIR_TAG_SAMPLE.children] * 100)).compact_render()) == 883215
 
 
 def test_compact_render_passes_html_to_compact_formatter(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -160,9 +170,15 @@ def test_pretty_print_delegates_to_helper(monkeypatch: pytest.MonkeyPatch) -> No
     assert printed == ["formatted"]
 
 
+def test_compact_html_matches_compact_render() -> None:
+    tag = SampleTag("body")
+
+    assert tag.compact_html == tag.compact_render()
+
+
 def test_save_writes_rendered_html(tmp_path: Path) -> None:
     target = tmp_path / "tag.html"
-    SampleTag("saved").save(target)
+    SampleTag("saved").save(file_path=target)
 
     assert target.read_text() == "<sampletag>saved</sampletag>"
 
@@ -172,7 +188,7 @@ def test_pretty_save_writes_pretty_html(tmp_path: Path, monkeypatch: pytest.Monk
 
     monkeypatch.setattr(base_module, "pretty_format_html", lambda html, **_: "pretty")
 
-    SampleTag("pretty").pretty_save(target)
+    SampleTag("pretty").pretty_save(file_path=target)
 
     assert target.read_text() == "pretty"
 
@@ -209,6 +225,53 @@ def test_doc_summary_and_repr_include_class_doc() -> None:
     assert representation.startswith('<air.SampleTag("Sample tag used in unit tests.")>')
 
 
+def test_last_child_returns_last_child() -> None:
+    tag = WrapperTag("first", SampleTag("inner"), "last")
+
+    assert tag.last_child == "last"
+
+
+def test_first_child_returns_first_child() -> None:
+    tag = WrapperTag("alpha", "beta")
+
+    assert tag.first_child == "alpha"
+
+
+def test_first_and_last_attribute_preserve_order() -> None:
+    tag = SampleTag("child", first="1", second="2")
+
+    assert tag.first_attribute == ("first", "1")
+    assert tag.last_attribute == ("second", "2")
+
+
+def test_counts_return_lengths() -> None:
+    tag = WrapperTag("one", "two")
+    tag_with_attrs = SampleTag(label="x", title="y")
+
+    assert tag.num_of_direct_children == 2
+    assert tag_with_attrs.num_of_attributes == 2
+
+
+def test_tag_id_returns_attribute() -> None:
+    tag = SampleTag(id_="identifier")
+
+    assert tag.tag_id == "identifier"
+
+
+def test_boolean_flags_for_children_and_attributes() -> None:
+    empty = SampleTag()
+    with_child = WrapperTag("kid")
+    with_attr = SampleTag(data_id="42")
+
+    assert not empty.has_children
+    assert not empty.has_attributes
+    assert empty.is_attribute_free_void_element
+    assert with_child.has_children
+    assert not with_child.is_attribute_free_void_element
+    assert with_attr.has_attributes
+    assert not with_attr.is_attribute_free_void_element
+
+
 def test_full_repr_includes_attributes_and_children() -> None:
     nested = SampleTag("inner")
     tag = WrapperTag(nested, "plain", title="example")
@@ -243,50 +306,6 @@ def test_to_json_and_to_pretty_json_round_trip() -> None:
     assert pretty_loaded == loaded
 
 
-def test_to_pretty_dict_uses_rich_when_available(monkeypatch: pytest.MonkeyPatch) -> None:
-    captured: dict[str, Any] = {}
-    rich_module = types.ModuleType("rich")
-    rich_pretty_module = types.ModuleType("rich.pretty")
-
-    def fake_pretty_repr(data: TagDictType, **kwargs: Any) -> str:
-        captured["data"] = data
-        captured["kwargs"] = kwargs
-        return "pretty"
-
-    rich_pretty_module.pretty_repr = fake_pretty_repr
-    rich_module.pretty = rich_pretty_module
-
-    monkeypatch.setitem(sys.modules, "rich", rich_module)
-    monkeypatch.setitem(sys.modules, "rich.pretty", rich_pretty_module)
-
-    result = SampleTag("rich").to_pretty_dict()
-
-    assert result == "pretty"
-    assert captured["data"]["name"] == "SampleTag"
-
-
-def test_to_pretty_dict_falls_back_when_rich_missing(monkeypatch: pytest.MonkeyPatch) -> None:
-    original_import = builtins.__import__
-
-    def fake_import(
-        name: str,
-        globals_: dict[str, Any] | None = None,
-        locals_: dict[str, Any] | None = None,
-        fromlist: tuple[str, ...] = (),
-        level: int = 0,
-    ) -> Any:
-        if name == "rich.pretty":
-            raise ModuleNotFoundError
-        return original_import(name, globals_, locals_, fromlist, level)
-
-    monkeypatch.setattr(builtins, "__import__", fake_import)
-
-    tag = SampleTag("fallback")
-    result = tag.to_pretty_dict()
-
-    assert result == str(tag.to_dict())
-
-
 def test_from_dict_and_from_json_restore_instances() -> None:
     original = WrapperTag(SampleTag("child"), "plain", title="demo")
     as_dict = original.to_dict()
@@ -302,7 +321,7 @@ def test_from_dict_and_from_json_restore_instances() -> None:
 
 
 def test_from_child_dict_handles_nested_and_plain_values() -> None:
-    child_dict: tuple[Any, ...] = (
+    child_dict: tuple[TagDictType | Renderable, ...] = (
         "plain",
         {
             "name": "SampleTag",
@@ -311,7 +330,7 @@ def test_from_child_dict_handles_nested_and_plain_values() -> None:
         },
     )
 
-    restored = WrapperTag._from_child_dict(cast(Any, child_dict))
+    restored = WrapperTag._from_child_dict(child_dict)
 
     assert restored[0] == "plain"
     assert isinstance(restored[1], SampleTag)
@@ -321,12 +340,12 @@ def test_init_subclass_registers_new_tag() -> None:
     class EphemeralTag(BaseTag):
         """Temporary tag for registry tests."""
 
-    assert BaseTag.registry["EphemeralTag"] is EphemeralTag
+    assert BaseTag.registry[EphemeralTag.__name__.lower()] is EphemeralTag
 
 
 def test_from_dict_and_from_json_roundtrip() -> None:
     """This test encodes the intended behavior for from_dict/from_json."""
-    original = HTML_SAMPLE
+    original = AIR_TAG_SAMPLE
     original_type = type(original)
     original_dict = original.to_dict()
     original_json = original.to_json()
@@ -340,3 +359,105 @@ def test_from_dict_and_from_json_roundtrip() -> None:
     assert isinstance(rebuilt_from_json, original_type)
     assert rebuilt_from_json.to_dict() == original_dict
     assert rebuilt_from_json.render() == original.render()
+
+
+def test_pretty_from_dict_and_from_json_roundtrip() -> None:
+    original = AIR_TAG_SAMPLE
+    original_type = type(original)
+    original_dict: dict = ast.literal_eval(
+        original.to_pretty_dict(max_length=None, max_depth=None, max_string=None, expand_all=True)
+    )
+    original_json = original.to_pretty_json()
+
+    rebuilt_from_dict = original_type.from_dict(original_dict)
+    assert isinstance(rebuilt_from_dict, original_type)
+    assert rebuilt_from_dict.to_dict() == original_dict
+    assert rebuilt_from_dict.render() == original.render()
+
+    rebuilt_from_json = original_type.from_json(original_json)
+    assert isinstance(rebuilt_from_json, original_type)
+    assert rebuilt_from_json.to_dict() == original_dict
+    assert rebuilt_from_json.render() == original.render()
+
+
+def test_print_source_outputs_python(monkeypatch: pytest.MonkeyPatch) -> None:
+    html = "<div><p>hey</p></div>"
+    captured: list[str] = []
+
+    monkeypatch.setattr(base_module, "pretty_print_python", lambda source, **_: captured.append(source))
+
+    air.Tag.print_source(html)
+
+    assert captured == ["air.Div(\n    air.P('hey'),\n)"]
+
+
+def test_save_source_writes_python(tmp_path: Path) -> None:
+    html = "<div data-id='3'>ok</div>"
+    target = tmp_path / "tag_source.py"
+
+    air.Tag.save_source(file_path=target, html_source=html)
+
+    saved = target.read_text()
+
+    assert saved == "air.Div('ok', data_id=3)"
+
+
+def test_hash_depends_on_rendered_html() -> None:
+    first = SampleTag("x")
+    second = SampleTag("x")
+    third = SampleTag("y")
+
+    assert hash(first) == hash(second)
+    assert len({first, second, third}) == 2
+
+
+def test_eq_rejects_non_tag() -> None:
+    with pytest.raises(TypeError):
+        _ = SampleTag() == "not-a-tag"
+
+
+def test_from_html() -> None:
+    actual_fragment_air_tag = air.Tag.from_html(FRAGMENT_HTML_SAMPLE)
+    expected_fragment_air_tag = FRAGMENT_AIR_TAG_SAMPLE
+    assert actual_fragment_air_tag == expected_fragment_air_tag
+    actual_tiny_air_tag = air.Tag.from_html(TINY_HTML_SAMPLE)
+    expected_tiny_air_tag = TINY_AIR_TAG_SAMPLE
+    assert actual_tiny_air_tag.pretty_html == expected_tiny_air_tag.pretty_html
+    actual_small_air_tag = air.Tag.from_html(SMALL_HTML_SAMPLE)
+    expected_small_air_tag = SMALL_AIR_TAG_SAMPLE
+    assert actual_small_air_tag.pretty_html == expected_small_air_tag.pretty_html
+    actual_air_tag = air.Tag.from_html(HTML_SAMPLE)
+    expected_air_tag = AIR_TAG_SAMPLE
+    assert actual_air_tag.pretty_html == expected_air_tag.pretty_html
+
+
+def test_to_source() -> None:
+    actual_fragment_air_tag_source = FRAGMENT_AIR_TAG_SAMPLE.to_source()
+    expected_fragment_air_tag_source = FRAGMENT_AIR_TAG_SOURCE_SAMPLE
+    assert actual_fragment_air_tag_source == expected_fragment_air_tag_source
+    actual_tiny_air_tag_source = TINY_AIR_TAG_SAMPLE.to_source()
+    expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
+    assert actual_tiny_air_tag_source == expected_tiny_air_tag_source
+    actual_small_air_tag_source = SMALL_AIR_TAG_SAMPLE.to_source()
+    expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
+    assert actual_small_air_tag_source == expected_small_air_tag_source
+    # TODO -> Multiline strings in script tags are tricky.
+    # actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
+    # expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
+    # assert actual_air_tag_source == expected_air_tag_source
+
+
+def test_from_html_to_source() -> None:
+    actual_fragment_air_tag_source = air.Tag.from_html_to_source(FRAGMENT_HTML_SAMPLE)
+    expected_fragment_air_tag_source = FRAGMENT_AIR_TAG_SOURCE_SAMPLE
+    assert actual_fragment_air_tag_source == expected_fragment_air_tag_source
+    actual_tiny_air_tag_source = air.Tag.from_html_to_source(TINY_HTML_SAMPLE)
+    expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
+    assert actual_tiny_air_tag_source == expected_tiny_air_tag_source
+    actual_small_air_tag_source = air.Tag.from_html_to_source(SMALL_HTML_SAMPLE)
+    expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
+    assert actual_small_air_tag_source == expected_small_air_tag_source
+    # TODO -> Multiline strings in script tags are tricky.
+    # actual_air_tag_source = air.Tag.from_html_to_source(HTML_SAMPLE)
+    # expected_air_tag_source = AIR_TAG_SAMPLE
+    # assert actual_air_tag_source == expected_air_tag_source
