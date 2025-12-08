@@ -447,7 +447,7 @@ class Air(RouterMixin):
     # Route Decorators - Clean API without response_model clutter
     # =========================================================================
 
-    def get(
+    def get(  # type: ignore[override]
         self,
         path: Annotated[
             str,
@@ -732,7 +732,7 @@ class Air(RouterMixin):
 
         return decorator
 
-    def post(
+    def post(  # type: ignore[override]
         self,
         path: Annotated[
             str,
@@ -1031,7 +1031,7 @@ class Air(RouterMixin):
 
         return decorator
 
-    def patch(
+    def patch(  # type: ignore[override]
         self,
         path: Annotated[
             str,
@@ -1290,7 +1290,7 @@ class Air(RouterMixin):
 
         return decorator
 
-    def put(
+    def put(  # type: ignore[override]
         self,
         path: Annotated[
             str,
@@ -1548,7 +1548,7 @@ class Air(RouterMixin):
 
         return decorator
 
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         path: Annotated[
             str,
