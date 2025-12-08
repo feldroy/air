@@ -335,15 +335,11 @@ This will generate HTML that looks something like this, without any wrapping tex
 
 ## Converting HTML to Air Tags
 
-The easiest way to do that is with the [air-convert](https://pypi.org/project/air-convert/) package.
-
-```sh
-pip install air-convert
-```
+The easiest way to do that is with the `BaseTag.from_html_to_source` method.
 
 ```python
-from air_convert import html_to_airtags
-html_to_airtags("""
+import air
+air.BaseTag.from_html_to_source("""
 <html>
     <body>
         <main>
@@ -360,32 +356,6 @@ air.Html(
     air.Body(
         air.Main(
             air.H1('Hello, World', class_='header')
-        )
-    )
-)
-```
-
-Removal of the `air.` prefix is done with the `air_prefix` boolean:
-
-```python
-html = """
-<html>
-    <body>
-        <main>
-            <h1 class="header">Hello, World</h1>
-        </main>
-    </body>
-</html>"""
-print(air.html_to_airtags(html, air_prefix=False))
-```
-
-This will generate:
-
-```python
-Html(
-    Body(
-        Main(
-            H1('Hello, World', class_='header')
         )
     )
 )
