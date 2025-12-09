@@ -7,14 +7,14 @@ from examples.src.applications__Air__post import app
 client = TestClient(app)
 
 
-def test_submit_form():
+def test_submit_form() -> None:
     """Test basic POST endpoint."""
     response = client.post("/submit")
     assert response.status_code == 200
     assert "Form Submitted!" in response.text
 
 
-def test_create_user():
+def test_create_user() -> None:
     """Test POST endpoint with request body."""
     response = client.post("/users", json={"name": "John Doe", "email": "john@example.com"})
     assert response.status_code == 200

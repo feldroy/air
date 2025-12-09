@@ -39,14 +39,14 @@ def get_tags() -> dict[str, int]:
     return tags
 
 
-def NavBar(request: air.Request):
+def NavBar(request: air.Request) -> air.Nav:
     return air.Nav(
         air.A("Home", href=request.url_for("index")),
         air.A("Tags", href=tags.url()),
     )
 
 
-def BlogPostPreview(article: dict, request: air.Request):
+def BlogPostPreview(article: dict, request: air.Request) -> air.Aside:
     return air.Aside(
         air.H3(
             air.A(
@@ -60,7 +60,7 @@ def BlogPostPreview(article: dict, request: air.Request):
 
 
 @app.page
-async def index(request: air.Request):
+async def index(request: air.Request) -> air.Html | air.Children:
     title = "AirBlog!"
     return air.layouts.mvpcss(
         air.Title(title),
@@ -83,7 +83,7 @@ def get_article(slug: str) -> dict | None:
 
 
 @app.get("/article/{slug}")
-async def article_detail(slug: str, request: air.Request):
+async def article_detail(slug: str, request: air.Request) -> air.P | air.Html | air.Children:
     article = get_article(slug)
     if article is None:
         return air.P("Article not found")
@@ -108,7 +108,7 @@ async def article_detail(slug: str, request: air.Request):
 
 
 @app.page
-def tags(request: air.Request):
+def tags(request: air.Request) -> air.Html | air.Children:
     return air.layouts.mvpcss(
         air.Title("Tags"),
         air.Header(
@@ -130,7 +130,7 @@ def tags(request: air.Request):
 
 
 @app.get("/tag/{slug}")
-def tag(slug: str, request: air.Request):
+def tag(slug: str, request: air.Request) -> air.Html | air.Children:
     articles = (x for x in get_articles() if slug in x["attributes"]["tags"])
     return air.layouts.mvpcss(
         air.Title(f"Tag: {slug}"),

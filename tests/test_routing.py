@@ -238,7 +238,7 @@ def test_air_router_get_with_url_method() -> None:
     assert response.text == "<h1>Item URL: /url-helper-test-with-params/42</h1>"
 
 
-def test_air_router_get_with_url_method_throws_error():
+def test_air_router_get_with_url_method_throws_error() -> None:
     """Test GET method with url helper function throwing error on missing params"""
     app = air.Air()
     router = air.AirRouter()
@@ -261,7 +261,7 @@ def test_air_router_get_with_url_method_throws_error():
     assert response.text == "<h1>Error: NoMatchFound</h1>"
 
 
-def test_air_router_get_url_method_different_path():
+def test_air_router_get_url_method_different_path() -> None:
     """Test GET method with url helper function using different path"""
     app = air.Air()
     router = air.AirRouter()
@@ -303,7 +303,7 @@ def test_air_router_post_with_url_method() -> None:
     assert response.text == "<h1>Item URL: /post-url-helper-test-with-params/99</h1>"
 
 
-def test_air_router_post_with_url_method_throws_error():
+def test_air_router_post_with_url_method_throws_error() -> None:
     """Test POST method with url helper function throwing error on missing params"""
     app = air.Air()
     router = air.AirRouter()
@@ -326,7 +326,7 @@ def test_air_router_post_with_url_method_throws_error():
     assert response.text == "<h1>Error: NoMatchFound</h1>"
 
 
-def test_air_router_post_url_method_different_path():
+def test_air_router_post_url_method_different_path() -> None:
     """Test POST method with url helper function using different path"""
     app = air.Air()
     router = air.AirRouter()
