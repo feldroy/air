@@ -1,5 +1,28 @@
 ### Latest Changes
 
+# 0.42.0 - 2025-12-08
+
+## What's Changed
+* feat: migrate AirConvert functionality to air-tags by introducing `BaseTag.from_html_to_source`! by @pygarap in https://github.com/feldroy/air/pull/879
+* [FEAT] Add new AirConvert functionality powered by selectolax by @pygarap in https://github.com/feldroy/air/pull/879
+* [FEAT] Improvements to AirTag typing and constants management by @pygarap in https://github.com/feldroy/air/pull/879
+* [FEAT] New utility methods for BaseTag and children by @pygarap in https://github.com/feldroy/air/pull/879
+  - `BaseTag.is_attribute_free_void_element`
+  - `BaseTag.has_children`
+  - `BaseTag.first_child`
+  - `BaseTag.last_child`
+  - `BaseTag.first_attribute`
+  - `BaseTag.last_attribute`
+  - `BaseTag.num_of_direct_children`
+  - `BaseTag.num_of_attributes`        
+  - `BaseTag.tag_id`        
+* [CHORE] Remove FURB189 ruff rule by @msaizar in https://github.com/feldroy/air/pull/872
+* [CHORE] Add 100% test coverage to missing_examples script by @msaizar in https://github.com/feldroy/air/pull/873
+* [CHORE] Add baseline and check modes for scripts/missing_examples.py by @msaizar in https://github.com/feldroy/air/pull/874
+* [CHORE] Remove ANN001 from pyproject.toml by @msaizar in https://github.com/feldroy/air/pull/877
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.41.2...v0.42.0
+
 # 0.41.2 - 2025-11-28
 
 ## What's Changed
