@@ -45,7 +45,7 @@ def test_form_validation_dependency_injection() -> None:
     @app.post("/cheese")
     async def cheese_form(
         cheese: Annotated[CheeseForm, Depends(CheeseForm.from_request)],
-    ):
+    ) -> air.Html:
         if cheese.is_valid:
             data = cast(CheeseModel, cheese.data)
             return air.Html(air.H1(data.name))
@@ -78,7 +78,7 @@ def test_form_validation_in_view() -> None:
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(request: Request):
+    async def cheese_form(request: Request) -> air.Html:
         cheese = await CheeseForm.from_request(request)
         if cheese.is_valid:
             data = cast(CheeseModel, cheese.data)
@@ -146,7 +146,7 @@ def test_form_render_in_view() -> None:
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(request: Request):
+    async def cheese_form(request: Request) -> air.Form:
         cheese = CheeseForm()
         return air.Form(cheese.render())
 
@@ -623,7 +623,7 @@ def test_air_to_form_generation_with_custom_widget() -> None:
         data: dict | None = None,
         errors: list | None = None,
         includes: Sequence[str] | None = None,
-    ):
+    ) -> str:
         return "<custom>"
 
     autoform = AutoModel.to_form(widget=custom_widget)
