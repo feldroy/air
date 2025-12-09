@@ -7,7 +7,7 @@ app.add_middleware(air.SessionMiddleware, secret_key="change-me")  # ty: ignore[
 
 
 @app.page
-async def index(request: air.Request):
+async def index(request: air.Request) -> air.Html | air.Children:
     if "first-visited" not in request.session:
         request.session["first-visited"] = time()
     return air.layouts.mvpcss(
@@ -18,6 +18,6 @@ async def index(request: air.Request):
 
 
 @app.page
-async def reset(request: air.Request):
+async def reset(request: air.Request) -> air.responses.RedirectResponse:
     request.session.pop("first-visited")
     return air.responses.RedirectResponse("/")

@@ -4,13 +4,13 @@ app = air.Air()
 
 
 @app.get("/hello")
-def hello_world():
+def hello_world() -> air.H1:
     # Simple GET endpoint returning HTML.
     return air.H1("Hello, World!")
 
 
 @app.get("/users/{user_id}")
-def get_user(user_id: int):
+def get_user(user_id: int) -> air.Div:
     # GET endpoint with path parameter.
     return air.Div(
         air.H2(f"User ID: {user_id}"),

@@ -7,14 +7,14 @@ from examples.src.applications__Air__get import app
 client = TestClient(app)
 
 
-def test_hello_world():
+def test_hello_world() -> None:
     """Test basic GET endpoint."""
     response = client.get("/hello")
     assert response.status_code == 200
     assert "Hello, World!" in response.text
 
 
-def test_get_user():
+def test_get_user() -> None:
     """Test GET endpoint with path parameter."""
     response = client.get("/users/123")
     assert response.status_code == 200
