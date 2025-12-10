@@ -138,7 +138,7 @@ def test_air_router_get_with_awaitable_result() -> None:
     router = air.AirRouter()
 
     @router.get("/async-test")
-    async def async_endpoint():
+    async def async_endpoint() -> air.H1:
         return air.H1("Async Hello!")
 
     app.include_router(router)
@@ -189,7 +189,7 @@ def test_air_router_post_with_awaitable_result() -> None:
     router = air.AirRouter()
 
     @router.post("/async-post")
-    async def async_post_endpoint():
+    async def async_post_endpoint() -> air.H1:
         return air.H1("Async POST!")
 
     app.include_router(router)

@@ -358,7 +358,6 @@ ignore = [
     "PLC0414", # keep explicit alias
     # TODO -> Remove the rules below this line
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
-    "ANN202", # https://docs.astral.sh/ruff/rules/missing-return-type-private-function
     "ANN401", # https://docs.astral.sh/ruff/rules/any-type
     "FBT001", # https://docs.astral.sh/ruff/rules/boolean-default-value-positional-argument/
     "FBT002", # https://docs.astral.sh/ruff/rules/boolean-type-hint-positional-argument
