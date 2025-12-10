@@ -18,27 +18,27 @@ def _is_htmx_request(hx_request: str = Header(default=None)) -> bool:
 
 
         @app.get("/")
-        def index_get(is_htmx: bool = air.is_htmx_request) -> air.H1:
+        def index_get(*, is_htmx: bool = air.is_htmx_request) -> air.H1:
             return air.H1(f"Is HTMX request?: {is_htmx}")
 
 
         @app.post("/")
-        def index_post(is_htmx: bool = air.is_htmx_request) -> air.H1:
+        def index_post(*, is_htmx: bool = air.is_htmx_request) -> air.H1:
             return air.H1(f"Is HTMX request?: {is_htmx}")
 
 
         @app.patch("/")
-        def index_patch(is_htmx: bool = air.is_htmx_request) -> air.AirResponse:
+        def index_patch(*, is_htmx: bool = air.is_htmx_request) -> air.AirResponse:
             return air.AirResponse(air.H1(f"Is HTMX request?: {is_htmx}"))
 
 
         @app.put("/")
-        def index_put(is_htmx: bool = air.is_htmx_request) -> air.AirResponse:
+        def index_put(*, is_htmx: bool = air.is_htmx_request) -> air.AirResponse:
             return air.AirResponse(air.H1(f"Is HTMX request?: {is_htmx}"))
 
 
         @app.delete("/")
-        def index_delete(is_htmx: bool = air.is_htmx_request) -> air.AirResponse:
+        def index_delete(*, is_htmx: bool = air.is_htmx_request) -> air.AirResponse:
             return air.AirResponse(air.H1(f"Is HTMX request?: {is_htmx}"))
     """
     return hx_request is not None and hx_request.lower() == "true"
