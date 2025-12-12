@@ -504,8 +504,10 @@ def test_html5_validation_optional_fields() -> None:
     html = OptionalForm().render()
 
     # Only the name field should have required attribute
-    assert 'name="name"' in html and "required" in html
-    assert 'name="nickname"' in html and '<input name="nickname" type="text" id="nickname">' in html
+    assert 'name="name"' in html
+    assert "required" in html
+    assert 'name="nickname"' in html
+    assert '<input name="nickname" type="text" id="nickname">' in html
 
 
 def test_html5_validation_with_standard_field() -> None:
@@ -610,7 +612,8 @@ def test_air_to_form_generation_with_includes() -> None:
     html = autoform.render()
     assert 'name="id"' not in html
     assert 'for="id"' not in html
-    assert "name" in html and "age" in html
+    assert "name" in html
+    assert "age" in html
 
 
 def test_air_to_form_generation_with_custom_widget() -> None:
