@@ -359,8 +359,6 @@ ignore = [
     # TODO -> Remove the rules below this line
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "ANN401", # https://docs.astral.sh/ruff/rules/any-type
-    "FBT001", # https://docs.astral.sh/ruff/rules/boolean-default-value-positional-argument/
-    "FBT002", # https://docs.astral.sh/ruff/rules/boolean-type-hint-positional-argument
 ]
 
 # A list of mappings from file pattern to rule codes or prefixes to exclude,
@@ -374,7 +372,6 @@ ignore = [
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
 ]
-"examples/src/dependencies___is_htmx_request.py" = ["FBT001"]
 "scripts/copy_src_example_to_callable.py" = ["C901"]
 "src/air/tags/utils.py" = ["PLC0415"]
 "src/air/tags/models/base.py" = ["PLC0415"]
