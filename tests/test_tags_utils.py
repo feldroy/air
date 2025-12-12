@@ -329,7 +329,8 @@ def test_open_html_in_the_browser_writes_temp_file(monkeypatch: pytest.MonkeyPat
 
     utils.open_html_in_the_browser("<article></article>")
 
-    assert opened and opened[0].startswith("file://")
+    assert opened
+    assert opened[0].startswith("file://")
 
 
 def test_save_pretty_html_uses_console(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

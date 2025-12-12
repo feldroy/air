@@ -56,7 +56,7 @@ def _expected_pretty_document_unescaped(*, with_head: bool, with_doctype: bool) 
 
 
 @pytest.mark.parametrize(
-    "with_body,with_head,pretty,with_doctype",
+    ("with_body", "with_head", "pretty", "with_doctype"),
     [(wb, wh, pr, wd) for wb in (False, True) for wh in (False, True) for pr in (False, True) for wd in (False, True)],
     ids=lambda v: ("T" if v else "F"),
 )
@@ -87,7 +87,7 @@ def test_format_html_all_parameter_combinations(
 
 
 @pytest.mark.parametrize(
-    "with_body,with_head,with_doctype",
+    ("with_body", "with_head", "with_doctype"),
     [(wb, wh, wd) for wb in (False, True) for wh in (False, True) for wd in (False, True)],
     ids=lambda v: ("T" if v else "F"),
 )

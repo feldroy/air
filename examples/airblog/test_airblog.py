@@ -41,7 +41,7 @@ def run_server(port_queue: Queue[int]) -> None:
     uvicorn.run("airblog:app", host="127.0.0.1", port=port, log_level="error")
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def live_server() -> Generator[int]:
     """
     A generator function that starts a live server in a separate process.

@@ -15,7 +15,7 @@ def test_init_signature_compat() -> None:
 
 
 @pytest.mark.parametrize(
-    "status,detail",
+    ("status", "detail"),
     [
         (400, "bad request"),
         (401, {"msg": "unauthorized", "code": "UNAUTH"}),

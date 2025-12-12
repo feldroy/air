@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pytest
-from pytest import CaptureFixture
 from scripts.copy_src_example_to_callable import (
     main,
     parse_filename_class,
@@ -124,7 +123,7 @@ def test_update_example_section_updates_class_method_docstring(tmp_path: Path) -
 
 
 def test_update_example_section_returns_false_for_missing_example_section(
-    tmp_path: Path, capsys: CaptureFixture[str]
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     test_code = '''def my_function():
     """Function without example section."""
@@ -141,7 +140,7 @@ def test_update_example_section_returns_false_for_missing_example_section(
 
 
 def test_update_example_section_returns_false_for_missing_docstring(
-    tmp_path: Path, capsys: CaptureFixture[str]
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     test_code = """def my_function():
     pass
@@ -157,7 +156,7 @@ def test_update_example_section_returns_false_for_missing_docstring(
 
 
 def test_update_example_section_returns_false_for_missing_class_when_looking_for_method(
-    tmp_path: Path, capsys: CaptureFixture[str]
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     test_code = '''class OtherClass:
     """Other class."""
@@ -173,7 +172,9 @@ def test_update_example_section_returns_false_for_missing_class_when_looking_for
     assert "Class MyClass not found" in captured.out
 
 
-def test_update_example_section_returns_false_for_missing_method(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
+def test_update_example_section_returns_false_for_missing_method(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     test_code = '''class MyClass:
     """Class docstring."""
 
@@ -191,7 +192,9 @@ def test_update_example_section_returns_false_for_missing_method(tmp_path: Path,
     assert "Method my_method not found in class MyClass" in captured.out
 
 
-def test_update_example_section_returns_false_for_missing_function(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
+def test_update_example_section_returns_false_for_missing_function(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     test_code = '''def other_function():
     """Other function."""
     pass
@@ -206,7 +209,9 @@ def test_update_example_section_returns_false_for_missing_function(tmp_path: Pat
     assert "Function my_function not found" in captured.out
 
 
-def test_update_example_section_returns_false_for_syntax_error(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
+def test_update_example_section_returns_false_for_syntax_error(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     test_code = '''def my_function(
     """Invalid syntax."""
     pass
@@ -370,7 +375,7 @@ def test_main_processes_example_files(project_dirs: tuple[Path, Path, Path]) -> 
     assert "old_example()" not in updated_content
 
 
-def test_main_handles_missing_examples_directory(tmp_path: Path, capsys: CaptureFixture[str]) -> None:
+def test_main_handles_missing_examples_directory(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     # Don't create examples/src directory, it should not exist
     main(project_root=tmp_path)
 
@@ -378,7 +383,7 @@ def test_main_handles_missing_examples_directory(tmp_path: Path, capsys: Capture
     assert "src_examples directory not found" in captured.out
 
 
-def test_main_skips_unparsable_files(project_dirs: tuple[Path, Path, Path], capsys: CaptureFixture[str]) -> None:
+def test_main_skips_unparsable_files(project_dirs: tuple[Path, Path, Path], capsys: pytest.CaptureFixture[str]) -> None:
     tmp_path, examples_src, _ = project_dirs
 
     # Create a file that parse_filename_class will return None for
@@ -392,7 +397,9 @@ def test_main_skips_unparsable_files(project_dirs: tuple[Path, Path, Path], caps
     assert not captured.out
 
 
-def test_main_handles_missing_source_file(project_dirs: tuple[Path, Path, Path], capsys: CaptureFixture[str]) -> None:
+def test_main_handles_missing_source_file(
+    project_dirs: tuple[Path, Path, Path], capsys: pytest.CaptureFixture[str]
+) -> None:
     tmp_path, examples_src, _ = project_dirs
 
     # Create an example file that references a non-existent source
