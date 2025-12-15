@@ -38,7 +38,7 @@ from .utils import (
     _format_child_instantiation,
     _format_instantiation_call,
     _get_paddings,
-    _is_lexbor_html_parser_valid,
+    _is_lexbor_html_parser_invalid,
     _migrate_html_attributes_to_air_tag,
     _wrap_multiline_instantiation_args,
 )
@@ -723,7 +723,7 @@ class BaseTag:
             raise ValueError(msg)
         is_fragment = not is_full_html_document(html_source)
         parser = LexborHTMLParser(html_source, is_fragment=is_fragment)
-        if _is_lexbor_html_parser_valid(parser=parser, is_fragment=is_fragment):
+        if _is_lexbor_html_parser_invalid(parser=parser, is_fragment=is_fragment):
             msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
             raise ValueError(msg)
         return cls._from_lexbor_node(parser.root)

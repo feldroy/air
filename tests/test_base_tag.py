@@ -512,6 +512,11 @@ def test_from_html_with_invalid_html() -> None:
         air.Tag.from_html(html_source)
     with pytest.raises(
         ValueError,
-        match=full_match("Tag.from_html(html_source) is unable to parse the HTML content."),
+        match=full_match("Tag.from_html(html_source) expects a valid HTML string."),
     ):
         air.Tag.from_html("<head>")
+    with pytest.raises(
+        ValueError,
+        match=full_match("Tag.from_html(html_source) is unable to parse the HTML content."),
+    ):
+        air.Tag.from_html("<head></head>")
