@@ -115,3 +115,20 @@ _LOOKS_LIKE_FULL_HTML_UNICODE_RE: Final = re.compile(
     """,
     re.IGNORECASE | re.DOTALL | re.VERBOSE,
 )
+_LOOKS_LIKE_HTML_UNICODE_RE: Final = re.compile(
+    r"""
+    ^(?:\s|<!--.*?-->)*
+    (?:<!doctype\s+html\b[^>]*>(?:\s|<!--.*?-->)*)?
+    (?:
+        <html\b[^>]*>
+        (?=.*(?:<head\b[^>]*>.*?</head\s*>|<body\b[^>]*>.*?</body\s*>))
+        .*</html\s*>
+      |
+        <(?!/|!--|!doctype\b)(?P<tag>[a-z][a-z0-9:-]*)\b[^>]*>.*</(?P=tag)\s*>
+      |
+        <(?!/|!--|!doctype\b)[a-z][a-z0-9:-]*\b[^>]*/?>
+    )
+    (?:\s|<!--.*?-->)*$
+    """,
+    re.IGNORECASE | re.DOTALL | re.VERBOSE,
+)
