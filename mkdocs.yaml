@@ -60,13 +60,13 @@ nav:
     - about/story.md
     - about/roadmap.md
 
-  - Community: community/index.md
+  - Community:
+    - community/index.md
+    - Tools: community/tools.md
 
   - Sprint:
     - sprint/index.md
     - Source Examples: sprint/src_examples.md
-
-  - Tools: tools.md
 
 theme:
   name: material
@@ -134,6 +134,7 @@ plugins:
         'about/alternatives.md': 'about/inspirations.md'
         'roadmap.md': 'about/roadmap.md'
         'why.md': 'about/why.md'
+        'tools.md': 'community/tools.md'
   - llmstxt:
       markdown_description: "Air is a Python web framework that provides a friendly layer over FastAPI for building modern web applications that combine beautiful HTML pages with powerful REST APIs."
       full_output: llms-full.txt
@@ -150,4 +151,4 @@ plugins:
         - api/*.md
         - api/tags/*.md
         - api/svg/*.md
-        - tools.md
+        - community/tools.md
