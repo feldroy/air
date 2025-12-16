@@ -4,7 +4,6 @@ repo_url: https://github.com/feldroy/air
 
 nav:
   - Home: index.md
-  - Why?: why.md
   - Learn:
     - learn/index.md
     - Quickstart: learn/quickstart.md
@@ -55,18 +54,19 @@ nav:
 
   - About:
     - about/index.md
+    - Why?: about/why.md
     - about/inspirations.md
     - about/help_air.md
     - about/story.md
     - about/roadmap.md
 
-  - Community: community/index.md
+  - Community:
+    - community/index.md
+    - Tools: community/tools.md
 
   - Sprint:
     - sprint/index.md
     - Source Examples: sprint/src_examples.md
-
-  - Tools: tools.md
 
 theme:
   name: material
@@ -133,6 +133,8 @@ plugins:
       redirect_maps:
         'about/alternatives.md': 'about/inspirations.md'
         'roadmap.md': 'about/roadmap.md'
+        'why.md': 'about/why.md'
+        'tools.md': 'community/tools.md'
   - llmstxt:
       markdown_description: "Air is a Python web framework that provides a friendly layer over FastAPI for building modern web applications that combine beautiful HTML pages with powerful REST APIs."
       full_output: llms-full.txt
@@ -149,4 +151,4 @@ plugins:
         - api/*.md
         - api/tags/*.md
         - api/svg/*.md
-        - tools.md
+        - community/tools.md
