@@ -38,7 +38,7 @@ from .utils import (
     _format_child_instantiation,
     _format_instantiation_call,
     _get_paddings,
-    _is_lexbor_html_parser_invalid,
+    _is_lexbor_html_parser_valid,
     _migrate_html_attributes_to_air_tag,
     _wrap_multiline_instantiation_args,
 )
@@ -701,7 +701,7 @@ class BaseTag:
         return cls.from_html(html_source).to_source()
 
     @classmethod
-    def from_html(cls, html_source: str) -> BaseTag:
+    def from_html(cls, html_source: str) -> Renderable:
         """Reconstruct the corresponding air-tag tree from the given HTML content.
 
         Args:
@@ -723,13 +723,13 @@ class BaseTag:
             raise ValueError(msg)
         is_fragment = not is_full_html_document(html_source)
         parser = LexborHTMLParser(html_source, is_fragment=is_fragment)
-        if _is_lexbor_html_parser_invalid(parser=parser, is_fragment=is_fragment):
+        if not _is_lexbor_html_parser_valid(parser=parser, is_fragment=is_fragment):
             msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
             raise ValueError(msg)
         return cls._from_lexbor_node(parser.root)
 
     @classmethod
-    def _from_lexbor_node(cls, node: LexborNode) -> BaseTag | str | None:
+    def _from_lexbor_node(cls, node: LexborNode) -> BaseTag | str:
         """Convert a parsed HTML LexborNode into an Air tag, text, or comment.
 
         Args:

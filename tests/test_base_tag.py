@@ -493,7 +493,7 @@ def test_from_html_with_comment() -> None:
     assert actual_air_tag == expected_air_tag
 
 
-def test_from_html_with_invalid_html() -> None:
+def test_from_html_with_malformed_html_document_raises_value_error() -> None:
     html_source = clean_doc(
         """
         <!doctype html>
@@ -510,11 +510,17 @@ def test_from_html_with_invalid_html() -> None:
         match=full_match("Tag.from_html(html_source) expects a valid HTML string."),
     ):
         air.Tag.from_html(html_source)
+
+
+def test_from_html_with_head_start_tag_only_raises_value_error() -> None:
     with pytest.raises(
         ValueError,
         match=full_match("Tag.from_html(html_source) expects a valid HTML string."),
     ):
         air.Tag.from_html("<head>")
+
+
+def test_from_html_with_head_element_only_raises_value_error() -> None:
     with pytest.raises(
         ValueError,
         match=full_match("Tag.from_html(html_source) is unable to parse the HTML content."),

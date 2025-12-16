@@ -170,7 +170,7 @@ def is_conforming_boolean_value(attr_name: str, attr_value: str | None) -> bool:
     return not attr_value or attr_name.casefold() == attr_value.casefold()
 
 
-def _is_lexbor_html_parser_invalid(parser: LexborHTMLParser, *, is_fragment: bool) -> bool:
+def _is_lexbor_html_parser_valid(parser: LexborHTMLParser, *, is_fragment: bool) -> bool:
     """
     Validates the given Lexbor HTML parser based on the provided conditions.
 
@@ -186,13 +186,11 @@ def _is_lexbor_html_parser_invalid(parser: LexborHTMLParser, *, is_fragment: boo
             does not result in invalidation.
 
     Returns:
-        True if the parser is deemed invalid based on the validation criteria;
+        True if the parser is deemed valid based on the validation criteria;
         otherwise, False.
     """
-    return (
-        not parser
-        or not parser.root
-        or not parser.root.html
-        or not parser.html
-        or (not is_fragment and (not parser.head or not parser.body))
-    )
+    if not parser or parser.root is None or not parser.root.html or not parser.html:
+        return False
+    if is_fragment:
+        return parser.head is None and parser.body is None
+    return parser.head is not None and parser.body is not None
