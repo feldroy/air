@@ -86,7 +86,7 @@ keywords = [
 ]
 
 dependencies = [
-    "fastapi>=0.119.1",
+    "fastapi[standard]>=0.119.1",
     "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
     "minify-html>=0.18.1",
@@ -97,18 +97,23 @@ dependencies = [
     "frozendict>=2.4.7",
     "pygments>=2.19.2",
     "selectolax>=0.4.6",
+    "typer>=0.20.0",
+    "pydantic-settings>=2.12.0",
 ]
 # endregion project
 
+[project.scripts]
+air = "air.cli:app"
+
 # region ----> dependencies <----
 # Runtime extras you want users to install from PyPI
-[project.optional-dependencies]
+# [project.optional-dependencies]
 # Make `air[standard]` install FastAPI’s own “standard” extras,
 # so *users* can do: uv pip install "air[standard]".
-standard = [
-    # Re-install FastAPI with its “standard” extra.
-    "fastapi[standard]>=0.119.1",
-]
+# standard = [
+#     # Re-install FastAPI with its “standard” extra.
+
+# ]
 
 # Groups are for contributors; install with: uv sync --group NAME
 # Developer-only deps under [dependency-groups],
@@ -238,6 +243,11 @@ module-root = "src"
 # The single top-level package name under ./src. The backend validates this structure
 # to catch layout mistakes early.
 module-name = "air"
+
+[tool.uv.workspace]
+members = [
+    "blog",
+]
 
 # endregion uv
 
