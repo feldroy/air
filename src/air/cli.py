@@ -107,12 +107,17 @@ def resource(
     if engine == "asyncpg":
         # Create route
         route_path = route_path / f"{name}.py"
-        route_path.touch()
+        try:
+            route_path.touch()
+        except FileNotFoundError:
+            print(f'[red bold]Error: Please create and enter the Air project.[/red bold]')
+            raise typer.Abort()
         # TODO
         route_path.write_text("""import air
 
 router = air.AirRouter()
         """)
+        print(f'Created router at {route_path}')
 
         # do migration
         migration = []
