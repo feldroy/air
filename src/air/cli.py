@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
+from cookiecutter.main import cookiecutter
 from fastapi_cli.logging import setup_logging
 from rich import print
 
@@ -66,10 +67,10 @@ def init(
         raise typer.Abort
     if template is None:
         project_path = Path(Path(__file__).parent / "templates/init")
-        project_path.copy(path)
+        cookiecutter(str(project_path), extra_context={"name": str(path)}, no_input=True)
+    else:
+        cookiecutter(template)
     print(f"Created new project at '{path}'")
-
-    # check_call(["uv", "init", str(path)])  # TODO placeholder to be replaced by Cookiecutter
 
 
 @app.command()
@@ -110,18 +111,18 @@ def resource(
         try:
             route_path.touch()
         except FileNotFoundError:
-            print(f'[red bold]Error: Please create and enter the Air project.[/red bold]')
-            raise typer.Abort()
+            print("[red bold]Error: Please create and enter the Air project.[/red bold]")
+            raise typer.Abort
         # TODO
         route_path.write_text("""import air
 
 router = air.AirRouter()
         """)
-        print(f'Created router at {route_path}')
+        print(f"Created router at {route_path}")
 
         # do migration
         migration = []
-        migration.append("-- migrate:up")
+        migration.extend("-- migrate:up")
         migration.append(f"-- PostgreSQL table creation script for {name}")
         migration.append(f"CREATE TABLE {name} (")
         migration.append("  id SERIAL PRIMARY KEY,")

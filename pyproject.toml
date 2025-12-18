@@ -99,6 +99,7 @@ dependencies = [
     "selectolax>=0.4.6",
     "typer>=0.20.0",
     "pydantic-settings>=2.12.0",
+    "cookiecutter>=2.6.0",
 ]
 # endregion project
 
