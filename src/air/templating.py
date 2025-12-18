@@ -25,6 +25,9 @@ def _jinja_context_item(item: Any) -> Any:
 
     BaseTag instances are converted to string.
     All other objects are handled by Jinja directly.
+
+    Returns:
+        The item as a string if it's a BaseTag, otherwise the item unchanged.
     """
 
     if isinstance(item, BaseTag):
@@ -92,6 +95,9 @@ class JinjaRenderer:
     ) -> _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
+
+        Returns:
+            A TemplateResponse with the rendered template.
         """
         if context is None:
             context = {}
@@ -171,6 +177,13 @@ class Renderer:
     ) -> str | _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
+
+        Returns:
+            Rendered string or TemplateResponse depending on the template type.
+
+        Raises:
+            TypeError: If callable result is neither a string nor has a render method.
+            RenderException: If no callable or Jinja template is found.
         """
         context = self._prepare_context(context, kwargs)
 
@@ -196,7 +209,11 @@ class Renderer:
         raise RenderException(msg)
 
     def _prepare_context(self, context: dict[Any, Any] | None, kwargs: dict[Any, Any]) -> dict[Any, Any]:
-        """Prepare and merge context dictionaries."""
+        """Prepare and merge context dictionaries.
+
+        Returns:
+            Merged context dictionary.
+        """
         if context is None:
             context = {}
         if kwargs:
@@ -204,12 +221,20 @@ class Renderer:
         return context
 
     def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> _TemplateResponse:
-        """Render Jinja template with Air Tag support."""
+        """Render Jinja template with Air Tag support.
+
+        Returns:
+            A TemplateResponse with the rendered template.
+        """
         context = {k: _jinja_context_item(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)  # type: ignore[arg-type]
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:
-        """Import and render a tag callable from module."""
+        """Import and render a tag callable from module.
+
+        Returns:
+            Rendered string from the tag callable.
+        """
         module_name, func_name = name.rsplit(".", 1)
         module = self._import_module(module_name)
         tag_callable = getattr(module, func_name)
@@ -221,7 +246,11 @@ class Renderer:
         return tag_callable(*args, **filtered_context)
 
     def _import_module(self, module_name: str) -> ModuleType:
-        """Import module handling relative imports."""
+        """Import module handling relative imports.
+
+        Returns:
+            The imported module.
+        """
         if module_name.startswith("."):
             return importlib.import_module(module_name, package=self.package)
 
@@ -233,7 +262,11 @@ class Renderer:
     def _filter_context_for_callable(
         self, tag_callable: Callable, context: dict[Any, Any], request: Request | None
     ) -> dict[str, Any]:
-        """Filter context to only include parameters expected by the callable."""
+        """Filter context to only include parameters expected by the callable.
+
+        Returns:
+            Filtered context dictionary with only expected parameters.
+        """
         sig = inspect.signature(tag_callable)
         filtered_context = {}
 

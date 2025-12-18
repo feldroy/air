@@ -25,7 +25,11 @@ class AirResponse(HTMLResponse):
 
     @override
     def render(self, tag: BaseTag | str) -> bytes | memoryview:  # ty: ignore[invalid-method-override]
-        """Render Tag elements to bytes of HTML."""
+        """Render Tag elements to bytes of HTML.
+
+        Returns:
+            Rendered HTML as bytes or memoryview.
+        """
         return super().render(str(tag))
 
 

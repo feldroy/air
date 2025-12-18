@@ -103,6 +103,9 @@ class HtmxDetails:
 
         This method allows you to change content for requests made with htmx:
 
+        Returns:
+            True if the request was made with htmx, otherwise False.
+
         Example:
 
             import air

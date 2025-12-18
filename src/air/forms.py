@@ -394,7 +394,11 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
 
 
 def get_user_error_message(error: dict) -> str:
-    """Convert technical pydantic error to user-friendly message."""
+    """Convert technical pydantic error to user-friendly message.
+
+    Returns:
+        User-friendly error message string.
+    """
     error_type = error.get("type", "")
     technical_msg = error.get("msg", "")
 
@@ -424,7 +428,11 @@ def get_user_error_message(error: dict) -> str:
 
 
 def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
-    """Converts a pydantic error list to a dictionary for easier reference."""
+    """Converts a pydantic error list to a dictionary for easier reference.
+
+    Returns:
+        Dictionary mapping field names to error details.
+    """
     if errors is None:
         return {}
     return {error["loc"][0]: error for error in errors}
@@ -647,6 +655,9 @@ def AirField(
     special input types and labels in air forms.
 
     NOTE: This is named AirField to adhere to the same naming convention as AirForm.
+
+    Returns:
+        A pydantic FieldInfo object configured with the specified parameters.
 
     Example:
 
