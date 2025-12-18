@@ -107,25 +107,21 @@ class RedirectResponse(StarletteRedirectResponse):
 
     Use `air.RedirectResponse` to redirect users to a different URL.
 
-    Important: Use `@app.get("/path")` instead of `@app.page` when returning
-    a RedirectResponse. The `@app.page` decorator is designed for HTML/tag
-    responses and derives the URL from the function name.
-
     Example:
         ```python
         import air
 
         app = air.Air()
 
-        @app.get("/")
-        def index():
+        @app.get("/old-page")
+        def old_page():
             # Permanent redirect (301) - browsers cache this
-            return air.RedirectResponse(url="https://example.com/", status_code=301)
+            return air.RedirectResponse(url="/new-page", status_code=301)
 
-        @app.get("/temp")
-        def temp():
-            # Temporary redirect (default 307) - preserves HTTP method
-            return air.RedirectResponse(url="/new-location")
+        @app.page
+        def legacy():
+            # Using @app.page works too - redirects from /legacy
+            return air.RedirectResponse(url="/", status_code=301)
         ```
 
     Args:
