@@ -639,7 +639,7 @@ builtin = 'clear,rare,usage,informal,names,code'
 skip = '''
 .idea,.git,.svn,.hg,site,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
 coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
-*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage,.cov_html,.benchmarks,.cache
+*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage,.cov_html,htmlcov,.benchmarks,.cache
 '''
 # Ignore typos inside URLs/emails to avoid breaking links
 uri-ignore-words-list = '*'
