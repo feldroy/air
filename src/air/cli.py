@@ -4,6 +4,7 @@ from importlib.metadata import version
 from pathlib import Path
 from typing import Annotated
 
+from jinja2 import Environment, FileSystemLoader
 import typer
 from cookiecutter.main import cookiecutter
 from fastapi_cli.logging import setup_logging
@@ -16,6 +17,7 @@ try:
 except ImportError:  # pragma: no cover
     uvicorn = None  # type: ignore[assignment]
 
+template_path = Path(__file__).parent / "templates"
 
 app = typer.Typer(rich_markup_mode="rich", context_settings={"help_option_names": ["-h", "--help"]})
 
@@ -66,7 +68,7 @@ def init(
         print(f"[red]Air will not overwrite '{path}'.[/red]")
         raise typer.Abort
     if template is None:
-        project_path = Path(Path(__file__).parent / "templates/init")
+        project_path = template_path / "init"
         cookiecutter(str(project_path), extra_context={"name": str(path)}, no_input=True)
     else:
         cookiecutter(template)
@@ -98,10 +100,13 @@ def resource(
         - Basic Python types like str, int, float, etc
         - "text" is a long character field
     """
-    project_path = Path()
-    route_path = project_path / "app" / "routes"
-    migration_path = project_path / "db" / "migrations"
-    schema_path = project_path / "db" / "schema"
+    resource_path = template_path / "resources"
+    route_path = resource_path / "app" / "routes"
+    schema_path = resource_path / "db" / "schema"
+    jinja_env = Environment(
+        loader=FileSystemLoader(str(resource_path))
+    )
+
     if fields is None:
         fields = []
 
@@ -121,22 +126,15 @@ router = air.AirRouter()
         print(f"Created router at {route_path}")
 
         # do migration
-        migration = []
-        migration.extend("-- migrate:up")
-        migration.append(f"-- PostgreSQL table creation script for {name}")
-        migration.append(f"CREATE TABLE {name} (")
-        migration.append("  id SERIAL PRIMARY KEY,")
-        # TODO key:value pairs
         types2pg = {"str": "VARCHAR(255)", "text": "TEXT"}
+        field_dict = {}
         for field in fields:
-            title, typ = field.split(":")
-            migration.append(f"  {title} {types2pg.get(typ)},")
-        migration.append("  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),")
-        migration.append("  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()")
-        migration.append(");")
-        migration.append("\n")
-        migration_path = migration_path / f"{timestamp_ymd_seconds()}_{name}.sql"
-        text = "\n".join(migration)
-        migration_path.touch()
-        migration_path.write_text(text)
-        print(f"Create migration at '{migration_path}'")
+            title, type = field.split(':')
+            field_dict[title] = types2pg.get(type, "VARCHAR(255)")
+        template = jinja_env.get_template('db/migrations/timestamp_initial.sql')
+        output = template.render(name=name,fields=field_dict)
+        print(output)
+
+        # migration_path / f"{timestamp_ymd_seconds()}_{name}.sql"
+
+
