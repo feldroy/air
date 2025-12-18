@@ -248,6 +248,7 @@ module-name = "air"
 [tool.uv.workspace]
 members = [
     "blog",
+    "src/air/templates/init",
 ]
 
 # endregion uv

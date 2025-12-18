@@ -1,3 +1,6 @@
 {
-    "name": "mysite"
+    "name": "mysite",
+    "orm": [
+        "PostgreSQL: asyncpg+dbmate"
+    ]
 }

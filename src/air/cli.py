@@ -19,6 +19,27 @@ except ImportError:  # pragma: no cover
 
 template_path = Path(__file__).parent / "templates"
 
+PYTHON_TO_POSTGRES = {
+    "int": "INTEGER",
+    "float": "DOUBLE PRECISION",
+    "bool": "BOOLEAN",
+    "str": "VARCHAR(255)",
+    "bytes": "BYTEA",
+
+    "date": "DATE",
+    "time": "TIME",
+    "datetime": "TIMESTAMP",
+
+    "uuid": "UUID",
+
+    "dict": "JSONB",
+    "list": "JSONB",
+    "tuple": "JSONB",
+
+    "object": "TEXT",
+    "text": "TEXT",
+}
+
 app = typer.Typer(rich_markup_mode="rich", context_settings={"help_option_names": ["-h", "--help"]})
 
 
@@ -69,7 +90,7 @@ def init(
         raise typer.Abort
     if template is None:
         project_path = template_path / "init"
-        cookiecutter(str(project_path), extra_context={"name": str(path)}, no_input=True)
+        cookiecutter(str(project_path), extra_context={"name": str(path)})
     else:
         cookiecutter(template)
     print(f"Created new project at '{path}'")
@@ -118,20 +139,17 @@ def resource(
             raise typer.Abort from None
         template = jinja_env.get_template("app/routes/router.py")
         output = template.render(name=name)
-        # print(output)
         route_path.write_text(output)
         print(f"Created router at {route_path}")
 
         # do migration
-        types2pg = {"str": "VARCHAR(255)", "text": "TEXT"}
         field_dict = {}
         for field in fields:
             title, type = field.split(":")
-            field_dict[title] = types2pg.get(type, "VARCHAR(255)")
+            field_dict[title] = PYTHON_TO_POSTGRES.get(type, "VARCHAR(255)")
         template = jinja_env.get_template("db/migrations/timestamp_initial.sql")
         output = template.render(name=name, fields=field_dict)
-        migration_path = Path() / 'db' / 'migrations' / f'{timestamp_ymd_seconds()}_initial.py'
+        migration_path = Path() / 'db' / 'migrations' / f'{timestamp_ymd_seconds()}_{name}_initial.sql'
         migration_path.write_text(output)
-        print(output)
+        print(f"Created initial migration at {migration_path}")
 
-        # migration_path / f"{timestamp_ymd_seconds()}_{name}.sql"
