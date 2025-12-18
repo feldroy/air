@@ -4,10 +4,10 @@ from importlib.metadata import version
 from pathlib import Path
 from typing import Annotated
 
-from jinja2 import Environment, FileSystemLoader
 import typer
 from cookiecutter.main import cookiecutter
 from fastapi_cli.logging import setup_logging
+from jinja2 import Environment, FileSystemLoader
 from rich import print
 
 logger = logging.getLogger(__name__)
@@ -103,9 +103,7 @@ def resource(
     resource_path = template_path / "resources"
     route_path = resource_path / "app" / "routes"
     schema_path = resource_path / "db" / "schema"
-    jinja_env = Environment(
-        loader=FileSystemLoader(str(resource_path))
-    )
+    jinja_env = Environment(loader=FileSystemLoader(str(resource_path)))
 
     if fields is None:
         fields = []
@@ -117,7 +115,7 @@ def resource(
             route_path.touch()
         except FileNotFoundError:
             print("[red bold]Error: Please create and enter the Air project.[/red bold]")
-            raise typer.Abort
+            raise typer.Abort from None
         # TODO
         route_path.write_text("""import air
 
@@ -129,12 +127,10 @@ router = air.AirRouter()
         types2pg = {"str": "VARCHAR(255)", "text": "TEXT"}
         field_dict = {}
         for field in fields:
-            title, type = field.split(':')
+            title, type = field.split(":")
             field_dict[title] = types2pg.get(type, "VARCHAR(255)")
-        template = jinja_env.get_template('db/migrations/timestamp_initial.sql')
-        output = template.render(name=name,fields=field_dict)
+        template = jinja_env.get_template("db/migrations/timestamp_initial.sql")
+        output = template.render(name=name, fields=field_dict)
         print(output)
 
         # migration_path / f"{timestamp_ymd_seconds()}_{name}.sql"
-
-
