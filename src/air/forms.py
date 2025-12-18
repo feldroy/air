@@ -45,7 +45,7 @@ class AirForm:
 
         @app.post("/flight")
         async def flight_form(request: air.Request) -> air.Html:
-            "Awaited form data"
+            # Awaited form data
             flight = await FlightForm.from_request(request)
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
@@ -55,7 +55,7 @@ class AirForm:
 
         @app.post("/flight-depends")
         async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm.from_request)]) -> air.Html:
-            "Dependency injection"
+            # Dependency injection
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
             errors = len(flight.errors or [])
