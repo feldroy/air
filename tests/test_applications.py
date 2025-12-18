@@ -3,7 +3,10 @@ from fastapi.testclient import TestClient
 from starlette.requests import Request
 
 import air
-from air.exception_handlers import DEFAULT_EXCEPTION_HANDLERS, default_500_exception_handler
+from air.exception_handlers import (
+    DEFAULT_EXCEPTION_HANDLERS,
+    default_500_exception_handler,
+)
 
 
 def test_air_app_factory() -> None:
@@ -200,6 +203,38 @@ def test_url_helper_method() -> None:
     response = client.get(url)
     assert response.status_code == 200
     assert response.text == "<h1>User 1, Post 2</h1>"
+
+
+def test_url_helper_supports_query_params() -> None:
+    app = air.Air()
+
+    @app.get("/search")
+    def search(q: str, page: int = 1) -> air.H1:
+        return air.H1(f"Search: {q} page {page}")
+
+    url = search.url(query_params={"q": "air", "page": 3})
+    assert url == "/search?q=air&page=3"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<h1>Search: air page 3</h1>"
+
+
+def test_url_helper_supports_query_params_with_Query() -> None:
+    app = air.Air()
+
+    @app.get("/search")
+    def search(q: str, page: int = air.Query(1)) -> air.H1:
+        return air.H1(f"Search: {q} page {page}")
+
+    url = search.url(query_params={"q": "air", "page": 3})
+    assert url == "/search?q=air&page=3"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<h1>Search: air page 3</h1>"
 
 
 def test_patch_endpoint() -> None:
