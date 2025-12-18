@@ -100,27 +100,26 @@ def resource(
         - Basic Python types like str, int, float, etc
         - "text" is a long character field
     """
-    resource_path = template_path / "resources"
-    route_path = resource_path / "app" / "routes"
-    schema_path = resource_path / "db" / "schema"
-    jinja_env = Environment(loader=FileSystemLoader(str(resource_path)))
+    jinja_env = Environment(loader=FileSystemLoader(str(template_path / "resources"))) 
+
+    # schema_path = Path() / "db" / "schema"
+
 
     if fields is None:
         fields = []
 
     if engine == "asyncpg":
         # Create route
-        route_path = route_path / f"{name}.py"
+        route_path = Path() / "app" / "routes" / f'{name}.py'
         try:
             route_path.touch()
         except FileNotFoundError:
-            print("[red bold]Error: Please create and enter the Air project.[/red bold]")
+            print("[red bold]Error: Not in an Air project.[/red bold]")
             raise typer.Abort from None
-        # TODO
-        route_path.write_text("""import air
-
-router = air.AirRouter()
-        """)
+        template = jinja_env.get_template("app/routes/router.py")
+        output = template.render(name=name)
+        # print(output)
+        route_path.write_text(output)
         print(f"Created router at {route_path}")
 
         # do migration
@@ -131,6 +130,8 @@ router = air.AirRouter()
             field_dict[title] = types2pg.get(type, "VARCHAR(255)")
         template = jinja_env.get_template("db/migrations/timestamp_initial.sql")
         output = template.render(name=name, fields=field_dict)
+        migration_path = Path() / 'db' / 'migrations' / f'{timestamp_ymd_seconds()}_initial.py'
+        migration_path.write_text(output)
         print(output)
 
         # migration_path / f"{timestamp_ymd_seconds()}_{name}.sql"
