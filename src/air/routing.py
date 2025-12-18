@@ -84,6 +84,7 @@ class RouterMixin:
     def page(self, func: FunctionType) -> RouteCallable:
         """Decorator that creates a GET route using the function name as the path.
 
+        Underscores in the function name are converted to dashes in the URL.
         If the name of the function is "index", then the route is "/".
 
         Example:
