@@ -113,10 +113,12 @@ class RedirectResponse(StarletteRedirectResponse):
 
         app = air.Air()
 
+
         @app.get("/old-page")
         def old_page():
             # Permanent redirect (301) - browsers cache this
             return air.RedirectResponse(url="/new-page", status_code=301)
+
 
         @app.page
         def legacy():
