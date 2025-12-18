@@ -103,6 +103,41 @@ class SSEResponse(StreamingResponse):
 
 
 class RedirectResponse(StarletteRedirectResponse):
+    """Response class for HTTP redirects.
+
+    Use `air.RedirectResponse` to redirect users to a different URL.
+
+    Example:
+        ```python
+        import air
+
+        app = air.Air()
+
+
+        @app.get("/old-page")
+        def old_page():
+            # Permanent redirect (301) - browsers cache this
+            return air.RedirectResponse(url="/new-page", status_code=301)
+
+
+        @app.page
+        def legacy():
+            # Using @app.page works too - redirects from /legacy
+            return air.RedirectResponse(url="/", status_code=301)
+        ```
+
+    Args:
+        url: The target URL to redirect to.
+        status_code: HTTP status code for the redirect. Defaults to 307 (Temporary Redirect).
+            Common values:
+            - 301: Permanent redirect (SEO-friendly, browsers cache)
+            - 302: Temporary redirect (traditional)
+            - 307: Temporary redirect (preserves HTTP method, default)
+            - 303: See Other (use after POST to redirect to GET)
+        headers: Optional additional headers to include in the response.
+        background: Optional background task to run after the response is sent.
+    """
+
     def __init__(
         self,
         url: str | URL,
