@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any
 from urllib.error import URLError
 
 import minify_html
+import nh3
 from lxml.etree import indent as indent_element_tree
 
 # noinspection PyProtectedMember
@@ -33,6 +34,7 @@ from air.exceptions import BrowserOpenError
 
 from .constants import (
     _LOOKS_LIKE_FULL_HTML_UNICODE_RE,
+    _LOOKS_LIKE_HTML_UNICODE_RE,
     ATTRIBUTES_TO_AIR,
     ATTRIBUTES_TO_HTML,
     BLOB_URL_PRESET,
@@ -72,6 +74,33 @@ def is_full_html_document(text: str) -> bool:
         otherwise False.
     """
     return bool(_LOOKS_LIKE_FULL_HTML_UNICODE_RE.fullmatch(text))
+
+
+def looks_like_html(text: str) -> bool:
+    """
+    Determines if the given text appears to be in HTML format.
+
+    The function checks whether the provided text both passes an HTML detection
+    test and matches a specific regular expression for HTML-like Unicode strings.
+
+    This uses two checks:
+
+    1) `nh3.is_html(text)` does a general HTML detection check, aiming to answer
+       "is there HTML markup here at all?" (it is a broad heuristic rather than a strict full-document validator).
+
+    2) `_LOOKS_LIKE_HTML_UNICODE_RE.fullmatch(text)` enforces this project's
+       stricter "HTML-like string" shape requirements, such as allowing leading
+       and trailing whitespace, optional doctype, and the expected tag structure
+       for the inputs we accept as "looks like HTML".
+
+    Args:
+        text: HTML source string to test.
+
+    Returns:
+        bool: True if the text is detected as HTML and matches the HTML-like
+            Unicode pattern; otherwise, False.
+    """
+    return nh3.is_html(text) and bool(_LOOKS_LIKE_HTML_UNICODE_RE.fullmatch(text))
 
 
 def migrate_attribute_name_to_html(attr_name: str) -> str:

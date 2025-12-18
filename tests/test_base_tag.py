@@ -19,12 +19,15 @@ from examples.samples.air_tag_source_samples import (
     TINY_AIR_TAG_SOURCE_SAMPLE,
 )
 from examples.samples.html_samples import FRAGMENT_HTML_SAMPLE, HTML_SAMPLE, SMALL_HTML_SAMPLE, TINY_HTML_SAMPLE
+from full_match import match as full_match
 
 import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag
 from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
+
+from .utils import clean_doc
 
 
 class SampleTag(BaseTag):
@@ -461,3 +464,65 @@ def test_from_html_to_source() -> None:
     # actual_air_tag_source = air.Tag.from_html_to_source(HTML_SAMPLE)
     # expected_air_tag_source = AIR_TAG_SAMPLE
     # assert actual_air_tag_source == expected_air_tag_source
+
+
+def test_from_html_with_leading_whitespace() -> None:
+    html_source = clean_doc(
+        """
+           <main class="column p-5" style="overflow-y: auto;">
+
+           <div class="columns">
+         </div>
+
+        </main>
+        """
+    )
+    actual_air_tag = air.Tag.from_html(html_source)
+    expected_air_tag = air.Main(
+        air.Div(class_="columns"),
+        class_="column p-5",
+        style="overflow-y: auto;",
+    )
+    assert actual_air_tag == expected_air_tag
+
+
+def test_from_html_with_comment() -> None:
+    html_source = "<!-- My crazy comment -->"
+    actual_air_tag = air.Tag.from_html(html_source)
+    expected_air_tag = air.Comment("My crazy comment")
+    assert actual_air_tag == expected_air_tag
+
+
+def test_from_html_with_malformed_html_document_raises_value_error() -> None:
+    html_source = clean_doc(
+        """
+        <!doctype html>
+        <html lang="en">
+          <head>
+          </head>
+          <body>
+          </body<
+        </html<
+        """
+    )
+    with pytest.raises(
+        ValueError,
+        match=full_match("Tag.from_html(html_source) expects a valid HTML string."),
+    ):
+        air.Tag.from_html(html_source)
+
+
+def test_from_html_with_head_start_tag_only_raises_value_error() -> None:
+    with pytest.raises(
+        ValueError,
+        match=full_match("Tag.from_html(html_source) expects a valid HTML string."),
+    ):
+        air.Tag.from_html("<head>")
+
+
+def test_from_html_with_head_element_only_raises_value_error() -> None:
+    with pytest.raises(
+        ValueError,
+        match=full_match("Tag.from_html(html_source) is unable to parse the HTML content."),
+    ):
+        air.Tag.from_html("<head></head>")

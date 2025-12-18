@@ -10,6 +10,7 @@ from typing import (
     Any,
     Literal,
     Protocol,
+    get_type_hints,
     override,
 )
 from warnings import deprecated
@@ -59,6 +60,25 @@ class RouteCallable(Protocol):
 class AirRoute(APIRoute):
     """Custom APIRoute that uses Air's custom AirRequest class."""
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize AirRoute and resolve string annotations from PEP 563."""
+
+        endpoint = kwargs.get("endpoint") or (args[1] if len(args) > 1 else None)
+
+        if endpoint is not None:
+            original = inspect.unwrap(endpoint)
+            resolved_hints = get_type_hints(original, include_extras=True)
+            sig = inspect.signature(endpoint)
+            endpoint.__signature__ = sig.replace(
+                parameters=[
+                    param.replace(annotation=resolved_hints.get(name, param.annotation))
+                    for name, param in sig.parameters.items()
+                ],
+                return_annotation=resolved_hints.get("return", sig.return_annotation),
+            )
+
+        super().__init__(*args, **kwargs)
+
     @override
     def get_route_handler(self) -> Callable:
         original_route_handler = super().get_route_handler()
@@ -84,6 +104,7 @@ class RouterMixin:
     def page(self, func: FunctionType) -> RouteCallable:
         """Decorator that creates a GET route using the function name as the path.
 
+        Underscores in the function name are converted to dashes in the URL.
         If the name of the function is "index", then the route is "/".
 
         Example:
