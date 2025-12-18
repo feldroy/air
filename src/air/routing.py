@@ -78,7 +78,7 @@ class RouterMixin:
         """Stub for type checking - implemented by subclasses."""
         raise NotImplementedError
 
-    def url_path_for(self, name: str, **params: Any) -> str:
+    def url_path_for(self, name: str, /, **params: Any) -> str:
         """Stub for type checking - implemented by subclasses."""
         raise NotImplementedError
 
