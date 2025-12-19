@@ -19,7 +19,11 @@ from air.templating import JinjaRenderer
 
 
 def create_complex_page_with_tags() -> Html:
-    """Generate a complex HTML page using Air Tags."""
+    """Generate a complex HTML page using Air Tags.
+
+    Returns:
+        Complete HTML page with product catalog.
+    """
     return air.Html(
         air.Head(
             air.Title("Product Catalog"),
@@ -63,7 +67,11 @@ def create_complex_page_with_tags() -> Html:
 
 
 def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: Mock) -> _TemplateResponse:
-    """Generate the same complex HTML page using Jinja2 templates."""
+    """Generate the same complex HTML page using Jinja2 templates.
+
+    Returns:
+        TemplateResponse with rendered Jinja2 template.
+    """
     context = {
         "title": "Product Catalog",
         "products": [

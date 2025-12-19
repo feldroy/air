@@ -13,6 +13,9 @@ from .tags import H1, P, Title
 def default_404_router_handler(router_name: str) -> ASGIApp:
     """Build an ASGI app that delegates the 404 to the default_404_exception_handler.
 
+    Returns:
+        An ASGI application that handles 404 errors.
+
     Example:
 
         import air
@@ -51,6 +54,9 @@ def default_404_router_handler(router_name: str) -> ASGIApp:
 def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
     """Default 404 exception handler. Can be overloaded.
 
+    Returns:
+        An AirResponse with a 404 status code and error page.
+
     Example:
 
         import air
@@ -75,6 +81,9 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
 
 def default_500_exception_handler(request: Request, exc: Exception) -> AirResponse:
     """Default 500 exception handler. Can be overloaded.
+
+    Returns:
+        An AirResponse with a 500 status code and error page.
 
     Example:
 

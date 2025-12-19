@@ -7,17 +7,29 @@ from .tags.models.types import HEAD_TAG_TYPES, AttributeType
 
 
 def filter_body_tags(tags: tuple) -> list:
-    """Given a list of tags, only list the ones that belong in body of an HTML document."""
+    """Given a list of tags, only list the ones that belong in body of an HTML document.
+
+    Returns:
+        List of tags that belong in the body of an HTML document.
+    """
     return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]
 
 
 def filter_head_tags(tags: tuple) -> list:
-    """Given a list of tags, only list the ones that belong in head of an HTML document."""
+    """Given a list of tags, only list the ones that belong in head of an HTML document.
+
+    Returns:
+        List of tags that belong in the head of an HTML document.
+    """
     return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]
 
 
 def _header(tags: tuple | list) -> Header | str:
-    """Extracts the air.Header tag from a set of tags."""
+    """Extracts the air.Header tag from a set of tags.
+
+    Returns:
+        The Header tag if found, otherwise an empty string.
+    """
     for tag in tags:
         if isinstance(tag, Header):
             return tag
@@ -41,6 +53,9 @@ def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Ht
     Args:
         children: These typically inherit from air.Tag but can be anything
         is_htmx: Whether or not HTMX sent the request from the page
+
+    Returns:
+        HTML document with MVP.css styling or Children for HTMX partial responses.
 
     Example:
 
@@ -120,6 +135,9 @@ def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> H
     Args:
         children: These typically inherit from air.Tag but can be anything
         is_htmx: Whether or not HTMX sent the request from the page
+
+    Returns:
+        HTML document with PicoCSS styling or Children for HTMX partial responses.
 
     Example:
 
