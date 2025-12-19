@@ -4,7 +4,7 @@ from air import Children, Html
 app = air.Air()
 
 
-@app.get("/search")
+@app.page
 def search(q: str = air.Query(""), page: int = air.Query(1)) -> Children | Html:
     """
     Search endpoint with scalar query parameters.
@@ -20,7 +20,7 @@ def search(q: str = air.Query(""), page: int = air.Query(1)) -> Children | Html:
     )
 
 
-@app.get("/filter")
+@app.page
 def filter_tags(
     tags: list[str] | None = air.Query(None),  # noqa: B008
 ) -> Children | Html:
@@ -39,7 +39,7 @@ def filter_tags(
     )
 
 
-@app.get("/advanced")
+@app.page
 def advanced_search(
     q: str = air.Query(""),
     page: int = air.Query(1),
