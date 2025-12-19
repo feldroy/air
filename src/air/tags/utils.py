@@ -248,7 +248,7 @@ def format_html(
         else parse_html_from_string(source)
     )
     if pretty:
-        indent_element_tree(html_element)  # ty: ignore[invalid-argument-type]
+        indent_element_tree(html_element)
     doctype = HTML_DOCTYPE if with_doctype else None
     # noinspection PyTypeChecker
     return serialize_document_to_html_string(

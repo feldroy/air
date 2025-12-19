@@ -628,7 +628,7 @@ class BaseTag:
         name: str = source_dict[TagKeys.NAME]
         attributes: TagAttributesType = source_dict[TagKeys.ATTRIBUTES]
         children_dict: TagChildrenTypeForDict = source_dict[TagKeys.CHILDREN]
-        children: TagChildrenType = cls._from_child_dict(children_dict)
+        children: TagChildrenTypeForDict = cls._from_child_dict(children_dict)
         return cls._create_tag(name, *children, **attributes)
 
     @classmethod
@@ -701,7 +701,7 @@ class BaseTag:
         return cls.from_html(html_source).to_source()
 
     @classmethod
-    def from_html(cls, html_source: str) -> Renderable:
+    def from_html(cls, html_source: str) -> BaseTag:
         """Reconstruct the corresponding air-tag tree from the given HTML content.
 
         Args:
