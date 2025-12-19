@@ -4,7 +4,6 @@ A common pattern is to use a Jinja template as the project base and then use Air
 """
 
 import importlib
-import inspect
 from collections.abc import Callable, Sequence
 from os import PathLike
 from types import ModuleType
@@ -18,6 +17,7 @@ from starlette.templating import _TemplateResponse
 from .exceptions import RenderException
 from .requests import Request
 from .tags.models.base import BaseTag
+from .utils import cached_signature
 
 
 def _jinja_context_item(item: Any) -> Any:
@@ -267,7 +267,7 @@ class Renderer:
         Returns:
             Filtered context dictionary with only expected parameters.
         """
-        sig = inspect.signature(tag_callable)
+        sig = cached_signature(tag_callable)
         filtered_context = {}
 
         for param_name in sig.parameters:

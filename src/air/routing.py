@@ -31,7 +31,7 @@ from .exception_handlers import default_404_router_handler
 from .requests import AirRequest
 from .responses import AirResponse
 from .types import MaybeAwaitable
-from .utils import compute_page_path, default_generate_unique_id
+from .utils import cached_signature, cached_unwrap, compute_page_path, default_generate_unique_id
 
 
 class RouteCallable(Protocol):
@@ -66,9 +66,9 @@ class AirRoute(APIRoute):
         endpoint = kwargs.get("endpoint") or (args[1] if len(args) > 1 else None)
 
         if endpoint is not None:
-            original = inspect.unwrap(endpoint)
+            original = cached_unwrap(endpoint)
             resolved_hints = get_type_hints(original, include_extras=True)
-            sig = inspect.signature(endpoint)
+            sig = cached_signature(endpoint)
             endpoint.__signature__ = sig.replace(
                 parameters=[
                     param.replace(annotation=resolved_hints.get(name, param.annotation))
