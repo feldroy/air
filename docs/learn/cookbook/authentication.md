@@ -44,13 +44,13 @@ async def login(request: air.Request):
         request.session["username"] = username
         request.session["logged_in_at"] = time()
 
-    return air.responses.RedirectResponse("/", status_code=302)
+    return air.RedirectResponse("/", status_code=302)
 
 
 @app.page
 async def logout(request: air.Request):
     request.session.pop("username")
-    return air.responses.RedirectResponse("/")
+    return air.RedirectResponse("/")
 ```
 
 ## Authentication with Dependencies

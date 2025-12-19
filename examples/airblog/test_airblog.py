@@ -20,6 +20,9 @@ def get_free_port() -> int:
     Finds a free port on localhost for the live server.
 
     This is only necessary for parallel end to end tests to avoid port conflicts.
+
+    Returns:
+        A free port number.
     """
     sock = socket.socket()
     sock.bind(("", 0))

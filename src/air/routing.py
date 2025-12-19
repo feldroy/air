@@ -108,6 +108,9 @@ class RouterMixin:
         Underscores in the function name are converted to dashes in the URL.
         If the name of the function is "index", then the route is "/".
 
+        Returns:
+            The decorated function registered as a page route.
+
         Example:
 
             import air
@@ -163,8 +166,8 @@ class RouterMixin:
             # The .url() method is created by this helper
             url = get_user.url(user_id=123)  # Returns: "/users/123"
             url_with_query = get_user.url(user_id=123, query_params={"page": 2})
-                # Returns: "/users/123?page=2"
-        """
+            # Returns: "/users/123?page=2"
+        """  # noqa: DOC502
 
         def helper_function(**params: Any) -> str:
             query_params = params.pop("query_params", None)
@@ -782,6 +785,9 @@ class AirRouter(APIRouter, RouterMixin):
         """
         Add a *path operation* using an HTTP GET operation.
 
+        Returns:
+            A decorator function that registers the decorated function as a GET endpoint.
+
         ## Example
 
         ```python
@@ -1176,6 +1182,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP POST operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a POST endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1554,6 +1563,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP PATCH operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a PATCH endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1931,6 +1943,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP PUT operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a PUT endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -2308,6 +2323,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP DELETE operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a DELETE endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:

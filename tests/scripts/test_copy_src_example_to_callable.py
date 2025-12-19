@@ -10,7 +10,11 @@ from scripts.copy_src_example_to_callable import (
 
 @pytest.fixture
 def project_dirs(tmp_path: Path) -> tuple[Path, Path, Path]:
-    """Create the standard project directory structure for testing main()."""
+    """Create the standard project directory structure for testing main().
+
+    Returns:
+        Tuple of (project_root, examples_src, src_air) paths.
+    """
     examples_src = tmp_path / "examples" / "src"
     examples_src.mkdir(parents=True)
     src_air = tmp_path / "src" / "air"

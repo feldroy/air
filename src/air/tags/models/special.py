@@ -28,7 +28,11 @@ class Html(BaseTag):
         with_head: bool = False,
         with_doctype: bool = True,
     ) -> str:
-        """Pretty-print without escaping."""
+        """Pretty-print without escaping.
+
+        Returns:
+            Pretty-printed raw HTML string.
+        """
         return super().pretty_render(with_body=with_body, with_head=with_head, with_doctype=with_doctype)
 
 
@@ -225,6 +229,9 @@ class Comment(UnSafeTag):
 
         Args:
             text_child: Text inserted inside the comment delimiters.
+
+        Raises:
+            TypeError: If the text_child contains newline characters.
         """
         if "\n" in text_child:
             msg = f"{self!r}, does not support multi-line comments!"

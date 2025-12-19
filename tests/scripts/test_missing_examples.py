@@ -12,7 +12,11 @@ from scripts.missing_examples import (
 
 @pytest.fixture
 def project_dirs(tmp_path: Path) -> tuple[Path, Path]:
-    """Create the standard project directory structure for testing main()."""
+    """Create the standard project directory structure for testing main().
+
+    Returns:
+        Tuple of (project_root, src_air) paths.
+    """
     src_air = tmp_path / "src" / "air"
     src_air.mkdir(parents=True)
     return tmp_path, src_air

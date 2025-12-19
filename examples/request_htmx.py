@@ -13,13 +13,16 @@ app = air.Air()
 
 @app.page
 def index(request: air.Request) -> air.Html | air.Children:
-    """ "Index page demonstrating request.htmx interaction.
+    """Index page demonstrating request.htmx interaction.
 
     This page:
 
     - Loads the table automatically into the #display div via HTMX on page load.
     - Let's you reload the table via a normal HTMX request.
     - Let's you trigger a table load from a different element (to show trigger/target behavior).
+
+    Returns:
+        HTML page with HTMX-enabled interactive table loading demonstration.
     """
     return air.layouts.mvpcss(
         air.H1("Example: request.htmx"),
@@ -75,6 +78,9 @@ def table(request: air.Request) -> air.Table:
     - The full request URL.
     - The raw request.htmx object.
     - Common HTMX attributes such as boosted, current_url, target, trigger, and prompt.
+
+    Returns:
+        Table displaying request.htmx attributes and their values.
     """
     # We wrap values in str(...) so both the template and the type checker are happy.
     htmx = request.htmx
