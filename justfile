@@ -138,6 +138,8 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     # Check for spelling and grammar violations and apply fixes
     just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell --write-changes
+    # Check for missing examples in docstrings
+    just run -- python scripts/missing_examples.py --mode check
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]

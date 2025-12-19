@@ -36,8 +36,7 @@
   "responses.py": [
     "class: AirResponse",
     "method: AirResponse.render",
-    "method: SSEResponse.stream_response",
-    "class: RedirectResponse"
+    "method: SSEResponse.stream_response"
   ],
   "routing.py": [
     "method: RouteCallable.url",
@@ -53,13 +52,17 @@
     "method: AirRouter.put",
     "method: AirRouter.delete"
   ],
+  "tags/constants.py": [
+    "class: TagKeys"
+  ],
   "tags/models/base.py": [
-    "class: TagDictType",
-    "class: TagKeys",
     "class: BaseTag",
     "method: BaseTag.name",
     "method: BaseTag.attrs",
     "method: BaseTag.children",
+    "method: BaseTag.html",
+    "method: BaseTag.pretty_html",
+    "method: BaseTag.compact_html",
     "method: BaseTag.render",
     "method: BaseTag.render_in_the_browser",
     "method: BaseTag.pretty_render_in_the_browser",
@@ -70,12 +73,27 @@
     "method: BaseTag.pretty_save",
     "method: BaseTag.pretty_display_in_the_browser",
     "method: BaseTag.full_repr",
+    "method: BaseTag.to_source",
+    "method: BaseTag.is_attribute_free_void_element",
+    "method: BaseTag.has_children",
+    "method: BaseTag.has_attributes",
+    "method: BaseTag.first_child",
+    "method: BaseTag.last_child",
+    "method: BaseTag.first_attribute",
+    "method: BaseTag.last_attribute",
+    "method: BaseTag.num_of_direct_children",
+    "method: BaseTag.num_of_attributes",
+    "method: BaseTag.tag_id",
     "method: BaseTag.to_pretty_dict",
     "method: BaseTag.to_dict",
     "method: BaseTag.to_json",
     "method: BaseTag.to_pretty_json",
     "method: BaseTag.from_dict",
-    "method: BaseTag.from_json"
+    "method: BaseTag.from_json",
+    "method: BaseTag.print_source",
+    "method: BaseTag.save_source",
+    "method: BaseTag.from_html_to_source",
+    "method: BaseTag.from_html"
   ],
   "tags/models/special.py": [
     "class: Html",
@@ -91,8 +109,27 @@
     "class: Style",
     "class: Comment"
   ],
+  "tags/models/types.py": [
+    "class: TagDictType"
+  ],
+  "tags/models/utils.py": [
+    "function: _get_paddings",
+    "function: _format_instantiation_call",
+    "function: _wrap_multiline_instantiation_args",
+    "function: _format_child_instantiation",
+    "function: _format_attribute_instantiation",
+    "function: _migrate_html_attributes_to_air_tag",
+    "function: _evaluate_attribute_value_to_py",
+    "function: is_a_boolean_attribute",
+    "function: is_conforming_boolean_value",
+    "function: _is_lexbor_html_parser_valid"
+  ],
   "tags/utils.py": [
-    "function: clean_html_attr_key",
+    "function: is_full_html_document",
+    "function: looks_like_html",
+    "function: migrate_attribute_name_to_html",
+    "function: migrate_attribute_name_to_air_tag",
+    "function: extract_html_comment",
     "function: compact_format_html",
     "function: pretty_format_html",
     "function: format_html",
@@ -100,11 +137,14 @@
     "function: _open_new_tab",
     "function: open_html_blob_in_the_browser",
     "function: open_html_in_the_browser",
+    "function: save_text",
     "function: save_pretty_html",
     "function: display_pretty_html_in_the_browser",
     "function: export_pretty_html",
+    "function: pretty_print_python",
     "function: pretty_print_html",
     "function: _get_pretty_html_console",
+    "function: _get_pretty_console",
     "function: locals_cleanup",
     "class: SafeStr"
   ],
