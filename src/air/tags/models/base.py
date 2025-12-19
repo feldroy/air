@@ -726,7 +726,7 @@ class BaseTag:
         if not _is_lexbor_html_parser_valid(parser=parser, is_fragment=is_fragment):
             msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
             raise ValueError(msg)
-        return cls._from_lexbor_node(parser.root)
+        return cls._from_lexbor_node(parser.root)  # type: ignore[arg-type,return-value]
 
     @classmethod
     def _from_lexbor_node(cls, node: LexborNode) -> BaseTag | str:
@@ -768,7 +768,7 @@ class BaseTag:
         return cls._create_tag(node.tag, *children, **attributes)
 
     @classmethod
-    def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
+    def _create_tag(cls, name: str, /, *children: Renderable | TagDictType, **attributes: AttributeType) -> BaseTag:
         """Instantiate a registered tag by name.
 
         Args:
