@@ -48,6 +48,38 @@ def index():
     )
 ```
 
+## Query Parameters
+
+Air supports query parameters through FastAPI's `Query()` validator, which you can import as `air.Query()`:
+
+```python
+import air
+
+app = air.Air()
+
+@app.get('/search')
+def search(q: str = air.Query(""), page: int = air.Query(1)):
+    return air.H1(f"Search: {q} (page {page})")
+
+# Generate URLs with query parameters
+@app.page
+def index():
+    return air.Div(
+        air.A('Search', href=search.url(query_params={"q": "air", "page": 1}))
+    )
+```
+
+The `.url()` method accepts a `query_params` argument for generating URLs with query strings. This works with both scalar values and lists:
+
+```python
+@app.get('/filter')
+def filter_items(tags: list[str] | None = air.Query(None)): # List parameters require explicit air.Query(None) for parsing
+    return air.H1(f"Filtered by: {tags}")
+
+# Generates: /filter?tags=python&tags=web
+url = filter_items.url(query_params={"tags": ["python", "web"]})
+```
+
 ---
 
 ::: air.routing

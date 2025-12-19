@@ -282,6 +282,78 @@ def test_air_router_get_url_method_different_path() -> None:
     assert response.text == "<h1>Profile URL: /profile/johndoe</h1>"
 
 
+def test_air_router_url_helper_supports_query_params() -> None:
+    """Test URL helper with query_params argument"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/items/{item_id}")
+    def get_item(
+        item_id: int,
+        tags: list[str] | None = air.Query(None),  # noqa: B008
+        page: int = 1,
+    ) -> air.P:
+        return air.P(f"Item {item_id} tags {tags} page {page}")
+
+    app.include_router(router)
+
+    url = get_item.url(item_id=5, query_params={"tags": ["a", "b"], "page": 2})
+    assert url == "/items/5?tags=a&tags=b&page=2"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<p>Item 5 tags [&#x27;a&#x27;, &#x27;b&#x27;] page 2</p>"
+
+
+def test_air_router_url_helper_empty_query_params() -> None:
+    """Test URL helper returns base path when query_params is empty or contains empty lists."""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/items/{item_id}")
+    def get_item(
+        item_id: int,
+        tags: list[str] | None = air.Query(None),  # noqa: B008
+        page: int = 1,
+    ) -> air.P:
+        return air.P(f"Item {item_id} tags {tags} page {page}")
+
+    app.include_router(router)
+
+    assert get_item.url(item_id=5, query_params={}) == "/items/5"
+    assert get_item.url(item_id=5, query_params={"tags": []}) == "/items/5"
+
+    client = TestClient(app)
+    response = client.get(get_item.url(item_id=5))
+    assert response.status_code == 200
+    assert response.text == "<p>Item 5 tags None page 1</p>"
+
+
+def test_air_router_url_helper_supports_query_params_with_Query() -> None:
+    """Test URL helper with query_params argument when parameters use Query()."""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/items/{item_id}")
+    def get_item(
+        item_id: int,
+        tags: list[str] | None = air.Query(None),  # noqa: B008
+        page: int = air.Query(1),
+    ) -> air.P:
+        return air.P(f"Item {item_id} tags {tags} page {page}")
+
+    app.include_router(router)
+
+    url = get_item.url(item_id=5, query_params={"tags": ["a", "b"], "page": 2})
+    assert url == "/items/5?tags=a&tags=b&page=2"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<p>Item 5 tags [&#x27;a&#x27;, &#x27;b&#x27;] page 2</p>"
+
+
 def test_air_router_post_with_url_method() -> None:
     """Test POST method with url helper function"""
     app = air.Air()

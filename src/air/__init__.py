@@ -1,5 +1,6 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
+from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
 
 from . import (

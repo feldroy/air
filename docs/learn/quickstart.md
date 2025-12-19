@@ -205,6 +205,39 @@ def index():
     )
 ```
 
+#### Query Parameters in URLs
+
+You can include query parameters when generating URLs using the `query_params` argument:
+
+```python
+@app.get('/search')
+def search(q: str = air.Query(""), page: int = air.Query(1)):
+    return air.H1(f"Search: {q}")
+
+# Generate URL with query parameters
+url = search.url(query_params={"q": "air", "page": 2})
+# Returns: "/search?q=air&page=2"
+
+# Use in templates
+@app.page
+def index():
+    return air.layouts.mvpcss(
+        air.A("Search for 'air'", href=search.url(query_params={"q": "air", "page": 1}))
+    )
+```
+
+Query parameters work with both scalar values and lists:
+
+```python
+@app.get('/filter')
+def filter_items(tags: list[str] | None = air.Query(None)):
+    return air.H1("Filtered Items")
+
+# Generate URL with list query parameters
+url = filter_items.url(query_params={"tags": ["python", "web"]})
+# Returns: "/filter?tags=python&tags=web"
+```
+
 ### Other HTTP Methods
 
 !!! warning

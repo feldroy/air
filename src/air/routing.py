@@ -13,6 +13,7 @@ from typing import (
     get_type_hints,
     override,
 )
+from urllib.parse import urlencode
 from warnings import deprecated
 
 from fastapi import params
@@ -97,7 +98,7 @@ class RouterMixin:
         """Stub for type checking - implemented by subclasses."""
         raise NotImplementedError
 
-    def url_path_for(self, name: str, **params: Any) -> str:
+    def url_path_for(self, name: str, /, **params: Any) -> str:
         """Stub for type checking - implemented by subclasses."""
         raise NotImplementedError
 
@@ -150,8 +151,8 @@ class RouterMixin:
             name: The route operation name (usually the function name or custom name).
 
         Returns:
-            A function that accepts **params (path parameters) and returns the
-            generated URL string.
+            A function that accepts **params (path parameters) and optional
+            `query_params` to return the generated URL string.
 
         Raises:
             NoMatchFound: If the route name doesn't exist or if the provided parameters
@@ -164,10 +165,21 @@ class RouterMixin:
 
             # The .url() method is created by this helper
             url = get_user.url(user_id=123)  # Returns: "/users/123"
+            url_with_query = get_user.url(user_id=123, query_params={"page": 2})
+            # Returns: "/users/123?page=2"
         """  # noqa: DOC502
 
         def helper_function(**params: Any) -> str:
-            return self.url_path_for(name, **params)
+            query_params = params.pop("query_params", None)
+            path = self.url_path_for(name, **params)
+
+            if query_params is None:
+                return path
+
+            query_string = urlencode(query_params, doseq=True)
+            if not query_string:
+                return path
+            return f"{path}?{query_string}"
 
         return helper_function
 
