@@ -643,7 +643,8 @@ class BaseTag:
         """
         # noinspection PyTypeChecker
         return tuple(
-            cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict for child_dict in children_dict
+            cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict  # type: ignore[arg-type]
+            for child_dict in children_dict
         )
 
     @classmethod
@@ -765,6 +766,7 @@ class BaseTag:
             cls._from_lexbor_node(child) for child in node.iter(include_text=True, skip_empty=True)
         )
         attributes: TagAttributesType = _migrate_html_attributes_to_air_tag(node)
+        assert node.tag is not None
         return cls._create_tag(node.tag, *children, **attributes)
 
     @classmethod
@@ -783,7 +785,7 @@ class BaseTag:
             TypeError: If the tag name is not registered.
         """
         try:
-            return cls.registry[name.lower()](*children, **attributes)
+            return cls.registry[name.lower()](*children, **attributes)  # type: ignore[arg-type]
         except KeyError as e:
             msg = f"Unable to create a new air-tag, <{name}> is not a registered tag name."
             raise TypeError(msg) from e
