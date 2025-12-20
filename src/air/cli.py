@@ -2,12 +2,13 @@ import logging
 from datetime import datetime
 from importlib.metadata import version
 from pathlib import Path
+import tempfile
+import shutil
 from typing import Annotated
 
 import typer
 from cookiecutter.main import cookiecutter
 from fastapi_cli.logging import setup_logging
-from jinja2 import Environment, FileSystemLoader
 from rich import print
 
 logger = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ try:
 except ImportError:  # pragma: no cover
     uvicorn = None  # type: ignore[assignment]
 
-template_path = Path(__file__).parent / "templates"
+templates_path = Path(__file__).parent / "templates"
 
 PYTHON_TO_POSTGRES = {
     "int": "INTEGER",
@@ -89,11 +90,28 @@ def init(
         print(f"[red]Air will not overwrite '{path}'.[/red]")
         raise typer.Abort
     if template is None:
-        project_path = template_path / "init"
-        cookiecutter(str(project_path), extra_context={"name": str(path)})
+        project_template_path = templates_path / "init"
+        cookiecutter(str(project_template_path), extra_context={"name": str(path)})
     else:
         cookiecutter(template)
     print(f"Created new project at '{path}'")
+
+
+def copytree_no_overwrite(src: Path, dst: Path) -> None:
+    src = Path(src)
+    dst = Path(dst)
+
+    for item in src.rglob("*"):
+        target = dst / item.relative_to(src)
+
+        if item.is_dir():
+            target.mkdir(parents=True, exist_ok=True)
+        else:
+            if target.exists():
+                # Skip existing files
+                continue
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(item, target)    
 
 
 @app.command()
@@ -121,7 +139,6 @@ def resource(
         - Basic Python types like str, int, float, etc
         - "text" is a long character field
     """
-    jinja_env = Environment(loader=FileSystemLoader(str(template_path / "resources"))) 
 
     # schema_path = Path() / "db" / "schema"
 
@@ -130,26 +147,31 @@ def resource(
         fields = []
 
     if engine == "asyncpg":
+        # Save cookiecutter to tmp location
+        # use shutil.copytree to bring it in
+
+        resource_template_path = templates_path / "resources"
+
         # Create route
-        route_path = Path() / "app" / "routes" / f'{name}.py'
         try:
-            route_path.touch()
+            (Path() / "app" / "routes" / "__init__.py").touch()
         except FileNotFoundError:
             print("[red bold]Error: Not in an Air project.[/red bold]")
             raise typer.Abort from None
-        template = jinja_env.get_template("app/routes/router.py")
-        output = template.render(name=name)
-        route_path.write_text(output)
-        print(f"Created router at {route_path}")
-
-        # do migration
+        
         field_dict = {}
         for field in fields:
             title, type = field.split(":")
             field_dict[title] = PYTHON_TO_POSTGRES.get(type, "VARCHAR(255)")
-        template = jinja_env.get_template("db/migrations/timestamp_initial.sql")
-        output = template.render(name=name, fields=field_dict)
-        migration_path = Path() / 'db' / 'migrations' / f'{timestamp_ymd_seconds()}_{name}_initial.sql'
-        migration_path.write_text(output)
-        print(f"Created initial migration at {migration_path}")
+                    
+        with tempfile.TemporaryDirectory() as tmpdir:
+            project_path = cookiecutter(
+                template=str(resource_template_path),
+                output_dir=tmpdir,
+                no_input=True,
+                extra_context={"name": name, "fields": field_dict, "project": "project"}
+            )        
+
+        copytree_no_overwrite(tmpdir, Path())
+        print(f"New resource create at {Path().expanduser()}")
 

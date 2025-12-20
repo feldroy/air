@@ -100,6 +100,7 @@ dependencies = [
     "typer>=0.20.0",
     "pydantic-settings>=2.12.0",
     "cookiecutter>=2.6.0",
+    "jinja2-time>=0.2.0",
 ]
 # endregion project
 
@@ -244,12 +245,6 @@ module-root = "src"
 # The single top-level package name under ./src. The backend validates this structure
 # to catch layout mistakes early.
 module-name = "air"
-
-[tool.uv.workspace]
-members = [
-    "blog",
-    "src/air/templates/init",
-]
 
 # endregion uv
 
