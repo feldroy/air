@@ -12,7 +12,6 @@
     ":semanticCommitScope(deps)",
     ":maintainLockFilesWeekly",
     ":prHourlyLimitNone",
-    "helpers:pinGitHubActionDigests",
   ],
   // Keep semantic commits explicit even though the preset already sets the scope
   semanticCommitScope: "deps",
