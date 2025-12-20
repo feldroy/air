@@ -2,8 +2,6 @@ import logging
 from datetime import datetime
 from importlib.metadata import version
 from pathlib import Path
-import tempfile
-import shutil
 from typing import Annotated
 
 import typer
@@ -26,17 +24,13 @@ PYTHON_TO_POSTGRES = {
     "bool": "BOOLEAN",
     "str": "VARCHAR(255)",
     "bytes": "BYTEA",
-
     "date": "DATE",
     "time": "TIME",
     "datetime": "TIMESTAMP",
-
     "uuid": "UUID",
-
     "dict": "JSONB",
     "list": "JSONB",
     "tuple": "JSONB",
-
     "object": "TEXT",
     "text": "TEXT",
 }
@@ -84,94 +78,24 @@ def init(
     ],
     template: Annotated[str | None, typer.Option(help="The Cookiecutter-style path to a project template.")] = None,
 ) -> None:
-    """Start new Air project"""
+    """Start new Air project
+
+    Args:
+        path: Location on the server where the project will be
+
+    Raises:
+        Abort: If the route name doesn't exist or if the provided parameters
+            don't match the route's path parameters.
+
+    """
     if path.exists():
         print(f"[bold red]ERROR: '{path}' already exists![/bold red]")
         print(f"[red]Air will not overwrite '{path}'.[/red]")
         raise typer.Abort
+
     if template is None:
         project_template_path = templates_path / "init"
-        cookiecutter(str(project_template_path), extra_context={"name": str(path)})
+        cookiecutter(str(project_template_path), extra_context={"name": path.name})
     else:
         cookiecutter(template)
-    print(f"Created new project at '{path}'")
-
-
-def copytree_no_overwrite(src: Path, dst: Path) -> None:
-    src = Path(src)
-    dst = Path(dst)
-
-    for item in src.rglob("*"):
-        target = dst / item.relative_to(src)
-
-        if item.is_dir():
-            target.mkdir(parents=True, exist_ok=True)
-        else:
-            if target.exists():
-                # Skip existing files
-                continue
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(item, target)    
-
-
-@app.command()
-def resource(
-    name: Annotated[
-        str,
-        typer.Argument(help="Name of the new resource."),
-    ],
-    engine: Annotated[
-        str,
-        typer.Option(help="Choose which database engine, currently only supports asyncpg"),
-    ] = "asyncpg",
-    fields: Annotated[
-        list[str] | None, typer.Argument(help="A set of 'name:type' pairs for defining fields in a resource")
-    ] = None,
-) -> None:
-    """
-    Creates a resource representing a database table.
-
-    - Create the schema in db/
-    - Create the initial migration in db/
-    - Create a router file with CRUD views in apps/routes
-
-    Supported types are:
-        - Basic Python types like str, int, float, etc
-        - "text" is a long character field
-    """
-
-    # schema_path = Path() / "db" / "schema"
-
-
-    if fields is None:
-        fields = []
-
-    if engine == "asyncpg":
-        # Save cookiecutter to tmp location
-        # use shutil.copytree to bring it in
-
-        resource_template_path = templates_path / "resources"
-
-        # Create route
-        try:
-            (Path() / "app" / "routes" / "__init__.py").touch()
-        except FileNotFoundError:
-            print("[red bold]Error: Not in an Air project.[/red bold]")
-            raise typer.Abort from None
-        
-        field_dict = {}
-        for field in fields:
-            title, type = field.split(":")
-            field_dict[title] = PYTHON_TO_POSTGRES.get(type, "VARCHAR(255)")
-                    
-        with tempfile.TemporaryDirectory() as tmpdir:
-            project_path = cookiecutter(
-                template=str(resource_template_path),
-                output_dir=tmpdir,
-                no_input=True,
-                extra_context={"name": name, "fields": field_dict, "project": "project"}
-            )        
-
-        copytree_no_overwrite(tmpdir, Path())
-        print(f"New resource create at {Path().expanduser()}")
-
+    print(f"Created project {path.name} at '{path}'")
