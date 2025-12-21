@@ -8,8 +8,12 @@ import air
 from .utils import clean_doc
 
 
-def _r(tag: air.BaseTag):
-    """Shortcut for easy renders"""
+def _r(tag: air.BaseTag) -> str:
+    """Shortcut for easy renders.
+
+    Returns:
+        Rendered HTML string.
+    """
     return tag.render()
 
 

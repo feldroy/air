@@ -2,6 +2,8 @@
 
 Welcome to the Air community! This page showcases community-created content, resources, and applications built with Air.
 
+- [Tools](tools.md) - Useful utilities and tools for Air
+
 ## Libraries
 
 Community libraries to help you build more with Air:

@@ -20,6 +20,9 @@ def get_free_port() -> int:
     Finds a free port on localhost for the live server.
 
     This is only necessary for parallel end to end tests to avoid port conflicts.
+
+    Returns:
+        A free port number.
     """
     sock = socket.socket()
     sock.bind(("", 0))
@@ -41,7 +44,7 @@ def run_server(port_queue: Queue[int]) -> None:
     uvicorn.run("airblog:app", host="127.0.0.1", port=port, log_level="error")
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def live_server() -> Generator[int]:
     """
     A generator function that starts a live server in a separate process.

@@ -28,7 +28,11 @@ EXCLUDED_PATHS = {
 
 
 def check_docstring_for_example(docstring: str | None) -> bool:
-    """Check if docstring contains an example."""
+    """Check if docstring contains an example.
+
+    Returns:
+        True if the docstring contains an example, False otherwise.
+    """
     if not docstring:
         return False
     return "Example:" in docstring
@@ -37,7 +41,8 @@ def check_docstring_for_example(docstring: str | None) -> bool:
 def collect_missing_examples(project_root: pathlib.Path) -> tuple[dict[pathlib.Path, list[str]], list[str]]:
     """Collect all missing examples from the codebase.
 
-    Returns a tuple of (missing_examples dict, list of excluded files).
+    Returns:
+        Tuple of (missing_examples dict, list of excluded files).
     """
     src_path = project_root / SRC_PATH
     missing_examples = defaultdict(list)
@@ -57,7 +62,11 @@ def collect_missing_examples(project_root: pathlib.Path) -> tuple[dict[pathlib.P
 
 
 def load_baseline(project_root: pathlib.Path) -> dict[str, list[str]]:
-    """Load baseline from JSON file."""
+    """Load baseline from JSON file.
+
+    Returns:
+        Dictionary containing the baseline missing examples data.
+    """
     baseline_path = project_root / BASELINE_FILE
     if not baseline_path.exists():
         return {}
@@ -79,7 +88,11 @@ def save_baseline(project_root: pathlib.Path, missing_examples: dict) -> None:
 
 
 def find_new_missing(current: dict, baseline: dict) -> dict[str, list[str]]:
-    """Find missing examples that are new (not in baseline)."""
+    """Find missing examples that are new (not in baseline).
+
+    Returns:
+        Dictionary of files and callables with new missing examples.
+    """
     new_missing = {}
 
     for file_path, callables in current.items():
@@ -99,8 +112,7 @@ def find_new_missing(current: dict, baseline: dict) -> dict[str, list[str]]:
 def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict, src_path: pathlib.Path) -> None:
     """Extract all callables from a Python file."""
     try:
-        with pathlib.Path(file_path).open("r", encoding="utf-8") as f:
-            tree = ast.parse(f.read())
+        tree = ast.parse(file_path.read_text())
     except (SyntaxError, UnicodeDecodeError):
         return
 

@@ -46,7 +46,7 @@ def submit_form(is_htmx: bool = Depends(air.is_htmx_request)):
     if is_htmx:
         return air.Div("Success!", class_="alert-success")
     else:
-        return RedirectResponse("/success", status_code=303)
+        return air.RedirectResponse("/success", status_code=303)
 ```
 
 ::: air.dependencies

@@ -572,6 +572,9 @@ class Air(FastAPI, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """Add a *path operation* using an HTTP GET operation.
 
+        Returns:
+            A decorator function that registers the decorated function as a GET endpoint.
+
         Example:
 
             import air
@@ -853,6 +856,9 @@ class Air(FastAPI, RouterMixin):
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """Add a *path operation* using an HTTP POST operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a POST endpoint.
 
         Example:
 
@@ -1150,6 +1156,9 @@ class Air(FastAPI, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP PATCH operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a PATCH endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1405,6 +1414,9 @@ class Air(FastAPI, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP PUT operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a PUT endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1660,6 +1672,9 @@ class Air(FastAPI, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP DELETE operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a DELETE endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:

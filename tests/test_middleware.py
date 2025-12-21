@@ -8,18 +8,18 @@ def test_session_middleware() -> None:
     app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 
     @app.page
-    async def check(request: air.Request):
+    async def check(request: air.Request) -> air.Html | air.Children:
         return air.layouts.mvpcss(
             air.H1(request.session.get("timestamp")),
         )
 
     @app.page
-    async def reset(request: air.Request):
+    async def reset(request: air.Request) -> air.P:
         request.session.pop("timestamp")
         return air.P("Reset")
 
     @app.get("/{timestamp}")
-    async def home(request: air.Request, timestamp: int):
+    async def home(request: air.Request, timestamp: int) -> air.Html | air.Children:
         request.session["timestamp"] = timestamp
         return air.layouts.mvpcss(
             air.H1(request.session.get("timestamp")),

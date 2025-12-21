@@ -10,8 +10,10 @@ from typing import (
     Any,
     Literal,
     Protocol,
+    get_type_hints,
     override,
 )
+from urllib.parse import urlencode
 from warnings import deprecated
 
 from fastapi import params
@@ -30,7 +32,7 @@ from .exception_handlers import default_404_router_handler
 from .requests import AirRequest
 from .responses import AirResponse
 from .types import MaybeAwaitable
-from .utils import compute_page_path, default_generate_unique_id
+from .utils import cached_signature, cached_unwrap, compute_page_path, default_generate_unique_id
 
 
 class RouteCallable(Protocol):
@@ -59,6 +61,25 @@ class RouteCallable(Protocol):
 class AirRoute(APIRoute):
     """Custom APIRoute that uses Air's custom AirRequest class."""
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize AirRoute and resolve string annotations from PEP 563."""
+
+        endpoint = kwargs.get("endpoint") or (args[1] if len(args) > 1 else None)
+
+        if endpoint is not None:
+            original = cached_unwrap(endpoint)
+            resolved_hints = get_type_hints(original, include_extras=True)
+            sig = cached_signature(endpoint)
+            endpoint.__signature__ = sig.replace(
+                parameters=[
+                    param.replace(annotation=resolved_hints.get(name, param.annotation))
+                    for name, param in sig.parameters.items()
+                ],
+                return_annotation=resolved_hints.get("return", sig.return_annotation),
+            )
+
+        super().__init__(*args, **kwargs)
+
     @override
     def get_route_handler(self) -> Callable:
         original_route_handler = super().get_route_handler()
@@ -77,14 +98,18 @@ class RouterMixin:
         """Stub for type checking - implemented by subclasses."""
         raise NotImplementedError
 
-    def url_path_for(self, name: str, **params: Any) -> str:
+    def url_path_for(self, name: str, /, **params: Any) -> str:
         """Stub for type checking - implemented by subclasses."""
         raise NotImplementedError
 
     def page(self, func: FunctionType) -> RouteCallable:
         """Decorator that creates a GET route using the function name as the path.
 
+        Underscores in the function name are converted to dashes in the URL.
         If the name of the function is "index", then the route is "/".
+
+        Returns:
+            The decorated function registered as a page route.
 
         Example:
 
@@ -126,8 +151,8 @@ class RouterMixin:
             name: The route operation name (usually the function name or custom name).
 
         Returns:
-            A function that accepts **params (path parameters) and returns the
-            generated URL string.
+            A function that accepts **params (path parameters) and optional
+            `query_params` to return the generated URL string.
 
         Raises:
             NoMatchFound: If the route name doesn't exist or if the provided parameters
@@ -140,10 +165,21 @@ class RouterMixin:
 
             # The .url() method is created by this helper
             url = get_user.url(user_id=123)  # Returns: "/users/123"
-        """
+            url_with_query = get_user.url(user_id=123, query_params={"page": 2})
+            # Returns: "/users/123?page=2"
+        """  # noqa: DOC502
 
         def helper_function(**params: Any) -> str:
-            return self.url_path_for(name, **params)
+            query_params = params.pop("query_params", None)
+            path = self.url_path_for(name, **params)
+
+            if query_params is None:
+                return path
+
+            query_string = urlencode(query_params, doseq=True)
+            if not query_string:
+                return path
+            return f"{path}?{query_string}"
 
         return helper_function
 
@@ -749,6 +785,9 @@ class AirRouter(APIRouter, RouterMixin):
         """
         Add a *path operation* using an HTTP GET operation.
 
+        Returns:
+            A decorator function that registers the decorated function as a GET endpoint.
+
         ## Example
 
         ```python
@@ -1143,6 +1182,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP POST operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a POST endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1521,6 +1563,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP PATCH operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a PATCH endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1898,6 +1943,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP PUT operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a PUT endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -2275,6 +2323,9 @@ class AirRouter(APIRouter, RouterMixin):
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Add a *path operation* using an HTTP DELETE operation.
+
+        Returns:
+            A decorator function that registers the decorated function as a DELETE endpoint.
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:

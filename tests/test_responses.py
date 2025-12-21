@@ -1,3 +1,4 @@
+from collections.abc import AsyncGenerator
 from typing import override
 
 from fastapi import status
@@ -207,12 +208,12 @@ def test_SSEResponse() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[air.P]:
         yield air.P("Hello")
         yield air.P("World")
 
     @app.get("/test")
-    async def test_endpoint():
+    async def test_endpoint() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -227,12 +228,12 @@ def test_SSEResponse_multiline_tag_content() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[air.P]:
         yield air.P("Hello\nWorld")
         yield air.P("World\nHello")
 
     @app.get("/test")
-    async def test_endpoint():
+    async def test_endpoint() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -249,12 +250,12 @@ def test_SSEResponse_multiline_tag_content() -> None:
 def test_SSEResponse_string_content() -> None:
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[str]:
         yield "Hello\nWorld"
         yield "Air is cool\nTry it out!"
 
     @app.get("/test")
-    async def test_endpoint():
+    async def test_endpoint() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -271,11 +272,11 @@ def test_SSEResponse_string_content() -> None:
 def test_SSEResponse_bytes_content() -> None:
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[bytes]:
         yield b"already encoded"
 
     @app.get("/test")
-    async def test_endpoint():
+    async def test_endpoint() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
@@ -291,11 +292,11 @@ def test_RedirectResponse() -> None:
     app = air.Air()
 
     @app.get("/test2")
-    async def another_test_endpoint():
+    async def another_test_endpoint() -> air.AirResponse:
         return air.AirResponse()
 
     @app.get("/test")
-    async def test_endpoint():
+    async def test_endpoint() -> air.RedirectResponse:
         return air.RedirectResponse("/test2")
 
     client = TestClient(app)

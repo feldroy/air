@@ -24,8 +24,9 @@ def parse_filename_class(filename: str) -> tuple[str, str | None, str | None] | 
     - 'module__Class.py' format for class-level examples (capitalized second part)
     - 'module__function.py' format for module-level functions (lowercase second part)
 
-    Returns (module, class_name, method_name), (module, class_name, None), or (module, None, function_name).
-    Returns None if filename is a test file or doesn't match expected pattern.
+    Returns:
+        Tuple of (module, class_name, method_name), (module, class_name, None), or (module, None, function_name).
+        Returns None if filename is a test file or doesn't match expected pattern.
     """
     if filename.endswith("__test.py") or filename == "__init__.py":
         return None
@@ -63,7 +64,8 @@ def update_example_section(
 ) -> bool:
     """Update the Example section in the specified class, method, or function's docstring.
 
-    Returns True if successful, False otherwise.
+    Returns:
+        True if successful, False otherwise.
     """
     content = file_path.read_text()
 
