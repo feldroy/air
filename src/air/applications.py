@@ -6,29 +6,29 @@ import inspect
 from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
-from typing import Annotated, Any, Literal, TypeVar
+from typing import Annotated, Any, Literal
 from warnings import deprecated
 
 from fastapi import FastAPI, routing
 from fastapi.params import Depends
-from fastapi.types import IncEx
 from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
 from starlette.responses import Response
 from starlette.routing import BaseRoute
-from starlette.types import Lifespan
+from starlette.types import Lifespan, Receive, Scope, Send
 from typing_extensions import Doc
 
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
-from .routing import AirRoute, RouteCallable, RouterMixin
+from .routing import AirRoute, AirRouter, RouteCallable, RouterMixin
 from .types import MaybeAwaitable
 
-AppType = TypeVar("AppType", bound="Air")
 
+class Air(RouterMixin):
+    """Air web framework - HTML-first web apps powered by FastAPI.
 
-class Air(FastAPI, RouterMixin):
-    """FastAPI wrapper class with AirResponse as the default response class.
+    Air uses composition, wrapping a FastAPI instance internally. This provides a clean, focused
+        API for HTML applications while leveraging FastAPI's toolkit.
 
     Args:
         debug: Enables additional logging or diagnostic output.
@@ -43,15 +43,20 @@ class Air(FastAPI, RouterMixin):
         lifespan: A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
         path_separator: An optional path separator, default to "-". valid option available ["/", "-"]
+
     Example:
 
         import air
 
         app = air.Air()
+
+        @app.get("/")
+        def index() -> air.H1:
+            return air.H1("Hello, World!")
     """
 
     def __init__(
-        self: AppType,
+        self,
         *,
         debug: Annotated[
             bool,
@@ -78,13 +83,8 @@ class Air(FastAPI, RouterMixin):
                 """
             ),
             deprecated(
-                """
-                You normally wouldn't use this parameter with FastAPI, it is inherited
-                from Starlette and supported for compatibility.
-
-                In FastAPI, you normally would use the *path operation methods*,
-                like `app.get()`, `app.post()`, etc.
-                """
+                "You normally wouldn't use this parameter with Air. "
+                "Use the path operation methods like app.get(), app.post(), etc."
             ),
         ] = None,
         servers: Annotated[
@@ -154,9 +154,7 @@ class Air(FastAPI, RouterMixin):
 
                 from .dependencies import func_dep_1, func_dep_2
 
-                app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])
-                ```
-                """
+                app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])"""
             ),
         ] = None,
         default_response_class: Annotated[
@@ -180,6 +178,8 @@ class Air(FastAPI, RouterMixin):
             bool,
             Doc(
                 """
+                TODO: Update for Air
+
                 Whether to detect and redirect slashes in URLs when the client doesn't
                 use the same format.
 
@@ -204,8 +204,8 @@ class Air(FastAPI, RouterMixin):
         ] = True,
         middleware: Annotated[
             Sequence[Middleware] | None,
-            Doc(
-                """
+            Doc("""
+                TODO: Update for Air
                 List of middleware to be added when creating the application.
 
                 In FastAPI you would normally do this with `app.add_middleware()`
@@ -213,13 +213,13 @@ class Air(FastAPI, RouterMixin):
 
                 Read more in the
                 [FastAPI docs for Middleware](https://fastapi.tiangolo.com/tutorial/middleware/).
-                """
-            ),
+                """),
         ] = None,
         exception_handlers: Annotated[
             ExceptionHandlersType | None,
             Doc(
                 """
+                TODO: Update for Air
                 A dictionary with handlers for exceptions.
 
                 In FastAPI, you would normally use the decorator
@@ -230,35 +230,11 @@ class Air(FastAPI, RouterMixin):
                 """
             ),
         ] = None,
-        on_startup: Annotated[
-            Sequence[Callable[[], Any]] | None,
-            Doc(
-                """
-                A list of startup event handler functions.
-
-                You should instead use the `lifespan` handlers.
-
-                Read more in the [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
-            ),
-        ] = None,
-        on_shutdown: Annotated[
-            Sequence[Callable[[], Any]] | None,
-            Doc(
-                """
-                A list of shutdown event handler functions.
-
-                You should instead use the `lifespan` handlers.
-
-                Read more in the
-                [FastAPI docs for `lifespan`](https://fastapi.tiangolo.com/advanced/events/).
-                """
-            ),
-        ] = None,
         lifespan: Annotated[
-            Lifespan[AppType] | None,
+            Lifespan[Any] | None,
             Doc(
                 """
+                TODO: Update for Air
                 A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
 
@@ -287,6 +263,7 @@ class Air(FastAPI, RouterMixin):
             bool | None,
             Doc(
                 """
+                TODO: Update for Air
                 Mark all *path operations* as deprecated. You probably don't need it,
                 but it's available.
 
@@ -299,409 +276,274 @@ class Air(FastAPI, RouterMixin):
         ] = None,
         docs_url: Annotated[
             str | None,
-            Doc(
-                """
-                The path at which to serve the Swagger UI documentation.
-
-                Set to `None` to disable it.
-                """
-            ),
+            Doc("The path to serve Swagger UI documentation. Set None to disable."),
         ] = None,
         redoc_url: Annotated[
             str | None,
-            Doc(
-                """
-                The path at which to serve the ReDoc documentation.
-
-                Set to `None` to disable it.
-                """
-            ),
+            Doc("The path to serve ReDoc documentation. Set None to disable."),
         ] = None,
         openapi_url: Annotated[
             str | None,
-            Doc(
-                """
-                The URL where the OpenAPI schema will be served from.
-
-                Set to `None` to disable it.
-                """
-            ),
+            Doc("The URL where the OpenAPI schema will be served. Set  None to disable."),
         ] = None,
-        path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
+        path_separator: Annotated[
+            Literal["/", "-"],
+            Doc("An optional path separator."),
+        ] = "-",
         **extra: Annotated[
             Any,
             Doc(
                 """
-                Extra keyword arguments to be stored in the app, not used by FastAPI
+                Extra keyword arguments to be stored in the app, not used by Air
                 anywhere.
                 """
             ),
         ],
     ) -> None:
-        """Initialize Air app with AirResponse as default response class.
+        """Initialize Air app with composition over FastAPI.
 
         This preserves most FastAPI initialization parameters while setting:
-            - AirResponse as the default response class.
-            - AirRoute as the default route class.
+        - AirResponse as the default response class.
+        - AirRoute as the default route class.
         """
         self.path_separator = path_separator
+
+        # Merge default exception handlers
         if exception_handlers is None:
             exception_handlers = {}
-        exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
-        super().__init__(
+        exception_handlers = {**exception_handlers, **DEFAULT_EXCEPTION_HANDLERS}
+
+        # Create internal FastAPI instance
+        self._app = FastAPI(
             debug=debug,
             routes=routes,
             servers=servers,
             dependencies=dependencies,
             default_response_class=default_response_class,
             middleware=middleware,
-            exception_handlers=exception_handlers,  # ty: ignore[invalid-argument-type]
-            on_startup=on_startup,
-            on_shutdown=on_shutdown,
-            lifespan=lifespan,  # ty: ignore[invalid-argument-type]
+            exception_handlers=exception_handlers,  # type: ignore[arg-type]
+            on_startup=None,
+            on_shutdown=None,
+            lifespan=lifespan,
             docs_url=docs_url,
             redoc_url=redoc_url,
             openapi_url=openapi_url,
             webhooks=webhooks,
             deprecated=deprecated,
+            redirect_slashes=redirect_slashes,
             **extra,
         )
 
-        self.router.route_class = AirRoute
+        # Use Air's custom route class
+        self._app.router.route_class = AirRoute
+
+    # =========================================================================
+    # ASGI Interface
+    # =========================================================================
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        """ASGI interface - delegates to internal FastAPI app."""
+        await self._app(scope, receive, send)
+
+    # =========================================================================
+    # FastAPI Proxies - expose commonly needed functionality
+    # =========================================================================
+
+    @property
+    def state(self) -> Any:
+        """Application state, shared across requests."""
+        return self._app.state
+
+    @property
+    def router(self) -> routing.APIRouter:
+        """The application router."""
+        return self._app.router
+
+    @property
+    def routes(self) -> list[BaseRoute]:
+        """The list of routes."""
+        return self._app.routes
+
+    @property
+    def debug(self) -> bool:
+        """Debug mode status."""
+        return self._app.debug
+
+    @debug.setter
+    def debug(self, value: bool) -> None:
+        self._app.debug = value
+
+    @property
+    def dependency_overrides(self) -> dict[Callable[..., Any], Callable[..., Any]]:
+        """Dependency overrides for testing."""
+        return self._app.dependency_overrides
+
+    @property
+    def exception_handlers(self) -> dict[Any, Callable[..., Any]]:
+        """Exception handlers for this application."""
+        return self._app.exception_handlers
+
+    def url_path_for(self, name: str, /, **path_params: Any) -> str:
+        """Generate a URL path for a named route.
+
+        Returns:
+            The generated URL path string.
+        """
+        return str(self._app.url_path_for(name, **path_params))
+
+    def add_middleware(
+        self,
+        middleware_class: type,
+        **options: Any,
+    ) -> None:
+        """Add middleware to the application."""
+        self._app.add_middleware(middleware_class, **options)
+
+    def include_router(
+        self,
+        router: AirRouter | routing.APIRouter,
+        *,
+        prefix: str = "",
+        tags: list[str | Enum] | None = None,
+        dependencies: Sequence[Depends] | None = None,
+        responses: dict[int | str, dict[str, Any]] | None = None,
+        deprecated: bool | None = None,
+        include_in_schema: bool = True,
+        default_response_class: type[Response] = AirResponse,
+        callbacks: list[BaseRoute] | None = None,
+        generate_unique_id_function: Callable[[routing.APIRoute], str] = generate_unique_id,
+    ) -> None:
+        """Include a router in this application."""
+        self._app.include_router(
+            router,
+            prefix=prefix,
+            tags=tags,
+            dependencies=dependencies,
+            responses=responses,
+            deprecated=deprecated,
+            include_in_schema=include_in_schema,
+            default_response_class=default_response_class,
+            callbacks=callbacks,
+            generate_unique_id_function=generate_unique_id_function,
+        )
+
+    def exception_handler(
+        self,
+        exc_class_or_status_code: int | type[Exception],
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+        """Add an exception handler to the application.
+
+        Returns:
+            A decorator that registers the exception handler.
+        """
+        return self._app.exception_handler(exc_class_or_status_code)
+
+    def middleware(self, middleware_type: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+        """Add a middleware function using a decorator.
+
+        Returns:
+            A decorator that registers the middleware function.
+        """
+        return self._app.middleware(middleware_type)
+
+    def mount(
+        self,
+        path: str,
+        app: Any,
+        name: str | None = None,
+    ) -> None:
+        """Mount a sub-application."""
+        self._app.mount(path, app, name=name)
+
+    @property
+    def fastapi_app(self) -> FastAPI:
+        """Access the underlying FastAPI app for advanced use cases.
+
+        Use this if you need FastAPI-specific features like:
+        - OpenAPI customization
+        - response_model for JSON endpoints
+        - WebSocket handling
+
+        Example:
+            @app.fastapi_app.get("/api/users", response_model=list[User])
+            async def api_get_users():
+                return users
+        """
+        return self._app
+
+    # =========================================================================
+    # Route Decorators - Clean API without response_model clutter
+    # =========================================================================
 
     def get(
         self,
         path: Annotated[
             str,
-            Doc(
-                """
-                The URL path to be used for this *path operation*.
-
-                For example, in `http://example.com/items`, the path is `/items`.
-                """
-            ),
+            Doc("The URL path for this path operation."),
         ],
         *,
-        response_model: Annotated[
-            Any,
-            Doc(
-                """
-                The type to use for the response.
-
-                It could be any valid Pydantic *field* type. So, it doesn't have to
-                be a Pydantic model, it could be other things, like a `list`, `dict`,
-                etc.
-
-                It will be used for:
-
-                * Documentation: the generated OpenAPI (and the UI at `/docs`) will
-                    show it as the response (JSON Schema).
-                * Serialization: you could return an arbitrary object and the
-                    `response_model` would be used to serialize that object into the
-                    corresponding JSON.
-                * Filtering: the JSON sent to the client will only contain the data
-                    (fields) defined in the `response_model`. If you returned an object
-                    that contains an attribute `password` but the `response_model` does
-                    not include that field, the JSON sent to the client would not have
-                    that `password`.
-                * Validation: whatever you return will be serialized with the
-                    `response_model`, converting any data as necessary to generate the
-                    corresponding JSON. But if the data in the object returned is not
-                    valid, that would mean a violation of the contract with the client,
-                    so it's an error from the API developer. So, FastAPI will raise an
-                    error and return a 500 error code (Internal Server Error).
-
-                Read more about it in the
-                [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """
-            ),
-        ] = None,
         status_code: Annotated[
             int | None,
-            Doc(
-                """
-                The default status code to be used for the response.
-
-                You could override the status code by returning a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """
-            ),
+            Doc("The default status code for the response."),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc(
-                """
-                A list of tags to be applied to the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """
-            ),
+            Doc("Tags for OpenAPI documentation."),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc(
-                """
-                A list of dependencies (using `Depends()`) to be applied to the
-                *path operation*.
-
-                Read more about it in the
-                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """
-            ),
+            Doc("Dependencies for this path operation."),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc(
-                """
-                A summary for the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Summary for OpenAPI documentation."),
         ] = None,
         description: Annotated[
             str | None,
-            Doc(
-                """
-                A description for the *path operation*.
-
-                If not provided, it will be extracted automatically from the docstring
-                of the *path operation function*.
-
-                It can contain Markdown.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Description for OpenAPI documentation."),
         ] = None,
         response_description: Annotated[
             str,
-            Doc(
-                """
-                The description for the default response.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Description for the default response."),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc(
-                """
-                Additional responses that could be returned by this *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Additional responses for OpenAPI."),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc(
-                """
-                Mark this *path operation* as deprecated.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Mark this path operation as deprecated."),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc(
-                """
-                Custom operation ID to be used by this *path operation*.
-
-                By default, it is generated automatically.
-
-                If you provide a custom operation ID, you need to make sure it is
-                unique for the whole API.
-
-                You can customize the
-                operation ID generation with the parameter
-                `generate_unique_id_function` in the `FastAPI` class.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Custom operation ID for OpenAPI."),
         ] = None,
-        response_model_include: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to include only certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_exclude: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to exclude certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_by_alias: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response model
-                should be serialized by alias when an alias is used.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = True,
-        response_model_exclude_unset: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that were not set and
-                have their default values. This is different from
-                `response_model_exclude_defaults` in that if the fields are set,
-                they will be included in the response, even if the value is the same
-                as the default.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_defaults: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that have the same value
-                as the default. This is different from `response_model_exclude_unset`
-                in that if the fields are set but contain the same default values,
-                they will be excluded from the response.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_none: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data should
-                exclude fields set to `None`.
-
-                This is much simpler (less smart) than `response_model_exclude_unset`
-                and `response_model_exclude_defaults`. You probably want to use one of
-                those two instead of this one, as those allow returning `None` values
-                when it makes sense.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """
-            ),
-        ] = False,
         include_in_schema: Annotated[
             bool,
-            Doc(
-                """
-                Include this *path operation* in the generated OpenAPI schema.
-
-                This affects the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """
-            ),
+            Doc("Include in OpenAPI schema."),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc(
-                """
-                Response class to be used for this *path operation*.
-
-                This will not be used if you return a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """
-            ),
+            Doc("Response class for this path operation."),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc(
-                """
-                Name for this *path operation*. Only used internally.
-                """
-            ),
+            Doc("Name for this path operation."),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc(
-                """
-                List of *path operations* that will be used as OpenAPI callbacks.
-
-                This is only for OpenAPI documentation, the callbacks won't be used
-                directly.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """
-            ),
+            Doc("OpenAPI callbacks."),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc(
-                """
-                Extra metadata to be included in the OpenAPI schema for this *path
-                operation*.
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """
-            ),
+            Doc("Extra OpenAPI metadata."),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc(
-                """
-                Customize the function used to generate unique IDs for the *path
-                operations* shown in the generated OpenAPI.
-
-                This is particularly useful when automatically generating clients or
-                SDKs for your API.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Function to generate unique IDs for OpenAPI."),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """Add a *path operation* using an HTTP GET operation.
+        """Add a GET path operation.
 
         Returns:
             A decorator function that registers the decorated function as a GET endpoint.
@@ -712,26 +554,16 @@ class Air(FastAPI, RouterMixin):
 
             app = air.Air()
 
-
             @app.get("/hello")
             def hello_world() -> air.H1:
-                # Simple GET endpoint returning HTML.
                 return air.H1("Hello, World!")
-
 
             @app.get("/users/{user_id}")
             def get_user(user_id: int) -> air.Div:
-                # GET endpoint with path parameter.
                 return air.Div(
                     air.H2(f"User ID: {user_id}"),
-                    air.P("This is a user profile page"),
+                    air.P("User profile page"),
                 )
-
-
-            if __name__ == "__main__":
-                import uvicorn
-
-                uvicorn.run(app, host="0.0.0.0", port=8000)
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -742,12 +574,11 @@ class Air(FastAPI, RouterMixin):
                     result = await result
                 if isinstance(result, Response):
                     return result
-                # Force HTML for non-Response results
                 return response_class(result)
 
-            decorated = super(Air, self).get(
+            decorated = self._app.get(
                 path,
-                response_model=response_model,
+                response_model=None,
                 status_code=status_code,
                 tags=tags,
                 dependencies=dependencies,
@@ -757,12 +588,12 @@ class Air(FastAPI, RouterMixin):
                 responses=responses,
                 deprecated=deprecated,
                 operation_id=operation_id,
-                response_model_include=response_model_include,
-                response_model_exclude=response_model_exclude,
-                response_model_by_alias=response_model_by_alias,
-                response_model_exclude_unset=response_model_exclude_unset,
-                response_model_exclude_defaults=response_model_exclude_defaults,
-                response_model_exclude_none=response_model_exclude_none,
+                response_model_include=None,
+                response_model_exclude=None,
+                response_model_by_alias=True,
+                response_model_exclude_unset=False,
+                response_model_exclude_defaults=False,
+                response_model_exclude_none=False,
                 include_in_schema=include_in_schema,
                 response_class=response_class,
                 name=name,
@@ -780,335 +611,71 @@ class Air(FastAPI, RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc(
-                """
-                The URL path to be used for this *path operation*.
-
-                For example, in `http://example.com/items`, the path is `/items`.
-                """
-            ),
+            Doc("The URL path for this path operation."),
         ],
         *,
-        response_model: Annotated[
-            Any,
-            Doc(
-                """
-                The type to use for the response.
-
-                It could be any valid Pydantic *field* type. So, it doesn't have to
-                be a Pydantic model, it could be other things, like a `list`, `dict`,
-                etc.
-
-                It will be used for:
-
-                * Documentation: the generated OpenAPI (and the UI at `/docs`) will
-                    show it as the response (JSON Schema).
-                * Serialization: you could return an arbitrary object and the
-                    `response_model` would be used to serialize that object into the
-                    corresponding JSON.
-                * Filtering: the JSON sent to the client will only contain the data
-                    (fields) defined in the `response_model`. If you returned an object
-                    that contains an attribute `password` but the `response_model` does
-                    not include that field, the JSON sent to the client would not have
-                    that `password`.
-                * Validation: whatever you return will be serialized with the
-                    `response_model`, converting any data as necessary to generate the
-                    corresponding JSON. But if the data in the object returned is not
-                    valid, that would mean a violation of the contract with the client,
-                    so it's an error from the API developer. So, FastAPI will raise an
-                    error and return a 500 error code (Internal Server Error).
-
-                Read more about it in the
-                [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """
-            ),
-        ] = None,
         status_code: Annotated[
             int | None,
-            Doc(
-                """
-                The default status code to be used for the response.
-
-                You could override the status code by returning a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """
-            ),
+            Doc("The default status code for the response."),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc(
-                """
-                A list of tags to be applied to the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """
-            ),
+            Doc("Tags for OpenAPI documentation."),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc(
-                """
-                A list of dependencies (using `Depends()`) to be applied to the
-                *path operation*.
-
-                Read more about it in the
-                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """
-            ),
+            Doc("Dependencies for this path operation."),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc(
-                """
-                A summary for the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Summary for OpenAPI documentation."),
         ] = None,
         description: Annotated[
             str | None,
-            Doc(
-                """
-                A description for the *path operation*.
-
-                If not provided, it will be extracted automatically from the docstring
-                of the *path operation function*.
-
-                It can contain Markdown.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Description for OpenAPI documentation."),
         ] = None,
         response_description: Annotated[
             str,
-            Doc(
-                """
-                The description for the default response.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Description for the default response."),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc(
-                """
-                Additional responses that could be returned by this *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Additional responses for OpenAPI."),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc(
-                """
-                Mark this *path operation* as deprecated.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Mark this path operation as deprecated."),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc(
-                """
-                Custom operation ID to be used by this *path operation*.
-
-                By default, it is generated automatically.
-
-                If you provide a custom operation ID, you need to make sure it is
-                unique for the whole API.
-
-                You can customize the
-                operation ID generation with the parameter
-                `generate_unique_id_function` in the `FastAPI` class.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Custom operation ID for OpenAPI."),
         ] = None,
-        response_model_include: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to include only certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_exclude: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to exclude certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_by_alias: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response model
-                should be serialized by alias when an alias is used.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = True,
-        response_model_exclude_unset: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that were not set and
-                have their default values. This is different from
-                `response_model_exclude_defaults` in that if the fields are set,
-                they will be included in the response, even if the value is the same
-                as the default.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_defaults: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that have the same value
-                as the default. This is different from `response_model_exclude_unset`
-                in that if the fields are set but contain the same default values,
-                they will be excluded from the response.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_none: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data should
-                exclude fields set to `None`.
-
-                This is much simpler (less smart) than `response_model_exclude_unset`
-                and `response_model_exclude_defaults`. You probably want to use one of
-                those two instead of this one, as those allow returning `None` values
-                when it makes sense.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """
-            ),
-        ] = False,
         include_in_schema: Annotated[
             bool,
-            Doc(
-                """
-                Include this *path operation* in the generated OpenAPI schema.
-
-                This affects the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """
-            ),
+            Doc("Include in OpenAPI schema."),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc(
-                """
-                Response class to be used for this *path operation*.
-
-                This will not be used if you return a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """
-            ),
+            Doc("Response class for this path operation."),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc(
-                """
-                Name for this *path operation*. Only used internally.
-                """
-            ),
+            Doc("Name for this path operation."),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc(
-                """
-                List of *path operations* that will be used as OpenAPI callbacks.
-
-                This is only for OpenAPI documentation, the callbacks won't be used
-                directly.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """
-            ),
+            Doc("OpenAPI callbacks."),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc(
-                """
-                Extra metadata to be included in the OpenAPI schema for this *path
-                operation*.
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """
-            ),
+            Doc("Extra OpenAPI metadata."),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc(
-                """
-                Customize the function used to generate unique IDs for the *path
-                operations* shown in the generated OpenAPI.
-
-                This is particularly useful when automatically generating clients or
-                SDKs for your API.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Function to generate unique IDs for OpenAPI."),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """Add a *path operation* using an HTTP POST operation.
+        """Add a POST path operation.
 
         Returns:
             A decorator function that registers the decorated function as a POST endpoint.
@@ -1116,43 +683,20 @@ class Air(FastAPI, RouterMixin):
         Example:
 
             from pydantic import BaseModel
-
             import air
 
-
             class UserCreate(BaseModel):
-                # User creation model.
-
                 name: str
                 email: str
 
-
             app = air.Air()
-
-
-            @app.post("/submit")
-            def submit_form() -> air.Div:
-                # Simple POST endpoint.
-                return air.Div(
-                    air.H2("Form Submitted!"),
-                    air.P("Thank you for your submission"),
-                )
-
 
             @app.post("/users")
             def create_user(user: UserCreate) -> air.Div:
-                # POST endpoint with request body.
                 return air.Div(
                     air.H2("User Created"),
                     air.P(f"Name: {user.name}"),
-                    air.P(f"Email: {user.email}"),
                 )
-
-
-            if __name__ == "__main__":
-                import uvicorn
-
-                uvicorn.run(app, host="0.0.0.0", port=8000)
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -1163,12 +707,11 @@ class Air(FastAPI, RouterMixin):
                     result = await result
                 if isinstance(result, Response):
                     return result
-                # Force HTML for non-Response results
                 return response_class(result)
 
-            decorated = super(Air, self).post(
+            decorated = self._app.post(
                 path,
-                response_model=response_model,
+                response_model=None,
                 status_code=status_code,
                 tags=tags,
                 dependencies=dependencies,
@@ -1178,12 +721,12 @@ class Air(FastAPI, RouterMixin):
                 responses=responses,
                 deprecated=deprecated,
                 operation_id=operation_id,
-                response_model_include=response_model_include,
-                response_model_exclude=response_model_exclude,
-                response_model_by_alias=response_model_by_alias,
-                response_model_exclude_unset=response_model_exclude_unset,
-                response_model_exclude_defaults=response_model_exclude_defaults,
-                response_model_exclude_none=response_model_exclude_none,
+                response_model_include=None,
+                response_model_exclude=None,
+                response_model_by_alias=True,
+                response_model_exclude_unset=False,
+                response_model_exclude_defaults=False,
+                response_model_exclude_none=False,
                 include_in_schema=include_in_schema,
                 response_class=response_class,
                 name=name,
@@ -1201,336 +744,71 @@ class Air(FastAPI, RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc(
-                """
-                The URL path to be used for this *path operation*.
-
-                For example, in `http://example.com/items`, the path is `/items`.
-                """
-            ),
+            Doc("The URL path for this path operation."),
         ],
         *,
-        response_model: Annotated[
-            Any,
-            Doc(
-                """
-                The type to use for the response.
-
-                It could be any valid Pydantic *field* type. So, it doesn't have to
-                be a Pydantic model, it could be other things, like a `list`, `dict`,
-                etc.
-
-                It will be used for:
-
-                * Documentation: the generated OpenAPI (and the UI at `/docs`) will
-                    show it as the response (JSON Schema).
-                * Serialization: you could return an arbitrary object and the
-                    `response_model` would be used to serialize that object into the
-                    corresponding JSON.
-                * Filtering: the JSON sent to the client will only contain the data
-                    (fields) defined in the `response_model`. If you returned an object
-                    that contains an attribute `password` but the `response_model` does
-                    not include that field, the JSON sent to the client would not have
-                    that `password`.
-                * Validation: whatever you return will be serialized with the
-                    `response_model`, converting any data as necessary to generate the
-                    corresponding JSON. But if the data in the object returned is not
-                    valid, that would mean a violation of the contract with the client,
-                    so it's an error from the API developer. So, FastAPI will raise an
-                    error and return a 500 error code (Internal Server Error).
-
-                Read more about it in the
-                [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """
-            ),
-        ] = None,
         status_code: Annotated[
             int | None,
-            Doc(
-                """
-                The default status code to be used for the response.
-
-                You could override the status code by returning a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """
-            ),
+            Doc("The default status code for the response."),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc(
-                """
-                A list of tags to be applied to the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """
-            ),
+            Doc("Tags for OpenAPI documentation."),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc(
-                """
-                A list of dependencies (using `Depends()`) to be applied to the
-                *path operation*.
-
-                Read more about it in the
-                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """
-            ),
+            Doc("Dependencies for this path operation."),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc(
-                """
-                A summary for the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Summary for OpenAPI documentation."),
         ] = None,
         description: Annotated[
             str | None,
-            Doc(
-                """
-                A description for the *path operation*.
-
-                If not provided, it will be extracted automatically from the docstring
-                of the *path operation function*.
-
-                It can contain Markdown.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Description for OpenAPI documentation."),
         ] = None,
         response_description: Annotated[
             str,
-            Doc(
-                """
-                The description for the default response.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Description for the default response."),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc(
-                """
-                Additional responses that could be returned by this *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Additional responses for OpenAPI."),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc(
-                """
-                Mark this *path operation* as deprecated.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Mark this path operation as deprecated."),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc(
-                """
-                Custom operation ID to be used by this *path operation*.
-
-                By default, it is generated automatically.
-
-                If you provide a custom operation ID, you need to make sure it is
-                unique for the whole API.
-
-                You can customize the
-                operation ID generation with the parameter
-                `generate_unique_id_function` in the `FastAPI` class.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Custom operation ID for OpenAPI."),
         ] = None,
-        response_model_include: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to include only certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_exclude: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to exclude certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_by_alias: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response model
-                should be serialized by alias when an alias is used.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = True,
-        response_model_exclude_unset: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that were not set and
-                have their default values. This is different from
-                `response_model_exclude_defaults` in that if the fields are set,
-                they will be included in the response, even if the value is the same
-                as the default.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_defaults: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that have the same value
-                as the default. This is different from `response_model_exclude_unset`
-                in that if the fields are set but contain the same default values,
-                they will be excluded from the response.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_none: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data should
-                exclude fields set to `None`.
-
-                This is much simpler (less smart) than `response_model_exclude_unset`
-                and `response_model_exclude_defaults`. You probably want to use one of
-                those two instead of this one, as those allow returning `None` values
-                when it makes sense.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """
-            ),
-        ] = False,
         include_in_schema: Annotated[
             bool,
-            Doc(
-                """
-                Include this *path operation* in the generated OpenAPI schema.
-
-                This affects the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """
-            ),
+            Doc("Include in OpenAPI schema."),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc(
-                """
-                Response class to be used for this *path operation*.
-
-                This will not be used if you return a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """
-            ),
+            Doc("Response class for this path operation."),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc(
-                """
-                Name for this *path operation*. Only used internally.
-                """
-            ),
+            Doc("Name for this path operation."),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc(
-                """
-                List of *path operations* that will be used as OpenAPI callbacks.
-
-                This is only for OpenAPI documentation, the callbacks won't be used
-                directly.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """
-            ),
+            Doc("OpenAPI callbacks."),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc(
-                """
-                Extra metadata to be included in the OpenAPI schema for this *path
-                operation*.
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """
-            ),
+            Doc("Extra OpenAPI metadata."),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc(
-                """
-                Customize the function used to generate unique IDs for the *path
-                operations* shown in the generated OpenAPI.
-
-                This is particularly useful when automatically generating clients or
-                SDKs for your API.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Function to generate unique IDs for OpenAPI."),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """
-        Add a *path operation* using an HTTP PATCH operation.
+        """Add a PATCH path operation.
 
         Returns:
             A decorator function that registers the decorated function as a PATCH endpoint.
@@ -1546,9 +824,9 @@ class Air(FastAPI, RouterMixin):
                     return result
                 return response_class(result)
 
-            decorated = super(Air, self).patch(
+            decorated = self._app.patch(
                 path,
-                response_model=response_model,
+                response_model=None,
                 status_code=status_code,
                 tags=tags,
                 dependencies=dependencies,
@@ -1558,12 +836,12 @@ class Air(FastAPI, RouterMixin):
                 responses=responses,
                 deprecated=deprecated,
                 operation_id=operation_id,
-                response_model_include=response_model_include,
-                response_model_exclude=response_model_exclude,
-                response_model_by_alias=response_model_by_alias,
-                response_model_exclude_unset=response_model_exclude_unset,
-                response_model_exclude_defaults=response_model_exclude_defaults,
-                response_model_exclude_none=response_model_exclude_none,
+                response_model_include=None,
+                response_model_exclude=None,
+                response_model_by_alias=True,
+                response_model_exclude_unset=False,
+                response_model_exclude_defaults=False,
+                response_model_exclude_none=False,
                 include_in_schema=include_in_schema,
                 response_class=response_class,
                 name=name,
@@ -1581,336 +859,71 @@ class Air(FastAPI, RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc(
-                """
-                The URL path to be used for this *path operation*.
-
-                For example, in `http://example.com/items`, the path is `/items`.
-                """
-            ),
+            Doc("The URL path for this path operation."),
         ],
         *,
-        response_model: Annotated[
-            Any,
-            Doc(
-                """
-                The type to use for the response.
-
-                It could be any valid Pydantic *field* type. So, it doesn't have to
-                be a Pydantic model, it could be other things, like a `list`, `dict`,
-                etc.
-
-                It will be used for:
-
-                * Documentation: the generated OpenAPI (and the UI at `/docs`) will
-                    show it as the response (JSON Schema).
-                * Serialization: you could return an arbitrary object and the
-                    `response_model` would be used to serialize that object into the
-                    corresponding JSON.
-                * Filtering: the JSON sent to the client will only contain the data
-                    (fields) defined in the `response_model`. If you returned an object
-                    that contains an attribute `password` but the `response_model` does
-                    not include that field, the JSON sent to the client would not have
-                    that `password`.
-                * Validation: whatever you return will be serialized with the
-                    `response_model`, converting any data as necessary to generate the
-                    corresponding JSON. But if the data in the object returned is not
-                    valid, that would mean a violation of the contract with the client,
-                    so it's an error from the API developer. So, FastAPI will raise an
-                    error and return a 500 error code (Internal Server Error).
-
-                Read more about it in the
-                [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """
-            ),
-        ] = None,
         status_code: Annotated[
             int | None,
-            Doc(
-                """
-                The default status code to be used for the response.
-
-                You could override the status code by returning a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """
-            ),
+            Doc("The default status code for the response."),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc(
-                """
-                A list of tags to be applied to the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """
-            ),
+            Doc("Tags for OpenAPI documentation."),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc(
-                """
-                A list of dependencies (using `Depends()`) to be applied to the
-                *path operation*.
-
-                Read more about it in the
-                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """
-            ),
+            Doc("Dependencies for this path operation."),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc(
-                """
-                A summary for the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Summary for OpenAPI documentation."),
         ] = None,
         description: Annotated[
             str | None,
-            Doc(
-                """
-                A description for the *path operation*.
-
-                If not provided, it will be extracted automatically from the docstring
-                of the *path operation function*.
-
-                It can contain Markdown.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Description for OpenAPI documentation."),
         ] = None,
         response_description: Annotated[
             str,
-            Doc(
-                """
-                The description for the default response.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Description for the default response."),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc(
-                """
-                Additional responses that could be returned by this *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Additional responses for OpenAPI."),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc(
-                """
-                Mark this *path operation* as deprecated.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Mark this path operation as deprecated."),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc(
-                """
-                Custom operation ID to be used by this *path operation*.
-
-                By default, it is generated automatically.
-
-                If you provide a custom operation ID, you need to make sure it is
-                unique for the whole API.
-
-                You can customize the
-                operation ID generation with the parameter
-                `generate_unique_id_function` in the `FastAPI` class.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Custom operation ID for OpenAPI."),
         ] = None,
-        response_model_include: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to include only certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_exclude: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to exclude certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_by_alias: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response model
-                should be serialized by alias when an alias is used.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = True,
-        response_model_exclude_unset: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that were not set and
-                have their default values. This is different from
-                `response_model_exclude_defaults` in that if the fields are set,
-                they will be included in the response, even if the value is the same
-                as the default.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_defaults: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that have the same value
-                as the default. This is different from `response_model_exclude_unset`
-                in that if the fields are set but contain the same default values,
-                they will be excluded from the response.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_none: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data should
-                exclude fields set to `None`.
-
-                This is much simpler (less smart) than `response_model_exclude_unset`
-                and `response_model_exclude_defaults`. You probably want to use one of
-                those two instead of this one, as those allow returning `None` values
-                when it makes sense.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """
-            ),
-        ] = False,
         include_in_schema: Annotated[
             bool,
-            Doc(
-                """
-                Include this *path operation* in the generated OpenAPI schema.
-
-                This affects the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """
-            ),
+            Doc("Include in OpenAPI schema."),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc(
-                """
-                Response class to be used for this *path operation*.
-
-                This will not be used if you return a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """
-            ),
+            Doc("Response class for this path operation."),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc(
-                """
-                Name for this *path operation*. Only used internally.
-                """
-            ),
+            Doc("Name for this path operation."),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc(
-                """
-                List of *path operations* that will be used as OpenAPI callbacks.
-
-                This is only for OpenAPI documentation, the callbacks won't be used
-                directly.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """
-            ),
+            Doc("OpenAPI callbacks."),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc(
-                """
-                Extra metadata to be included in the OpenAPI schema for this *path
-                operation*.
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """
-            ),
+            Doc("Extra OpenAPI metadata."),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc(
-                """
-                Customize the function used to generate unique IDs for the *path
-                operations* shown in the generated OpenAPI.
-
-                This is particularly useful when automatically generating clients or
-                SDKs for your API.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Function to generate unique IDs for OpenAPI."),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """
-        Add a *path operation* using an HTTP PUT operation.
+        """Add a PUT path operation.
 
         Returns:
             A decorator function that registers the decorated function as a PUT endpoint.
@@ -1926,9 +939,9 @@ class Air(FastAPI, RouterMixin):
                     return result
                 return response_class(result)
 
-            decorated = super(Air, self).put(
+            decorated = self._app.put(
                 path,
-                response_model=response_model,
+                response_model=None,
                 status_code=status_code,
                 tags=tags,
                 dependencies=dependencies,
@@ -1938,12 +951,12 @@ class Air(FastAPI, RouterMixin):
                 responses=responses,
                 deprecated=deprecated,
                 operation_id=operation_id,
-                response_model_include=response_model_include,
-                response_model_exclude=response_model_exclude,
-                response_model_by_alias=response_model_by_alias,
-                response_model_exclude_unset=response_model_exclude_unset,
-                response_model_exclude_defaults=response_model_exclude_defaults,
-                response_model_exclude_none=response_model_exclude_none,
+                response_model_include=None,
+                response_model_exclude=None,
+                response_model_by_alias=True,
+                response_model_exclude_unset=False,
+                response_model_exclude_defaults=False,
+                response_model_exclude_none=False,
                 include_in_schema=include_in_schema,
                 response_class=response_class,
                 name=name,
@@ -1961,336 +974,71 @@ class Air(FastAPI, RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc(
-                """
-                The URL path to be used for this *path operation*.
-
-                For example, in `http://example.com/items`, the path is `/items`.
-                """
-            ),
+            Doc("The URL path for this path operation."),
         ],
         *,
-        response_model: Annotated[
-            Any,
-            Doc(
-                """
-                The type to use for the response.
-
-                It could be any valid Pydantic *field* type. So, it doesn't have to
-                be a Pydantic model, it could be other things, like a `list`, `dict`,
-                etc.
-
-                It will be used for:
-
-                * Documentation: the generated OpenAPI (and the UI at `/docs`) will
-                    show it as the response (JSON Schema).
-                * Serialization: you could return an arbitrary object and the
-                    `response_model` would be used to serialize that object into the
-                    corresponding JSON.
-                * Filtering: the JSON sent to the client will only contain the data
-                    (fields) defined in the `response_model`. If you returned an object
-                    that contains an attribute `password` but the `response_model` does
-                    not include that field, the JSON sent to the client would not have
-                    that `password`.
-                * Validation: whatever you return will be serialized with the
-                    `response_model`, converting any data as necessary to generate the
-                    corresponding JSON. But if the data in the object returned is not
-                    valid, that would mean a violation of the contract with the client,
-                    so it's an error from the API developer. So, FastAPI will raise an
-                    error and return a 500 error code (Internal Server Error).
-
-                Read more about it in the
-                [FastAPI docs for Response Model](https://fastapi.tiangolo.com/tutorial/response-model/).
-                """
-            ),
-        ] = None,
         status_code: Annotated[
             int | None,
-            Doc(
-                """
-                The default status code to be used for the response.
-
-                You could override the status code by returning a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
-                """
-            ),
+            Doc("The default status code for the response."),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc(
-                """
-                A list of tags to be applied to the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
-                """
-            ),
+            Doc("Tags for OpenAPI documentation."),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc(
-                """
-                A list of dependencies (using `Depends()`) to be applied to the
-                *path operation*.
-
-                Read more about it in the
-                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
-                """
-            ),
+            Doc("Dependencies for this path operation."),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc(
-                """
-                A summary for the *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Summary for OpenAPI documentation."),
         ] = None,
         description: Annotated[
             str | None,
-            Doc(
-                """
-                A description for the *path operation*.
-
-                If not provided, it will be extracted automatically from the docstring
-                of the *path operation function*.
-
-                It can contain Markdown.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
+            Doc("Description for OpenAPI documentation."),
         ] = None,
         response_description: Annotated[
             str,
-            Doc(
-                """
-                The description for the default response.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Description for the default response."),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc(
-                """
-                Additional responses that could be returned by this *path operation*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Additional responses for OpenAPI."),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc(
-                """
-                Mark this *path operation* as deprecated.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-                """
-            ),
+            Doc("Mark this path operation as deprecated."),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc(
-                """
-                Custom operation ID to be used by this *path operation*.
-
-                By default, it is generated automatically.
-
-                If you provide a custom operation ID, you need to make sure it is
-                unique for the whole API.
-
-                You can customize the
-                operation ID generation with the parameter
-                `generate_unique_id_function` in the `FastAPI` class.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Custom operation ID for OpenAPI."),
         ] = None,
-        response_model_include: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to include only certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_exclude: Annotated[
-            IncEx | None,
-            Doc(
-                """
-                Configuration passed to Pydantic to exclude certain fields in the
-                response data.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = None,
-        response_model_by_alias: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response model
-                should be serialized by alias when an alias is used.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_include-and-response_model_exclude).
-                """
-            ),
-        ] = True,
-        response_model_exclude_unset: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that were not set and
-                have their default values. This is different from
-                `response_model_exclude_defaults` in that if the fields are set,
-                they will be included in the response, even if the value is the same
-                as the default.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_defaults: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data
-                should have all the fields, including the ones that have the same value
-                as the default. This is different from `response_model_exclude_unset`
-                in that if the fields are set but contain the same default values,
-                they will be excluded from the response.
-
-                When `True`, default values are omitted from the response.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#use-the-response_model_exclude_unset-parameter).
-                """
-            ),
-        ] = False,
-        response_model_exclude_none: Annotated[
-            bool,
-            Doc(
-                """
-                Configuration passed to Pydantic to define if the response data should
-                exclude fields set to `None`.
-
-                This is much simpler (less smart) than `response_model_exclude_unset`
-                and `response_model_exclude_defaults`. You probably want to use one of
-                those two instead of this one, as those allow returning `None` values
-                when it makes sense.
-
-                Read more about it in the
-                [FastAPI docs for Response Model - Return Type](https://fastapi.tiangolo.com/tutorial/response-model/#response_model_exclude_none).
-                """
-            ),
-        ] = False,
         include_in_schema: Annotated[
             bool,
-            Doc(
-                """
-                Include this *path operation* in the generated OpenAPI schema.
-
-                This affects the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
-                """
-            ),
+            Doc("Include in OpenAPI schema."),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc(
-                """
-                Response class to be used for this *path operation*.
-
-                This will not be used if you return a response directly.
-
-                Read more about it in the
-                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
-                """
-            ),
+            Doc("Response class for this path operation."),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc(
-                """
-                Name for this *path operation*. Only used internally.
-                """
-            ),
+            Doc("Name for this path operation."),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc(
-                """
-                List of *path operations* that will be used as OpenAPI callbacks.
-
-                This is only for OpenAPI documentation, the callbacks won't be used
-                directly.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
-                """
-            ),
+            Doc("OpenAPI callbacks."),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc(
-                """
-                Extra metadata to be included in the OpenAPI schema for this *path
-                operation*.
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
-                """
-            ),
+            Doc("Extra OpenAPI metadata."),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc(
-                """
-                Customize the function used to generate unique IDs for the *path
-                operations* shown in the generated OpenAPI.
-
-                This is particularly useful when automatically generating clients or
-                SDKs for your API.
-
-                Read more about it in the
-                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
-                """
-            ),
+            Doc("Function to generate unique IDs for OpenAPI."),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """
-        Add a *path operation* using an HTTP DELETE operation.
+        """Add a DELETE path operation.
 
         Returns:
             A decorator function that registers the decorated function as a DELETE endpoint.
@@ -2306,9 +1054,9 @@ class Air(FastAPI, RouterMixin):
                     return result
                 return response_class(result)
 
-            decorated = super(Air, self).delete(
+            decorated = self._app.delete(
                 path,
-                response_model=response_model,
+                response_model=None,
                 status_code=status_code,
                 tags=tags,
                 dependencies=dependencies,
@@ -2318,12 +1066,12 @@ class Air(FastAPI, RouterMixin):
                 responses=responses,
                 deprecated=deprecated,
                 operation_id=operation_id,
-                response_model_include=response_model_include,
-                response_model_exclude=response_model_exclude,
-                response_model_by_alias=response_model_by_alias,
-                response_model_exclude_unset=response_model_exclude_unset,
-                response_model_exclude_defaults=response_model_exclude_defaults,
-                response_model_exclude_none=response_model_exclude_none,
+                response_model_include=None,
+                response_model_exclude=None,
+                response_model_by_alias=True,
+                response_model_exclude_unset=False,
+                response_model_exclude_defaults=False,
+                response_model_exclude_none=False,
                 include_in_schema=include_in_schema,
                 response_class=response_class,
                 name=name,
