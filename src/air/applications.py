@@ -465,6 +465,7 @@ class Air(RouterMixin):
         - WebSocket handling
 
         Example:
+
             @app.fastapi_app.get("/api/users", response_model=list[User])
             async def api_get_users():
                 return users
