@@ -77,6 +77,7 @@ def init(
         typer.Argument(help="Path for where the new project will be built."),
     ],
     template: Annotated[str | None, typer.Option(help="The Cookiecutter-style path to a project template.")] = None,
+    defaults: Annotated[bool, typer.Option(help="Assume defaults for the project")] = False
 ) -> None:
     """Start new Air project
 
@@ -86,7 +87,6 @@ def init(
     Raises:
         Abort: If the route name doesn't exist or if the provided parameters
             don't match the route's path parameters.
-
     """
     if path.exists():
         print(f"[bold red]ERROR: '{path}' already exists![/bold red]")
@@ -95,7 +95,27 @@ def init(
 
     if template is None:
         project_template_path = templates_path / "init"
-        cookiecutter(str(project_template_path), extra_context={"name": path.name})
+        cookiecutter(str(project_template_path), extra_context={"name": path.name}, no_input=defaults)
     else:
         cookiecutter(template)
-    print(f"Created project {path.name} at '{path}'")
+    print(f"Created project {path.name} at '{path.expanduser()}/'")
+
+
+@app.command()
+def resource(
+    action: Annotated[
+        str,
+        typer.Argument(help="Resource command, coming soon!"),
+    ],
+    template: Annotated[str | None, typer.Option(help="The Cookiecutter-style path to a project template.")] = None,
+) -> None:
+    """Build or update resource
+
+    Args:
+        action: Subcommand for resource controls
+
+    Raises:
+        Abort: For any errors.
+    """
+    print('Not yet implemented')
+    raise typer.Abort
