@@ -230,7 +230,6 @@ class Air(RouterMixin):
             Lifespan[Any] | None,
             Doc(
                 """
-                TODO: Update for Air
                 A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
 
@@ -259,7 +258,6 @@ class Air(RouterMixin):
             bool | None,
             Doc(
                 """
-                TODO: Update for Air
                 Mark all *path operations* as deprecated. You probably don't need it,
                 but it's available.
 
