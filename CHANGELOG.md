@@ -1,5 +1,43 @@
 ### Latest Changes
 
+# 0.43.0 - 2025-12-22
+
+## What's Changed
+
+### New feature
+
+* FEAT: Add support for query params in .url() function by @aybruhm in https://github.com/feldroy/air/pull/899 (First time contribution!)
+* FEAT: Add caching for inspect.signature and inspect.unwrap by @msaizar in https://github.com/feldroy/air/pull/903
+
+## Bugfixes
+
+* BUGFIX Handle more edge cases in from_html by @pygarap in https://github.com/feldroy/air/pull/891
+* BUGFIX: Resolve PEP 563 string annotations in AirRoute by @msaizar in https://github.com/feldroy/air/pull/893
+
+## Documentation changes
+
+* DOCS: Update html to source tag by @pydanny in https://github.com/feldroy/air/pull/883
+* DOCS: Remove airbook by @pydanny in https://github.com/feldroy/air/pull/884
+* DOCS: Improve docs in preparation for the beta of Air by @audreyfeldroy in https://github.com/feldroy/air/pull/890
+* DOCS: Improve page decorator docs by @audreyfeldroy in https://github.com/feldroy/air/pull/894
+* DOCS: improve RedirectResponse for AI and editors by @audreyfeldroy in https://github.com/feldroy/air/pull/897
+
+## Chores
+
+* CHORE: Update FastAPI to 0.125.0 and modernize other libraries by @pydanny in https://github.com/feldroy/air/pull/901
+* CHORE: Remove ANN201 and add return types by @msaizar in https://github.com/feldroy/air/pull/880
+* CHORE: Remove ANN202 rule by @msaizar in https://github.com/feldroy/air/pull/887
+* CHORE: Remove FBT rules by @msaizar in https://github.com/feldroy/air/pull/888
+* CHORE: Uncomment PT rule in ruff by @msaizar in https://github.com/feldroy/air/pull/889
+* CHORE: Exclude htmlcov directory from codespell checks by @audreyfeldroy in https://github.com/feldroy/air/pull/898
+* CHORE: Uncomment DOC ruff rule by @msaizar in https://github.com/feldroy/air/pull/900
+* CHORE: Renovate to update by version not hash by @pydanny in https://github.com/feldroy/air/pull/905
+
+## New Contributors
+* @aybruhm made their first contribution in https://github.com/feldroy/air/pull/899
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.42.0...v0.43.0
+
 # 0.42.0 - 2025-12-08
 
 ## What's Changed
