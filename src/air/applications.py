@@ -178,17 +178,15 @@ class Air(RouterMixin):
             bool,
             Doc(
                 """
-                TODO: Update for Air
-
                 Whether to detect and redirect slashes in URLs when the client doesn't
                 use the same format.
 
                 **Example**
 
                 ```python
-                from fastapi import FastAPI
+                import air
 
-                app = FastAPI(redirect_slashes=True)  # the default
+                app = Air(redirect_slashes=True)  # the default
 
 
                 @app.get("/items/")
@@ -205,10 +203,9 @@ class Air(RouterMixin):
         middleware: Annotated[
             Sequence[Middleware] | None,
             Doc("""
-                TODO: Update for Air
                 List of middleware to be added when creating the application.
 
-                In FastAPI you would normally do this with `app.add_middleware()`
+                In FastAPI and Air you would normally do this with `app.add_middleware()`
                 instead.
 
                 Read more in the
@@ -219,10 +216,9 @@ class Air(RouterMixin):
             ExceptionHandlersType | None,
             Doc(
                 """
-                TODO: Update for Air
                 A dictionary with handlers for exceptions.
 
-                In FastAPI, you would normally use the decorator
+                In FastAPI and Air, you would normally use the decorator
                 `@app.exception_handler()`.
 
                 Read more in the
