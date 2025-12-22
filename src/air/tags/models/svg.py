@@ -38,7 +38,7 @@ class A(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -55,9 +55,9 @@ class A(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Animate(CaseTag):
@@ -80,7 +80,7 @@ class Animate(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -101,9 +101,9 @@ class Animate(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class AnimateMotion(CaseTag):
@@ -120,7 +120,7 @@ class AnimateMotion(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -135,9 +135,9 @@ class AnimateMotion(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class AnimateTransform(CaseTag):
@@ -155,7 +155,7 @@ class AnimateTransform(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -171,9 +171,9 @@ class AnimateTransform(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Circle(CaseTag):
@@ -188,7 +188,7 @@ class Circle(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -201,9 +201,9 @@ class Circle(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class ClipPath(CaseTag):
@@ -215,7 +215,7 @@ class ClipPath(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -225,9 +225,9 @@ class ClipPath(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Defs(CaseTag):
@@ -238,7 +238,7 @@ class Defs(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -247,9 +247,9 @@ class Defs(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Desc(CaseTag):
@@ -260,7 +260,7 @@ class Desc(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -269,9 +269,9 @@ class Desc(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Ellipse(CaseTag):
@@ -287,7 +287,7 @@ class Ellipse(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -301,9 +301,9 @@ class Ellipse(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeBlend(CaseTag):
@@ -318,7 +318,7 @@ class FeBlend(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -331,9 +331,9 @@ class FeBlend(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeColorMatrix(CaseTag):
@@ -348,7 +348,7 @@ class FeColorMatrix(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -361,9 +361,9 @@ class FeColorMatrix(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeComponentTransfer(CaseTag):
@@ -376,7 +376,7 @@ class FeComponentTransfer(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -387,9 +387,9 @@ class FeComponentTransfer(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeComposite(CaseTag):
@@ -408,7 +408,7 @@ class FeComposite(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -425,9 +425,9 @@ class FeComposite(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeConvolveMatrix(CaseTag):
@@ -448,7 +448,7 @@ class FeConvolveMatrix(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -467,9 +467,9 @@ class FeConvolveMatrix(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeDiffuseLighting(CaseTag):
@@ -485,7 +485,7 @@ class FeDiffuseLighting(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -499,9 +499,9 @@ class FeDiffuseLighting(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeDisplacementMap(CaseTag):
@@ -518,7 +518,7 @@ class FeDisplacementMap(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -533,9 +533,9 @@ class FeDisplacementMap(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeDistantLight(CaseTag):
@@ -548,7 +548,7 @@ class FeDistantLight(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -559,9 +559,9 @@ class FeDistantLight(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeDropShadow(CaseTag):
@@ -577,7 +577,7 @@ class FeDropShadow(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -591,9 +591,9 @@ class FeDropShadow(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeFlood(CaseTag):
@@ -607,7 +607,7 @@ class FeFlood(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -619,9 +619,9 @@ class FeFlood(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeFuncA(CaseTag):
@@ -639,7 +639,7 @@ class FeFuncA(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -655,9 +655,9 @@ class FeFuncA(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeFuncB(CaseTag):
@@ -675,7 +675,7 @@ class FeFuncB(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -691,9 +691,9 @@ class FeFuncB(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeFuncG(CaseTag):
@@ -711,7 +711,7 @@ class FeFuncG(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -727,9 +727,9 @@ class FeFuncG(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeFuncR(CaseTag):
@@ -747,7 +747,7 @@ class FeFuncR(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -763,9 +763,9 @@ class FeFuncR(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeGaussianBlur(CaseTag):
@@ -780,7 +780,7 @@ class FeGaussianBlur(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -793,9 +793,9 @@ class FeGaussianBlur(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeImage(CaseTag):
@@ -810,7 +810,7 @@ class FeImage(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -823,9 +823,9 @@ class FeImage(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeMerge(CaseTag):
@@ -837,7 +837,7 @@ class FeMerge(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -847,9 +847,9 @@ class FeMerge(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeMergeNode(CaseTag):
@@ -861,7 +861,7 @@ class FeMergeNode(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -871,9 +871,9 @@ class FeMergeNode(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeMorphology(CaseTag):
@@ -888,7 +888,7 @@ class FeMorphology(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -901,9 +901,9 @@ class FeMorphology(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeOffset(CaseTag):
@@ -918,7 +918,7 @@ class FeOffset(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -931,9 +931,9 @@ class FeOffset(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FePointLight(CaseTag):
@@ -947,7 +947,7 @@ class FePointLight(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -959,9 +959,9 @@ class FePointLight(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeSpecularLighting(CaseTag):
@@ -978,7 +978,7 @@ class FeSpecularLighting(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -993,9 +993,9 @@ class FeSpecularLighting(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeSpotLight(CaseTag):
@@ -1014,7 +1014,7 @@ class FeSpotLight(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1031,9 +1031,9 @@ class FeSpotLight(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeTile(CaseTag):
@@ -1046,7 +1046,7 @@ class FeTile(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1057,9 +1057,9 @@ class FeTile(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class FeTurbulence(CaseTag):
@@ -1076,7 +1076,7 @@ class FeTurbulence(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1091,9 +1091,9 @@ class FeTurbulence(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Filter(CaseTag):
@@ -1110,7 +1110,7 @@ class Filter(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1125,9 +1125,9 @@ class Filter(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class ForeignObject(CaseTag):
@@ -1142,7 +1142,7 @@ class ForeignObject(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1155,9 +1155,9 @@ class ForeignObject(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class G(CaseTag):
@@ -1168,7 +1168,7 @@ class G(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1177,9 +1177,9 @@ class G(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Image(CaseTag):
@@ -1199,7 +1199,7 @@ class Image(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1217,9 +1217,9 @@ class Image(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Line(CaseTag):
@@ -1235,7 +1235,7 @@ class Line(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1249,9 +1249,9 @@ class Line(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class LinearGradient(CaseTag):
@@ -1270,7 +1270,7 @@ class LinearGradient(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1287,9 +1287,9 @@ class LinearGradient(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Marker(CaseTag):
@@ -1308,7 +1308,7 @@ class Marker(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1325,9 +1325,9 @@ class Marker(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Mask(CaseTag):
@@ -1345,7 +1345,7 @@ class Mask(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1361,9 +1361,9 @@ class Mask(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Metadata(CaseTag):
@@ -1374,7 +1374,7 @@ class Metadata(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1383,9 +1383,9 @@ class Metadata(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Mpath(CaseTag):
@@ -1397,7 +1397,7 @@ class Mpath(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1407,9 +1407,9 @@ class Mpath(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Path(CaseTag):
@@ -1422,7 +1422,7 @@ class Path(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1433,9 +1433,9 @@ class Path(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Pattern(CaseTag):
@@ -1456,7 +1456,7 @@ class Pattern(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1475,9 +1475,9 @@ class Pattern(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Polygon(CaseTag):
@@ -1490,7 +1490,7 @@ class Polygon(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1501,9 +1501,9 @@ class Polygon(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Polyline(CaseTag):
@@ -1516,7 +1516,7 @@ class Polyline(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1527,9 +1527,9 @@ class Polyline(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class RadialGradient(CaseTag):
@@ -1550,7 +1550,7 @@ class RadialGradient(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1569,9 +1569,9 @@ class RadialGradient(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Rect(CaseTag):
@@ -1589,7 +1589,7 @@ class Rect(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1605,9 +1605,9 @@ class Rect(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Script(CaseTag):
@@ -1622,7 +1622,7 @@ class Script(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1635,9 +1635,9 @@ class Script(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Set(CaseTag):
@@ -1652,7 +1652,7 @@ class Set(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1665,9 +1665,9 @@ class Set(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Stop(CaseTag):
@@ -1681,7 +1681,7 @@ class Stop(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1693,9 +1693,9 @@ class Stop(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Style(CaseTag):
@@ -1708,7 +1708,7 @@ class Style(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1719,9 +1719,9 @@ class Style(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Svg(CaseTag):
@@ -1738,7 +1738,7 @@ class Svg(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1753,9 +1753,9 @@ class Svg(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Switch(CaseTag):
@@ -1766,7 +1766,7 @@ class Switch(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1775,9 +1775,9 @@ class Switch(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Symbol(CaseTag):
@@ -1796,7 +1796,7 @@ class Symbol(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1813,9 +1813,9 @@ class Symbol(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Text(CaseTag):
@@ -1833,7 +1833,7 @@ class Text(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1849,9 +1849,9 @@ class Text(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class TextPath(CaseTag):
@@ -1870,7 +1870,7 @@ class TextPath(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1887,9 +1887,9 @@ class TextPath(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Title(CaseTag):
@@ -1900,7 +1900,7 @@ class Title(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1909,9 +1909,9 @@ class Title(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Tspan(CaseTag):
@@ -1929,7 +1929,7 @@ class Tspan(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1945,9 +1945,9 @@ class Tspan(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Use(CaseTag):
@@ -1963,7 +1963,7 @@ class Use(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -1977,9 +1977,9 @@ class Use(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class View(CaseTag):
@@ -1992,7 +1992,7 @@ class View(CaseTag):
         class_: Substituted as the DOM `class` attribute.
         id: DOM ID attribute.
         style: Inline style attribute.
-        **kwargs: Additional attributes.
+        **custom_attributes: Additional attributes.
     """
 
     def __init__(
@@ -2003,6 +2003,6 @@ class View(CaseTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
