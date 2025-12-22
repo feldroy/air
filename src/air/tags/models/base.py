@@ -702,7 +702,7 @@ class BaseTag:
         return cls.from_html(html_source).to_source()
 
     @classmethod
-    def from_html(cls, html_source: str) -> BaseTag | str:
+    def from_html(cls, html_source: str) -> BaseTag:
         """Reconstruct the corresponding air-tag tree from the given HTML content.
 
         Args:
@@ -727,7 +727,11 @@ class BaseTag:
         if not _is_lexbor_html_parser_valid(parser=parser, is_fragment=is_fragment):
             msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
             raise ValueError(msg)
-        return cls._from_lexbor_node(parser.root)  # type: ignore[arg-type]
+        air_tag = cls._from_lexbor_node(parser.root)  # type: ignore[arg-type]
+        if not air_tag or not isinstance(air_tag, BaseTag):
+            msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
+            raise ValueError(msg)
+        return air_tag
 
     @classmethod
     def _from_lexbor_node(cls, node: LexborNode) -> BaseTag | str:
