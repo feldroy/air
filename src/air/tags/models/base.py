@@ -628,11 +628,11 @@ class BaseTag:
         name: str = source_dict[TagKeys.NAME]
         attributes: TagAttributesType = source_dict[TagKeys.ATTRIBUTES]
         children_dict: TagChildrenTypeForDict = source_dict[TagKeys.CHILDREN]
-        children: TagChildrenTypeForDict = cls._from_child_dict(children_dict)
+        children: TagChildrenType = cls._from_child_dict(children_dict)
         return cls._create_tag(name, *children, **attributes)
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagChildrenTypeForDict) -> TagChildrenTypeForDict:
+    def _from_child_dict(cls, children_dict: TagChildrenTypeForDict) -> TagChildrenType:
         """Restore serialized children into tag instances or raw values.
 
         Args:
@@ -643,9 +643,9 @@ class BaseTag:
         """
         # noinspection PyTypeChecker
         return tuple(
-            cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict  # type: ignore[arg-type]
+            cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict  # type: ignore[invalid-argument-type]
             for child_dict in children_dict
-        )
+        )  # type: ignore[invalid-return-type]
 
     @classmethod
     def from_json(cls, source_json: str) -> BaseTag:
@@ -727,7 +727,11 @@ class BaseTag:
         if not _is_lexbor_html_parser_valid(parser=parser, is_fragment=is_fragment):
             msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
             raise ValueError(msg)
-        return cls._from_lexbor_node(parser.root)  # type: ignore[arg-type,return-value]
+        air_tag = cls._from_lexbor_node(parser.root)  # type: ignore[arg-type]
+        if not air_tag or not isinstance(air_tag, BaseTag):
+            msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
+            raise ValueError(msg)
+        return air_tag
 
     @classmethod
     def _from_lexbor_node(cls, node: LexborNode) -> BaseTag | str:
@@ -743,6 +747,9 @@ class BaseTag:
         Raises:
             ValueError: If the node type cannot be handled.
         """
+        if not node.tag:
+            msg = f"Unable to parse <{node!r}>."
+            raise ValueError(msg)
         if node.is_element_node:
             return cls._from_element_node(node)
         if node.is_text_node and node.text_content:
@@ -766,11 +773,10 @@ class BaseTag:
             cls._from_lexbor_node(child) for child in node.iter(include_text=True, skip_empty=True)
         )
         attributes: TagAttributesType = _migrate_html_attributes_to_air_tag(node)
-        assert node.tag is not None
-        return cls._create_tag(node.tag, *children, **attributes)
+        return cls._create_tag(node.tag, *children, **attributes)  # ty:ignore[invalid-argument-type]
 
     @classmethod
-    def _create_tag(cls, name: str, /, *children: Renderable | TagDictType, **attributes: AttributeType) -> BaseTag:
+    def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:
         """Instantiate a registered tag by name.
 
         Args:
@@ -785,7 +791,7 @@ class BaseTag:
             TypeError: If the tag name is not registered.
         """
         try:
-            return cls.registry[name.lower()](*children, **attributes)  # type: ignore[arg-type]
+            return cls.registry[name.lower()](*children, **attributes)
         except KeyError as e:
             msg = f"Unable to create a new air-tag, <{name}> is not a registered tag name."
             raise TypeError(msg) from e
