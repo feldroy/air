@@ -141,7 +141,7 @@ class Script(UnSafeTag):
         class_: Substituted as the DOM ``class`` attribute.
         id: DOM ``id`` attribute.
         style: Inline style attribute.
-        attributes: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     @override
