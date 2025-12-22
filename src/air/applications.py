@@ -168,7 +168,6 @@ class Air(RouterMixin):
                 ```python
                 from fastapi import FastAPI
                 from air import AirResponse
-
                 app = FastAPI(default_response_class=AirResponse)
                 ```
                 """
@@ -202,15 +201,17 @@ class Air(RouterMixin):
         ] = True,
         middleware: Annotated[
             Sequence[Middleware] | None,
-            Doc("""
+            Doc(
+                """
                 List of middleware to be added when creating the application.
 
-                In FastAPI and Air you would normally do this with `app.add_middleware()`
+                In FastAPI you would normally do this with `app.add_middleware()`
                 instead.
 
                 Read more in the
                 [FastAPI docs for Middleware](https://fastapi.tiangolo.com/tutorial/middleware/).
-                """),
+                """
+            ),
         ] = None,
         exception_handlers: Annotated[
             ExceptionHandlersType | None,
@@ -270,15 +271,33 @@ class Air(RouterMixin):
         ] = None,
         docs_url: Annotated[
             str | None,
-            Doc("The path to serve Swagger UI documentation. Set None to disable."),
+            Doc(
+                """
+                The path at which to serve the Swagger UI documentation.
+
+                Set to `None` to disable it.
+                """
+            ),
         ] = None,
         redoc_url: Annotated[
             str | None,
-            Doc("The path to serve ReDoc documentation. Set None to disable."),
+            Doc(
+                """
+                The path at which to serve the ReDoc documentation.
+
+                Set to `None` to disable it.
+                """
+            ),
         ] = None,
         openapi_url: Annotated[
             str | None,
-            Doc("The URL where the OpenAPI schema will be served. Set  None to disable."),
+            Doc(
+                """
+                The URL where the OpenAPI schema will be served from.
+
+                Set to `None` to disable it.
+                """
+            ),
         ] = None,
         path_separator: Annotated[
             Literal["/", "-"],
@@ -297,15 +316,13 @@ class Air(RouterMixin):
         """Initialize Air app with composition over FastAPI.
 
         This preserves most FastAPI initialization parameters while setting:
-        - AirResponse as the default response class.
-        - AirRoute as the default route class.
+            - AirResponse as the default response class.
+            - AirRoute as the default route class.
         """
         self.path_separator = path_separator
-
-        # Merge default exception handlers
         if exception_handlers is None:
             exception_handlers = {}
-        exception_handlers = {**exception_handlers, **DEFAULT_EXCEPTION_HANDLERS}
+        exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
 
         # Create internal FastAPI instance
         self._app = FastAPI(
@@ -474,71 +491,213 @@ class Air(RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc("The URL path for this path operation."),
+            Doc(
+                """
+                The URL path to be used for this *path operation*.
+
+                For example, in `http://example.com/items`, the path is `/items`.
+                """
+            ),
         ],
         *,
         status_code: Annotated[
             int | None,
-            Doc("The default status code for the response."),
+            Doc(
+                """
+                The default status code to be used for the response.
+
+                You could override the status code by returning a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
+                """
+            ),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc("Tags for OpenAPI documentation."),
+            Doc(
+                """
+                A list of tags to be applied to the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
+                """
+            ),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc("Dependencies for this path operation."),
+            Doc(
+                """
+                A list of dependencies (using `Depends()`) to be applied to the
+                *path operation*.
+
+                Read more about it in the
+                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
+                """
+            ),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc("Summary for OpenAPI documentation."),
+            Doc(
+                """
+                A summary for the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         description: Annotated[
             str | None,
-            Doc("Description for OpenAPI documentation."),
+            Doc(
+                """
+                A description for the *path operation*.
+
+                If not provided, it will be extracted automatically from the docstring
+                of the *path operation function*.
+
+                It can contain Markdown.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         response_description: Annotated[
             str,
-            Doc("Description for the default response."),
+            Doc(
+                """
+                The description for the default response.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc("Additional responses for OpenAPI."),
+            Doc(
+                """
+                Additional responses that could be returned by this *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc("Mark this path operation as deprecated."),
+            Doc(
+                """
+                Mark this *path operation* as deprecated.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc("Custom operation ID for OpenAPI."),
+            Doc(
+                """
+                Custom operation ID to be used by this *path operation*.
+
+                By default, it is generated automatically.
+
+                If you provide a custom operation ID, you need to make sure it is
+                unique for the whole API.
+
+                You can customize the
+                operation ID generation with the parameter
+                `generate_unique_id_function` in the `FastAPI` class.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = None,
         include_in_schema: Annotated[
             bool,
-            Doc("Include in OpenAPI schema."),
+            Doc(
+                """
+                Include this *path operation* in the generated OpenAPI schema.
+
+                This affects the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
+                """
+            ),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc("Response class for this path operation."),
+            Doc(
+                """
+                Response class to be used for this *path operation*.
+
+                This will not be used if you return a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
+                """
+            ),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc("Name for this path operation."),
+            Doc(
+                """
+                Name for this *path operation*. Only used internally.
+                """
+            ),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc("OpenAPI callbacks."),
+            Doc(
+                """
+                List of *path operations* that will be used as OpenAPI callbacks.
+
+                This is only for OpenAPI documentation, the callbacks won't be used
+                directly.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
+                """
+            ),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc("Extra OpenAPI metadata."),
+            Doc(
+                """
+                Extra metadata to be included in the OpenAPI schema for this *path
+                operation*.
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
+                """
+            ),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc("Function to generate unique IDs for OpenAPI."),
+            Doc(
+                """
+                Customize the function used to generate unique IDs for the *path
+                operations* shown in the generated OpenAPI.
+
+                This is particularly useful when automatically generating clients or
+                SDKs for your API.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """Add a GET path operation.
+        """Add a *path operation* using an HTTP GET operation.
 
         Returns:
             A decorator function that registers the decorated function as a GET endpoint.
@@ -549,16 +708,26 @@ class Air(RouterMixin):
 
             app = air.Air()
 
+
             @app.get("/hello")
             def hello_world() -> air.H1:
+                # Simple GET endpoint returning HTML.
                 return air.H1("Hello, World!")
+
 
             @app.get("/users/{user_id}")
             def get_user(user_id: int) -> air.Div:
+                # GET endpoint with path parameter.
                 return air.Div(
                     air.H2(f"User ID: {user_id}"),
-                    air.P("User profile page"),
+                    air.P("This is a user profile page"),
                 )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="0.0.0.0", port=8000)
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -569,6 +738,7 @@ class Air(RouterMixin):
                     result = await result
                 if isinstance(result, Response):
                     return result
+                # Force HTML for non-Response results
                 return response_class(result)
 
             decorated = self._app.get(
@@ -606,71 +776,213 @@ class Air(RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc("The URL path for this path operation."),
+            Doc(
+                """
+                The URL path to be used for this *path operation*.
+
+                For example, in `http://example.com/items`, the path is `/items`.
+                """
+            ),
         ],
         *,
         status_code: Annotated[
             int | None,
-            Doc("The default status code for the response."),
+            Doc(
+                """
+                The default status code to be used for the response.
+
+                You could override the status code by returning a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
+                """
+            ),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc("Tags for OpenAPI documentation."),
+            Doc(
+                """
+                A list of tags to be applied to the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
+                """
+            ),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc("Dependencies for this path operation."),
+            Doc(
+                """
+                A list of dependencies (using `Depends()`) to be applied to the
+                *path operation*.
+
+                Read more about it in the
+                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
+                """
+            ),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc("Summary for OpenAPI documentation."),
+            Doc(
+                """
+                A summary for the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         description: Annotated[
             str | None,
-            Doc("Description for OpenAPI documentation."),
+            Doc(
+                """
+                A description for the *path operation*.
+
+                If not provided, it will be extracted automatically from the docstring
+                of the *path operation function*.
+
+                It can contain Markdown.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         response_description: Annotated[
             str,
-            Doc("Description for the default response."),
+            Doc(
+                """
+                The description for the default response.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc("Additional responses for OpenAPI."),
+            Doc(
+                """
+                Additional responses that could be returned by this *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc("Mark this path operation as deprecated."),
+            Doc(
+                """
+                Mark this *path operation* as deprecated.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc("Custom operation ID for OpenAPI."),
+            Doc(
+                """
+                Custom operation ID to be used by this *path operation*.
+
+                By default, it is generated automatically.
+
+                If you provide a custom operation ID, you need to make sure it is
+                unique for the whole API.
+
+                You can customize the
+                operation ID generation with the parameter
+                `generate_unique_id_function` in the `FastAPI` class.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = None,
         include_in_schema: Annotated[
             bool,
-            Doc("Include in OpenAPI schema."),
+            Doc(
+                """
+                Include this *path operation* in the generated OpenAPI schema.
+
+                This affects the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
+                """
+            ),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc("Response class for this path operation."),
+            Doc(
+                """
+                Response class to be used for this *path operation*.
+
+                This will not be used if you return a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
+                """
+            ),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc("Name for this path operation."),
+            Doc(
+                """
+                Name for this *path operation*. Only used internally.
+                """
+            ),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc("OpenAPI callbacks."),
+            Doc(
+                """
+                List of *path operations* that will be used as OpenAPI callbacks.
+
+                This is only for OpenAPI documentation, the callbacks won't be used
+                directly.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
+                """
+            ),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc("Extra OpenAPI metadata."),
+            Doc(
+                """
+                Extra metadata to be included in the OpenAPI schema for this *path
+                operation*.
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
+                """
+            ),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc("Function to generate unique IDs for OpenAPI."),
+            Doc(
+                """
+                Customize the function used to generate unique IDs for the *path
+                operations* shown in the generated OpenAPI.
+
+                This is particularly useful when automatically generating clients or
+                SDKs for your API.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """Add a POST path operation.
+        """Add a *path operation* using an HTTP POST operation.
 
         Returns:
             A decorator function that registers the decorated function as a POST endpoint.
@@ -678,20 +990,43 @@ class Air(RouterMixin):
         Example:
 
             from pydantic import BaseModel
+
             import air
 
+
             class UserCreate(BaseModel):
+                # User creation model.
+
                 name: str
                 email: str
 
+
             app = air.Air()
+
+
+            @app.post("/submit")
+            def submit_form() -> air.Div:
+                # Simple POST endpoint.
+                return air.Div(
+                    air.H2("Form Submitted!"),
+                    air.P("Thank you for your submission"),
+                )
+
 
             @app.post("/users")
             def create_user(user: UserCreate) -> air.Div:
+                # POST endpoint with request body.
                 return air.Div(
                     air.H2("User Created"),
                     air.P(f"Name: {user.name}"),
+                    air.P(f"Email: {user.email}"),
                 )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="0.0.0.0", port=8000)
         """
 
         def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
@@ -702,6 +1037,7 @@ class Air(RouterMixin):
                     result = await result
                 if isinstance(result, Response):
                     return result
+                # Force HTML for non-Response results
                 return response_class(result)
 
             decorated = self._app.post(
@@ -739,71 +1075,214 @@ class Air(RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc("The URL path for this path operation."),
+            Doc(
+                """
+                The URL path to be used for this *path operation*.
+
+                For example, in `http://example.com/items`, the path is `/items`.
+                """
+            ),
         ],
         *,
         status_code: Annotated[
             int | None,
-            Doc("The default status code for the response."),
+            Doc(
+                """
+                The default status code to be used for the response.
+
+                You could override the status code by returning a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
+                """
+            ),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc("Tags for OpenAPI documentation."),
+            Doc(
+                """
+                A list of tags to be applied to the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
+                """
+            ),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc("Dependencies for this path operation."),
+            Doc(
+                """
+                A list of dependencies (using `Depends()`) to be applied to the
+                *path operation*.
+
+                Read more about it in the
+                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
+                """
+            ),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc("Summary for OpenAPI documentation."),
+            Doc(
+                """
+                A summary for the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         description: Annotated[
             str | None,
-            Doc("Description for OpenAPI documentation."),
+            Doc(
+                """
+                A description for the *path operation*.
+
+                If not provided, it will be extracted automatically from the docstring
+                of the *path operation function*.
+
+                It can contain Markdown.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         response_description: Annotated[
             str,
-            Doc("Description for the default response."),
+            Doc(
+                """
+                The description for the default response.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc("Additional responses for OpenAPI."),
+            Doc(
+                """
+                Additional responses that could be returned by this *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc("Mark this path operation as deprecated."),
+            Doc(
+                """
+                Mark this *path operation* as deprecated.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc("Custom operation ID for OpenAPI."),
+            Doc(
+                """
+                Custom operation ID to be used by this *path operation*.
+
+                By default, it is generated automatically.
+
+                If you provide a custom operation ID, you need to make sure it is
+                unique for the whole API.
+
+                You can customize the
+                operation ID generation with the parameter
+                `generate_unique_id_function` in the `FastAPI` class.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = None,
         include_in_schema: Annotated[
             bool,
-            Doc("Include in OpenAPI schema."),
+            Doc(
+                """
+                Include this *path operation* in the generated OpenAPI schema.
+
+                This affects the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
+                """
+            ),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc("Response class for this path operation."),
+            Doc(
+                """
+                Response class to be used for this *path operation*.
+
+                This will not be used if you return a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
+                """
+            ),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc("Name for this path operation."),
+            Doc(
+                """
+                Name for this *path operation*. Only used internally.
+                """
+            ),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc("OpenAPI callbacks."),
+            Doc(
+                """
+                List of *path operations* that will be used as OpenAPI callbacks.
+
+                This is only for OpenAPI documentation, the callbacks won't be used
+                directly.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
+                """
+            ),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc("Extra OpenAPI metadata."),
+            Doc(
+                """
+                Extra metadata to be included in the OpenAPI schema for this *path
+                operation*.
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
+                """
+            ),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc("Function to generate unique IDs for OpenAPI."),
+            Doc(
+                """
+                Customize the function used to generate unique IDs for the *path
+                operations* shown in the generated OpenAPI.
+
+                This is particularly useful when automatically generating clients or
+                SDKs for your API.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """Add a PATCH path operation.
+        """
+        Add a *path operation* using an HTTP PATCH operation.
 
         Returns:
             A decorator function that registers the decorated function as a PATCH endpoint.
@@ -817,6 +1296,7 @@ class Air(RouterMixin):
                     result = await result
                 if isinstance(result, Response):
                     return result
+                # Force HTML for non-Response results
                 return response_class(result)
 
             decorated = self._app.patch(
@@ -854,71 +1334,213 @@ class Air(RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc("The URL path for this path operation."),
+            Doc(
+                """
+                The URL path to be used for this *path operation*.
+
+                For example, in `http://example.com/items`, the path is `/items`.
+                """
+            ),
         ],
         *,
         status_code: Annotated[
             int | None,
-            Doc("The default status code for the response."),
+            Doc(
+                """
+                The default status code to be used for the response.
+
+                You could override the status code by returning a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
+                """
+            ),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc("Tags for OpenAPI documentation."),
+            Doc(
+                """
+                A list of tags to be applied to the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
+                """
+            ),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc("Dependencies for this path operation."),
+            Doc(
+                """
+                A list of dependencies (using `Depends()`) to be applied to the
+                *path operation*.
+
+                Read more about it in the
+                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
+                """
+            ),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc("Summary for OpenAPI documentation."),
+            Doc(
+                """
+                A summary for the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         description: Annotated[
             str | None,
-            Doc("Description for OpenAPI documentation."),
+            Doc(
+                """
+                A description for the *path operation*.
+
+                If not provided, it will be extracted automatically from the docstring
+                of the *path operation function*.
+
+                It can contain Markdown.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         response_description: Annotated[
             str,
-            Doc("Description for the default response."),
+            Doc(
+                """
+                The description for the default response.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc("Additional responses for OpenAPI."),
+            Doc(
+                """
+                The description for the default response.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc("Mark this path operation as deprecated."),
+            Doc(
+                """
+                Mark this *path operation* as deprecated.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc("Custom operation ID for OpenAPI."),
+            Doc(
+                """
+                Custom operation ID to be used by this *path operation*.
+
+                By default, it is generated automatically.
+
+                If you provide a custom operation ID, you need to make sure it is
+                unique for the whole API.
+
+                You can customize the
+                operation ID generation with the parameter
+                `generate_unique_id_function` in the `FastAPI` class.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = None,
         include_in_schema: Annotated[
             bool,
-            Doc("Include in OpenAPI schema."),
+            Doc(
+                """
+                Include this *path operation* in the generated OpenAPI schema.
+
+                This affects the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
+                """
+            ),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc("Response class for this path operation."),
+            Doc(
+                """
+                Response class to be used for this *path operation*.
+
+                This will not be used if you return a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
+                """
+            ),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc("Name for this path operation."),
+            Doc(
+                """
+                Name for this *path operation*. Only used internally.
+                """
+            ),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc("OpenAPI callbacks."),
+            Doc(
+                """
+                List of *path operations* that will be used as OpenAPI callbacks.
+
+                This is only for OpenAPI documentation, the callbacks won't be used
+                directly.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
+                """
+            ),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc("Extra OpenAPI metadata."),
+            Doc(
+                """
+                Extra metadata to be included in the OpenAPI schema for this *path
+                operation*.
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
+                """
+            ),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc("Function to generate unique IDs for OpenAPI."),
+            Doc(
+                """
+                Customize the function used to generate unique IDs for the *path
+                operations* shown in the generated OpenAPI.
+
+                This is particularly useful when automatically generating clients or
+                SDKs for your API.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """Add a PUT path operation.
+        """Add a *path operation* using an HTTP PUT operation.
 
         Returns:
             A decorator function that registers the decorated function as a PUT endpoint.
@@ -932,6 +1554,7 @@ class Air(RouterMixin):
                     result = await result
                 if isinstance(result, Response):
                     return result
+                # Force HTML for non-Response results
                 return response_class(result)
 
             decorated = self._app.put(
@@ -969,71 +1592,214 @@ class Air(RouterMixin):
         self,
         path: Annotated[
             str,
-            Doc("The URL path for this path operation."),
+            Doc(
+                """
+                The URL path to be used for this *path operation*.
+
+                For example, in `http://example.com/items`, the path is `/items`.
+                """
+            ),
         ],
         *,
         status_code: Annotated[
             int | None,
-            Doc("The default status code for the response."),
+            Doc(
+                """
+                The default status code to be used for the response.
+
+                You could override the status code by returning a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Response Status Code](https://fastapi.tiangolo.com/tutorial/response-status-code/).
+                """
+            ),
         ] = None,
         tags: Annotated[
             list[str | Enum] | None,
-            Doc("Tags for OpenAPI documentation."),
+            Doc(
+                """
+                A list of tags to be applied to the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
+                """
+            ),
         ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
-            Doc("Dependencies for this path operation."),
+            Doc(
+                """
+                A list of dependencies (using `Depends()`) to be applied to the
+                *path operation*.
+
+                Read more about it in the
+                [FastAPI docs for Dependencies in path operation decorators](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/).
+                """
+            ),
         ] = None,
         summary: Annotated[
             str | None,
-            Doc("Summary for OpenAPI documentation."),
+            Doc(
+                """
+                A summary for the *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         description: Annotated[
             str | None,
-            Doc("Description for OpenAPI documentation."),
+            Doc(
+                """
+                A description for the *path operation*.
+
+                If not provided, it will be extracted automatically from the docstring
+                of the *path operation function*.
+
+                It can contain Markdown.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
+                """
+            ),
         ] = None,
         response_description: Annotated[
             str,
-            Doc("Description for the default response."),
+            Doc(
+                """
+                The description for the default response.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = "Successful Response",
         responses: Annotated[
             dict[int | str, dict[str, Any]] | None,
-            Doc("Additional responses for OpenAPI."),
+            Doc(
+                """
+                Additional responses that could be returned by this *path operation*.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         deprecated: Annotated[
             bool | None,
-            Doc("Mark this path operation as deprecated."),
+            Doc(
+                """
+                Mark this *path operation* as deprecated.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+                """
+            ),
         ] = None,
         operation_id: Annotated[
             str | None,
-            Doc("Custom operation ID for OpenAPI."),
+            Doc(
+                """
+                Custom operation ID to be used by this *path operation*.
+
+                By default, it is generated automatically.
+
+                If you provide a custom operation ID, you need to make sure it is
+                unique for the whole API.
+
+                You can customize the
+                operation ID generation with the parameter
+                `generate_unique_id_function` in the `FastAPI` class.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = None,
         include_in_schema: Annotated[
             bool,
-            Doc("Include in OpenAPI schema."),
+            Doc(
+                """
+                Include this *path operation* in the generated OpenAPI schema.
+
+                This affects the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for Query Parameters and String Validations](https://fastapi.tiangolo.com/tutorial/query-params-str-validations/#exclude-parameters-from-openapi).
+                """
+            ),
         ] = True,
         response_class: Annotated[
             type[Response],
-            Doc("Response class for this path operation."),
+            Doc(
+                """
+                Response class to be used for this *path operation*.
+
+                This will not be used if you return a response directly.
+
+                Read more about it in the
+                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#redirectresponse).
+                """
+            ),
         ] = AirResponse,
         name: Annotated[
             str | None,
-            Doc("Name for this path operation."),
+            Doc(
+                """
+                Name for this *path operation*. Only used internally.
+                """
+            ),
         ] = None,
         callbacks: Annotated[
             list[BaseRoute] | None,
-            Doc("OpenAPI callbacks."),
+            Doc(
+                """
+                List of *path operations* that will be used as OpenAPI callbacks.
+
+                This is only for OpenAPI documentation, the callbacks won't be used
+                directly.
+
+                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
+
+                Read more about it in the
+                [FastAPI docs for OpenAPI Callbacks](https://fastapi.tiangolo.com/advanced/openapi-callbacks/).
+                """
+            ),
         ] = None,
         openapi_extra: Annotated[
             dict[str, Any] | None,
-            Doc("Extra OpenAPI metadata."),
+            Doc(
+                """
+                Extra metadata to be included in the OpenAPI schema for this *path
+                operation*.
+
+                Read more about it in the
+                [FastAPI docs for Path Operation Advanced Configuration](https://fastapi.tiangolo.com/advanced/path-operation-advanced-configuration/#custom-openapi-path-operation-schema).
+                """
+            ),
         ] = None,
         generate_unique_id_function: Annotated[
             Callable[[routing.APIRoute], str],
-            Doc("Function to generate unique IDs for OpenAPI."),
+            Doc(
+                """
+                Customize the function used to generate unique IDs for the *path
+                operations* shown in the generated OpenAPI.
+
+                This is particularly useful when automatically generating clients or
+                SDKs for your API.
+
+                Read more about it in the
+                [FastAPI docs about how to Generate Clients](https://fastapi.tiangolo.com/advanced/generate-clients/#custom-generate-unique-id-function).
+                """
+            ),
         ] = generate_unique_id,
     ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-        """Add a DELETE path operation.
+        """
+        Add a *path operation* using an HTTP DELETE operation.
 
         Returns:
             A decorator function that registers the decorated function as a DELETE endpoint.
@@ -1047,6 +1813,7 @@ class Air(RouterMixin):
                     result = await result
                 if isinstance(result, Response):
                     return result
+                # Force HTML for non-Response results
                 return response_class(result)
 
             decorated = self._app.delete(
