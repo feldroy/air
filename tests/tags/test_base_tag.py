@@ -26,8 +26,7 @@ import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag
 from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
-
-from .utils import clean_doc
+from tests.utils import clean_doc
 
 
 class SampleTag(BaseTag):
