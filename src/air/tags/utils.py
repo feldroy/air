@@ -334,6 +334,21 @@ def save_text(text: str, file_path: StrPath) -> None:
     Path(file_path).write_text(data=text, encoding=DEFAULT_ENCODING)
 
 
+def read_text(file_path: StrPath) -> str:
+    """Reads the content of a text file and returns it as a string.
+
+    This function reads the text from the file at the specified path using the
+    default encoding.
+
+    Args:
+        file_path: The path to the file to be read.
+
+    Returns:
+        str: The content of the file as a string.
+    """
+    return Path(file_path).read_text(encoding=DEFAULT_ENCODING)
+
+
 def save_pretty_html(
     source: str,
     *,
