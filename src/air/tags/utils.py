@@ -42,9 +42,11 @@ from .constants import (
     DEFAULT_ENCODING,
     DEFAULT_THEME,
     FORMAT_HTML_ENCODING,
+    HOMEPAGE_FILE_NAME,
     HTML_DOCTYPE,
     HTML_LEXER,
     HTML_PANEL_TITLE,
+    HTML_SUFFIX,
     LOCALS_CLEANUP_EXCLUDED_KEYS,
     PANEL_BORDER_STYLE,
     PANEL_TITLE_STYLE,
@@ -267,7 +269,7 @@ def open_local_file_in_the_browser(path: StrPath) -> None:
     """
     path = Path(path)
     if path.is_dir():
-        path /= "index.html"
+        path /= HOMEPAGE_FILE_NAME
     if not path.exists():
         raise FileNotFoundError(path)
 
@@ -314,7 +316,7 @@ def open_html_in_the_browser(html_source: str) -> None:
     Args:
         html_source: HTML markup to render in the browser.
     """
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding=DEFAULT_ENCODING) as f:
+    with tempfile.NamedTemporaryFile("w", delete=False, suffix=HTML_SUFFIX, encoding=DEFAULT_ENCODING) as f:
         f.write(html_source)
         path = Path(f.name)
 
@@ -366,8 +368,8 @@ def read_html(file_path: StrPath) -> str:
     """
     file_path = Path(file_path)
     if file_path.is_dir():
-        file_path /= "index.html"
-    elif file_path.suffix != ".html":
+        file_path /= HOMEPAGE_FILE_NAME
+    elif file_path.suffix != HTML_SUFFIX:
         msg = "Expected a .html file extension."
         raise ValueError(msg)
     return read_text(file_path=file_path)
