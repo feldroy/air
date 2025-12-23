@@ -71,9 +71,9 @@ class SelfClosingTag(BaseTag):
 
     def __init__(
         self,
-        **kwargs: AttributeType,
+        **attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs)
+        super().__init__(**attributes)
 
     @override
     def _render(self) -> str:
@@ -84,14 +84,14 @@ class UnSafeTag(BaseTag):
     """Tag base that bypasses HTML escaping for its content."""
 
     @override
-    def __init__(self, text_child: str = "", /, **kwargs: AttributeType) -> None:
+    def __init__(self, text_child: str = "", /, **attributes: AttributeType) -> None:
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
         if text_child:
-            super().__init__(text_child, **kwargs)
+            super().__init__(text_child, **attributes)
         else:
-            super().__init__(**kwargs)
+            super().__init__(**attributes)
 
     @override
     @staticmethod
@@ -141,7 +141,7 @@ class Script(UnSafeTag):
         class_: Substituted as the DOM ``class`` attribute.
         id: DOM ``id`` attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     @override
@@ -175,9 +175,9 @@ class Script(UnSafeTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(text_child, **custom_attributes | locals_cleanup(locals()))
 
 
 class Style(UnSafeTag):
@@ -194,7 +194,7 @@ class Style(UnSafeTag):
         class_: Substituted as the DOM ``class`` attribute.
         id: DOM ``id`` attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     @override
@@ -211,9 +211,9 @@ class Style(UnSafeTag):
         class_: str | None = None,
         id: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(text_child, **custom_attributes | locals_cleanup(locals()))
 
 
 class Comment(UnSafeTag):

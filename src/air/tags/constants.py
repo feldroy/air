@@ -25,6 +25,7 @@ LOCALS_CLEANUP_EXCLUDED_KEYS: Final = frozenset({
     "args",
     "kwargs",
     "attributes",
+    "custom_attributes",
 })
 ATTRIBUTES_TO_AIR: Final = frozendict({
     "class": "class_",
