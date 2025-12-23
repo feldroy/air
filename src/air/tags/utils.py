@@ -349,6 +349,30 @@ def read_text(file_path: StrPath) -> str:
     return Path(file_path).read_text(encoding=DEFAULT_ENCODING)
 
 
+def read_html(file_path: StrPath) -> str:
+    """
+    Reads the content of an HTML file from the given file path. Handles both directory
+    paths (by appending 'index.html' to the directory) and explicit file paths, ensuring
+    that only files with the '.html' extension are processed.
+
+    Args:
+        file_path: The path to the HTML file or a directory containing the file.
+
+    Returns:
+        str: The content of the HTML file.
+
+    Raises:
+        ValueError: If the file path does not have an '.html' extension.
+    """
+    file_path = Path(file_path)
+    if file_path.is_dir():
+        file_path /= "index.html"
+    elif file_path.suffix != ".html":
+        msg = "Expected a .html file extension."
+        raise ValueError(msg)
+    return read_text(file_path=file_path)
+
+
 def save_pretty_html(
     source: str,
     *,

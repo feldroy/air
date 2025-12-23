@@ -30,7 +30,7 @@ from air.tags.utils import (
     pretty_format_html,
     pretty_print_html,
     pretty_print_python,
-    read_text,
+    read_html,
     save_text,
 )
 
@@ -710,7 +710,7 @@ class BaseTag:
         into the instantiable-formatted representation of the tag.
 
         Args:
-            file_path: Path to the HTML file as a string or a Path-like object.
+            file_path: The file path pointing to the HTML file or a folder with an index file to be read and parsed.
 
         Returns:
             The formatted instantiation call for this tag and its children.
@@ -722,12 +722,12 @@ class BaseTag:
         """Reconstruct the corresponding air-tag tree from the given HTML file.
 
         Args:
-            file_path: The file path pointing to the HTML file to be read and parsed.
+            file_path: The file path pointing to the HTML file or a folder with an index file to be read and parsed.
 
         Returns:
             The root air-tag built from the provided HTML file.
         """
-        return cls.from_html(html_source=read_text(file_path=file_path))
+        return cls.from_html(html_source=read_html(file_path=file_path))
 
     @classmethod
     def from_html(cls, html_source: str) -> BaseTag:
