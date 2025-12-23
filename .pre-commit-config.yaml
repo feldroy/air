@@ -1,0 +1,18 @@
+# Note: we are using https://github.com/j178/prek a better `pre-commit`, re-engineered in Rust!
+# See https://prek.j178.dev/configuration for more information
+# See https://prek.j178.dev/builtin for more hooks
+repos:
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: "1.20.0"
+    hooks:
+      - id: blacken-docs
+        additional_dependencies:
+          - black==25.12.0
+  - repo: https://github.com/rtts/djhtml
+    rev: '3.0.10'
+    hooks:
+      - id: djhtml
+        # Use a tabwidth of 2 for HTML files
+        entry: djhtml --tabwidth 2
+      - id: djcss
+      - id: djjs

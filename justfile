@@ -138,6 +138,7 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     # Check for spelling and grammar violations and apply fixes
     just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell --write-changes
+    just run -- prek run --all-files
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -163,6 +164,7 @@ lint OUTPUT_FORMAT="full":
     # Check for spelling and grammar violations
     just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell
+    just run -- prek run --all-files
 
 # Check for lint violations for all rules!
 [group('qa')]
