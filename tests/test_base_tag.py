@@ -30,13 +30,13 @@ from air.tags.utils import SafeStr
 from .utils import clean_doc
 
 HTML_SAMPLES_DIR: Final = Path("examples/samples")
-FRAGMENT_HTML_SAMPLE_FILE_NAME: Final = Path("fragment_html_sample.html")
+FRAGMENT_HTML_SAMPLE_FILE_NAME: Final = "fragment_html_sample.html"
 FRAGMENT_HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / FRAGMENT_HTML_SAMPLE_FILE_NAME
-TINY_HTML_SAMPLE_FILE_NAME: Final = Path("tiny_html_sample.html")
+TINY_HTML_SAMPLE_FILE_NAME: Final = "tiny_html_sample.html"
 TINY_HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / TINY_HTML_SAMPLE_FILE_NAME
-SMALL_HTML_SAMPLE_FILE_NAME: Final = Path("small_html_sample.html")
+SMALL_HTML_SAMPLE_FILE_NAME: Final = "small_html_sample.html"
 SMALL_HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / SMALL_HTML_SAMPLE_FILE_NAME
-HTML_SAMPLE_FILE_NAME: Final = Path("html_sample.html")
+HTML_SAMPLE_FILE_NAME: Final = "html_sample.html"
 HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / HTML_SAMPLE_FILE_NAME
 
 
