@@ -154,25 +154,11 @@ class Air(RouterMixin):
 
                 from .dependencies import func_dep_1, func_dep_2
 
-                app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])"""
-            ),
-        ] = None,
-        default_response_class: Annotated[
-            type[Response],
-            Doc(
-                """
-                The default response class to be used.
-                Read more in the
-                [FastAPI docs for Custom Response - HTML, Stream, File, others](https://fastapi.tiangolo.com/advanced/custom-response/#default-response-class).
-                **Analogy**
-                ```python
-                from fastapi import FastAPI
-                from air import AirResponse
-                app = FastAPI(default_response_class=AirResponse)
+                app = FastAPI(dependencies=[Depends(func_dep_1), Depends(func_dep_2)])
                 ```
                 """
             ),
-        ] = AirResponse,
+        ] = None,
         redirect_slashes: Annotated[
             bool,
             Doc(
@@ -239,70 +225,39 @@ class Air(RouterMixin):
                 """
             ),
         ] = None,
-        webhooks: Annotated[
-            routing.APIRouter | None,
-            Doc(
-                """
-                Add OpenAPI webhooks. This is similar to `callbacks` but it doesn't
-                depend on specific *path operations*.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                **Note**: This is available since OpenAPI 3.1.0, FastAPI 0.99.0.
-
-                Read more about it in the
-                [FastAPI docs for OpenAPI Webhooks](https://fastapi.tiangolo.com/advanced/openapi-webhooks/).
-                """
-            ),
-        ] = None,
-        deprecated: Annotated[
-            bool | None,
-            Doc(
-                """
-                Mark all *path operations* as deprecated. You probably don't need it,
-                but it's available.
-
-                It will be added to the generated OpenAPI (e.g. visible at `/docs`).
-
-                Read more about it in the
-                [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/).
-                """
-            ),
-        ] = None,
-        docs_url: Annotated[
-            str | None,
-            Doc(
-                """
-                The path at which to serve the Swagger UI documentation.
-
-                Set to `None` to disable it.
-                """
-            ),
-        ] = None,
-        redoc_url: Annotated[
-            str | None,
-            Doc(
-                """
-                The path at which to serve the ReDoc documentation.
-
-                Set to `None` to disable it.
-                """
-            ),
-        ] = None,
-        openapi_url: Annotated[
-            str | None,
-            Doc(
-                """
-                The URL where the OpenAPI schema will be served from.
-
-                Set to `None` to disable it.
-                """
-            ),
-        ] = None,
         path_separator: Annotated[
             Literal["/", "-"],
             Doc("An optional path separator."),
         ] = "-",
+        fastapi_app: Annotated[
+            FastAPI | None,
+            Doc("""
+                For those occasions when the FastAPI app needs more customization
+                than Air parameters allow.
+
+                Example:
+
+                    # This example turns on OpenAPI docs while continuing mostly normal Air behaviors.
+                    # Go to 127.0.0.1:8000/docs or 127.0.0.1:8000/redoc
+                    import air
+                    from fastapi import FastAPI
+
+                    fastapi_app = FastAPI(default_response_class=air.AirResponse)
+                    app = air.Air(fastapi_app=fastapi_app)
+
+
+                    @app.page
+                    def index():
+                        "project home page"
+                        return air.H1('Hello world')
+
+
+                    @app.page
+                    def about():
+                        "This is the about page"
+                        return air.Div('About Air')
+                """),
+        ] = None,
         **extra: Annotated[
             Any,
             Doc(
@@ -325,25 +280,28 @@ class Air(RouterMixin):
         exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
 
         # Create internal FastAPI instance
-        self._app = FastAPI(
-            debug=debug,
-            routes=routes,
-            servers=servers,
-            dependencies=dependencies,
-            default_response_class=default_response_class,
-            middleware=middleware,
-            exception_handlers=exception_handlers,  # type: ignore[arg-type]
-            on_startup=None,
-            on_shutdown=None,
-            lifespan=lifespan,
-            docs_url=docs_url,
-            redoc_url=redoc_url,
-            openapi_url=openapi_url,
-            webhooks=webhooks,
-            deprecated=deprecated,
-            redirect_slashes=redirect_slashes,
-            **extra,
-        )
+        if fastapi_app is None:
+            self._app = FastAPI(
+                debug=debug,
+                routes=routes,
+                servers=servers,
+                dependencies=dependencies,
+                default_response_class=AirResponse,
+                middleware=middleware,
+                exception_handlers=exception_handlers,  # type: ignore[arg-type]
+                on_startup=None,
+                on_shutdown=None,
+                lifespan=lifespan,
+                docs_url=None,
+                redoc_url=None,
+                openapi_url=None,
+                webhooks=None,
+                deprecated=None,
+                redirect_slashes=redirect_slashes,
+                **extra,
+            )
+        else:
+            self._app = fastapi_app
 
         # Use Air's custom route class
         self._app.router.route_class = AirRoute
