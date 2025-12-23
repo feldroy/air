@@ -1,6 +1,5 @@
 import air
-
-from .utils import clean_doc, clean_doc_with_broken_lines
+from tests.utils import clean_doc, clean_doc_with_broken_lines
 
 
 def test_atag_no_attrs_no_children() -> None:

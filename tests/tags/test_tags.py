@@ -4,8 +4,7 @@ import pytest
 from full_match import match as full_match
 
 import air
-
-from .utils import clean_doc
+from tests.utils import clean_doc
 
 
 def _r(tag: air.BaseTag) -> str:
