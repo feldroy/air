@@ -49,7 +49,8 @@ To provide unescaped code, Air Tags provides three options: the `Style`, `Script
 To avoid escaping CSS, use the `Style` tag:
 
 ```python
-air.Style("""
+air.Style(
+    """
 p {
   font-size: 1.2rem;
   line-height: 1.6;
@@ -57,7 +58,8 @@ p {
   max-width: 60ch;
   margin: 1em auto;
 }
-""")
+"""
+)
 ```
 
 Renders as:
@@ -79,12 +81,14 @@ p {
 To avoid escaping JavaScript, use the `Script` tag:
 
 ```python
-air.Script("""
+air.Script(
+    """
 function capitalize(str) {
   if (!str) return '';
   return str[0].toUpperCase() + str.slice(1);
 }
-""")
+"""
+)
 ```
 
 Renders as:

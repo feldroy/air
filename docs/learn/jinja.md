@@ -57,11 +57,12 @@ app = Air()
 # Set the Jinja render function
 jinja = air.JinjaRenderer(directory="tests/templates")
 
-@app.get('/')
+
+@app.get("/")
 def index(request: Request):
     content = air.Main(
-        air.H2('Does Jinja work with Air Tags?'),
-        air.P("Jinja works great with Air Tags")
+        air.H2("Does Jinja work with Air Tags?"),
+        air.P("Jinja works great with Air Tags"),
     )
     return jinja(
         request,

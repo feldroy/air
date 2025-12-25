@@ -164,6 +164,7 @@ class Air(FastAPI, RouterMixin):
                 ```python
                 from fastapi import FastAPI
                 from air import AirResponse
+
                 app = FastAPI(default_response_class=AirResponse)
                 ```
                 """
@@ -182,6 +183,7 @@ class Air(FastAPI, RouterMixin):
                 from fastapi import FastAPI
 
                 app = FastAPI(redirect_slashes=True)  # the default
+
 
                 @app.get("/items/")
                 async def read_items():

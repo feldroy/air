@@ -15,11 +15,11 @@ import air
 
 app = air.Air()
 
+
 @app.page
 def index():
     return air.layouts.mvpcss(
-        air.H1('Avatar Data'),
-        air.P(air.A('Dashboard', href='/dashboard'))
+        air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard"))
     )
 ```
 
@@ -30,11 +30,11 @@ import air
 
 router = air.AirRouter()
 
+
 @router.page
 def dashboard():
     return air.layouts.mvpcss(
-        air.H1('Avatar Data Dashboard'),
-        air.P(air.A('<- Home', href='/'))
+        air.H1("Avatar Data Dashboard"), air.P(air.A("<- Home", href="/"))
     )
 ```
 
@@ -47,11 +47,11 @@ from .dashboard import router
 app = air.Air()
 app.include_router(router)
 
+
 @app.page
 def index():
     return air.layouts.mvpcss(
-        air.H1('Avatar Data'),
-        air.P(air.A('Dashboard', href='/dashboard'))
+        air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard"))
     )
 ```
 
@@ -73,28 +73,29 @@ One of the really nice features of Air is the ability to mount apps inside each 
 import air
 
 # Create the main app, which serves as the entry point
-app = air.Air(title='Air')
+app = air.Air(title="Air")
+
 
 @app.page
 def index():
     return air.layouts.mvpcss(
-        air.H1('Air landing page'),
-        air.P(air.A('Shop', href='/shop'))
+        air.H1("Air landing page"), air.P(air.A("Shop", href="/shop"))
     )
+
 
 # Creating a separate app for the shop,
 # which could be placed in a different file
-shop = air.Air(title='Air shop')
+shop = air.Air(title="Air shop")
+
 
 @shop.page
 def index():
-    return air.layouts.mvpcss(
-        air.H1('Shop for Air things')
-    )
+    return air.layouts.mvpcss(air.H1("Shop for Air things"))
+
 
 # Mount the shop app to the main app
 # This allows you to access the shop at /shop
-app.mount('/shop', shop)
+app.mount("/shop", shop)
 ```
 
 ## Mounting FastAPI inside of Air apps
@@ -105,8 +106,9 @@ You can easily mount a FastAPI app inside an Air app. A common scenario is to ha
 import air
 from fastapi import FastAPI
 
-# Create the landing page app using Air
+# Create the landing page app using Air
 app = air.Air()
+
 
 @app.get("/")
 def landing_page():
@@ -118,11 +120,14 @@ def landing_page():
         ),
     )
 
+
 api = FastAPI()
+
 
 @api.get("/")
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
+
 
 # Combining the Air and and FastAPI apps into one
 app.mount("/api", api)

@@ -157,6 +157,7 @@ from fastapi import FastAPI
 app = air.Air()
 api = FastAPI()
 
+
 @app.get("/")
 def landing_page():
     return air.Html(
@@ -171,6 +172,7 @@ def landing_page():
 @api.get("/")
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
+
 
 # Combining the Air and FastAPI apps into one
 app.mount("/api", api)
@@ -190,13 +192,16 @@ api = FastAPI()
 # Air's JinjaRenderer is a shortcut for using Jinja templates
 jinja = air.JinjaRenderer(directory="templates")
 
+
 @app.get("/")
 def index(request: air.Request):
     return jinja(request, name="home.html")
 
+
 @api.get("/")
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
+
 
 # Combining the Air and and FastAPI apps into one
 app.mount("/api", api)
