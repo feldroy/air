@@ -97,7 +97,11 @@ dependencies = [
     "frozendict>=2.4.7",
     "pygments>=2.19.2",
     "selectolax>=0.4.6",
+    "typer>=0.15.0",
 ]
+
+[project.scripts]
+air = "air.cli:main"
 # endregion project
 
 # region ----> dependencies <----
@@ -124,7 +128,6 @@ dev = [
 ]
 devtools = [
     "uvicorn>=0.34.0", # run full example apps
-    "typer>=0.19.1" # For running of scripts
 ]
 lint = [
     "codespell>=2.4.1",
