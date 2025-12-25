@@ -19,6 +19,7 @@ dependencies = [
     { name = "rich" },
     { name = "selectolax" },
     { name = "typer" },
+    { name = "uvicorn" },
 ]
 
 [package.optional-dependencies]
@@ -58,10 +59,6 @@ dev = [
     { name = "types-markdown" },
     { name = "types-pygments" },
     { name = "typos" },
-    { name = "uvicorn" },
-]
-devtools = [
-    { name = "uvicorn" },
 ]
 docs = [
     { name = "click" },
@@ -115,6 +112,7 @@ requires-dist = [
     { name = "rich", specifier = ">=14.2.0" },
     { name = "selectolax", specifier = ">=0.4.6" },
     { name = "typer", specifier = ">=0.15.0" },
+    { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 provides-extras = ["standard"]
 
@@ -150,9 +148,8 @@ dev = [
     { name = "types-markdown", specifier = ">=3.8.0" },
     { name = "types-pygments", specifier = ">=2.19.0.20251121" },
     { name = "typos", specifier = ">=1.38.1" },
-    { name = "uvicorn", specifier = ">=0.34.0" },
 ]
-devtools = [{ name = "uvicorn", specifier = ">=0.34.0" }]
+devtools = []
 docs = [
     { name = "click", specifier = "==8.3.1" },
     { name = "mkdocs", specifier = ">=1.6.1" },

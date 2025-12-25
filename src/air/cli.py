@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
 from typing import Annotated
 
 import typer
+import uvicorn
 
 app = typer.Typer(
     name="air",
@@ -13,20 +16,6 @@ app = typer.Typer(
     no_args_is_help=True,
     rich_markup_mode="rich",
 )
-
-
-def _check_uvicorn() -> None:
-    """Check if uvicorn is available and provide helpful error if not."""
-    try:
-        import uvicorn  # noqa: F401
-    except ImportError:
-        typer.echo(
-            'To use the "air run" command, please install "air[standard]":\n\n'
-            '    pip install "air[standard]"\n\n'
-            "or:\n\n"
-            '    uv add "air[standard]"'
-        )
-        raise typer.Exit(code=1)
 
 
 @app.command()
@@ -51,32 +40,24 @@ def run(
         typer.Option(help="Enable auto-reload on code changes"),
     ] = True,
 ) -> None:
-    """Run an Air application in development mode.
-
-    Examples:
-
-        air run
-
-        air run main.py
-
-        air run main:app --port 8080
-
-        air run myapp.py --host 0.0.0.0 --port 5000
-
-    """
-    _check_uvicorn()
-    import uvicorn
-
+    """Run an Air application in development mode."""
     # Handle both "main.py" and "main:app" formats
     if path.endswith(".py"):
         # Convert main.py -> main:app
-        module = path[:-3].replace("/", ".").replace("\\", ".")
+        file_path = Path(path).resolve()
+        module = file_path.stem
         app_path = f"{module}:app"
+        # Add the file's directory to sys.path so uvicorn can import it
+        sys.path.insert(0, str(file_path.parent))
     elif ":" not in path:
         # Assume it's a module name without :app
         app_path = f"{path}:app"
+        # Add current directory to sys.path
+        sys.path.insert(0, str(Path.cwd()))
     else:
         app_path = path
+        # Add current directory to sys.path
+        sys.path.insert(0, str(Path.cwd()))
 
     uvicorn.run(
         app_path,
@@ -84,6 +65,14 @@ def run(
         port=port,
         reload=reload,
     )
+
+
+@app.command()
+def version() -> None:
+    """Show the Air version."""
+    from importlib.metadata import version as get_version  # noqa: PLC0415
+
+    typer.echo(f"Air {get_version('air')}")
 
 
 def main() -> None:

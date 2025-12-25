@@ -98,6 +98,7 @@ dependencies = [
     "pygments>=2.19.2",
     "selectolax>=0.4.6",
     "typer>=0.15.0",
+    "uvicorn>=0.34.0",
 ]
 
 [project.scripts]
@@ -126,9 +127,7 @@ dev = [
     { include-group = "test" }, # test runner and helpers
     { include-group = "docs" }, # documentation build toolchain
 ]
-devtools = [
-    "uvicorn>=0.34.0", # run full example apps
-]
+devtools = []
 lint = [
     "codespell>=2.4.1",
     "pyrefly>=0.29.1", # A fast type checker
