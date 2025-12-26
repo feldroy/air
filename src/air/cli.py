@@ -7,8 +7,32 @@ from typing import Annotated
 
 import typer
 import uvicorn
+from rich.console import Console
 
 app = typer.Typer(add_completion=False, rich_markup_mode="rich")
+console = Console()
+
+# Suppress uvicorn's startup noise, keep request logs
+LOG_CONFIG = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {
+            "format": "%(message)s",
+        },
+    },
+    "handlers": {
+        "default": {
+            "class": "logging.StreamHandler",
+            "formatter": "default",
+            "stream": "ext://sys.stderr",
+        },
+    },
+    "loggers": {
+        "uvicorn.error": {"level": "WARNING", "handlers": ["default"]},
+        "uvicorn.access": {"level": "INFO", "handlers": ["default"], "propagate": False},
+    },
+}
 
 
 def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback signature
@@ -69,11 +93,21 @@ def run(
         # Add current directory to sys.path
         sys.path.insert(0, str(Path.cwd()))
 
+    # Print startup banner
+    url = f"http://{host}:{port}"
+    console.print()
+    console.print(f"  [bold cyan]Air[/bold cyan] v{version('air')}")
+    console.print()
+    console.print(f"  [dim]➜[/dim]  [bold]App:[/bold]     {app_path}")
+    console.print(f"  [dim]➜[/dim]  [bold]Server:[/bold]  [link={url}]{url}[/link]")
+    console.print()
+
     uvicorn.run(
         app_path,
         host=host,
         port=port,
         reload=reload,
+        log_config=LOG_CONFIG,
     )
 
 
