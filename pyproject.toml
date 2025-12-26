@@ -97,7 +97,12 @@ dependencies = [
     "frozendict>=2.4.7",
     "pygments>=2.19.2",
     "selectolax>=0.4.6",
+    "typer>=0.19.1",
+    "uvicorn>=0.34.0",
 ]
+
+[project.scripts]
+air = "air.cli:main"
 # endregion project
 
 # region ----> dependencies <----
@@ -122,10 +127,7 @@ dev = [
     { include-group = "test" }, # test runner and helpers
     { include-group = "docs" }, # documentation build toolchain
 ]
-devtools = [
-    "uvicorn>=0.34.0", # run full example apps
-    "typer>=0.19.1" # For running of scripts
-]
+devtools = []
 lint = [
     "codespell>=2.4.1",
     "pyrefly>=0.29.1", # A fast type checker

@@ -18,6 +18,8 @@ dependencies = [
     { name = "python-multipart" },
     { name = "rich" },
     { name = "selectolax" },
+    { name = "typer" },
+    { name = "uvicorn" },
 ]
 
 [package.optional-dependencies]
@@ -53,16 +55,10 @@ dev = [
     { name = "pytest-pretty" },
     { name = "ruff" },
     { name = "ty" },
-    { name = "typer" },
     { name = "types-lxml" },
     { name = "types-markdown" },
     { name = "types-pygments" },
     { name = "typos" },
-    { name = "uvicorn" },
-]
-devtools = [
-    { name = "typer" },
-    { name = "uvicorn" },
 ]
 docs = [
     { name = "click" },
@@ -115,6 +111,8 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "rich", specifier = ">=14.2.0" },
     { name = "selectolax", specifier = ">=0.4.6" },
+    { name = "typer", specifier = ">=0.19.1" },
+    { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 provides-extras = ["standard"]
 
@@ -146,17 +144,12 @@ dev = [
     { name = "pytest-pretty", specifier = ">=1.3.0" },
     { name = "ruff", specifier = ">=0.11.13" },
     { name = "ty", specifier = ">=0.0.1a16" },
-    { name = "typer", specifier = ">=0.19.1" },
     { name = "types-lxml", specifier = ">=2025.11.25" },
     { name = "types-markdown", specifier = ">=3.8.0" },
     { name = "types-pygments", specifier = ">=2.19.0.20251121" },
     { name = "typos", specifier = ">=1.38.1" },
-    { name = "uvicorn", specifier = ">=0.34.0" },
 ]
-devtools = [
-    { name = "typer", specifier = ">=0.19.1" },
-    { name = "uvicorn", specifier = ">=0.34.0" },
-]
+devtools = []
 docs = [
     { name = "click", specifier = "==8.3.1" },
     { name = "mkdocs", specifier = ">=1.6.1" },
