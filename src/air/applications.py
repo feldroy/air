@@ -123,8 +123,14 @@ class Air(FastAPI, RouterMixin):
 
                 app = FastAPI(
                     servers=[
-                        {"url": "https://stag.example.com", "description": "Staging environment"},
-                        {"url": "https://prod.example.com", "description": "Production environment"},
+                        {
+                            "url": "https://stag.example.com",
+                            "description": "Staging environment",
+                        },
+                        {
+                            "url": "https://prod.example.com",
+                            "description": "Production environment",
+                        },
                     ]
                 )
                 ```

@@ -218,7 +218,10 @@ url = search.url(query_params={"q": "air", "page": 2})
 @app.page
 def index():
     return air.layouts.mvpcss(
-        air.A("Search for 'air'", href=search.url(query_params={"q": "air", "page": 1}))
+        air.A(
+            "Search for 'air'",
+            href=search.url(query_params={"q": "air", "page": 1}),
+        )
     )
 ```
 
@@ -345,7 +348,8 @@ def index():
         ),
         air.Body(
             air.Main(
-                air.H1("Air Web Framework"), air.P("The web framework for Air Nomads.")
+                air.H1("Air Web Framework"),
+                air.P("The web framework for Air Nomads."),
             )
         ),
     )
@@ -368,7 +372,8 @@ def index():
             air.Style("h1 {color: red;}"),
         ),
         air.Body(
-            air.H1("Air Web Framework"), air.P("The web framework for Air Nomads.")
+            air.H1("Air Web Framework"),
+            air.P("The web framework for Air Nomads."),
         ),
     )
 ```
@@ -624,7 +629,9 @@ def index():
 
 async def lottery_generator():  # (6)!
     while True:
-        lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
+        lottery_numbers = ", ".join(
+            [str(random.randint(1, 40)) for x in range(6)]
+        )
         # Tags work seamlessly
         yield air.Aside(lottery_numbers)  # (7)!
         await sleep(1)

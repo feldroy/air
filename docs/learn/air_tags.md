@@ -16,7 +16,10 @@ from air import Article, H1, P
 
 content = Article(
     H1("Air Tags"),
-    P("Air Tags are a fast, expressive way to generate HTML.", class_="subtitle"),
+    P(
+        "Air Tags are a fast, expressive way to generate HTML.",
+        class_="subtitle",
+    ),
 )
 print(content)  # <air.Article("Defines an article")>
 ```
@@ -212,7 +215,11 @@ Unlike HTML, SVG tags are case-sensitive. You can access SVG tags by importing t
 ```python
 from air import svg
 
-svg.Svg(svg.Circle(cx="50", cy="50", r="40", fill="blue"), width="100", height="100")
+svg.Svg(
+    svg.Circle(cx="50", cy="50", r="40", fill="blue"),
+    width="100",
+    height="100",
+)
 ```
 
 This will render the following SVG:
@@ -340,16 +347,14 @@ The easiest way to do that is with the `BaseTag.from_html_to_source` method.
 ```python
 import air
 
-air.BaseTag.from_html_to_source(
-    """
+air.BaseTag.from_html_to_source("""
 <html>
     <body>
         <main>
             <h1 class="header">Hello, World</h1>
         </main>
     </body>
-</html>"""
-)
+</html>""")
 ```
 
 This generates:

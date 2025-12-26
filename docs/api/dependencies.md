@@ -35,7 +35,10 @@ def get_users(is_htmx: bool = Depends(air.is_htmx_request)):
             [
                 air.Head(air.Title("Users")),
                 air.Body(
-                    [air.H1("User List"), air.Ul([air.Li(user) for user in users])]
+                    [
+                        air.H1("User List"),
+                        air.Ul([air.Li(user) for user in users]),
+                    ]
                 ),
             ]
         )

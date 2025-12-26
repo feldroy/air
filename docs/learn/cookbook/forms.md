@@ -121,7 +121,9 @@ async def flight():
 
 
 @app.post("/flight-info")
-async def flight_info(flight: Annotated[FlightForm, Depends(FlightForm.validate)]):
+async def flight_info(
+    flight: Annotated[FlightForm, Depends(FlightForm.validate)],
+):
     if flight.is_valid:
         return air.Html(
             air.H1(f"{flight.data.flight_number} → {flight.data.destination}")

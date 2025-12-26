@@ -51,7 +51,6 @@ from air import Air
 from air.requests import Request
 import air
 
-
 app = Air()
 
 # Set the Jinja render function

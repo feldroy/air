@@ -12,7 +12,9 @@ Air's layout functions automatically sort your tags into the right places using 
 ```python
 # Verbose Way
 air.Html(
-    air.Head(air.Title("My App"), air.Link(rel="stylesheet", href="style.css")),
+    air.Head(
+        air.Title("My App"), air.Link(rel="stylesheet", href="style.css")
+    ),
     air.Body(air.H1("Welcome"), air.P("Content here")),
 )
 

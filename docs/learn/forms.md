@@ -22,7 +22,11 @@ def index():
         air.H1("Contact Form"),
         air.Article(
             air.Form(
-                air.Label("Email", air.Input(name="email", type="email"), for_="Email"),
+                air.Label(
+                    "Email",
+                    air.Input(name="email", type="email"),
+                    for_="Email",
+                ),
                 air.Label(
                     "Name",
                     air.Input(name="name"),
