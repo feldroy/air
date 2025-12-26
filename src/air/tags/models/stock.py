@@ -2745,7 +2745,17 @@ class Track(SelfClosingTag):
 
 
 class U(BaseTag):
-    """Defines some text that is unarticulated and styled differently from normal text"""
+    """Defines some text that is unarticulated and styled differently from normal text
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        compact: Specifies that the list should be rendered in a compact style.
+        type: Specifies the kind of marker to use in the list.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2761,7 +2771,15 @@ class U(BaseTag):
 
 
 class Ul(BaseTag):
-    """Defines an unordered list"""
+    """Defines an unordered list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2775,7 +2793,15 @@ class Ul(BaseTag):
 
 
 class Var(BaseTag):
-    """Defines a variable"""
+    """Defines a variable
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2789,7 +2815,29 @@ class Var(BaseTag):
 
 
 class Video(BaseTag):
-    """Defines embedded video content"""
+    """Defines embedded video content
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        src: Specifies the URL of the video file.
+        autoplay: Specifies that the video will start playing as soon as it is ready.
+        controls: Specifies that video controls should be displayed (such as a play/pause button etc).
+        controlslist: Specifies which controls to show on the media element.
+        crossorigin: Specifies how the element handles cross-origin requests.
+        disablepictureinpicture: Prevents the browser from suggesting a Picture-in-Picture context menu.
+        disableremoteplayback: Disables the capability of remote playback on devices.
+        height: Specifies the height of the video player.
+        width: Specifies the width of the video player.
+        loop: Specifies that the video will start over again, every time it is finished.
+        muted: Specifies that the audio output of the video should be muted.
+        playsinline: Indicates that the video is to be played inline.
+        poster: Specifies an image to be shown while the video is downloading.
+        preload: Specifies if and how the author thinks the video should be loaded when the page loads.
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2817,7 +2865,14 @@ class Video(BaseTag):
 
 
 class Wbr(SelfClosingTag):
-    """Defines a possible line-break"""
+    """Defines a possible line-break
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
