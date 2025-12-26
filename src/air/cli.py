@@ -22,9 +22,7 @@ app = typer.Typer(
 def run(
     path: Annotated[
         str,
-        typer.Argument(
-            help="Path to the Python file or module:app (e.g., main.py or main:app)"
-        ),
+        typer.Argument(help="Path to the Python file or module:app (e.g., main.py or main:app)"),
     ] = "main:app",
     *,
     host: Annotated[
