@@ -8,6 +8,7 @@ from air.tags.models.types import AttributeType
 
 
 app = air.Air()
+app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 
 
 def layout(*children: Any, **kwargs: AttributeType) -> air.Html | air.Children:
@@ -30,11 +31,47 @@ def layout(*children: Any, **kwargs: AttributeType) -> air.Html | air.Children:
     )
 
 
+def _check_user(request: air.Request) -> Any | None:
+    return request.session.get("user") if hasattr(request, "session") else None
+
+def _require_login(request: air.Request):
+    # Replace this with your actual login check
+    user = _check_user(request=request)  
+
+    if not user:
+        # Redirect if not logged in
+        raise air.HTTPException(
+            status_code=307,
+            headers={"Location": "/login"},
+        )
+    return user
+require_login = Depends(_require_login)
+
+
 @app.page
-def index() -> air.BaseTag:
+def index(user=require_login) -> air.BaseTag:
     title = "TODOs"
-    return air.layouts.mvpcss(
+    return layout(
         air.Title(title),
         air.H1(title),
+    )
 
+@app.page
+async def login():
+    return layout(
+        air.H1('TODOs Login'),
+        # login the user
+        air.Form(
+            air.P(
+            air.Label("Username:", for_="username"),
+            air.Input(type="text", name="username", id="username", required=True, autofocus=True),
+            ),
+            air.P(
+            air.Label("Password:", for_="password"),
+            air.Input(type="password", name="password", id="password", required=True, autofocus=True),            
+            ),
+            air.P(air.Button("Login", type="submit")),
+            action="/login",
+            method="post",
+        )    
     )
