@@ -36,7 +36,7 @@ class A(CaseTag):
         rel: Relationship to target object.
         type: MIME type of linked URL.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -53,7 +53,7 @@ class A(CaseTag):
         rel: str | None = None,
         type: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -78,7 +78,7 @@ class Animate(CaseTag):
         end: Animation end time.
         calcMode: Interpolation mode (discrete|linear|paced|spline).
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -99,7 +99,7 @@ class Animate(CaseTag):
         end: str | None = None,
         calcMode: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -118,7 +118,7 @@ class AnimateMotion(CaseTag):
         repeatCount: Number of repetitions.
         begin: Animation start time.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -133,7 +133,7 @@ class AnimateMotion(CaseTag):
         repeatCount: str | float | None = None,
         begin: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -153,7 +153,7 @@ class AnimateTransform(CaseTag):
         repeatCount: Number of repetitions.
         begin: Animation start time.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -169,7 +169,7 @@ class AnimateTransform(CaseTag):
         repeatCount: str | float | None = None,
         begin: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -186,7 +186,7 @@ class Circle(CaseTag):
         r: Radius.
         pathLength: Total circumference length in user units.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -199,7 +199,7 @@ class Circle(CaseTag):
         r: str | float | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -213,7 +213,7 @@ class ClipPath(CaseTag):
         children: Tags, strings, or other rendered content.
         clipPathUnits: Coordinate system (userSpaceOnUse|objectBoundingBox).
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -223,7 +223,7 @@ class ClipPath(CaseTag):
         *children: Renderable,
         clipPathUnits: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -236,7 +236,7 @@ class Defs(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -245,7 +245,7 @@ class Defs(CaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -258,7 +258,7 @@ class Desc(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -267,7 +267,7 @@ class Desc(CaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -285,7 +285,7 @@ class Ellipse(CaseTag):
         ry: Vertical radius.
         pathLength: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -299,7 +299,7 @@ class Ellipse(CaseTag):
         ry: str | float | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -316,7 +316,7 @@ class FeBlend(CaseTag):
         mode: Blending mode.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -329,7 +329,7 @@ class FeBlend(CaseTag):
         mode: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -346,7 +346,7 @@ class FeColorMatrix(CaseTag):
         values: Matrix values.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -359,7 +359,7 @@ class FeColorMatrix(CaseTag):
         values: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -374,7 +374,7 @@ class FeComponentTransfer(CaseTag):
         in_: Input image reference.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -385,7 +385,7 @@ class FeComponentTransfer(CaseTag):
         in_: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -406,7 +406,7 @@ class FeComposite(CaseTag):
         k4: Coefficient for arithmetic operation.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -423,7 +423,7 @@ class FeComposite(CaseTag):
         k4: float | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -446,7 +446,7 @@ class FeConvolveMatrix(CaseTag):
         preserveAlpha: Preserve alpha channel.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -465,7 +465,7 @@ class FeConvolveMatrix(CaseTag):
         preserveAlpha: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -483,7 +483,7 @@ class FeDiffuseLighting(CaseTag):
         kernelUnitLength: Kernel unit length.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -497,7 +497,7 @@ class FeDiffuseLighting(CaseTag):
         kernelUnitLength: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -516,7 +516,7 @@ class FeDisplacementMap(CaseTag):
         yChannelSelector: Y displacement channel (R|G|B|A).
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -531,7 +531,7 @@ class FeDisplacementMap(CaseTag):
         yChannelSelector: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -546,7 +546,7 @@ class FeDistantLight(CaseTag):
         azimuth: Direction angle on XY plane (degrees).
         elevation: Direction angle from XY plane to z-axis (degrees).
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -557,7 +557,7 @@ class FeDistantLight(CaseTag):
         azimuth: str | float | None = None,
         elevation: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -575,7 +575,7 @@ class FeDropShadow(CaseTag):
         flood_color: Shadow color.
         flood_opacity: Shadow opacity.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -589,7 +589,7 @@ class FeDropShadow(CaseTag):
         flood_color: str | None = None,
         flood_opacity: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -605,7 +605,7 @@ class FeFlood(CaseTag):
         flood_opacity: Fill opacity.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -617,7 +617,7 @@ class FeFlood(CaseTag):
         flood_opacity: str | float | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -637,7 +637,7 @@ class FeFuncA(CaseTag):
         exponent: Gamma function exponent.
         offset: Gamma function offset.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -653,7 +653,7 @@ class FeFuncA(CaseTag):
         exponent: float | None = None,
         offset: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -673,7 +673,7 @@ class FeFuncB(CaseTag):
         exponent: Gamma function exponent.
         offset: Gamma function offset.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -689,7 +689,7 @@ class FeFuncB(CaseTag):
         exponent: float | None = None,
         offset: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -709,7 +709,7 @@ class FeFuncG(CaseTag):
         exponent: Gamma function exponent.
         offset: Gamma function offset.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -725,7 +725,7 @@ class FeFuncG(CaseTag):
         exponent: float | None = None,
         offset: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -745,7 +745,7 @@ class FeFuncR(CaseTag):
         exponent: Gamma function exponent.
         offset: Gamma function offset.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -761,7 +761,7 @@ class FeFuncR(CaseTag):
         exponent: float | None = None,
         offset: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -778,7 +778,7 @@ class FeGaussianBlur(CaseTag):
         edgeMode: Edge handling during blur.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -791,7 +791,7 @@ class FeGaussianBlur(CaseTag):
         edgeMode: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -808,7 +808,7 @@ class FeImage(CaseTag):
         crossorigin: CORS credentials flag.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -821,7 +821,7 @@ class FeImage(CaseTag):
         crossorigin: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -835,7 +835,7 @@ class FeMerge(CaseTag):
         children: Tags, strings, or other rendered content.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -845,7 +845,7 @@ class FeMerge(CaseTag):
         *children: Renderable,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -859,7 +859,7 @@ class FeMergeNode(CaseTag):
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -869,7 +869,7 @@ class FeMergeNode(CaseTag):
         *children: Renderable,
         in_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -886,7 +886,7 @@ class FeMorphology(CaseTag):
         radius: Morphology radius.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -899,7 +899,7 @@ class FeMorphology(CaseTag):
         radius: str | float | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -916,7 +916,7 @@ class FeOffset(CaseTag):
         dy: Vertical offset distance.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -929,7 +929,7 @@ class FeOffset(CaseTag):
         dy: str | float | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -945,7 +945,7 @@ class FePointLight(CaseTag):
         y: Y-coordinate of light position.
         z: Z-coordinate of light position.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -957,7 +957,7 @@ class FePointLight(CaseTag):
         y: str | float | None = None,
         z: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -976,7 +976,7 @@ class FeSpecularLighting(CaseTag):
         kernelUnitLength: Kernel unit length.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -991,7 +991,7 @@ class FeSpecularLighting(CaseTag):
         kernelUnitLength: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1012,7 +1012,7 @@ class FeSpotLight(CaseTag):
         specularExponent: Focus control for light source.
         limitingConeAngle: Angle of spot light cone.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1029,7 +1029,7 @@ class FeSpotLight(CaseTag):
         specularExponent: float | None = None,
         limitingConeAngle: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1044,7 +1044,7 @@ class FeTile(CaseTag):
         in_: Input image reference.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1055,7 +1055,7 @@ class FeTile(CaseTag):
         in_: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1074,7 +1074,7 @@ class FeTurbulence(CaseTag):
         type: Turbulence type (fractalNoise|turbulence).
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1089,7 +1089,7 @@ class FeTurbulence(CaseTag):
         type: str | None = None,
         result: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1108,7 +1108,7 @@ class Filter(CaseTag):
         filterUnits: Coordinate system for position/size.
         primitiveUnits: Coordinate system for primitives.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1123,7 +1123,7 @@ class Filter(CaseTag):
         filterUnits: str | None = None,
         primitiveUnits: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1140,7 +1140,7 @@ class ForeignObject(CaseTag):
         width: Width.
         height: Height.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1153,7 +1153,7 @@ class ForeignObject(CaseTag):
         width: str | float | None = None,
         height: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1166,7 +1166,7 @@ class G(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1175,7 +1175,7 @@ class G(CaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1197,7 +1197,7 @@ class Image(CaseTag):
         decoding: Image decoding hint.
         fetchpriority: Fetch priority hint (experimental).
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1215,7 +1215,7 @@ class Image(CaseTag):
         decoding: str | None = None,
         fetchpriority: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1233,7 +1233,7 @@ class Line(CaseTag):
         y2: Y-coordinate of end point.
         pathLength: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1247,7 +1247,7 @@ class Line(CaseTag):
         y2: str | float | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1268,7 +1268,7 @@ class LinearGradient(CaseTag):
         href: Reference to template gradient.
         spreadMethod: Gradient behavior outside bounds.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1285,7 +1285,7 @@ class LinearGradient(CaseTag):
         href: str | None = None,
         spreadMethod: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1306,7 +1306,7 @@ class Marker(CaseTag):
         viewBox: Viewport bounds.
         preserveAspectRatio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1323,7 +1323,7 @@ class Marker(CaseTag):
         viewBox: str | None = None,
         preserveAspectRatio: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1343,7 +1343,7 @@ class Mask(CaseTag):
         maskContentUnits: Coordinate system for contents.
         mask_type: Mask mode (alpha|luminance).
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1359,7 +1359,7 @@ class Mask(CaseTag):
         maskContentUnits: str | None = None,
         mask_type: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1372,7 +1372,7 @@ class Metadata(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1381,7 +1381,7 @@ class Metadata(CaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1395,7 +1395,7 @@ class Mpath(CaseTag):
         children: Tags, strings, or other rendered content.
         href: Reference to path element.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1405,7 +1405,7 @@ class Mpath(CaseTag):
         *children: Renderable,
         href: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1420,7 +1420,7 @@ class Path(CaseTag):
         d: Path data defining the shape.
         pathLength: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1431,7 +1431,7 @@ class Path(CaseTag):
         d: str | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1454,7 +1454,7 @@ class Pattern(CaseTag):
         viewBox: Viewport bounds for pattern.
         preserveAspectRatio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1473,7 +1473,7 @@ class Pattern(CaseTag):
         viewBox: str | None = None,
         preserveAspectRatio: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1488,7 +1488,7 @@ class Polygon(CaseTag):
         points: List of x,y coordinate pairs.
         pathLength: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1499,7 +1499,7 @@ class Polygon(CaseTag):
         points: str | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1514,7 +1514,7 @@ class Polyline(CaseTag):
         points: List of x,y coordinate pairs.
         pathLength: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1525,7 +1525,7 @@ class Polyline(CaseTag):
         points: str | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1548,7 +1548,7 @@ class RadialGradient(CaseTag):
         href: Reference to template gradient.
         spreadMethod: Gradient behavior.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1567,7 +1567,7 @@ class RadialGradient(CaseTag):
         href: str | None = None,
         spreadMethod: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1587,7 +1587,7 @@ class Rect(CaseTag):
         ry: Vertical corner radius.
         pathLength: Total perimeter length in user units.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1603,7 +1603,7 @@ class Rect(CaseTag):
         ry: str | float | None = None,
         pathLength: float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1620,7 +1620,7 @@ class Script(CaseTag):
         crossorigin: CORS credentials flag.
         fetchpriority: Fetch priority hint (experimental).
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1633,7 +1633,7 @@ class Script(CaseTag):
         crossorigin: str | None = None,
         fetchpriority: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1650,7 +1650,7 @@ class Set(CaseTag):
         begin: Animation start time.
         dur: Animation duration.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1663,7 +1663,7 @@ class Set(CaseTag):
         begin: str | None = None,
         dur: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1679,7 +1679,7 @@ class Stop(CaseTag):
         stop_color: Color of gradient stop.
         stop_opacity: Opacity of gradient stop.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1691,7 +1691,7 @@ class Stop(CaseTag):
         stop_color: str | None = None,
         stop_opacity: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1706,7 +1706,7 @@ class Style(CaseTag):
         type: Style sheet language MIME type.
         media: Media query for when styles apply.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1717,7 +1717,7 @@ class Style(CaseTag):
         type: str | None = None,
         media: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1736,7 +1736,7 @@ class Svg(CaseTag):
         viewBox: SVG viewport coordinates.
         preserveAspectRatio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1751,7 +1751,7 @@ class Svg(CaseTag):
         viewBox: str | None = None,
         preserveAspectRatio: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1764,7 +1764,7 @@ class Switch(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1773,7 +1773,7 @@ class Switch(CaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1794,7 +1794,7 @@ class Symbol(CaseTag):
         refX: X reference point.
         refY: Y reference point.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1811,7 +1811,7 @@ class Symbol(CaseTag):
         refX: str | float | None = None,
         refY: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1831,7 +1831,7 @@ class Text(CaseTag):
         lengthAdjust: Text stretching method.
         textLength: Target width for text scaling.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1847,7 +1847,7 @@ class Text(CaseTag):
         lengthAdjust: str | None = None,
         textLength: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1868,7 +1868,7 @@ class TextPath(CaseTag):
         startOffset: Offset from path beginning.
         textLength: Text rendering width.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1885,7 +1885,7 @@ class TextPath(CaseTag):
         startOffset: str | float | None = None,
         textLength: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1898,7 +1898,7 @@ class Title(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1907,7 +1907,7 @@ class Title(CaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1927,7 +1927,7 @@ class Tspan(CaseTag):
         lengthAdjust: Text stretching method.
         textLength: Target width for text scaling.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1943,7 +1943,7 @@ class Tspan(CaseTag):
         lengthAdjust: str | None = None,
         textLength: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1961,7 +1961,7 @@ class Use(CaseTag):
         width: Width (only for elements with viewBox).
         height: Height (only for elements with viewBox).
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -1975,7 +1975,7 @@ class Use(CaseTag):
         width: str | float | None = None,
         height: str | float | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1990,7 +1990,7 @@ class View(CaseTag):
         viewBox: Viewport bounds.
         preserveAspectRatio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         **custom_attributes: Additional attributes.
     """
@@ -2001,7 +2001,7 @@ class View(CaseTag):
         viewBox: str | None = None,
         preserveAspectRatio: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:

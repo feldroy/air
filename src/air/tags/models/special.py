@@ -139,7 +139,7 @@ class Script(UnSafeTag):
         attributionsrc: Space-separated URLs for Attribution Reporting (experimental).
         nonce: CSP nonce (meaning: one-time token) to allow this inline script.
         class_: Substituted as the DOM ``class`` attribute.
-        id: DOM ``id`` attribute.
+        id_: DOM ``id`` attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -173,7 +173,7 @@ class Script(UnSafeTag):
         attributionsrc: str | None = None,
         nonce: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -192,7 +192,7 @@ class Style(UnSafeTag):
         nonce: CSP nonce (meaning: one-time token) to allow this inline style.
         type: (Deprecated) Only ``""`` or ``"text/css"`` are permitted; omit in modern HTML.
         class_: Substituted as the DOM ``class`` attribute.
-        id: DOM ``id`` attribute.
+        id_: DOM ``id`` attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -209,7 +209,7 @@ class Style(UnSafeTag):
         nonce: str | None = None,
         type: str | None = None,  # deprecated
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
