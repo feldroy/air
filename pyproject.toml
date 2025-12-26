@@ -130,6 +130,7 @@ dev = [
 devtools = []
 lint = [
     "codespell>=2.4.1",
+    "prek>=0.2.24",
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types

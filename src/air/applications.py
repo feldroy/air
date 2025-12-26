@@ -123,8 +123,14 @@ class Air(FastAPI, RouterMixin):
 
                 app = FastAPI(
                     servers=[
-                        {"url": "https://stag.example.com", "description": "Staging environment"},
-                        {"url": "https://prod.example.com", "description": "Production environment"},
+                        {
+                            "url": "https://stag.example.com",
+                            "description": "Staging environment",
+                        },
+                        {
+                            "url": "https://prod.example.com",
+                            "description": "Production environment",
+                        },
                     ]
                 )
                 ```
@@ -164,6 +170,7 @@ class Air(FastAPI, RouterMixin):
                 ```python
                 from fastapi import FastAPI
                 from air import AirResponse
+
                 app = FastAPI(default_response_class=AirResponse)
                 ```
                 """
@@ -182,6 +189,7 @@ class Air(FastAPI, RouterMixin):
                 from fastapi import FastAPI
 
                 app = FastAPI(redirect_slashes=True)  # the default
+
 
                 @app.get("/items/")
                 async def read_items():

@@ -15,11 +15,21 @@ def index():
     data = json.dumps(
         {
             "data": [
-                {"x": [0, 4, 5, 7, 8, 10], "y": [2, 9, 0, 4, 3, 6], "type": "scatter"},
-                {"x": [0, 1, 2, 4, 8, 10], "y": [9, 2, 4, 3, 5, 0], "type": "scatter"},
+                {
+                    "x": [0, 4, 5, 7, 8, 10],
+                    "y": [2, 9, 0, 4, 3, 6],
+                    "type": "scatter",
+                },
+                {
+                    "x": [0, 1, 2, 4, 8, 10],
+                    "y": [9, 2, 4, 3, 5, 0],
+                    "type": "scatter",
+                },
             ],
             "title": "Fun charts with Plotly and Air",
-            "description": "This is a demonstration of how to build a chart using Plotly and Air",
+            "description": (
+                "This is a demonstration of how to build a chart using Plotly and Air"
+            ),
             "type": "scatter",
         }
     )

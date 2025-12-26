@@ -12,14 +12,16 @@ Used individually or combined into a greater whole, every Air Tag includes a `re
 This example:
 
 ```python
->>> from air import Article, H1, P
->>> content = Article(
+from air import Article, H1, P
+
+content = Article(
     H1("Air Tags"),
-    P("Air Tags are a fast, expressive way to generate HTML.",
-        class_="subtitle")
+    P(
+        "Air Tags are a fast, expressive way to generate HTML.",
+        class_="subtitle",
+    ),
 )
->>> content
-<air.Article("Defines an article")>
+print(content)  # <air.Article("Defines an article")>
 ```
 
 In constructing this example, the `Article` tag has wrapped the `H1` and `P` tags. You can't see that the `H1` and `P` tags are inside, but they have been carefully stored.
@@ -27,7 +29,7 @@ In constructing this example, the `Article` tag has wrapped the `H1` and `P` tag
 This is the output of the `render()` method for the example above:
 
 ```python
->>> content.render()
+content.render()
 ```
 
 ```html
@@ -37,7 +39,7 @@ This is the output of the `render()` method for the example above:
 A shortcut for the `render()` method is the `str()` built-ins.
 
 ```python
->>> str(content)
+str(content)
 ```
 
 ```html
@@ -48,7 +50,7 @@ The `print()` built-in also does this conversion, but the result goes to `stdout
 
 
 ```python
->>> print(content)
+print(content)
 ```
 
 ```html
@@ -64,7 +66,7 @@ The `print()` built-in also does this conversion, but the result goes to `stdout
 What if we want a more human-friendly display of HTML? We can use `.pretty_render()` method on any Air Tag:
 
 ```python
->>> print(content.pretty_render())
+print(content.pretty_render())
 ```
 
 ```html
@@ -116,7 +118,7 @@ Some HTML attributes are reserved words in Python. To get around that, **Air Tag
 In Python `class` is a protected word. To set the `class` attribute in **Air Tags**, use the `class_` keyword.
 
 ```python
-air.P('Hello', class_='plain')
+air.P("Hello", class_="plain")
 ```
 
 renders as
@@ -130,11 +132,7 @@ renders as
 In Python `for` is a protected word. To set the `for` attribute in **Air Tags**, use the `for_` keyword.
 
 ```python
-air.Label(
-    'Email',
-    air.Input(name='email', type='email')
-    for_='email'
-)
+air.Label("Email", air.Input(name="email", type="email"), for_="email")
 ```
 
 renders as
@@ -165,7 +163,7 @@ renders as
 To get around that in Python we can't begin function arguments with special characters, we lean into how **Air Tags** is kwargs friendly.
 
 ```python
-air.P('Hello', class_='plain', **{'@data': 6})
+air.P("Hello", class_="plain", **{"@data": 6})
 ```
 
 Renders as:
@@ -180,8 +178,8 @@ To set or hide single word attributes like `@selected`, set the tag to `True` or
 
 ```python
 air.Select(
-    air.Option('South America', value='SA', selected=True),
-    air.Option('North America', value='NA', selected=False)
+    air.Option("South America", value="SA", selected=True),
+    air.Option("North America", value="NA", selected=False),
 )
 ```
 
@@ -218,9 +216,9 @@ Unlike HTML, SVG tags are case-sensitive. You can access SVG tags by importing t
 from air import svg
 
 svg.Svg(
-    svg.Circle(cx='50', cy='50', r='40', fill='blue'),
-    width='100',
-    height='100'
+    svg.Circle(cx="50", cy="50", r="40", fill="blue"),
+    width="100",
+    height="100",
 )
 ```
 
@@ -243,6 +241,7 @@ The best way to define your own **Air Tags** is to subclass the `air.Tag` class.
 ```python
 from air import Tag
 
+
 class Tasty(Tag):
     pass
 ```
@@ -250,7 +249,7 @@ class Tasty(Tag):
 Let's instantiate this class and call its `render()` method:
 
 ```python
-Tasty('Ice Cream', class_='dessert').render()
+Tasty("Ice Cream", class_="dessert").render()
 ```
 
 This will produce the following HTML:
@@ -264,12 +263,8 @@ This will produce the following HTML:
 Subclasses are not the only way to create custom Air Tags. You can also use functions to create Air Tags. This is particularly useful for putting together components quickly without needing to define a class. Here's an example of a function that creates a custom Air Tag for a [picocss card](https://picocss.com/docs/card):
 
 ```python
-def card(*content, header:str, footer:str):
-    return air.Article(
-        air.Header(header),
-        *content,
-        air.Footer(footer)
-    )
+def card(*content, header: str, footer: str):
+    return air.Article(air.Header(header), *content, air.Footer(footer))
 ```
 
 We can use this function to create a card:
@@ -303,18 +298,30 @@ Which produces the following HTML:
 When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are hierarchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
 
 ```python
-import
+import air
 
-@app.post('/cart/add/{product_id}/')
+
+@app.post("/cart/add/{product_id}/")
 def update_cart(request: air.Request, product_id: int):
     "This is a simplified update cart view"
     # air.Tags renders the child tags without adding anything of its own
     return air.Tags(
         # Mark that an item has been added to the cart
-        Button('Added!', hx_post='/cart/add/{{product.id}}', hx_swap_oob='true', id='add-button'),
-
+        Button(
+            "Added!",
+            hx_post="/cart/add/{{product.id}}",
+            hx_swap_oob="true",
+            id="add-button",
+        ),
         # Cart icon quantity changed
-        A(f'Cart {count}', id='cart-icon', href='/cart', hx_trigger='polling 30s', hx_get='/cart-icon', hx_swap_oob='true'),
+        A(
+            f"Cart {count}",
+            id="cart-icon",
+            href="/cart",
+            hx_trigger="polling 30s",
+            hx_get="/cart-icon",
+            hx_swap_oob="true",
+        ),
     )
 ```
 
@@ -339,6 +346,7 @@ The easiest way to do that is with the `BaseTag.from_html_to_source` method.
 
 ```python
 import air
+
 air.BaseTag.from_html_to_source("""
 <html>
     <body>
@@ -352,11 +360,5 @@ air.BaseTag.from_html_to_source("""
 This generates:
 
 ```python
-air.Html(
-    air.Body(
-        air.Main(
-            air.H1('Hello, World', class_='header')
-        )
-    )
-)
+air.Html(air.Body(air.Main(air.H1("Hello, World", class_="header"))))
 ```

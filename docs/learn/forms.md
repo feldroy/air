@@ -14,6 +14,7 @@ import air
 
 app = air.Air()
 
+
 @app.page
 def index():
     return air.layouts.mvpcss(
@@ -21,7 +22,11 @@ def index():
         air.H1("Contact Form"),
         air.Article(
             air.Form(
-                air.Label("Email", air.Input(name="email", type="email"), for_="Email"),
+                air.Label(
+                    "Email",
+                    air.Input(name="email", type="email"),
+                    for_="Email",
+                ),
                 air.Label(
                     "Name",
                     air.Input(name="name"),
@@ -32,6 +37,7 @@ def index():
             )
         ),
     )
+
 
 @app.post("/add-contact")
 async def add(request: air.Request):
@@ -52,9 +58,11 @@ Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseM
 ```python
 from air import AirForm, AirField, AirModel
 
+
 class ContactModel(AirModel):
     name: str
     email: str = AirField(type="email", label="Email")
+
 
 # Create an Air Form instance from the Air Model
 contact_form = ContactModel.to_form()
@@ -63,7 +71,6 @@ contact_form = ContactModel.to_form()
 ### Displaying an Air Form
 
 ```python
-
 contact_form.render()
 ```
 
@@ -114,9 +121,11 @@ You can easily convert any Pydantic model into an Air Form using the `to_form` f
 ```python
 from pydantic import BaseModel, EmailStr
 
+
 class ContactModel(BaseModel):
     name: str
     email: EmailStr
+
 
 ContactForm = air.to_form(ContactModel)
 

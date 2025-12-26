@@ -934,6 +934,7 @@ import air
 
 app = air.Air()
 
+
 @app.get("/")
 async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
