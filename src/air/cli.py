@@ -95,11 +95,13 @@ def run(
 
     # Print startup banner
     url = f"http://{host}:{port}"
+    docs_url = f"{url}/docs"
     console.print()
     console.print(f"  [bold cyan]Air[/bold cyan] v{version('air')}")
     console.print()
     console.print(f"  [dim]➜[/dim]  [bold]App:[/bold]     {app_path}")
     console.print(f"  [dim]➜[/dim]  [bold]Server:[/bold]  [link={url}]{url}[/link]")
+    console.print(f"  [dim]➜[/dim]  [bold]Docs:[/bold]    [link={docs_url}]{docs_url}[/link]")
     console.print()
 
     uvicorn.run(
