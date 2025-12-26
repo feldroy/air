@@ -111,7 +111,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "rich", specifier = ">=14.2.0" },
     { name = "selectolax", specifier = ">=0.4.6" },
-    { name = "typer", specifier = ">=0.15.0" },
+    { name = "typer", specifier = ">=0.19.1" },
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 provides-extras = ["standard"]

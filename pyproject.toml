@@ -97,7 +97,7 @@ dependencies = [
     "frozendict>=2.4.7",
     "pygments>=2.19.2",
     "selectolax>=0.4.6",
-    "typer>=0.15.0",
+    "typer>=0.19.1",
     "uvicorn>=0.34.0",
 ]
 
