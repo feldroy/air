@@ -17,14 +17,17 @@ def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback sig
         raise typer.Exit
 
 
-@app.callback()
+@app.callback(invoke_without_command=True)
 def _callback(
+    ctx: typer.Context,
     _: Annotated[
         bool | None,
         typer.Option("--version", "-v", help="Show version and exit.", callback=_version_callback),
     ] = None,
 ) -> None:
     """Air CLI - Run your Air applications."""
+    if ctx.invoked_subcommand is None:
+        typer.echo(ctx.get_help())
 
 
 @app.command()
