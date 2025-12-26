@@ -329,7 +329,7 @@ class Air(FastAPI, RouterMixin):
                 Set to `None` to disable it.
                 """
             ),
-        ] = "/_docs",
+        ] = "/_swagger",
         redoc_url: Annotated[
             str | None,
             Doc(
@@ -339,7 +339,7 @@ class Air(FastAPI, RouterMixin):
                 Set to `None` to disable it.
                 """
             ),
-        ] = None,
+        ] = "/_redoc",
         openapi_url: Annotated[
             str | None,
             Doc(
