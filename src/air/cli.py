@@ -95,7 +95,7 @@ def run(
 
     # Print startup banner
     url = f"http://{host}:{port}"
-    docs_url = f"{url}/docs"
+    docs_url = f"{url}/_docs"
     console.print()
     console.print(f"  [bold cyan]Air[/bold cyan] v{version('air')}")
     console.print()
