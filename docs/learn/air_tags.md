@@ -84,7 +84,7 @@ What if we want a more human-friendly display of HTML? We can use `.pretty_rende
 **Air Tags** convert keyword arguments into attributes. So:
 
 ```python+html
-air.P('Hello', id="mine")
+air.P('Hello', id_="mine")
 ```
 
 renders as:
@@ -311,10 +311,10 @@ def update_cart(request: air.Request, product_id: int):
     # air.Tags renders the child tags without adding anything of its own
     return air.Tags(
         # Mark that an item has been added to the cart
-        Button('Added!', hx_post='/cart/add/{{product.id}}', hx_swap_oob='true', id='add-button'),
+        Button('Added!', hx_post='/cart/add/{{product.id}}', hx_swap_oob='true', id_='add-button'),
 
         # Cart icon quantity changed
-        A(f'Cart {count}', id='cart-icon', href='/cart', hx_trigger='polling 30s', hx_get='/cart-icon', hx_swap_oob='true'),
+        A(f'Cart {count}', id_='cart-icon', href='/cart', hx_trigger='polling 30s', hx_get='/cart-icon', hx_swap_oob='true'),
     )
 ```
 
