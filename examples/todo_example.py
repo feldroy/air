@@ -1,11 +1,9 @@
-import csv
+from typing import Any
+
+from fastapi import Depends
 
 import air
-from fastapi import Depends
-from typing import Any
 from air.tags.models.types import AttributeType
-
-
 
 app = air.Air()
 app.add_middleware(air.SessionMiddleware, secret_key="change-me")
@@ -13,7 +11,7 @@ app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 
 def layout(*children: Any, **kwargs: AttributeType) -> air.Html | air.Children:
     body_tags = air.layouts.filter_body_tags(children)
-    head_tags = air.layouts.filter_head_tags(children)    
+    head_tags = air.layouts.filter_head_tags(children)
 
     return air.Html(
         air.Head(
@@ -25,53 +23,73 @@ def layout(*children: Any, **kwargs: AttributeType) -> air.Html | air.Children:
             ),
             *head_tags,
         ),
-        air.Body(
-            *[x for x in body_tags]
-        ),
+        air.Body(*[x for x in body_tags]),
     )
 
 
 def _check_user(request: air.Request) -> Any | None:
-    return request.session.get("user") if hasattr(request, "session") else None
+    return request.session.get("username") if hasattr(request, "session") else None
+
 
 def _require_login(request: air.Request):
     # Replace this with your actual login check
-    user = _check_user(request=request)  
+    username = _check_user(request=request)
 
-    if not user:
+    if not username and request.htmx.is_hx_request:
+        return air.Div(**{"hx_on::load": f"window.location.replace({index.url()})"})
+    if not username:
         # Redirect if not logged in
         raise air.HTTPException(
             status_code=307,
-            headers={"Location": "/login"},
+            headers={"Location": index.url()},
         )
-    return user
+    return username
+
+
 require_login = Depends(_require_login)
 
 
 @app.page
-def index(user=require_login) -> air.BaseTag:
-    title = "TODOs"
+async def index(request: air.Request) -> air.BaseTag:
+    print(request.session.get("user"))
+    if request.session.get("user") if hasattr(request, "session") else False:
+        print(request.session.get("user"))
+        return air.RedirectResponse(dashboard.url())
+    title = "TODOs Login"
     return layout(
         air.Title(title),
         air.H1(title),
-    )
-
-@app.page
-async def login():
-    return layout(
-        air.H1('TODOs Login'),
         # login the user
         air.Form(
             air.P(
-            air.Label("Username:", for_="username"),
-            air.Input(type="text", name="username", id="username", required=True, autofocus=True),
+                air.Label("Username:", for_="username"),
+                air.Input(type="text", name="username", id="username", required=True, autofocus=True),
             ),
             air.P(
-            air.Label("Password:", for_="password"),
-            air.Input(type="password", name="password", id="password", required=True, autofocus=True),            
+                air.Label("Password:", for_="password"),
+                air.Input(type="password", name="password", id="password", required=True, autofocus=True),
             ),
-            air.P(air.Button("Login", type="submit")),
+            air.P(air.Button("Login / Create Account", type="submit")),
             action="/login",
             method="post",
-        )    
+        ),
     )
+
+
+@app.post("/login")
+async def login(request: air.Request):
+    form = await request.form()
+    request.session["username"] = form.get("username")
+    return air.RedirectResponse("/dashboard", status_code=303)
+
+
+@app.post("/logout")
+async def logout(request: air.Request):
+    request.session.pop("user")
+    return air.Div(**{"hx_on::load": "window.location.replace('/')"})
+
+
+@app.page
+async def dashboard(request: air.Request, username=require_login):
+    title = f"TODOs Dashboard for {username}"
+    return layout(air.Title(title), air.H1(title), air.P(air.U("Logout", hx_post=logout.url())), air.Ol())
