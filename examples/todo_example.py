@@ -1,3 +1,6 @@
+import csv
+from pathlib import Path
+from time import time
 from typing import Any
 
 from fastapi import Depends
@@ -85,11 +88,67 @@ async def login(request: air.Request):
 
 @app.post("/logout")
 async def logout(request: air.Request):
-    request.session.pop("user")
+    request.session.pop("username")
     return air.Div(**{"hx_on::load": "window.location.replace('/')"})
+
+
+CSV_PATH = Path(__file__).resolve().parent / "todos.csv"
+
+
+def _createdb() -> None:
+    # Ensure todos.csv exists, create it if it does not
+    if CSV_PATH.exists():
+        return
+    CSV_PATH.write_text("id,title,status,username,order")
+    return
+
+
+def read_todo_by_username(username: str) -> list[dict]:
+    with CSV_PATH.open(newline="", encoding="utf-8") as f:
+        return [x for x in csv.DictReader(f) if x["username"] == username]
+
+
+def new_todo_form():
+    return air.Form(
+        air.P(
+            air.Label("New todo:", for_="title"),
+            air.Input(
+                type="text", name="title", id_="title", required=True, autofocus=True, placeholder="Thing I need to do"
+            ),
+            air.Button("New TODO", type="submit"),
+        ),
+        hx_post="/new-todo",
+        hx_swap="afterbegin",
+        hx_target="#listOfTodos",
+        hx_swap_oob="true",
+        id_="#newTodoForm",
+    )
 
 
 @app.page
 async def dashboard(request: air.Request, username=require_login):
+    _createdb()
     title = f"TODOs Dashboard for {username}"
-    return layout(air.Title(title), air.H1(title), air.P(air.U("Logout", hx_post=logout.url())), air.Ol())
+    records = read_todo_by_username(username)
+    return layout(
+        air.Title(title),
+        air.H1(title),
+        air.P(air.U("Logout", hx_post=logout.url())),
+        new_todo_form(),
+        air.Ul(*[air.Li(x["title"], id_=x["id"]) for x in records], id_="listOfTodos"),
+    )
+
+
+@app.post("/new-todo")
+async def new_todo(request: air.Request, username=require_login) -> air.BaseTag:
+    form = await request.form()
+    title = form.get("title")
+    # Write the next line
+    with CSV_PATH.open("a", newline="", encoding="utf-8") as f:
+        fieldnames = ["id", "title", "completed", "username", "order"]
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writerow(dict(title=title, username=username, completed="False", id=int(time()), order=1))
+    return air.Children(
+        air.Li(title),
+        new_todo_form(),
+    )
