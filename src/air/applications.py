@@ -27,7 +27,7 @@ from .types import MaybeAwaitable
 
 AIR_VERSION = get_version("air")
 FASTAPI_VERSION = get_version("fastapi")
-DEFAULT_DESCRIPTION = f"Built with Air {AIR_VERSION} on FastAPI {FASTAPI_VERSION}"
+DEFAULT_DESCRIPTION = f"Built on FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
 DEFAULT_TAGS: list[str | Enum] = ["pages"]
 
 AppType = TypeVar("AppType", bound="Air")
