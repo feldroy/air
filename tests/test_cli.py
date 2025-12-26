@@ -10,7 +10,12 @@ runner = CliRunner()
 
 
 def strip_ansi(text: str) -> str:
-    """Remove ANSI escape codes from text."""
+    """Remove ANSI escape codes from text.
+
+    Returns:
+        Text with ANSI escape codes removed.
+
+    """
     return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
 
