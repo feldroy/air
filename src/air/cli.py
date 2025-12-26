@@ -1,19 +1,30 @@
 """Air CLI - Command-line interface for running Air applications."""
 
 import sys
+from importlib.metadata import version
 from pathlib import Path
 from typing import Annotated
 
 import typer
 import uvicorn
 
-app = typer.Typer(
-    name="air",
-    help="Air CLI - Run Air applications",
-    add_completion=False,
-    no_args_is_help=True,
-    rich_markup_mode="rich",
-)
+app = typer.Typer(add_completion=False, rich_markup_mode="rich")
+
+
+def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback signature
+    if value:
+        typer.echo(f"Air {version('air')}")
+        raise typer.Exit
+
+
+@app.callback()
+def _callback(
+    _: Annotated[
+        bool | None,
+        typer.Option("--version", "-v", help="Show version and exit.", callback=_version_callback),
+    ] = None,
+) -> None:
+    """Air CLI - Run your Air applications."""
 
 
 @app.command()
@@ -61,14 +72,6 @@ def run(
         port=port,
         reload=reload,
     )
-
-
-@app.command()
-def version() -> None:
-    """Show the Air version."""
-    from importlib.metadata import version as get_version  # noqa: PLC0415
-
-    typer.echo(f"Air {get_version('air')}")
 
 
 def main() -> None:

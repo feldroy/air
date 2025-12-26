@@ -26,12 +26,12 @@ def test_cli_help() -> None:
     output = strip_ansi(result.output)
     assert "Air CLI" in output
     assert "run" in output
-    assert "version" in output
+    assert "--version" in output
 
 
 def test_cli_version() -> None:
-    """Test the version command."""
-    result = runner.invoke(app, ["version"], color=False)
+    """Test the --version flag."""
+    result = runner.invoke(app, ["--version"], color=False)
     assert result.exit_code == 0
     assert "Air" in result.output
 
