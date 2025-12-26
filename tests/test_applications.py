@@ -277,3 +277,15 @@ def test_delete_endpoint() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Deleted item 42</h1>"
+
+
+def test_health_endpoint() -> None:
+    """Test that Air apps have a built-in /health endpoint."""
+    app = air.Air()
+    client = TestClient(app)
+
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/json"
+    assert response.json() == {"status": "ok"}
