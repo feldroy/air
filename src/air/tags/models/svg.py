@@ -34,7 +34,7 @@ class A(CaseTag):
         ping: Space-separated list of URLs for tracking.
         referrerpolicy: Referrer policy when fetching the URL.
         rel: Relationship to target object.
-        type: MIME type of linked URL.
+        type_: MIME type of linked URL.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -51,7 +51,7 @@ class A(CaseTag):
         ping: str | None = None,
         referrerpolicy: str | None = None,
         rel: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -145,7 +145,7 @@ class AnimateTransform(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        type: Transformation type (rotate|scale|translate|skew).
+        type_: Transformation type (rotate|scale|translate|skew).
         by: Relative animation value.
         from_: Starting transformation value.
         to: Ending transformation value.
@@ -161,7 +161,7 @@ class AnimateTransform(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        type: str | None = None,
+        type_: str | None = None,
         by: str | None = None,
         from_: str | None = None,
         to: str | None = None,
@@ -342,7 +342,7 @@ class FeColorMatrix(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
-        type: Matrix type (matrix|saturate|hueRotate|luminanceToAlpha).
+        type_: Matrix type (matrix|saturate|hueRotate|luminanceToAlpha).
         values: Matrix values.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
@@ -355,7 +355,7 @@ class FeColorMatrix(CaseTag):
         self,
         *children: Renderable,
         in_: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         values: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -629,7 +629,7 @@ class FeFuncA(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        type: Transfer function type.
+        type_: Transfer function type.
         tableValues: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
@@ -645,7 +645,7 @@ class FeFuncA(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        type: str | None = None,
+        type_: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
@@ -665,7 +665,7 @@ class FeFuncB(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        type: Transfer function type.
+        type_: Transfer function type.
         tableValues: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
@@ -681,7 +681,7 @@ class FeFuncB(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        type: str | None = None,
+        type_: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
@@ -701,7 +701,7 @@ class FeFuncG(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        type: Transfer function type.
+        type_: Transfer function type.
         tableValues: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
@@ -717,7 +717,7 @@ class FeFuncG(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        type: str | None = None,
+        type_: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
@@ -737,7 +737,7 @@ class FeFuncR(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        type: Transfer function type.
+        type_: Transfer function type.
         tableValues: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
@@ -753,7 +753,7 @@ class FeFuncR(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        type: str | None = None,
+        type_: str | None = None,
         tableValues: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
@@ -1071,7 +1071,7 @@ class FeTurbulence(CaseTag):
         numOctaves: Number of noise octaves.
         seed: Random seed for turbulence.
         stitchTiles: Tile stitching mode (stitch|noStitch).
-        type: Turbulence type (fractalNoise|turbulence).
+        type_: Turbulence type (fractalNoise|turbulence).
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1086,7 +1086,7 @@ class FeTurbulence(CaseTag):
         numOctaves: int | None = None,
         seed: float | None = None,
         stitchTiles: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1615,7 +1615,7 @@ class Script(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        type: Script MIME type.
+        type_: Script MIME type.
         href: External script URL.
         crossorigin: CORS credentials flag.
         fetchpriority: Fetch priority hint (experimental).
@@ -1628,7 +1628,7 @@ class Script(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        type: str | None = None,
+        type_: str | None = None,
         href: str | None = None,
         crossorigin: str | None = None,
         fetchpriority: str | None = None,
@@ -1703,7 +1703,7 @@ class Style(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        type: Style sheet language MIME type.
+        type_: Style sheet language MIME type.
         media: Media query for when styles apply.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1714,7 +1714,7 @@ class Style(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        type: str | None = None,
+        type_: str | None = None,
         media: str | None = None,
         class_: str | None = None,
         id_: str | None = None,

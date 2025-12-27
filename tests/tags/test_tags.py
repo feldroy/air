@@ -330,11 +330,11 @@ def test_input_boolean_attributes() -> None:
     assert html == '<input name="q">'
 
     # Test checked=True renders as boolean attribute
-    html = _r(air.Input(type="checkbox", name="agree", checked=True))
+    html = _r(air.Input(type_="checkbox", name="agree", checked=True))
     assert html == '<input name="agree" type="checkbox" checked>'
 
     # Test checked=False doesn't render the attribute
-    html = _r(air.Input(type="checkbox", name="agree", checked=False))
+    html = _r(air.Input(type_="checkbox", name="agree", checked=False))
     assert html == '<input name="agree" type="checkbox">'
 
     # Test disabled=True renders as boolean attribute
@@ -358,7 +358,7 @@ def test_input_boolean_attributes_combinations() -> None:
     """Test combinations of boolean attributes on Input tag."""
 
     # Test multiple boolean attributes together
-    html = _r(air.Input(name="email", type="email", required=True, autofocus=True, disabled=False))
+    html = _r(air.Input(name="email", type_="email", required=True, autofocus=True, disabled=False))
     assert html == '<input name="email" type="email" required autofocus>'
 
     # Test with some True and some False
@@ -366,7 +366,7 @@ def test_input_boolean_attributes_combinations() -> None:
     assert html == '<input name="q" required autofocus>'
 
     # Test with checkbox and checked
-    html = _r(air.Input(type="checkbox", name="terms", checked=True, required=True))
+    html = _r(air.Input(type_="checkbox", name="terms", checked=True, required=True))
     assert html == '<input name="terms" type="checkbox" required checked>'
 
 
@@ -374,11 +374,11 @@ def test_input_boolean_attributes_with_other_attrs() -> None:
     """Test boolean attributes work correctly with other attributes."""
 
     # Test autofocus with other attributes
-    html = _r(air.Input(name="search", type="text", placeholder="Search...", autofocus=True, class_="search-input"))
+    html = _r(air.Input(name="search", type_="text", placeholder="Search...", autofocus=True, class_="search-input"))
     assert html == '<input name="search" type="text" autofocus placeholder="Search..." class="search-input">'
 
     # Test disabled with other attributes
-    html = _r(air.Input(name="readonly", type="text", value="Can't change me", disabled=True, readonly=True))
+    html = _r(air.Input(name="readonly", type_="text", value="Can't change me", disabled=True, readonly=True))
     assert html == '<input name="readonly" type="text" value="Can\'t change me" readonly disabled>'
 
 

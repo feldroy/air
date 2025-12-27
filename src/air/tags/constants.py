@@ -33,6 +33,7 @@ ATTRIBUTES_TO_AIR: Final = frozendict({
     "id": "id_",
     "as": "as_",
     "async": "async_",
+    "type": "type_",
 })
 ATTRIBUTES_TO_HTML: Final = frozendict({
     "class_": "class",
@@ -40,6 +41,7 @@ ATTRIBUTES_TO_HTML: Final = frozendict({
     "id_": "id",
     "as_": "as",
     "async_": "async",
+    "type_": "type",
 })
 BOOLEAN_HTML_ATTRIBUTES: Final = {
     # https://html.spec.whatwg.org/multipage/indices.html#attributes-3

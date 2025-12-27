@@ -41,8 +41,8 @@ def test_tag_object_memory_cleanup() -> None:
                 air.P(f"Description for item {i}", class_="desc"),
                 air.Ul(air.Li(f"Feature {j}", class_="feature") for j in range(5)),
                 air.Form(
-                    air.Input(type="text", name=f"input_{i}", value=f"value_{i}"),
-                    air.Button("Submit", type="submit"),
+                    air.Input(type_="text", name=f"input_{i}", value=f"value_{i}"),
+                    air.Button("Submit", type_="submit"),
                     action=f"/submit/{i}",
                     method="post",
                 ),

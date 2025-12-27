@@ -25,7 +25,7 @@ class A(BaseTag):
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
         rel: Specifies the relationship between the current document and the linked document.
         hreflang: Specifies the language of the linked document.
-        type: Specifies the media type of the linked document.
+        type_: Specifies the media type of the linked document.
         referrerpolicy: Specifies which referrer information to send with the link.
         media: Specifies what media/device the linked document is optimized for.
         ping: Specifies a space-separated list of URLs to which, when the link is followed, post
@@ -45,7 +45,7 @@ class A(BaseTag):
         download: str | None = None,
         rel: str | None = None,
         hreflang: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         referrerpolicy: str | None = None,
         media: str | None = None,
         ping: str | None = None,
@@ -378,18 +378,18 @@ class Button(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         name: Specifies a name for the button.
-        type: Specifies the type of button.
+        type_: Specifies the type of button.
         value: Specifies an initial value for the button.
         autofocus: Specifies that a button should automatically get focus when the page loads.
         disabled: Specifies that a button should be disabled.
         form: Specifies which form the button belongs to.
-        formaction: Specifies where to send the form-data when a form is submitted. Only for type="submit".
+        formaction: Specifies where to send the form-data when a form is submitted. Only for type_="submit".
         formenctype: Specifies how the form-data should be encoded before sending it to a
-            server. Only for type="submit".
-        formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type="submit".
-        formnovalidate: Specifies that the form-data should not be validated on submission. Only for type="submit".
+            server. Only for type_="submit".
+        formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type_="submit".
+        formnovalidate: Specifies that the form-data should not be validated on submission. Only for type_="submit".
         formtarget: Specifies where to display the response that is received after submitting
-            the form. Only for type="submit".
+            the form. Only for type_="submit".
         popovertarget: Specifies which popover element to invoke.
         popovertargetaction: Specifies what action to perform on the popover element.
         class_: Substituted as the DOM `class` attribute.
@@ -402,7 +402,7 @@ class Button(BaseTag):
         self,
         *children: Renderable,
         name: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         value: str | None = None,
         autofocus: str | None = None,
         disabled: str | None = None,
@@ -818,7 +818,7 @@ class Embed(SelfClosingTag):
 
     Args:
         src: Specifies the address of the external file to embed.
-        type: Specifies the media type of the embedded content.
+        type_: Specifies the media type of the embedded content.
         width: Specifies the width of the embedded content.
         height: Specifies the height of the embedded content.
         class_: Substituted as the DOM `class` attribute.
@@ -831,7 +831,7 @@ class Embed(SelfClosingTag):
         self,
         *,
         src: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         width: str | int | None = None,
         height: str | int | None = None,
         class_: str | None = None,
@@ -1310,7 +1310,7 @@ class Input(SelfClosingTag):
 
     Args:
         name: Specifies the name of an `<input>` element.
-        type: Specifies the type `<input>` element to display.
+        type_: Specifies the type `<input>` element to display.
         value: Specifies the value of an `<input>` element.
         readonly: Specifies that an input field is read-only.
         required: Specifies that an input field must be filled out before submitting the form.
@@ -1351,7 +1351,7 @@ class Input(SelfClosingTag):
         self,
         *,
         name: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         value: str | None = None,
         readonly: bool | None = None,
         required: bool | None = None,
@@ -1527,7 +1527,7 @@ class Link(SelfClosingTag):
         rel: Specifies the relationship between the current document and the linked resource.
         sizes: Specifies the size of the linked resource.
         title: Specifies the title of the linked resource.
-        type: Specifies the media type of the linked resource.
+        type_: Specifies the media type of the linked resource.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
@@ -1551,7 +1551,7 @@ class Link(SelfClosingTag):
         rel: str | None = None,
         sizes: str | None = None,
         title: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         **custom_attributes: AttributeType,
@@ -1772,7 +1772,7 @@ class Object(BaseTag):
         height: The height of the object.
         name: The name of the object.
         standby: A message to display while the object is loading.
-        type: The content type of the data.
+        type_: The content type of the data.
         usemap: The name of a client-side image map to be used with the object.
         width: The width of the object.
         class_: Substituted as the DOM `class` attribute.
@@ -1795,7 +1795,7 @@ class Object(BaseTag):
         height: str | int | None = None,
         name: str | None = None,
         standby: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         usemap: str | None = None,
         width: str | int | None = None,
         class_: str | None = None,
@@ -1814,7 +1814,7 @@ class Ol(BaseTag):
         compact: Specifies that the list should be rendered in a compact style.
         reversed: Specifies that the list order should be descending.
         start: Specifies the start value of an ordered list.
-        type: Specifies the kind of marker to use in the list.
+        type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1827,7 +1827,7 @@ class Ol(BaseTag):
         compact: str | None = None,
         reversed: str | None = None,
         start: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -2273,7 +2273,7 @@ class Source(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         src: Specifies the URL of the media resource.
-        type: Specifies the MIME type of the media resource.
+        type_: Specifies the MIME type of the media resource.
         sizes: List of source sizes that describe the final rendered width of the image.
         media: Specifies the media query for the media resource.
         srcset: Specifies a list of one or more image URLs and their descriptors.
@@ -2289,7 +2289,7 @@ class Source(BaseTag):
         self,
         *children: Renderable,
         src: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         sizes: str | None = None,
         media: str | None = None,
         srcset: str | None = None,
@@ -2750,7 +2750,7 @@ class U(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be rendered in a compact style.
-        type: Specifies the kind of marker to use in the list.
+        type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -2761,7 +2761,7 @@ class U(BaseTag):
         self,
         *children: Renderable,
         compact: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,

@@ -24,7 +24,7 @@ def test_stock_tags_comprehensive_coverage() -> None:
         # Block elements
         air.Blockquote("Quote text", cite="https://example.com", class_="quote"),
         air.Body("Body content", class_="main-body"),
-        air.Button("Click me", type="submit", disabled=False, class_="btn"),
+        air.Button("Click me", type_="submit", disabled=False, class_="btn"),
         air.Canvas("Canvas content", width=300, height=200, id_="canvas"),
         air.Caption("Table caption", class_="table-caption"),
         air.Cite("Citation", class_="citation"),
@@ -69,12 +69,12 @@ def test_stock_tags_comprehensive_coverage() -> None:
         air.Map("Map content", name="image-map", class_="map"),
         air.Mark("Highlighted text", class_="highlight"),
         # Media and object elements
-        air.Menu("Menu content", type="toolbar", class_="menu"),
+        air.Menu("Menu content", type_="toolbar", class_="menu"),
         air.Meter("Meter content", value=6, min=0, max=10),
         air.Nav("Navigation", class_="navigation"),
         air.Noscript("No script message", class_="noscript"),
-        air.Object("Object content", data="/file.swf", type="application/x-shockwave-flash"),
-        air.Ol("List content", type="1", start=1, class_="ordered-list"),
+        air.Object("Object content", data="/file.swf", type_="application/x-shockwave-flash"),
+        air.Ol("List content", type_="1", start=1, class_="ordered-list"),
         air.Optgroup("Option group", label="Group 1", disabled=False),
         air.Option("Option text", value="option1", selected=True, class_="option"),
         air.Output("Output text", name="result", for_="input1", class_="output"),
@@ -120,14 +120,14 @@ def test_stock_tags_comprehensive_coverage() -> None:
         air.Base(href="https://example.com", target="_blank"),
         air.Br(class_="line-break", id_="br1"),
         air.Col(span=2, class_="column"),
-        air.Embed(src="/embed.swf", type="application/x-shockwave-flash", width=400, height=300),
+        air.Embed(src="/embed.swf", type_="application/x-shockwave-flash", width=400, height=300),
         air.Hr(class_="divider", id_="hr1"),
         air.Img(src="/image.jpg", alt="Image", width=300, height=200, class_="image"),
-        air.Input(type="text", name="input1", value="default", required=True, class_="input"),
-        air.Link(rel="stylesheet", href="/style.css", type="text/css"),
+        air.Input(type_="text", name="input1", value="default", required=True, class_="input"),
+        air.Link(rel="stylesheet", href="/style.css", type_="text/css"),
         air.Meta(name="description", content="Page description", charset="utf-8"),
         air.Param(name="param1", value="value1"),
-        air.Source(src="/video.mp4", type="video/mp4", media="(min-width: 800px)"),
+        air.Source(src="/video.mp4", type_="video/mp4", media="(min-width: 800px)"),
         air.Track(src="/subtitles.vtt", kind="subtitles", srclang="en", label="English"),
         air.Wbr(class_="word-break"),
     ]
@@ -220,7 +220,7 @@ def test_stock_tags_edge_cases() -> None:
 
     # Test with boolean attributes
     boolean_attr_tags = [
-        air.Input(type="checkbox", checked=True, required=True, disabled=False),
+        air.Input(type_="checkbox", checked=True, required=True, disabled=False),
         air.Button("Submit", disabled=True, autofocus=False),
         air.Select("Options", multiple=True, required=False, disabled=None),
         air.Textarea("Text", readonly=True, required=False, disabled=None),
