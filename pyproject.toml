@@ -382,8 +382,6 @@ ignore = [
 "src/air/tags/models/stock.py" = ["A002"]
 "src/air/forms.py" = ["A002"]
 "tests/test_templating.py" = ["PLC2701"]
-"examples/airblog/airblog.py" = ["INP001"]
-"examples/airblog/test_airblog.py" = ["INP001"]
 "tests/benchmarks/test_memory_tag_cleanup.py" = ["RUF052"]
 
 [tool.ruff.lint.flake8-import-conventions]
