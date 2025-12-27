@@ -192,8 +192,8 @@ def test_tag_creation_memory_scaling() -> None:
         f"{'Scale (Num. of Tags)':>18} | {'Total Used (bytes)':>20} | {'Per Tag (bytes)':>16}",
         "-" * divider_size,
     ]
-    for scale, _total_memory, _per_tag_memory in memory_measurements:
-        lines.append(f"{scale:>19} | {_total_memory:>20,.0f} | {_per_tag_memory:>16.1f}")
+    for scale, total_memory, per_tag_memory in memory_measurements:
+        lines.append(f"{scale:>19} | {total_memory:>20,.0f} | {per_tag_memory:>16.1f}")
     lines.append("-" * divider_size)
 
     logger.info("\n".join(lines))
