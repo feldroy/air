@@ -24,7 +24,7 @@ class SessionMiddleware(StarletteSessionMiddleware):
         import air
 
         app = air.Air()
-        app.add_middleware(air.SessionMiddleware, secret_key="change-me")  # ty: ignore[invalid-argument-type]
+        app.add_middleware(air.SessionMiddleware, secret_key="change-me")
 
 
         @app.page
