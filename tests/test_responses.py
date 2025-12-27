@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 
 import air
 from air import H1, AirResponse, Article, BaseTag, Div, Html, Main
+from air.responses import TagResponse
 
 from .utils import clean_doc
 
@@ -35,7 +36,6 @@ def test_TagResponse_obj() -> None:
 def test_TagResponse_compatibility() -> None:
     """Test for non-proxied TagResponse that should still work if used directly."""
     # import to check backward compatibility
-    from air.responses import TagResponse
 
     app = air.Air()
 

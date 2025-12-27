@@ -6,7 +6,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from jinja2 import FileSystemLoader
-from starlette.templating import _TemplateResponse
+from starlette.responses import HTMLResponse
 
 import air
 from air import Air, JinjaRenderer, Request
@@ -22,7 +22,7 @@ def test_JinjaRenderer() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> _TemplateResponse:
+    def test_endpoint(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="home.html",
@@ -44,7 +44,7 @@ def test_JinjaRenderer_no_context() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> _TemplateResponse:
+    def test_endpoint(request: Request) -> HTMLResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -62,7 +62,7 @@ def test_JinjaRenderer_with_Air() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> _TemplateResponse:
+    def test_endpoint(request: Request) -> HTMLResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -79,7 +79,7 @@ def test_JinjaRenderer_with_kwargs() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> _TemplateResponse:
+    def test_endpoint(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="home.html",
@@ -101,7 +101,7 @@ def test_jinja_plus_airtags() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.page
-    def index(request: Request) -> _TemplateResponse:
+    def index(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="jinja_airtags.html",
@@ -135,7 +135,7 @@ def test_jinja_plus_airtags_autorender() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.page
-    def index(request: Request) -> _TemplateResponse:
+    def index(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="jinja_airtags.html",
@@ -193,7 +193,7 @@ def test_Renderer() -> None:
     render = air.Renderer(directory="tests/templates", package="tests")
 
     @app.page
-    def jinja(request: Request) -> str | _TemplateResponse:
+    def jinja(request: Request) -> str | HTMLResponse:
         return render(
             name="home.html",
             request=request,
@@ -201,7 +201,7 @@ def test_Renderer() -> None:
         )
 
     @app.page
-    def airtag(request: Request) -> str | _TemplateResponse:
+    def airtag(request: Request) -> str | HTMLResponse:
         return render(
             name=".components.index",
             request=request,
@@ -228,7 +228,7 @@ def test_Renderer_without_request_for_components() -> None:
     render = air.Renderer(directory="tests/templates", package="tests")
 
     @app.page
-    def airtag(request: Request) -> str | _TemplateResponse:
+    def airtag(request: Request) -> str | HTMLResponse:
         return render(
             name=".components.index",
             request=request,
@@ -250,7 +250,7 @@ def test_renderer_with_installed_package_and_children() -> None:
     render = air.Renderer(directory="tests/templates", package="air")
 
     @app.page
-    def airtag(request: Request) -> str | _TemplateResponse:
+    def airtag(request: Request) -> str | HTMLResponse:
         return render(
             ".layouts.mvpcss",
             air.Title("Test Page"),
@@ -259,7 +259,7 @@ def test_renderer_with_installed_package_and_children() -> None:
         )
 
     @app.page
-    def airtag_without_request() -> str | _TemplateResponse:
+    def airtag_without_request() -> str | HTMLResponse:
         return render(".layouts.mvpcss", air.Title("Test Page"), air.H1("Hello, World"))
 
     client = TestClient(app)
@@ -295,11 +295,11 @@ def test_render_with_callable() -> None:
     render = air.Renderer(directory="tests/templates", package="air")
 
     @app.page
-    def layout(request: Request) -> str | _TemplateResponse:
+    def layout(request: Request) -> str | HTMLResponse:
         return render(air.layouts.mvpcss, air.Title("Test Page"), air.H1("Hello, World"))
 
     @app.page
-    def component(request: Request) -> str | _TemplateResponse:
+    def component(request: Request) -> str | HTMLResponse:
         return render(index_callable, title="Test Page", content="Hello, World!")
 
     client = TestClient(app)
@@ -350,7 +350,7 @@ def test_Renderer_render_template_with_air_tags() -> None:
     render = air.Renderer(directory="tests/templates")
 
     @app.page
-    def test_with_tags(request: Request) -> str | _TemplateResponse:
+    def test_with_tags(request: Request) -> str | HTMLResponse:
         return render(
             name="home.html",
             request=request,
@@ -379,7 +379,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
     sys.modules["tests.test_module"] = test_module
 
     @app.page
-    def test_page(request: Request) -> str | _TemplateResponse:
+    def test_page(request: Request) -> str | HTMLResponse:
         return render(
             ".test_module.test_func",
             "Hello",  # This is args - will be ignored due to line 205 behavior
@@ -441,7 +441,7 @@ def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
     render = air.Renderer(directory="tests/templates", package="tests")
 
     @app.page
-    def test_page(request: Request) -> str | _TemplateResponse:
+    def test_page(request: Request) -> str | HTMLResponse:
         return render(
             name="lists_and_dicts.html",
             request=request,
