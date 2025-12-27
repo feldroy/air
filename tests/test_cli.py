@@ -24,7 +24,7 @@ def test_cli_help() -> None:
     result = runner.invoke(app, ["--help"], color=False)
     assert result.exit_code == 0
     output = strip_ansi(result.output)
-    assert "Air CLI" in output
+    assert "clarity and joy" in output
     assert "run" in output
     assert "--version" in output
 
