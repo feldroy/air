@@ -34,7 +34,7 @@ def test_JinjaRenderer() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
+    assert response.text == '<html>\n  <title>Test Page</title>\n  <h1>Hello, World!</h1>\n</html>'
 
 
 def test_JinjaRenderer_no_context() -> None:
@@ -52,7 +52,7 @@ def test_JinjaRenderer_no_context() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
+    assert response.text == '<html>\n  <title></title>\n  <h1></h1>\n</html>'
 
 
 def test_JinjaRenderer_with_Air() -> None:
@@ -70,7 +70,7 @@ def test_JinjaRenderer_with_Air() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html>\n<title></title>\n<h1></h1>\n</html>"
+    assert response.text == '<html>\n  <title></title>\n  <h1></h1>\n</html>'
 
 
 def test_JinjaRenderer_with_kwargs() -> None:
@@ -92,7 +92,7 @@ def test_JinjaRenderer_with_kwargs() -> None:
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
+    assert response.text == '<html>\n  <title>Test Page</title>\n  <h1>Hello, World!</h1>\n</html>'
 
 
 def test_jinja_plus_airtags() -> None:
@@ -116,13 +116,13 @@ def test_jinja_plus_airtags() -> None:
     expected_html = clean_doc(
         """
         <html>
-            <head>
-                <title>Jinja+Air Tags</title>
-            </head>
-            <body>
-                <h1>Jinja+Air Tags</h1>
-                <main><p>Air Tags work great with Jinja</p></main>
-            </body>
+          <head>
+            <title>Jinja+Air Tags</title>
+          </head>
+          <body>
+            <h1>Jinja+Air Tags</h1>
+            <main><p>Air Tags work great with Jinja</p></main>
+          </body>
         </html>
         """
     )
@@ -150,13 +150,13 @@ def test_jinja_plus_airtags_autorender() -> None:
     expected_html = clean_doc(
         """
         <html>
-            <head>
-                <title>Jinja+Air Tags</title>
-            </head>
-            <body>
-                <h1>Jinja+Air Tags</h1>
-                <main><p>Air Tags work great with Jinja</p></main>
-            </body>
+          <head>
+            <title>Jinja+Air Tags</title>
+          </head>
+          <body>
+            <h1>Jinja+Air Tags</h1>
+            <main><p>Air Tags work great with Jinja</p></main>
+          </body>
         </html>
         """
     )
@@ -213,12 +213,12 @@ def test_Renderer() -> None:
     response = client.get("/jinja")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html>\n<title>Test Page</title>\n<h1>Hello, World!</h1>\n</html>"
+    assert response.text == '<html>\n  <title>Test Page</title>\n  <h1>Hello, World!</h1>\n</html>'
 
     response = client.get("/airtag")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
+    assert response.text == '<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>'
 
 
 def test_Renderer_without_request_for_components() -> None:
