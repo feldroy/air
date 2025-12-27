@@ -290,20 +290,21 @@ HTML_SAMPLE: Final = cleandoc(
           </header>
         </dialog>
         <div hx-trigger="keyup[key=='/'] from:body"></div>
-        <script>document.body.addEventListener('keydown', e => {
-                if (e.key === '/') {
-                    e.preventDefault();
-                    document.getElementById('search-modal').style.display = 'block';
-                    document.getElementById('search-input').focus();
-                }
-                if (e.key === 'Escape') {
-                    document.getElementById('search-modal').style.display = 'none';
-                }
-                });
-
-                document.getElementById('search-input').addEventListener('input', e => {
-                htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});
-                });</script>
+        <script>
+          document.body.addEventListener('keydown', e => {
+            if (e.key === '/') {
+              e.preventDefault();
+              document.getElementById('search-modal').style.display = 'block';
+              document.getElementById('search-input').focus();
+            }
+            if (e.key === 'Escape') {
+              document.getElementById('search-modal').style.display = 'none';
+            }
+          });
+          document.getElementById('search-input').addEventListener('input', e => {
+            htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});
+          });
+        </script>
       </body>
     </html>
     """
