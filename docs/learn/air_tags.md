@@ -138,7 +138,7 @@ air.Label("Email", air.Input(name="email", type_="email"), for_="email")
 renders as
 
 ```html
-<label for="email">Email<input name="email" type_="email"></label>
+<label for="email">Email<input name="email" type="email"></label>
 ```
 
 #### Setting the `async` attribute
