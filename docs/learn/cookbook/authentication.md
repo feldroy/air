@@ -31,7 +31,7 @@ async def index(request: air.Request):
             air.Input(
                 type="text",
                 name="username",
-                id="username",
+                id_="username",
                 required=True,
                 autofocus=True,
             ),
@@ -157,7 +157,7 @@ async def login():
             air.Input(
                 type="text",
                 name="username",
-                id="username",
+                id_="username",
                 required=True,
                 autofocus=True,
             ),
@@ -165,7 +165,7 @@ async def login():
             air.Input(
                 type="password",
                 name="password",
-                id="password",
+                id_="password",
                 required=True,
                 autofocus=True,
             ),

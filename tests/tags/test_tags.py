@@ -108,7 +108,7 @@ def test_special_attributes() -> None:
     html = air.P("Has a special attribute", **{"!data": "12345"}).render()
     assert html == '<p !data="12345">Has a special attribute</p>'
 
-    html = air.P("HTMX example", hx_post="/get", _id="53").render()
+    html = air.P("HTMX example", hx_post="/get", id_="53").render()
     assert html == '<p hx-post="/get" id="53">HTMX example</p>'
 
 
@@ -140,7 +140,7 @@ def test_raw_html_invalid_args() -> None:
 def test_raw_html_reject_kwargs() -> None:
     """Test that Raw reject keyword arguments."""
     with pytest.raises(TypeError):
-        air.Raw("<div>Test</div>", id="ignored", class_="also-ignored")
+        air.Raw("<div>Test</div>", id_="ignored", class_="also-ignored")
 
 
 def test_functions_as_tags() -> None:
@@ -243,7 +243,7 @@ def test_tags_support_global_attributes() -> None:
 
 
 def test_special_characters() -> None:
-    assert air.P("Hello", id="mine").render() == '<p id="mine">Hello</p>'
+    assert air.P("Hello", id_="mine").render() == '<p id="mine">Hello</p>'
     assert air.P("Hello", **{"@data": 1}).render() == '<p @data="1">Hello</p>'
 
 

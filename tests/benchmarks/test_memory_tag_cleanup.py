@@ -47,7 +47,7 @@ def test_tag_object_memory_cleanup() -> None:
                     method="post",
                 ),
                 class_="item-card",
-                id=f"item-{i}",
+                id_=f"item-{i}",
             )
             tags.append(tag)
 
@@ -163,7 +163,7 @@ def test_tag_creation_memory_scaling() -> None:
                 air.P(f"Content for article {i}"),
                 air.Footer(f"Footer {i}"),
                 class_="article",
-                id=f"article-{i}",
+                id_=f"article-{i}",
             )
             for i in range(scale)
         ]
