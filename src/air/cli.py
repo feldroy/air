@@ -37,7 +37,7 @@ LOG_CONFIG = {
 
 def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback signature
     if value:
-        typer.echo(f"Air {version('air')}")
+        typer.echo(f"Air {version('air')}\nCrafted with care by Two Scoops authors pydanny and audreyfeldroy")
         raise typer.Exit
 
 
@@ -49,7 +49,7 @@ def _callback(
         typer.Option("--version", "-v", help="Show version and exit.", callback=_version_callback),
     ] = None,
 ) -> None:
-    """Air CLI - Run your Air applications."""
+    """Air: Designed to give developers everywhere clarity and joy."""
     if ctx.invoked_subcommand is None:
         typer.echo(ctx.get_help())
 

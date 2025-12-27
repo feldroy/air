@@ -10,9 +10,10 @@ import air
 
 router = air.AirRouter()
 
+
 @router.page
 def cart():
-    return air.H1('I am a shopping cart')
+    return air.H1("I am a shopping cart")
 ```
 
 Then in our main page we can load that and tie it into our main `app`.
@@ -24,9 +25,10 @@ from cart import router as cart_router
 app = air.Air()
 app.include_router(cart_router)
 
+
 @app.page
 def index():
-    return air.H1('Home page')
+    return air.H1("Home page")
 ```
 
 Note that the router allows sharing of sessions and other application states.
@@ -40,12 +42,10 @@ from cart import router as cart_router, cart
 app = air.Air()
 app.include_router(cart_router)
 
+
 @app.page
 def index():
-    return air.Div(
-        air.H1('Home page'),
-        air.A('View cart', href=cart.url())
-    )
+    return air.Div(air.H1("Home page"), air.A("View cart", href=cart.url()))
 ```
 
 ## Query Parameters
@@ -57,24 +57,29 @@ import air
 
 app = air.Air()
 
-@app.get('/search')
+
+@app.get("/search")
 def search(q: str = air.Query(""), page: int = air.Query(1)):
     return air.H1(f"Search: {q} (page {page})")
+
 
 # Generate URLs with query parameters
 @app.page
 def index():
     return air.Div(
-        air.A('Search', href=search.url(query_params={"q": "air", "page": 1}))
+        air.A("Search", href=search.url(query_params={"q": "air", "page": 1}))
     )
 ```
 
 The `.url()` method accepts a `query_params` argument for generating URLs with query strings. This works with both scalar values and lists:
 
 ```python
-@app.get('/filter')
-def filter_items(tags: list[str] | None = air.Query(None)): # List parameters require explicit air.Query(None) for parsing
+@app.get("/filter")
+def filter_items(
+    tags: list[str] | None = air.Query(None),
+):  # List parameters require explicit air.Query(None) for parsing
     return air.H1(f"Filtered by: {tags}")
+
 
 # Generates: /filter?tags=python&tags=web
 url = filter_items.url(query_params={"tags": ["python", "web"]})

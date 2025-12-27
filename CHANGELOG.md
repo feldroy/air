@@ -1,5 +1,35 @@
 ### Latest Changes
 
+# 0.44.0 - 2025-12-27
+
+## What's Changed
+
+### Features
+
+* FEAT: Add "air run" and "air version" CLI commands, make uvicorn a main dep by @audreyfeldroy in https://github.com/feldroy/air/pull/920
+* FEAT: add `prek` a better `pre-commit`, re-engineered in Rust & blacken-docs, Run `black` on python code blocks in documentation files! by @pygarap in https://github.com/feldroy/air/pull/918
+* FEAT: Introduced two new class methods to `BaseTag` in `src/air/tags/models/base.py` by @pygarap in https://github.com/feldroy/air/pull/917:
+  - `from_html_file` for building an air-tag tree from a file
+  -  `from_html_file_to_source` for generating the instantiable source from a file
+  
+ ### Refactoring
+  
+* REFACTOR: Type Annotations Adjustments in the `air.tags.models.base.BaseTag` class! by @pygarap in https://github.com/feldroy/air/pull/914
+* REFACTOR: rename `kwargs` to `custom_attributes` for improved clarity! by @pygarap in https://github.com/feldroy/air/pull/915
+* REFACTOR: reorganize test files into `tags` subdirectory! by @pygarap in https://github.com/feldroy/air/pull/916
+* REFACTOR: Convert air.Application from inheritance to composition by @pydanny in https://github.com/feldroy/air/pull/906
+
+### Docs
+
+* DOC: Added remaining docstrings to HTML air tags, finishing the awesome effort by @vanessapigwin! by @pydanny in https://github.com/feldroy/air/pull/923
+
+### Bugfixes
+
+* BUGFIX: Fix for docsite by @pydanny in https://github.com/feldroy/air/pull/924
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.43.0...v0.44.0
+
 # 0.43.0 - 2025-12-22
 
 ## What's Changed
@@ -933,6 +963,7 @@ Minimal apps now look like this:
 import air
 
 app = air.Air()
+
 
 @app.get("/")
 async def index():
