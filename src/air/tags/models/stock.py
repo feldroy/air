@@ -1331,7 +1331,7 @@ class Input(SelfClosingTag):
         list: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
         max_: Specifies the maximum value for an `<input>` element.
         maxlength: Specifies the maximum number of characters allowed in an `<input>` element.
-        min: Specifies a minimum value for an `<input>` element.
+        min_: Specifies a minimum value for an `<input>` element.
         minlength: Specifies the minimum number of characters required in an `<input>` element.
         multiple: Specifies that a user can enter more than one value in an `<input>` element.
         pattern: Specifies a regular expression that an `<input>` element's value is checked against.
@@ -1372,7 +1372,7 @@ class Input(SelfClosingTag):
         list: str | None = None,
         max_: str | None = None,
         maxlength: str | None = None,
-        min: str | None = None,
+        min_: str | None = None,
         minlength: str | None = None,
         multiple: bool | None = None,
         pattern: str | None = None,
@@ -1687,7 +1687,7 @@ class Meter(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         value: The current numeric value. Must be between the min and max values.
-        min: The lower bound of the measured range.
+        min_: The lower bound of the measured range.
         max_: The upper bound of the measured range.
         low: The upper numeric bound of the low end of the measured range.
         high: The lower numeric bound of the high end of the measured range.
@@ -1702,7 +1702,7 @@ class Meter(BaseTag):
         self,
         *children: Renderable,
         value: str | None = None,
-        min: str | None = None,
+        min_: str | None = None,
         max_: str | None = None,
         low: str | None = None,
         high: str | None = None,
