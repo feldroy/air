@@ -52,7 +52,7 @@ def contact(request: air.Request) -> air.Html | air.Children:
         air.P("This example uses a custom AirForm.widget to wrap the default form HTML."),
         air.Form(
             form.render(),
-            air.Button("Send message", type="submit"),
+            air.Button("Send message", type_="submit"),
             method="post",
             action="/contact",
         ),
@@ -76,7 +76,7 @@ async def submit_contact(request: air.Request) -> air.Html:
         air.P(f"Found {error_count} validation error(s)."),
         air.Form(
             form.render(),
-            air.Button("Send message", type="submit"),
+            air.Button("Send message", type_="submit"),
             method="post",
             action="/contact",
         ),

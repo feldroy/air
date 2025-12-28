@@ -1,9 +1,13 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+from fastapi.routing import APIRouter
 from fastapi.testclient import TestClient
 from starlette.requests import Request
 
 import air
-from air.exception_handlers import DEFAULT_EXCEPTION_HANDLERS, default_500_exception_handler
+from air.exception_handlers import (
+    DEFAULT_EXCEPTION_HANDLERS,
+    default_500_exception_handler,
+)
 
 
 def test_air_app_factory() -> None:
@@ -202,6 +206,38 @@ def test_url_helper_method() -> None:
     assert response.text == "<h1>User 1, Post 2</h1>"
 
 
+def test_url_helper_supports_query_params() -> None:
+    app = air.Air()
+
+    @app.get("/search")
+    def search(q: str, page: int = 1) -> air.H1:
+        return air.H1(f"Search: {q} page {page}")
+
+    url = search.url(query_params={"q": "air", "page": 3})
+    assert url == "/search?q=air&page=3"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<h1>Search: air page 3</h1>"
+
+
+def test_url_helper_supports_query_params_with_Query() -> None:
+    app = air.Air()
+
+    @app.get("/search")
+    def search(q: str, page: int = air.Query(1)) -> air.H1:
+        return air.H1(f"Search: {q} page {page}")
+
+    url = search.url(query_params={"q": "air", "page": 3})
+    assert url == "/search?q=air&page=3"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<h1>Search: air page 3</h1>"
+
+
 def test_patch_endpoint() -> None:
     app = air.Air()
 
@@ -242,3 +278,84 @@ def test_delete_endpoint() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Deleted item 42</h1>"
+
+
+def test_app_state() -> None:
+    """Test that app.state property exposes application state."""
+    app = air.Air()
+    app.state.counter = 0
+
+    @app.get("/count")
+    def count() -> air.H1:
+        app.state.counter += 1
+        return air.H1(f"Count: {app.state.counter}")
+
+    client = TestClient(app)
+    response = client.get("/count")
+    assert response.text == "<h1>Count: 1</h1>"
+    assert app.state.counter == 1
+
+
+def test_app_router() -> None:
+    """Test that app.router property exposes the APIRouter."""
+    app = air.Air()
+
+    @app.get("/test")
+    def test_endpoint() -> air.H1:
+        return air.H1("Test")
+
+    assert isinstance(app.router, APIRouter)
+    assert len(app.router.routes) > 0
+
+
+def test_app_routes() -> None:
+    """Test that app.routes property exposes the list of routes."""
+    app = air.Air()
+
+    @app.get("/test")
+    def test_endpoint() -> air.H1:
+        return air.H1("Test")
+
+    routes = app.routes
+    assert isinstance(routes, list)
+    assert any(getattr(r, "path", None) == "/test" for r in routes)
+
+
+def test_app_debug() -> None:
+    """Test that app.debug property exposes and sets debug mode."""
+    app = air.Air(debug=False)
+    assert app.debug is False
+
+    app.debug = True
+    assert app.debug is True
+
+
+def test_app_dependency_overrides() -> None:
+    """Test that app.dependency_overrides property works for testing."""
+    app = air.Air()
+
+    def get_db() -> str:
+        return "real_db"
+
+    def mock_db() -> str:
+        return "mock_db"
+
+    @app.get("/db")
+    def db_endpoint(db: str = Depends(get_db)) -> air.H1:
+        return air.H1(f"DB: {db}")
+
+    client = TestClient(app)
+    response = client.get("/db")
+    assert response.text == "<h1>DB: real_db</h1>"
+
+    app.dependency_overrides[get_db] = mock_db
+    response = client.get("/db")
+    assert response.text == "<h1>DB: mock_db</h1>"
+
+
+def test_fastapi_app_property() -> None:
+    """Test that fastapi_app property exposes the underlying FastAPI instance."""
+    app = air.Air()
+
+    assert isinstance(app.fastapi_app, FastAPI)
+    assert app.fastapi_app is app._app

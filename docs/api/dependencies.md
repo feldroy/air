@@ -21,6 +21,7 @@ from fastapi import Depends
 
 app = air.App()
 
+
 @app.get("/users")
 def get_users(is_htmx: bool = Depends(air.is_htmx_request)):
     users = ["Alice", "Bob", "Charlie"]
@@ -30,13 +31,17 @@ def get_users(is_htmx: bool = Depends(air.is_htmx_request)):
         return air.Ul([air.Li(user) for user in users])
     else:
         # Return full page for regular requests
-        return air.Html([
-            air.Head(air.Title("Users")),
-            air.Body([
-                air.H1("User List"),
-                air.Ul([air.Li(user) for user in users])
-            ])
-        ])
+        return air.Html(
+            [
+                air.Head(air.Title("Users")),
+                air.Body(
+                    [
+                        air.H1("User List"),
+                        air.Ul([air.Li(user) for user in users]),
+                    ]
+                ),
+            ]
+        )
 ```
 
 #### Form Handling

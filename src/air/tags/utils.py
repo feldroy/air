@@ -42,9 +42,11 @@ from .constants import (
     DEFAULT_ENCODING,
     DEFAULT_THEME,
     FORMAT_HTML_ENCODING,
+    HOMEPAGE_FILE_NAME,
     HTML_DOCTYPE,
     HTML_LEXER,
     HTML_PANEL_TITLE,
+    HTML_SUFFIX,
     LOCALS_CLEANUP_EXCLUDED_KEYS,
     PANEL_BORDER_STYLE,
     PANEL_TITLE_STYLE,
@@ -248,7 +250,7 @@ def format_html(
         else parse_html_from_string(source)
     )
     if pretty:
-        indent_element_tree(html_element)  # ty: ignore[invalid-argument-type]
+        indent_element_tree(html_element)
     doctype = HTML_DOCTYPE if with_doctype else None
     # noinspection PyTypeChecker
     return serialize_document_to_html_string(
@@ -267,7 +269,7 @@ def open_local_file_in_the_browser(path: StrPath) -> None:
     """
     path = Path(path)
     if path.is_dir():
-        path /= "index.html"
+        path /= HOMEPAGE_FILE_NAME
     if not path.exists():
         raise FileNotFoundError(path)
 
@@ -314,7 +316,7 @@ def open_html_in_the_browser(html_source: str) -> None:
     Args:
         html_source: HTML markup to render in the browser.
     """
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".html", encoding=DEFAULT_ENCODING) as f:
+    with tempfile.NamedTemporaryFile("w", delete=False, suffix=HTML_SUFFIX, encoding=DEFAULT_ENCODING) as f:
         f.write(html_source)
         path = Path(f.name)
 
@@ -332,6 +334,45 @@ def save_text(text: str, file_path: StrPath) -> None:
         file_path: The path to the file where the text will be saved.
     """
     Path(file_path).write_text(data=text, encoding=DEFAULT_ENCODING)
+
+
+def read_text(file_path: StrPath) -> str:
+    """Reads the content of a text file and returns it as a string.
+
+    This function reads the text from the file at the specified path using the
+    default encoding.
+
+    Args:
+        file_path: The path to the file to be read.
+
+    Returns:
+        str: The content of the file as a string.
+    """
+    return Path(file_path).read_text(encoding=DEFAULT_ENCODING)
+
+
+def read_html(file_path: StrPath) -> str:
+    """
+    Reads the content of an HTML file from the given file path. Handles both directory
+    paths (by appending 'index.html' to the directory) and explicit file paths, ensuring
+    that only files with the '.html' extension are processed.
+
+    Args:
+        file_path: The path to the HTML file or a directory containing the file.
+
+    Returns:
+        str: The content of the HTML file.
+
+    Raises:
+        ValueError: If the file path does not have an '.html' extension.
+    """
+    file_path = Path(file_path)
+    if file_path.is_dir():
+        file_path /= HOMEPAGE_FILE_NAME
+    elif file_path.suffix != HTML_SUFFIX:
+        msg = "Expected a .html file extension."
+        raise ValueError(msg)
+    return read_text(file_path=file_path)
 
 
 def save_pretty_html(

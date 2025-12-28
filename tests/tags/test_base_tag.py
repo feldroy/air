@@ -4,7 +4,7 @@ import ast
 import json
 from collections.abc import Iterator
 from pathlib import Path
-from typing import Any
+from typing import Any, Final
 
 import pytest
 from examples.samples.air_tag_samples import (
@@ -14,6 +14,7 @@ from examples.samples.air_tag_samples import (
     TINY_AIR_TAG_SAMPLE,
 )
 from examples.samples.air_tag_source_samples import (
+    AIR_TAG_SOURCE_SAMPLE,
     FRAGMENT_AIR_TAG_SOURCE_SAMPLE,
     SMALL_AIR_TAG_SOURCE_SAMPLE,
     TINY_AIR_TAG_SOURCE_SAMPLE,
@@ -26,8 +27,17 @@ import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag
 from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
+from tests.utils import clean_doc
 
-from .utils import clean_doc
+HTML_SAMPLES_DIR: Final = Path("examples/samples")
+FRAGMENT_HTML_SAMPLE_FILE_NAME: Final = "fragment_html_sample.html"
+FRAGMENT_HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / FRAGMENT_HTML_SAMPLE_FILE_NAME
+TINY_HTML_SAMPLE_FILE_NAME: Final = "tiny_html_sample.html"
+TINY_HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / TINY_HTML_SAMPLE_FILE_NAME
+SMALL_HTML_SAMPLE_FILE_NAME: Final = "small_html_sample.html"
+SMALL_HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / SMALL_HTML_SAMPLE_FILE_NAME
+HTML_SAMPLE_FILE_NAME: Final = "html_sample.html"
+HTML_SAMPLE_FILE_PATH: Final = HTML_SAMPLES_DIR / HTML_SAMPLE_FILE_NAME
 
 
 class SampleTag(BaseTag):
@@ -70,7 +80,7 @@ def test_escape_text_escapes_html_entities() -> None:
 
 
 def test_render_and_str_return_paired_markup() -> None:
-    tag = WrapperTag("body", id="main")
+    tag = WrapperTag("body", id_="main")
     expected = '<wrappertag id="main">body</wrappertag>'
 
     assert tag.render() == expected
@@ -137,8 +147,8 @@ def test_pretty_render_passes_flags_to_formatter(monkeypatch: pytest.MonkeyPatch
 
 def test_compact_format_html_minifies() -> None:
     assert len(SMALL_AIR_TAG_SAMPLE.compact_render()) == 760
-    assert len(AIR_TAG_SAMPLE.compact_render()) == 7530
-    assert len(air.Html(*([AIR_TAG_SAMPLE.children] * 100)).compact_render()) == 883215
+    assert len(AIR_TAG_SAMPLE.compact_render()) == 7536
+    assert len(air.Html(*([AIR_TAG_SAMPLE.children] * 100)).compact_render()) == 884015
 
 
 def test_compact_render_passes_html_to_compact_formatter(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -444,10 +454,9 @@ def test_to_source() -> None:
     actual_small_air_tag_source = SMALL_AIR_TAG_SAMPLE.to_source()
     expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
     assert actual_small_air_tag_source == expected_small_air_tag_source
-    # TODO -> Multiline strings in script tags are tricky.
-    # actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
-    # expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
-    # assert actual_air_tag_source == expected_air_tag_source
+    actual_air_tag_source = AIR_TAG_SAMPLE.to_source()
+    expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
+    assert actual_air_tag_source == expected_air_tag_source
 
 
 def test_from_html_to_source() -> None:
@@ -460,10 +469,39 @@ def test_from_html_to_source() -> None:
     actual_small_air_tag_source = air.Tag.from_html_to_source(SMALL_HTML_SAMPLE)
     expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
     assert actual_small_air_tag_source == expected_small_air_tag_source
-    # TODO -> Multiline strings in script tags are tricky.
-    # actual_air_tag_source = air.Tag.from_html_to_source(HTML_SAMPLE)
-    # expected_air_tag_source = AIR_TAG_SAMPLE
-    # assert actual_air_tag_source == expected_air_tag_source
+    actual_air_tag_source = air.Tag.from_html_to_source(HTML_SAMPLE)
+    expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
+    assert actual_air_tag_source == expected_air_tag_source
+
+
+def test_from_html_file() -> None:
+    actual_fragment_air_tag = air.Tag.from_html_file(file_path=FRAGMENT_HTML_SAMPLE_FILE_PATH)
+    expected_fragment_air_tag = FRAGMENT_AIR_TAG_SAMPLE
+    assert actual_fragment_air_tag == expected_fragment_air_tag
+    actual_tiny_air_tag = air.Tag.from_html_file(file_path=TINY_HTML_SAMPLE_FILE_PATH)
+    expected_tiny_air_tag = TINY_AIR_TAG_SAMPLE
+    assert actual_tiny_air_tag.pretty_html == expected_tiny_air_tag.pretty_html
+    actual_small_air_tag = air.Tag.from_html_file(file_path=SMALL_HTML_SAMPLE_FILE_PATH)
+    expected_small_air_tag = SMALL_AIR_TAG_SAMPLE
+    assert actual_small_air_tag.pretty_html == expected_small_air_tag.pretty_html
+    actual_air_tag = air.Tag.from_html_file(file_path=HTML_SAMPLE_FILE_PATH)
+    expected_air_tag = AIR_TAG_SAMPLE
+    assert actual_air_tag.pretty_html == expected_air_tag.pretty_html
+
+
+def test_from_html_file_to_source() -> None:
+    actual_fragment_air_tag_source = air.Tag.from_html_file_to_source(file_path=FRAGMENT_HTML_SAMPLE_FILE_PATH)
+    expected_fragment_air_tag_source = FRAGMENT_AIR_TAG_SOURCE_SAMPLE
+    assert actual_fragment_air_tag_source == expected_fragment_air_tag_source
+    actual_tiny_air_tag_source = air.Tag.from_html_file_to_source(file_path=TINY_HTML_SAMPLE_FILE_PATH)
+    expected_tiny_air_tag_source = TINY_AIR_TAG_SOURCE_SAMPLE
+    assert actual_tiny_air_tag_source == expected_tiny_air_tag_source
+    actual_small_air_tag_source = air.Tag.from_html_file_to_source(file_path=SMALL_HTML_SAMPLE_FILE_PATH)
+    expected_small_air_tag_source = SMALL_AIR_TAG_SOURCE_SAMPLE
+    assert actual_small_air_tag_source == expected_small_air_tag_source
+    actual_air_tag_source = air.Tag.from_html_file_to_source(file_path=HTML_SAMPLE_FILE_PATH)
+    expected_air_tag_source = AIR_TAG_SOURCE_SAMPLE
+    assert actual_air_tag_source == expected_air_tag_source
 
 
 def test_from_html_with_leading_whitespace() -> None:

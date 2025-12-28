@@ -191,7 +191,7 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
             air.Link(
                 href='/public/style.css',
                 rel='stylesheet',
-                type='text/css',
+                type_='text/css',
             ),
             air.Title('Daniel Roy Greenfeld'),
         ),
@@ -200,7 +200,7 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                 air.A(
                     air.Img(
                         src='https://f004.backblazeb2.com/file/daniel-feldroy-com/public/images/profile.jpg',
-                        width='108',
+                        width=108,
                         alt='Daniel Roy Greenfeld',
                         class_='borderCircle',
                     ),
@@ -278,7 +278,7 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                             ),
                         ),
                         air.P(
-                            air.A('Read all articles', href='<function posts at 0x7fa78cb1b740>'),
+                            air.A('Read all articles', href='<function%20posts%20at%200x7fa78cb1b740>'),
                         ),
                     ),
                     air.Section(
@@ -470,10 +470,10 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                         hx_trigger='keyup',
                         hx_get='/search-results',
                         hx_target='.search-results-modal',
-                        id_='search-input',
                         name='q',
-                        type='text',
+                        type_='text',
                         placeholder='Enter your search query...',
+                        id_='search-input',
                     ),
                     air.Div(class_='search-results-modal'),
                     class_='modal-content',
@@ -482,9 +482,9 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                 id_='search-modal',
                 style='display:none;',
             ),
-        air.Div(hx_trigger="keyup[key=='/'] from:body"),
-        air.Script("document.body.addEventListener('keydown', e => {\n            if (e.key === '/') {\n                e.preventDefault();\n                document.getElementById('search-modal').style.display = 'block';\n                document.getElementById('search-input').focus();\n            }\n            if (e.key === 'Escape') {\n                document.getElementById('search-modal').style.display = 'none';\n            }\n            });\n\n            document.getElementById('search-input').addEventListener('input', e => {\n            htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});\n            });"),
-        hx_boost='true',
+            air.Div(hx_trigger="keyup[key=='/'] from:body"),
+            air.Script("\\n      document.body.addEventListener(\'keydown\', e => {\\n        if (e.key === \'/\') {\\n          e.preventDefault();\\n          document.getElementById(\'search-modal\').style.display = \'block\';\\n          document.getElementById(\'search-input\').focus();\\n        }\\n        if (e.key === \'Escape\') {\\n          document.getElementById(\'search-modal\').style.display = \'none\';\\n        }\\n      });\\n      document.getElementById(\'search-input\').addEventListener(\'input\', e => {\\n        htmx.trigger(\'.search-results\', \'htmx:trigger\', {value: e.target.value});\\n      });\\n    "),
+            hx_boost='true',
         ),
     )
     """

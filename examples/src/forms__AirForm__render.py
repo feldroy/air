@@ -28,7 +28,7 @@ def contact(request: air.Request) -> air.Html | air.Children:
         air.P("This form is rendered using AirForm.render()."),
         air.Form(
             form.render(),
-            air.Button("Send message", type="submit"),
+            air.Button("Send message", type_="submit"),
             method="post",
             action=submit.url(),  # type: ignore[unresolved-attribute]
         ),
@@ -57,7 +57,7 @@ async def submit(request: air.Request) -> air.Html:
         air.P(f"Found {error_count} validation error(s)."),
         air.Form(
             form.render(),
-            air.Button("Send message", type="submit"),
+            air.Button("Send message", type_="submit"),
             method="post",
             action=submit.url(),  # type: ignore[unresolved-attribute]
         ),

@@ -97,8 +97,7 @@ HTML_SAMPLE: Final = cleandoc(
             <h2>Daniel Roy Greenfeld</h2>
           </a>
           <p>
-            <a href="/about">About</a>|<a href="/posts">Articles (715)</a>|<a href="/books">Books</a>|<a
-            href="/jobs">Jobs</a>|<a href="/tags">Tags</a>|<a href="/search">Search</a>
+            <a href="/about">About</a>|<a href="/posts">Articles (715)</a>|<a href="/books">Books</a>|<a href="/jobs">Jobs</a>|<a href="/tags">Tags</a>|<a href="/search">Search</a>
           </p>
         </header>
         <main class="container">
@@ -118,7 +117,7 @@ HTML_SAMPLE: Final = cleandoc(
               <span>
                 <h2>
                   <a
-                    href="/posts/2025-07-uv-run-for-testing-python-versions">uv run for running tests on versions of Python</a>
+                     href="/posts/2025-07-uv-run-for-testing-python-versions">uv run for running tests on versions of Python</a>
                 </h2>
                 <p>Using uv run with make to replace tox or nox for testing multiple versions of Python locally.<br>
                   <small>
@@ -275,10 +274,7 @@ HTML_SAMPLE: Final = cleandoc(
         <footer class="container">
           <hr>
           <p>
-            <a href="https://www.linkedin.com/in/danielfeldroy/" target="_blank">LinkedIn</a>|<a
-            href="https://bsky.app/profile/daniel.feldroy.com" target="_blank">Bluesky</a>|<a href="https://twitter.com/pydanny" target="_blank">Twitter</a>|<a
-            href="https://github.com/pydanny" target="_blank">Github</a>| Feeds:<a href="/feeds/atom.xml" target="_blank">All</a>,<a
-            href="/feeds/python.atom.xml" target="_blank">Python</a>,<a href="/feeds/til.atom.xml" target="_blank">TIL</a>
+            <a href="https://www.linkedin.com/in/danielfeldroy/" target="_blank">LinkedIn</a>|<a href="https://bsky.app/profile/daniel.feldroy.com" target="_blank">Bluesky</a>|<a href="https://twitter.com/pydanny" target="_blank">Twitter</a>|<a href="https://github.com/pydanny" target="_blank">Github</a>| Feeds:<a href="/feeds/atom.xml" target="_blank">All</a>,<a href="/feeds/python.atom.xml" target="_blank">Python</a>,<a href="/feeds/til.atom.xml" target="_blank">TIL</a>
           </p>
           <p>All rights reserved 2025, Daniel Roy Greenfeld</p>
         </footer>
@@ -290,20 +286,21 @@ HTML_SAMPLE: Final = cleandoc(
           </header>
         </dialog>
         <div hx-trigger="keyup[key=='/'] from:body"></div>
-        <script>document.body.addEventListener('keydown', e => {
-                if (e.key === '/') {
-                    e.preventDefault();
-                    document.getElementById('search-modal').style.display = 'block';
-                    document.getElementById('search-input').focus();
-                }
-                if (e.key === 'Escape') {
-                    document.getElementById('search-modal').style.display = 'none';
-                }
-                });
-
-                document.getElementById('search-input').addEventListener('input', e => {
-                htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});
-                });</script>
+        <script>
+          document.body.addEventListener('keydown', e => {
+            if (e.key === '/') {
+              e.preventDefault();
+              document.getElementById('search-modal').style.display = 'block';
+              document.getElementById('search-input').focus();
+            }
+            if (e.key === 'Escape') {
+              document.getElementById('search-modal').style.display = 'none';
+            }
+          });
+          document.getElementById('search-input').addEventListener('input', e => {
+            htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});
+          });
+        </script>
       </body>
     </html>
     """

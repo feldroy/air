@@ -30,6 +30,7 @@ from air.tags.utils import (
     pretty_format_html,
     pretty_print_html,
     pretty_print_python,
+    read_html,
     save_text,
 )
 
@@ -632,7 +633,7 @@ class BaseTag:
         return cls._create_tag(name, *children, **attributes)
 
     @classmethod
-    def _from_child_dict(cls, children_dict: TagChildrenTypeForDict) -> TagChildrenTypeForDict:
+    def _from_child_dict(cls, children_dict: TagChildrenTypeForDict) -> TagChildrenType:
         """Restore serialized children into tag instances or raw values.
 
         Args:
@@ -643,8 +644,9 @@ class BaseTag:
         """
         # noinspection PyTypeChecker
         return tuple(
-            cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict for child_dict in children_dict
-        )
+            cls.from_dict(child_dict) if isinstance(child_dict, dict) else child_dict  # type: ignore[invalid-argument-type]
+            for child_dict in children_dict
+        )  # type: ignore[invalid-return-type]
 
     @classmethod
     def from_json(cls, source_json: str) -> BaseTag:
@@ -701,7 +703,34 @@ class BaseTag:
         return cls.from_html(html_source).to_source()
 
     @classmethod
-    def from_html(cls, html_source: str) -> Renderable:
+    def from_html_file_to_source(cls, *, file_path: StrPath) -> str:
+        """Reconstruct the instantiable-formatted representation of the tag from the given HTML file.
+
+        For converting the corresponding air-tag tree from the given HTML file,
+        into the instantiable-formatted representation of the tag.
+
+        Args:
+            file_path: The file path pointing to the HTML file or a folder with an index file to be read and parsed.
+
+        Returns:
+            The formatted instantiation call for this tag and its children.
+        """
+        return cls.from_html_file(file_path=file_path).to_source()
+
+    @classmethod
+    def from_html_file(cls, *, file_path: StrPath) -> BaseTag:
+        """Reconstruct the corresponding air-tag tree from the given HTML file.
+
+        Args:
+            file_path: The file path pointing to the HTML file or a folder with an index file to be read and parsed.
+
+        Returns:
+            The root air-tag built from the provided HTML file.
+        """
+        return cls.from_html(html_source=read_html(file_path=file_path))
+
+    @classmethod
+    def from_html(cls, html_source: str) -> BaseTag:
         """Reconstruct the corresponding air-tag tree from the given HTML content.
 
         Args:
@@ -726,7 +755,11 @@ class BaseTag:
         if not _is_lexbor_html_parser_valid(parser=parser, is_fragment=is_fragment):
             msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
             raise ValueError(msg)
-        return cls._from_lexbor_node(parser.root)
+        air_tag = cls._from_lexbor_node(parser.root)  # type: ignore[arg-type]
+        if not air_tag or not isinstance(air_tag, BaseTag):
+            msg = f"{cls.__name__}.from_html(html_source) is unable to parse the HTML content."
+            raise ValueError(msg)
+        return air_tag
 
     @classmethod
     def _from_lexbor_node(cls, node: LexborNode) -> BaseTag | str:
@@ -742,6 +775,9 @@ class BaseTag:
         Raises:
             ValueError: If the node type cannot be handled.
         """
+        if not node.tag:
+            msg = f"Unable to parse <{node!r}>."
+            raise ValueError(msg)
         if node.is_element_node:
             return cls._from_element_node(node)
         if node.is_text_node and node.text_content:
@@ -765,7 +801,7 @@ class BaseTag:
             cls._from_lexbor_node(child) for child in node.iter(include_text=True, skip_empty=True)
         )
         attributes: TagAttributesType = _migrate_html_attributes_to_air_tag(node)
-        return cls._create_tag(node.tag, *children, **attributes)
+        return cls._create_tag(node.tag, *children, **attributes)  # ty:ignore[invalid-argument-type]
 
     @classmethod
     def _create_tag(cls, name: str, /, *children: Renderable, **attributes: AttributeType) -> BaseTag:

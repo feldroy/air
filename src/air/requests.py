@@ -120,14 +120,14 @@ class HtmxDetails:
                 if request.htmx:
                     return air.H1(
                         "Click me: ", randint(1, 100),
-                        id="number",
+                        id_="number",
                         hx_get="/",
                         hx_swap="outerHTML"
                     )
                 return air.layouts.mvpcss(
                     air.H1(
                         "Click me: ", randint(1, 100),
-                        id="number",
+                        id_="number",
                         hx_get="/",
                         hx_swap="outerHTML"
                     )

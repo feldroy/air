@@ -49,20 +49,20 @@ def index(request: air.Request) -> air.Html | air.Children:
             ),
             air.Button(
                 "Load second table (trigger from this button)",
-                id="other-trigger",
+                id_="other-trigger",
             ),
-            id="controls",
+            id_="controls",
         ),
         # This div will load the table once on page load via HTMX.
         air.Div(
-            id="display",
+            id_="display",
             hx_get="/table",
             hx_trigger="load",
         ),
         # This second div demonstrates hx_trigger using a different element
         # as the source of the event (`click from:#other-trigger`).
         air.Div(
-            id="display-2",
+            id_="display-2",
             hx_get="/table?source=external-trigger",
             hx_trigger="click from:#other-trigger",
         ),

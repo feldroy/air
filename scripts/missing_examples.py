@@ -112,8 +112,7 @@ def find_new_missing(current: dict, baseline: dict) -> dict[str, list[str]]:
 def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict, src_path: pathlib.Path) -> None:
     """Extract all callables from a Python file."""
     try:
-        with pathlib.Path(file_path).open("r", encoding="utf-8") as f:
-            tree = ast.parse(f.read())
+        tree = ast.parse(file_path.read_text())
     except (SyntaxError, UnicodeDecodeError):
         return
 

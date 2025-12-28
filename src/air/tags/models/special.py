@@ -71,9 +71,9 @@ class SelfClosingTag(BaseTag):
 
     def __init__(
         self,
-        **kwargs: AttributeType,
+        **attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs)
+        super().__init__(**attributes)
 
     @override
     def _render(self) -> str:
@@ -84,14 +84,14 @@ class UnSafeTag(BaseTag):
     """Tag base that bypasses HTML escaping for its content."""
 
     @override
-    def __init__(self, text_child: str = "", /, **kwargs: AttributeType) -> None:
+    def __init__(self, text_child: str = "", /, **attributes: AttributeType) -> None:
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
         if text_child:
-            super().__init__(text_child, **kwargs)
+            super().__init__(text_child, **attributes)
         else:
-            super().__init__(**kwargs)
+            super().__init__(**attributes)
 
     @override
     @staticmethod
@@ -123,7 +123,7 @@ class Script(UnSafeTag):
     Args:
         text_child: Inline script code. Use an empty string when providing ``src``.
         src: URI of the external script.
-        type: Script type. Examples: ``module``, ``importmap``, ``speculationrules``,
+        type_: Script type. Examples: ``module``, ``importmap``, ``speculationrules``,
             a JavaScript MIME type (e.g. ``text/javascript``), or empty for classic scripts.
         async_: Fetch in parallel and execute as soon as ready; order is not guaranteed.
         defer: Execute after parsing (classic scripts only; modules defer by default).
@@ -139,9 +139,9 @@ class Script(UnSafeTag):
         attributionsrc: Space-separated URLs for Attribution Reporting (experimental).
         nonce: CSP nonce (meaning: one-time token) to allow this inline script.
         class_: Substituted as the DOM ``class`` attribute.
-        id: DOM ``id`` attribute.
+        id_: DOM ``id`` attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     @override
@@ -151,7 +151,7 @@ class Script(UnSafeTag):
         /,
         *,
         src: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         async_: bool | None = None,
         defer: bool | None = None,
         nomodule: bool | None = None,
@@ -173,11 +173,11 @@ class Script(UnSafeTag):
         attributionsrc: str | None = None,
         nonce: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(text_child, **custom_attributes | locals_cleanup(locals()))
 
 
 class Style(UnSafeTag):
@@ -190,11 +190,11 @@ class Style(UnSafeTag):
         title: Title for alternate style sheet sets.
         blocking: Space-separated tokens that block operations; currently ``"render"``.
         nonce: CSP nonce (meaning: one-time token) to allow this inline style.
-        type: (Deprecated) Only ``""`` or ``"text/css"`` are permitted; omit in modern HTML.
+        type_: (Deprecated) Only ``""`` or ``"text/css"`` are permitted; omit in modern HTML.
         class_: Substituted as the DOM ``class`` attribute.
-        id: DOM ``id`` attribute.
+        id_: DOM ``id`` attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     @override
@@ -207,13 +207,13 @@ class Style(UnSafeTag):
         title: str | None = None,
         blocking: Literal["render"] | None = None,
         nonce: str | None = None,
-        type: str | None = None,  # deprecated
+        type_: str | None = None,  # deprecated
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributeType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(text_child, **custom_attributes | locals_cleanup(locals()))
 
 
 class Comment(UnSafeTag):

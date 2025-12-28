@@ -54,7 +54,7 @@ def create_complex_page_with_tags() -> Html:
                                 class_="product-actions",
                             ),
                             class_="product-card",
-                            id=f"product-{i}",
+                            id_=f"product-{i}",
                         )
                         for i in range(1, 21)  # 20 products
                     ],
