@@ -29,6 +29,9 @@ AIR_VERSION = get_version("air")
 FASTAPI_VERSION = get_version("fastapi")
 DEFAULT_DESCRIPTION = f"Built on FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
 DEFAULT_TAGS: list[str | Enum] = ["pages"]
+DEFAULT_SWAGGER_URL = "/_swagger"
+DEFAULT_REDOC_URL = "/_redoc"
+DEFAULT_OPENAPI_URL = "/openapi.json"
 
 AppType = TypeVar("AppType", bound="Air")
 
