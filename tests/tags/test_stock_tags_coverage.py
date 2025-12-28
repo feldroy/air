@@ -70,7 +70,7 @@ def test_stock_tags_comprehensive_coverage() -> None:
         air.Mark("Highlighted text", class_="highlight"),
         # Media and object elements
         air.Menu("Menu content", type_="toolbar", class_="menu"),
-        air.Meter("Meter content", value=6, min=0, max_=10),
+        air.Meter("Meter content", value=6, min_=0, max_=10),
         air.Nav("Navigation", class_="navigation"),
         air.Noscript("No script message", class_="noscript"),
         air.Object("Object content", data="/file.swf", type_="application/x-shockwave-flash"),
