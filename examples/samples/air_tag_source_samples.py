@@ -489,5 +489,3 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
     )
     """
 )
-
-# Script("\n      document.body.addEventListener('keydown', e => {\n        if (e.key === '/') {\n          e.preventDefault();\n          document.getElementById('search-modal').style.display = 'block';\n          document.getElementById('search-input').focus();\n        }\n        if (e.key === 'Escape') {\n          document.getElementById('search-modal').style.display = 'none';\n        }\n      });\n      document.getElementById('search-input').addEventListener('input', e => {\n        htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});\n      });\n    "),
