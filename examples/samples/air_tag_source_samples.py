@@ -191,7 +191,7 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
             air.Link(
                 href='/public/style.css',
                 rel='stylesheet',
-                type='text/css',
+                type_='text/css',
             ),
             air.Title('Daniel Roy Greenfeld'),
         ),
@@ -472,7 +472,7 @@ AIR_TAG_SOURCE_SAMPLE: Final = cleandoc(
                         hx_target='.search-results-modal',
                         id_='search-input',
                         name='q',
-                        type='text',
+                        type_='text',
                         placeholder='Enter your search query...',
                     ),
                     air.Div(class_='search-results-modal'),

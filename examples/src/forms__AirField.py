@@ -30,7 +30,7 @@ def index(request: air.Request) -> air.Html | air.Children:
         air.P("Submit the form below to see AirField + AirForm in action."),
         air.Form(
             form.render(),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action=submit.url(),  # ty: ignore[unresolved-attribute]
         ),
@@ -66,7 +66,7 @@ async def submit(request: air.Request) -> air.Html:
             air.H1("Please fix the errors below."),
             air.Form(
                 form.render(),
-                air.Button("Submit", type="submit"),
+                air.Button("Submit", type_="submit"),
                 method="post",
                 action=submit.url(),  # ty: ignore[unresolved-attribute]
             ),

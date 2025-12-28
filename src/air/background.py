@@ -21,9 +21,8 @@ class BackgroundTasks(FastAPIBackgroundTasks):
 
 
         def write_notification(email: str, message: str = "") -> None:
-            with pathlib.Path("log.txt").open(mode="w") as email_file:
-                content = f"notification for {email}: {message}"
-                email_file.write(content)
+            content = f"notification for {email}: {message}"
+            pathlib.Path("log.txt").write_text(content)
 
 
         @app.post("/send-notification/{email}")

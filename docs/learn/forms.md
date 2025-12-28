@@ -24,14 +24,14 @@ def index():
             air.Form(
                 air.Label(
                     "Email",
-                    air.Input(name="email", type="email"),
+                    air.Input(name="email", type_="email"),
                     for_="Email",
                 ),
                 air.Label(
                     "Name",
                     air.Input(name="name"),
                 ),
-                air.Button("submit", type="submit"),
+                air.Button("submit", type_="submit"),
                 action="/add-contact",
                 method="post",
             )

@@ -81,7 +81,7 @@ class AirModel(BaseModel):
                     air.P("This form demonstrates name, includes, and widget parameters"),
                     air.Form(
                         contact_form.render(),
-                        air.Button("Submit", type="submit"),
+                        air.Button("Submit", type_="submit"),
                         method="post",
                         action="/submit",
                     ),

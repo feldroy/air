@@ -132,7 +132,7 @@ renders as
 In Python `for` is a protected word. To set the `for` attribute in **Air Tags**, use the `for_` keyword.
 
 ```python
-air.Label("Email", air.Input(name="email", type="email"), for_="email")
+air.Label("Email", air.Input(name="email", type_="email"), for_="email")
 ```
 
 renders as

@@ -16,7 +16,7 @@ def test_atag_with_all_attributes() -> None:
         ping="https://tracker.example.com",
         referrerpolicy="no-referrer",
         rel="noopener",
-        type="application/pdf",
+        type_="application/pdf",
     ).pretty_render()
     expected_html = clean_doc_with_broken_lines(
         r"""
@@ -296,7 +296,7 @@ def test_image_with_experimental_attributes() -> None:
 def test_script_with_experimental_attributes() -> None:
     # Test fetchpriority experimental attribute
     script = air.svg.Script(
-        type="application/javascript",
+        type_="application/javascript",
         href="script.js",
         fetchpriority="low",
         crossorigin="use-credentials",
@@ -340,7 +340,7 @@ def test_animate_with_extended_attributes() -> None:
 
 # Test missing classes for coverage
 def test_animate_transform() -> None:
-    transform = air.svg.AnimateTransform(type="rotate", from_="0", to="360", dur="2s", repeatCount="indefinite")
+    transform = air.svg.AnimateTransform(type_="rotate", from_="0", to="360", dur="2s", repeatCount="indefinite")
     expected = (
         '<animateTransform type="rotate" from-="0" to="360" dur="2s" repeatCount="indefinite"></animateTransform>'
     )
@@ -360,7 +360,7 @@ def test_fe_blend() -> None:
 
 
 def test_fe_color_matrix() -> None:
-    matrix = air.svg.FeColorMatrix(type="matrix", values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0")
+    matrix = air.svg.FeColorMatrix(type_="matrix", values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0")
     expected = '<feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"></feColorMatrix>'
     assert matrix.render() == expected
 
@@ -404,25 +404,25 @@ def test_fe_flood() -> None:
 
 
 def test_fe_func_a() -> None:
-    func_a = air.svg.FeFuncA(type="linear", slope=0.5)
+    func_a = air.svg.FeFuncA(type_="linear", slope=0.5)
     expected = '<feFuncA type="linear" slope="0.5"></feFuncA>'
     assert func_a.render() == expected
 
 
 def test_fe_func_b() -> None:
-    func_b = air.svg.FeFuncB(type="discrete", tableValues="0 0.5 1")
+    func_b = air.svg.FeFuncB(type_="discrete", tableValues="0 0.5 1")
     expected = '<feFuncB type="discrete" tableValues="0 0.5 1"></feFuncB>'
     assert func_b.render() == expected
 
 
 def test_fe_func_g() -> None:
-    func_g = air.svg.FeFuncG(type="gamma", amplitude=2, exponent=3)
+    func_g = air.svg.FeFuncG(type_="gamma", amplitude=2, exponent=3)
     expected = '<feFuncG type="gamma" amplitude="2" exponent="3"></feFuncG>'
     assert func_g.render() == expected
 
 
 def test_fe_func_r() -> None:
-    func_r = air.svg.FeFuncR(type="identity")
+    func_r = air.svg.FeFuncR(type_="identity")
     expected = '<feFuncR type="identity"></feFuncR>'
     assert func_r.render() == expected
 
@@ -476,7 +476,7 @@ def test_fe_tile() -> None:
 
 
 def test_fe_turbulence() -> None:
-    turbulence = air.svg.FeTurbulence(baseFrequency="0.9", numOctaves=4, type="fractalNoise")
+    turbulence = air.svg.FeTurbulence(baseFrequency="0.9", numOctaves=4, type_="fractalNoise")
     expected = '<feTurbulence baseFrequency="0.9" numOctaves="4" type="fractalNoise"></feTurbulence>'
     assert turbulence.render() == expected
 

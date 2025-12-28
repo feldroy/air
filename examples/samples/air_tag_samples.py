@@ -150,7 +150,7 @@ AIR_TAG_SAMPLE: Final = Html(
         Script(
             src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/css.min.js",
         ),
-        Link(href="/public/style.css", rel="stylesheet", type="text/css"),
+        Link(href="/public/style.css", rel="stylesheet", type_="text/css"),
         Title("Daniel Roy Greenfeld"),
     ),
     Body(
@@ -410,7 +410,7 @@ AIR_TAG_SAMPLE: Final = Html(
                     hx_trigger="keyup",
                     hx_get="/search-results",
                     hx_target=".search-results-modal",
-                    type="text",
+                    type_="text",
                     name="q",
                     placeholder="Enter your search query...",
                     id_="search-input",
