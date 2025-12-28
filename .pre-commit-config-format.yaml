@@ -28,6 +28,7 @@ repos:
       - id: check-vcs-permalinks # Ensures that links to vcs websites are permalinks.
       - id: forbid-new-submodules # Prevent addition of new git submodules.
       - id: name-tests-test # verifies that test files are named correctly.
+        args: [ '--pytest-test-first' ]
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
         args: [ '--autofix' ]
       - id: sort-simple-yaml # Sorts simple YAML files which consist only of top-level keys.
