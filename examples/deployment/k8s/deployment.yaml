@@ -127,7 +127,7 @@ kind: Secret
 metadata:
   name: air-secrets
 type: Opaque
-stringData: { }
+# stringData:
 # Add your secrets here, for example:
 # DATABASE_URL: "postgresql://user:pass@host:5432/db"
 # SECRET_KEY: "your-secret-key-here"
