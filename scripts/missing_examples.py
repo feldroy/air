@@ -15,7 +15,9 @@ import sys
 from collections import defaultdict
 
 import typer
-from rich import print
+from rich.console import Console
+
+console = Console()
 
 BASELINE_FILE = ".missing_examples_baseline.json"
 SRC_PATH = "src/air"
@@ -142,10 +144,10 @@ def extract_callables_from_file(file_path: pathlib.Path, missing_examples: dict,
 def _print_missing_examples(missing_examples: dict) -> None:
     """Print missing examples in a formatted way."""
     for file_path, callables in sorted(missing_examples.items()):
-        print(f"[bold blue]{file_path}[/bold blue]:")
+        console.print(f"[bold blue]{file_path}[/bold blue]:")
         for callable_info in callables:
-            print(f"  • {callable_info}")
-        print()
+            console.print(f"  • {callable_info}")
+        console.print()
 
 
 def main(project_root: pathlib.Path | None = None, mode: str = "report") -> None:
@@ -171,10 +173,10 @@ def main(project_root: pathlib.Path | None = None, mode: str = "report") -> None
         save_baseline(project_root, missing_examples)
         baseline_path = project_root / BASELINE_FILE
         total = sum(len(v) for v in missing_examples.values())
-        print(f"[bold green]✓[/bold green] Baseline saved to {baseline_path}")
-        print(f"[dim]  {total} missing examples recorded[/dim]")
+        console.print(f"[bold green]✓[/bold green] Baseline saved to {baseline_path}")
+        console.print(f"[dim]  {total} missing examples recorded[/dim]")
         if excluded_files:
-            print(f"[dim]  Excluded files: {', '.join(excluded_files)}[/dim]")
+            console.print(f"[dim]  Excluded files: {', '.join(excluded_files)}[/dim]")
         return
 
     if mode == "check":
@@ -182,36 +184,36 @@ def main(project_root: pathlib.Path | None = None, mode: str = "report") -> None
         baseline = load_baseline(project_root)
 
         if not baseline:
-            print("[bold red]✗[/bold red] No baseline file found. Generate one with --mode baseline")
+            console.print("[bold red]✗[/bold red] No baseline file found. Generate one with --mode baseline")
             sys.exit(1)
 
         new_missing = find_new_missing(missing_examples, baseline)
 
         if new_missing:
-            print("[bold red]✗ New missing examples found:[/bold red]\n")
+            console.print("[bold red]✗ New missing examples found:[/bold red]\n")
             _print_missing_examples(new_missing)
             total = sum(len(v) for v in new_missing.values())
-            print(f"[bold red]Found {total} new missing example(s)[/bold red]")
-            print("[dim]Add examples or update baseline with --mode baseline[/dim]")
+            console.print(f"[bold red]Found {total} new missing example(s)[/bold red]")
+            console.print("[dim]Add examples or update baseline with --mode baseline[/dim]")
             sys.exit(1)
 
-        print("[bold green]✓ No new missing examples![/bold green]")
+        console.print("[bold green]✓ No new missing examples![/bold green]")
         if excluded_files:
-            print(f"[dim]Excluded files: {', '.join(excluded_files)}[/dim]")
+            console.print(f"[dim]Excluded files: {', '.join(excluded_files)}[/dim]")
         return
 
     # report mode
     if missing_examples:
-        print("[bold red]Callables missing examples:[/bold red]\n")
+        console.print("[bold red]Callables missing examples:[/bold red]\n")
         _print_missing_examples(missing_examples)
         total_missing = sum(len(callables) for callables in missing_examples.values())
-        print(f"[bold yellow]Total missing examples: {total_missing}[/bold yellow]")
+        console.print(f"[bold yellow]Total missing examples: {total_missing}[/bold yellow]")
     else:
-        print("[bold green]All callables have examples! 🎉[/bold green]")
+        console.print("[bold green]All callables have examples! 🎉[/bold green]")
 
     # Show excluded files if any
     if excluded_files:
-        print(f"\n[dim]Excluded files: {', '.join(excluded_files)}[/dim]")
+        console.print(f"\n[dim]Excluded files: {', '.join(excluded_files)}[/dim]")
 
 
 if __name__ == "__main__":
