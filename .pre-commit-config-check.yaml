@@ -3,6 +3,9 @@
 # Note: we are using https://github.com/j178/prek a better `pre-commit`, re-engineered in Rust!
 # See https://prek.j178.dev/configuration for more information
 # See https://prek.j178.dev/builtin for more hooks
+ci:
+  autofix_prs: false
+fail_fast: false
 repos:
   - repo: builtin
     hooks:
