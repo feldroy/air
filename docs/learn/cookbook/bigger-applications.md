@@ -100,7 +100,7 @@ app.mount("/shop", shop)
 
 ## Mounting FastAPI inside of Air apps
 
-You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API, while your main Air app serves the landing, billing, and usage frontends. 
+You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API, while your main Air app serves the landing, billing, and usage frontends.
 
 ```python
 import air
@@ -135,4 +135,4 @@ app.mount("/api", api)
 
 ## Mounting FastAPI apps inside each other
 
-Mounting one FastAPI app is outside the scope of this guide. We recommend reading [FastAPI's Bigger Application](https://fastapi.tiangolo.com/tutorial/bigger-applications) reference. 
+Mounting one FastAPI app is outside the scope of this guide. We recommend reading [FastAPI's Bigger Application](https://fastapi.tiangolo.com/tutorial/bigger-applications) reference.

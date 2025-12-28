@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Most feature requests for air core are probably best executed as a new package. 
+about: Most feature requests for air core are probably best executed as a new package.
 title: 'FEAT: '
 labels: feature
 assignees: ''
