@@ -70,7 +70,7 @@ def test_stock_tags_comprehensive_coverage() -> None:
         air.Mark("Highlighted text", class_="highlight"),
         # Media and object elements
         air.Menu("Menu content", type_="toolbar", class_="menu"),
-        air.Meter("Meter content", value=6, min=0, max=10),
+        air.Meter("Meter content", value=6, min=0, max_=10),
         air.Nav("Navigation", class_="navigation"),
         air.Noscript("No script message", class_="noscript"),
         air.Object("Object content", data="/file.swf", type_="application/x-shockwave-flash"),
@@ -81,7 +81,7 @@ def test_stock_tags_comprehensive_coverage() -> None:
         # Paragraph and text elements
         air.P("Paragraph text", class_="paragraph", id_="p1"),
         air.Pre("Preformatted text", class_="preformatted"),
-        air.Progress("Progress content", value=50, max=100, class_="progress"),
+        air.Progress("Progress content", value=50, max_=100, class_="progress"),
         air.Q("Quoted text", cite="https://example.com", class_="quote"),
         air.Rp("Rp content", class_="rp"),
         air.Rt("Rt content", class_="rt"),
