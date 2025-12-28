@@ -189,7 +189,7 @@ def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) 
 
 def test_compact_format_html_minifies() -> None:
     assert len(utils.compact_format_html(SMALL_AIR_TAG_SAMPLE.render())) == 760
-    assert len(utils.compact_format_html(AIR_TAG_SAMPLE.render())) == 7530
+    assert len(utils.compact_format_html(AIR_TAG_SAMPLE.render())) == 7536
 
 
 def test_compact_format_html_minifies_with_safe_defaults(monkeypatch: pytest.MonkeyPatch) -> None:

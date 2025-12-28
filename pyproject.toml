@@ -381,6 +381,7 @@ ignore = [
 "src/air/tags/models/svg.py" = ["A002"]
 "src/air/tags/models/stock.py" = ["A002"]
 "src/air/forms.py" = ["A002"]
+"examples/samples/air_tag_source_samples.py" = ["W505"]
 
 [tool.ruff.lint.flake8-import-conventions]
 # Declare the banned `from` imports.
