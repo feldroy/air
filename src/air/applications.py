@@ -27,7 +27,9 @@ from .routing import AirRoute, AirRouter, RouteCallable, RouterMixin
 from .types import MaybeAwaitable
 
 FASTAPI_VERSION = get_version("fastapi")
-DEFAULT_DESCRIPTION = f"Built for clarity and joy • FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
+DEFAULT_DESCRIPTION = (
+    f"Built for clarity and joy • FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
+)
 DEFAULT_TAGS: list[str | Enum] = ["pages"]
 DEFAULT_OPENAPI_URL = "/openapi.json"
 
