@@ -7,33 +7,22 @@ from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
 from typing import Annotated, Any, Literal
-from importlib.metadata import version as get_version
-from typing import Annotated, Any, Literal, TypeVar
 from warnings import deprecated
 
 from fastapi import FastAPI, routing
 from fastapi.params import Depends
 from fastapi.utils import generate_unique_id
 from starlette.middleware import Middleware
-from starlette.responses import JSONResponse, Response
+from starlette.responses import Response
 from starlette.routing import BaseRoute
 from starlette.types import Lifespan, Receive, Scope, Send
 from typing_extensions import Doc
 
-from .constants import AIR_VERSION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL, DEFAULT_TITLE
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
 from .routing import AirRoute, AirRouter, RouteCallable, RouterMixin
 from .types import MaybeAwaitable
 
-FASTAPI_VERSION = get_version("fastapi")
-DEFAULT_DESCRIPTION = (
-    f"Built for clarity and joy • FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
-)
-DEFAULT_TAGS: list[str | Enum] = ["pages"]
-DEFAULT_OPENAPI_URL = "/openapi.json"
-
-AppType = TypeVar("AppType", bound="Air")
 
 class Air(RouterMixin):
     """Air web framework - HTML-first web apps powered by FastAPI.
@@ -81,31 +70,6 @@ class Air(RouterMixin):
                 """
             ),
         ] = False,
-        title: Annotated[
-            str,
-            Doc(
-                """
-                The title of the API, shown in the OpenAPI documentation.
-                """
-            ),
-        ] = DEFAULT_TITLE,
-        version: Annotated[
-            str,
-            Doc(
-                """
-                The version of the API, shown in the OpenAPI documentation.
-                """
-            ),
-        ] = AIR_VERSION,
-        description: Annotated[
-            str,
-            Doc(
-                """
-                A description of the API, shown in the OpenAPI documentation.
-                Supports Markdown.
-                """
-            ),
-        ] = DEFAULT_DESCRIPTION,
         routes: Annotated[
             list[BaseRoute] | None,
             Doc(
@@ -319,9 +283,6 @@ class Air(RouterMixin):
         if fastapi_app is None:
             self._app = FastAPI(
                 debug=debug,
-                title=title,
-                version=version,
-                description=description,
                 routes=routes,
                 servers=servers,
                 dependencies=dependencies,
@@ -484,21 +445,6 @@ class Air(RouterMixin):
     # Route Decorators - Clean API without response_model clutter
     # =========================================================================
 
-        # Register built-in health endpoint
-        self._register_health_endpoint()
-
-    def _register_health_endpoint(self) -> None:
-        """Register the built-in /health endpoint."""
-
-        @self.get("/health", response_class=JSONResponse, tags=["health"])
-        def health() -> dict[str, str]:
-            """Health check endpoint.
-
-            Returns:
-                A JSON object with status "ok".
-            """
-            return {"status": "ok"}
-
     def get(
         self,
         path: Annotated[
@@ -537,7 +483,7 @@ class Air(RouterMixin):
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
                 """
             ),
-        ] = DEFAULT_TAGS,
+        ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
             Doc(
@@ -822,7 +768,7 @@ class Air(RouterMixin):
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
                 """
             ),
-        ] = DEFAULT_TAGS,
+        ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
             Doc(
@@ -1121,7 +1067,7 @@ class Air(RouterMixin):
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
                 """
             ),
-        ] = DEFAULT_TAGS,
+        ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
             Doc(
@@ -1380,7 +1326,7 @@ class Air(RouterMixin):
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
                 """
             ),
-        ] = DEFAULT_TAGS,
+        ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
             Doc(
@@ -1638,7 +1584,7 @@ class Air(RouterMixin):
                 [FastAPI docs for Path Operation Configuration](https://fastapi.tiangolo.com/tutorial/path-operation-configuration/#tags).
                 """
             ),
-        ] = DEFAULT_TAGS,
+        ] = None,
         dependencies: Annotated[
             Sequence[Depends] | None,
             Doc(

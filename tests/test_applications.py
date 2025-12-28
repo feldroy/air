@@ -359,6 +359,8 @@ def test_fastapi_app_property() -> None:
 
     assert isinstance(app.fastapi_app, FastAPI)
     assert app.fastapi_app is app._app
+
+
 def test_health_endpoint() -> None:
     """Test that Air apps have a built-in /health endpoint."""
     app = air.Air()
