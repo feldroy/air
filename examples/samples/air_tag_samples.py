@@ -158,7 +158,7 @@ AIR_TAG_SAMPLE: Final = Html(
             A(
                 Img(
                     src="https://f004.backblazeb2.com/file/daniel-feldroy-com/public/images/profile.jpg",
-                    width="108",
+                    width=108,
                     alt="Daniel Roy Greenfeld",
                     class_="borderCircle",
                 ),
@@ -242,7 +242,7 @@ AIR_TAG_SAMPLE: Final = Html(
                     P(
                         A(
                             "Read all articles",
-                            href="<function posts at 0x7fa78cb1b740>",
+                            href="<function%20posts%20at%200x7fa78cb1b740>",
                         ),
                     ),
                 ),
@@ -424,21 +424,7 @@ AIR_TAG_SAMPLE: Final = Html(
         ),
         Div(hx_trigger="keyup[key=='/'] from:body"),
         Script(
-            """
-            document.body.addEventListener('keydown', e => {
-              if (e.key === '/') {
-                e.preventDefault();
-                document.getElementById('search-modal').style.display = 'block';
-                document.getElementById('search-input').focus();
-              }
-              if (e.key === 'Escape') {
-                document.getElementById('search-modal').style.display = 'none';
-              }
-            });
-            document.getElementById('search-input').addEventListener('input', e => {
-              htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});
-            });
-            """,
+            "\n      document.body.addEventListener('keydown', e => {\n        if (e.key === '/') {\n          e.preventDefault();\n          document.getElementById('search-modal').style.display = 'block';\n          document.getElementById('search-input').focus();\n        }\n        if (e.key === 'Escape') {\n          document.getElementById('search-modal').style.display = 'none';\n        }\n      });\n      document.getElementById('search-input').addEventListener('input', e => {\n        htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});\n      });\n    "
         ),
         hx_boost="true",
     ),
