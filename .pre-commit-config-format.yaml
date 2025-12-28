@@ -14,6 +14,7 @@ repos:
       - id: check-symlinks # Checks for symlinks which do not point to anything.
       - id: check-toml # Attempts to load all TOML files to verify syntax.
       - id: check-yaml # Attempts to load all yaml files to verify syntax.
+        args: [ '--allow-multiple-documents' ]
       - id: detect-private-key # Checks for the existence of private keys.
       - id: end-of-file-fixer # Ensure newline at EOF.
       - id: fix-byte-order-marker # Remove UTF-8 byte order marker.
@@ -29,9 +30,9 @@ repos:
       - id: forbid-new-submodules # Prevent addition of new git submodules.
       - id: name-tests-test # verifies that test files are named correctly.
         args: [ '--pytest-test-first' ]
+        exclude: ^tests/(utils|components)\.py$
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
         args: [ '--autofix' ]
-      - id: sort-simple-yaml # Sorts simple YAML files which consist only of top-level keys.
   - repo: https://github.com/adamchainz/blacken-docs
     rev: '1.20.0'
     hooks:
