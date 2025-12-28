@@ -660,7 +660,7 @@ class Details(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        open: Specifies that the details should be visible (open) to the user.
+        open_: Specifies that the details should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -670,7 +670,7 @@ class Details(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        open: str | None = None,
+        open_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -706,7 +706,7 @@ class Dialog(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        open: Specifies that the dialog box should be visible (open) to the user.
+        open_: Specifies that the dialog box should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -716,7 +716,7 @@ class Dialog(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        open: str | None = None,
+        open_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
