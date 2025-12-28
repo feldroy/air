@@ -37,14 +37,14 @@ repos:
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
         args: [ '--autofix' ]
   - repo: https://github.com/adamchainz/blacken-docs
-    rev: '1.20.0'
+    rev: 1.20.0
     hooks:
       - id: blacken-docs # Run Black on Python code blocks in documentation files.
         additional_dependencies:
           - black==25.12.0
         args: [ '--preview', '--line-length=79' ]
   - repo: https://github.com/rtts/djhtml
-    rev: '3.0.1'
+    rev: 3.0.10
     hooks:
       - id: djhtml # A pure-Python Django/Jinja template indenter without dependencies.
         entry: djhtml --tabwidth 2
