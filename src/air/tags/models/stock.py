@@ -1329,7 +1329,7 @@ class Input(SelfClosingTag):
         formtarget: Specifies where to display the response that is received after submitting the form.
         height: Specifies the height of an `<input>` element.
         list: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
-        max: Specifies the maximum value for an `<input>` element.
+        max_: Specifies the maximum value for an `<input>` element.
         maxlength: Specifies the maximum number of characters allowed in an `<input>` element.
         min: Specifies a minimum value for an `<input>` element.
         minlength: Specifies the minimum number of characters required in an `<input>` element.
@@ -1370,7 +1370,7 @@ class Input(SelfClosingTag):
         formtarget: str | None = None,
         height: str | int | None = None,
         list: str | None = None,
-        max: str | None = None,
+        max_: str | None = None,
         maxlength: str | None = None,
         min: str | None = None,
         minlength: str | None = None,
@@ -1688,7 +1688,7 @@ class Meter(BaseTag):
         children: Tags, strings, or other rendered content.
         value: The current numeric value. Must be between the min and max values.
         min: The lower bound of the measured range.
-        max: The upper bound of the measured range.
+        max_: The upper bound of the measured range.
         low: The upper numeric bound of the low end of the measured range.
         high: The lower numeric bound of the high end of the measured range.
         optimum: The optimal numeric value.
@@ -1703,7 +1703,7 @@ class Meter(BaseTag):
         *children: Renderable,
         value: str | None = None,
         min: str | None = None,
-        max: str | None = None,
+        max_: str | None = None,
         low: str | None = None,
         high: str | None = None,
         optimum: str | None = None,
@@ -2014,7 +2014,7 @@ class Progress(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        max: The maximum value of the progress bar.
+        max_: The maximum value of the progress bar.
         value: The current value of the progress bar.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -2025,7 +2025,7 @@ class Progress(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        max: str | None = None,
+        max_: str | None = None,
         value: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
