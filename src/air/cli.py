@@ -8,7 +8,7 @@ import typer
 import uvicorn
 from rich.console import Console
 
-from air.constants import AIR_VERSION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL
+from air.constants import AIR_VERSION, ATTRIBUTION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL
 
 app = typer.Typer(add_completion=False, rich_markup_mode="rich")
 console = Console()
@@ -38,7 +38,7 @@ LOG_CONFIG = {
 
 def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback signature
     if value:
-        typer.echo(f"Air {AIR_VERSION}\nCrafted with care by Two Scoops authors pydanny and audreyfeldroy")
+        typer.echo(f"Air {AIR_VERSION}\n{ATTRIBUTION}")
         raise typer.Exit
 
 

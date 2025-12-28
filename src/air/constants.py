@@ -9,6 +9,10 @@ from importlib.metadata import version as get_version
 # Version
 AIR_VERSION = get_version("air")
 
-# OpenAPI documentation URL defaults
+# Configuration defaults
+DEFAULT_TITLE = "Air"
 DEFAULT_SWAGGER_URL = "/_swagger"
 DEFAULT_REDOC_URL = "/_redoc"
+
+# Brand voice
+ATTRIBUTION = "Crafted with care by Two Scoops authors pydanny and audreyfeldroy"

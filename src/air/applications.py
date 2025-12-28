@@ -20,14 +20,14 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan, Receive, Scope, Send
 from typing_extensions import Doc
 
-from .constants import AIR_VERSION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL
+from .constants import AIR_VERSION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL, DEFAULT_TITLE
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
 from .routing import AirRoute, AirRouter, RouteCallable, RouterMixin
 from .types import MaybeAwaitable
 
 FASTAPI_VERSION = get_version("fastapi")
-DEFAULT_DESCRIPTION = f"Built on FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
+DEFAULT_DESCRIPTION = f"Built for clarity and joy • FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
 DEFAULT_TAGS: list[str | Enum] = ["pages"]
 DEFAULT_OPENAPI_URL = "/openapi.json"
 
@@ -86,7 +86,7 @@ class Air(RouterMixin):
                 The title of the API, shown in the OpenAPI documentation.
                 """
             ),
-        ] = "Air",
+        ] = DEFAULT_TITLE,
         version: Annotated[
             str,
             Doc(
@@ -317,6 +317,9 @@ class Air(RouterMixin):
         if fastapi_app is None:
             self._app = FastAPI(
                 debug=debug,
+                title=title,
+                version=version,
+                description=description,
                 routes=routes,
                 servers=servers,
                 dependencies=dependencies,
