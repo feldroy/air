@@ -1,11 +1,30 @@
 {
   "applications.py": [
+    "method: Air.state",
+    "method: Air.router",
+    "method: Air.routes",
+    "method: Air.debug",
+    "method: Air.debug",
+    "method: Air.dependency_overrides",
+    "method: Air.exception_handlers",
+    "method: Air.url_path_for",
+    "method: Air.add_middleware",
+    "method: Air.include_router",
+    "method: Air.exception_handler",
+    "method: Air.middleware",
+    "method: Air.mount",
     "method: Air.patch",
     "method: Air.put",
     "method: Air.delete"
   ],
   "background.py": [
     "method: BackgroundTasks.add_task"
+  ],
+  "cli.py": [
+    "function: _version_callback",
+    "function: _callback",
+    "function: run",
+    "function: main"
   ],
   "exceptions.py": [
     "class: HTTPException",
@@ -93,6 +112,8 @@
     "method: BaseTag.print_source",
     "method: BaseTag.save_source",
     "method: BaseTag.from_html_to_source",
+    "method: BaseTag.from_html_file_to_source",
+    "method: BaseTag.from_html_file",
     "method: BaseTag.from_html"
   ],
   "tags/models/special.py": [
@@ -138,6 +159,8 @@
     "function: open_html_blob_in_the_browser",
     "function: open_html_in_the_browser",
     "function: save_text",
+    "function: read_text",
+    "function: read_html",
     "function: save_pretty_html",
     "function: display_pretty_html_in_the_browser",
     "function: export_pretty_html",
