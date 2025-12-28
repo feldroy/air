@@ -20,17 +20,15 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan, Receive, Scope, Send
 from typing_extensions import Doc
 
+from .constants import AIR_VERSION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
 from .routing import AirRoute, AirRouter, RouteCallable, RouterMixin
 from .types import MaybeAwaitable
 
-AIR_VERSION = get_version("air")
 FASTAPI_VERSION = get_version("fastapi")
 DEFAULT_DESCRIPTION = f"Built on FastAPI {FASTAPI_VERSION} • [Docs](https://docs.airwebframework.org/)"
 DEFAULT_TAGS: list[str | Enum] = ["pages"]
-DEFAULT_SWAGGER_URL = "/_swagger"
-DEFAULT_REDOC_URL = "/_redoc"
 DEFAULT_OPENAPI_URL = "/openapi.json"
 
 AppType = TypeVar("AppType", bound="Air")
