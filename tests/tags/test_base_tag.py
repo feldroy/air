@@ -80,7 +80,7 @@ def test_escape_text_escapes_html_entities() -> None:
 
 
 def test_render_and_str_return_paired_markup() -> None:
-    tag = WrapperTag("body", id="main")
+    tag = WrapperTag("body", id_="main")
     expected = '<wrappertag id="main">body</wrappertag>'
 
     assert tag.render() == expected

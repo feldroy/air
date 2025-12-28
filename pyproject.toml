@@ -1,7 +1,7 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.43.0"
+version = "0.44.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
@@ -311,7 +311,7 @@ select = [
     "BLE", # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
     "FBT", # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
     "B", # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
-    #    "A",      # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+    "A", # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
     "C4", # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
     "EM", # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
     #    "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
@@ -374,15 +374,13 @@ ignore = [
 ]
 "examples/**.py" = [
     "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
+    "A004", # https://docs.astral.sh/ruff/rules/builtin-import-shadowing/
 ]
 "scripts/copy_src_example_to_callable.py" = ["C901"]
-"src/air/tags/utils.py" = ["PLC0415"]
-"src/air/tags/models/base.py" = ["PLC0415"]
-"tests/test_templating.py" = ["PLC2701"]
-"tests/test_responses.py" = ["PLC0415"]
-"examples/airblog/airblog.py" = ["INP001"]
-"examples/airblog/test_airblog.py" = ["INP001"]
-"tests/benchmarks/test_memory_tag_cleanup.py" = ["RUF052"]
+"scripts/missing_examples.py" = ["A004"]
+"src/air/tags/models/svg.py" = ["A002"]
+"src/air/tags/models/stock.py" = ["A002"]
+"src/air/forms.py" = ["A002"]
 "examples/samples/air_tag_source_samples.py" = ["W505"]
 
 [tool.ruff.lint.flake8-import-conventions]

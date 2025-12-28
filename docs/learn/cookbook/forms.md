@@ -27,7 +27,7 @@ async def index():
         air.Form(
             air.Input(name="flight_number", placeholder="flight number"),
             air.Input(name="destination", placeholder="destination"),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/flight-info",
         ),
@@ -48,7 +48,7 @@ async def flight_info(request: Request):
         air.P("Please correct the errors below:"),
         air.Form(
             flight.render(),  # Automatically shows user-friendly error messages
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/flight-info",
         ),
@@ -113,7 +113,7 @@ async def flight():
         air.Form(
             air.Input(name="flight_number"),
             air.Input(name="destination"),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/flight-info",
         ),

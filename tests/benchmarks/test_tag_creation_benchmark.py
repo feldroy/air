@@ -18,7 +18,7 @@ def test_create_tags_benchmark(benchmark: BenchmarkFixture) -> None:
 
     def create(n: int = 5000) -> list[air.A]:
         # Create many tag instances; keep this function small and self-contained
-        return [air.A(href="/home", class_="link", id=f"elem{i}") for i in range(n)]
+        return [air.A(href="/home", class_="link", id_=f"elem{i}") for i in range(n)]
 
     # Run the benchmark with 5000 objects. pytest-benchmark will time this call.
     benchmark(create, 5000)

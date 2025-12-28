@@ -29,13 +29,13 @@ async def index(request: air.Request):
         action = air.Form(
             air.Label("Name:", for_="username"),
             air.Input(
-                type="text",
+                type_="text",
                 name="username",
-                id="username",
+                id_="username",
                 required=True,
                 autofocus=True,
             ),
-            air.Button("Login", type="submit"),
+            air.Button("Login", type_="submit"),
             action="/login",
             method="post",
         )
@@ -155,21 +155,21 @@ async def login():
         air.Form(
             air.Label("Name:", for_="username"),
             air.Input(
-                type="text",
+                type_="text",
                 name="username",
-                id="username",
+                id_="username",
                 required=True,
                 autofocus=True,
             ),
             air.Label("Password:", for_="password"),
             air.Input(
-                type="password",
+                type_="password",
                 name="password",
-                id="password",
+                id_="password",
                 required=True,
                 autofocus=True,
             ),
-            air.Button("Login", type="submit"),
+            air.Button("Login", type_="submit"),
             action="/login",
             method="post",
         ),

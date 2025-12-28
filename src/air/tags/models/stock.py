@@ -25,14 +25,14 @@ class A(BaseTag):
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
         rel: Specifies the relationship between the current document and the linked document.
         hreflang: Specifies the language of the linked document.
-        type: Specifies the media type of the linked document.
+        type_: Specifies the media type of the linked document.
         referrerpolicy: Specifies which referrer information to send with the link.
         media: Specifies what media/device the linked document is optimized for.
         ping: Specifies a space-separated list of URLs to which, when the link is followed, post
             requests with the body ping will be sent by the browser (in the background).
             Typically used for tracking.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -45,12 +45,12 @@ class A(BaseTag):
         download: str | None = None,
         rel: str | None = None,
         hreflang: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         referrerpolicy: str | None = None,
         media: str | None = None,
         ping: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -63,7 +63,7 @@ class Abbr(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -72,7 +72,7 @@ class Abbr(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -85,7 +85,7 @@ class Address(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -94,7 +94,7 @@ class Address(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -117,7 +117,7 @@ class Area(SelfClosingTag):
         shape: Specifies the shape of an area.
         target: Specifies where to open the linked document.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -135,7 +135,7 @@ class Area(SelfClosingTag):
         shape: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -148,7 +148,7 @@ class Article(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -157,7 +157,7 @@ class Article(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -170,7 +170,7 @@ class Aside(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -179,7 +179,7 @@ class Aside(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -198,7 +198,7 @@ class Audio(BaseTag):
         preload: Specifies if and how the author thinks the audio should be loaded when the page loads.
         src: Specifies the URL of the audio file.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -213,7 +213,7 @@ class Audio(BaseTag):
         preload: str | None = None,
         src: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -226,7 +226,7 @@ class B(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -235,7 +235,7 @@ class B(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -247,7 +247,7 @@ class Base(SelfClosingTag):
 
     Args:
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -258,7 +258,7 @@ class Base(SelfClosingTag):
         href: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -271,7 +271,7 @@ class Bdi(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -280,7 +280,7 @@ class Bdi(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -294,7 +294,7 @@ class Bdo(BaseTag):
         children: Tags, strings, or other rendered content.
         dir: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -304,7 +304,7 @@ class Bdo(BaseTag):
         *children: Renderable,
         dir: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -318,7 +318,7 @@ class Blockquote(BaseTag):
         children: Tags, strings, or other rendered content.
         cite: Specifies the source of the quotation.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -328,7 +328,7 @@ class Blockquote(BaseTag):
         *children: Renderable,
         cite: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -356,7 +356,7 @@ class Br(SelfClosingTag):
 
     Args:
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -365,7 +365,7 @@ class Br(SelfClosingTag):
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -378,22 +378,22 @@ class Button(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         name: Specifies a name for the button.
-        type: Specifies the type of button.
+        type_: Specifies the type of button.
         value: Specifies an initial value for the button.
         autofocus: Specifies that a button should automatically get focus when the page loads.
         disabled: Specifies that a button should be disabled.
         form: Specifies which form the button belongs to.
-        formaction: Specifies where to send the form-data when a form is submitted. Only for type="submit".
+        formaction: Specifies where to send the form-data when a form is submitted. Only for type_="submit".
         formenctype: Specifies how the form-data should be encoded before sending it to a
-            server. Only for type="submit".
-        formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type="submit".
-        formnovalidate: Specifies that the form-data should not be validated on submission. Only for type="submit".
+            server. Only for type_="submit".
+        formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type_="submit".
+        formnovalidate: Specifies that the form-data should not be validated on submission. Only for type_="submit".
         formtarget: Specifies where to display the response that is received after submitting
-            the form. Only for type="submit".
+            the form. Only for type_="submit".
         popovertarget: Specifies which popover element to invoke.
         popovertargetaction: Specifies what action to perform on the popover element.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -402,7 +402,7 @@ class Button(BaseTag):
         self,
         *children: Renderable,
         name: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         value: str | None = None,
         autofocus: str | None = None,
         disabled: str | None = None,
@@ -415,7 +415,7 @@ class Button(BaseTag):
         popovertarget: str | None = None,
         popovertargetaction: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -430,7 +430,7 @@ class Canvas(BaseTag):
         width: Specifies the width of the canvas.
         height: Specifies the height of the canvas.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -441,7 +441,7 @@ class Canvas(BaseTag):
         width: str | int | None = None,
         height: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -454,7 +454,7 @@ class Caption(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -463,7 +463,7 @@ class Caption(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -476,7 +476,7 @@ class Cite(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -485,7 +485,7 @@ class Cite(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -498,7 +498,7 @@ class Code(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -507,7 +507,7 @@ class Code(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -520,7 +520,7 @@ class Col(SelfClosingTag):
     Args:
         span: Specifies the number of columns a <col> element should span.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -530,7 +530,7 @@ class Col(SelfClosingTag):
         *,
         span: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -544,7 +544,7 @@ class Colgroup(BaseTag):
         children: Tags, strings, or other rendered content.
         span: Specifies the number of columns a <colgroup> element should span.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -554,7 +554,7 @@ class Colgroup(BaseTag):
         *children: Renderable,
         span: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -568,7 +568,7 @@ class Data(BaseTag):
         children: Tags, strings, or other rendered content.
         value: Specifies the machine-readable translation of the content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -578,7 +578,7 @@ class Data(BaseTag):
         *children: Renderable,
         value: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -591,7 +591,7 @@ class Datalist(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -600,7 +600,7 @@ class Datalist(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -615,7 +615,7 @@ class Dd(BaseTag):
         cite: Specifies the source of the quotation.
         datetime: Specifies the date and time of the quotation.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -626,7 +626,7 @@ class Dd(BaseTag):
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -639,7 +639,7 @@ class Del(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -648,7 +648,7 @@ class Del(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -662,7 +662,7 @@ class Details(BaseTag):
         children: Tags, strings, or other rendered content.
         open: Specifies that the details should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -672,7 +672,7 @@ class Details(BaseTag):
         *children: Renderable,
         open: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -685,7 +685,7 @@ class Dfn(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -694,7 +694,7 @@ class Dfn(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -708,7 +708,7 @@ class Dialog(BaseTag):
         children: Tags, strings, or other rendered content.
         open: Specifies that the dialog box should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -731,7 +731,7 @@ class Div(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -753,7 +753,7 @@ class Dl(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -762,7 +762,7 @@ class Dl(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -775,7 +775,7 @@ class Dt(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -784,7 +784,7 @@ class Dt(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -797,7 +797,7 @@ class Em(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -806,7 +806,7 @@ class Em(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -818,11 +818,11 @@ class Embed(SelfClosingTag):
 
     Args:
         src: Specifies the address of the external file to embed.
-        type: Specifies the media type of the embedded content.
+        type_: Specifies the media type of the embedded content.
         width: Specifies the width of the embedded content.
         height: Specifies the height of the embedded content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -831,11 +831,11 @@ class Embed(SelfClosingTag):
         self,
         *,
         src: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         width: str | int | None = None,
         height: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -851,7 +851,7 @@ class Fieldset(BaseTag):
         form: Specifies which form the fieldset belongs to.
         name: Specifies a name for the fieldset.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -863,7 +863,7 @@ class Fieldset(BaseTag):
         form: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -876,7 +876,7 @@ class Figcaption(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -885,7 +885,7 @@ class Figcaption(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -898,7 +898,7 @@ class Figure(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -907,7 +907,7 @@ class Figure(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -920,7 +920,7 @@ class Footer(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -929,7 +929,7 @@ class Footer(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -951,7 +951,7 @@ class Form(BaseTag):
         rel: Specifies the relationship between a linked resource and the current document.
         target: Specifies where to display the response that is received after submitting the form.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -969,7 +969,7 @@ class Form(BaseTag):
         rel: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -982,7 +982,7 @@ class H1(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -991,7 +991,7 @@ class H1(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1004,7 +1004,7 @@ class H2(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1013,7 +1013,7 @@ class H2(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1026,7 +1026,7 @@ class H3(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1035,7 +1035,7 @@ class H3(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1048,7 +1048,7 @@ class H4(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1057,7 +1057,7 @@ class H4(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1070,7 +1070,7 @@ class H5(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1079,7 +1079,7 @@ class H5(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1092,7 +1092,7 @@ class H6(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1101,7 +1101,7 @@ class H6(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1132,7 +1132,7 @@ class Header(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1141,7 +1141,7 @@ class Header(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1154,7 +1154,7 @@ class Hgroup(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1163,7 +1163,7 @@ class Hgroup(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1176,7 +1176,7 @@ class Hr(SelfClosingTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1185,7 +1185,7 @@ class Hr(SelfClosingTag):
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1198,7 +1198,7 @@ class I(BaseTag):  # noqa: E742
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1207,7 +1207,7 @@ class I(BaseTag):  # noqa: E742
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1233,7 +1233,7 @@ class Iframe(BaseTag):
             iframe's content.
         sandbox: Enables an extra set of restrictions for the content in an `<iframe>`.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1253,7 +1253,7 @@ class Iframe(BaseTag):
         referrerpolicy: str | None = None,
         sandbox: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1277,7 +1277,7 @@ class Img(SelfClosingTag):
         sizes: Specifies image sizes for different page layouts.
         usemap: Specifies an image as a client-side image map.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1298,7 +1298,7 @@ class Img(SelfClosingTag):
         sizes: str | None = None,
         usemap: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1310,7 +1310,7 @@ class Input(SelfClosingTag):
 
     Args:
         name: Specifies the name of an `<input>` element.
-        type: Specifies the type `<input>` element to display.
+        type_: Specifies the type `<input>` element to display.
         value: Specifies the value of an `<input>` element.
         readonly: Specifies that an input field is read-only.
         required: Specifies that an input field must be filled out before submitting the form.
@@ -1342,7 +1342,7 @@ class Input(SelfClosingTag):
         src: Specifies the URL of the image to use as a submit button.
         step: Specifies the legal number intervals for an input field.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1351,7 +1351,7 @@ class Input(SelfClosingTag):
         self,
         *,
         name: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         value: str | None = None,
         readonly: bool | None = None,
         required: bool | None = None,
@@ -1383,7 +1383,7 @@ class Input(SelfClosingTag):
         src: str | None = None,
         step: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1398,7 +1398,7 @@ class Ins(BaseTag):
         cite: Specifies a URL to a document that explains the reason why the text was inserted/changed.
         datetime: Specifies the date and time when the text was inserted/changed.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1409,7 +1409,7 @@ class Ins(BaseTag):
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1422,7 +1422,7 @@ class Kbd(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1431,7 +1431,7 @@ class Kbd(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1445,7 +1445,7 @@ class Label(BaseTag):
         children: Tags, strings, or other rendered content.
         for_: Specifies which form element a label is bound to.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1455,7 +1455,7 @@ class Label(BaseTag):
         *children: Renderable,
         for_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1468,7 +1468,7 @@ class Legend(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1477,7 +1477,7 @@ class Legend(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1491,7 +1491,7 @@ class Li(BaseTag):
         children: Tags, strings, or other rendered content.
         value: Only for OL lists, this is the starting number of the list item.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1501,7 +1501,7 @@ class Li(BaseTag):
         *children: Renderable,
         value: int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1527,9 +1527,9 @@ class Link(SelfClosingTag):
         rel: Specifies the relationship between the current document and the linked resource.
         sizes: Specifies the size of the linked resource.
         title: Specifies the title of the linked resource.
-        type: Specifies the media type of the linked resource.
+        type_: Specifies the media type of the linked resource.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -1551,9 +1551,9 @@ class Link(SelfClosingTag):
         rel: str | None = None,
         sizes: str | None = None,
         title: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(**custom_attributes | locals_cleanup(locals()))
@@ -1565,7 +1565,7 @@ class Main(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1574,7 +1574,7 @@ class Main(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1588,7 +1588,7 @@ class Map(BaseTag):
         children: Tags, strings, or other rendered content.
         name: Specifies the name of the image map.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1598,7 +1598,7 @@ class Map(BaseTag):
         *children: Renderable,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1611,7 +1611,7 @@ class Mark(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1620,7 +1620,7 @@ class Mark(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1634,7 +1634,7 @@ class Menu(BaseTag):
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be displayed in a compact style.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1644,7 +1644,7 @@ class Menu(BaseTag):
         *children: Renderable,
         compact: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1661,7 +1661,7 @@ class Meta(SelfClosingTag):
         media: Specifies what media/device the linked document is optimized for.
         name: Specifies a name for the metadata.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1675,7 +1675,7 @@ class Meta(SelfClosingTag):
         media: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(**custom_attributes | locals_cleanup(locals()))
@@ -1693,7 +1693,7 @@ class Meter(BaseTag):
         high: The lower numeric bound of the high end of the measured range.
         optimum: The optimal numeric value.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1708,7 +1708,7 @@ class Meter(BaseTag):
         high: str | None = None,
         optimum: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1721,7 +1721,7 @@ class Nav(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
          custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1730,7 +1730,7 @@ class Nav(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1743,7 +1743,7 @@ class Noscript(BaseTag):
     Args:
      children: Tags, strings, or other rendered content.
      class_: Substituted as the DOM `class` attribute.
-     id: DOM ID attribute.
+     id_: DOM ID attribute.
      custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -1751,7 +1751,7 @@ class Noscript(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
@@ -1772,11 +1772,11 @@ class Object(BaseTag):
         height: The height of the object.
         name: The name of the object.
         standby: A message to display while the object is loading.
-        type: The content type of the data.
+        type_: The content type of the data.
         usemap: The name of a client-side image map to be used with the object.
         width: The width of the object.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1786,7 +1786,7 @@ class Object(BaseTag):
         *children: Renderable,
         archive: str | None = None,
         border: str | None = None,
-        classid: str | None = None,
+        classid_: str | None = None,
         codebase: str | None = None,
         codetype: str | None = None,
         data: str | None = None,
@@ -1795,11 +1795,11 @@ class Object(BaseTag):
         height: str | int | None = None,
         name: str | None = None,
         standby: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         usemap: str | None = None,
         width: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1814,9 +1814,9 @@ class Ol(BaseTag):
         compact: Specifies that the list should be rendered in a compact style.
         reversed: Specifies that the list order should be descending.
         start: Specifies the start value of an ordered list.
-        type: Specifies the kind of marker to use in the list.
+        type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1827,9 +1827,9 @@ class Ol(BaseTag):
         compact: str | None = None,
         reversed: str | None = None,
         start: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1844,7 +1844,7 @@ class Optgroup(BaseTag):
         disabled: Indicates if items in the option group are not selectable.
         label: Specifies a label for the group of options.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1855,7 +1855,7 @@ class Optgroup(BaseTag):
         disabled: str | None = None,
         label: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1872,7 +1872,7 @@ class Option(BaseTag):
         selected: Specifies that the option should be pre-selected.
         value: Specifies the value to be sent with the form.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1885,7 +1885,7 @@ class Option(BaseTag):
         selected: bool | None = None,
         value: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1901,7 +1901,7 @@ class Output(BaseTag):
         form: Associates the output with a form element.
         name: Defines a name for the output element.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1913,7 +1913,7 @@ class Output(BaseTag):
         form: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1926,7 +1926,7 @@ class P(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1935,7 +1935,7 @@ class P(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1947,7 +1947,7 @@ class Param(SelfClosingTag):
 
     Args:
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -1955,7 +1955,7 @@ class Param(SelfClosingTag):
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(**custom_attributes | locals_cleanup(locals()))
@@ -1967,7 +1967,7 @@ class Picture(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -1976,7 +1976,7 @@ class Picture(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -1991,7 +1991,7 @@ class Pre(BaseTag):
         width: preferred counf of characters that a line should have
         wrap: hint indicating how overflow must happen
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2002,7 +2002,7 @@ class Pre(BaseTag):
         width: str | int | None = None,
         wrap: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2017,7 +2017,7 @@ class Progress(BaseTag):
         max: The maximum value of the progress bar.
         value: The current value of the progress bar.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2028,7 +2028,7 @@ class Progress(BaseTag):
         max: str | None = None,
         value: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2042,7 +2042,7 @@ class Q(BaseTag):
         children: Tags, strings, or other rendered content.
         cite: Specifies a URL to the source of the quotation.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2052,7 +2052,7 @@ class Q(BaseTag):
         *children: Renderable,
         cite: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2065,7 +2065,7 @@ class Rp(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -2073,7 +2073,7 @@ class Rp(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
@@ -2085,7 +2085,7 @@ class Rt(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -2093,7 +2093,7 @@ class Rt(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
@@ -2105,7 +2105,7 @@ class Ruby(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -2113,7 +2113,7 @@ class Ruby(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
@@ -2125,7 +2125,7 @@ class S(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2134,7 +2134,7 @@ class S(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2147,7 +2147,7 @@ class Samp(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2156,7 +2156,7 @@ class Samp(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2169,7 +2169,7 @@ class Search(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2178,7 +2178,7 @@ class Search(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2191,7 +2191,7 @@ class Section(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2200,7 +2200,7 @@ class Section(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2221,7 +2221,7 @@ class Select(BaseTag):
         required: Indicates that an option must be selected before the form can be submitted.
         size: If drop-down list is a scrolling list box, specifies the number of visible options.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2238,7 +2238,7 @@ class Select(BaseTag):
         required: str | None = None,
         size: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2251,7 +2251,7 @@ class Small(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2260,7 +2260,7 @@ class Small(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2273,14 +2273,14 @@ class Source(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         src: Specifies the URL of the media resource.
-        type: Specifies the MIME type of the media resource.
+        type_: Specifies the MIME type of the media resource.
         sizes: List of source sizes that describe the final rendered width of the image.
         media: Specifies the media query for the media resource.
         srcset: Specifies a list of one or more image URLs and their descriptors.
         height: Specifies the height of the media resource.
         width: Specifies the width of the media resource.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2289,14 +2289,14 @@ class Source(BaseTag):
         self,
         *children: Renderable,
         src: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         sizes: str | None = None,
         media: str | None = None,
         srcset: str | None = None,
         height: str | int | None = None,
         width: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2309,7 +2309,7 @@ class Span(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2318,7 +2318,7 @@ class Span(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2331,7 +2331,7 @@ class Strong(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2340,7 +2340,7 @@ class Strong(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2353,7 +2353,7 @@ class Sub(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2362,7 +2362,7 @@ class Sub(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2375,7 +2375,7 @@ class Summary(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2384,7 +2384,7 @@ class Summary(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2397,7 +2397,7 @@ class Sup(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2406,7 +2406,7 @@ class Sup(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2419,7 +2419,7 @@ class Table(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2428,7 +2428,7 @@ class Table(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2441,7 +2441,7 @@ class Tbody(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2450,7 +2450,7 @@ class Tbody(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2466,7 +2466,7 @@ class Td(BaseTag):
         rowspan: Defines the number of rows a cell should span.
         headers: list of string ids of the `<th>` elements that apply to the cell
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2478,7 +2478,7 @@ class Td(BaseTag):
         rowspan: str | None = None,
         headers: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2495,7 +2495,7 @@ class Template(BaseTag):
         shadowrootclonable: Sets the value of the 'cloneable' property on the shadow root.
         shadowrootserializable: Sets the value of the 'serializable' property on the shadow root.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -2507,7 +2507,7 @@ class Template(BaseTag):
         shadowrootclonable: str | None = None,
         shadowrootserializable: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
         super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
@@ -2536,7 +2536,7 @@ class Textarea(BaseTag):
         spellcheck: Specifies if the element is subject to browser or OS spell-check.
         wrap: Indicates how the text area handles line wrapping.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2562,7 +2562,7 @@ class Textarea(BaseTag):
         spellcheck: str | None = None,
         wrap: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2575,7 +2575,7 @@ class Tfoot(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2584,7 +2584,7 @@ class Tfoot(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2602,7 +2602,7 @@ class Th(BaseTag):
         rowspan: Defines the number of rows a header cell should span.
         scope: Specifies whether the header cell is a header for a column, row, or group of columns or rows.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2616,7 +2616,7 @@ class Th(BaseTag):
         rowspan: str | None = None,
         scope: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2629,7 +2629,7 @@ class Thead(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2638,7 +2638,7 @@ class Thead(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2652,7 +2652,7 @@ class Time(BaseTag):
         children: Tags, strings, or other rendered content.
         datetime: Specifies the date and/or time format.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2662,7 +2662,7 @@ class Time(BaseTag):
         *children: Renderable,
         datetime: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2675,7 +2675,7 @@ class Title(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2684,7 +2684,7 @@ class Title(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2697,7 +2697,7 @@ class Tr(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2706,7 +2706,7 @@ class Tr(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2723,7 +2723,7 @@ class Track(SelfClosingTag):
         srclang: Specifies the language of the text track data.
         src: Specifies the URL of the track file.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2737,7 +2737,7 @@ class Track(SelfClosingTag):
         srclang: str | None = None,
         src: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2750,9 +2750,9 @@ class U(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be rendered in a compact style.
-        type: Specifies the kind of marker to use in the list.
+        type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2761,9 +2761,9 @@ class U(BaseTag):
         self,
         *children: Renderable,
         compact: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2776,7 +2776,7 @@ class Ul(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2785,7 +2785,7 @@ class Ul(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2798,7 +2798,7 @@ class Var(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2807,7 +2807,7 @@ class Var(BaseTag):
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2834,7 +2834,7 @@ class Video(BaseTag):
         poster: Specifies an image to be shown while the video is downloading.
         preload: Specifies if and how the author thinks the video should be loaded when the page loads.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2857,7 +2857,7 @@ class Video(BaseTag):
         poster: str | None = None,
         preload: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:
@@ -2869,7 +2869,7 @@ class Wbr(SelfClosingTag):
 
     Args:
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
@@ -2878,7 +2878,7 @@ class Wbr(SelfClosingTag):
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
         **custom_attributes: AttributeType,
     ) -> None:

@@ -39,7 +39,7 @@ async def show_form() -> air.Html | air.Children:
         air.H1("Contact Form - Error Message Demo"),
         air.Form(
             contact_form.render(),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
         ),
@@ -73,7 +73,7 @@ async def handle_form(request: air.Request) -> air.Html | air.Children:
         air.Form(
             form.render(),
             air.Br(),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
         ),

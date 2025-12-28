@@ -489,8 +489,8 @@ def index():
         air.H1("Email form"),
         air.Form(
             air.Label("Email:", for_="email"),
-            air.Input(type="email", name="email", required=True),
-            air.Button("Submit", type="submit"),
+            air.Input(type_="email", name="email", required=True),
+            air.Button("Submit", type_="submit"),
             method="POST",
             action="/submit",
         ),
@@ -549,7 +549,7 @@ async def index():
         air.H1("Contact Form - Error Message Demo"),
         air.Form(
             form.render(),  # (4)!
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
         ),
@@ -578,7 +578,7 @@ async def handle_form(request: air.Request):
         air.Form(
             form.render(),  # (7)!
             air.Br(),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
         ),

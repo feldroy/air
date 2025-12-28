@@ -44,7 +44,7 @@ def index():
                 " and ",
                 air.A("Plotly", href="https://plotly.com/javascript/"),
             ),
-            air.Div(id="chart"),
+            air.Div(id_="chart"),
             air.Script(f"var data = {data}; Plotly.newPlot('chart', data);"),
         ),
     )
@@ -54,12 +54,12 @@ Air makes it possible to build charts that pull data from servers and animate th
 
 ```air-live
 air.Children(
-    air.Div(id="randomChart"),
+    air.Div(id_="randomChart"),
     air.Script("""
         var data = {"data": [{"x": [0, 4, 5, 7, 8, 10], "y": [2, 9, 0, 4, 3, 6], "type": "scatter"}, {"x": [0, 1, 2, 4, 8, 10], "y": [9, 2, 4, 3, 5, 0], "type": "scatter"}], "title": "Fun charts with Plotly and Air", "description": "This is a demonstration of how to build a chart using Plotly and Air", "type": "scatter"};
         Plotly.newPlot('randomChart', data);""",
         # ID is used to help HTMX know where to replace data
-        id="dataSource",
+        id_="dataSource",
         # Trigger HTMX to call new data every 2 seconds
         hx_trigger="every 2s",
         # Use HTMX to fetch new info from the /data route

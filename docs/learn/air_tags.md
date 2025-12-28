@@ -86,7 +86,7 @@ print(content.pretty_render())
 **Air Tags** convert keyword arguments into attributes. So:
 
 ```python+html
-air.P('Hello', id="mine")
+air.P('Hello', id_="mine")
 ```
 
 renders as:
@@ -132,7 +132,7 @@ renders as
 In Python `for` is a protected word. To set the `for` attribute in **Air Tags**, use the `for_` keyword.
 
 ```python
-air.Label("Email", air.Input(name="email", type="email"), for_="email")
+air.Label("Email", air.Input(name="email", type_="email"), for_="email")
 ```
 
 renders as
@@ -311,12 +311,12 @@ def update_cart(request: air.Request, product_id: int):
             "Added!",
             hx_post="/cart/add/{{product.id}}",
             hx_swap_oob="true",
-            id="add-button",
+            id_="add-button",
         ),
         # Cart icon quantity changed
         A(
             f"Cart {count}",
-            id="cart-icon",
+            id_="cart-icon",
             href="/cart",
             hx_trigger="polling 30s",
             hx_get="/cart-icon",
