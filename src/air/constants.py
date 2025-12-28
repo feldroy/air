@@ -1,4 +1,8 @@
-"""Air framework constants shared across modules."""
+"""Shared constants used across multiple Air modules.
+
+Module-specific constants (like DEFAULT_TAGS in applications.py
+or LOG_CONFIG in cli.py) are kept with their consumers for locality.
+"""
 
 from importlib.metadata import version as get_version
 
