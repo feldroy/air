@@ -377,7 +377,6 @@ ignore = [
     "A004", # https://docs.astral.sh/ruff/rules/builtin-import-shadowing/
 ]
 "scripts/copy_src_example_to_callable.py" = ["C901"]
-"scripts/missing_examples.py" = ["A004"]
 "src/air/tags/models/svg.py" = ["A002"]
 "src/air/tags/models/stock.py" = ["A002"]
 "src/air/forms.py" = ["A002"]
