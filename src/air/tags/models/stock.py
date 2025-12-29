@@ -1328,7 +1328,7 @@ class Input(SelfClosingTag):
         formnovalidate: Specifies that the form-data should not be validated on submission.
         formtarget: Specifies where to display the response that is received after submitting the form.
         height: Specifies the height of an `<input>` element.
-        list: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
+        list_: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
         max_: Specifies the maximum value for an `<input>` element.
         maxlength: Specifies the maximum number of characters allowed in an `<input>` element.
         min_: Specifies a minimum value for an `<input>` element.
@@ -1369,7 +1369,7 @@ class Input(SelfClosingTag):
         formnovalidate: bool | None = None,
         formtarget: str | None = None,
         height: str | int | None = None,
-        list: str | None = None,
+        list_: str | None = None,
         max_: str | None = None,
         maxlength: str | None = None,
         min_: str | None = None,
