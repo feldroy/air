@@ -36,6 +36,7 @@ ATTRIBUTES_TO_AIR: Final = frozendict({
     "type": "type_",
     "max": "max_",
     "min": "min_",
+    "open": "open_",
 })
 ATTRIBUTES_TO_HTML: Final = frozendict({
     "class_": "class",
@@ -46,6 +47,7 @@ ATTRIBUTES_TO_HTML: Final = frozendict({
     "type_": "type",
     "max_": "max",
     "min_": "min",
+    "open_": "open",
 })
 BOOLEAN_HTML_ATTRIBUTES: Final = {
     # https://html.spec.whatwg.org/multipage/indices.html#attributes-3

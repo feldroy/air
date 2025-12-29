@@ -34,9 +34,9 @@ def test_stock_tags_comprehensive_coverage() -> None:
         air.Datalist("Datalist content", id_="browsers"),
         air.Dd("Definition description", class_="definition"),
         air.Del("Deleted text", datetime="2023-01-01", class_="deleted"),
-        air.Details("Details content", open=True, class_="details"),
+        air.Details("Details content", open_=True, class_="details"),
         air.Dfn("Definition", title="Definition title", class_="definition"),
-        air.Dialog("Dialog content", open=False, id_="modal"),
+        air.Dialog("Dialog content", open_=False, id_="modal"),
         air.Div("Div content", class_="container", id_="main"),
         air.Dl("Description list", class_="description-list"),
         air.Dt("Definition term", class_="term"),
@@ -227,8 +227,8 @@ def test_stock_tags_edge_cases() -> None:
         air.Option("Option", selected=True, disabled=False),
         air.Audio(controls=True, autoplay=False, loop=None, muted=True),
         air.Video(controls=True, autoplay=False, muted=True, loop=False),
-        air.Details("Details", open=True),
-        air.Dialog("Dialog", open=False),
+        air.Details("Details", open_=True),
+        air.Dialog("Dialog", open_=False),
     ]
 
     for tag in boolean_attr_tags:
