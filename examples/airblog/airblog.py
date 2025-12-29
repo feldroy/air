@@ -12,11 +12,12 @@ from pathlib import Path
 import mistletoe
 import uvicorn
 from frontmatter import Frontmatter
-from rich import print
+from rich.console import Console
 
 import air
 
 app = air.Air()
+console = Console()
 
 
 @cache
@@ -148,6 +149,6 @@ def tag(slug: str, request: air.Request) -> air.Html | air.Children:
 
 
 if __name__ == "__main__":
-    print("[bold]Demo server starting...[/bold]")
-    print("[bold]Open http://localhost:8005 in your browser[/bold]")
+    console.print("[bold]Demo server starting...[/bold]")
+    console.print("[bold]Open http://localhost:8005 in your browser[/bold]")
     uvicorn.run("airblog:app", host="127.0.0.1", port=8005, reload=True)

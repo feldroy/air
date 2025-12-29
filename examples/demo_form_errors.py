@@ -12,9 +12,11 @@ Usage:
 """
 
 from pydantic import Field
-from rich import print
+from rich.console import Console
 
 import air
+
+console = Console()
 
 
 class ContactModel(air.AirModel):
@@ -88,8 +90,8 @@ async def handle_form(request: air.Request) -> air.Html | air.Children:
 if __name__ == "__main__":
     import uvicorn
 
-    print("Demo server starting...")
-    print("1. Open http://localhost:8000 in your browser")
-    print("2. Leave fields empty and click Submit to see 'This field is required.'")
-    print("3. Enter invalid data (like 'abc' for age) to see 'Please enter a valid number.'")
+    console.print("Demo server starting...")
+    console.print("1. Open http://localhost:8000 in your browser")
+    console.print("2. Leave fields empty and click Submit to see 'This field is required.'")
+    console.print("3. Enter invalid data (like 'abc' for age) to see 'Please enter a valid number.'")
     uvicorn.run(app, host="127.0.0.1", port=8000)

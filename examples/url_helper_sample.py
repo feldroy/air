@@ -1,8 +1,10 @@
 import uvicorn
+from rich.console import Console
 
 import air
 
 app = air.Air()
+console = Console()
 
 
 @app.page
@@ -25,6 +27,6 @@ def index() -> air.Children | air.Html:
 
 
 if __name__ == "__main__":
-    print("[bold]Demo server starting...[/bold]")
-    print("[bold]Open http://localhost:8005 in your browser[/bold]")
+    console.print("[bold]Demo server starting...[/bold]")
+    console.print("[bold]Open http://localhost:8005 in your browser[/bold]")
     uvicorn.run("url_helper_sample:app", host="127.0.0.1", port=8005, reload=True)
