@@ -12,7 +12,7 @@
         - Option
         - Output
         - Pre
-        - Progress        
+        - Progress
         - Q
         - Script
         - Select

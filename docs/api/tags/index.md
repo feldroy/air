@@ -30,4 +30,4 @@ What remains on this page are core **Air Tag** that either have great utility (*
         - CaseTag
         - NoEscapeTag
         - SafeStr
-        - BaseTag        
+        - BaseTag

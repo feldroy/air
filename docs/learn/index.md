@@ -1,4 +1,4 @@
-# Learn 
+# Learn
 
 Resources for learning the fundamentals of the Air web framework.
 
@@ -30,4 +30,3 @@ This section contains short recipes. See the topic pages for details:
 - **[Static files](cookbook/static.md)** - how to serve static files like CSS and JavaScript
 
 If you'd like to contribute a recipe, open a PR with a new file under `docs/learn/cookbook`.
-

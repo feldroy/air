@@ -11,9 +11,9 @@
 * FEAT: Introduced two new class methods to `BaseTag` in `src/air/tags/models/base.py` by @pygarap in https://github.com/feldroy/air/pull/917:
   - `from_html_file` for building an air-tag tree from a file
   -  `from_html_file_to_source` for generating the instantiable source from a file
-  
+
  ### Refactoring
-  
+
 * REFACTOR: Type Annotations Adjustments in the `air.tags.models.base.BaseTag` class! by @pygarap in https://github.com/feldroy/air/pull/914
 * REFACTOR: rename `kwargs` to `custom_attributes` for improved clarity! by @pygarap in https://github.com/feldroy/air/pull/915
 * REFACTOR: reorganize test files into `tags` subdirectory! by @pygarap in https://github.com/feldroy/air/pull/916
@@ -82,8 +82,8 @@
   - `BaseTag.first_attribute`
   - `BaseTag.last_attribute`
   - `BaseTag.num_of_direct_children`
-  - `BaseTag.num_of_attributes`        
-  - `BaseTag.tag_id`        
+  - `BaseTag.num_of_attributes`
+  - `BaseTag.tag_id`
 * [CHORE] Remove FURB189 ruff rule by @msaizar in https://github.com/feldroy/air/pull/872
 * [CHORE] Add 100% test coverage to missing_examples script by @msaizar in https://github.com/feldroy/air/pull/873
 * [CHORE] Add baseline and check modes for scripts/missing_examples.py by @msaizar in https://github.com/feldroy/air/pull/874

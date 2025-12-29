@@ -138,6 +138,9 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     # Check for spelling and grammar violations and apply fixes
     just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell --write-changes
+    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+    just run -- prek auto-update --config .pre-commit-config-check.yaml
+    just run -- prek auto-update --config .pre-commit-config-format.yaml
     just run -- prek run --all-files --config .pre-commit-config-format.yaml
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
@@ -164,6 +167,9 @@ lint OUTPUT_FORMAT="full":
     # Check for spelling and grammar violations
     just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell
+    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+    just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
+    just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
     just run -- prek run --all-files --config .pre-commit-config-check.yaml
 
 # Check for lint violations for all rules!
