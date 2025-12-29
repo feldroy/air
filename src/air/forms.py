@@ -63,7 +63,7 @@ class AirForm:
     """
 
     model: type[BaseModel] | None = None
-    data: Any = None  # TODO change type to something more specific
+    data: type[BaseModel] | None = None
     initial_data: dict | None = None
     errors: list[ErrorDetails] | None = None
     is_valid: bool = False

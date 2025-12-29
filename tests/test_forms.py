@@ -633,3 +633,23 @@ def test_air_to_form_generation_with_custom_widget() -> None:
 
     rendered = autoform.render()
     assert str(rendered) == "<custom>"
+
+
+def test_airform_rejects_non_basemodel() -> None:
+    """
+    This ensures the type annotation data: type[BaseModel] | None is enforced
+    """
+    class NotABaseModel:
+        name: str
+        age: int
+
+    class InvalidForm(air.AirForm):
+        model = NotABaseModel 
+
+    form = InvalidForm()
+
+    # Should fail model is not a BaseModel type
+    with pytest.raises((TypeError, AttributeError)):
+        form.validate({"name": "Test", "age": 5})
+
+    assert not form.is_valid

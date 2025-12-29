@@ -7,7 +7,7 @@ name = "air"
 version = "0.44.0"
 source = { editable = "." }
 dependencies = [
-    { name = "fastapi" },
+    { name = "fastapi", extra = ["standard"] },
     { name = "frozendict" },
     { name = "itsdangerous" },
     { name = "jinja2" },
@@ -101,7 +101,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "fastapi", specifier = ">=0.125.0" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.125.0" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.119.1" },
     { name = "frozendict", specifier = ">=2.4.7" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
