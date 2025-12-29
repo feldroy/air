@@ -127,21 +127,22 @@ sync-lock *ARGS:
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
-# Format code and auto-fix simple issues with Ruff
+# Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
 format OUTPUT_FORMAT="full" UNSAFE="":
     # Format Python files using Ruff's formatter (writes changes to disk).
     just run -- ruff format .
-    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
-    # show an enumeration of all fixed lint violations.
+    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
     # Check for spelling and grammar violations and apply fixes
     just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell --write-changes
+    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-format.yaml
-    just run -- prek run --all-files --config .pre-commit-config-format.yaml
+    just run -- prek run --all-files --config .pre-commit-config-format.yaml \
+     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -155,22 +156,22 @@ format-unsafe: && (format "concise" "--unsafe-fixes")
 [group('qa')]
 @format-grouped: && (format "grouped")
 
-# Check for formatting, lint violations
+# Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
 lint OUTPUT_FORMAT="full":
-    # Avoid writing any formatted files back; instead, exit with a non-zero
-    # status code if any files would have been modified, and zero otherwise,
-    # and the difference between the current file and how the formatted file would look like.
+    # Check for formatting violations using Ruff
     just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
-    # Check for lint violations
+    # Check for lint violations using Ruff
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
     # Check for spelling and grammar violations
     just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     just run -- codespell
+    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
-    just run -- prek run --all-files --config .pre-commit-config-check.yaml
+    just run -- prek run --all-files --config .pre-commit-config-check.yaml \
+     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
 
 # Check for lint violations for all rules!
 [group('qa')]
