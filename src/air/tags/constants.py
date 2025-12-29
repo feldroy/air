@@ -38,6 +38,7 @@ ATTRIBUTES_TO_AIR: Final = frozendict({
     "min": "min_",
     "open": "open_",
     "reversed": "reversed_",
+    "list": "list_",
 })
 ATTRIBUTES_TO_HTML: Final = frozendict({
     "class_": "class",
@@ -50,6 +51,7 @@ ATTRIBUTES_TO_HTML: Final = frozendict({
     "min_": "min",
     "open_": "open",
     "reversed_": "reversed",
+    "list_": "list",
 })
 BOOLEAN_HTML_ATTRIBUTES: Final = {
     # https://html.spec.whatwg.org/multipage/indices.html#attributes-3
