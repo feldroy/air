@@ -1812,7 +1812,7 @@ class Ol(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be rendered in a compact style.
-        reversed: Specifies that the list order should be descending.
+        reversed_: Specifies that the list order should be descending.
         start: Specifies the start value of an ordered list.
         type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
@@ -1825,7 +1825,7 @@ class Ol(BaseTag):
         self,
         *children: Renderable,
         compact: str | None = None,
-        reversed: str | None = None,
+        reversed_: str | None = None,
         start: str | None = None,
         type_: str | None = None,
         class_: str | None = None,
