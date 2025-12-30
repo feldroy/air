@@ -292,7 +292,7 @@ class Bdo(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        dir: Specifies the text direction of the text inside the <bdo> element.
+        dir_: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -302,7 +302,7 @@ class Bdo(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        dir: str | None = None,
+        dir_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
