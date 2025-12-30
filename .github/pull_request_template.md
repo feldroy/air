@@ -1,5 +1,5 @@
 <!-- A summary of the changes made here. -->
-<!-- Add any links to other issues or secondary material. --> 
+<!-- Add any links to other issues or secondary material. -->
 
 # Issue(s)
 
