@@ -45,5 +45,14 @@ repos:
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
     hooks:
-      - id: sync-pre-commit-deps
-        files: '^\.pre-commit-config-check.yaml$'
+      - id: sync-pre-commit-deps # Sync pre-commit hook dependencies based on other installed hooks.
+        files: '^\.pre-commit-config-check\.yaml$'
+  - repo: https://github.com/tsvikas/sync-with-uv
+    rev: v0.5.0 # Sync .pre-commit-config.yaml from uv.lock
+    hooks:
+      - id: sync-with-uv
+        name: Sync pre-commit hooks from `.pre-commit-config-check.yaml` with uv.lock
+        entry: sync-with-uv --check --pre-commit-config .pre-commit-config-check.yaml
+      - id: sync-with-uv
+        name: Sync pre-commit hooks from `.pre-commit-config-format.yaml` with uv.lock
+        entry: sync-with-uv --check --pre-commit-config .pre-commit-config-format.yaml
