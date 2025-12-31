@@ -22,6 +22,7 @@ from air.caches import InMemoryCache
 
 app = air.Air(cache=InMemoryCache())
 
+
 @app.page(cache_ttl=60)  # Cache for 60 seconds
 def about_page():
     return air.H1("About Page")
@@ -55,7 +56,9 @@ def about_page() -> air.Children | air.Html:
         air.Title("About — cache test"),
         air.H1(f"About Page (render #{count})"),
         air.P(f"Render timestamp: {ts:.3f}"),
-        air.P("If this page is cached the render count will not increase until the TTL expires."),
+        air.P(
+            "If this page is cached the render count will not increase until the TTL expires."
+        ),
         air.A("Go back to home page", href=index.url()),
     )
 
@@ -112,7 +115,9 @@ def about_page() -> air.Children | air.Html:
         air.Title("About — cache test"),
         air.H1(f"About Page (render #{count})"),
         air.P(f"Render timestamp: {ts:.3f}"),
-        air.P("If this page is cached the render count will not increase until the TTL expires."),
+        air.P(
+            "If this page is cached the render count will not increase until the TTL expires."
+        ),
         air.A("Go back to home page", href=index.url()),
     )
 
@@ -177,7 +182,9 @@ def about_page() -> air.Children | air.Html:
         air.Title("About — cache test"),
         air.H1(f"About Page (render #{count})"),
         air.P(f"Render timestamp: {ts:.3f}"),
-        air.P("If this page is cached the render count will not increase until the TTL expires."),
+        air.P(
+            "If this page is cached the render count will not increase until the TTL expires."
+        ),
         air.A("Go back to home page", href=index.url()),
     )
 
@@ -193,7 +200,9 @@ async def aabout_page() -> air.Children | air.Html:
         air.Title("About (async) — cache test"),
         air.H1(f"About (async) Page (render #{count})"),
         air.P(f"Render timestamp: {ts:.3f}"),
-        air.P("If this page is cached the render count will not increase until the TTL expires."),
+        air.P(
+            "If this page is cached the render count will not increase until the TTL expires."
+        ),
         air.A("Go back to home page", href=index.url()),
     )
 
@@ -212,7 +221,9 @@ def index() -> air.Children | air.Html:
 if __name__ == "__main__":
     print("[bold]Demo server starting...[/bold]")
     print("[bold]Open http://localhost:8005 in your browser[/bold]")
-    uvicorn.run("cache_memcached:app", host="127.0.0.1", port=8005, reload=True)
+    uvicorn.run(
+        "cache_memcached:app", host="127.0.0.1", port=8005, reload=True
+    )
 ```
 
 **Installation:**
@@ -267,7 +278,9 @@ def about_page() -> air.Children | air.Html:
         air.Title("About — cache test"),
         air.H1(f"About Page (render #{count})"),
         air.P(f"Render timestamp: {ts:.3f}"),
-        air.P("If this page is cached the render count will not increase until the TTL expires."),
+        air.P(
+            "If this page is cached the render count will not increase until the TTL expires."
+        ),
         air.A("Go back to home page", href=index.url()),
     )
 
@@ -306,9 +319,11 @@ from air.caches import RedisCache
 app = air.Air(cache=RedisCache(url="redis://localhost:6379"))
 router = air.AirRouter()
 
+
 @router.page(cache_ttl=30)
 def router_page():
     return air.H1("Cached router page")
+
 
 # Router automatically inherits the app's cache
 app.include_router(router)
