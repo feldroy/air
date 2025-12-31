@@ -307,6 +307,7 @@ class Air(RouterMixin):
 
         # Use Air's custom route class
         self._app.router.route_class = AirRoute
+        self._cache = cache
 
     # =========================================================================
     # ASGI Interface
@@ -397,8 +398,11 @@ class Air(RouterMixin):
             callbacks=callbacks,
             generate_unique_id_function=generate_unique_id_function,
         )
-
         self.router.route_class = AirRoute
+
+        # Add support for _cache in included routers
+        if isinstance(router, AirRouter):
+            router._cache = self._cache
 
     def exception_handler(
         self,

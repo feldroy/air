@@ -159,15 +159,7 @@ class RouterMixin:
             decorated_func = f
 
             if cache_ttl is not None:
-                if self._cache is None:
-                    import logging  # noqa: PLC0415
-
-                    logging.warning(
-                        f"cache_ttl={cache_ttl} specified for {f.__name__}, "
-                        "but no cache configured. Page will not be cached."
-                    )
-                else:
-                    decorated_func = self._apply_cache_decorator(f, cache_ttl)
+                decorated_func = self._apply_cache_decorator(f, cache_ttl)
 
             return self.get(page_path)(decorated_func)
 
