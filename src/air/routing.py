@@ -11,6 +11,7 @@ from typing import (
     Literal,
     Protocol,
     get_type_hints,
+    overload,
     override,
 )
 from urllib.parse import urlencode
@@ -28,6 +29,7 @@ from starlette.routing import (
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc
 
+from .caches import CacheInterface, _generate_cache_key
 from .exception_handlers import default_404_router_handler
 from .requests import AirRequest
 from .responses import AirResponse
@@ -93,6 +95,7 @@ class AirRoute(APIRoute):
 
 class RouterMixin:
     path_separator: Literal["/", "-"]
+    _cache: CacheInterface | None
 
     def get(self, *args: Any, **kwargs: Any) -> Any:
         """Stub for type checking - implemented by subclasses."""
@@ -102,24 +105,38 @@ class RouterMixin:
         """Stub for type checking - implemented by subclasses."""
         raise NotImplementedError
 
-    def page(self, func: FunctionType) -> RouteCallable:
+    @overload
+    def page(self, func: FunctionType, *, cache_ttl: int | None = None) -> RouteCallable: ...
+
+    @overload
+    def page(self, func: None = None, *, cache_ttl: int | None = None) -> Callable[[FunctionType], RouteCallable]: ...
+
+    def page(
+        self, func: FunctionType | None = None, *, cache_ttl: int | None = None
+    ) -> RouteCallable | Callable[[FunctionType], RouteCallable]:
         """Decorator that creates a GET route using the function name as the path.
 
         Underscores in the function name are converted to dashes in the URL.
         If the name of the function is "index", then the route is "/".
 
+        Args:
+            func: The function to decorate (when used without parentheses).
+            cache_ttl: Optional TTL in seconds for caching the page response.
+
         Returns:
-            The decorated function registered as a page route.
+            The decorated function registered as a page route, or a decorator function
+            if called with parameters.
 
         Example:
 
             import air
+            from air.caches import InMemoryCache
 
-            app = air.Air()
+            app = air.Air(cache=InMemoryCache())
             router = air.AirRouter()
 
 
-            @app.page
+            @app.page(cache_ttl=60)
             def index() -> air.H1:  # route is "/"
                 return air.H1("I am the home page")
 
@@ -136,10 +153,28 @@ class RouterMixin:
 
             app.include_router(router)
         """
-        page_path = compute_page_path(func.__name__, separator=self.path_separator)
 
-        # Pin the route's response_class for belt-and-suspenders robustness
-        return self.get(page_path)(func)
+        def decorator(f: FunctionType) -> RouteCallable:
+            page_path = compute_page_path(f.__name__, separator=self.path_separator)
+            decorated_func = f
+
+            if cache_ttl is not None:
+                if self._cache is None:
+                    import logging  # noqa: PLC0415
+
+                    logging.warning(
+                        f"cache_ttl={cache_ttl} specified for {f.__name__}, "
+                        "but no cache configured. Page will not be cached."
+                    )
+                else:
+                    decorated_func = self._apply_cache_decorator(f, cache_ttl)
+
+            return self.get(page_path)(decorated_func)
+
+        if func is None:
+            return decorator
+
+        return decorator(func)
 
     def _url_helper(self, name: str) -> Callable[..., str]:
         """Helper function to generate URLs for route operations.
@@ -182,6 +217,50 @@ class RouterMixin:
             return f"{path}?{query_string}"
 
         return helper_function
+
+    def _apply_cache_decorator(self, func: FunctionType, cache_ttl: int) -> Callable[..., Any]:
+        """Wrap function with caching logic.
+
+        Args:
+            func: The function to wrap with caching.
+            cache_ttl: Time-to-live in seconds for cached responses.
+
+        Returns:
+            The wrapped function with caching logic applied.
+        """
+
+        import logging  # noqa: PLC0415
+        import pickle  # noqa: PLC0415
+
+        logger = logging.getLogger(__name__)
+        cache_key = _generate_cache_key(func_name=func.__name__)
+
+        @wraps(func)
+        async def cached_wrapper(*args: Any, **kwargs: Any) -> Any:
+            if self._cache is not None:
+                try:
+                    cached_value = await self._cache.aget(cache_key)
+                    if cached_value is not None:
+                        logger.debug(f"Cache hit for {func.__name__}")
+                        return pickle.loads(cached_value)
+                except Exception as e:  # noqa: BLE001
+                    logger.warning(f"Cache get failed for {func.__name__}: {e}")
+
+            result = func(*args, **kwargs)
+            if inspect.isawaitable(result):
+                result = await result
+
+            if self._cache is not None:
+                try:
+                    serialized = pickle.dumps(result)
+                    await self._cache.aset(cache_key, serialized, cache_ttl)
+                    logger.debug(f"Cached result for {func.__name__} with TTL={cache_ttl}s")
+                except Exception as e:  # noqa: BLE001
+                    logger.warning(f"Cache set failed for {func.__name__}: {e}")
+
+            return result
+
+        return cached_wrapper
 
 
 class AirRouter(APIRouter, RouterMixin):
@@ -425,6 +504,7 @@ class AirRouter(APIRouter, RouterMixin):
         path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
     ) -> None:
         self.path_separator = path_separator
+        self._cache: CacheInterface | None = None
         if default is None:
             default = default_404_router_handler(prefix or "router")
         super().__init__(

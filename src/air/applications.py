@@ -19,6 +19,7 @@ from starlette.routing import BaseRoute
 from starlette.types import Lifespan
 from typing_extensions import Doc
 
+from .caches import CacheInterface
 from .exception_handlers import DEFAULT_EXCEPTION_HANDLERS, ExceptionHandlersType
 from .responses import AirResponse
 from .routing import AirRoute, RouteCallable, RouterMixin
@@ -53,6 +54,7 @@ class Air(FastAPI, RouterMixin):
     def __init__(
         self: AppType,
         *,
+        cache: CacheInterface | None = None,
         debug: Annotated[
             bool,
             Doc(
@@ -360,6 +362,19 @@ class Air(FastAPI, RouterMixin):
         )
 
         self.router.route_class = AirRoute
+        self._cache = cache
+
+    def include_router(
+        self,
+        router: Any,
+        **kwargs: Any,
+    ) -> None:
+        """Include a router and share the cache instance with it."""
+
+        if hasattr(router, "_cache"):
+            router._cache = self._cache
+
+        super().include_router(router, **kwargs)
 
     def get(
         self,
