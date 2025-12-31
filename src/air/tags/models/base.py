@@ -329,17 +329,7 @@ class BaseTag:
         children_str = f"{attributes and ', '}{TagKeys.CHILDREN}={children}" if self._children else ""
         return f"{self._name}({attributes}{children_str})"
 
-    def to_source(self) -> str:
-        """Return a Python expression that reconstructs this tag.
-
-        Convert this air-tag into the instantiable-formatted representation of the tag.
-
-        Returns:
-            The formatted instantiation call for this tag and its children.
-        """
-        return self._to_source()
-
-    def _to_source(self, level: int = 0) -> str:
+    def to_source(self, level: int = 0) -> str:
         """Return a Python expression that reconstructs this tag.
 
         Convert this air-tag into the instantiable-formatted representation of the tag.
@@ -437,7 +427,7 @@ class BaseTag:
             Formatted child argument strings.
         """
         return [
-            child._to_source(level + 1) if isinstance(child, BaseTag) else _format_child_instantiation(child, padding)
+            child.to_source(level + 1) if isinstance(child, BaseTag) else _format_child_instantiation(child, padding)
             for child in self._children
         ]
 
