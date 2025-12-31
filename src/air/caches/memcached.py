@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 class _SyncMemcachedClient(Protocol):
     def ping(self) -> None: ...
 
-    def get(self, name: str) -> bytes | None: ...
+    def get(self, key: str) -> bytes | None: ...
 
-    def set(self, name: str, time: int, value: bytes) -> None: ...
+    def set(self, key: str, time: int, val: Any) -> None: ...
 
     def delete(self, key: str) -> None: ...
 
@@ -22,9 +22,9 @@ class _SyncMemcachedClient(Protocol):
 
 
 class _AsyncMemcachedClient(Protocol):
-    async def get(self, name: str) -> bytes | None: ...
+    async def get(self, key: str) -> bytes | None: ...
 
-    async def set(self, name: str, time: int, value: bytes) -> None: ...
+    async def set(self, key: str, time: int, val: Any) -> None: ...
 
     async def delete(self, key: str) -> None: ...
 
@@ -52,42 +52,37 @@ class MemcachedCache(CacheInterface):
         Initialize Memcached client with error handling.
 
         Raises:
-            ImportError: If the pymemcache library is not installed.
+            ImportError: If the pylibmc library is not installed.
             ConnectionError: For any other connection-related issues.
         """
 
         try:
-            from pymemcache.client.base import Client  # noqa: PLC0415
+            import pylibmc  # noqa: PLC0415
 
-            server_spec = self._map_server_to_server_spec()
+            username = self.memcached_kwargs.get("username", None)
+            password = self.memcached_kwargs.get("password", None)
+            behaviors = self.memcached_kwargs.get(
+                "behaviors",
+                {"tcp_nodelay": True, "ketama": True},
+            )
+
             self._client = cast(
                 _SyncMemcachedClient,
-                Client(server_spec, **self.memcached_kwargs),
+                pylibmc.Client(
+                    [self.server],
+                    binary=True,
+                    behaviors=behaviors,
+                    username=username,
+                    password=password,
+                ),
             )
 
         except ImportError:
-            logger.exception("Memcached library not installed. Install with: pip install pymemcache")
+            logger.exception("Memcached library not installed. Install with: pip install pylibmc")
             raise
         except Exception as exc:
             logger.exception("Failed to connect to Memcached server at %s", self.server)
             raise ConnectionError from exc
-
-    def _map_server_to_server_spec(self) -> tuple[str, int] | str:
-        """
-        Map server to a format suitable for pymemcache Client.
-
-        Returns:
-            tuple[str, int] | str: Server specification for pymemcache Client.
-        """
-
-        if isinstance(self.server, str) and ":" in self.server:
-            host, port_str = self.server.rsplit(":", 1)
-            try:
-                port = int(port_str)
-            except ValueError:
-                port = 11211
-            return (host, port)
-        return self.server
 
     def get(self, key: str) -> bytes | None:
         """
@@ -113,28 +108,28 @@ class MemcachedCache(CacheInterface):
 
         return self.get(key)
 
-    def set(self, key: str, value: bytes, ttl: int) -> None:
+    def set(self, key: str, value: Any, ttl: int) -> None:
         """
         Store value with TTL.
 
         Args:
             key (str): The cache key.
-            value (bytes): The value to store.
+            value (Any): The value to store.
             ttl (int): Time-to-live in seconds.
         """
 
         try:
-            self._client.set(name=key, value=value, time=ttl)
+            self._client.set(key=key, time=ttl, val=value)
         except Exception as e:
             logger.exception(f"Memcached set failed for key '{key}'", exc_info=e)
 
-    async def aset(self, key: str, value: bytes, ttl: int) -> None:
+    async def aset(self, key: str, value: Any, ttl: int) -> None:
         """
         Store value with TTL.
 
         Args:
             key (str): The cache key.
-            value (bytes): The value to store.
+            value (Any): The value to store.
             ttl (int): Time-to-live in seconds.
         """
 
