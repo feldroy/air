@@ -40,12 +40,10 @@ import air
 
 app = air.Air()
 
+
 @app.get("/")
 async def index():
-    return air.layouts.mvpcss(
-        air.H1("Hello, Air!"),
-        air.P("Breathe it in.")
-    )
+    return air.layouts.mvpcss(air.H1("Hello, Air!"), air.P("Breathe it in."))
 ```
 
 Serve your app with:
@@ -75,12 +73,11 @@ import air
 
 app = air.Air()
 
+
 @app.get("/")
 def index():
-    return air.layouts.mvpcss(
-        air.H1("Hello, Air!"),
-        air.P("Breathe it in.")
-    )
+    return air.layouts.mvpcss(air.H1("Hello, Air!"), air.P("Breathe it in."))
+
 
 @app.get("/air-is-grounded")
 def air_is_grounded():
@@ -88,15 +85,16 @@ def air_is_grounded():
         air.H1("Air is Grounded"),
         air.P("Built on industry standard libraries including:"),
         air.Ul(
-            air.Li('FastAPI'),
-            air.Li('Starlette'),
-            air.Li('Pydantic'),
-            air.Li('Jinja'),
-        )
+            air.Li("FastAPI"),
+            air.Li("Starlette"),
+            air.Li("Pydantic"),
+            air.Li("Jinja"),
+        ),
     )
 
-@app.post('/form-handler')
-async def form_handler(request: air.Request): # (1)!
+
+@app.post("/form-handler")
+async def form_handler(request: air.Request):  # (1)!
     ...
 ```
 
@@ -111,24 +109,23 @@ import air
 
 app = air.Air()
 
-@app.page # Renders as '/'
-def index(): # (1)!
-    return air.layouts.mvpcss(
-        air.H1("Hello, Air!"),
-        air.P("Breathe it in.")
-    )
 
-@app.page # Renders as '/air-is-grounded'
-def air_is_grounded(): # (2)!
+@app.page  # Renders as '/'
+def index():  # (1)!
+    return air.layouts.mvpcss(air.H1("Hello, Air!"), air.P("Breathe it in."))
+
+
+@app.page  # Renders as '/air-is-grounded'
+def air_is_grounded():  # (2)!
     return air.layouts.mvpcss(
         air.H1("Air is Grounded"),
         air.P("Built on industry standard libraries including:"),
         air.Ul(
-            air.Li('FastAPI'),
-            air.Li('Starlette'),
-            air.Li('Pydantic'),
-            air.Li('Jinja'),
-        )
+            air.Li("FastAPI"),
+            air.Li("Starlette"),
+            air.Li("Pydantic"),
+            air.Li("Jinja"),
+        ),
     )
 ```
 
@@ -144,12 +141,10 @@ import air
 
 app = air.Air()
 
-@app.get('/users/{username}') # (1)!
-def user_detail(username: str): # (2)!
-    return air.layouts.mvpcss(
-        air.Title(username),
-        air.H1(username)
-    )
+
+@app.get("/users/{username}")  # (1)!
+def user_detail(username: str):  # (2)!
+    return air.layouts.mvpcss(air.Title(username), air.H1(username))
 ```
 
 1. We've specified a variable called `username`.
@@ -168,12 +163,10 @@ import air
 
 app = air.Air()
 
-@app.get('/users')
-def user_detail(username: str): # (1)!
-    return air.layouts.mvpcss(
-        air.Title(username),
-        air.H1(username)
-    )
+
+@app.get("/users")
+def user_detail(username: str):  # (1)!
+    return air.layouts.mvpcss(air.Title(username), air.H1(username))
 ```
 
 1. We have defined a function argument named `username`. Because `username` is not part of the decorator's URL path ('/users'), Air automatically treats it as a query parameter.
@@ -185,9 +178,10 @@ Try it out by going to <http://localhost:8000/users/?username=Aang>
 Air allows you to generate URLs programmatically through the `.url()` method accessible on route functions:
 
 ```python
-@app.get('/users/{username}')
+@app.get("/users/{username}")
 def user_detail(username: str):
     return air.H1(username)
+
 
 # Generate URL with path parameters
 url = user_detail.url(username="Aang")
@@ -201,7 +195,7 @@ This is useful for creating links and redirects without hardcoding URLs:
 def index():
     return air.layouts.mvpcss(
         air.H1("Home"),
-        air.A("View user profile", href=user_detail.url(username="Aang"))
+        air.A("View user profile", href=user_detail.url(username="Aang")),
     )
 ```
 
@@ -210,28 +204,34 @@ def index():
 You can include query parameters when generating URLs using the `query_params` argument:
 
 ```python
-@app.get('/search')
+@app.get("/search")
 def search(q: str = air.Query(""), page: int = air.Query(1)):
     return air.H1(f"Search: {q}")
+
 
 # Generate URL with query parameters
 url = search.url(query_params={"q": "air", "page": 2})
 # Returns: "/search?q=air&page=2"
 
+
 # Use in templates
 @app.page
 def index():
     return air.layouts.mvpcss(
-        air.A("Search for 'air'", href=search.url(query_params={"q": "air", "page": 1}))
+        air.A(
+            "Search for 'air'",
+            href=search.url(query_params={"q": "air", "page": 1}),
+        )
     )
 ```
 
 Query parameters work with both scalar values and lists:
 
 ```python
-@app.get('/filter')
+@app.get("/filter")
 def filter_items(tags: list[str] | None = air.Query(None)):
     return air.H1("Filtered Items")
+
 
 # Generate URL with list query parameters
 url = filter_items.url(query_params={"tags": ["python", "web"]})
@@ -251,16 +251,19 @@ import air
 
 app = air.Air()
 
-@app.patch('/partial-update/{slug}')
-async def partial_update(request: air.Request, slug: str): # (1)!
+
+@app.patch("/partial-update/{slug}")
+async def partial_update(request: air.Request, slug: str):  # (1)!
     ...
 
-@app.put('/create-item')
-async def create_item(request: air.Request): # (2)!
+
+@app.put("/create-item")
+async def create_item(request: air.Request):  # (2)!
     ...
 
-@app.delete('/delete/{slug}')
-async def delete_item(request: air.Request, slug: str): # (3)!
+
+@app.delete("/delete/{slug}")
+async def delete_item(request: air.Request, slug: str):  # (3)!
     ...
 ```
 
@@ -275,7 +278,7 @@ Calling these can be done via HTMX or other methods that support these HTTP verb
 ```python
 air.Form(
     # form elements here
-    hx_patch=partial_update.url(slug='airbook'),
+    hx_patch=partial_update.url(slug="airbook"),
 )
 
 air.Form(
@@ -285,7 +288,7 @@ air.Form(
 
 air.Form(
     # form elements here
-    hx_delete=delete_item.url(slug='firebook'),
+    hx_delete=delete_item.url(slug="firebook"),
 )
 ```
 
@@ -303,9 +306,12 @@ import air
 
 app = air.Air()
 
+
 @app.page
 def index():
-    return air.Script(src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js")
+    return air.Script(
+        src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
+    )
 ```
 
 ### Inline Scripts
@@ -317,6 +323,7 @@ When you need to use JavaScript inline in Air Tags:
 import air
 
 app = air.Air()
+
 
 @app.page
 def index():
@@ -332,6 +339,7 @@ import air
 
 app = air.Air()
 
+
 @app.page
 def index():
     return air.Html(
@@ -341,9 +349,9 @@ def index():
         air.Body(
             air.Main(
                 air.H1("Air Web Framework"),
-                air.P("The web framework for Air Nomads.")
+                air.P("The web framework for Air Nomads."),
             )
-        )
+        ),
     )
 ```
 
@@ -356,6 +364,7 @@ import air
 
 app = air.Air()
 
+
 @app.page
 def index():
     return air.Html(
@@ -364,8 +373,8 @@ def index():
         ),
         air.Body(
             air.H1("Air Web Framework"),
-            air.P("The web framework for Air Nomads.")
-        )
+            air.P("The web framework for Air Nomads."),
+        ),
     )
 ```
 
@@ -396,17 +405,18 @@ import air
 app = air.Air()
 
 # Set the Jinja render function
-jinja = air.JinjaRenderer(directory="templates") #(1)!
+jinja = air.JinjaRenderer(directory="templates")  # (1)!
+
 
 @app.page
 def index(request: air.Request):
-    return jinja( #(2)!
+    return jinja(  # (2)!
         request,
         name="base.html",
         # You can pass in individual keyword arguments
-        title="Hello, Air Benders", #(3)!
+        title="Hello, Air Benders",  # (3)!
         # Or a dict for the context
-        context={"message": "Air + Jinja is awesome"} #(4)!
+        context={"message": "Air + Jinja is awesome"},  # (4)!
     )
 ```
 
@@ -442,6 +452,7 @@ app = air.Air()
 
 jinja = air.JinjaRenderer(directory="templates")
 
+
 @app.get("/avatar")
 def avatar(request: air.Request):
     return jinja(
@@ -449,9 +460,8 @@ def avatar(request: air.Request):
         name="avatar.html",
         title="Hello, Air Benders",
         fragment=air.Div(
-            air.P("We are fans of the Last Avatar"),
-            class_="thing"
-        ) #(1)!
+            air.P("We are fans of the Last Avatar"), class_="thing"
+        ),  # (1)!
     )
 ```
 
@@ -472,29 +482,31 @@ import air
 
 app = air.Air()
 
+
 @app.page
 def index():
     return air.layouts.mvpcss(
-        air.H1('Email form'),
+        air.H1("Email form"),
         air.Form(
             air.Label("Email:", for_="email"),
-            air.Input(type="email", name="email", required=True),
-            air.Button("Submit", type="submit"),
+            air.Input(type_="email", name="email", required=True),
+            air.Button("Submit", type_="submit"),
             method="POST",
-            action="/submit"
-        )
+            action="/submit",
+        ),
     )
 
-@app.post('/submit')
-async def email_handler(request: air.Request): #(1)!
-    form = await request.form() #(2)!
+
+@app.post("/submit")
+async def email_handler(request: air.Request):  # (1)!
+    form = await request.form()  # (2)!
     return air.layouts.mvpcss(
-        air.H1('Email form data'),
+        air.H1("Email form data"),
         air.Pre(
             air.Code(form),
             air.Code(form.keys()),
             air.Code(form.values()),
-        )
+        ),
     )
 ```
 
@@ -514,37 +526,42 @@ The pydantic library isn't just a component of Air and FastAPI, it's an industry
 from pydantic import BaseModel, Field
 import air
 
-class ContactModel(BaseModel): #(1)!
+
+class ContactModel(BaseModel):  # (1)!
     name: str = Field(min_length=2, max_length=50)
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
 
-class ContactForm(air.AirForm): #(2)!
+
+class ContactForm(air.AirForm):  # (2)!
     model = ContactModel
 
+
 app = air.Air()
+
 
 @app.page
 async def index():
     """Show the form initially."""
-    form = ContactForm() #(3)!
+    form = ContactForm()  # (3)!
     return air.layouts.picocss(
         air.Title("Enhanced Form Errors Demo"),
         air.H1("Contact Form - Error Message Demo"),
         air.Form(
-            form.render(), #(4)!
-            air.Button("Submit", type="submit"),
+            form.render(),  # (4)!
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
-        )
+        ),
     )
+
 
 @app.post("/submit")
 async def handle_form(request: air.Request):
     """Handle form submission and show errors."""
-    form = await ContactForm.from_request(request) #(5)!
+    form = await ContactForm.from_request(request)  # (5)!
 
-    if form.is_valid:  #(6)!
+    if form.is_valid:  # (6)!
         return air.layouts.picocss(
             air.Title("Success"),
             air.H1("Success!"),
@@ -559,9 +576,9 @@ async def handle_form(request: air.Request):
         air.H1("Contact Form - With Enhanced Error Messages"),
         air.P("Notice the specific, user-friendly error messages below:"),
         air.Form(
-            form.render(), #(7)!
+            form.render(),  # (7)!
             air.Br(),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
         ),
@@ -569,7 +586,7 @@ async def handle_form(request: air.Request):
         air.Details(
             air.Summary("Technical Error Details (for developers)"),
             air.P(str(form.errors)) if form.errors else "No errors",
-        )
+        ),
     )
 ```
 
@@ -593,32 +610,36 @@ import air
 
 app = air.Air()
 
+
 @app.page
 def index():
     return air.layouts.mvpcss(
-        air.Script(src="https://unpkg.com/htmx-ext-sse@2.2.1/sse.js"), #(1)!
+        air.Script(src="https://unpkg.com/htmx-ext-sse@2.2.1/sse.js"),  # (1)!
         air.Title("Server Sent Event Demo"),
         air.H1("Server Sent Event Demo"),
         air.P("Lottery number generator"),
         air.Section(
-            hx_ext="sse",  #(2)!
-            sse_connect="/lottery-numbers", #(3)!
-            hx_swap="beforeend show:bottom", #(4)!
-            sse_swap="message", #(5)!
+            hx_ext="sse",  # (2)!
+            sse_connect="/lottery-numbers",  # (3)!
+            hx_swap="beforeend show:bottom",  # (4)!
+            sse_swap="message",  # (5)!
         ),
     )
 
-async def lottery_generator():  #(6)!
+
+async def lottery_generator():  # (6)!
     while True:
-        lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
+        lottery_numbers = ", ".join(
+            [str(random.randint(1, 40)) for x in range(6)]
+        )
         # Tags work seamlessly
-        yield air.Aside(lottery_numbers) #(7)!
+        yield air.Aside(lottery_numbers)  # (7)!
         await sleep(1)
 
 
 @app.page
 async def lottery_numbers():
-    return air.SSEResponse(lottery_generator())  #(8)!
+    return air.SSEResponse(lottery_generator())  # (8)!
 ```
 
 1. To use SSE, the source for the HTMX plugin for them has to be included in the page.

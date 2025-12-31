@@ -10,12 +10,15 @@ from typing import Any
 
 import pytest
 from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
+from examples.samples.html_samples import FRAGMENT_HTML_SAMPLE
 from full_match import match as full_match
 
 import air.tags.constants
 import air.tags.utils as utils
 from air.exceptions import BrowserOpenError
 from air.tags.utils import SafeStr
+
+from .test_base_tag import FRAGMENT_HTML_SAMPLE_FILE_PATH
 
 
 @pytest.fixture
@@ -186,7 +189,7 @@ def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) 
 
 def test_compact_format_html_minifies() -> None:
     assert len(utils.compact_format_html(SMALL_AIR_TAG_SAMPLE.render())) == 760
-    assert len(utils.compact_format_html(AIR_TAG_SAMPLE.render())) == 7530
+    assert len(utils.compact_format_html(AIR_TAG_SAMPLE.render())) == 7536
 
 
 def test_compact_format_html_minifies_with_safe_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -479,3 +482,17 @@ def test_pretty_print_python_outputs_code(monkeypatch: pytest.MonkeyPatch) -> No
     utils.pretty_print_python("x = 1")
 
     assert captured == ["x = 1"]
+
+
+def test_read_html() -> None:
+    actual_html = utils.read_html(file_path=FRAGMENT_HTML_SAMPLE_FILE_PATH)
+    expected_html = f"{FRAGMENT_HTML_SAMPLE}\n"
+    assert actual_html == expected_html
+
+
+def test_read_html_raises_value_error() -> None:
+    with pytest.raises(
+        ValueError,
+        match=full_match("Expected a .html file extension."),
+    ):
+        utils.read_html(file_path="temp.txt")

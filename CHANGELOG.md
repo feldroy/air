@@ -1,5 +1,60 @@
 ### Latest Changes
 
+# 0.44.1 - 2025-12-31
+
+## What's Changed
+
+* CHORE: Air CLI polish for clarity and joy by @audreyfeldroy in https://github.com/feldroy/air/pull/929
+* CHORE: enable Ruff rule A (builtins shadowing) by @ohhaus in https://github.com/feldroy/air/pull/919
+* CHORE: `id_` inconsistently used to represent HTML attribute of `id` by @msaizar in https://github.com/feldroy/air/pull/926
+* CHORE: Replace type argument with type_ in tags by @msaizar in https://github.com/feldroy/air/pull/931
+* CHORE: Remove ruff lint per file ignores by @msaizar in https://github.com/feldroy/air/pull/930
+* CHORE: Added `djhtml` hook to both `.pre-commit-config-check.yaml` and `.pre-commit-config-format.yaml` to automate formatting of HTML files and Jinja Templates! by @pygarap in https://github.com/feldroy/air/pull/932
+* CHORE: Rename max argument to max_ in tags to prevent builtin shadowing by @msaizar in https://github.com/feldroy/air/pull/933
+* CHORE: Rename min to min_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/936
+* CHORE: Rename open to open_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/938
+* CHORE: Add pre-commit-hooks: Some out-of-the-box hooks for pre-commit. by @pygarap in https://github.com/feldroy/air/pull/935
+* CHORE: Rename reversed to reversed_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/947
+* CHORE: Rename list to list_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/952
+* CHORE: Rename dir to dir_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/953
+* CHORE: Remove air_tag_source_samples.py from ruff lint per-file-ignore by @msaizar in https://github.com/feldroy/air/pull/954
+
+## New Contributors
+
+* @ohhaus made their first contribution in https://github.com/feldroy/air/pull/919
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.44.0...v0.44.1
+
+# 0.44.0 - 2025-12-27
+
+## What's Changed
+
+### Features
+
+* FEAT: Add "air run" and "air version" CLI commands, make uvicorn a main dep by @audreyfeldroy in https://github.com/feldroy/air/pull/920
+* FEAT: add `prek` a better `pre-commit`, re-engineered in Rust & blacken-docs, Run `black` on python code blocks in documentation files! by @pygarap in https://github.com/feldroy/air/pull/918
+* FEAT: Introduced two new class methods to `BaseTag` in `src/air/tags/models/base.py` by @pygarap in https://github.com/feldroy/air/pull/917:
+  - `from_html_file` for building an air-tag tree from a file
+  -  `from_html_file_to_source` for generating the instantiable source from a file
+
+ ### Refactoring
+
+* REFACTOR: Type Annotations Adjustments in the `air.tags.models.base.BaseTag` class! by @pygarap in https://github.com/feldroy/air/pull/914
+* REFACTOR: rename `kwargs` to `custom_attributes` for improved clarity! by @pygarap in https://github.com/feldroy/air/pull/915
+* REFACTOR: reorganize test files into `tags` subdirectory! by @pygarap in https://github.com/feldroy/air/pull/916
+* REFACTOR: Convert air.Application from inheritance to composition by @pydanny in https://github.com/feldroy/air/pull/906
+
+### Docs
+
+* DOC: Added remaining docstrings to HTML air tags, finishing the awesome effort by @vanessapigwin! by @pydanny in https://github.com/feldroy/air/pull/923
+
+### Bugfixes
+
+* BUGFIX: Fix for docsite by @pydanny in https://github.com/feldroy/air/pull/924
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.43.0...v0.44.0
+
 # 0.43.0 - 2025-12-22
 
 ## What's Changed
@@ -52,8 +107,8 @@
   - `BaseTag.first_attribute`
   - `BaseTag.last_attribute`
   - `BaseTag.num_of_direct_children`
-  - `BaseTag.num_of_attributes`        
-  - `BaseTag.tag_id`        
+  - `BaseTag.num_of_attributes`
+  - `BaseTag.tag_id`
 * [CHORE] Remove FURB189 ruff rule by @msaizar in https://github.com/feldroy/air/pull/872
 * [CHORE] Add 100% test coverage to missing_examples script by @msaizar in https://github.com/feldroy/air/pull/873
 * [CHORE] Add baseline and check modes for scripts/missing_examples.py by @msaizar in https://github.com/feldroy/air/pull/874
@@ -933,6 +988,7 @@ Minimal apps now look like this:
 import air
 
 app = air.Air()
+
 
 @app.get("/")
 async def index():

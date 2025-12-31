@@ -41,13 +41,13 @@ def test_tag_object_memory_cleanup() -> None:
                 air.P(f"Description for item {i}", class_="desc"),
                 air.Ul(air.Li(f"Feature {j}", class_="feature") for j in range(5)),
                 air.Form(
-                    air.Input(type="text", name=f"input_{i}", value=f"value_{i}"),
-                    air.Button("Submit", type="submit"),
+                    air.Input(type_="text", name=f"input_{i}", value=f"value_{i}"),
+                    air.Button("Submit", type_="submit"),
                     action=f"/submit/{i}",
                     method="post",
                 ),
                 class_="item-card",
-                id=f"item-{i}",
+                id_=f"item-{i}",
             )
             tags.append(tag)
 
@@ -163,7 +163,7 @@ def test_tag_creation_memory_scaling() -> None:
                 air.P(f"Content for article {i}"),
                 air.Footer(f"Footer {i}"),
                 class_="article",
-                id=f"article-{i}",
+                id_=f"article-{i}",
             )
             for i in range(scale)
         ]
@@ -192,8 +192,8 @@ def test_tag_creation_memory_scaling() -> None:
         f"{'Scale (Num. of Tags)':>18} | {'Total Used (bytes)':>20} | {'Per Tag (bytes)':>16}",
         "-" * divider_size,
     ]
-    for scale, _total_memory, _per_tag_memory in memory_measurements:
-        lines.append(f"{scale:>19} | {_total_memory:>20,.0f} | {_per_tag_memory:>16.1f}")
+    for scale, total_memory, per_tag_memory in memory_measurements:
+        lines.append(f"{scale:>19} | {total_memory:>20,.0f} | {per_tag_memory:>16.1f}")
     lines.append("-" * divider_size)
 
     logger.info("\n".join(lines))

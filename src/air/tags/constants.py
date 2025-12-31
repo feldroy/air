@@ -33,6 +33,13 @@ ATTRIBUTES_TO_AIR: Final = frozendict({
     "id": "id_",
     "as": "as_",
     "async": "async_",
+    "type": "type_",
+    "max": "max_",
+    "min": "min_",
+    "open": "open_",
+    "reversed": "reversed_",
+    "list": "list_",
+    "dir": "dir_",
 })
 ATTRIBUTES_TO_HTML: Final = frozendict({
     "class_": "class",
@@ -40,6 +47,13 @@ ATTRIBUTES_TO_HTML: Final = frozendict({
     "id_": "id",
     "as_": "as",
     "async_": "async",
+    "type_": "type",
+    "max_": "max",
+    "min_": "min",
+    "open_": "open",
+    "reversed_": "reversed",
+    "list_": "list",
+    "dir_": "dir",
 })
 BOOLEAN_HTML_ATTRIBUTES: Final = {
     # https://html.spec.whatwg.org/multipage/indices.html#attributes-3
@@ -103,6 +117,8 @@ MULTILINE_JOIN_SEPARATOR: Final = ",\n"
 HTML_ATTRIBUTES_JOIN_SEPARATOR: Final = " "
 EMPTY_JOIN_SEPARATOR: Final = ""
 AIR_PREFIX: Final = "air."
+HOMEPAGE_FILE_NAME: Final = "index.html"
+HTML_SUFFIX: Final = ".html"
 HTML_LEXER: Final = HtmlLexer()
 PYTHON_LEXER: Final = PythonLexer()
 _LOOKS_LIKE_FULL_HTML_UNICODE_RE: Final = re.compile(

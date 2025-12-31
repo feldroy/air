@@ -150,7 +150,7 @@ AIR_TAG_SAMPLE: Final = Html(
         Script(
             src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/languages/css.min.js",
         ),
-        Link(href="/public/style.css", rel="stylesheet", type="text/css"),
+        Link(href="/public/style.css", rel="stylesheet", type_="text/css"),
         Title("Daniel Roy Greenfeld"),
     ),
     Body(
@@ -158,7 +158,7 @@ AIR_TAG_SAMPLE: Final = Html(
             A(
                 Img(
                     src="https://f004.backblazeb2.com/file/daniel-feldroy-com/public/images/profile.jpg",
-                    width="108",
+                    width=108,
                     alt="Daniel Roy Greenfeld",
                     class_="borderCircle",
                 ),
@@ -242,7 +242,7 @@ AIR_TAG_SAMPLE: Final = Html(
                     P(
                         A(
                             "Read all articles",
-                            href="<function posts at 0x7fa78cb1b740>",
+                            href="<function%20posts%20at%200x7fa78cb1b740>",
                         ),
                     ),
                 ),
@@ -410,7 +410,7 @@ AIR_TAG_SAMPLE: Final = Html(
                     hx_trigger="keyup",
                     hx_get="/search-results",
                     hx_target=".search-results-modal",
-                    type="text",
+                    type_="text",
                     name="q",
                     placeholder="Enter your search query...",
                     id_="search-input",
@@ -424,20 +424,7 @@ AIR_TAG_SAMPLE: Final = Html(
         ),
         Div(hx_trigger="keyup[key=='/'] from:body"),
         Script(
-            "document.body.addEventListener('keydown', e => {\n"
-            "            if (e.key === '/') {\n"
-            "                e.preventDefault();\n"
-            "                document.getElementById('search-modal').style.display = 'block';\n"
-            "                document.getElementById('search-input').focus();\n"
-            "            }\n"
-            "            if (e.key === 'Escape') {\n"
-            "                document.getElementById('search-modal').style.display = 'none';\n"
-            "            }\n"
-            "            });\n"
-            "\n"
-            "            document.getElementById('search-input').addEventListener('input', e => {\n"
-            "            htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});\n"
-            "            });",
+            "\n      document.body.addEventListener('keydown', e => {\n        if (e.key === '/') {\n          e.preventDefault();\n          document.getElementById('search-modal').style.display = 'block';\n          document.getElementById('search-input').focus();\n        }\n        if (e.key === 'Escape') {\n          document.getElementById('search-modal').style.display = 'none';\n        }\n      });\n      document.getElementById('search-input').addEventListener('input', e => {\n        htmx.trigger('.search-results', 'htmx:trigger', {value: e.target.value});\n      });\n    "
         ),
         hx_boost="true",
     ),

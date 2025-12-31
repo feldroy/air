@@ -3,7 +3,7 @@
 # and you can use this straight into production.
 #
 # REMINDER: make sure to double check, verify, and test the
-# base image that you will be using. 
+# base image that you will be using.
 FROM ghcr.io/astral-sh/uv:python3.14-bookworm-slim AS builder
 
 # Install build dependencies
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
-    
+
 WORKDIR /app
 
 # Enable bytecode compilation for better startup performance
@@ -59,7 +59,7 @@ ENV PATH="/app/.venv/bin:$PATH" \
 
 # Security: Run as non-root user
 USER appuser
-    
+
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8000/health', timeout=5)" || exit 1
@@ -68,7 +68,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 EXPOSE 8000
 
 # This sample uses uvicorn with production settings.
-# REMINDERS: 
+# REMINDERS:
 # Change "airblog" to the name of your app.py if you are going to adopt this Dockerfile as is.
 # If you are exposing a different port, make sure to update EXPOSE and --port as well.
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4", "--proxy-headers", "--forwarded-allow-ips", "*"]

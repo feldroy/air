@@ -42,12 +42,16 @@ from sqlmodel import SQLModel, Field, select
 
 app = air.Air(lifespan=sql.async_db_lifespan)
 
+
 @app.page
-async def index(request: Request, session: sql.AsyncSession = air.Depends(sql.async_session_dependency)):
+async def index(
+    request: Request,
+    session: sql.AsyncSession = air.Depends(sql.async_session_dependency),
+):
     # Use the session to interact with the database
     result = await session.execute(select(User).where(User.name == "John"))
     user = result.scalars().first()
-    
+
     return air.Main(
         air.H1("User Info"),
         air.P(f"Name: {user.name}"),
@@ -63,6 +67,7 @@ Sometimes you may want to make SQL queries outside of Air views, for example in 
 import air
 import airsqlmodel as sql
 from sqlmodel import SQLModel, Field, select
+
 
 async def some_background_task():
     async with sql.get_async_session() as session:
