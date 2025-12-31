@@ -136,7 +136,6 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
     # Check for spelling and grammar violations and apply fixes
     just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
-    just run -- codespell --write-changes
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-check.yaml
@@ -165,7 +164,6 @@ lint OUTPUT_FORMAT="full":
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
     # Check for spelling and grammar violations
     just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
-    just run -- codespell
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
