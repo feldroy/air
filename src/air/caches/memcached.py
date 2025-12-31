@@ -36,11 +36,11 @@ class MemcachedCache(CacheInterface):
 
     def __init__(
         self,
-        servers: list[str] | None = None,
+        server: str | None = None,
         default_ttl: int = 300,
         **memcached_kwargs: Any,
     ) -> None:
-        self.servers = servers or ["127.0.0.1:11211"]
+        self.server = server or "127.0.0.1:11211"
         self.default_ttl = default_ttl
         self.memcached_kwargs = memcached_kwargs
         self._client: _SyncMemcachedClient
@@ -59,7 +59,7 @@ class MemcachedCache(CacheInterface):
         try:
             from pymemcache.client.base import Client  # noqa: PLC0415
 
-            server_spec = self._map_servers_to_server_spec()
+            server_spec = self._map_server_to_server_spec()
             self._client = cast(
                 _SyncMemcachedClient,
                 Client(server_spec, **self.memcached_kwargs),
@@ -69,29 +69,25 @@ class MemcachedCache(CacheInterface):
             logger.exception("Memcached library not installed. Install with: pip install pymemcache")
             raise
         except Exception as exc:
-            logger.exception("Failed to connect to Memcached server at %s", self.servers)
+            logger.exception("Failed to connect to Memcached server at %s", self.server)
             raise ConnectionError from exc
 
-    def _map_servers_to_server_spec(self) -> tuple[str, int] | str:
+    def _map_server_to_server_spec(self) -> tuple[str, int] | str:
         """
-        Map servers list to a format suitable for pymemcache Client.
+        Map server to a format suitable for pymemcache Client.
 
         Returns:
             tuple[str, int] | str: Server specification for pymemcache Client.
         """
 
-        servers = self.servers
-        first = servers[0] if isinstance(servers, list) else servers
-        if isinstance(first, str) and ":" in first:
-            host, port_str = first.rsplit(":", 1)
+        if isinstance(self.server, str) and ":" in self.server:
+            host, port_str = self.server.rsplit(":", 1)
             try:
                 port = int(port_str)
             except ValueError:
                 port = 11211
-            server_spec = (host, port)
-        else:
-            server_spec = first
-        return server_spec
+            return (host, port)
+        return self.server
 
     def get(self, key: str) -> bytes | None:
         """
