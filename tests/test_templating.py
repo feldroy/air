@@ -22,7 +22,7 @@ def test_JinjaRenderer() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="home.html",
@@ -44,7 +44,7 @@ def test_JinjaRenderer_no_context() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -62,7 +62,7 @@ def test_JinjaRenderer_with_Air() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -79,7 +79,7 @@ def test_JinjaRenderer_with_kwargs() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="home.html",
@@ -350,7 +350,7 @@ def test_Renderer_render_template_with_air_tags() -> None:
     render = air.Renderer(directory="tests/templates")
 
     @app.page
-    def test_with_tags(request: Request) -> str | HTMLResponse:
+    def context_with_tags(request: Request) -> str | HTMLResponse:
         return render(
             name="home.html",
             request=request,
@@ -358,7 +358,7 @@ def test_Renderer_render_template_with_air_tags() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-with-tags")
+    response = client.get("/context-with-tags")
 
     assert response.status_code == 200
     assert "Test content" in response.text
@@ -370,16 +370,16 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
     render = air.Renderer(directory="tests/templates", package="tests")
 
     # Function that can be called with only keyword args to test the specific line 205
-    def test_callable(title: str | None = None) -> str:
+    def callable_function(title: str | None = None) -> str:
         return f"<p>{title}</p>"
 
     # Create a test module to simulate the import
     test_module = types.ModuleType("test_module")
-    test_module.test_func = test_callable
+    test_module.test_func = callable_function
     sys.modules["tests.test_module"] = test_module
 
     @app.page
-    def test_page(request: Request) -> str | HTMLResponse:
+    def page(request: Request) -> str | HTMLResponse:
         return render(
             ".test_module.test_func",
             "Hello",  # This is args - will be ignored due to line 205 behavior
@@ -388,7 +388,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-page")
+    response = client.get("/page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
@@ -421,13 +421,13 @@ def test_Renderer_filter_context_with_request() -> None:
     """Test _filter_context_for_callable when callable expects request parameter"""
     render = air.Renderer(directory="tests/templates")
 
-    def test_callable(request: Request, title: str) -> str:
+    def callable_function(request: Request, title: str) -> str:
         return f"<p>{title}</p>"
 
     context = {"title": "Test", "extra": "ignored"}
     request = Request({"type": "http", "method": "GET", "path": "/"})
 
-    filtered = render._filter_context_for_callable(test_callable, context, request)
+    filtered = render._filter_context_for_callable(callable_function, context, request)
 
     assert "title" in filtered
     assert "request" in filtered
@@ -441,7 +441,7 @@ def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
     render = air.Renderer(directory="tests/templates", package="tests")
 
     @app.page
-    def test_page(request: Request) -> str | HTMLResponse:
+    def page(request: Request) -> str | HTMLResponse:
         return render(
             name="lists_and_dicts.html",
             request=request,
@@ -451,7 +451,7 @@ def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-page")
+    response = client.get("/page")
 
     assert "<h1>Lists and Dicts</h1>" in response.text
     assert "<li>One</li>" in response.text
