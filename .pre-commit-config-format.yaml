@@ -43,3 +43,8 @@ repos:
     hooks:
       - id: djhtml # A pure-Python Django/Jinja template indenter without dependencies.
         entry: djhtml --tabwidth 2
+  - repo: https://github.com/pre-commit/sync-pre-commit-deps
+    rev: v0.0.3
+    hooks:
+      - id: sync-pre-commit-deps
+        files: '^\.pre-commit-config-format.yaml$'
