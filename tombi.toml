@@ -23,30 +23,26 @@ exclude = [
 ]
 
 [format]
-enabled = true
-
 [format.rules]
 # Defaults are shown in Tombi docs.
-array-bracket-space-width = 0
+array-bracket-space-width = 1
 array-comma-space-width = 1
-date-time-delimiter = "T"
+date-time-delimiter = "space"
 indent-style = "space"
 indent-sub-tables = false
 indent-table-key-value-pairs = false
 indent-width = 4
 inline-table-brace-space-width = 1
 inline-table-comma-space-width = 1
-key-value-equals-sign-alignment = false
+key-value-equals-sign-alignment = true
 key-value-equals-sign-space-width = 1
 line-ending = "lf"
 line-width = 120
 string-quote-style = "double"
-trailing-comment-alignment = false
-trailing-comment-space-width = 2
+trailing-comment-alignment = true
+trailing-comment-space-width = 1
 
 [lint]
-enabled = true
-
 [lint.rules]
 # Promote common style issues to errors for CI consistency.
 dotted-keys-out-of-order = "error"
