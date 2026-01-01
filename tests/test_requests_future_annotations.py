@@ -16,7 +16,7 @@ def test_request_param_with_future_annotations() -> None:
     app = air.Air()
 
     @app.get("/test")
-    def test_endpoint(request: air.Request, *, is_htmx: bool = air.is_htmx_request) -> air.Div:
+    def htmx_status(request: air.Request, *, is_htmx: bool = air.is_htmx_request) -> air.Div:
         htmx_status = "htmx" if is_htmx else "no-htmx"
         return air.Div(f"Status: {htmx_status}", class_="status")
 

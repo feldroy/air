@@ -12,7 +12,7 @@ def test_is_htmx() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(is_htmx: Annotated[bool, is_htmx_request]) -> H1:
+    def is_htmx(is_htmx: Annotated[bool, is_htmx_request]) -> H1:
         return H1(f"Is HTMX request: {is_htmx}")
 
     client = TestClient(app)
@@ -37,7 +37,7 @@ def test_request_htmx_method() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def is_htmx(request: Request) -> H1:
         return H1(f"Is HTMX request: {request.htmx}")
 
     client = TestClient(app)
@@ -62,7 +62,7 @@ def test_htmx_boosted() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def is_boosted(request: Request) -> H1:
         return H1(f"Is boosted: {request.htmx.boosted}")
 
     client = TestClient(app)
@@ -78,7 +78,7 @@ def test_htmx_current_url() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def current_url(request: Request) -> H1:
         return H1(f"Current URL: {request.htmx.current_url}")
 
     client = TestClient(app)
@@ -94,7 +94,7 @@ def test_htmx_current_url_abs_path() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def current_url_abs_path(request: Request) -> H1:
         return H1(f"Abs path: {request.htmx.current_url_abs_path}")
 
     client = TestClient(app)
@@ -113,7 +113,7 @@ def test_htmx_history_restore_request() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def history_restore_request(request: Request) -> H1:
         return H1(f"History restore: {request.htmx.history_restore_request}")
 
     client = TestClient(app)
@@ -129,7 +129,7 @@ def test_htmx_prompt() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def prompt(request: Request) -> H1:
         return H1(f"Prompt: {request.htmx.prompt}")
 
     client = TestClient(app)
@@ -145,7 +145,7 @@ def test_htmx_target() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def target(request: Request) -> H1:
         return H1(f"Target: {request.htmx.target}")
 
     client = TestClient(app)
@@ -161,7 +161,7 @@ def test_htmx_trigger() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def trigger(request: Request) -> H1:
         return H1(f"Trigger: {request.htmx.trigger}")
 
     client = TestClient(app)
@@ -177,7 +177,7 @@ def test_htmx_trigger_name() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> H1:
+    def trigger_name(request: Request) -> H1:
         return H1(f"Trigger name: {request.htmx.trigger_name}")
 
     client = TestClient(app)
@@ -193,7 +193,7 @@ def test_htmx_triggering_event() -> None:
     app = Air()
 
     @app.get("/test")
-    def test_endpoint(request: AirRequest) -> H1:
+    def triggering_event(request: AirRequest) -> H1:
         event = request.htmx.triggering_event
         if event:
             return H1(f"Event: {event['type']}")

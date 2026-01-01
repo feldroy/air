@@ -292,7 +292,7 @@ class Bdo(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        dir: Specifies the text direction of the text inside the <bdo> element.
+        dir_: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -302,7 +302,7 @@ class Bdo(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        dir: str | None = None,
+        dir_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1328,7 +1328,7 @@ class Input(SelfClosingTag):
         formnovalidate: Specifies that the form-data should not be validated on submission.
         formtarget: Specifies where to display the response that is received after submitting the form.
         height: Specifies the height of an `<input>` element.
-        list: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
+        list_: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
         max_: Specifies the maximum value for an `<input>` element.
         maxlength: Specifies the maximum number of characters allowed in an `<input>` element.
         min_: Specifies a minimum value for an `<input>` element.
@@ -1369,7 +1369,7 @@ class Input(SelfClosingTag):
         formnovalidate: bool | None = None,
         formtarget: str | None = None,
         height: str | int | None = None,
-        list: str | None = None,
+        list_: str | None = None,
         max_: str | None = None,
         maxlength: str | None = None,
         min_: str | None = None,
@@ -1812,7 +1812,7 @@ class Ol(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be rendered in a compact style.
-        reversed: Specifies that the list order should be descending.
+        reversed_: Specifies that the list order should be descending.
         start: Specifies the start value of an ordered list.
         type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
@@ -1825,7 +1825,7 @@ class Ol(BaseTag):
         self,
         *children: Renderable,
         compact: str | None = None,
-        reversed: str | None = None,
+        reversed_: str | None = None,
         start: str | None = None,
         type_: str | None = None,
         class_: str | None = None,
