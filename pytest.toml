@@ -3,6 +3,8 @@
 # https://docs.pytest.org/en/latest/reference/customize.html
 # https://docs.pytest.org/en/latest/reference/reference.html
 
+[pytest]
+minversion = "9.0.2"
 # Keep imports simple (src/ layout)
 pythonpath = ["src"]
 # Only look here for tests
@@ -20,10 +22,13 @@ addopts = [
     # TODO -> Uncomment this line, when https://github.com/ipython/ipython/issues/14620 is solved:
     # "--pdbcls=IPython.terminal.debugger:Pdb",
 ]
-# Set the directory basename patterns to avoid when recursing for test discovery.
-# The individual (fnmatch-style) patterns are applied to the basename of a directory,
-# to decide if to recurse into it.
+# Set directory basename patterns to skip during test discovery recursion; fnmatch patterns match directory basenames.
 norecursedirs = [
     "tests/benchmarks",
     "tests/templates",
 ]
+# https://docs.pytest.org/en/latest/reference/reference.html#confval-strict
+strict_config = true
+strict_markers = true
+strict_parametrization_ids = true
+strict_xfail = true

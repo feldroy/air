@@ -201,7 +201,7 @@ type-annotate TARGET="src":
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
-qa: format type-check
+qa: format-concise type-check-concise
 
 # Run all the formatting, linting, type checking and tests for local development.
 [group('qa')]
