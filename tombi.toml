@@ -39,7 +39,7 @@ key-value-equals-sign-space-width = 1
 line-ending = "lf"
 line-width = 120
 string-quote-style = "double"
-trailing-comment-alignment = true
+trailing-comment-alignment = false
 trailing-comment-space-width = 1
 
 [lint]
