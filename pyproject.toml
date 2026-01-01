@@ -89,17 +89,13 @@ dependencies = [
     "typer>=0.19.1",
     "uvicorn>=0.34.0",
 ]
-
-[project.scripts]
-air = "air.cli:main"
-
-[project.urls]
-Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
-Docs = "https://feldroy.github.io/air/"
-Homepage = "https://github.com/feldroy/air"
-Issues = "https://github.com/feldroy/air/issues"
-Repository = "https://github.com/feldroy/air"
-Sponsor = "https://github.com/sponsors/feldroy"
+scripts.air = "air.cli:main"
+urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
+urls.Docs = "https://feldroy.github.io/air/"
+urls.Homepage = "https://github.com/feldroy/air"
+urls.Issues = "https://github.com/feldroy/air/issues"
+urls.Repository = "https://github.com/feldroy/air"
+urls.Sponsor = "https://github.com/sponsors/feldroy"
 # endregion project
 
 # region ----> dependencies <----
