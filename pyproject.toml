@@ -283,6 +283,7 @@ line-ending = "lf" # enforce LF newlines
 quote-style = "double" # keep quotes in sync with flake8-quotes
 # Docstring code formatting
 docstring-code-format = true # format Python code blocks in docstrings
+# tombi: lint.rules.type-mismatch.disabled = true
 docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
 # Trailing-comma behavior (Black's “magic comma”)
 skip-magic-trailing-comma = false # leave multi-line when trailing comma present
@@ -531,7 +532,7 @@ missing-attribute = false
 # endregion pyrefly
 
 # region ----> pytest <----
-[tool.pytest.ini_options]
+[tool.pytest]
 # Keep imports simple (src/ layout)
 pythonpath = ["src"]
 # Only look here for tests
