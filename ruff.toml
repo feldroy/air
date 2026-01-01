@@ -150,7 +150,7 @@ banned-from = []
 [lint.isort]
 # group aliases coming from the same module
 combine-as-imports = true
-# keep the multi-line, parenthesised layout
+# keep the multi-line, parenthesized layout
 force-wrap-aliases = true
 # Help Ruff classify your own package as first-party (very important for stable sorting)
 known-first-party = ["air"]
