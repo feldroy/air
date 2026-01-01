@@ -107,11 +107,3 @@ include = ["pyproject.toml"]
 root = "tool.ty"
 path = "https://json.schemastore.org/ty.json"
 include = ["pyproject.toml"]
-
-# Overrides for test fixtures that may be intentionally unusual or invalid.
-[[overrides]]
-files.include = ["tests/fixtures/**/*.toml", "tests/**/fixtures/**/*.toml"]
-files.exclude = []
-
-[overrides.lint]
-enabled = false
