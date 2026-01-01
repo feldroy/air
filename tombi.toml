@@ -73,25 +73,45 @@ paths = [
 
 # Use SchemaStore schemas for better editor help and validation.
 # Tombi will also use the catalog automatically, but these explicit mappings make it predictable.
-[[schemas]]
-path = "https://json.schemastore.org/tombi.json"
-include = ["pyproject.toml", "tombi.toml"]
+[[schemas]] # Root Schema
+path = "tombi://www.schemastore.org/tombi.json"
+include = ["tombi.toml"]
 
-[[schemas]]
+[[schemas]] # Root Schema
 path = "https://json.schemastore.org/pyproject.json"
 include = ["pyproject.toml", "**/pyproject.toml"]
 
-[[schemas]]
+[[schemas]] # Root Schema
 path = "https://json.schemastore.org/uv.json"
-include = ["pyproject.toml", "uv.toml"]
+include = ["uv.toml"]
 
-[[schemas]]
+[[schemas]] # Root Schema
 path = "https://json.schemastore.org/ruff.json"
-include = ["pyproject.toml", "ruff.toml"]
+include = ["ruff.toml"]
 
-[[schemas]]
+[[schemas]] # Root Schema
 path = "https://json.schemastore.org/ty.json"
-include = ["pyproject.toml", "ty.toml"]
+include = ["ty.toml"]
+
+[[schemas]] # Sub Schema
+root = "tool.taskipy"
+path = "schemas/partial-taskipy.schema.json"
+include = ["pyproject.toml"]
+
+[[schemas]] # Sub Schema
+root = "tool.uv"
+path = "schemas/partial-uv.schema.json"
+include = ["pyproject.toml"]
+
+[[schemas]] # Sub Schema
+root = "tool.ruff"
+path = "schemas/partial-ruff.schema.json"
+include = ["pyproject.toml"]
+
+[[schemas]] # Sub Schema
+root = "tool.ty"
+path = "schemas/partial-ty.schema.json"
+include = ["pyproject.toml"]
 
 # Overrides for test fixtures that may be intentionally unusual or invalid.
 [[overrides]]
