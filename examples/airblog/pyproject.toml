@@ -7,13 +7,13 @@ requires-python = ">=3.14"
 dependencies = [
     "air",
     "frontmatter",
-    "mistletoe",
-    "pytest",
-    "playwright",
-    "pytest-playwright",
-    "uvicorn",
     "httpx",
+    "mistletoe",
+    "playwright",
+    "pytest",
+    "pytest-playwright",
     "rich",
+    "uvicorn",
 ]
 
 [dependency-groups]

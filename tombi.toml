@@ -94,23 +94,18 @@ path = "https://json.schemastore.org/ty.json"
 include = ["ty.toml"]
 
 [[schemas]] # Sub Schema
-root = "tool.taskipy"
-path = "schemas/partial-taskipy.schema.json"
-include = ["pyproject.toml"]
-
-[[schemas]] # Sub Schema
 root = "tool.uv"
-path = "schemas/partial-uv.schema.json"
+path = "https://json.schemastore.org/uv.json"
 include = ["pyproject.toml"]
 
 [[schemas]] # Sub Schema
 root = "tool.ruff"
-path = "schemas/partial-ruff.schema.json"
+path = "https://json.schemastore.org/ruff.json"
 include = ["pyproject.toml"]
 
 [[schemas]] # Sub Schema
 root = "tool.ty"
-path = "schemas/partial-ty.schema.json"
+path = "https://json.schemastore.org/ty.json"
 include = ["pyproject.toml"]
 
 # Overrides for test fixtures that may be intentionally unusual or invalid.
