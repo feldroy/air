@@ -25,7 +25,7 @@ exclude = [
 [format]
 [format.rules]
 # Defaults are shown in Tombi docs.
-array-bracket-space-width = 1
+array-bracket-space-width = 0
 array-comma-space-width = 1
 date-time-delimiter = "space"
 indent-style = "space"
@@ -34,7 +34,7 @@ indent-table-key-value-pairs = false
 indent-width = 4
 inline-table-brace-space-width = 1
 inline-table-comma-space-width = 1
-key-value-equals-sign-alignment = true
+key-value-equals-sign-alignment = false
 key-value-equals-sign-space-width = 1
 line-ending = "lf"
 line-width = 120
