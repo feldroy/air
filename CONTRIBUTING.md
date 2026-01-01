@@ -64,7 +64,7 @@ just sync
 
 #### 7. Make your code changes and write/adjust tests to cover them (keep changes focused and small).
 
-#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty and pyrefly.
+#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty.
 
 ```bash
 just qa
