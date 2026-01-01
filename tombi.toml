@@ -1,5 +1,7 @@
-# tombi.toml - TOML Formatter / Linter / Language Server
+# ----------------------------------------------------> tombi.toml <----------------------------------------------------
+# Tombi - TOML Formatter / Linter / Language Server, written in Rust.
 # https://tombi-toml.github.io/tombi/docs/configuration
+
 toml-version = "v1.1.0"
 
 [files]

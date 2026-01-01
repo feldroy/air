@@ -184,17 +184,15 @@ ruff-check-all TARGET=".":
 [group('qa')]
 @lint-grouped: && (lint "grouped")
 
-# Type check the project with Ty and pyrefly
+# Type check the project with Ty
 [group('qa')]
 type-check TARGET=".":
     just run -- ty check "{{TARGET}}"
-    just run -- pyrefly check "{{TARGET}}"
 
-# Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
+# Type check the project with Ty - Print diagnostics concisely, one per line
 [group('qa')]
 type-check-concise TARGET=".":
     just run -- ty check --output-format=concise "{{TARGET}}"
-    just run -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]

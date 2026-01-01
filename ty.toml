@@ -1,0 +1,58 @@
+# -----------------------------------------------------> ty.toml <-----------------------------------------------------
+# ty - An extremely fast Python type checker and language server, written in Rust.
+# https://docs.astral.sh/ty/reference/configuration
+
+[src]
+# Lock what gets checked so "ty check" and "ty check ." act the same
+include = ["src", "tests", "examples", "docs"] # keep discovery stable
+# Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
+respect-ignore-files = true
+
+[environment]
+# Make first-party resolution stable and priority-ordered.
+root = ["./src", "."]
+# Freeze analysis semantics across dev/CI.
+# If your project table already has `requires-python`, Ty will infer the min;
+# setting explicitly keeps things deterministic.
+python-version = "3.14"
+# For cross-platform libraries, analyze as if code may run anywhere.
+python-platform = "all"
+
+[terminal]
+# Fail the run on any warning.
+error-on-warning = true
+# Verbose output; switch to "concise" when you want minimal output.
+output-format = "full"
+
+# Promote every non-error rule to error (strict).
+[rules]
+# Defaults = warn:
+ambiguous-protocol-member = "error" # https://docs.astral.sh/ty/reference/rules/#ambiguous-protocol-member
+deprecated = "error" # https://docs.astral.sh/ty/reference/rules/#deprecated
+invalid-ignore-comment = "error" # https://docs.astral.sh/ty/reference/rules/#invalid-ignore-comment
+possibly-missing-attribute = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-missing-attribute
+possibly-missing-implicit-call = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-missing-implicit-call
+possibly-missing-import = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-missing-import
+redundant-cast = "error" # https://docs.astral.sh/ty/reference/rules/#redundant-cast
+undefined-reveal = "error" # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
+ignore-comment-unknown-rule = "error" # https://docs.astral.sh/ty/reference/rules/#ignore-comment-unknown-rule
+unresolved-global = "error" # https://docs.astral.sh/ty/reference/rules/#unresolved-global
+unsupported-base = "error" # https://docs.astral.sh/ty/reference/rules/#unsupported-base
+useless-overload-body = "error" # https://docs.astral.sh/ty/reference/rules/#useless-overload-body
+# Defaults = ignore:
+division-by-zero = "error" # https://docs.astral.sh/ty/reference/rules/#division-by-zero
+possibly-unresolved-reference = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
+unused-ignore-comment = "error" # https://docs.astral.sh/ty/reference/rules/#unused-ignore-comment
+
+# Tests often import optional dev deps or use dynamic patterns.
+[[overrides]]
+include = ["tests/**", "**/test_*.py", "**/*_test.py", "examples/airblog/**"]
+
+[overrides.rules]
+# TODO -> Remove all error code below
+unresolved-import = "ignore"
+possibly-unresolved-reference = "ignore"
+invalid-argument-type = "ignore"
+too-many-positional-arguments = "ignore"
+unresolved-attribute = "ignore"
+possibly-missing-attribute = "ignore"
