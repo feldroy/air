@@ -57,3 +57,7 @@ repos:
       - id: sync-with-uv
         name: Sync pre-commit hooks from `.pre-commit-config-format.yaml` with uv.lock
         entry: sync-with-uv --pre-commit-config .pre-commit-config-format.yaml
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: v0.7.14
+    hooks:
+      - id: tombi-format

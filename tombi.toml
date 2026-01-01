@@ -1,0 +1,110 @@
+# tombi.toml - TOML Formatter / Linter / Language Server
+# https://tombi-toml.github.io/tombi/docs/configuration
+toml-version = "v1.1.0"
+
+[files]
+include = ["**/*.toml"]
+exclude = [
+    ".git/**",
+    ".github/**/vendor/**",
+    ".venv/**",
+    ".tox/**",
+    ".nox/**",
+    ".mypy_cache/**",
+    ".ruff_cache/**",
+    ".pytest_cache/**",
+    ".hypothesis/**",
+    "build/**",
+    "dist/**",
+    "*.egg-info/**",
+    ".eggs/**",
+    "node_modules/**",
+    "target/**",
+]
+
+[format]
+enabled = true
+
+[format.rules]
+# Defaults are shown in Tombi docs. :contentReference[oaicite:3]{index=3}
+array-bracket-space-width = 0
+array-comma-space-width = 1
+date-time-delimiter = "T"
+indent-style = "space"
+indent-sub-tables = false
+indent-table-key-value-pairs = false
+indent-width = 4
+inline-table-brace-space-width = 1
+inline-table-comma-space-width = 1
+key-value-equals-sign-alignment = false
+key-value-equals-sign-space-width = 1
+line-ending = "lf"
+
+# I set this to 88 to match common Python formatting defaults (for example, Ruff/Black line length).
+# Tombi's default is 80. :contentReference[oaicite:4]{index=4}
+line-width = 88
+
+string-quote-style = "double"
+trailing-comment-alignment = false
+trailing-comment-space-width = 2
+
+[lint]
+enabled = true
+
+[lint.rules]
+# Promote common style issues to errors for CI consistency. :contentReference[oaicite:5]{index=5}
+dotted-keys-out-of-order = "error"
+key-empty = "error"
+tables-out-of-order = "error"
+
+[lsp]
+code-action.enabled = true
+completion.enabled = true
+diagnostic.enabled = true
+document-link.enabled = true
+formatting.enabled = true
+goto-declaration.enabled = true
+goto-definition.enabled = true
+goto-type-definition.enabled = true
+hover.enabled = true
+workspace-diagnostic.enabled = true
+
+[schema]
+enabled = true
+strict = true
+
+[schema.catalog]
+paths = [
+    "tombi://www.schemastore.org/api/json/catalog.json",
+    "https://www.schemastore.org/api/json/catalog.json",
+]
+
+# Use SchemaStore schemas for better editor help and validation.
+# Tombi will also use the catalog automatically, but these explicit mappings make it predictable.
+[[schemas]]
+path = "https://json.schemastore.org/tombi.json"
+include = ["pyproject.toml", "tombi.toml"]
+
+[[schemas]]
+path = "https://json.schemastore.org/pyproject.json"
+include = ["pyproject.toml", "**/pyproject.toml"]
+
+[[schemas]]
+path = "https://json.schemastore.org/uv.json"
+include = ["pyproject.toml", "uv.toml"]
+
+[[schemas]]
+path = "https://json.schemastore.org/ruff.json"
+include = ["pyproject.toml", "ruff.toml"]
+
+[[schemas]]
+path = "https://json.schemastore.org/ty.json"
+include = ["pyproject.toml", "ty.toml"]
+
+# Overrides for test fixtures (fixtures (meaning: "test files used as input")) that may be intentionally unusual or invalid.
+[[overrides]]
+files.include = ["tests/fixtures/**/*.toml", "tests/**/fixtures/**/*.toml"]
+files.exclude = []
+
+[overrides.lint]
+enabled = false
