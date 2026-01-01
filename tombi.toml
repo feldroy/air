@@ -26,7 +26,7 @@ exclude = [
 enabled = true
 
 [format.rules]
-# Defaults are shown in Tombi docs. :contentReference[oaicite:3]{index=3}
+# Defaults are shown in Tombi docs.
 array-bracket-space-width = 0
 array-comma-space-width = 1
 date-time-delimiter = "T"
@@ -39,10 +39,7 @@ inline-table-comma-space-width = 1
 key-value-equals-sign-alignment = false
 key-value-equals-sign-space-width = 1
 line-ending = "lf"
-
-# I set this to 88 to match common Python formatting defaults (for example, Ruff/Black line length).
-# Tombi's default is 80. :contentReference[oaicite:4]{index=4}
-line-width = 88
+line-width = 120
 
 string-quote-style = "double"
 trailing-comment-alignment = false
@@ -52,7 +49,7 @@ trailing-comment-space-width = 2
 enabled = true
 
 [lint.rules]
-# Promote common style issues to errors for CI consistency. :contentReference[oaicite:5]{index=5}
+# Promote common style issues to errors for CI consistency.
 dotted-keys-out-of-order = "error"
 key-empty = "error"
 tables-out-of-order = "error"
@@ -101,7 +98,7 @@ include = ["pyproject.toml", "ruff.toml"]
 path = "https://json.schemastore.org/ty.json"
 include = ["pyproject.toml", "ty.toml"]
 
-# Overrides for test fixtures (fixtures (meaning: "test files used as input")) that may be intentionally unusual or invalid.
+# Overrides for test fixtures that may be intentionally unusual or invalid.
 [[overrides]]
 files.include = ["tests/fixtures/**/*.toml", "tests/**/fixtures/**/*.toml"]
 files.exclude = []
