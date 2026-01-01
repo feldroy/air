@@ -74,7 +74,6 @@ classifiers = [
     "Topic :: Text Processing :: Markup :: HTML",
     "Typing :: Typed",
 ]
-
 dependencies = [
     "Jinja2>=3.1.6",
     "fastapi>=0.125.0",
@@ -121,9 +120,9 @@ standard = [
 # umbrella group that pulls in all dev-time groups
 dev = [
     { include-group = "devtools" }, # core developer tools
+    { include-group = "docs" }, # documentation build toolchain
     { include-group = "lint" }, # linting and type-checking toolchain
     { include-group = "test" }, # test runner and helpers
-    { include-group = "docs" }, # documentation build toolchain
 ]
 devtools = []
 docs = [
