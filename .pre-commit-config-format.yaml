@@ -6,17 +6,25 @@
 ci:
   autofix_prs: false
 fail_fast: false
+minimum_prek_version: '0.2.25'
 repos:
   - repo: builtin
     hooks:
       - id: check-added-large-files # Prevent giant files from being committed.
+        priority: 0
       - id: check-case-conflict # Check for files that would conflict in case-insensitive filesystems.
+        priority: 0
       - id: check-json # Attempts to load all json files to verify syntax.
+        priority: 0
       - id: check-merge-conflict # Check for files that contain merge conflict strings.
+        priority: 0
       - id: check-toml # Attempts to load all TOML files to verify syntax.
+        priority: 0
       - id: check-yaml # Attempts to load all yaml files to verify syntax.
+        priority: 0
         args: [ '--allow-multiple-documents' ]
       - id: detect-private-key # Checks for the existence of private keys.
+        priority: 0
       - id: end-of-file-fixer # Ensure newline at EOF.
       - id: fix-byte-order-marker # Remove UTF-8 byte order marker.
       - id: mixed-line-ending # Replaces or checks mixed line ending.
@@ -25,9 +33,12 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-ast # Simply check whether files parse as valid python.
+        priority: 0
       - id: check-vcs-permalinks # Ensures that links to vcs websites are permalinks.
+        priority: 0
       - id: name-tests-test # verifies that test files are named correctly.
         args: [ '--pytest-test-first' ]
+        priority: 0
         exclude: ^tests/(utils|components)\.py$
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
         args: [ '--autofix' ]
@@ -38,6 +49,19 @@ repos:
         additional_dependencies:
           - black==25.12.0
         args: [ '--preview', '--line-length=79' ]
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.36.0
+    hooks:
+      - id: check-codecov
+        priority: 0
+      - id: check-github-issue-config
+        priority: 0
+        files: '^\.github/ISSUE_TEMPLATE/config\.yaml$'
+      - id: check-github-workflows
+        priority: 0
+      - id: check-renovate
+        priority: 0
+        additional_dependencies: [ 'json5' ]
   - repo: https://github.com/rtts/djhtml
     rev: 3.0.10
     hooks:
@@ -65,8 +89,9 @@ repos:
     rev: v1.41.0
     hooks:
       - id: typos
-        args: [ '--force-exclude', '--format=brief' ]
+        args: [ '--write-changes', '--force-exclude', '--format=brief' ]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2025.12.30
+    rev: 2026.01.02
     hooks:
       - id: validate-pyproject
+        priority: 0
