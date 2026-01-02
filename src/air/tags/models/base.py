@@ -89,7 +89,7 @@ class BaseTag:
         Raises:
             TypeError: If code attempts to instantiate BaseTag directly.
         """
-        if cls is BaseTag:
+        if cls is not BaseTag:
             msg = f"{cls.__name__} cannot be instantiated; use a subclass"
             raise TypeError(msg)
         return super().__new__(cls)
