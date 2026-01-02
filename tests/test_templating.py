@@ -11,7 +11,7 @@ from starlette.responses import HTMLResponse
 import air
 from air import Air, JinjaRenderer, Request
 
-from .components import index as index_callable  # pyrefly: ignore
+from .components import index as index_callable
 from .utils import clean_doc, clean_doc_with_broken_lines
 
 

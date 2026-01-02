@@ -24,7 +24,6 @@ env:
   JUST_COMMAND_COLOR: purple
   JUST_EXPLAIN: true
   JUST_HIGHLIGHT: true
-  PYREFLY_COLOR: always
 
 # Cancel older runs for the same branch/PR (concurrency = run one at a time).
 # When you push several commits in a row, only the newest run continues; older ones are cancelled.
@@ -54,7 +53,7 @@ jobs:
       - name: Check for formatting and linting violations
         run: just lint
   type-check:
-    name: Type Checking (via just, uv, ty, pyrefly)
+    name: Type Checking (via just, uv, ty)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

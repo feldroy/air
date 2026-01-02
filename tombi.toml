@@ -1,0 +1,111 @@
+# ----------------------------------------------------> tombi.toml <----------------------------------------------------
+# Tombi - TOML Formatter / Linter / Language Server, written in Rust.
+# https://tombi-toml.github.io/tombi/docs/configuration
+
+toml-version = "v1.1.0"
+
+[files]
+include = ["**/*.toml"]
+exclude = [
+    ".git/**",
+    ".github/**/vendor/**",
+    ".venv/**",
+    ".tox/**",
+    ".nox/**",
+    ".mypy_cache/**",
+    ".ruff_cache/**",
+    ".pytest_cache/**",
+    ".hypothesis/**",
+    "build/**",
+    "dist/**",
+    "*.egg-info/**",
+    ".eggs/**",
+    "node_modules/**",
+    "target/**",
+]
+
+[format]
+[format.rules]
+# Defaults are shown in Tombi docs.
+array-bracket-space-width = 0
+array-comma-space-width = 1
+date-time-delimiter = "space"
+indent-style = "space"
+indent-sub-tables = false
+indent-table-key-value-pairs = false
+indent-width = 4
+inline-table-brace-space-width = 1
+inline-table-comma-space-width = 1
+key-value-equals-sign-alignment = false
+key-value-equals-sign-space-width = 1
+line-ending = "lf"
+line-width = 120
+string-quote-style = "double"
+trailing-comment-alignment = false
+trailing-comment-space-width = 1
+
+[lint]
+[lint.rules]
+# Promote common style issues to errors for CI consistency.
+dotted-keys-out-of-order = "error"
+key-empty = "error"
+tables-out-of-order = "error"
+
+[lsp]
+code-action.enabled = true
+completion.enabled = true
+diagnostic.enabled = true
+document-link.enabled = true
+formatting.enabled = true
+goto-declaration.enabled = true
+goto-definition.enabled = true
+goto-type-definition.enabled = true
+hover.enabled = true
+workspace-diagnostic.enabled = true
+
+[schema]
+enabled = true
+strict = true
+
+[schema.catalog]
+paths = [
+    "tombi://www.schemastore.org/api/json/catalog.json",
+    "https://www.schemastore.org/api/json/catalog.json",
+]
+
+# Use SchemaStore schemas for better editor help and validation.
+# Tombi will also use the catalog automatically, but these explicit mappings make it predictable.
+[[schemas]] # Root Schema
+path = "tombi://www.schemastore.org/tombi.json"
+include = ["tombi.toml"]
+
+[[schemas]] # Root Schema
+path = "https://json.schemastore.org/pyproject.json"
+include = ["pyproject.toml", "**/pyproject.toml"]
+
+[[schemas]] # Root Schema
+path = "https://json.schemastore.org/uv.json"
+include = ["uv.toml"]
+
+[[schemas]] # Root Schema
+path = "https://json.schemastore.org/ruff.json"
+include = ["ruff.toml"]
+
+[[schemas]] # Root Schema
+path = "https://json.schemastore.org/ty.json"
+include = ["ty.toml"]
+
+[[schemas]] # Sub Schema
+root = "tool.uv"
+path = "https://json.schemastore.org/uv.json"
+include = ["pyproject.toml"]
+
+[[schemas]] # Sub Schema
+root = "tool.ruff"
+path = "https://json.schemastore.org/ruff.json"
+include = ["pyproject.toml"]
+
+[[schemas]] # Sub Schema
+root = "tool.ty"
+path = "https://json.schemastore.org/ty.json"
+include = ["pyproject.toml"]
