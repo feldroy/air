@@ -3,7 +3,7 @@ from .factory import CacheFactory
 from .memcached import MemcachedCache
 from .memory import InMemoryCache
 from .redis import RedisCache
-from .utils import _generate_cache_key
+from .utils import generate_cache_key
 
 __all__ = [
     "CacheFactory",
@@ -11,5 +11,5 @@ __all__ = [
     "InMemoryCache",
     "MemcachedCache",
     "RedisCache",
-    "_generate_cache_key",
+    "generate_cache_key",
 ]

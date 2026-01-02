@@ -3,11 +3,13 @@ import json
 from typing import Any
 
 
-def _generate_cache_key(func_name: str, *args: tuple[Any], **kwargs: dict[str, Any]) -> str:
+def generate_cache_key(func_name: str, *args: Any, **kwargs: Any) -> str:
     """Generate a unique cache key based on function name and arguments.
 
     Args:
         func_name (str): Name of the function
+        *args: Positional arguments to include in the cache key
+        **kwargs: Keyword arguments to include in the cache key
 
     Returns:
         str: constructed cache key

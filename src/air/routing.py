@@ -29,7 +29,7 @@ from starlette.routing import (
 from starlette.types import ASGIApp, Lifespan
 from typing_extensions import Doc
 
-from .caches import CacheInterface, _generate_cache_key
+from .caches import CacheInterface, generate_cache_key
 from .exception_handlers import default_404_router_handler
 from .requests import AirRequest
 from .responses import AirResponse
@@ -225,7 +225,7 @@ class RouterMixin:
         import pickle  # noqa: PLC0415
 
         logger = logging.getLogger(__name__)
-        cache_key = _generate_cache_key(func_name=func.__name__)
+        cache_key = generate_cache_key(func_name=func.__name__)
 
         @wraps(func)
         async def cached_wrapper(*args: Any, **kwargs: Any) -> Any:
