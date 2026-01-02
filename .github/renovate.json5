@@ -4,6 +4,7 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
     "config:best-practices",
+    "helpers:pinGitHubActionDigests",
     "schedule:automergeDaily",
     ":dependencyDashboard",
     ":enablePreCommit",
@@ -36,4 +37,16 @@
   lockFileMaintenance: {
     enabled: true
   },
+  packageRules: [
+    // Make sure GitHub Actions are always pinned to commit SHAs (hashes).
+    {
+      matchManagers: [
+        "github-actions"
+      ],
+      matchDepTypes: [
+        "action"
+      ],
+      pinDigests: true,
+    }
+  ]
 }
