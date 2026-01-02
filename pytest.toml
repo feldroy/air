@@ -20,6 +20,7 @@ markers = ["memory: marks tests as memory-focused (deselect with '-m \"not memor
 console_output_style = "classic"
 addopts = [
     "-rfEsxXp",
+    "-q",
     "--new-first",
     "--no-header",
     "--color=yes",
