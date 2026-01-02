@@ -61,7 +61,7 @@ select = [
     "FAST", # https://docs.astral.sh/ruff/rules/#fastapi-fast
     "ANN", # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
     "ASYNC", # https://docs.astral.sh/ruff/rules/#flake8-async-async
-    # "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
+    # "S", # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
     "BLE", # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
     "FBT", # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
     "B", # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
@@ -69,9 +69,8 @@ select = [
     "C4", # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
     "EM", # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
     "EXE", # https://docs.astral.sh/ruff/rules/#flake8-executable-exe
-    # "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
+    # "FIX", # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
     "FA", # https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa
-    "INT", # https://docs.astral.sh/ruff/rules/#flake8-gettext-int
     "ISC", # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
     "ICN", # https://docs.astral.sh/ruff/rules/#flake8-import-conventions-icn
     "INP", # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
@@ -85,7 +84,7 @@ select = [
     # "SLOT", # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
     "TID", # https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
     # "TC", # https://docs.astral.sh/ruff/rules/#flake8-type-checking-tc
-    #    "ARG",    # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+    # "ARG", # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
     "PTH", # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
     "FLY", # https://docs.astral.sh/ruff/rules/#flynt-fly
     "I", # https://docs.astral.sh/ruff/rules/#isort-i
@@ -95,10 +94,10 @@ select = [
     "E",
     "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
     "DOC", # https://docs.astral.sh/ruff/rules/#pydoclint-doc
-    # "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+    # "D", # https://docs.astral.sh/ruff/rules/#pydocstyle-d
     "F", # https://docs.astral.sh/ruff/rules/#pyflakes-f
     "PGH", # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
-    # "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
+    # "PL", # https://docs.astral.sh/ruff/rules/#pylint-pl
     "PLC", # https://docs.astral.sh/ruff/rules/#convention-plc
     "UP", # https://docs.astral.sh/ruff/rules/#pyupgrade-up
     "FURB", # https://docs.astral.sh/ruff/rules/#refurb-furb
