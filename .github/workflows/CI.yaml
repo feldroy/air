@@ -17,6 +17,7 @@ on:
 
 env:
   COLUMNS: 150
+  CI: 1
   FORCE_COLOR: 1
   RUFF_OUTPUT_FORMAT: github
   RUFF_NO_CACHE: true
