@@ -101,17 +101,13 @@ dependencies = [
 # region ----> dependencies <----
 # Runtime extras you want users to install from PyPI
 [project.optional-dependencies]
-# Make `air[standard]` install FastAPI’s own “standard” extras,
-# so *users* can do: uv pip install "air[standard]".
+# Make `air[standard]` install FastAPI’s “standard” extras so users can run: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.119.1",
 ]
 
-# Groups are for contributors; install with: uv sync --group NAME
-# Developer-only deps under [dependency-groups],
-# so uv sync can install them for contributors.
-# (Groups are not published to PyPI (meaning: they’re not visible to end users).)
+# Contributor-only groups under [dependency-groups]; install via uv sync --group NAME (not published to PyPI).
 [dependency-groups]
 # umbrella group that pulls in all dev-time groups
 dev = [
@@ -160,16 +156,11 @@ test = [
 # endregion dependencies
 
 # region ----> build-system <----
-# PEP 517/518: tells installers (pip/uv) how to build/install this project.
-# For Python libraries, an editable install is the standard:
-# it enables scripts, plugins, metadata, compiled code, and proper src/ behavior.
-# uv follows these standards and installs your package by default, ensuring everything “just works.”
+# PEP 517/518: tells pip/uv how to build/install; uv installs your package (editable).
 [build-system]
-# Ensure the chosen backend is present. A version range keeps CI reproducible
-# (meaning: stable over time) while allowing safe updates.
+# Ensure the chosen backend is available; a version range keeps CI reproducible while allowing safe updates.
 requires = ["uv_build>=0.9.0,<0.10.0"]
-# Use uv’s build backend. It is fast and strict, supports PEP 660 editable installs,
-# and produces correct distribution metadata for tooling.
+# Use uv’s build backend: fast and strict, supports PEP 660 editable installs, and produces correct tooling metadata.
 build-backend = "uv_build"
 # endregion build-system
 
