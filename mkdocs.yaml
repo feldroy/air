@@ -19,7 +19,6 @@ nav:
       - Authentication: learn/cookbook/authentication.md
       - Bigger applications: learn/cookbook/bigger-applications.md
       - Charts: learn/cookbook/charts.md
-      - Deployment: learn/deployment.md
       - Minimal app: learn/cookbook/minimal.md
       - Forms & validation: learn/cookbook/forms.md
       - Static files: learn/cookbook/static.md
