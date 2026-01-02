@@ -51,16 +51,16 @@ repos:
           - black==25.12.0
         args: [ '--check', '--preview', '--line-length=79' ]
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.36.0
+    rev: 0.36.0 # A JSON Schema CLI and pre-commit hook built on jsonschema.
     hooks:
-      - id: check-codecov
+      - id: check-codecov # Validate Codecov config against the schema provided by SchemaStore.
         priority: 0
-      - id: check-github-issue-config
+      - id: check-github-issue-config # Validate GitHub Actions against the schema provided by SchemaStore.
         priority: 0
         files: '^\.github/ISSUE_TEMPLATE/config\.yaml$'
-      - id: check-github-workflows
+      - id: check-github-workflows # Validate GitHub Workflows against the schema provided by SchemaStore.
         priority: 0
-      - id: check-renovate
+      - id: check-renovate # Validate Renovate config against the schema provided by Renovate.
         priority: 0
         additional_dependencies: [ 'json5' ]
   - repo: https://github.com/rtts/djhtml
@@ -101,3 +101,7 @@ repos:
     hooks:
       - id: validate-pyproject
         priority: 0
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.19.0
+    hooks:
+      - id: zizmor # Static analysis tool for GitHub Actions.

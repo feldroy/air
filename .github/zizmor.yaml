@@ -1,0 +1,7 @@
+rules:
+  template-injection:
+    disable: false
+  unpinned-uses:
+    disable: false
+  use-trusted-publishing:
+    disable: false
