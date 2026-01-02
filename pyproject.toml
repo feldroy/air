@@ -82,10 +82,10 @@ urls.Repository = "https://github.com/feldroy/air"
 urls.Sponsor = "https://github.com/sponsors/feldroy"
 scripts.air = "air.cli:main"
 dependencies = [
+    "Jinja2>=3.1.6",
     "fastapi>=0.125.0",
     "frozendict>=2.4.7",
     "itsdangerous>=2.2.0",
-    "Jinja2>=3.1.6",
     "lxml>=6.0.1",
     "minify-html>=0.18.1",
     "nh3>=0.3.2",
@@ -119,13 +119,13 @@ dev = [
 devtools = []
 docs = [
     "click==8.3.1", # Necessary to allow live reload to work
+    "mkdocs>=1.6.1", # Static site generator for project documentation
     "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
     "mkdocs-exclude>=1.0.2", # Plugin to exclude files from MkDocs build
     "mkdocs-jupyter>=0.25.1",
     "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
     "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
     "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
-    "mkdocs>=1.6.1", # Static site generator for project documentation
     "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
     "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
 ]
@@ -134,8 +134,8 @@ lint = [
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
-    "types-lxml>=2025.11.25",
     "types-Markdown>=3.8.0", # Types for the markdown library
+    "types-lxml>=2025.11.25",
     "types-pygments>=2.19.0.20251121",
     "typos>=1.38.1",
 ]
@@ -145,13 +145,13 @@ test = [
     "full-match>=0.0.3",
     "httpx>=0.28.1", # For the test client
     "pyinstrument>=5.1.1",
+    "pytest>=9.0.2", # The pytest framework
     "pytest-asyncio>=1.3.0", # Adds asyncio support for pytest
     "pytest-benchmark>=5.2.3",
     "pytest-cov>=7.0.0", # Pytest plugin for measuring coverage.
     "pytest-env>=1.2.0", # for setting env vars in tests
     "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
     "pytest-pretty>=1.3.0", # Provides richer test session output.
-    "pytest>=9.0.2", # The pytest framework
 ]
 # endregion dependencies
 
