@@ -22,7 +22,7 @@ repos:
         priority: 0
       - id: check-yaml # Attempts to load all yaml files to verify syntax.
         priority: 0
-        args: [ '--allow-multiple-documents' ]
+        args: ['--allow-multiple-documents']
       - id: detect-private-key # Checks for the existence of private keys.
         priority: 0
       - id: end-of-file-fixer # Ensure newline at EOF.
@@ -37,7 +37,7 @@ repos:
       - id: check-vcs-permalinks # Ensures that links to vcs websites are permalinks.
         priority: 0
       - id: name-tests-test # verifies that test files are named correctly.
-        args: [ '--pytest-test-first' ]
+        args: ['--pytest-test-first']
         priority: 0
         exclude: ^tests/(utils|components)\.py$
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
@@ -49,7 +49,7 @@ repos:
         priority: 0
         additional_dependencies:
           - black==25.12.0
-        args: [ '--check', '--preview', '--line-length=79' ]
+        args: ['--check', '--preview', '--line-length=79']
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.36.0 # A JSON Schema CLI and pre-commit hook built on jsonschema.
     hooks:
@@ -62,7 +62,7 @@ repos:
         priority: 0
       - id: check-renovate # Validate Renovate config against the schema provided by Renovate.
         priority: 0
-        additional_dependencies: [ 'json5' ]
+        additional_dependencies: ['json5']
   - repo: https://github.com/rtts/djhtml
     rev: 3.0.10
     hooks:
@@ -95,20 +95,19 @@ repos:
     hooks:
       - id: typos
         priority: 0
-        args: [ '--force-exclude', '--format=brief' ]
+        args: ['--force-exclude', '--format=brief']
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.02
     hooks:
       - id: validate-pyproject
         priority: 0
   - repo: https://github.com/google/yamlfmt
-    rev: v0.19.0
+    rev: v0.20.0
     hooks:
       - id: yamlfmt
         priority: 0
-        args: [ '-lint' ]
-  # TODO -> Uncomment all commented hooks below!
-#  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-#    rev: v1.19.0
-#    hooks:
-#      - id: zizmor # Static analysis tool for GitHub Actions.
+        args: ['-lint']
+        #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+        #    rev: v1.19.0
+        #    hooks:
+        #      - id: zizmor # Static analysis tool for GitHub Actions.
