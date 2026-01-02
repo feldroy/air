@@ -28,7 +28,7 @@ extensions:
   - .yml
   - .yaml
 
-output_format: default
+output_format: line
 
 formatter:
   type: basic
@@ -49,5 +49,5 @@ formatter:
   array_indent: 2
   indent_root_array: false
   disable_alias_key_correction: false
-  force_array_style: block
+  force_array_style: flow
   force_quote_style: double
