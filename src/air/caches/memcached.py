@@ -57,7 +57,7 @@ class MemcachedCache(CacheInterface):
         """
 
         try:
-            import pylibmc  # noqa: PLC0415
+            import pylibmc  # type: ignore[import-not-found] # noqa: PLC0415
 
             username = self.memcached_kwargs.get("username", None)
             password = self.memcached_kwargs.get("password", None)

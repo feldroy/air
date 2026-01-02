@@ -52,8 +52,8 @@ class RedisCache(CacheInterface):
         """
 
         try:
-            import redis  # noqa: PLC0415
-            import redis.asyncio as aioredis  # noqa: PLC0415
+            import redis  # type: ignore[import-not-found] # noqa: PLC0415
+            import redis.asyncio as aioredis  # type: ignore[import-not-found] # noqa: PLC0415
 
             self._client = cast(_SyncRedisClient, redis.from_url(self.url, **self.redis_kwargs))
             self._async_client = cast(_AsyncRedisClient, aioredis.from_url(self.url, **self.redis_kwargs))
