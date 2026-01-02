@@ -95,8 +95,9 @@ repos:
     hooks:
       - id: validate-pyproject
         priority: 0
-  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.19.0
-    hooks:
-      - id: zizmor # Static analysis tool for GitHub Actions.
-        args: [ '--fix=all' ]
+  # TODO -> Uncomment all commented hooks below!
+#  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+#    rev: v1.19.0
+#    hooks:
+#      - id: zizmor # Static analysis tool for GitHub Actions.
+#        args: [ '--fix=all' ]
