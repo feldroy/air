@@ -13,21 +13,20 @@ uv venv
 source .venv/bin/activate
 uv init
 uv add air
-uv add "fastapi[standard]"
 ```
 
 !!! note
     You can also do:
 
     ```sh
-    pip install -U air "fastapi[standard]"
+    python -m venv .venv
+    pip install -U air
     ```
 
     or even
 
     ```sh
     conda install air -c conda-forge
-    conda install "fastapi[standard]" -c conda-forge
     ```
 
 
@@ -49,7 +48,7 @@ async def index():
 Serve your app with:
 
 ```sh
-fastapi dev
+air run
 ```
 
 Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>
@@ -59,6 +58,17 @@ Here's a few interesting things about this page:
 1. The page has an attractive layout and typography
 2. The Python for this app is similar in design to how FastAPI code is written
 3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
+
+!!! note
+    Air, being based on FastAPI, can be run with the FastAPI CLI through the use of the `--entrypoint` flag:
+
+    ```sh
+    fastapi dev --entrypoint main:app
+    ```
+
+    This requires installation of the `fastapi[standard]` package.
+
+
 
 ## Routing
 

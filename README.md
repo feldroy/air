@@ -117,7 +117,7 @@ async def index():
 Run the app with:
 
 ```sh
-fastapi dev
+air run
 ```
 
 If you have fastapi installed globally, you may see an error:
@@ -131,7 +131,7 @@ To use the fastapi command, please install "fastapi[standard]":
 In that case, run the app with:
 
 ```sh
-uv run fastapi dev
+uv run air run
 ```
 
 > [!NOTE]
