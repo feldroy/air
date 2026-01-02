@@ -29,6 +29,9 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
+BRANCH_NAME := `git branch --show-current`
+PREK_RUN_ARG := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref main" }
+
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -134,13 +137,11 @@ format OUTPUT_FORMAT="full" UNSAFE="":
     just run -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
-    # Check for spelling violations and apply fixes
-    just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-format.yaml
-    just run -- prek run --all-files --config .pre-commit-config-format.yaml \
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml \
      {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
@@ -162,13 +163,11 @@ lint OUTPUT_FORMAT="full":
     just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
     # Check for lint violations using Ruff
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
-    # Check for spelling violations
-    just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
-    just run -- prek run --all-files --config .pre-commit-config-check.yaml \
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
      {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
 
 # Check for lint violations for all rules!
