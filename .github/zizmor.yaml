@@ -1,3 +1,8 @@
+# ---------------------------------------------------> zizmor.toml <---------------------------------------------------
+# zizmor - A static analysis tool for GitHub Actions.
+# https://docs.zizmor.sh/configuration
+
+
 rules:
   template-injection:
     disable: false
