@@ -2,7 +2,7 @@
 
 This is a reference for deploying Air applications to different platforms. It is by no means complete, if you have specific questions about deploying to a certain platform, please reach out on our [Discord community](https://discord.gg/nhPNn4bw6R).
 
-## Deploying to Railway 
+## Deploying to Railway
 
 Railway is a Platform as a Service that supports Python deployments. To deploy an Air application to Railway, add the `hypercorn` package to your dependency list. When using the `uv` command just do this:
 
@@ -25,5 +25,3 @@ Then, assuming you have a `main.py` with an instantiated Air `app`, add a `railw
 ```
 
 Then, follow the [Railway deployment instructions](https://docs.railway.app/deploy/deploying-code) to connect your repository and deploy.
-
-
