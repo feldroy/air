@@ -1,14 +1,11 @@
 """Air CLI - Command-line interface for running Air applications."""
 
-import importlib
 import sys
-from collections.abc import Callable
 from pathlib import Path
-from typing import Annotated, Any, cast
+from typing import Annotated
 
 import typer
 import uvicorn
-from fastapi import FastAPI
 from rich.console import Console
 
 from air.constants import AIR_VERSION, ATTRIBUTION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL
@@ -43,40 +40,6 @@ def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback sig
     if value:
         typer.echo(f"Air {AIR_VERSION}\n{ATTRIBUTION}")
         raise typer.Exit
-
-
-def _load_app(app_path: str) -> FastAPI | Callable[..., Any] | object:
-    """Load the ASGI app from a ``module:attr`` path or a Python file.
-
-    If the loaded object is callable, it will be invoked to obtain the app.
-
-    Returns:
-        The loaded application object (FastAPI instance or ASGI callable).
-    """
-    module_path, attr_name = app_path.split(":", 1)
-    module = importlib.import_module(module_path)
-    print(f"{module=}")
-    obj = getattr(module, attr_name)
-    print(f"{obj=}")
-    return obj() if callable(obj) else obj
-
-
-def _add_healthcheck_route(app_obj: object) -> None:
-    """Add a simple `/healthcheck` route when the app is a FastAPI instance."""
-    if isinstance(app_obj, FastAPI):
-
-        def _healthcheck() -> dict[str, str]:
-            return {"status": "ok"}
-
-        # Keep healthcheck out of schema to avoid clutter; change as needed
-        app_obj.add_api_route(
-            "/healthcheck",
-            _healthcheck,
-            methods=["GET"],
-            tags=["Health"],
-            include_in_schema=False,
-        )
-    raise Exception("blarg")
 
 
 @app.callback(invoke_without_command=True)
@@ -144,16 +107,8 @@ def run(
     console.print(f"  [dim]➜[/dim]              [link={redoc_url}]{redoc_url}[/link]")
     console.print()
 
-    # Import the app so we can modify it (e.g., add healthcheck)
-    try:
-        loaded_app: FastAPI | Callable[..., Any] | str | object = _load_app(app_path)
-        _add_healthcheck_route(loaded_app)
-    except (ImportError, AttributeError, TypeError) as exc:  # Fallback: run by path if loading fails
-        console.print(f"[yellow]Warning:[/yellow] Could not pre-load app ({exc!r}); running by path.")
-        loaded_app = app_path
-
     uvicorn.run(
-        cast(Any, loaded_app),
+        app_path,
         host=host,
         port=port,
         reload=reload,
