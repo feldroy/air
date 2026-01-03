@@ -2,6 +2,7 @@
 // https://docs.renovatebot.com
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  dependencyDashboard: true,
   extends: [
     "config:best-practices",
     "helpers:pinGitHubActionDigests",
@@ -36,6 +37,9 @@
   // Weekly lockfile refreshes (e.g., uv.lock)
   lockFileMaintenance: {
     enabled: true
+  },
+  "pre-commit": {
+    enabled: true,
   },
   packageRules: [
     // Make sure GitHub Actions are always pinned to commit SHAs (hashes).
