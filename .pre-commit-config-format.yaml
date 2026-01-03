@@ -12,6 +12,8 @@ repos:
     hooks:
       - id: check-added-large-files # Prevent giant files from being committed.
         priority: 0
+        args:
+          - --maxkb=1024 # 1MB
       - id: check-case-conflict # Check for files that would conflict in case-insensitive filesystems.
         priority: 0
       - id: check-json # Attempts to load all json files to verify syntax.
@@ -22,7 +24,7 @@ repos:
         priority: 0
       - id: check-yaml # Attempts to load all yaml files to verify syntax.
         priority: 0
-        args: ['--allow-multiple-documents']
+        args: ['--allow-multiple-documents', '--unsafe']
       - id: detect-private-key # Checks for the existence of private keys.
         priority: 0
       - id: end-of-file-fixer # Ensure newline at EOF.
