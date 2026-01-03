@@ -9,11 +9,11 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     tags:
-      - '*'   # matches any tag name
+      - '*' # matches any tag name
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   COLUMNS: 150
@@ -49,8 +49,12 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
+        with:
+          persist-credentials: false
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
+        with:
+          enable-cache: false
       - name: Check for formatting and linting violations
         run: just lint
   type-check:
@@ -59,27 +63,35 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
+        with:
+          persist-credentials: false
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
+        with:
+          enable-cache: false
       - name: Type Checking
         run: just type-check
   test-all:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        python-version: [ "3.13", "3.14" ]
-        resolution-strategy: [ "highest", "lowest-direct" ]
-    name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.13", "3.14"]
+        resolution-strategy: ["highest", "lowest-direct"]
+    name: >-
+      Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }}
       • resolution-strategy ${{ matrix.resolution-strategy }} (via just, uv, pytest, pytest-pretty)
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
+        with:
+          persist-credentials: false
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
         with:
           python-version: ${{ matrix.python-version }}
+          enable-cache: false
       - name: Run all the tests
         env:
           UV_RESOLUTION: ${{ matrix.resolution-strategy }}
@@ -91,8 +103,12 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
+        with:
+          persist-credentials: false
       - uses: taiki-e/install-action@just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
+        with:
+          enable-cache: false
       - name: Generating an XML Coverage Report
         run: just coverage-xml
       - name: Upload Coverage Report to Codecov
