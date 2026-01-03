@@ -8,6 +8,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import Mock
 
+from pytest_benchmark.fixture import BenchmarkFixture
 from starlette.datastructures import URL
 from starlette.requests import Request
 from starlette.templating import _TemplateResponse
@@ -18,7 +19,11 @@ from air.templating import JinjaRenderer
 
 
 def create_complex_page_with_tags() -> Html:
-    """Generate a complex HTML page using Air Tags."""
+    """Generate a complex HTML page using Air Tags.
+
+    Returns:
+        Complete HTML page with product catalog.
+    """
     return air.Html(
         air.Head(
             air.Title("Product Catalog"),
@@ -49,7 +54,7 @@ def create_complex_page_with_tags() -> Html:
                                 class_="product-actions",
                             ),
                             class_="product-card",
-                            id=f"product-{i}",
+                            id_=f"product-{i}",
                         )
                         for i in range(1, 21)  # 20 products
                     ],
@@ -62,7 +67,11 @@ def create_complex_page_with_tags() -> Html:
 
 
 def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: Mock) -> _TemplateResponse:
-    """Generate the same complex HTML page using Jinja2 templates."""
+    """Generate the same complex HTML page using Jinja2 templates.
+
+    Returns:
+        TemplateResponse with rendered Jinja2 template.
+    """
     context = {
         "title": "Product Catalog",
         "products": [
@@ -73,7 +82,7 @@ def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: 
     return jinja_renderer(mock_request, "complex_page.html", context=context)
 
 
-def test_air_tags_vs_jinja_rendering_benchmark(benchmark) -> None:
+def test_air_tags_vs_jinja_rendering_benchmark(benchmark: BenchmarkFixture) -> None:
     """Benchmark Air Tags vs Jinja2 template rendering for equivalent HTML.
 
     This tests the performance of Air's tag-based approach against traditional template rendering.
@@ -141,7 +150,7 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark) -> None:
         benchmark(render_with_air_tags)
 
 
-def test_simple_air_tags_rendering_benchmark(benchmark) -> None:
+def test_simple_air_tags_rendering_benchmark(benchmark: BenchmarkFixture) -> None:
     """Benchmark simple Air Tags rendering for baseline performance."""
 
     def render_simple_page() -> str:

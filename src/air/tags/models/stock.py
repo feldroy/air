@@ -2,9 +2,17 @@
 
 Script and Style tags can be found in the [air.tags.models.special](/reference/air.tags.models.special) page."""
 
-from ..utils import locals_cleanup
-from .base import AttributesType, BaseTag, Renderable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from air.tags.utils import locals_cleanup
+
+from .base import BaseTag
 from .special import SelfClosingTag
+
+if TYPE_CHECKING:
+    from .types import AttributeType, Renderable
 
 
 class A(BaseTag):
@@ -17,14 +25,16 @@ class A(BaseTag):
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
         rel: Specifies the relationship between the current document and the linked document.
         hreflang: Specifies the language of the linked document.
-        type: Specifies the media type of the linked document.
+        type_: Specifies the media type of the linked document.
         referrerpolicy: Specifies which referrer information to send with the link.
         media: Specifies what media/device the linked document is optimized for.
-        ping: Specifies a space-separated list of URLs to which, when the link is followed, post requests with the body ping will be sent by the browser (in the background). Typically used for tracking.
+        ping: Specifies a space-separated list of URLs to which, when the link is followed, post
+            requests with the body ping will be sent by the browser (in the background).
+            Typically used for tracking.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -35,16 +45,16 @@ class A(BaseTag):
         download: str | None = None,
         rel: str | None = None,
         hreflang: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         referrerpolicy: str | None = None,
         media: str | None = None,
         ping: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Abbr(BaseTag):
@@ -53,20 +63,20 @@ class Abbr(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Address(BaseTag):
@@ -75,20 +85,20 @@ class Address(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Area(SelfClosingTag):
@@ -99,15 +109,17 @@ class Area(SelfClosingTag):
         coords: Specifies the coordinates of an area.
         download: Specifies that the target will be downloaded when a user clicks on the hyperlink.
         href: Specifies the URL of the page the link goes to.
-        ping: Specifies a space-separated list of URLs to which, when the link is followed, post requests with the body ping will be sent by the browser (in the background). Typically used for tracking.
+        ping: Specifies a space-separated list of URLs to which, when the link is followed, post
+            requests with the body ping will be sent by the browser (in the background).
+            Typically used for tracking.
         referrerpolicy: Specifies which referrer information to send with the link.
         rel: Specifies the relationship between the current document and the linked document.
         shape: Specifies the shape of an area.
         target: Specifies where to open the linked document.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -123,11 +135,11 @@ class Area(SelfClosingTag):
         shape: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Article(BaseTag):
@@ -136,20 +148,20 @@ class Article(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Aside(BaseTag):
@@ -158,20 +170,20 @@ class Aside(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Audio(BaseTag):
@@ -186,9 +198,9 @@ class Audio(BaseTag):
         preload: Specifies if and how the author thinks the audio should be loaded when the page loads.
         src: Specifies the URL of the audio file.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -201,11 +213,11 @@ class Audio(BaseTag):
         preload: str | None = None,
         src: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class B(BaseTag):
@@ -214,20 +226,20 @@ class B(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Base(SelfClosingTag):
@@ -235,9 +247,9 @@ class Base(SelfClosingTag):
 
     Args:
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -246,11 +258,11 @@ class Base(SelfClosingTag):
         href: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Bdi(BaseTag):
@@ -259,20 +271,20 @@ class Bdi(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Bdo(BaseTag):
@@ -280,23 +292,23 @@ class Bdo(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        dir: Specifies the text direction of the text inside the <bdo> element.
+        dir_: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
-        dir: str | None = None,
+        dir_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Blockquote(BaseTag):
@@ -306,9 +318,9 @@ class Blockquote(BaseTag):
         children: Tags, strings, or other rendered content.
         cite: Specifies the source of the quotation.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -316,11 +328,11 @@ class Blockquote(BaseTag):
         *children: Renderable,
         cite: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Body(BaseTag):
@@ -328,15 +340,15 @@ class Body(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Br(SelfClosingTag):
@@ -344,20 +356,20 @@ class Br(SelfClosingTag):
 
     Args:
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Button(BaseTag):
@@ -366,29 +378,31 @@ class Button(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         name: Specifies a name for the button.
-        type: Specifies the type of button.
+        type_: Specifies the type of button.
         value: Specifies an initial value for the button.
         autofocus: Specifies that a button should automatically get focus when the page loads.
         disabled: Specifies that a button should be disabled.
         form: Specifies which form the button belongs to.
-        formaction: Specifies where to send the form-data when a form is submitted. Only for type="submit".
-        formenctype: Specifies how the form-data should be encoded before sending it to a server. Only for type="submit".
-        formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type="submit".
-        formnovalidate: Specifies that the form-data should not be validated on submission. Only for type="submit".
-        formtarget: Specifies where to display the response that is received after submitting the form. Only for type="submit".
+        formaction: Specifies where to send the form-data when a form is submitted. Only for type_="submit".
+        formenctype: Specifies how the form-data should be encoded before sending it to a
+            server. Only for type_="submit".
+        formmethod: Specifies how to send the form-data (which HTTP method to use). Only for type_="submit".
+        formnovalidate: Specifies that the form-data should not be validated on submission. Only for type_="submit".
+        formtarget: Specifies where to display the response that is received after submitting
+            the form. Only for type_="submit".
         popovertarget: Specifies which popover element to invoke.
         popovertargetaction: Specifies what action to perform on the popover element.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         name: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         value: str | None = None,
         autofocus: str | None = None,
         disabled: str | None = None,
@@ -401,11 +415,11 @@ class Button(BaseTag):
         popovertarget: str | None = None,
         popovertargetaction: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Canvas(BaseTag):
@@ -416,9 +430,9 @@ class Canvas(BaseTag):
         width: Specifies the width of the canvas.
         height: Specifies the height of the canvas.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -427,11 +441,11 @@ class Canvas(BaseTag):
         width: str | int | None = None,
         height: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Caption(BaseTag):
@@ -440,20 +454,20 @@ class Caption(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Cite(BaseTag):
@@ -462,20 +476,20 @@ class Cite(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Code(BaseTag):
@@ -484,20 +498,20 @@ class Code(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Col(SelfClosingTag):
@@ -506,9 +520,9 @@ class Col(SelfClosingTag):
     Args:
         span: Specifies the number of columns a <col> element should span.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -516,11 +530,11 @@ class Col(SelfClosingTag):
         *,
         span: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Colgroup(BaseTag):
@@ -530,9 +544,9 @@ class Colgroup(BaseTag):
         children: Tags, strings, or other rendered content.
         span: Specifies the number of columns a <colgroup> element should span.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -540,11 +554,11 @@ class Colgroup(BaseTag):
         *children: Renderable,
         span: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Data(BaseTag):
@@ -554,9 +568,9 @@ class Data(BaseTag):
         children: Tags, strings, or other rendered content.
         value: Specifies the machine-readable translation of the content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -564,11 +578,11 @@ class Data(BaseTag):
         *children: Renderable,
         value: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Datalist(BaseTag):
@@ -577,20 +591,20 @@ class Datalist(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Dd(BaseTag):
@@ -601,9 +615,9 @@ class Dd(BaseTag):
         cite: Specifies the source of the quotation.
         datetime: Specifies the date and time of the quotation.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -612,11 +626,11 @@ class Dd(BaseTag):
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Del(BaseTag):
@@ -625,20 +639,20 @@ class Del(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Details(BaseTag):
@@ -646,23 +660,23 @@ class Details(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        open: Specifies that the details should be visible (open) to the user.
+        open_: Specifies that the details should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
-        open: str | None = None,
+        open_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Dfn(BaseTag):
@@ -671,20 +685,20 @@ class Dfn(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Dialog(BaseTag):
@@ -692,23 +706,23 @@ class Dialog(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        open: Specifies that the dialog box should be visible (open) to the user.
+        open_: Specifies that the dialog box should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
-        open: str | None = None,
+        open_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Div(BaseTag):
@@ -717,20 +731,20 @@ class Div(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Dl(BaseTag):
@@ -739,20 +753,20 @@ class Dl(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Dt(BaseTag):
@@ -761,20 +775,20 @@ class Dt(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Em(BaseTag):
@@ -783,20 +797,20 @@ class Em(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Embed(SelfClosingTag):
@@ -804,28 +818,28 @@ class Embed(SelfClosingTag):
 
     Args:
         src: Specifies the address of the external file to embed.
-        type: Specifies the media type of the embedded content.
+        type_: Specifies the media type of the embedded content.
         width: Specifies the width of the embedded content.
         height: Specifies the height of the embedded content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *,
         src: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         width: str | int | None = None,
         height: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Fieldset(BaseTag):
@@ -837,9 +851,9 @@ class Fieldset(BaseTag):
         form: Specifies which form the fieldset belongs to.
         name: Specifies a name for the fieldset.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -849,11 +863,11 @@ class Fieldset(BaseTag):
         form: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Figcaption(BaseTag):
@@ -862,20 +876,20 @@ class Figcaption(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Figure(BaseTag):
@@ -884,20 +898,20 @@ class Figure(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Footer(BaseTag):
@@ -906,20 +920,20 @@ class Footer(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Form(BaseTag):
@@ -937,9 +951,9 @@ class Form(BaseTag):
         rel: Specifies the relationship between a linked resource and the current document.
         target: Specifies where to display the response that is received after submitting the form.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -955,11 +969,11 @@ class Form(BaseTag):
         rel: str | None = None,
         target: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class H1(BaseTag):
@@ -968,20 +982,20 @@ class H1(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class H2(BaseTag):
@@ -990,20 +1004,20 @@ class H2(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class H3(BaseTag):
@@ -1012,20 +1026,20 @@ class H3(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class H4(BaseTag):
@@ -1034,20 +1048,20 @@ class H4(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class H5(BaseTag):
@@ -1056,20 +1070,20 @@ class H5(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class H6(BaseTag):
@@ -1078,20 +1092,20 @@ class H6(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Head(BaseTag):
@@ -1100,16 +1114,16 @@ class Head(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         profile: Specifies the URL of a document that contains a line-break-separated list of links.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         profile: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Header(BaseTag):
@@ -1118,20 +1132,20 @@ class Header(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Hgroup(BaseTag):
@@ -1140,20 +1154,20 @@ class Hgroup(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Hr(SelfClosingTag):
@@ -1162,20 +1176,20 @@ class Hr(SelfClosingTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class I(BaseTag):  # noqa: E742
@@ -1184,20 +1198,20 @@ class I(BaseTag):  # noqa: E742
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Iframe(BaseTag):
@@ -1211,15 +1225,17 @@ class Iframe(BaseTag):
         height: Specifies the height of an `<iframe>`.
         allow: Specifies a feature policy for the `<iframe>`.
         allowfullscreen: Set to true if the `<iframe>` can activate fullscreen mode.
-        allowpaymentrequest: Set to true if a cross-origin `<iframe>` should be allowed to invoke the Payment Request API.
+        allowpaymentrequest: Set to true if a cross-origin `<iframe>` should be allowed to
+            invoke the Payment Request API.
         loading: Specifies the loading policy of the `<iframe>`.
         name: Specifies the name of an `<iframe>`.
-        referrerpolicy: Specifies which referrer information to send when fetching the iframe's content.
+        referrerpolicy: Specifies which referrer information to send when fetching the
+            iframe's content.
         sandbox: Enables an extra set of restrictions for the content in an `<iframe>`.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1237,11 +1253,11 @@ class Iframe(BaseTag):
         referrerpolicy: str | None = None,
         sandbox: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Img(SelfClosingTag):
@@ -1261,9 +1277,9 @@ class Img(SelfClosingTag):
         sizes: Specifies image sizes for different page layouts.
         usemap: Specifies an image as a client-side image map.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1282,11 +1298,11 @@ class Img(SelfClosingTag):
         sizes: str | None = None,
         usemap: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Input(SelfClosingTag):
@@ -1294,7 +1310,7 @@ class Input(SelfClosingTag):
 
     Args:
         name: Specifies the name of an `<input>` element.
-        type: Specifies the type `<input>` element to display.
+        type_: Specifies the type `<input>` element to display.
         value: Specifies the value of an `<input>` element.
         readonly: Specifies that an input field is read-only.
         required: Specifies that an input field must be filled out before submitting the form.
@@ -1312,10 +1328,10 @@ class Input(SelfClosingTag):
         formnovalidate: Specifies that the form-data should not be validated on submission.
         formtarget: Specifies where to display the response that is received after submitting the form.
         height: Specifies the height of an `<input>` element.
-        list: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
-        max: Specifies the maximum value for an `<input>` element.
+        list_: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
+        max_: Specifies the maximum value for an `<input>` element.
         maxlength: Specifies the maximum number of characters allowed in an `<input>` element.
-        min: Specifies a minimum value for an `<input>` element.
+        min_: Specifies a minimum value for an `<input>` element.
         minlength: Specifies the minimum number of characters required in an `<input>` element.
         multiple: Specifies that a user can enter more than one value in an `<input>` element.
         pattern: Specifies a regular expression that an `<input>` element's value is checked against.
@@ -1326,16 +1342,16 @@ class Input(SelfClosingTag):
         src: Specifies the URL of the image to use as a submit button.
         step: Specifies the legal number intervals for an input field.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *,
         name: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         value: str | None = None,
         readonly: bool | None = None,
         required: bool | None = None,
@@ -1353,10 +1369,10 @@ class Input(SelfClosingTag):
         formnovalidate: bool | None = None,
         formtarget: str | None = None,
         height: str | int | None = None,
-        list: str | None = None,
-        max: str | None = None,
+        list_: str | None = None,
+        max_: str | None = None,
         maxlength: str | None = None,
-        min: str | None = None,
+        min_: str | None = None,
         minlength: str | None = None,
         multiple: bool | None = None,
         pattern: str | None = None,
@@ -1367,11 +1383,11 @@ class Input(SelfClosingTag):
         src: str | None = None,
         step: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Ins(BaseTag):
@@ -1382,9 +1398,9 @@ class Ins(BaseTag):
         cite: Specifies a URL to a document that explains the reason why the text was inserted/changed.
         datetime: Specifies the date and time when the text was inserted/changed.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1393,11 +1409,11 @@ class Ins(BaseTag):
         cite: str | None = None,
         datetime: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Kbd(BaseTag):
@@ -1406,20 +1422,20 @@ class Kbd(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Label(BaseTag):
@@ -1429,9 +1445,9 @@ class Label(BaseTag):
         children: Tags, strings, or other rendered content.
         for_: Specifies which form element a label is bound to.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1439,11 +1455,11 @@ class Label(BaseTag):
         *children: Renderable,
         for_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Legend(BaseTag):
@@ -1452,20 +1468,20 @@ class Legend(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Li(BaseTag):
@@ -1475,9 +1491,9 @@ class Li(BaseTag):
         children: Tags, strings, or other rendered content.
         value: Only for OL lists, this is the starting number of the list item.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1485,11 +1501,11 @@ class Li(BaseTag):
         *children: Renderable,
         value: int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Link(SelfClosingTag):
@@ -1511,10 +1527,10 @@ class Link(SelfClosingTag):
         rel: Specifies the relationship between the current document and the linked resource.
         sizes: Specifies the size of the linked resource.
         title: Specifies the title of the linked resource.
-        type: Specifies the media type of the linked resource.
+        type_: Specifies the media type of the linked resource.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        id_: DOM ID attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1535,12 +1551,12 @@ class Link(SelfClosingTag):
         rel: str | None = None,
         sizes: str | None = None,
         title: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Main(BaseTag):
@@ -1549,20 +1565,20 @@ class Main(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Map(BaseTag):
@@ -1572,9 +1588,9 @@ class Map(BaseTag):
         children: Tags, strings, or other rendered content.
         name: Specifies the name of the image map.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1582,11 +1598,11 @@ class Map(BaseTag):
         *children: Renderable,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Mark(BaseTag):
@@ -1595,20 +1611,20 @@ class Mark(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Menu(BaseTag):
@@ -1618,9 +1634,9 @@ class Menu(BaseTag):
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be displayed in a compact style.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1628,11 +1644,11 @@ class Menu(BaseTag):
         *children: Renderable,
         compact: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Meta(SelfClosingTag):
@@ -1645,9 +1661,9 @@ class Meta(SelfClosingTag):
         media: Specifies what media/device the linked document is optimized for.
         name: Specifies a name for the metadata.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1659,10 +1675,10 @@ class Meta(SelfClosingTag):
         media: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Meter(BaseTag):
@@ -1671,32 +1687,32 @@ class Meter(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         value: The current numeric value. Must be between the min and max values.
-        min: The lower bound of the measured range.
-        max: The upper bound of the measured range.
+        min_: The lower bound of the measured range.
+        max_: The upper bound of the measured range.
         low: The upper numeric bound of the low end of the measured range.
         high: The lower numeric bound of the high end of the measured range.
         optimum: The optimal numeric value.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         value: str | None = None,
-        min: str | None = None,
-        max: str | None = None,
+        min_: str | None = None,
+        max_: str | None = None,
         low: str | None = None,
         high: str | None = None,
         optimum: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Nav(BaseTag):
@@ -1705,20 +1721,20 @@ class Nav(BaseTag):
     Args:
          children: Tags, strings, or other rendered content.
          class_: Substituted as the DOM `class` attribute.
-         id: DOM ID attribute.
+         id_: DOM ID attribute.
          style: Inline style attribute.
-         kwargs: Keyword arguments transformed into tag attributes.
+         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Noscript(BaseTag):
@@ -1727,18 +1743,18 @@ class Noscript(BaseTag):
     Args:
      children: Tags, strings, or other rendered content.
      class_: Substituted as the DOM `class` attribute.
-     id: DOM ID attribute.
-     kwargs: Keyword arguments transformed into tag attributes.
+     id_: DOM ID attribute.
+     custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Object(BaseTag):
@@ -1756,13 +1772,13 @@ class Object(BaseTag):
         height: The height of the object.
         name: The name of the object.
         standby: A message to display while the object is loading.
-        type: The content type of the data.
+        type_: The content type of the data.
         usemap: The name of a client-side image map to be used with the object.
         width: The width of the object.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1770,7 +1786,7 @@ class Object(BaseTag):
         *children: Renderable,
         archive: str | None = None,
         border: str | None = None,
-        classid: str | None = None,
+        classid_: str | None = None,
         codebase: str | None = None,
         codetype: str | None = None,
         data: str | None = None,
@@ -1779,15 +1795,15 @@ class Object(BaseTag):
         height: str | int | None = None,
         name: str | None = None,
         standby: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         usemap: str | None = None,
         width: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Ol(BaseTag):
@@ -1796,28 +1812,28 @@ class Ol(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be rendered in a compact style.
-        reversed: Specifies that the list order should be descending.
+        reversed_: Specifies that the list order should be descending.
         start: Specifies the start value of an ordered list.
-        type: Specifies the kind of marker to use in the list.
+        type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         compact: str | None = None,
-        reversed: str | None = None,
+        reversed_: str | None = None,
         start: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Optgroup(BaseTag):
@@ -1828,9 +1844,9 @@ class Optgroup(BaseTag):
         disabled: Indicates if items in the option group are not selectable.
         label: Specifies a label for the group of options.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1839,11 +1855,11 @@ class Optgroup(BaseTag):
         disabled: str | None = None,
         label: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Option(BaseTag):
@@ -1856,9 +1872,9 @@ class Option(BaseTag):
         selected: Specifies that the option should be pre-selected.
         value: Specifies the value to be sent with the form.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1869,11 +1885,11 @@ class Option(BaseTag):
         selected: bool | None = None,
         value: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Output(BaseTag):
@@ -1885,9 +1901,9 @@ class Output(BaseTag):
         form: Associates the output with a form element.
         name: Defines a name for the output element.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1897,11 +1913,11 @@ class Output(BaseTag):
         form: str | None = None,
         name: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class P(BaseTag):
@@ -1910,20 +1926,20 @@ class P(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Param(SelfClosingTag):
@@ -1931,18 +1947,18 @@ class Param(SelfClosingTag):
 
     Args:
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        id_: DOM ID attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class Picture(BaseTag):
@@ -1951,20 +1967,20 @@ class Picture(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Pre(BaseTag):
@@ -1975,9 +1991,9 @@ class Pre(BaseTag):
         width: preferred counf of characters that a line should have
         wrap: hint indicating how overflow must happen
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -1986,11 +2002,11 @@ class Pre(BaseTag):
         width: str | int | None = None,
         wrap: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Progress(BaseTag):
@@ -1998,25 +2014,25 @@ class Progress(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        max: The maximum value of the progress bar.
+        max_: The maximum value of the progress bar.
         value: The current value of the progress bar.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
-        max: str | None = None,
+        max_: str | None = None,
         value: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Q(BaseTag):
@@ -2026,9 +2042,9 @@ class Q(BaseTag):
         children: Tags, strings, or other rendered content.
         cite: Specifies a URL to the source of the quotation.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -2036,11 +2052,11 @@ class Q(BaseTag):
         *children: Renderable,
         cite: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Rp(BaseTag):
@@ -2049,18 +2065,18 @@ class Rp(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        id_: DOM ID attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Rt(BaseTag):
@@ -2069,18 +2085,18 @@ class Rt(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        id_: DOM ID attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Ruby(BaseTag):
@@ -2089,18 +2105,18 @@ class Ruby(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        id_: DOM ID attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class S(BaseTag):
@@ -2109,20 +2125,20 @@ class S(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Samp(BaseTag):
@@ -2131,20 +2147,20 @@ class Samp(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Search(BaseTag):
@@ -2153,20 +2169,20 @@ class Search(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Section(BaseTag):
@@ -2175,20 +2191,20 @@ class Section(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Select(BaseTag):
@@ -2205,9 +2221,9 @@ class Select(BaseTag):
         required: Indicates that an option must be selected before the form can be submitted.
         size: If drop-down list is a scrolling list box, specifies the number of visible options.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
@@ -2222,11 +2238,11 @@ class Select(BaseTag):
         required: str | None = None,
         size: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Small(BaseTag):
@@ -2235,20 +2251,20 @@ class Small(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Source(BaseTag):
@@ -2257,34 +2273,34 @@ class Source(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         src: Specifies the URL of the media resource.
-        type: Specifies the MIME type of the media resource.
+        type_: Specifies the MIME type of the media resource.
         sizes: List of source sizes that describe the final rendered width of the image.
         media: Specifies the media query for the media resource.
         srcset: Specifies a list of one or more image URLs and their descriptors.
         height: Specifies the height of the media resource.
         width: Specifies the width of the media resource.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         src: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         sizes: str | None = None,
         media: str | None = None,
         srcset: str | None = None,
         height: str | int | None = None,
         width: str | int | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Span(BaseTag):
@@ -2293,20 +2309,20 @@ class Span(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Strong(BaseTag):
@@ -2315,20 +2331,20 @@ class Strong(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Sub(BaseTag):
@@ -2337,20 +2353,20 @@ class Sub(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Summary(BaseTag):
@@ -2359,20 +2375,20 @@ class Summary(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Sup(BaseTag):
@@ -2381,52 +2397,79 @@ class Sup(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         class_: Substituted as the DOM `class` attribute.
-        id: DOM ID attribute.
+        id_: DOM ID attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Table(BaseTag):
-    """Defines a table"""
+    """Defines a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Tbody(BaseTag):
-    """Groups the body content in a table"""
+    """Groups the body content in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Td(BaseTag):
-    """Defines a cell in a table"""
+    """Defines a cell in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        colspan: Defines the number of columns a cell should span.
+        rowspan: Defines the number of rows a cell should span.
+        headers: list of string ids of the `<th>` elements that apply to the cell
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2435,15 +2478,26 @@ class Td(BaseTag):
         rowspan: str | None = None,
         headers: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Template(BaseTag):
-    """Defines a container for content that should be hidden when the page loads"""
+    """Defines a container for content that should be hidden when the page loads
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        shadowrootmode: Creates a shadow root for the parent element.
+        shadowrootdelegatesfocus: Sets whether the shadow root created delegates focus.
+        shadowrootclonable: Sets the value of the 'cloneable' property on the shadow root.
+        shadowrootserializable: Sets the value of the 'serializable' property on the shadow root.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2453,14 +2507,39 @@ class Template(BaseTag):
         shadowrootclonable: str | None = None,
         shadowrootserializable: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
-        **kwargs: AttributesType,
+        id_: str | None = None,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Textarea(BaseTag):
-    """Defines a multiline input control (text area)"""
+    """Defines a multiline input control (text area)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        autocapitalize: Determines whether inputted text is automatically capitalized.
+        autocomplete: Controls whether inputted text can be automatically completed by the browser.
+        autocorrect: Controls whether autocorrect is enabled on the input text.
+        autofocus: Indicates that the text area should have input focus when the page loads.
+        cols: Defines the visible width of the text area in average character widths.
+        dirname: Indicates text directionality of the element contents.
+        disabled: Determines if the user can interact with the text area.
+        form: Associates the text area with a form element.
+        maxlength: Defines the maximum number of characters allowed in the text area.
+        minlength: Defines the minimum number of characters required in the text area.
+        name: The name of the element.
+        placeholder: Provides a hint to the user of what can be entered in the text area.
+        readonly: Indicates that the user may not edit the value of the text area.
+        required: Specifies that the text area must be filled out before submitting the form.
+        rows: Defines the visible number of lines for the control.
+        spellcheck: Specifies if the element is subject to browser or OS spell-check.
+        wrap: Indicates how the text area handles line wrapping.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2483,29 +2562,50 @@ class Textarea(BaseTag):
         spellcheck: str | None = None,
         wrap: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Tfoot(BaseTag):
-    """Groups the footer content in a table"""
+    """Groups the footer content in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Th(BaseTag):
-    """Defines a header cell in a table"""
+    """Defines a header cell in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        abbr: An abbreviated description of the header cell content.
+        colspan: Defines the number of columns a header cell should span.
+        headers: list of string ids of the `<th>` elements that provide the headers for the cell.
+        rowspan: Defines the number of rows a header cell should span.
+        scope: Specifies whether the header cell is a header for a column, row, or group of columns or rows.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2516,72 +2616,117 @@ class Th(BaseTag):
         rowspan: str | None = None,
         scope: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Thead(BaseTag):
-    """Groups the header content in a table"""
+    """Groups the header content in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Time(BaseTag):
-    """Defines a specific time (or datetime)"""
+    """Defines a specific time (or datetime)
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        datetime: Specifies the date and/or time format.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         datetime: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Title(BaseTag):
-    """Defines a title for the document"""
+    """Defines a title for the document
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Tr(BaseTag):
-    """Defines a row in a table"""
+    """Defines a row in a table
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Track(SelfClosingTag):
-    """Defines text tracks for media elements (<video> and <audio>)"""
+    """Defines text tracks for media elements (<video> and <audio>)
+
+    Args:
+        default: Indicates that the track is to be enabled if the user's preferences do not indicate any.
+        kind: Specifies how the text track is meant to be used.
+        label: Provides a user-readable title for the text track.
+        srclang: Specifies the language of the text track data.
+        src: Specifies the URL of the track file.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2592,59 +2737,107 @@ class Track(SelfClosingTag):
         srclang: str | None = None,
         src: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))
 
 
 class U(BaseTag):
-    """Defines some text that is unarticulated and styled differently from normal text"""
+    """Defines some text that is unarticulated and styled differently from normal text
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        compact: Specifies that the list should be rendered in a compact style.
+        type_: Specifies the kind of marker to use in the list.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         compact: str | None = None,
-        type: str | None = None,
+        type_: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Ul(BaseTag):
-    """Defines an unordered list"""
+    """Defines an unordered list
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Var(BaseTag):
-    """Defines a variable"""
+    """Defines a variable
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *children: Renderable,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Video(BaseTag):
-    """Defines embedded video content"""
+    """Defines embedded video content
+
+    Args:
+        children: Tags, strings, or other rendered content.
+        src: Specifies the URL of the video file.
+        autoplay: Specifies that the video will start playing as soon as it is ready.
+        controls: Specifies that video controls should be displayed (such as a play/pause button etc).
+        controlslist: Specifies which controls to show on the media element.
+        crossorigin: Specifies how the element handles cross-origin requests.
+        disablepictureinpicture: Prevents the browser from suggesting a Picture-in-Picture context menu.
+        disableremoteplayback: Disables the capability of remote playback on devices.
+        height: Specifies the height of the video player.
+        width: Specifies the width of the video player.
+        loop: Specifies that the video will start over again, every time it is finished.
+        muted: Specifies that the audio output of the video should be muted.
+        playsinline: Indicates that the video is to be played inline.
+        poster: Specifies an image to be shown while the video is downloading.
+        preload: Specifies if and how the author thinks the video should be loaded when the page loads.
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
@@ -2664,22 +2857,29 @@ class Video(BaseTag):
         poster: str | None = None,
         preload: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(*children, **kwargs | locals_cleanup(locals()))
+        super().__init__(*children, **custom_attributes | locals_cleanup(locals()))
 
 
 class Wbr(SelfClosingTag):
-    """Defines a possible line-break"""
+    """Defines a possible line-break
+
+    Args:
+        class_: Substituted as the DOM `class` attribute.
+        id_: DOM ID attribute.
+        style: Inline style attribute.
+        custom_attributes: Keyword arguments transformed into tag attributes.
+    """
 
     def __init__(
         self,
         *,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs | locals_cleanup(locals()))
+        super().__init__(**custom_attributes | locals_cleanup(locals()))

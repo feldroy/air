@@ -80,7 +80,7 @@ readinessProbe:
     port: 8000
 ```
 
-`httpGet.path` on the sample YAML was set to `/` which will need to be modified to `/health` or `/healthz` and `/ready` respectively. Or if you prefer, you can set it to whichever endpoint you have prepared in your application. 
+`httpGet.path` on the sample YAML was set to `/` which will need to be modified to `/health` or `/healthz` and `/ready` respectively. Or if you prefer, you can set it to whichever endpoint you have prepared in your application.
 
 Modify the rest of the deployment.yaml as you see fit for your application.
 

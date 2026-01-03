@@ -1,9 +1,14 @@
 # Contributing to the Air 💨 Web Framework!
 
+Welcome!
+We’re glad you’re here — every contribution, no matter how small, helps make **Air** better for everyone.
+
 ##### Prerequisites:
 
-1. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
-2. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
+1. Make sure you have [just](https://just.systems/man/en/packages.html) installed.
+2. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
+3. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
+4. Make sure you have [rich-cli](https://github.com/Textualize/rich-cli/tree/main#installation) installed.
 
 #### 1. Create the fork on GitHub, clone it locally, and wire remotes correctly.
 
@@ -34,7 +39,7 @@ git switch -c your-new-branch-name upstream/main
 #### 5. Update the project's environment (ensures that all project dependencies are installed and up-to-date with the lockfile).
 
 ```bash
-uv sync --frozen --extra all
+just sync
 ```
 
 #### 6. Configure your IDE with the uv environment:
@@ -59,7 +64,7 @@ uv sync --frozen --extra all
 
 #### 7. Make your code changes and write/adjust tests to cover them (keep changes focused and small).
 
-#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty and pyrefly.
+#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty.
 
 ```bash
 just qa
@@ -94,6 +99,9 @@ git push -u origin your-new-branch-name
 ```bash
 gh pr create --fill --repo feldroy/air
 ```
+[!IMPORTANT]
+> When opening a pull request, make sure to fill out the **Pull Request Template** completely.
+> This helps maintainers review your contribution quickly and keeps the process consistent.
 
 ---
 
@@ -117,24 +125,24 @@ We have the following categories for features. All new features will be assigned
 
 |Category|Label|
 |---|---|
-|Core Air Feature|Feature: Core| 
+|Core Air Feature|Feature: Core|
 |Optional Air Feature|Feature: Optional|
 |Third-Party Integrated Feature|Feature: Third-Party Integrated|
 |Out-of-Scope Feature|Feature: Out-of-Scope|
 
-    
+
 #### Core Air Feature
 
 Implemented and maintained in the main Air repository; enabled by default. Fully documented and covered by tests; receives security and bug fixes promptly. Examples include Air Tags and FastAPI integration controls.
-    
+
 #### Optional Air Feature
 
 Implemented in the Air repository but off by default; installed via extras. Documented and tested, but opt-in to keep the core small and fast. Receives updates together with Air releases and follows the same support policy. Examples include authentication and CSRF validation.
-    
+
 #### Third-Party Integrated Feature
 
 Not implemented by Air; we provide official guides and examples for integrating an external library. Docs may include minimal glue code and recommended settings, but ownership stays with the third party. An example would be SQL integration or a quick guide on using a frontend library that isn't HTMX.
-    
+
 #### Out-of-Scope Feature
 
 Not implemented, not documented, and not supported by the project. Requests are redirected to community solutions or closed as "out of scope."
@@ -159,6 +167,7 @@ require complete docstrings. This will help us maintain a high-quality documenta
   public functions, classes, and methods.
     - Use the `Args:` and `Return:` (or `Yields:` for generators) directives to document parameters and return values
     - Use the `Example:` directive to document how to use the function, class, or method being documented.
+- [What makes documentation good?](https://github.com/openai/openai-cookbook/blob/main/articles/what_makes_documentation_good.md)
 
 ## Plugins vs. Core Features
 

@@ -75,31 +75,29 @@ source .venv/bin/activate
 uv init
 uv add air
 ```
+
 ### Install optional features (with `uv add`)
 
 You can install each optional feature (extras) like this:
+
 1. **Standard** — FastAPI’s recommended extras
    ```sh
    uv add "air[standard]"
    ```
-2. **Pretty** — Beautiful HTML Rendering (lxml, rich)
-   ```sh
-   uv add "air[pretty]"
-   ```
-3. **SQL** — SQLModel / SQLAlchemy support
-   ```sh
-   uv add "air[sqlmodel]"
-   ```
-4. **Auth** — OAuth clients via Authlib
-   ```sh
-   uv add "air[auth]"
-   ```
-5. **All** — everything above in one go
-   ```sh
-   uv add "air[all]"
-   ```
-> Tip: you can also combine extras in one command, for example:
-> `uv add "air[pretty,sql]"`
+
+## Agentic Coding
+
+The library and its dependencies are available through [Context7](https://context7.com/feldroy/air).
+For effective AI assistance, register the Context7 MCP server in your coding environment and configure your agent to use
+it.
+
+You can also use:
+
+- [Code Wiki by Google](https://codewiki.google/github.com/feldroy/air)
+- [DeepWiki powered by Devin](https://deepwiki.com/feldroy/air)
+
+For the canonical long-form context, please use: [llms-full.txt](https://feldroy.github.io/air/llms-full.txt), it
+follows the [llmstxt](https://llmstxt.org/#format) format.
 
 ## A Simple Example
 
@@ -119,18 +117,21 @@ async def index():
 Run the app with:
 
 ```sh
-fastapi dev
+air run
 ```
 
 If you have fastapi installed globally, you may see an error:
+
 ```sh
 To use the fastapi command, please install "fastapi[standard]":
 
 	pip install "fastapi[standard]"
 ```
+
 In that case, run the app with:
+
 ```sh
-uv run fastapi dev
+uv run air run
 ```
 
 > [!NOTE]
@@ -150,6 +151,7 @@ from fastapi import FastAPI
 app = air.Air()
 api = FastAPI()
 
+
 @app.get("/")
 def landing_page():
     return air.Html(
@@ -164,6 +166,7 @@ def landing_page():
 @api.get("/")
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
+
 
 # Combining the Air and FastAPI apps into one
 app.mount("/api", api)
@@ -184,13 +187,16 @@ api = FastAPI()
 # Air's JinjaRenderer is a shortcut for using Jinja templates
 jinja = air.JinjaRenderer(directory="templates")
 
+
 @app.get("/")
 def index(request: Request):
     return jinja(request, name="home.html")
 
+
 @api.get("/")
 def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
+
 
 # Combining the Air and and FastAPI apps into one
 app.mount("/api", api)
@@ -218,8 +224,11 @@ Don't forget the Jinja template!
 
 ## Sponsors
 
-Maintenance of this project is made possible by all the [contributors](https://github.com/feldroy/air/graphs/contributors) and [sponsors](https://github.com/sponsors/feldroy).
-If you would like to support this project and have your avatar or company logo appear below, please [sponsor us](https://github.com/sponsors/feldroy). 💖💨
+Maintenance of this project is made possible by all
+the [contributors](https://github.com/feldroy/air/graphs/contributors)
+and [sponsors](https://github.com/sponsors/feldroy).
+If you would like to support this project and have your avatar or company logo appear below,
+please [sponsor us](https://github.com/sponsors/feldroy). 💖💨
 
 <!-- SPONSORS -->
 
@@ -230,7 +239,8 @@ Your [support](https://github.com/sponsors/feldroy) is much appreciated.
 
 ## Contributing
 
-For guidance on setting up a development environment and how to make a contribution to Air, see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).
+For guidance on setting up a development environment and how to make a contribution to Air,
+see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).
 
 ## Contributors
 
@@ -238,4 +248,21 @@ Thanks to all the contributors to the Air 💨 web framework!
 
 <a href="https://github.com/feldroy/air/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=feldroy/air" />
+</a>
+
+## PyPI Stats
+
+- [pypistats](https://pypistats.org/packages/air)
+- [libraries.io](https://libraries.io/pypi/air)
+- [deps.dev](https://deps.dev/pypi/air)
+- [PePy](https://pepy.tech/projects/air)
+
+## Star History
+
+<a href="https://www.star-history.com/#feldroy/air&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
+ </picture>
 </a>

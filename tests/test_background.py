@@ -14,7 +14,7 @@ def test_background_task_in_view() -> None:
         elements.append(1)
 
     @app.get("/big-process")
-    async def test_big_process(background_tasks: air.BackgroundTasks):
+    async def big_process(background_tasks: air.BackgroundTasks) -> air.H1:
         background_tasks.add_task(creeping_task)
         return air.H1("Hello, World!")
 

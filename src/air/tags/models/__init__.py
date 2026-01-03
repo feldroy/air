@@ -1,11 +1,8 @@
 from . import svg as svg
-from .base import (
-    BaseTag as BaseTag,
-    TagDictType as TagDictType,
-    TagKeys as TagKeys,
-)
+from .base import BaseTag as BaseTag
 from .special import (
     Children as Children,
+    Comment as Comment,
     Fragment as Fragment,
     Html as Html,
     Raw as Raw,

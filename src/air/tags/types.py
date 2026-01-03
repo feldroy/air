@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-from typing import Final
+from os import PathLike
+from pathlib import Path
+from typing import TYPE_CHECKING
 
-from .models import (
-    Base,
-    BaseTag,
-    Link,
-    Meta,
-    Script,
-    Style,
-    Title,
-)
-from .models.base import AttributesType as AttributesType
+if TYPE_CHECKING:
+    # noinspection PyUnresolvedReferences
+    from pygments.lexers.html import HtmlLexer
 
-type TagTypes = tuple[type[BaseTag], ...]
-HEAD_TAG_TYPES: Final[TagTypes] = (Title, Style, Meta, Link, Script, Base)
+    # noinspection PyUnresolvedReferences
+    from pygments.lexers.python import PythonLexer
+
+type LexerType = HtmlLexer | PythonLexer
+type StrPath = PathLike | Path | str

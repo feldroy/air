@@ -8,6 +8,7 @@ import air
 app = air.Air()
 app.mount("/static", air.StaticFiles(directory="static"), name="static")
 
+
 @app.page
 def index():
     return air.layouts.mvpcss(

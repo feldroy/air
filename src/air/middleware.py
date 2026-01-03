@@ -1,4 +1,5 @@
-"""Middleware are callables (functions, classes) that works with every request before it is processed by views. And also with every response before returning it.
+"""Middleware are callables (functions, classes) that works with every request before it is
+processed by views. And also with every response before returning it.
 
 - Middleware takes each request that comes to applications
 - It can then do something to that request or run code
@@ -27,18 +28,18 @@ class SessionMiddleware(StarletteSessionMiddleware):
 
 
         @app.page
-        async def index(request: air.Request):
+        async def index(request: air.Request) -> air.Html | air.Children:
             if "first-visited" not in request.session:
                 request.session["first-visited"] = time()
             return air.layouts.mvpcss(
-                air.H1(request.session.get("first-visited")),
+                air.H1(str(request.session.get("first-visited"))),
                 air.P("Refresh the page and the timestamp won't change"),
                 air.P(air.A("Reset the time stamp", href="/reset")),
             )
 
 
         @app.page
-        async def reset(request: air.Request):
+        async def reset(request: air.Request) -> air.responses.RedirectResponse:
             request.session.pop("first-visited")
             return air.responses.RedirectResponse("/")
     """

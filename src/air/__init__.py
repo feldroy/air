@@ -1,9 +1,9 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
+from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
 
 from . import (
-    ext as ext,
     layouts as layouts,
     responses as responses,
 )
@@ -67,6 +67,7 @@ from .tags import (
     Code as Code,
     Col as Col,
     Colgroup as Colgroup,
+    Comment as Comment,
     Data as Data,
     Datalist as Datalist,
     Dd as Dd,
@@ -141,8 +142,6 @@ from .tags import (
     Sup as Sup,
     Table as Table,
     Tag as Tag,
-    TagDictType as TagDictType,
-    TagKeys as TagKeys,
     Tags as Tags,
     Tbody as Tbody,
     Td as Td,

@@ -17,7 +17,7 @@ on:
 
 env:
   COLUMNS: 150
-  UV_FROZEN: true
+  CI: 1
   FORCE_COLOR: 1
   RUFF_OUTPUT_FORMAT: github
   RUFF_NO_CACHE: true
@@ -25,7 +25,6 @@ env:
   JUST_COMMAND_COLOR: purple
   JUST_EXPLAIN: true
   JUST_HIGHLIGHT: true
-  PYREFLY_COLOR: always
 
 # Cancel older runs for the same branch/PR (concurrency = run one at a time).
 # When you push several commits in a row, only the newest run continues; older ones are cancelled.
@@ -49,19 +48,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7
+      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
       - name: Check for formatting and linting violations
         run: just lint
   type-check:
-    name: Type Checking (via just, uv, ty, pyrefly)
+    name: Type Checking (via just, uv, ty)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7
+      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
       - name: Type Checking
         run: just type-check
   test-all:
@@ -70,30 +69,30 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         python-version: [ "3.13", "3.14" ]
-        resolution-strategy: [ "highest", "lowest" ]
+        resolution-strategy: [ "highest", "lowest-direct" ]
     name: Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }}
       • resolution-strategy ${{ matrix.resolution-strategy }} (via just, uv, pytest, pytest-pretty)
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7
+      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
         with:
           python-version: ${{ matrix.python-version }}
       - name: Run all the tests
         env:
           UV_RESOLUTION: ${{ matrix.resolution-strategy }}
-        run: just test
+        run: just test-ci
   coverage-xml:
     if: github.actor != 'dependabot[bot]' && github.actor != 'renovate[bot]'
     name: Send Coverage to Codecov
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - uses: taiki-e/install-action@just
-      - uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41 # v7
+      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7
       - name: Generating an XML Coverage Report
         run: just coverage-xml
       - name: Upload Coverage Report to Codecov

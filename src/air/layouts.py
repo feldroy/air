@@ -3,28 +3,40 @@
 from typing import Any
 
 from .tags import Body, Children, Head, Header, Html, Link, Main, Script, Style
-from .tags.types import HEAD_TAG_TYPES, AttributesType
+from .tags.models.types import HEAD_TAG_TYPES, AttributeType
 
 
-def filter_body_tags(tags) -> list:
-    """Given a list of tags, only list the ones that belong in body of an HTML document."""
+def filter_body_tags(tags: tuple) -> list:
+    """Given a list of tags, only list the ones that belong in body of an HTML document.
+
+    Returns:
+        List of tags that belong in the body of an HTML document.
+    """
     return [t for t in tags if not isinstance(t, HEAD_TAG_TYPES)]
 
 
-def filter_head_tags(tags) -> list:
-    """Given a list of tags, only list the ones that belong in head of an HTML document."""
+def filter_head_tags(tags: tuple) -> list:
+    """Given a list of tags, only list the ones that belong in head of an HTML document.
+
+    Returns:
+        List of tags that belong in the head of an HTML document.
+    """
     return [t for t in tags if isinstance(t, HEAD_TAG_TYPES)]
 
 
-def _header(tags) -> Header | str:
-    """Extracts the air.Header tag from a set of tags."""
+def _header(tags: tuple | list) -> Header | str:
+    """Extracts the air.Header tag from a set of tags.
+
+    Returns:
+        The Header tag if found, otherwise an empty string.
+    """
     for tag in tags:
         if isinstance(tag, Header):
             return tag
     return ""
 
 
-def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> Html | Children:
+def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Html | Children:
     """Renders the basic layout with MVP.css and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -42,32 +54,46 @@ def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> H
         children: These typically inherit from air.Tag but can be anything
         is_htmx: Whether or not HTMX sent the request from the page
 
+    Returns:
+        HTML document with MVP.css styling or Children for HTMX partial responses.
+
     Example:
 
-        from fastapi import Depends
         import air
 
         app = air.Air()
 
 
         @app.page
-        async def index(is_htmx: bool = Depends(air.is_htmx_request)):
+        async def index(request: air.Request) -> air.Html | air.Children:
             return air.layouts.mvpcss(
                 air.Title("Home"),
                 air.Article(
-                    air.H1("Welcome to Air"), air.P(air.A("Click to go to Dashboard", href="/dashboard")), hx_boost="true"
+                    air.H1("Welcome to Air"),
+                    air.P(air.A("Click to go to Dashboard", href="/dashboard")),
+                    hx_boost="true",
                 ),
-                is_htmx=is_htmx
+                is_htmx=request.htmx.is_hx_request,
             )
 
 
         @app.page
-        async def dashboard(is_htmx: bool = Depends(air.is_htmx_request)):
+        async def dashboard(request: air.Request) -> air.Html | air.Children:
             return air.layouts.mvpcss(
-                air.Title("Dashboard"), air.Article(air.H1("Dashboard"), air.P(air.A("Go home", href="/")), hx_boost="true"),
-                is_htmx=is_htmx
+                air.Title("Dashboard"),
+                air.Article(
+                    air.H1("Dashboard"),
+                    air.P(air.A("Go home", href="/")),
+                    hx_boost="true",
+                ),
+                is_htmx=request.htmx.is_hx_request,
             )
 
+
+        if __name__ == "__main__":
+            import uvicorn
+
+            uvicorn.run(app, host="127.0.0.1", port=8000)
     """
     body_tags = filter_body_tags(children)
     head_tags = filter_head_tags(children)
@@ -93,7 +119,7 @@ def mvpcss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> H
     )
 
 
-def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> Html | Children:
+def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributeType) -> Html | Children:
     """Renders the basic layout with PicoCSS and HTMX for quick prototyping
 
     1. At the top level HTML head tags are put in the `<head>` tag
@@ -110,6 +136,46 @@ def picocss(*children: Any, is_htmx: bool = False, **kwargs: AttributesType) -> 
         children: These typically inherit from air.Tag but can be anything
         is_htmx: Whether or not HTMX sent the request from the page
 
+    Returns:
+        HTML document with PicoCSS styling or Children for HTMX partial responses.
+
+    Example:
+
+        import air
+
+        app = air.Air()
+
+
+        @app.page
+        async def index(request: air.Request) -> air.Html | air.Children:
+            return air.layouts.picocss(
+                air.Title("Home"),
+                air.Article(
+                    air.H1("Welcome to Air"),
+                    air.P(air.A("Click to go to Dashboard", href="/dashboard")),
+                    hx_boost="true",
+                ),
+                is_htmx=request.htmx.is_hx_request,
+            )
+
+
+        @app.page
+        async def dashboard(request: air.Request) -> air.Html | air.Children:
+            return air.layouts.picocss(
+                air.Title("Dashboard"),
+                air.Article(
+                    air.H1("Dashboard"),
+                    air.P(air.A("Go home", href="/")),
+                    hx_boost="true",
+                ),
+                is_htmx=request.htmx.is_hx_request,
+            )
+
+
+        if __name__ == "__main__":
+            import uvicorn
+
+            uvicorn.run(app, host="127.0.0.1", port=8000)
     """
     body_tags = filter_body_tags(children)
     head_tags = filter_head_tags(children)

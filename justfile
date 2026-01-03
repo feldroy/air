@@ -28,7 +28,7 @@ VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
 PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
-
+UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -87,31 +87,61 @@ run-with-relative-paths +CMD:
 @run-py-script TARGET=".":
     just run --script "{{ TARGET }}"
 
-# uv run helper
+# Run a command or script using uv.
 [doc]
+[private]
+[group('uv')]
+@uv-run +ARGS:
+    just run-with-relative-paths uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
+
+# Run ipython using uv.
+[group('uv')]
+ipython:
+    uv run {{ UV_CLI_FLAGS }} -- ipython
+
+# Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
 @run +ARGS:
-    just run-with-relative-paths uv run -q --extra all --frozen {{ ARGS }}
+    just uv-run -q --frozen {{ ARGS }}
 
-# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet)
+# Run a command or script using uv, in an isolated virtual environment.
+[group('uv')]
+@run-isolated +ARGS:
+    just uv-run --isolated {{ ARGS }}
+
+# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
 upgrade-dependencies:
-    uv sync --extra all -U
+    uv sync -U {{ UV_CLI_FLAGS }}
+
+# Sync all dependencies using uv, without updating the uv.lock file.
+[group('uv')]
+sync:
+    uv sync --frozen {{ UV_CLI_FLAGS }}
+
+# Sync all dependencies using uv, and updating the uv.lock file. <Don’t use! For maintainers only!>
+[group('uv')]
+sync-lock *ARGS:
+    uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
-# Format code and auto-fix simple issues with Ruff
+# Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
 format OUTPUT_FORMAT="full" UNSAFE="":
     # Format Python files using Ruff's formatter (writes changes to disk).
     just run -- ruff format .
-    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
-    # show an enumeration of all fixed lint violations.
+    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
-    # Check for spelling and grammar violations and apply fixes
+    # Check for spelling violations and apply fixes
     just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
-    just run -- codespell --write-changes
+    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
+    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+    just run -- prek auto-update --config .pre-commit-config-check.yaml
+    just run -- prek auto-update --config .pre-commit-config-format.yaml
+    just run -- prek run --all-files --config .pre-commit-config-format.yaml \
+     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -125,18 +155,26 @@ format-unsafe: && (format "concise" "--unsafe-fixes")
 [group('qa')]
 @format-grouped: && (format "grouped")
 
-# Check for formatting, lint violations
+# Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
 lint OUTPUT_FORMAT="full":
-    # Avoid writing any formatted files back; instead, exit with a non-zero
-    # status code if any files would have been modified, and zero otherwise,
-    # and the difference between the current file and how the formatted file would look like.
+    # Check for formatting violations using Ruff
     just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
-    # Check for lint violations
+    # Check for lint violations using Ruff
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
-    # Check for spelling and grammar violations
+    # Check for spelling violations
     just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
-    just run -- codespell
+    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
+    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+    just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
+    just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
+    just run -- prek run --all-files --config .pre-commit-config-check.yaml \
+     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
+
+# Check for lint violations for all rules!
+[group('qa')]
+ruff-check-all TARGET=".":
+    just run -- ruff check --output-format=concise --select ALL --ignore CPY001,TC003,COM812,TD,D101,PLR0904,ARG004,FBT001,FBT002,SLF001 "{{TARGET}}"
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
@@ -146,17 +184,15 @@ lint OUTPUT_FORMAT="full":
 [group('qa')]
 @lint-grouped: && (lint "grouped")
 
-# Type check the project with Ty and pyrefly
+# Type check the project with Ty
 [group('qa')]
 type-check TARGET=".":
     just run -- ty check "{{TARGET}}"
-    just run -- pyrefly check "{{TARGET}}"
 
-# Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
+# Type check the project with Ty - Print diagnostics concisely, one per line
 [group('qa')]
 type-check-concise TARGET=".":
     just run -- ty check --output-format=concise "{{TARGET}}"
-    just run -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]
@@ -165,7 +201,7 @@ type-annotate TARGET="src":
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
-qa: format type-check
+qa: format-concise type-check-concise
 
 # Run all the formatting, linting, type checking and tests for local development.
 [group('qa')]
@@ -185,15 +221,21 @@ qa-plus: qa test
 test:
     just run -- pytest
 
-# Run all the tests for the lowest compatible version of each package.
+# Run all the tests, for CI.
+[private]
 [group('test')]
-test-lowest-resolution:
-    just run --resolution=lowest -- pytest
+test-ci:
+    just uv-run --no-dev --group test -- pytest
+
+# Run tests with lowest compatible versions for direct dependencies and highest compatible versions for indirect ones.
+[group('test')]
+test-lowest-direct-resolution:
+    just run-isolated --no-dev --group test --resolution=lowest-direct -- pytest
 
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
-    just run --python={{ PY_VERSION }} --isolated -- pytest
+    just run-isolated --python={{ PY_VERSION }} -- pytest
 
 # Run all the tests for all the supported Python versions
 [group('test')]
@@ -282,10 +324,15 @@ coverage-md: coverage-xml
 [group('docs')]
 @changelog: (readmd "CHANGELOG.md")
 
-# Serve docs locally
+# Serve docs locally.
 [group('docs')]
-doc:
+doc-serve:
     just run -- mkdocs serve -a localhost:3000
+
+# Serve docs locally and open them in a new tab.
+[group('docs')]
+doc-serve-open:
+    just run -- mkdocs serve --open -a localhost:3000
 
 # Build docs
 [group('docs')]

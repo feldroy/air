@@ -1,22 +1,32 @@
-from typing import Any
+from collections.abc import AsyncGenerator
+from typing import override
 
 from fastapi import status
 from fastapi.testclient import TestClient
 
 import air
-from air import H1, AirResponse, Article, Body, Div, Html, Main
+from air import H1, AirResponse, Article, BaseTag, Div, Html, Main
+from air.responses import TagResponse
+
+from .utils import clean_doc
+
+
+class CustomLayoutResponse(air.AirResponse):
+    @override
+    def render(self, tag: BaseTag | str) -> bytes | memoryview:  # ty: ignore[invalid-method-override]
+        return super().render(air.Html(air.Body(tag)))
 
 
 def test_TagResponse_obj() -> None:
     """Test the TagResponse class."""
     app = air.Air()
 
-    @app.get("/test")
-    def test_endpoint() -> AirResponse:
+    @app.get("/tag-response")
+    def tag_response() -> AirResponse:
         return air.TagResponse(air.H1("Hello, World!"))
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/tag-response")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
@@ -26,17 +36,16 @@ def test_TagResponse_obj() -> None:
 def test_TagResponse_compatibility() -> None:
     """Test for non-proxied TagResponse that should still work if used directly."""
     # import to check backward compatibility
-    from air.responses import TagResponse
 
     app = air.Air()
 
-    @app.get("/test_tag", response_class=TagResponse)
-    def test_tag_endpoint() -> Div:
+    @app.get("/non-proxied-tag-response", response_class=TagResponse)
+    def non_proxied_tag_response() -> Div:
         return air.Div(air.H1("Hi from TagResponse!"), air.Br())
 
     client = TestClient(app)
 
-    response = client.get("/test_tag")
+    response = client.get("/non-proxied-tag-response")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
@@ -47,22 +56,22 @@ def test_AirResponse() -> None:
     """Test the AirResponse class."""
     app = air.Air()
 
-    @app.get("/test_tag", response_class=air.AirResponse)
-    def test_tag_endpoint() -> H1:
+    @app.get("/tag-page", response_class=air.AirResponse)
+    def tag_page() -> H1:
         return air.H1("Hello, World!")
 
-    @app.get("/test_html", response_class=air.AirResponse)
-    def test_html_endpoint() -> str:
+    @app.get("/html-page", response_class=air.AirResponse)
+    def html_page() -> str:
         return "<h1>Hello, World!</h1>"
 
     client = TestClient(app)
-    response = client.get("/test_tag")
+    response = client.get("/tag-page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
 
-    response = client.get("/test_html")
+    response = client.get("/html-page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
@@ -74,15 +83,15 @@ def test_AirResponse_type() -> None:
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint() -> Main:
+    @app.get("/tag-page", response_class=air.AirResponse)
+    def tag_page() -> Main:
         return air.Main(
             air.H1("Hello, clean HTML response!"),
             air.P("This is a paragraph in the response."),
         )
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/tag-page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
@@ -96,8 +105,8 @@ def test_AirResponse_html() -> None:
 
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint() -> Html:
+    @app.get("/tag-page", response_class=air.AirResponse)
+    def tag_page() -> str:
         return air.Html(
             air.Head(),
             air.Body(
@@ -106,28 +115,40 @@ def test_AirResponse_html() -> None:
                     air.P("This is a paragraph in the response."),
                 )
             ),
-        )
+        ).pretty_render()
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/tag-page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert (
-        response.text
-        == "<!doctype html><html><head></head><body><main><h1>Hello, clean HTML response!</h1><p>This is a paragraph in the response.</p></main></body></html>"
+    expected_html = clean_doc(
+        """
+        <!doctype html>
+        <html>
+          <head></head>
+          <body>
+            <main>
+              <h1>Hello, clean HTML response!</h1>
+              <p>This is a paragraph in the response.</p>
+            </main>
+          </body>
+        </html>
+        """
     )
+    actual_html = response.text
+    assert actual_html == expected_html
 
 
 def test_strings_and_tag_children() -> None:
     app = air.Air()
 
-    @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint() -> Html:
+    @app.get("/tag-page", response_class=air.AirResponse)
+    def tag_page() -> Html:
         return air.Html(air.Body(air.P("This isn't a ", air.Strong("cut off"), " sentence")))
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/tag-page")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert (
@@ -142,51 +163,41 @@ def test_custom_name_in_response() -> None:
     def Card(sentence: str) -> Article:
         return air.Article(air.Header("Header"), sentence, air.Footer("Footer"))
 
-    @app.get("/test", response_class=air.AirResponse)
-    def test_endpoint() -> Article:
+    @app.get("/tag-page", response_class=air.AirResponse)
+    def tag_page() -> Article:
         return Card("This is a sentence")
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/tag-page")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<article><header>Header</header>This is a sentence<footer>Footer</footer></article>"
 
 
 def test_AirResponse_with_layout_strings() -> None:
-    class CustomLayoutResponse(air.AirResponse):
-        def render(self, content: Any) -> bytes:
-            content = super().render(content)
-            return f"<html><body><h1>Custom Layout</h1>{content}</body></html>".encode()
-
     app = air.Air()
 
-    @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint() -> Main:
+    @app.get("/tag-page", response_class=CustomLayoutResponse)
+    def tag_page() -> Main:
         return air.Main(air.H2("Hello, World!"))
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/tag-page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
-    assert response.text == "<html><body><h1>Custom Layout</h1>b'<main><h2>Hello, World!</h2></main>'</body></html>"
+    assert response.text == "<!doctype html><html><body><main><h2>Hello, World!</h2></main></body></html>"
 
 
 def test_AirResponse_with_layout_names() -> None:
-    class CustomLayoutResponse(air.AirResponse):
-        def render(self, content: Any) -> bytes:
-            content = super().render(content).decode("utf-8")
-            return air.Html(air.Raw(content)).render().encode("utf-8")
-
     app = air.Air()
 
-    @app.get("/test", response_class=CustomLayoutResponse)
-    def test_endpoint() -> Body:
-        return air.Body(air.Main(air.H1("Hello, World!")))
+    @app.get("/tag-page", response_class=CustomLayoutResponse)
+    def tag_page() -> air.Main:
+        return air.Main(air.H1("Hello, World!"))
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/tag-page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
@@ -197,16 +208,16 @@ def test_SSEResponse() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[air.P]:
         yield air.P("Hello")
         yield air.P("World")
 
-    @app.get("/test")
-    async def test_endpoint():
+    @app.get("/sse-response")
+    async def sse_response() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/sse-response")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
@@ -217,16 +228,16 @@ def test_SSEResponse_multiline_tag_content() -> None:
     """Test the SSEResponse class."""
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[air.P]:
         yield air.P("Hello\nWorld")
         yield air.P("World\nHello")
 
-    @app.get("/test")
-    async def test_endpoint():
+    @app.get("/sse-response")
+    async def sse_response() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/sse-response")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
@@ -239,16 +250,16 @@ def test_SSEResponse_multiline_tag_content() -> None:
 def test_SSEResponse_string_content() -> None:
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[str]:
         yield "Hello\nWorld"
         yield "Air is cool\nTry it out!"
 
-    @app.get("/test")
-    async def test_endpoint():
+    @app.get("/sse-response")
+    async def sse_response() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/sse-response")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
@@ -261,15 +272,15 @@ def test_SSEResponse_string_content() -> None:
 def test_SSEResponse_bytes_content() -> None:
     app = air.Air()
 
-    async def event_generator():
+    async def event_generator() -> AsyncGenerator[bytes]:
         yield b"already encoded"
 
-    @app.get("/test")
-    async def test_endpoint():
+    @app.get("/sse-response")
+    async def sse_response() -> air.SSEResponse:
         return air.SSEResponse(event_generator())
 
     client = TestClient(app)
-    response = client.get("/test")
+    response = client.get("/sse-response")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/event-stream; charset=utf-8"
@@ -280,19 +291,19 @@ def test_RedirectResponse() -> None:
     """Test the RedirectResponse class."""
     app = air.Air()
 
-    @app.get("/test2")
-    async def another_test_endpoint():
+    @app.get("/air-response")
+    async def air_response() -> air.AirResponse:
         return air.AirResponse()
 
-    @app.get("/test")
-    async def test_endpoint():
-        return air.RedirectResponse("/test2")
+    @app.get("/redirect-response")
+    async def redirect_response() -> air.RedirectResponse:
+        return air.RedirectResponse("/air-response")
 
     client = TestClient(app)
-    response = client.get("/test", follow_redirects=False)
+    response = client.get("/redirect-response", follow_redirects=False)
     assert response.status_code == status.HTTP_307_TEMPORARY_REDIRECT
 
     # check if redirect works
-    response = client.get("/test", follow_redirects=True)
+    response = client.get("/redirect-response", follow_redirects=True)
     assert response.status_code == 200
-    assert "/test2" in response.url.path
+    assert "/air-response" in response.url.path

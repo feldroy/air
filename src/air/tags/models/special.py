@@ -1,9 +1,16 @@
-"""Special Air Tags that aren't find in any other category."""
+"""Special Air Tags that are not found in any other category."""
 
-from typing import Literal, override
+from __future__ import annotations
 
-from ..utils import HTML_DOCTYPE, locals_cleanup
-from .base import AttributesType, BaseTag, Renderable
+from typing import TYPE_CHECKING, Literal, override
+
+from air.tags.constants import HTML_DOCTYPE
+from air.tags.utils import locals_cleanup
+
+from .base import BaseTag
+
+if TYPE_CHECKING:
+    from .types import AttributeType, Renderable
 
 
 class Html(BaseTag):
@@ -21,7 +28,11 @@ class Html(BaseTag):
         with_head: bool = False,
         with_doctype: bool = True,
     ) -> str:
-        """Pretty-print without escaping."""
+        """Pretty-print without escaping.
+
+        Returns:
+            Pretty-printed raw HTML string.
+        """
         return super().pretty_render(with_body=with_body, with_head=with_head, with_doctype=with_doctype)
 
 
@@ -40,27 +51,29 @@ class Transparent(BaseTag):
 
 
 class Children(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class Tag(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class Tags(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class Fragment(Transparent):
-    pass
+    """Alias for the `Transparent` tag; use it if it improves clarity."""
 
 
 class SelfClosingTag(BaseTag):
+    """Base class for void tags that render as self-closing HTML."""
+
     def __init__(
         self,
-        **kwargs: AttributesType,
+        **attributes: AttributeType,
     ) -> None:
-        super().__init__(**kwargs)
+        super().__init__(**attributes)
 
     @override
     def _render(self) -> str:
@@ -68,12 +81,17 @@ class SelfClosingTag(BaseTag):
 
 
 class UnSafeTag(BaseTag):
+    """Tag base that bypasses HTML escaping for its content."""
+
     @override
-    def __init__(self, text_child: str = "", /, **kwargs: AttributesType) -> None:
-        super().__init__(text_child, **kwargs)
+    def __init__(self, text_child: str = "", /, **attributes: AttributeType) -> None:
         if not isinstance(text_child, str):
             msg = f"{self!r} only accepts string content"
             raise TypeError(msg)
+        if text_child:
+            super().__init__(text_child, **attributes)
+        else:
+            super().__init__(**attributes)
 
     @override
     @staticmethod
@@ -105,7 +123,7 @@ class Script(UnSafeTag):
     Args:
         text_child: Inline script code. Use an empty string when providing ``src``.
         src: URI of the external script.
-        type: Script type. Examples: ``module``, ``importmap``, ``speculationrules``,
+        type_: Script type. Examples: ``module``, ``importmap``, ``speculationrules``,
             a JavaScript MIME type (e.g. ``text/javascript``), or empty for classic scripts.
         async_: Fetch in parallel and execute as soon as ready; order is not guaranteed.
         defer: Execute after parsing (classic scripts only; modules defer by default).
@@ -121,9 +139,9 @@ class Script(UnSafeTag):
         attributionsrc: Space-separated URLs for Attribution Reporting (experimental).
         nonce: CSP nonce (meaning: one-time token) to allow this inline script.
         class_: Substituted as the DOM ``class`` attribute.
-        id: DOM ``id`` attribute.
+        id_: DOM ``id`` attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     @override
@@ -133,10 +151,10 @@ class Script(UnSafeTag):
         /,
         *,
         src: str | None = None,
-        type: str | None = None,
-        async_: bool = False,
-        defer: bool = False,
-        nomodule: bool = False,
+        type_: str | None = None,
+        async_: bool | None = None,
+        defer: bool | None = None,
+        nomodule: bool | None = None,
         crossorigin: Literal["anonymous", "use-credentials"] | None = None,
         integrity: str | None = None,
         referrerpolicy: Literal[
@@ -155,11 +173,11 @@ class Script(UnSafeTag):
         attributionsrc: str | None = None,
         nonce: str | None = None,
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(text_child, **custom_attributes | locals_cleanup(locals()))
 
 
 class Style(UnSafeTag):
@@ -172,11 +190,11 @@ class Style(UnSafeTag):
         title: Title for alternate style sheet sets.
         blocking: Space-separated tokens that block operations; currently ``"render"``.
         nonce: CSP nonce (meaning: one-time token) to allow this inline style.
-        type: (Deprecated) Only ``""`` or ``"text/css"`` are permitted; omit in modern HTML.
+        type_: (Deprecated) Only ``""`` or ``"text/css"`` are permitted; omit in modern HTML.
         class_: Substituted as the DOM ``class`` attribute.
-        id: DOM ``id`` attribute.
+        id_: DOM ``id`` attribute.
         style: Inline style attribute.
-        kwargs: Keyword arguments transformed into tag attributes.
+        custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
     @override
@@ -189,10 +207,42 @@ class Style(UnSafeTag):
         title: str | None = None,
         blocking: Literal["render"] | None = None,
         nonce: str | None = None,
-        type: str | None = None,  # deprecated
+        type_: str | None = None,  # deprecated
         class_: str | None = None,
-        id: str | None = None,
+        id_: str | None = None,
         style: str | None = None,
-        **kwargs: AttributesType,
+        **custom_attributes: AttributeType,
     ) -> None:
-        super().__init__(text_child, **kwargs | locals_cleanup(locals()))
+        super().__init__(text_child, **custom_attributes | locals_cleanup(locals()))
+
+
+class Comment(UnSafeTag):
+    """Represents an HTML comment node."""
+
+    @override
+    def __init__(
+        self,
+        text_child: str = "",
+        /,
+    ) -> None:
+        """Initializes the comment with the raw text payload.
+
+        Args:
+            text_child: Text inserted inside the comment delimiters.
+
+        Raises:
+            TypeError: If the text_child contains newline characters.
+        """
+        if "\n" in text_child:
+            msg = f"{self!r}, does not support multi-line comments!"
+            raise TypeError(msg)
+        super().__init__(text_child)
+
+    @override
+    def _render(self) -> str:
+        """Wraps the comment text with HTML comment delimiters.
+
+        Returns:
+            The serialized comment node.
+        """
+        return f"<!-- {self.children} -->"

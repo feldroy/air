@@ -1,4 +1,4 @@
-# Contributing to src_examples
+# Contributing to examples/src
 
 Air has a system for ensuring that its code examples:
 

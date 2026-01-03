@@ -24,12 +24,17 @@ class AirResponse(HTMLResponse):
     """Response class to handle air.tags.Tags or HTML (from Jinja2)."""
 
     @override
-    def render(self, tag: BaseTag | str) -> bytes:
-        """Render Tag elements to bytes of HTML."""
+    def render(self, tag: BaseTag | str) -> bytes | memoryview:  # ty: ignore[invalid-method-override]
+        """Render Tag elements to bytes of HTML.
+
+        Returns:
+            Rendered HTML as bytes or memoryview.
+        """
         return super().render(str(tag))
 
 
-TagResponse = AirResponse  # Alias for clarity
+TagResponse = AirResponse
+"""Alias for the `AirResponse` Response class; use it if it improves clarity."""
 
 
 class SSEResponse(StreamingResponse):
@@ -63,10 +68,13 @@ class SSEResponse(StreamingResponse):
 
         async def lottery_generator():
             while True:
-                lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
+                lottery_numbers = ", ".join(
+                    [str(random.randint(1, 40)) for x in range(6)]
+                )
                 # Tags work seamlessly
                 yield air.Aside(lottery_numbers)
-                # As do strings. Non-strings are cast to strings via the str built-in
+                # As do strings. Non-strings are cast to strings via the
+                # str built-in
                 yield "Hello, world"
                 await sleep(1)
 
@@ -99,6 +107,41 @@ class SSEResponse(StreamingResponse):
 
 
 class RedirectResponse(StarletteRedirectResponse):
+    """Response class for HTTP redirects.
+
+    Use `air.RedirectResponse` to redirect users to a different URL.
+
+    Example:
+        ```python
+        import air
+
+        app = air.Air()
+
+
+        @app.get("/old-page")
+        def old_page():
+            # Permanent redirect (301) - browsers cache this
+            return air.RedirectResponse(url="/new-page", status_code=301)
+
+
+        @app.page
+        def legacy():
+            # Using @app.page works too - redirects from /legacy
+            return air.RedirectResponse(url="/", status_code=301)
+        ```
+
+    Args:
+        url: The target URL to redirect to.
+        status_code: HTTP status code for the redirect. Defaults to 307 (Temporary Redirect).
+            Common values:
+            - 301: Permanent redirect (SEO-friendly, browsers cache)
+            - 302: Temporary redirect (traditional)
+            - 307: Temporary redirect (preserves HTTP method, default)
+            - 303: See Other (use after POST to redirect to GET)
+        headers: Optional additional headers to include in the response.
+        background: Optional background task to run after the response is sent.
+    """
+
     def __init__(
         self,
         url: str | URL,

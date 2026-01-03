@@ -19,35 +19,47 @@ from .tags import SafeStr
 
 
 class AirForm:
-    """
-    A form handler that validates incoming form data against a Pydantic model. Can be used with awaited form data or with FastAPI's dependency injection system.
+    """A form handler that validates incoming form data against a Pydantic model. Can be used with
+    awaited form data or with FastAPI's dependency injection system.
 
     Example:
+
+        from typing import Annotated
+
+        from fastapi import Depends
+        from pydantic import BaseModel
+
+        import air
+
+        app = air.Air()
+
 
         class FlightModel(BaseModel):
             flight_number: str
             destination: str
 
+
         class FlightForm(air.AirForm):
             model = FlightModel
 
+
         @app.post("/flight")
-        async def flight_form(request: air.Request):
-            "Awaited form data"
+        async def flight_form(request: air.Request) -> air.Html:
+            # Awaited form data
             flight = await FlightForm.from_request(request)
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
+            errors = len(flight.errors or [])
+            return air.Html(air.H1(air.Raw(str(errors))))
+
 
         @app.post("/flight-depends")
-        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm())]):
-            "Dependency injection"
+        async def flight_form_depends(flight: Annotated[FlightForm, Depends(FlightForm.from_request)]) -> air.Html:
+            # Dependency injection
             if flight.is_valid:
                 return air.Html(air.H1(flight.data.flight_number))
-            return air.Html(air.H1(air.Raw(str(len(flight.errors)))))
-
-
-    NOTE: This is named AirForm to avoid collisions with tags.Form
+            errors = len(flight.errors or [])
+            return air.Html(air.H1(air.Raw(str(errors))))
     """
 
     model: type[BaseModel] | None = None
@@ -68,9 +80,49 @@ class AirForm:
         return self
 
     def validate(self, form_data: dict[Any, Any] | FormData) -> bool:
+        """Validate form data against the model.
+
+        Args:
+            form_data: Dictionary or FormData containing the form fields to validate
+
+        Returns:
+            True if validation succeeds, False otherwise
+
+        Example:
+
+            import air
+
+            app = air.Air()
+
+
+            class FlightModel(air.AirModel):
+                flight_number: str
+                destination: str
+
+
+            @app.post("/flight")
+            async def submit_flight(request: air.Request) -> air.Html:
+                form_data = await request.form()
+                flight_form = FlightModel.to_form()
+
+                if flight_form.validate(form_data):
+                    # Form is valid
+                    return air.Html(
+                        air.H1("Flight Submitted"),
+                        air.P(f"Flight: {flight_form.data.flight_number}"),
+                        air.P(f"Destination: {flight_form.data.destination}"),
+                    )
+
+                # Form has errors
+                return air.Html(
+                    air.H1("Validation Failed"),
+                    air.P(f"Errors: {len(flight_form.errors or [])}"),
+                )
+        """
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
         try:
+            assert self.model is not None
             self.data = self.model(**form_data)
             self.is_valid = True
         except ValidationError as e:
@@ -79,6 +131,47 @@ class AirForm:
 
     @classmethod
     async def from_request(cls, request: Request) -> Self:
+        """Create and validate an AirForm instance from a request.
+
+        Args:
+            request: The incoming request containing form data
+
+        Returns:
+            An AirForm instance with validation results
+
+        Example:
+
+            import air
+
+            app = air.Air()
+
+
+            class FlightModel(air.AirModel):
+                flight_number: str
+                destination: str
+
+
+            FlightForm = FlightModel.to_form()
+
+
+            @app.post("/flight")
+            async def submit_flight(request: air.Request) -> air.Html:
+                flight = await FlightForm.from_request(request)
+
+                if flight.is_valid:
+                    # Form is valid
+                    return air.Html(
+                        air.H1("Flight Submitted"),
+                        air.P(f"Flight: {flight.data.flight_number}"),
+                        air.P(f"Destination: {flight.data.destination}"),
+                    )
+
+                # Form has errors
+                return air.Html(
+                    air.H1("Validation Failed"),
+                    air.P(f"Errors: {len(flight.errors or [])}"),
+                )
+        """
         form_data = await request.form()
         self = cls()
         await self(form_data=form_data)
@@ -93,10 +186,178 @@ class AirForm:
             - model: BaseModel
             - data: dict|None
             - errors:dict|None=None
+
+        Example:
+
+            from collections.abc import Sequence
+
+            from pydantic import BaseModel
+
+            import air
+            from air.forms import default_form_widget
+
+            app = air.Air()
+
+
+            class ContactModel(air.AirModel):
+                # Note: This uses `str` for email. For stricter server-side validation,
+                # you can use `EmailStr` from pydantic.
+                name: str
+                email: str
+                message: str
+
+
+            def contact_widget(
+                *,
+                model: type[BaseModel],
+                data: dict | None = None,
+                errors: list | None = None,
+                includes: Sequence[str] | None = None,
+            ) -> air.Div:
+
+                base_html = default_form_widget(
+                    model=model,
+                    data=data,
+                    errors=errors,
+                    includes=includes,
+                )
+
+                return air.Div(
+                    air.P("Custom widget wrapper"),
+                    air.Raw(base_html),
+                    class_="contact-form",
+                )
+
+
+            def get_contact_form() -> air.AirForm:
+                return ContactModel.to_form(widget=contact_widget)
+
+
+            @app.page
+            def contact(request: air.Request) -> air.Html | air.Children:
+
+                form = get_contact_form()
+
+                return air.layouts.mvpcss(
+                    air.H1("Contact Us"),
+                    air.P("This example uses a custom AirForm.widget to wrap the default form HTML."),
+                    air.Form(
+                        form.render(),
+                        air.Button("Send message", type_="submit"),
+                        method="post",
+                        action="/contact",
+                    ),
+                )
+
+
+            @app.post("/contact")
+            async def submit_contact(request: air.Request) -> air.Html:
+                form = get_contact_form()
+                form_data = await request.form()
+
+                if form.validate(form_data):
+                    return air.Html(
+                        air.H1("Thank you for your message!"),
+                        air.P("Your contact form was submitted successfully."),
+                    )
+
+                error_count = len(form.errors or [])
+                return air.Html(
+                    air.H1("Please fix the errors below."),
+                    air.P(f"Found {error_count} validation error(s)."),
+                    air.Form(
+                        form.render(),
+                        air.Button("Send message", type_="submit"),
+                        method="post",
+                        action="/contact",
+                    ),
+                )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="127.0.0.1", port=8000)
         """
         return default_form_widget
 
     def render(self) -> SafeStr:
+        """Return HTML representation of HTML widget
+
+        Example:
+
+            from pydantic import BaseModel
+
+            import air
+
+            app = air.Air()
+
+
+            class ContactModel(BaseModel):
+                # Pydantic model backing the contact form.
+
+                name: str
+                email: str
+                message: str
+
+
+            class ContactForm(air.AirForm):
+                # AirForm that uses ContactModel for validation and rendering.
+
+                model = ContactModel
+
+
+            @app.page
+            def contact(request: air.Request) -> air.Html | air.Children:
+                # Render a page with a contact form built using AirForm.render()
+                form = ContactForm()
+                return air.layouts.mvpcss(
+                    air.H1("Contact us"),
+                    air.P("This form is rendered using AirForm.render()."),
+                    air.Form(
+                        form.render(),
+                        air.Button("Send message", type_="submit"),
+                        method="post",
+                        action=submit.url(),  # type: ignore[unresolved-attribute]
+                    ),
+                )
+
+
+            @app.post("/contact")
+            async def submit(request: air.Request) -> air.Html:
+                # Handle form submission and re-render the form if there are errors.
+                form = ContactForm()
+                form_data = await request.form()
+
+                # Validate incoming form data; AirForm.render() will then include errors
+                # and preserve submitted values when re-rendered.
+                form.validate(form_data)
+
+                if form.is_valid:
+                    return air.Html(
+                        air.H1("Thank you for your message!"),
+                        air.P("Your contact form was submitted successfully."),
+                    )
+
+                error_count = len(form.errors or [])
+                return air.Html(
+                    air.H1("Please fix the errors below."),
+                    air.P(f"Found {error_count} validation error(s)."),
+                    air.Form(
+                        form.render(),
+                        air.Button("Send message", type_="submit"),
+                        method="post",
+                        action=submit.url(),  # type: ignore[unresolved-attribute]
+                    ),
+                )
+
+
+            if __name__ == "__main__":
+                import uvicorn
+
+                uvicorn.run(app, host="127.0.0.1", port=8000)
+        """
+
         # Use submitted data if available (preserves values on validation errors)
         render_data = getattr(self, "submitted_data", None) or self.initial_data
         return SafeStr(
@@ -133,7 +394,11 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
 
 
 def get_user_error_message(error: dict) -> str:
-    """Convert technical pydantic error to user-friendly message."""
+    """Convert technical pydantic error to user-friendly message.
+
+    Returns:
+        User-friendly error message string.
+    """
     error_type = error.get("type", "")
     technical_msg = error.get("msg", "")
 
@@ -163,7 +428,11 @@ def get_user_error_message(error: dict) -> str:
 
 
 def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
-    """Converts a pydantic error list to a dictionary for easier reference."""
+    """Converts a pydantic error list to a dictionary for easier reference.
+
+    Returns:
+        Dictionary mapping field names to error details.
+    """
     if errors is None:
         return {}
     return {error["loc"][0]: error for error in errors}
@@ -175,8 +444,7 @@ def default_form_widget(  # noqa: C901
     errors: list | None = None,
     includes: Sequence[str] | None = None,
 ) -> str:
-    """
-    Render a form widget for a given Pydantic model.
+    """Render a form widget for a given Pydantic model.
 
     Args:
         model: The Pydantic model class to render
@@ -186,6 +454,97 @@ def default_form_widget(  # noqa: C901
 
     Returns:
         HTML string representing the form
+
+    Example:
+
+        import air
+        from air.forms import default_form_widget
+
+        app = air.Air()
+
+
+        class FlightModel(air.AirModel):
+            flight_number: str
+            destination: str
+            passengers: int
+
+
+        @app.page
+        def index(request: air.Request) -> air.Html:
+            # Render different field groups separately using includes parameter
+            basic_info = default_form_widget(
+                model=FlightModel,
+                data={"flight_number": "AA123"},  # Pre-populate flight_number
+                includes=["flight_number", "destination"],
+            )
+
+            passenger_info = default_form_widget(
+                model=FlightModel,
+                includes=["passengers"],
+            )
+
+            return air.Html(
+                air.H1("Flight Booking"),
+                air.Form(
+                    air.Fieldset(
+                        air.Legend("Flight Information"),
+                        air.Raw(basic_info),
+                    ),
+                    air.Fieldset(
+                        air.Legend("Passenger Count"),
+                        air.Raw(passenger_info),
+                    ),
+                    air.Button("Submit", type_="submit"),
+                    method="post",
+                    action="/submit",
+                ),
+            )
+
+
+        @app.post("/submit")
+        async def submit(request: air.Request) -> air.Html:
+            form_data = await request.form()
+            flight_form = FlightModel.to_form()
+
+            if flight_form.validate(form_data):
+                return air.Html(
+                    air.H1("Flight Booked"),
+                    air.P(f"Flight: {flight_form.data.flight_number}"),
+                    air.P(f"Destination: {flight_form.data.destination}"),
+                    air.P(f"Passengers: {flight_form.data.passengers}"),
+                )
+
+            # Re-render with custom layout and errors
+            basic_info = default_form_widget(
+                model=FlightModel,
+                data=dict(form_data),
+                errors=flight_form.errors,
+                includes=["flight_number", "destination"],
+            )
+
+            passenger_info = default_form_widget(
+                model=FlightModel,
+                data=dict(form_data),
+                errors=flight_form.errors,
+                includes=["passengers"],
+            )
+
+            return air.Html(
+                air.H1("Please fix the errors"),
+                air.Form(
+                    air.Fieldset(
+                        air.Legend("Flight Information"),
+                        air.Raw(basic_info),
+                    ),
+                    air.Fieldset(
+                        air.Legend("Passenger Count"),
+                        air.Raw(passenger_info),
+                    ),
+                    air.Button("Submit", type_="submit"),
+                    method="post",
+                    action="/submit",
+                ),
+            )
     """
     error_dict = errors_to_dict(errors)
     fields = []
@@ -240,8 +599,8 @@ def default_form_widget(  # noqa: C901
                     json_schema_extra.get("label") or field_name,
                     for_=field_name,
                 ),
-                tags.Input(name=field_name, type=input_type, id=field_name, **kwargs),
-                (tags.Small(get_user_error_message(error), id=f"{field_name}-error") if error else ""),
+                tags.Input(name=field_name, type_=input_type, id_=field_name, **kwargs),
+                (tags.Small(get_user_error_message(error), id_=f"{field_name}-error") if error else ""),
             ),
         )
 
@@ -297,28 +656,93 @@ def AirField(
 
     NOTE: This is named AirField to adhere to the same naming convention as AirForm.
 
+    Returns:
+        A pydantic FieldInfo object configured with the specified parameters.
+
     Example:
 
-        class CheeseModel(BaseModel):
-            name: str = air.AirField(label="Name", autofocus=True)
-            age: int
+        from pydantic import BaseModel
 
-        class CheeseForm(air.AirForm):
-            model = CheeseModel
+        import air
 
-    Used with FastAPI's dependency injection system:
-        class CheeseModel(pydantic.BaseModel):
-            name: str
-            age: int
+        app = air.Air()
 
-        class CheeseForm(air.AirForm):
-            model = CheeseModel
 
-        @app.post("/cheese")
-        async def cheese_form(cheese: Annotated[CheeseForm, Depends(CheeseForm())]):
-            if cheese.is_valid:
-                return air.Html(air.H1(cheese.data.name))
-            return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
+        class ContactModel(BaseModel):
+            name: str = air.AirField(label="Full Name", min_length=2, max_length=50)
+            # Note: This uses `str` for email. For stricter server-side validation,
+            # you can use `EmailStr` from pydantic.
+            email: str = air.AirField(type="email", label="Email Address")
+            message: str = air.AirField(label="Message", min_length=10, max_length=500)
+            preferred_datetime: str = air.AirField(
+                type="datedatetime-local",
+                label="Preferred Date & Time",
+            )
+
+
+        class ContactForm(air.AirForm):
+            model = ContactModel
+
+
+        @app.page
+        def index(request: air.Request) -> air.Html | air.Children:
+            # Render a simple page containing the contact form.
+            form = ContactForm()
+            return air.layouts.mvpcss(
+                air.H1("Contact Form Example Using AirField"),
+                air.P("Submit the form below to see AirField + AirForm in action."),
+                air.Form(
+                    form.render(),
+                    air.Button("Submit", type_="submit"),
+                    method="post",
+                    action=submit.url(),  # ty: ignore[unresolved-attribute]
+                ),
+            )
+
+
+        @app.post("/submit")
+        async def submit(request: air.Request) -> air.Html:
+            # Handle POSTed form data and re-render with errors if invalid.
+            form = ContactForm()
+
+            # Parse form data from the incoming request and validate
+            form_data = await request.form()
+            form.validate(form_data)
+
+            if form.is_valid:
+                return air.Html(
+                    air.layouts.mvpcss(
+                        air.H1("Thanks for your message!"),
+                        air.P("Here is what you sent:"),
+                        air.Ul(
+                            air.Li(f"Name: {form.data.name}"),
+                            air.Li(f"Email: {form.data.email}"),
+                            air.Li(f"Message: {form.data.message}"),
+                            air.Li(f"Preferred Date & Time: {form.data.preferred_datetime}"),
+                        ),
+                    )
+                )
+
+            # If invalid, re-render the form with errors and values preserved
+            return air.Html(
+                air.layouts.mvpcss(
+                    air.H1("Please fix the errors below."),
+                    air.Form(
+                        form.render(),
+                        air.Button("Submit", type_="submit"),
+                        method="post",
+                        action=submit.url(),  # ty: ignore[unresolved-attribute]
+                    ),
+                )
+            )
+
+
+        if __name__ == "__main__":
+            # Run this example with:
+            #   uv run examples/src/forms__AirField.py
+            import uvicorn
+
+            uvicorn.run(app, host="127.0.0.1", port=8000)
     """
     schema_extra: dict[str, JsonValue] = json_schema_extra or {}
     if type:

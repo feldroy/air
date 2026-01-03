@@ -27,15 +27,19 @@ app = air.Air()
 
 
 @app.get("/")
-async def show_form():
-    """Show the form initially."""
+async def show_form() -> air.Html | air.Children:
+    """Show the form initially.
+
+    Returns:
+        HTML page with the contact form.
+    """
     contact_form = ContactModel.to_form()
     return air.layouts.picocss(
         air.Title("Enhanced Form Errors Demo"),
         air.H1("Contact Form - Error Message Demo"),
         air.Form(
             contact_form.render(),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
         ),
@@ -43,8 +47,12 @@ async def show_form():
 
 
 @app.post("/submit")
-async def handle_form(request: air.Request):
-    """Handle form submission and show errors."""
+async def handle_form(request: air.Request) -> air.Html | air.Children:
+    """Handle form submission and show errors.
+
+    Returns:
+        HTML page with form validation results or success message.
+    """
     contact_form = ContactModel.to_form()
     form = await contact_form.from_request(request)
 
@@ -65,7 +73,7 @@ async def handle_form(request: air.Request):
         air.Form(
             form.render(),
             air.Br(),
-            air.Button("Submit", type="submit"),
+            air.Button("Submit", type_="submit"),
             method="post",
             action="/submit",
         ),

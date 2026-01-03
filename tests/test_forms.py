@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Annotated, cast
 
 import annotated_types
@@ -44,7 +45,7 @@ def test_form_validation_dependency_injection() -> None:
     @app.post("/cheese")
     async def cheese_form(
         cheese: Annotated[CheeseForm, Depends(CheeseForm.from_request)],
-    ):
+    ) -> air.Html:
         if cheese.is_valid:
             data = cast(CheeseModel, cheese.data)
             return air.Html(air.H1(data.name))
@@ -77,7 +78,7 @@ def test_form_validation_in_view() -> None:
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(request: Request):
+    async def cheese_form(request: Request) -> air.Html:
         cheese = await CheeseForm.from_request(request)
         if cheese.is_valid:
             data = cast(CheeseModel, cheese.data)
@@ -145,7 +146,7 @@ def test_form_render_in_view() -> None:
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(request: Request):
+    async def cheese_form(request: Request) -> air.Form:
         cheese = CheeseForm()
         return air.Form(cheese.render())
 
@@ -303,7 +304,7 @@ def test_field_includes() -> None:
     assert '<label for="id">id</label><input name="id" type="number" required id="id">' not in html
 
 
-def test_default_form_widget_basic():
+def test_default_form_widget_basic() -> None:
     """
     Test that the default form widget is applied correctly to all fields in a form.
     """
@@ -324,7 +325,7 @@ def test_default_form_widget_basic():
     assert "<small" not in html
 
 
-def test_default_form_widget_with_data():
+def test_default_form_widget_with_data() -> None:
     """
     Test form widget with pre-populated data.
     """
@@ -339,7 +340,7 @@ def test_default_form_widget_with_data():
     assert 'value="27"' in html
 
 
-def test_default_form_widget_with_errors():
+def test_default_form_widget_with_errors() -> None:
     """
     Test form widget rendering with validation errors.
     """
@@ -361,7 +362,7 @@ def test_default_form_widget_with_errors():
     assert "Please enter a valid number." in html
 
 
-def test_default_form_widget_bool_field():
+def test_default_form_widget_bool_field() -> None:
     """Test form widget with boolean field."""
 
     class TestModel(BaseModel):
@@ -371,7 +372,7 @@ def test_default_form_widget_bool_field():
     assert 'type="checkbox"' in html
 
 
-def test_default_form_widget_includes():
+def test_default_form_widget_includes() -> None:
     """Test form widget with includes."""
 
     class TestModel(BaseModel):
@@ -391,7 +392,7 @@ def test_default_form_widget_includes():
     assert '<input name="age" type="number" required id="age">' in html
 
 
-def test_default_form_widget_optional_fields():
+def test_default_form_widget_optional_fields() -> None:
     """Test form widget with optional fields."""
 
     class AnotherInterestingTestModel(BaseModel):
@@ -404,7 +405,7 @@ def test_default_form_widget_optional_fields():
     assert "required" not in html
 
 
-def test_default_form_widget_custom_label():
+def test_default_form_widget_custom_label() -> None:
     """Test form widget with custom label via json_schema_extra."""
 
     class CustomLabelTestModel(BaseModel):
@@ -414,7 +415,7 @@ def test_default_form_widget_custom_label():
     assert '<label for="name">Full Name</label>' in html
 
 
-def test_default_form_widget_autofocus():
+def test_default_form_widget_autofocus() -> None:
     """Test form widget with autofocus attribute via json_schema_extra."""
 
     class AutofocusTestModel(BaseModel):
@@ -503,8 +504,10 @@ def test_html5_validation_optional_fields() -> None:
     html = OptionalForm().render()
 
     # Only the name field should have required attribute
-    assert 'name="name"' in html and "required" in html
-    assert 'name="nickname"' in html and '<input name="nickname" type="text" id="nickname">' in html
+    assert 'name="name"' in html
+    assert "required" in html
+    assert 'name="nickname"' in html
+    assert '<input name="nickname" type="text" id="nickname">' in html
 
 
 def test_html5_validation_with_standard_field() -> None:
@@ -609,14 +612,21 @@ def test_air_to_form_generation_with_includes() -> None:
     html = autoform.render()
     assert 'name="id"' not in html
     assert 'for="id"' not in html
-    assert "name" in html and "age" in html
+    assert "name" in html
+    assert "age" in html
 
 
 def test_air_to_form_generation_with_custom_widget() -> None:
     class AutoModel(air.AirModel):
         name: str
 
-    def custom_widget(*, model, data, errors, includes):
+    def custom_widget(
+        *,
+        model: type[BaseModel],
+        data: dict | None = None,
+        errors: list | None = None,
+        includes: Sequence[str] | None = None,
+    ) -> str:
         return "<custom>"
 
     autoform = AutoModel.to_form(widget=custom_widget)

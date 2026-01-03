@@ -1,544 +1,172 @@
 # region ----> project <----
 [project]
 name = "air"
-version = "0.40.0"
+version = "0.44.0"
 description = "The new Python web framework by the authors of Two Scoops of Django. Built with FastAPI, Starlette, and Pydantic."
+readme = "README.md"
+requires-python = ">=3.13,<3.15"
+license = { file = "LICENSE" }
 authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
-readme = "README.md"
-license = { file = "LICENSE" }
-requires-python = ">=3.13,<3.15"
-urls.Homepage = "https://github.com/feldroy/air"
-urls.Docs = "https://feldroy.github.io/air/"
-urls.Issues = "https://github.com/feldroy/air/issues"
-urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
-
+maintainers = [{ name = "pygarap", email = "pygarap@gmail.com" }]
+keywords = [
+    "air",
+    "air-tags",
+    "api",
+    "async",
+    "backend",
+    "css",
+    "fastapi",
+    "fasthtml",
+    "framework",
+    "frontend",
+    "fullstack",
+    "html",
+    "javascript",
+    "jinja",
+    "jinja2",
+    "openapi",
+    "pydantic",
+    "python",
+    "rest",
+    "restapi",
+    "restful",
+    "server",
+    "templates",
+    "uvicorn",
+    "web",
+]
 classifiers = [
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python",
-    "Topic :: Internet",
-    "Topic :: Software Development :: Libraries :: Application Frameworks",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-    "Topic :: Software Development :: Libraries",
-    "Topic :: Software Development",
-    "Typing :: Typed",
     "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "Framework :: FastAPI",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: OS Independent",
+    "Operating System :: Unix",
+    "Programming Language :: JavaScript",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Internet :: WWW/HTTP :: WSGI",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
+    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
 ]
-
+urls.Changelog = "https://github.com/feldroy/air/blob/main/CHANGELOG.md"
+urls.Docs = "https://feldroy.github.io/air/"
+urls.Homepage = "https://github.com/feldroy/air"
+urls.Issues = "https://github.com/feldroy/air/issues"
+urls.Repository = "https://github.com/feldroy/air"
+urls.Sponsor = "https://github.com/sponsors/feldroy"
+scripts.air = "air.cli:main"
 dependencies = [
-    "fastapi>=0.119.1",
-    "itsdangerous>=2.2.0",
     "Jinja2>=3.1.6",
+    "fastapi>=0.125.0",
+    "frozendict>=2.4.7",
+    "itsdangerous>=2.2.0",
+    "lxml>=6.0.1",
+    "minify-html>=0.18.1",
+    "nh3>=0.3.2",
+    "pygments>=2.19.2",
     "python-multipart>=0.0.20",
+    "rich>=14.2.0",
+    "selectolax>=0.4.6",
+    "typer>=0.19.1",
+    "uvicorn>=0.34.0",
 ]
 # endregion project
 
 # region ----> dependencies <----
 # Runtime extras you want users to install from PyPI
 [project.optional-dependencies]
-# Make `air[standard]` install FastAPI’s own “standard” extras,
-# so *users* can do: uv pip install "air[standard]".
+# Make `air[standard]` install FastAPI’s “standard” extras so users can run: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
     "fastapi[standard]>=0.119.1",
 ]
-# Add a "pretty" extra for tree-formatted HTML support
-pretty = [
-    "lxml>=6.0.1",
-    "rich>=12.6.0",
-]
-# Used for interacting with sqlmodel and sqlalchemy
-sqlmodel = [
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
-    "sqlmodel>=0.0.24", # Bridge between SQLAlchemy and Pydantic
-]
-# Used for authentication
-auth = [
-    "authlib>=1.6.3", # OAuth clients
-]
-# All optional packages (combined list of every extra above, except 'standard')
-all = [
-    "lxml>=6.0.1",
-    "rich>=12.6.0",
-    "greenlet>=3.2.4",
-    "sqlmodel>=0.0.24",
-    "authlib>=1.6.3",
-]
 
-# Groups are for contributors; install with: uv sync --group NAME
-# Developer-only deps under [dependency-groups],
-# so uv sync can install them for contributors.
-# (Groups are not published to PyPI (meaning: they’re not visible to end users).)
+# Contributor-only groups under [dependency-groups]; install via uv sync --group NAME (not published to PyPI).
 [dependency-groups]
 # umbrella group that pulls in all dev-time groups
 dev = [
-    { include-group = "devtools" }, # core developer tools
-    { include-group = "lint" }, # linting and type-checking toolchain
-    { include-group = "test" }, # test runner and helpers
-    { include-group = "docs" }, # documentation build toolchain
+    { include-group = "devtools" },
+    { include-group = "docs" },
+    { include-group = "lint" },
+    { include-group = "test" },
 ]
-devtools = [
-    "rust-just>=1.42.3", # Justfile tasks
-    "uvicorn>=0.34.0", # run full example apps
-    "rich-cli>=1.8.1", # Command Line Interface to Rich
-    "typer>=0.19.1" # For running of scripts
+devtools = []
+docs = [
+    "click==8.3.1", # Necessary to allow live reload to work
+    "mkdocs>=1.6.1", # Static site generator for project documentation
+    "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
+    "mkdocs-exclude>=1.0.2", # Plugin to exclude files from MkDocs build
+    "mkdocs-jupyter>=0.25.1",
+    "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
+    "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
+    "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
+    "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
+    "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
 ]
 lint = [
-    "codespell>=2.4.1",
+    "prek>=0.2.24",
     "pyrefly>=0.29.1", # A fast type checker
     "ruff>=0.11.13", # Linting and formatting
     "ty>=0.0.1a16", # for checking types
     "types-Markdown>=3.8.0", # Types for the markdown library
+    "types-lxml>=2025.11.25",
+    "types-pygments>=2.19.0.20251121",
     "typos>=1.38.1",
 ]
 test = [
-    "aiosqlite>=0.21.0",
     "coverage[toml]>=7.8.2", # Measure how much of the code is covered by tests
-    "greenlet>=3.2.4", # Dependency for SQLAlchemy to run async
-    "httpx>=0.28.1", # For the test client
-    "pytest>=8.4.0", # The pytest framework
-    "pytest-cov>=6.2.1", # Pytest plugin for measuring coverage.
-    "pytest-pretty>=1.3.0", # Provides richer test session output.
-    "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
-    "pytest-asyncio>=1.1.0", # Adds asyncio support for pytest
     "diff-cover>=9.6.0", # Run coverage and linting reports on diffs
-    "pytest-benchmark>=5.1.0",
-    "pytest-env>=1.1.5", # for setting env vars in tests
+    "full-match>=0.0.3",
+    "httpx>=0.28.1", # For the test client
     "pyinstrument>=5.1.1",
-    "sqlmodel>=0.0.24",
-]
-docs = [
-    "greenlet>=3.2.4",
-    "mkdocs-material[imaging]>=9.6.17", # MkDocs theme
-    "mkdocstrings[python]>=0.30.0", # generate API docs from docstrings automatically
-    "mkdocs-autorefs>=1.4.2", # automatic cross-references between pages
-    "mkdocs>=1.6.1", # Static site generator for project documentation
-    "mkdocs-exclude>=1.0.2", # Plugin to exclude files from MkDocs build
-    "mkdocs-llmstxt>=0.3.1", # Plugin for embedding LLM-readable text
-    "mkdocs-redirects>=1.2.2", # Plugin to create redirects between pages
-    "mkdocstrings-python>=1.16.12", # Python handler for mkdocstrings
-    "mkdocs-jupyter>=0.25.1", # Use Jupyter Notebook in mkdocs
-    "sqlmodel>=0.0.24",
+    "pytest>=9.0.2", # The pytest framework
+    "pytest-asyncio>=1.3.0", # Adds asyncio support for pytest
+    "pytest-benchmark>=5.2.3",
+    "pytest-cov>=7.0.0", # Pytest plugin for measuring coverage.
+    "pytest-env>=1.2.0", # for setting env vars in tests
+    "pytest-github-actions-annotate-failures>=0.3.0", # Annotates test failures in GitHub Actions logs
+    "pytest-pretty>=1.3.0", # Provides richer test session output.
 ]
 # endregion dependencies
 
-# region ----> uv <----
-
-# uv’s own config block for this project (not PyPI metadata).
-[tool.uv]
-required-version = ">=0.8.0"
-# Whether to enable experimental, preview features.
-preview = true
-# Treat this repo as an installable *package*, not just a “virtual” project.
-# Result: `uv sync` / `uv run` will install *this library itself* into the venv in
-# editable (meaning: linked to your working tree) mode, not only its dependencies.
-# This enables entry points (meaning: auto-created CLI scripts), plugin discovery,
-# and proper distribution metadata (meaning: standard package info used by tools).
-package = true
-
-# Use uv’s default: include the "dev" group by default.
-# 'uv run' will auto-install and use dev (unless you choose groups yourself).
-# 'uv sync' also includes dev by default; change this by passing explicit --group flags.
-default-groups = ["dev"]
-# ---------------------------------------------------------------------------
-# OPTION FOR LATER (comments only; not active):
-# Disable uv's implicit dev default (the default is default-groups = ["dev"]).
-# Ensure 'uv run' will not auto-install dev; it will only use groups you pass.
-# 'uv sync' can still add dev with: --group dev
-# To enable this option, set:
-# default-groups = []
-# ---------------------------------------------------------------------------
-
-# Cache “hints” you (or CI) can hash to decide when to rebuild an editable install
-# or reuse a cached environment. uv doesn’t read these at runtime; they’re for automation
-# (meaning: your own scripts/CI pipelines).
-cache-keys = [
-    { file = "pyproject.toml" }, # Rebuild if project config changes.
-    { file = "uv.lock" }, # Rebuild if exact dependency versions change.
-    { dir = "src" }, # Rebuild on library source edits.
-    { dir = "tests" }, # Rebuild on test edits (keeps test env fresh).
-    { file = "README.md" }, # Rebuild if docs used in build change.
-]
-
-# Declare rules that block certain dependency combos,
-# This lets one lockfile cover both setups while resolving them separately.
-conflicts = [
-    # Block installing the "standard" extra (air[standard] → fastapi[standard]),
-    # together with the "devtools" group (contains rich-cli)
-    [{ extra = "standard" }, { group = "devtools" }],
-]
-
-# uv group metadata (constraints, conflicts) — disabled for now
-# Dev tools may require modern Python, while the library itself can support older
-# versions. This avoids installing heavy tooling on older interpreters used only
-# to consume the library.
-#[tool.uv.dependency-groups]
-#dev = { requires-python = ">=3.13" }
-
-# Control where uv resolves packages from.
-[tool.uv.sources]
-# Always use the local workspace copy of "air" instead of a PyPI release.
-# In mono-repo (meaning: multiple projects in one repo) or local dev, this guarantees
-# uv uses your checked-out code.
-air = { workspace = true }
-# -------- uv build backend --------
-# PEP 517/518: tells installers (pip/uv) how to build/install this project.
-# For Python libraries, an editable install is the standard:
-# it enables scripts, plugins, metadata, compiled code, and proper src/ behavior.
-# uv follows these standards and installs your package by default, ensuring everything “just works.”
+# region ----> build-system <----
+# PEP 517/518: tells pip/uv how to build/install; uv installs your package (editable).
 [build-system]
-# Ensure the chosen backend is present. A version range keeps CI reproducible
-# (meaning: stable over time) while allowing safe updates.
+# Ensure the chosen backend is available; a version range keeps CI reproducible while allowing safe updates.
 requires = ["uv_build>=0.9.0,<0.10.0"]
-# Use uv’s build backend. It is fast and strict, supports PEP 660 editable installs,
-# and produces correct distribution metadata for tooling.
+# Use uv’s build backend: fast and strict, supports PEP 660 editable installs, and produces correct tooling metadata.
 build-backend = "uv_build"
-# Settings specific to uv_build.
-[tool.uv.build-backend]
-# Declare the “src/” layout so imports come from the installed package, not the repo root.
-# Prevents path leaks (meaning: accidental local imports) and matches end-user installs.
-module-root = "src"
-# The single top-level package name under ./src. The backend validates this structure
-# to catch layout mistakes early.
-module-name = "air"
-
-# endregion uv
-
-# region ----> ruff <----
-[tool.ruff]
-# Enforce a requirement on the version of Ruff, to enforce at runtime.
-# If the version of Ruff does not meet the requirement, Ruff will exit with an error.
-required-version = ">=0.13.3"
-# Enable preview features.
-preview = true
-# Enumerate all fixed violations.
-show-fixes = true
-# Enable application of unsafe fixes.
-# If excluded, a hint will be displayed when unsafe fixes are available.
-# If set to false, the hint will be hidden.
-unsafe-fixes = false
-# Keep file discovery identical whether you pass "." or not
-respect-gitignore = true  # default, shown for clarity
-force-exclude = true      # apply excludes even for explicit paths like "."
-src = ["src"]
-line-length = 120
-indent-width = 4
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".git",
-    ".github",
-    ".pytest_cache",
-    ".ruff_cache",
-    ".venv",
-    ".vscode",
-    ".cursor",
-    ".idea",
-    "__pypackages__",
-    "build",
-    "dist",
-    "site-packages",
-    "docs"
-]
-
-[tool.ruff.format]
-indent-style = "space"   # match EditorConfig
-line-ending = "lf"       # enforce LF newlines
-quote-style = "double"   # keep quotes in sync with flake8-quotes
-# Docstring code formatting
-docstring-code-format = true # format Python code blocks in docstrings
-docstring-code-line-length = "dynamic" # int | "dynamic" (used only if above is true)
-# Trailing-comma behavior (Black's “magic comma”)
-skip-magic-trailing-comma = false # leave multi-line when trailing comma present
-# Formatter-only file excludes (extra to top-level exclude/extend-exclude)
-exclude = []
-# Opt into preview (experimental) formatting style
-preview = true
-
-[tool.ruff.lint]
-# Opt into preview (experimental) linting style
-preview = true
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-select = [
-    # TODO -> Uncomment all commented prefix
-    # prefix
-    "ERA", # https://docs.astral.sh/ruff/rules/#eradicate-era
-    "FAST", # https://docs.astral.sh/ruff/rules/#fastapi-fast
-    "ANN", # https://docs.astral.sh/ruff/rules/#flake8-annotations-ann
-    "ASYNC", # https://docs.astral.sh/ruff/rules/#flake8-async-async
-    #    "S",      # https://docs.astral.sh/ruff/rules/#flake8-bandit-s
-    "BLE", # https://docs.astral.sh/ruff/rules/#flake8-blind-except-ble
-    "FBT", # https://docs.astral.sh/ruff/rules/#flake8-boolean-trap-fbt
-    "B", # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
-    #    "A",      # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
-    "C4", # https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
-    "EM", # https://docs.astral.sh/ruff/rules/#flake8-errmsg-em
-    #    "FIX",    # https://docs.astral.sh/ruff/rules/#flake8-fixme-fix
-    "FA", # https://docs.astral.sh/ruff/rules/#flake8-future-annotations-fa
-    "ISC", # https://docs.astral.sh/ruff/rules/#flake8-implicit-str-concat-isc
-    "INP", # https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
-    "PIE", # https://docs.astral.sh/ruff/rules/#flake8-pie-pie
-    "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
-    #    "PT", # https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
-    "RSE", # https://docs.astral.sh/ruff/rules/#flake8-raise-rse
-    "RET", # https://docs.astral.sh/ruff/rules/#flake8-return-ret
-    "SIM", # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
-    #    "SLOT", # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
-    #    "ARG",    # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
-    "PTH", # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
-    "FLY", # https://docs.astral.sh/ruff/rules/#flynt-fly
-    "I", # https://docs.astral.sh/ruff/rules/#isort-i
-    "C90", # https://docs.astral.sh/ruff/rules/#mccabe-c90
-    #    "N", # https://docs.astral.sh/ruff/rules/#pep8-naming-n
-    "PERF", # https://docs.astral.sh/ruff/rules/#perflint-perf
-    "E", "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
-    #    "DOC",    # https://docs.astral.sh/ruff/rules/#pydoclint-doc
-    #    "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
-    "F", # https://docs.astral.sh/ruff/rules/#pyflakes-f
-    "PGH", # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
-    #    "PL",     # https://docs.astral.sh/ruff/rules/#pylint-pl
-    "PLC", # https://docs.astral.sh/ruff/rules/#convention-plc
-    "UP", # https://docs.astral.sh/ruff/rules/#pyupgrade-up
-    "FURB", # https://docs.astral.sh/ruff/rules/#refurb-furb
-    "RUF", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
-    "TRY", # https://docs.astral.sh/ruff/rules/#tryceratops-try
-    # Full rule code
-    "ICN003", # https://docs.astral.sh/ruff/rules/banned-import-from
-    "TC004", # https://docs.astral.sh/ruff/rules/runtime-import-in-type-checking-block
-    "TC005", # https://docs.astral.sh/ruff/rules/empty-type-checking-block
-    "TC008", # https://docs.astral.sh/ruff/rules/quoted-type-alias
-    "TC010", # https://docs.astral.sh/ruff/rules/runtime-string-union
-]
-ignore = [
-    "D100", # ignore missing docstring in module
-    "D102", # ignore missing docstring in public method
-    "D104", # ignore missing docstring in public package
-    "D105", # ignore missing docstring in magic methods
-    "D107", # ignore missing docstring in __init__ methods
-    "D206", # docstring-tab-indentation (formatter handles indentation)
-    "D300", # triple-single-quotes (formatter enforces double quotes)
-    "ERA001", # commented-out code
-    "PLC0414", # keep explicit alias
-    # TODO -> Remove the rules below this line
-    "E501", # Line too long
-    "PGH004", # Use specific rule codes when using `noqa` or `ruff: noqa`
-    "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
-    "W505", # Doc line too long
-    "FURB189", # Subclassing `str` can be error prone, use `collections.UserString` instead
-    "ANN001", # https://docs.astral.sh/ruff/rules/missing-type-function-argument
-    "ANN201", # https://docs.astral.sh/ruff/rules/missing-return-type-undocumented-public-function
-    "ANN202", # https://docs.astral.sh/ruff/rules/missing-return-type-private-function
-    "ANN401", # https://docs.astral.sh/ruff/rules/any-type
-]
-
-# A list of mappings from file pattern to rule codes or prefixes to exclude,
-# when considering any matching files. An initial '!' negates the file pattern.
-[tool.ruff.lint.per-file-ignores]
-"examples/html_sample.py" = [
-    "F403", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star
-    "F405", # https://docs.astral.sh/ruff/rules/undefined-local-with-import-star-usage
-]
-"examples/**.py" = [
-    "T20", # https://docs.astral.sh/ruff/rules/#flake8-print-t20
-]
-"src_examples/dependencies___is_htmx_request.py" = ["FBT001"]
-"scripts/copy_src_example_to_callable.py" = ["C901"]
-"src/air/tags/utils.py" = ["PLC0415"]
-"src/air/tags/models/base.py" = ["PLC0415"]
-"tests/test_templating.py" = ["PLC2701"]
-"tests/test_responses.py" = ["PLC0415"]
-
-[tool.ruff.lint.flake8-import-conventions]
-# Declare the banned `from` imports.
-banned-from = []
-
-[tool.ruff.lint.isort]
-combine-as-imports = true     # group aliases coming from the same module
-force-wrap-aliases = true     # keep the multi-line, parenthesised layout
-# Help Ruff classify your own package as first-party (very important for stable sorting)
-known-first-party = ["air"]
-# Extra safety: mark imports from the same package as first-party when inside it
-detect-same-package = true
-# Keep the standard section order; set explicitly for clarity
-section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
-# Keep type-based ordering (default, but set explicitly)
-order-by-type = true
-# Do NOT set these (formatter conflicts):
-# force-single-line, lines-after-imports, lines-between-types, split-on-trailing-comma
-
-[tool.ruff.lint.pycodestyle]
-ignore-overlong-task-comments = true
-max-doc-length = 120
-max-line-length = 120
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
-[tool.ruff.lint.mccabe]
-max-complexity = 10  # set the C901 threshold explicitly
-
-[tool.ruff.lint.flake8-type-checking]
-# Do NOT auto-quote annotations; prefer normal annotations.
-quote-annotations = false
-# These must exist at runtime (annotations are read/used), so don't gate their imports
-runtime-evaluated-base-classes = [
-    "pydantic.BaseModel",
-]
-runtime-evaluated-decorators = [
-    "dataclasses.dataclass",
-    "pydantic.validate_call",
-    "fastapi.FastAPI.get",
-]
-# Modules that are always safe to import (never gate)
-exempt-modules = ["typing", "typing_extensions"]
-# endregion ruff
-
-# region ----> ty <----
-[tool.ty.src]
-# Lock what gets checked so "ty check" and "ty check ." act the same
-include = ["src", "tests", "examples", "docs"] # keep discovery stable
-# Keep Ty aligned with .gitignore and friends (default = true; shown for clarity).
-respect-ignore-files = true
-
-[tool.ty.environment]
-# Make first-party resolution stable and priority-ordered.
-root = ["./src", "."]
-# Freeze analysis semantics across dev/CI.
-# If your project table already has `requires-python`, Ty will infer the min;
-# setting explicitly keeps things deterministic.
-python-version = "3.14"
-# For cross-platform libraries, analyze as if code may run anywhere.
-python-platform = "all"
-
-[tool.ty.terminal]
-# Fail the run on any warning.
-error-on-warning = true
-# Verbose output; switch to "concise" when you want minimal output.
-output-format = "full"
-
-# Promote every non-error rule to error (strict).
-[tool.ty.rules]
-# Defaults = warn:
-ambiguous-protocol-member = "error"      # https://docs.astral.sh/ty/reference/rules/#ambiguous-protocol-member
-deprecated = "error"                     # https://docs.astral.sh/ty/reference/rules/#deprecated
-invalid-ignore-comment = "error"         # https://docs.astral.sh/ty/reference/rules/#invalid-ignore-comment
-possibly-missing-attribute = "error"     # https://docs.astral.sh/ty/reference/rules/#possibly-missing-attribute
-possibly-missing-implicit-call = "error" # https://docs.astral.sh/ty/reference/rules/#possibly-missing-implicit-call
-possibly-missing-import = "error"        # https://docs.astral.sh/ty/reference/rules/#possibly-missing-import
-redundant-cast = "error"                 # https://docs.astral.sh/ty/reference/rules/#redundant-cast
-undefined-reveal = "error"               # https://docs.astral.sh/ty/reference/rules/#undefined-reveal
-unknown-rule = "error"                   # https://docs.astral.sh/ty/reference/rules/#unknown-rule
-unresolved-global = "error"              # https://docs.astral.sh/ty/reference/rules/#unresolved-global
-unsupported-base = "error"               # https://docs.astral.sh/ty/reference/rules/#unsupported-base
-useless-overload-body = "error"          # https://docs.astral.sh/ty/reference/rules/#useless-overload-body
-# Defaults = ignore:
-division-by-zero = "error"               # https://docs.astral.sh/ty/reference/rules/#division-by-zero
-possibly-unresolved-reference = "error"  # https://docs.astral.sh/ty/reference/rules/#possibly-unresolved-reference
-unused-ignore-comment = "error"          # https://docs.astral.sh/ty/reference/rules/#unused-ignore-comment
-
-# Tests often import optional dev deps or use dynamic patterns.
-[[tool.ty.overrides]]
-include = ["tests/**", "**/test_*.py", "**/*_test.py"]
-[tool.ty.overrides.rules]
-# TODO -> Remove all error code below
-unresolved-import = "ignore"
-possibly-unresolved-reference = "ignore"
-invalid-argument-type = "ignore"
-too-many-positional-arguments = "ignore"
-unresolved-attribute = "ignore"
-possibly-missing-attribute = "ignore"
-# endregion ty
-
-# region ----> pyrefly <----
-[tool.pyrefly]
-# keep discovery stable
-project-includes = ["src", "tests", "examples", "docs"]
-project-excludes = [
-    "**/__pycache__",
-    "**/*venv/**/*",
-]
-use-ignore-files = true
-#### configuring what to type check and where to import from
-search-path = ["src", "docs"]
-python-version = "3.14"
-# Keep resolution stable
-disable-search-path-heuristics = true
-# Should Pyrefly ignore errors based on annotations from other tools,
-# pyre-ignore or # mypy: ignore? By default, respects # pyrefly: ignore and # type: ignore.
-permissive-ignores = true
-# When the table is empty, all errors are enabled by default
-# setting <error-code> = true is the same as having no error code configuration present,
-# which means the error will be shown. Setting <error-code> = false,
-# will disable the error for type checking.
-[tool.pyrefly.errors]
-# TODO -> Remove all error code below
-bad-override = false
-no-matching-overload = false
-not-callable = false
-bad-assignment = false
-bad-argument-type = false
-bad-return = false
-not-iterable = false
-bad-unpacking = false
-bad-index = false
-missing-import = false
-implicit-import = false
-bad-argument-count = false
-bad-param-name-override = false
-missing-attribute = false
-
-# endregion pyrefly
+# endregion build-system
 
 # region ----> pytest <----
-[tool.pytest.ini_options]
-# Keep imports simple (src/ layout)
-pythonpath = ["src"]
-# Only look here for tests
-testpaths = ["tests", "src_examples"]
-# Fail on most warnings
-filterwarnings = [
-    # TODO: restore failing of all warnings after
-    #       air.ext.sqlmodel is extracted
-    # "error", # equals: -W error 
-    "ignore::DeprecationWarning:air\\.ext\\.sqlmodel"
-]  
-# pytest-asyncio
-asyncio_mode = "auto"
-# Custom markers
-markers = [
-    "memory: marks tests as memory-focused (deselect with '-m \"not memory\"')"
-]
-addopts = [
-    "--color=yes",
-    "--cov-context=test", # record per-test contexts
-    "--cov-config=pyproject.toml", # be explicit about the config source
-    # TODO -> Uncomment this line, when https://github.com/ipython/ipython/issues/14620 is solved:
-    # "--pdbcls=IPython.terminal.debugger:Pdb",
-]
-# Set the directory basename patterns to avoid when recursing for test discovery.
-# The individual (fnmatch-style) patterns are applied to the basename of a directory,
-# to decide if to recurse into it.
-norecursedirs = [
-    "tests/benchmarks",
-    "tests/templates",
-]
-
-[tool.pytest_env]
-# Test value for the SUPER_SECRET_KEY environment variable
-DATABASE_URL = "sqlite:///:memory:"
-
 [tool.coverage.run]
-source = ["src"]
+source = ["src", "scripts"]
 branch = true
 parallel = true
 sigterm = true
@@ -555,8 +183,8 @@ precision = 0
 sort = "miss"
 exclude_lines = [
     # Pragmas explicitly telling Coverage to skip:
-    'pragma: no cover', # skip lines marked not to cover
-    'pragma: lax no cover', # skip lines marked lax not to cover
+    "pragma: no cover", # skip lines marked not to cover
+    "pragma: lax no cover", # skip lines marked lax not to cover
     # TYPE_CHECKING guards:
     '^\s*if\s+TYPE_CHECKING\s*:', # runtime-false typing gate
     '^\s*if\s+typing\.TYPE_CHECKING\s*:', # runtime-false typing gate (qualified)
@@ -565,10 +193,10 @@ exclude_lines = [
     '^\s*from\s+\S+\s+import\s+', # from-import lines
     # Typing/decorators/protocol markers:
     '^\s*from\s+__future__\s+import\s+annotations\s*$', # future annotations import
-    '@overload', # typing overload stub
+    "@overload", # typing overload stub
     '@typing\.overload', # typing overload stub (qualified)
-    '@abstractmethod', # abstract method decorator
-    '@deprecated', # deprecated decorator marker
+    "@abstractmethod", # abstract method decorator
+    "@deprecated", # deprecated decorator marker
     '\(Protocol\):$', # Protocol base class line
     # Typing helpers and asserts:
     '^\s*typing\.cast\(', # typing cast helper
@@ -589,7 +217,7 @@ exclude_lines = [
     '^\s*\.\.\.\s*(#.*)?$', # bare ellipsis
     '^\s*return\s+\.\.\.\s*(#.*)?$', # return ellipsis
     '^\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*[^=]+=\s*\.\.\.\s*$', # annotated ellipsis assignment
-    '^\s*(?:async\s+)?def\s+\w+\s*\(.*\)\s*(?:->[^:]+)?\s*:\s*\.\.\.$'  # function body ellipsis
+    '^\s*(?:async\s+)?def\s+\w+\s*\(.*\)\s*(?:->[^:]+)?\s*:\s*\.\.\.$', # function body ellipsis
 ]
 
 [tool.coverage.html]
@@ -601,61 +229,43 @@ output = "coverage.xml" # default “coverage.xml”
 # Helpful for path normalization across OS/CI workers
 [tool.coverage.paths]
 source = ["src"]
+
+[tool.pytest_env]
+# Test value for the SUPER_SECRET_KEY environment variable
+DATABASE_URL = "sqlite:///:memory:"
 # endregion pytest
 
-# region ----> spell checker <----
-[tool.codespell]
-# Fail loud: print everything
-quiet-level = 0
-count = false
-summary = false
-interactive = 0
-enable-colors = true
-# Check more things
-check-filenames = true
-check-hidden = true
-hard-encoding-detection = true
-# Use extra built-in dictionaries for stricter wording
-builtin = 'clear,rare,usage,informal,names,code'
-# Avoid noisy or binary paths, but keep the set lean so we still catch issues
-skip = '''
-.idea,.git,.svn,.hg,.tox,.venv,venv,node_modules,dist,build,.mypy_cache,.pytest_cache,.ruff_cache,
-coverage*,target,out,*.toml,*.png,*.jpg,*.jpeg,*.gif,*.bmp,*.ico,*.svg,*.pdf,*.zip,*.gz,*.tgz,
-*.bz2,*.xz,*.7z,*.min.js,*.min.css,*.lock,*.pyc,.DS_Store,.coverage,.cov_html,.benchmarks,.cache
-'''
-# Ignore typos inside URLs/emails to avoid breaking links
-uri-ignore-words-list = '*'
-# Your project-specific words (file: one word per line)
-ignore-words = '.codespellignore'
-# Ignore Markdown bolding forms like **L**anguage
-ignore-regex = '\*\*[A-Z]\*\*[a-z]+\b'
-# Skip fenced code blocks in Markdown (reduces false positives)
-ignore-multiline-regex = '```.*?```'
-
-[tool.typos]
-# Strict, safe config for English repositories
-[tool.typos.files]
-ignore-hidden = false                # check dotfiles too
-ignore-files = true                  # respect .gitignore etc.
-ignore-dot = true                    # respect .ignore
-ignore-vcs = true                    # skip .git/
-ignore-global = true                 # respect global ignores
-ignore-parent = true                 # respect parent ignores
-extend-exclude = [
-    ".git", ".svn", ".hg",
-    ".tox", ".venv", "venv",
-    "node_modules", "dist", "build", "target", "out",
-    ".mypy_cache", ".pytest_cache", ".ruff_cache", "coverage*",
-    "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.ico", "*.svg",
-    "*.pdf", "*.zip", "*.gz", "*.tgz", "*.bz2", "*.xz", "*.7z",
-    "*.min.js", "*.min.css", "*.map", "*.lock", "*.pyc"
+# region ----> uv <----
+# uv - An extremely fast Python package and project manager, written in Rust.
+# https://docs.astral.sh/uv/reference/settings
+# uv’s own config block for this project (not PyPI metadata).
+[tool.uv]
+required-version = ">=0.9.8"
+# Whether to enable experimental, preview features.
+preview = true
+# Treat this repo as a package, so uv sync/run installs it editable, enabling CLI scripts, plugins, and package info.
+package = true
+# Use uv’s default: include the "dev" group for uv run and uv sync unless you pass explicit --group flags.
+default-groups = ["dev"]
+# Cache “hints” for you (or CI) to hash and decide when to rebuild an editable install or reuse a cached environment.
+cache-keys = [
+    { file = "pyproject.toml" }, # Rebuild if the project config changes.
+    { file = "uv.toml" }, # Rebuild if the uv config changes.
+    { file = "uv.lock" }, # Rebuild if exact dependency versions change.
+    { dir = "src" }, # Rebuild on library source edits.
+    { dir = "tests" }, # Rebuild on test edits (keeps test env fresh).
 ]
 
-[tool.typos.default]
-binary = false
-check-filename = true
-check-file = true
-unicode = true
-locale = "en-us"
+# Control where uv resolves packages from.
+[tool.uv.sources]
+# Always use the local workspace copy of "air" instead of PyPI; in a monorepo or dev, uv uses your checked-out code.
+air = { workspace = true }
 
-# endregion spell checker
+# Settings specific to uv_build.
+[tool.uv.build-backend]
+# Declare the “src/” layout so imports come from installed package, preventing path leaks and matching user installs.
+module-root = "src"
+# The single top-level package name under ./src; the backend validates this to catch layout mistakes early.
+module-name = "air"
+
+# endregion uv

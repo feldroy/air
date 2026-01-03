@@ -138,7 +138,7 @@ def test_air_router_get_with_awaitable_result() -> None:
     router = air.AirRouter()
 
     @router.get("/async-test")
-    async def async_endpoint():
+    async def async_endpoint() -> air.H1:
         return air.H1("Async Hello!")
 
     app.include_router(router)
@@ -189,7 +189,7 @@ def test_air_router_post_with_awaitable_result() -> None:
     router = air.AirRouter()
 
     @router.post("/async-post")
-    async def async_post_endpoint():
+    async def async_post_endpoint() -> air.H1:
         return air.H1("Async POST!")
 
     app.include_router(router)
@@ -238,7 +238,7 @@ def test_air_router_get_with_url_method() -> None:
     assert response.text == "<h1>Item URL: /url-helper-test-with-params/42</h1>"
 
 
-def test_air_router_get_with_url_method_throws_error():
+def test_air_router_get_with_url_method_throws_error() -> None:
     """Test GET method with url helper function throwing error on missing params"""
     app = air.Air()
     router = air.AirRouter()
@@ -249,8 +249,6 @@ def test_air_router_get_with_url_method_throws_error():
             return air.H1(f"Item URL: {url_helper_error_endpoint_with_params.url()}")
         except NoMatchFound as e:
             return air.H1(f"Error: {type(e).__name__}")
-        except Exception:  # noqa
-            return air.H1("Error: Should not appear.")
 
     @router.get("/url-helper-error-test-with-params/{item_id}")
     def url_helper_error_endpoint_with_params(item_id: int) -> H1:
@@ -263,7 +261,7 @@ def test_air_router_get_with_url_method_throws_error():
     assert response.text == "<h1>Error: NoMatchFound</h1>"
 
 
-def test_air_router_get_url_method_different_path():
+def test_air_router_get_url_method_different_path() -> None:
     """Test GET method with url helper function using different path"""
     app = air.Air()
     router = air.AirRouter()
@@ -282,6 +280,78 @@ def test_air_router_get_url_method_different_path():
     response = client.get("/")
     assert response.status_code == 200
     assert response.text == "<h1>Profile URL: /profile/johndoe</h1>"
+
+
+def test_air_router_url_helper_supports_query_params() -> None:
+    """Test URL helper with query_params argument"""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/items/{item_id}")
+    def get_item(
+        item_id: int,
+        tags: list[str] | None = air.Query(None),  # noqa: B008
+        page: int = 1,
+    ) -> air.P:
+        return air.P(f"Item {item_id} tags {tags} page {page}")
+
+    app.include_router(router)
+
+    url = get_item.url(item_id=5, query_params={"tags": ["a", "b"], "page": 2})
+    assert url == "/items/5?tags=a&tags=b&page=2"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<p>Item 5 tags [&#x27;a&#x27;, &#x27;b&#x27;] page 2</p>"
+
+
+def test_air_router_url_helper_empty_query_params() -> None:
+    """Test URL helper returns base path when query_params is empty or contains empty lists."""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/items/{item_id}")
+    def get_item(
+        item_id: int,
+        tags: list[str] | None = air.Query(None),  # noqa: B008
+        page: int = 1,
+    ) -> air.P:
+        return air.P(f"Item {item_id} tags {tags} page {page}")
+
+    app.include_router(router)
+
+    assert get_item.url(item_id=5, query_params={}) == "/items/5"
+    assert get_item.url(item_id=5, query_params={"tags": []}) == "/items/5"
+
+    client = TestClient(app)
+    response = client.get(get_item.url(item_id=5))
+    assert response.status_code == 200
+    assert response.text == "<p>Item 5 tags None page 1</p>"
+
+
+def test_air_router_url_helper_supports_query_params_with_Query() -> None:
+    """Test URL helper with query_params argument when parameters use Query()."""
+    app = air.Air()
+    router = air.AirRouter()
+
+    @router.get("/items/{item_id}")
+    def get_item(
+        item_id: int,
+        tags: list[str] | None = air.Query(None),  # noqa: B008
+        page: int = air.Query(1),
+    ) -> air.P:
+        return air.P(f"Item {item_id} tags {tags} page {page}")
+
+    app.include_router(router)
+
+    url = get_item.url(item_id=5, query_params={"tags": ["a", "b"], "page": 2})
+    assert url == "/items/5?tags=a&tags=b&page=2"
+
+    client = TestClient(app)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.text == "<p>Item 5 tags [&#x27;a&#x27;, &#x27;b&#x27;] page 2</p>"
 
 
 def test_air_router_post_with_url_method() -> None:
@@ -305,7 +375,7 @@ def test_air_router_post_with_url_method() -> None:
     assert response.text == "<h1>Item URL: /post-url-helper-test-with-params/99</h1>"
 
 
-def test_air_router_post_with_url_method_throws_error():
+def test_air_router_post_with_url_method_throws_error() -> None:
     """Test POST method with url helper function throwing error on missing params"""
     app = air.Air()
     router = air.AirRouter()
@@ -316,8 +386,6 @@ def test_air_router_post_with_url_method_throws_error():
             return air.H1(f"Item URL: {post_url_helper_error_endpoint_with_params.url()}")
         except NoMatchFound as e:
             return air.H1(f"Error: {type(e).__name__}")
-        except Exception:  # noqa
-            return air.H1("Error: Should not appear.")
 
     @router.post("/post-url-helper-error-test-with-params/{item_id}")
     def post_url_helper_error_endpoint_with_params(item_id: int) -> H1:
@@ -330,7 +398,7 @@ def test_air_router_post_with_url_method_throws_error():
     assert response.text == "<h1>Error: NoMatchFound</h1>"
 
 
-def test_air_router_post_url_method_different_path():
+def test_air_router_post_url_method_different_path() -> None:
     """Test POST method with url helper function using different path"""
     app = air.Air()
     router = air.AirRouter()
@@ -401,3 +469,17 @@ def test_air_router_delete_endpoint() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Updated item 42</h1>"
+
+
+def test_air_router_default_404_handler() -> None:
+    """Test that AirRouter correctly configures the default 404 handler."""
+    router = air.AirRouter(prefix="/api")
+
+    @router.get("/exists")
+    def exists() -> air.H1:
+        return air.H1("exists")
+
+    client = TestClient(router)
+    response = client.get("/api/not-found")
+    assert response.status_code == 404
+    assert "The requested resource was not found on this server." in response.text

@@ -6,6 +6,8 @@ Call pyinstrument by adding '?profile=1' after any URL
 """
 
 from pyinstrument import Profiler
+from starlette.middleware.base import RequestResponseEndpoint
+from starlette.responses import Response
 
 import air
 from air import Children, Html
@@ -14,7 +16,7 @@ app = air.Air()
 
 
 @app.middleware("http")
-async def profile_request(request: air.Request, call_next):
+async def profile_request(request: air.Request, call_next: RequestResponseEndpoint) -> Response:
     profiling = request.query_params.get("profile", False)
     if profiling:
         profiler = Profiler()

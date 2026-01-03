@@ -1,10 +1,9 @@
 site_name: AIR
-site_url: http://feldroy.github.io/air/
+site_url: https://docs.airwebframework.org/
 repo_url: https://github.com/feldroy/air
 
 nav:
   - Home: index.md
-  - Why?: why.md
   - Learn:
     - learn/index.md
     - Quickstart: learn/quickstart.md
@@ -13,7 +12,7 @@ nav:
     - Forms: learn/forms.md
     - Jinja: learn/jinja.md
     - Layouts: learn/layouts.md
-    - SQL: learn/sqlmodel.md
+    - SQLModel + Air: learn/sqlmodel.md
     - Cookbook:
       - learn/cookbook/index.md
       - app.page decorator: learn/cookbook/page-decorator.md
@@ -23,22 +22,6 @@ nav:
       - Minimal app: learn/cookbook/minimal.md
       - Forms & validation: learn/cookbook/forms.md
       - Static files: learn/cookbook/static.md
-  - Book:
-    - Book Introduction: book/README.md
-    - Introduction to Air: book/01-introduction.md
-    - Getting Started: book/02-getting-started.md
-    - 'AI-Enhanced Development Setup': book/03-ai-enhanced-development-setup.md
-    - 'Air Tags and Layouts': book/04-air-tags-and-layouts.md
-    - 'Building Our Blog Application': book/05-building-blog-application.md
-    - 'Advanced Routing and URL Management': book/06-advanced-routing.md
-    - 'Forms and Data Validation': book/07-forms-validation.md
-    - 'Working with Databases': book/08-databases.md
-    - 'API Development': book/09-api-development.md
-    - 'HTMX and Interactive Interfaces': book/10-htmx-interfaces.md
-    - 'Authentication and Security': book/11-authentication-security.md
-    - Testing: book/12-testing.md
-    - Deployment: book/13-deployment.md
-    - 'Advanced Patterns and Best Practices': book/14-advanced-patterns.md
   - Reference:
     - api/index.md
     - Applications: api/applications.md
@@ -46,10 +29,6 @@ nav:
     - Dependencies: api/dependencies.md
     - Exception Handlers: api/exception_handlers.md
     - Exceptions: api/exceptions.md
-    - Ext:
-      - Ext: api/ext/index.md
-      - Auth: api/ext/auth.md
-      - SQLModel: api/ext/sqlmodel.md
     - Forms: api/forms.md
     - Layouts: api/layouts.md
     - Middleware: api/middleware.md
@@ -75,18 +54,19 @@ nav:
 
   - About:
     - about/index.md
+    - Why?: about/why.md
     - about/inspirations.md
     - about/help_air.md
     - about/story.md
     - about/roadmap.md
 
-  - Community: community/index.md
+  - Community:
+    - community/index.md
+    - Tools: community/tools.md
 
   - Sprint:
     - sprint/index.md
     - Source Examples: sprint/src_examples.md
-
-  - Tools: tools.md
 
   - Deployment: deployment/index.md
 
@@ -131,6 +111,8 @@ markdown_extensions:
   - md_in_html
   - pymdownx.emoji
   - pymdownx.details
+  - pymdownx.highlight:
+      default_lang: python
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
@@ -154,6 +136,8 @@ plugins:
       redirect_maps:
         'about/alternatives.md': 'about/inspirations.md'
         'roadmap.md': 'about/roadmap.md'
+        'why.md': 'about/why.md'
+        'tools.md': 'community/tools.md'
   - llmstxt:
       markdown_description: "Air is a Python web framework that provides a friendly layer over FastAPI for building modern web applications that combine beautiful HTML pages with powerful REST APIs."
       full_output: llms-full.txt
@@ -170,4 +154,6 @@ plugins:
         - api/*.md
         - api/tags/*.md
         - api/svg/*.md
-        - tools.md
+        - community/tools.md
+        - deployment/index.md
+        - deployment/railway.md

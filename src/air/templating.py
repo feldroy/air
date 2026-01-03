@@ -4,7 +4,6 @@ A common pattern is to use a Jinja template as the project base and then use Air
 """
 
 import importlib
-import inspect
 from collections.abc import Callable, Sequence
 from os import PathLike
 from types import ModuleType
@@ -18,6 +17,7 @@ from starlette.templating import _TemplateResponse
 from .exceptions import RenderException
 from .requests import Request
 from .tags.models.base import BaseTag
+from .utils import cached_signature
 
 
 def _jinja_context_item(item: Any) -> Any:
@@ -25,6 +25,9 @@ def _jinja_context_item(item: Any) -> Any:
 
     BaseTag instances are converted to string.
     All other objects are handled by Jinja directly.
+
+    Returns:
+        The item as a string if it's a BaseTag, otherwise the item unchanged.
     """
 
     if isinstance(item, BaseTag):
@@ -37,8 +40,12 @@ class JinjaRenderer:
 
     Args:
         directory: The template directory where Jinja templates for the project are stored.
-        context_processors: A list of Jinja-style context processors, functions that automatically injects variables or functions into the template context so they're available in every rendered template without passing them explicitly.
-        env: The env is the central Jinja object that holds configuration, filters, globals, and template loading settings, and is responsible for compiling and rendering templates.
+        context_processors: A list of Jinja-style context processors, functions that
+            automatically injects variables or functions into the template context so they're
+            available in every rendered template without passing them explicitly.
+        env: The env is the central Jinja object that holds configuration, filters, globals,
+            and template loading settings, and is responsible for compiling and rendering
+            templates.
 
     Example:
 
@@ -88,6 +95,9 @@ class JinjaRenderer:
     ) -> _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
+
+        Returns:
+            A TemplateResponse with the rendered template.
         """
         if context is None:
             context = {}
@@ -104,8 +114,12 @@ class Renderer:
 
     Args:
         directory: The template directory where Jinja templates for the project are stored.
-        context_processors: A list of Jinja-style context processors, functions that automatically injects variables or functions into the template context so they're available in every rendered template without passing them explicitly.
-        env: The env is the central Jinja object that holds configuration, filters, globals, and template loading settings, and is responsible for compiling and rendering templates.
+        context_processors: A list of Jinja-style context processors, functions that
+            automatically injects variables or functions into the template context so they're
+            available in every rendered template without passing them explicitly.
+        env: The env is the central Jinja object that holds configuration, filters, globals,
+            and template loading settings, and is responsible for compiling and rendering
+            templates.
 
     Example:
 
@@ -160,9 +174,16 @@ class Renderer:
         request: Request | None = None,
         context: dict[Any, Any] | None = None,
         **kwargs: Any,
-    ) -> str:
+    ) -> str | _TemplateResponse:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
+
+        Returns:
+            Rendered string or TemplateResponse depending on the template type.
+
+        Raises:
+            TypeError: If callable result is neither a string nor has a render method.
+            RenderException: If no callable or Jinja template is found.
         """
         context = self._prepare_context(context, kwargs)
 
@@ -188,7 +209,11 @@ class Renderer:
         raise RenderException(msg)
 
     def _prepare_context(self, context: dict[Any, Any] | None, kwargs: dict[Any, Any]) -> dict[Any, Any]:
-        """Prepare and merge context dictionaries."""
+        """Prepare and merge context dictionaries.
+
+        Returns:
+            Merged context dictionary.
+        """
         if context is None:
             context = {}
         if kwargs:
@@ -196,12 +221,20 @@ class Renderer:
         return context
 
     def _render_template(self, name: str, request: Request | None, context: dict[Any, Any]) -> _TemplateResponse:
-        """Render Jinja template with Air Tag support."""
+        """Render Jinja template with Air Tag support.
+
+        Returns:
+            A TemplateResponse with the rendered template.
+        """
         context = {k: _jinja_context_item(v) for k, v in context.items()}
-        return self.templates.TemplateResponse(request=request, name=name, context=context)
+        return self.templates.TemplateResponse(request=request, name=name, context=context)  # type: ignore[arg-type]
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:
-        """Import and render a tag callable from module."""
+        """Import and render a tag callable from module.
+
+        Returns:
+            Rendered string from the tag callable.
+        """
         module_name, func_name = name.rsplit(".", 1)
         module = self._import_module(module_name)
         tag_callable = getattr(module, func_name)
@@ -213,7 +246,11 @@ class Renderer:
         return tag_callable(*args, **filtered_context)
 
     def _import_module(self, module_name: str) -> ModuleType:
-        """Import module handling relative imports."""
+        """Import module handling relative imports.
+
+        Returns:
+            The imported module.
+        """
         if module_name.startswith("."):
             return importlib.import_module(module_name, package=self.package)
 
@@ -225,8 +262,12 @@ class Renderer:
     def _filter_context_for_callable(
         self, tag_callable: Callable, context: dict[Any, Any], request: Request | None
     ) -> dict[str, Any]:
-        """Filter context to only include parameters expected by the callable."""
-        sig = inspect.signature(tag_callable)
+        """Filter context to only include parameters expected by the callable.
+
+        Returns:
+            Filtered context dictionary with only expected parameters.
+        """
+        sig = cached_signature(tag_callable)
         filtered_context = {}
 
         for param_name in sig.parameters:
