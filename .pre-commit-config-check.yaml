@@ -24,7 +24,7 @@ repos:
         priority: 0
       - id: check-yaml # Attempts to load all yaml files to verify syntax.
         priority: 0
-        args: ['--allow-multiple-documents', '--unsafe']
+        args: ['--allow-multiple-documents']
       - id: detect-private-key # Checks for the existence of private keys.
         priority: 0
       - id: end-of-file-fixer # Ensure newline at EOF.
@@ -43,6 +43,19 @@ repos:
         priority: 0
         exclude: ^tests/(utils|components)\.py$
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
+        priority: 0
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+        priority: 0
+        files: '^\.pre-commit-config-check\.yaml$'
+      - id: check-useless-excludes
+        priority: 0
+        files: '^\.pre-commit-config-check\.yaml$'
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.10
+    hooks:
+      - id: actionlint
         priority: 0
   - repo: https://github.com/adamchainz/blacken-docs
     rev: 1.20.0
