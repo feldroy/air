@@ -359,3 +359,15 @@ def test_fastapi_app_property() -> None:
 
     assert isinstance(app.fastapi_app, FastAPI)
     assert app.fastapi_app is app._app
+
+
+def test_health_endpoint() -> None:
+    """Test that Air apps have a built-in /health endpoint."""
+    app = air.Air()
+    client = TestClient(app)
+
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/json"
+    assert response.json() == {"status": "ok"}
