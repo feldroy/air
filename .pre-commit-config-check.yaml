@@ -107,7 +107,8 @@ repos:
       - id: yamlfmt
         priority: 0
         args: ['-lint']
-        #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-        #    rev: v1.19.0
-        #    hooks:
-        #      - id: zizmor # Static analysis tool for GitHub Actions.
+# TODO -> Enable once all lint violations are fixed:
+#  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+#    rev: v1.19.0
+#    hooks:
+#      - id: zizmor # Static analysis tool for GitHub Actions.

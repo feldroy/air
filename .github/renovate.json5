@@ -12,7 +12,7 @@
     ":semanticCommitType(build)",
     ":semanticCommitScope(deps)",
     ":maintainLockFilesWeekly",
-    ":prHourlyLimitNone",
+    ":prHourlyLimitNone"
   ],
   // Keep semantic commits explicit even though the preset already sets the scope
   semanticCommitScope: "deps",
@@ -23,14 +23,14 @@
   "rebaseWhen": "behind-base-branch",
   labels: [
     "deps",
-    "renovate",
+    "renovate"
   ],
   // Limit Renovate to these managers only
   enabledManagers: [
     "pep621",
     "pre-commit",
     "github-actions",
-    "renovate-config-presets",
+    "renovate-config-presets"
   ],
   prConcurrentLimit: 3,
   // Weekly lockfile refreshes (e.g., uv.lock)
@@ -46,7 +46,7 @@
       matchDepTypes: [
         "action"
       ],
-      pinDigests: true,
+      pinDigests: true
     }
   ]
 }
