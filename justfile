@@ -30,8 +30,9 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
 BRANCH_NAME := `git branch --show-current`
-#PREK_RUN_ARG := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref main" }
 PREK_RUN_ARG := "--all-files"
+# TODO -> Use the line bellow to run prek only on the files changes by the PR branch:
+#PREK_RUN_ARG := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref main" }
 
 # -----------------------------------------------------------------------------
 # RECIPES:
