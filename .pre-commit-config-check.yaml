@@ -46,16 +46,16 @@ repos:
         priority: 0
   - repo: meta
     hooks:
-      - id: check-hooks-apply
+      - id: check-hooks-apply # ensures that the configured hooks apply to at least one file in the repository.
         priority: 0
         files: '^\.pre-commit-config-check\.yaml$'
-      - id: check-useless-excludes
+      - id: check-useless-excludes # ensures that exclude directives apply to any file in the repository.
         priority: 0
         files: '^\.pre-commit-config-check\.yaml$'
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
     hooks:
-      - id: actionlint
+      - id: actionlint # Runs actionlint to lint GitHub Actions workflow files.
         language: golang
         priority: 0
         additional_dependencies:
@@ -92,11 +92,11 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.10
     hooks:
-      - id: ruff-format
+      - id: ruff-format # Check for formatting violations using Ruff.
         priority: 0
         args: ['--check', '--output-format=concise']
         types_or: [python]
-      - id: ruff-check
+      - id: ruff-check # Check for lint violations using Ruff.
         priority: 0
         args: ['--output-format=concise']
         types_or: [python]
@@ -119,23 +119,23 @@ repos:
   - repo: https://github.com/tombi-toml/tombi-pre-commit
     rev: v0.7.14
     hooks:
-      - id: tombi-lint
+      - id: tombi-lint # A TOML linter.
         priority: 0
   - repo: https://github.com/crate-ci/typos
     rev: v1.41.0
     hooks:
-      - id: typos
+      - id: typos # Source code spell checker.
         priority: 0
         args: ['--force-exclude', '--format=brief']
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.02
     hooks:
-      - id: validate-pyproject
+      - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0
   - repo: https://github.com/google/yamlfmt
     rev: v0.20.0
     hooks:
-      - id: yamlfmt
+      - id: yamlfmt # Extensible Yaml linter.
         priority: 0
         args: ['-lint']
         # --------------------------------------------------------------------------------------------------------------
