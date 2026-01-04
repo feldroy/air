@@ -135,16 +135,20 @@ sync-lock *ARGS:
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
 format OUTPUT_FORMAT="full" UNSAFE="":
-    # Format Python files using Ruff's formatter (writes changes to disk).
-    just run -- ruff format .
-    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
-    just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-format.yaml
     just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml \
      {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
+
+# ruff-format - Fix formatting and lint violations - Write formatted files back!
+[group('qa')]
+ruff-format OUTPUT_FORMAT="full" UNSAFE="":
+    # Format Python files using Ruff's formatter (writes changes to disk).
+    just run -- ruff format .
+    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
+    just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -161,16 +165,20 @@ format-unsafe: && (format "concise" "--unsafe-fixes")
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
 lint OUTPUT_FORMAT="full":
-    # Check for formatting violations using Ruff
-    just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
-    # Check for lint violations using Ruff
-    just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
     just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
      {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
+
+# ruff-check - Check for formatting and lint violations - Avoid writing any formatted files back!
+[group('qa')]
+ruff-check OUTPUT_FORMAT="full":
+    # Check for formatting violations using Ruff
+    just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
+    # Check for lint violations using Ruff
+    just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
 
 # Check for lint violations for all rules!
 [group('qa')]
