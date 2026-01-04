@@ -90,8 +90,8 @@ repos:
     rev: v0.14.10
     hooks:
       - id: ruff-format
-        args: [ '--check', '--output-format=concise' ]
-        types_or: [ python ]
+        args: ['--check', '--output-format=concise']
+        types_or: [python]
       - id: ruff-check
         args: ['--show-fixes', '--output-format=concise']
         types_or: [python]
