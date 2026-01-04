@@ -97,12 +97,7 @@ run-with-relative-paths +CMD:
 [private]
 [group('uv')]
 @uv-run +ARGS:
-    just run-with-relative-paths uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
-
-# Run ipython using uv.
-[group('uv')]
-ipython:
-    uv run {{ UV_CLI_FLAGS }} -- ipython
+    uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
@@ -128,6 +123,11 @@ sync:
 [group('uv')]
 sync-lock *ARGS:
     uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
+
+# Run ipython using uv.
+[group('uv')]
+ipython:
+    just run -- ipython
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
@@ -173,7 +173,7 @@ lint OUTPUT_FORMAT="":
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
-    prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
      {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
 
 # [print diagnostics for prek, with hook id and duration]
