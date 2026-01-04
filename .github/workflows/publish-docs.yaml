@@ -14,7 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
         with:
-          persist-credentials: false
+          fetch-depth: 0
+          persist-credentials: true
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
@@ -33,5 +34,5 @@ jobs:
           cache-dependency-glob: uv.lock
       - name: Install just
         uses: taiki-e/install-action@just
-      - name: Measuring Coverage • macOS
+      - name: Deploy the documentation to GitHub Pages.
         run: just doc-build
