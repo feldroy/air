@@ -57,6 +57,8 @@ repos:
     hooks:
       - id: actionlint
         priority: 0
+        additional_dependencies:
+          - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@latest"
   - repo: https://github.com/adamchainz/blacken-docs
     rev: 1.20.0
     hooks:
@@ -82,6 +84,15 @@ repos:
     hooks:
       - id: djhtml # A pure-Python Django/Jinja template indenter without dependencies.
         entry: djhtml --tabwidth 2
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.10
+    hooks:
+      - id: ruff-format
+        args: [ '--output-format=concise' ]
+        types_or: [ python ]
+      - id: ruff-check
+        args: ['--fix', '--output-format=concise']
+        types_or: [python]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
     hooks:
