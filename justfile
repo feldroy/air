@@ -134,13 +134,17 @@ sync-lock *ARGS:
 
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-format OUTPUT_FORMAT="full" UNSAFE="":
+format OUTPUT_FORMAT="":
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-format.yaml
     just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml \
-     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
+     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+
+# [print diagnostics for prek, with hook id and duration]
+[group('qa')]
+@format-verbose: && (format "verbose")
 
 # ruff-format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
@@ -152,25 +156,29 @@ ruff-format OUTPUT_FORMAT="full" UNSAFE="":
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
-format-unsafe: && (format "concise" "--unsafe-fixes")
+ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
-@format-concise: && (format "concise")
+@ruff-format-concise: && (ruff-format "concise")
 
 # [group messages by file]
 [group('qa')]
-@format-grouped: && (format "grouped")
+@ruff-format-grouped: && (ruff-format "grouped")
 
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-lint OUTPUT_FORMAT="full":
+lint OUTPUT_FORMAT="":
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
-    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
-     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
+    prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
+     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+
+# [print diagnostics for prek, with hook id and duration]
+[group('qa')]
+@lint-verbose: && (lint "verbose")
 
 # ruff-check - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
@@ -187,11 +195,11 @@ ruff-check-all TARGET=".":
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
-@lint-concise: && (lint "concise")
+@ruff-check-concise: && (ruff-check "concise")
 
 # [group messages by file]
 [group('qa')]
-@lint-grouped: && (lint "grouped")
+@ruff-check-grouped: && (ruff-check "grouped")
 
 # Type check the project with Ty
 [group('qa')]
@@ -210,7 +218,7 @@ type-annotate TARGET="src":
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
-qa: format-concise type-check-concise
+qa: format type-check-concise
 
 # Run all the formatting, linting, type checking and tests for local development.
 [group('qa')]
