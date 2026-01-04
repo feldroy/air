@@ -29,6 +29,11 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
+BRANCH_NAME := `git branch --show-current`
+PREK_RUN_ARG := "--all-files"
+# TODO -> Use the line bellow to run prek only on the files changes by the PR branch:
+#PREK_RUN_ARG := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref main" }
+
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -92,12 +97,7 @@ run-with-relative-paths +CMD:
 [private]
 [group('uv')]
 @uv-run +ARGS:
-    just run-with-relative-paths uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
-
-# Run ipython using uv.
-[group('uv')]
-ipython:
-    uv run {{ UV_CLI_FLAGS }} -- ipython
+    uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
@@ -124,52 +124,69 @@ sync:
 sync-lock *ARGS:
     uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
 
+# Run ipython using uv.
+[group('uv')]
+ipython:
+    just run -- ipython
+
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-format OUTPUT_FORMAT="full" UNSAFE="":
-    # Format Python files using Ruff's formatter (writes changes to disk).
-    just run -- ruff format .
-    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
-    just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
-    # Check for spelling violations and apply fixes
-    just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
+format OUTPUT_FORMAT="":
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-check.yaml
     just run -- prek auto-update --config .pre-commit-config-format.yaml
-    just run -- prek run --all-files --config .pre-commit-config-format.yaml \
-     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml \
+     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+
+# [print diagnostics for prek, with hook id and duration]
+[group('qa')]
+@format-verbose: && (format "verbose")
+
+# ruff-format - Fix formatting and lint violations - Write formatted files back!
+[group('qa')]
+ruff-format OUTPUT_FORMAT="full" UNSAFE="":
+    # Format Python files using Ruff's formatter (writes changes to disk).
+    just run -- ruff format .
+    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
+    just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
-format-unsafe: && (format "concise" "--unsafe-fixes")
+ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
-@format-concise: && (format "concise")
+@ruff-format-concise: && (ruff-format "concise")
 
 # [group messages by file]
 [group('qa')]
-@format-grouped: && (format "grouped")
+@ruff-format-grouped: && (ruff-format "grouped")
 
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-lint OUTPUT_FORMAT="full":
-    # Check for formatting violations using Ruff
-    just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
-    # Check for lint violations using Ruff
-    just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
-    # Check for spelling violations
-    just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
+lint OUTPUT_FORMAT="":
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
     just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
-    just run -- prek run --all-files --config .pre-commit-config-check.yaml \
-     {{ if OUTPUT_FORMAT == "concise" { "" } else { "--verbose" } }}
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
+     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+
+# [print diagnostics for prek, with hook id and duration]
+[group('qa')]
+@lint-verbose: && (lint "verbose")
+
+# ruff-check - Check for formatting and lint violations - Avoid writing any formatted files back!
+[group('qa')]
+ruff-check OUTPUT_FORMAT="full":
+    # Check for formatting violations using Ruff
+    just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
+    # Check for lint violations using Ruff
+    just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
 
 # Check for lint violations for all rules!
 [group('qa')]
@@ -178,11 +195,11 @@ ruff-check-all TARGET=".":
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
-@lint-concise: && (lint "concise")
+@ruff-check-concise: && (ruff-check "concise")
 
 # [group messages by file]
 [group('qa')]
-@lint-grouped: && (lint "grouped")
+@ruff-check-grouped: && (ruff-check "grouped")
 
 # Type check the project with Ty
 [group('qa')]
@@ -201,7 +218,7 @@ type-annotate TARGET="src":
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
-qa: format-concise type-check-concise
+qa: format type-check-concise
 
 # Run all the formatting, linting, type checking and tests for local development.
 [group('qa')]

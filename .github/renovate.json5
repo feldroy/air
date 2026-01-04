@@ -2,8 +2,10 @@
 // https://docs.renovatebot.com
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  dependencyDashboard: true,
   extends: [
     "config:best-practices",
+    "helpers:pinGitHubActionDigests",
     "schedule:automergeDaily",
     ":dependencyDashboard",
     ":enablePreCommit",
@@ -11,7 +13,7 @@
     ":semanticCommitType(build)",
     ":semanticCommitScope(deps)",
     ":maintainLockFilesWeekly",
-    ":prHourlyLimitNone",
+    ":prHourlyLimitNone"
   ],
   // Keep semantic commits explicit even though the preset already sets the scope
   semanticCommitScope: "deps",
@@ -22,18 +24,33 @@
   "rebaseWhen": "behind-base-branch",
   labels: [
     "deps",
-    "renovate",
+    "renovate"
   ],
   // Limit Renovate to these managers only
   enabledManagers: [
     "pep621",
     "pre-commit",
     "github-actions",
-    "renovate-config-presets",
+    "renovate-config-presets"
   ],
   prConcurrentLimit: 3,
   // Weekly lockfile refreshes (e.g., uv.lock)
   lockFileMaintenance: {
     enabled: true
   },
+  "pre-commit": {
+    enabled: true,
+  },
+  packageRules: [
+    // Make sure GitHub Actions are always pinned to commit SHAs (hashes).
+    {
+      matchManagers: [
+        "github-actions"
+      ],
+      matchDepTypes: [
+        "action"
+      ],
+      pinDigests: true
+    }
+  ]
 }

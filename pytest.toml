@@ -17,7 +17,7 @@ asyncio_mode = "auto"
 # Custom markers
 markers = ["memory: marks tests as memory-focused (deselect with '-m \"not memory\"')"]
 # Sets the console output style while running tests.
-console_output_style = "classic"
+console_output_style = "times"
 addopts = [
     "-rfEsxXp",
     "--new-first",
