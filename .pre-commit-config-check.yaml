@@ -93,10 +93,12 @@ repos:
     rev: v0.14.10
     hooks:
       - id: ruff-format
+        priority: 0
         args: ['--check', '--output-format=concise']
         types_or: [python]
       - id: ruff-check
-        args: ['--show-fixes', '--output-format=concise']
+        priority: 0
+        args: ['--output-format=concise']
         types_or: [python]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
