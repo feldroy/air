@@ -128,9 +128,14 @@ repos:
     rev: v0.20.0
     hooks:
       - id: yamlfmt
+        # --------------------------------------------------------------------------------------------------------------
         # TODO -> Enable once all lint violations are fixed:
         #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
         #    rev: v1.19.0
         #    hooks:
         #      - id: zizmor # Static analysis tool for GitHub Actions.
         #        args: [ '--fix=all' ]
+        #  - repo: https://github.com/google/osv-scanner
+        #    rev: v2.3.1 # https://google.github.io/osv-scanner/usage/#pre-commit-integration
+        #    hooks:
+        #      - id: osv-scanner # Vulnerability scanner written in Go.
