@@ -46,16 +46,16 @@ repos:
         args: ['--autofix']
   - repo: meta
     hooks:
-      - id: check-hooks-apply
+      - id: check-hooks-apply # ensures that the configured hooks apply to at least one file in the repository.
         priority: 0
         files: '^\.pre-commit-config-format\.yaml$'
-      - id: check-useless-excludes
+      - id: check-useless-excludes # ensures that exclude directives apply to any file in the repository.
         priority: 0
         files: '^\.pre-commit-config-format\.yaml$'
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
     hooks:
-      - id: actionlint
+      - id: actionlint # Runs actionlint to lint GitHub Actions workflow files.
         language: golang
         priority: 0
         additional_dependencies:
@@ -90,10 +90,10 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.10
     hooks:
-      - id: ruff-format
+      - id: ruff-format # Format Python files using Ruff's formatter (writes changes to disk).
         args: ['--output-format=concise']
         types_or: [python]
-      - id: ruff-check
+      - id: ruff-check # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
         args: ['--fix', '--output-format=concise']
         types_or: [python]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
@@ -113,21 +113,21 @@ repos:
   - repo: https://github.com/tombi-toml/tombi-pre-commit
     rev: v0.7.14
     hooks:
-      - id: tombi-format
+      - id: tombi-format # A TOML formatter.
   - repo: https://github.com/crate-ci/typos
     rev: v1.41.0
     hooks:
-      - id: typos
+      - id: typos # Source code spell checker.
         args: ['--write-changes', '--force-exclude', '--format=brief']
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.02
     hooks:
-      - id: validate-pyproject
+      - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0
   - repo: https://github.com/google/yamlfmt
     rev: v0.20.0
     hooks:
-      - id: yamlfmt
+      - id: yamlfmt # Extensible Yaml formatter.
         # --------------------------------------------------------------------------------------------------------------
         # TODO -> Enable once all lint violations are fixed:
         #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
