@@ -46,16 +46,16 @@ repos:
         args: ['--autofix']
   - repo: meta
     hooks:
-      - id: check-hooks-apply
+      - id: check-hooks-apply # ensures that the configured hooks apply to at least one file in the repository.
         priority: 0
         files: '^\.pre-commit-config-format\.yaml$'
-      - id: check-useless-excludes
+      - id: check-useless-excludes # ensures that exclude directives apply to any file in the repository.
         priority: 0
         files: '^\.pre-commit-config-format\.yaml$'
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
     hooks:
-      - id: actionlint
+      - id: actionlint # Runs actionlint to lint GitHub Actions workflow files.
         language: golang
         priority: 0
         additional_dependencies:
@@ -82,18 +82,44 @@ repos:
         language: python
         priority: 0
         additional_dependencies: ['json5']
+  - repo: https://github.com/rohaquinlop/complexipy-pre-commit
+    rev: v4.2.0
+    hooks:
+      - id: complexipy # Run the cognitive complexity checker.
+        priority: 0
+  - repo: https://github.com/fredrikaverpil/creosote
+    rev: v4.1.0
+    hooks:
+      - id: creosote # Identify unused dependencies and avoid a bloated virtual environment.
+        priority: 0
   - repo: https://github.com/rtts/djhtml
     rev: 3.0.10
     hooks:
       - id: djhtml # A pure-Python Django/Jinja template indenter without dependencies.
         entry: djhtml --tabwidth 2
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8 # Flake8 glues pycodestyle, pyflakes, mccabe, and plugins; we disable core checks, run plugins only.
+        language: python
+        priority: 0
+        name: flake8-class-attributes-order & flake8-pydantic
+        additional_dependencies:
+          - Flake8-pyproject==1.2.4 # Flake8 plug-in loading the configuration from pyproject.toml
+          - flake8-class-attributes-order==0.3.0 # A flake8 extension that checks classes attributes order.
+          - flake8-pydantic==0.4.0 # A flake8 plugin to check Pydantic related code.
+  - repo: https://github.com/regebro/pyroma
+    rev: 5.0.1
+    hooks:
+      - id: pyroma # Rate your Python packages package friendliness.
+        priority: 0
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.10
     hooks:
-      - id: ruff-format
+      - id: ruff-format # Format Python files using Ruff's formatter (writes changes to disk).
         args: ['--output-format=concise']
         types_or: [python]
-      - id: ruff-check
+      - id: ruff-check # Check for lint violations, apply fixes to resolve lint violations (only for fixable rules).
         args: ['--fix', '--output-format=concise']
         types_or: [python]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
@@ -113,24 +139,29 @@ repos:
   - repo: https://github.com/tombi-toml/tombi-pre-commit
     rev: v0.7.14
     hooks:
-      - id: tombi-format
+      - id: tombi-format # A TOML formatter.
   - repo: https://github.com/crate-ci/typos
     rev: v1.41.0
     hooks:
-      - id: typos
+      - id: typos # Source code spell checker.
         args: ['--write-changes', '--force-exclude', '--format=brief']
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.02
     hooks:
-      - id: validate-pyproject
+      - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0
   - repo: https://github.com/google/yamlfmt
     rev: v0.20.0
     hooks:
-      - id: yamlfmt
+      - id: yamlfmt # Extensible Yaml formatter.
+        # --------------------------------------------------------------------------------------------------------------
         # TODO -> Enable once all lint violations are fixed:
         #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
         #    rev: v1.19.0
         #    hooks:
         #      - id: zizmor # Static analysis tool for GitHub Actions.
         #        args: [ '--fix=all' ]
+        #  - repo: https://github.com/google/osv-scanner
+        #    rev: v2.3.1 # https://google.github.io/osv-scanner/usage/#pre-commit-integration
+        #    hooks:
+        #      - id: osv-scanner # Vulnerability scanner written in Go.

@@ -164,7 +164,8 @@ requires = ["uv_build>=0.9.0,<0.10.0"]
 build-backend = "uv_build"
 # endregion build-system
 
-# region ----> pytest <----
+# region ----> Coverage.py <----
+# https://coverage.readthedocs.io/en/latest/config.html
 [tool.coverage.run]
 source = ["src", "scripts"]
 branch = true
@@ -229,11 +230,78 @@ output = "coverage.xml" # default “coverage.xml”
 # Helpful for path normalization across OS/CI workers
 [tool.coverage.paths]
 source = ["src"]
+# endregion Coverage.py
 
-[tool.pytest_env]
-# Test value for the SUPER_SECRET_KEY environment variable
-DATABASE_URL = "sqlite:///:memory:"
-# endregion pytest
+# region ----> creosote <----
+# https://github.com/fredrikaverpil/creosote
+[tool.creosote]
+venvs = [".venv"]
+paths = ["src"]
+deps-file = "pyproject.toml"
+sections = ["project.dependencies", "project.optional-dependencies"]
+exclude-deps = [
+    # TODO -> Enable once we uninstall these dependencies:
+    "itsdangerous",
+    "python-multipart"
+]
+# endregion creosote
+
+# region ----> flake8 <----
+# https://flake8.pycqa.org/en/latest/glossary.html
+# https://flake8.pycqa.org/en/latest/user/error-codes.html
+# https://flake8.pycqa.org/en/latest/user/configuration.html
+# https://github.com/john-hen/Flake8-pyproject
+[tool.flake8]
+extend-ignore = [
+    "E", # pycodestyle
+    "W", # pycodestyle
+    "F", # pyflakes
+    "C901", # McCabe
+    # TODO -> Enable once all lint violations are fixed:
+    "CCE001", # flake8-class-attributes-order
+    "PYD001", # flake8-pydantic
+]
+per-file-ignores = []
+count = false # Print the total number of errors.
+show-source = false # Print the source code generating the error/warning in question.
+statistics = true # Count the number of occurrences of each error/warning code and print a report.
+format = "default"
+require-plugins = [
+    "Flake8-pyproject",
+    "flake8-class-attributes-order",
+    "flake8-pydantic",
+]
+# https://github.com/best-doctor/flake8-class-attributes-order
+class_attributes_order = [
+    "meta_class",
+    "nested_class",
+    "constant",
+    "outer_field",
+    "field",
+    "protected_field",
+    "private_field",
+    "__new__",
+    "__init__",
+    "__post_init__",
+    "__str__",
+    "magic_method",
+    "save",
+    "delete",
+    "property_method",
+    "protected_property_method",
+    "private_property_method",
+    "static_method",
+    "protected_static_method",
+    "private_static_method",
+    "class_method",
+    "protected_class_method",
+    "private_class_method",
+    "private_method",
+    "protected_method",
+    "method",
+]
+
+# endregion flake8
 
 # region ----> uv <----
 # uv - An extremely fast Python package and project manager, written in Rust.
