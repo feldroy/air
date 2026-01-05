@@ -253,7 +253,7 @@ exclude-deps = [
 # https://github.com/john-hen/Flake8-pyproject
 [tool.flake8]
 extend-ignore = [
-    "E",
+    "E", # pycodestyle
     "W", # pycodestyle
     "F", # pyflakes
     "C901", # McCabe
