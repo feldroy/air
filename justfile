@@ -109,7 +109,7 @@ run-with-relative-paths +CMD:
 @run-isolated +ARGS:
     just uv-run --isolated {{ ARGS }}
 
-# Upgrade all dependencies using uv and prek (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
+# Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
 [group('uv')]
 upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies
 
@@ -120,9 +120,9 @@ upgrade-prek-hooks:
     # Update pre-commit hook revisions in the formatting config via prek
     just run -- prek auto-update --config .pre-commit-config-format.yaml
 
+# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
 upgrade-uv-dependencies:
-    # Upgrade locked dependencies and re-sync the environment via uv
     uv sync -U {{ UV_CLI_FLAGS }}
 
 # Sync all dependencies using uv, without updating the uv.lock file.
