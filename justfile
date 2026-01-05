@@ -125,6 +125,12 @@ upgrade-prek-hooks:
 upgrade-uv-dependencies:
     uv sync -U {{ UV_CLI_FLAGS }}
 
+# https://github.com/eclipse-csi/octopin
+# Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
+[group('uv')]
+pin-github-action-versions:
+    git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin pin --inplace
+
 # Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
 sync:
