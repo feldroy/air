@@ -34,5 +34,5 @@ jobs:
           cache-dependency-glob: uv.lock
       - name: Install just
         uses: taiki-e/install-action@just
-      - name: Deploy the documentation to GitHub Pages.
+      - name: Deploy the documentation to GitHub Pages
         run: just doc-build

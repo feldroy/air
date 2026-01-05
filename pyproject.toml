@@ -240,7 +240,7 @@ paths = ["src"]
 deps-file = "pyproject.toml"
 sections = ["project.dependencies", "project.optional-dependencies"]
 exclude-deps = [
-    # TODO -> Enable once uninstall these dependencies:
+    # TODO -> Enable once we uninstall these dependencies:
     "itsdangerous",
     "python-multipart"
 ]
