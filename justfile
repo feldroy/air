@@ -109,9 +109,20 @@ run-with-relative-paths +CMD:
 @run-isolated +ARGS:
     just uv-run --isolated {{ ARGS }}
 
-# Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
+# Upgrade all dependencies using uv and prek (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
-upgrade-dependencies:
+upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies
+
+[group('uv')]
+upgrade-prek-hooks:
+    # Update pre-commit hook revisions in the checks config via prek
+    just run -- prek auto-update --config .pre-commit-config-check.yaml
+    # Update pre-commit hook revisions in the formatting config via prek
+    just run -- prek auto-update --config .pre-commit-config-format.yaml
+
+[group('uv')]
+upgrade-uv-dependencies:
+    # Upgrade locked dependencies and re-sync the environment via uv
     uv sync -U {{ UV_CLI_FLAGS }}
 
 # Sync all dependencies using uv, without updating the uv.lock file.
@@ -137,8 +148,6 @@ ipython:
 format OUTPUT_FORMAT="":
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek auto-update --config .pre-commit-config-check.yaml
-    just run -- prek auto-update --config .pre-commit-config-format.yaml
     just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml \
      {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
 
@@ -171,8 +180,6 @@ ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 lint OUTPUT_FORMAT="":
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
-    just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
     just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
      {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
 

@@ -4,19 +4,15 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   dependencyDashboard: true,
   extends: [
+    ":dependencyDashboard",
     "config:best-practices",
-    "helpers:pinGitHubActionDigests",
     "helpers:pinGitHubActionDigestsToSemver",
     "schedule:automergeDaily",
-    ":dependencyDashboard",
-    ":enablePreCommit",
     ":rebaseStalePrs",
     ":semanticCommitType(build)",
-    ":semanticCommitScope(deps)",
     ":maintainLockFilesWeekly",
-    ":prHourlyLimitNone"
   ],
-  // Keep semantic commits explicit even though the preset already sets the scope
+  // Keep semantic commit scope explicit
   semanticCommitScope: "deps",
   prCreation: "immediate",
   prConcurrentLimit: 3,
@@ -38,10 +34,6 @@
     "github-actions",
     "renovate-config-presets"
   ],
-  // Weekly lockfile refreshes (e.g., uv.lock)
-  lockFileMaintenance: {
-    enabled: true
-  },
   "pre-commit": {
     enabled: true,
     managerFilePatterns: [
@@ -50,40 +42,4 @@
     ],
   },
   updatePinnedDependencies: true,
-  packageRules: [
-    // Pin GitHub Actions to immutable SHAs.
-    {
-      matchDepTypes: [
-        "action"
-      ],
-      pinDigests: true,
-    },
-    // Annotate GitHub Actions SHAs with a SemVer version.
-    {
-      extends: [
-        "helpers:pinGitHubActionDigests"
-      ],
-      extractVersion: "^(?<version>v?\\d+\\.\\d+\\.\\d+)$",
-      versioning: "regex:^v?(?<major>\\d+)(\\.(?<minor>\\d+)\\.(?<patch>\\d+))?$",
-    },
-    {
-      // Disable GitHub runner updates; only pin a runner version when there is a clear reason.
-      groupName: "GitHub runners",
-      matchManagers: [
-        "github-actions"
-      ],
-      matchDatasources: [
-        "github-runners"
-      ],
-      description: "Disable PRs updating GitHub runners (e.g. 'runs-on: macos-14')",
-      enabled: false,
-    },
-    {
-      groupName: "pre-commit dependencies",
-      matchManagers: [
-        "pre-commit"
-      ],
-      description: "Weekly update of pre-commit dependencies",
-    }
-  ],
 }
