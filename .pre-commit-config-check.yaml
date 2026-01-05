@@ -83,15 +83,15 @@ repos:
         language: python
         priority: 0
         additional_dependencies: ['json5']
-  - repo: https://github.com/fredrikaverpil/creosote
-    rev: v4.1.0
-    hooks:
-      - id: creosote # Identify unused dependencies and avoid a bloated virtual environment.
-        priority: 0
   - repo: https://github.com/rohaquinlop/complexipy-pre-commit
     rev: v4.2.0
     hooks:
       - id: complexipy # Run the cognitive complexity checker.
+        priority: 0
+  - repo: https://github.com/fredrikaverpil/creosote
+    rev: v4.1.0
+    hooks:
+      - id: creosote # Identify unused dependencies and avoid a bloated virtual environment.
         priority: 0
   - repo: https://github.com/rtts/djhtml
     rev: 3.0.10

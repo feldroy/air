@@ -119,7 +119,7 @@ repos:
       - id: ruff-format # Format Python files using Ruff's formatter (writes changes to disk).
         args: ['--output-format=concise']
         types_or: [python]
-      - id: ruff-check # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
+      - id: ruff-check # Check for lint violations, apply fixes to resolve lint violations (only for fixable rules).
         args: ['--fix', '--output-format=concise']
         types_or: [python]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
