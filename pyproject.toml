@@ -232,6 +232,20 @@ output = "coverage.xml" # default “coverage.xml”
 source = ["src"]
 # endregion Coverage.py
 
+# region ----> creosote <----
+# https://github.com/fredrikaverpil/creosote
+[tool.creosote]
+venvs = [".venv"]
+paths = ["src"]
+deps-file = "pyproject.toml"
+sections = ["project.dependencies", "project.optional-dependencies"]
+exclude-deps = [
+    # TODO -> Enable once uninstall these dependencies:
+    "itsdangerous",
+    "python-multipart"
+]
+# endregion creosote
+
 # region ----> flake8 <----
 # https://flake8.pycqa.org/en/latest/glossary.html
 # https://flake8.pycqa.org/en/latest/user/error-codes.html
