@@ -6,6 +6,7 @@
   extends: [
     "config:best-practices",
     "helpers:pinGitHubActionDigests",
+    "helpers:pinGitHubActionDigestsToSemver",
     "schedule:automergeDaily",
     ":dependencyDashboard",
     ":enablePreCommit",
@@ -17,9 +18,12 @@
   ],
   // Keep semantic commits explicit even though the preset already sets the scope
   semanticCommitScope: "deps",
-  // Create PRs immediately; allow Renovate to merge PRs itself
-  automergeType: "pr",
   prCreation: "immediate",
+  prConcurrentLimit: 3,
+  prHourlyLimit: 3,
+  suppressNotifications: [
+    'prEditedNotification'
+  ],
   // Rebase PRs when they fall behind the base branch
   "rebaseWhen": "behind-base-branch",
   labels: [
@@ -29,28 +33,57 @@
   // Limit Renovate to these managers only
   enabledManagers: [
     "pep621",
+    "pep723",
     "pre-commit",
     "github-actions",
     "renovate-config-presets"
   ],
-  prConcurrentLimit: 3,
   // Weekly lockfile refreshes (e.g., uv.lock)
   lockFileMaintenance: {
     enabled: true
   },
   "pre-commit": {
     enabled: true,
+    managerFilePatterns: [
+      // Matches: .pre-commit-config-check.yaml, .pre-commit-config-format.yaml, etc
+      "/(^|/)\\.pre-commit-config-[^/.]+\\.ya?ml$/"
+    ],
   },
+  updatePinnedDependencies: true,
   packageRules: [
-    // Make sure GitHub Actions are always pinned to commit SHAs (hashes).
+    // Pin GitHub Actions to immutable SHAs.
     {
-      matchManagers: [
-        "github-actions"
-      ],
       matchDepTypes: [
         "action"
       ],
-      pinDigests: true
+      pinDigests: true,
+    },
+    // Annotate GitHub Actions SHAs with a SemVer version.
+    {
+      extends: [
+        "helpers:pinGitHubActionDigests"
+      ],
+      extractVersion: "^(?<version>v?\\d+\\.\\d+\\.\\d+)$",
+      versioning: "regex:^v?(?<major>\\d+)(\\.(?<minor>\\d+)\\.(?<patch>\\d+))?$",
+    },
+    {
+      // Disable GitHub runner updates; only pin a runner version when there is a clear reason.
+      groupName: "GitHub runners",
+      matchManagers: [
+        "github-actions"
+      ],
+      matchDatasources: [
+        "github-runners"
+      ],
+      description: "Disable PRs updating GitHub runners (e.g. 'runs-on: macos-14')",
+      enabled: false,
+    },
+    {
+      groupName: "pre-commit dependencies",
+      matchManagers: [
+        "pre-commit"
+      ],
+      description: "Weekly update of pre-commit dependencies",
     }
-  ]
+  ],
 }
