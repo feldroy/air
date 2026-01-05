@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
     steps:
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3  # v6.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: false
-      - uses: tiangolo/latest-changes@0.4.0
+      - uses: tiangolo/latest-changes@dd39d11d7dd4f4ebf30206448ad4baff5c477eca  # 0.4.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           latest_changes_file: CHANGELOG.md
