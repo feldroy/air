@@ -114,7 +114,7 @@ repos:
     rev: v0.1.4
     hooks:
       - id: pin-versions # Analyses and pins GitHub actions in your workflows.
-        args: [ 'pin', '--diff ]
+        args: ['pin', '--diff']
   - repo: https://github.com/regebro/pyroma
     rev: 5.0.1
     hooks:
