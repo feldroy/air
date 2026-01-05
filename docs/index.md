@@ -1,8 +1,7 @@
 
 
 <p align="center">
-  <!-- <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/docs/img/air-neon.png" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a> -->
-  <a href="http://feldroy.github.io/air/"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>
+  <a href="https://airwebframework.org"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>
 </p>
 
 <p align="center">
@@ -108,7 +107,7 @@
 
 ---
 
-**Documentation**: <a href="https://feldroy.github.io/air/" target="_blank">https://feldroy.github.io/air/</a>
+**Documentation**: <a href="https://docs.airwebframework.org" target="_blank">https://docs.airwebframework.org</a>
 
 **Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
 

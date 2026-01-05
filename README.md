@@ -59,7 +59,7 @@
 
 ---
 
-**Documentation**: <a href="https://airdocs.fastapicloud.dev/" target="_blank">https://airdocs.fastapicloud.dev</a>
+**Documentation**: <a href="https://docs.airwebframework.org" target="_blank">https://docs.airwebframework.org</a>
 
 **Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
 
