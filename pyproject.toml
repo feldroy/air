@@ -164,7 +164,8 @@ requires = ["uv_build>=0.9.0,<0.10.0"]
 build-backend = "uv_build"
 # endregion build-system
 
-# region ----> pytest <----
+# region ----> Coverage.py <----
+# https://coverage.readthedocs.io/en/latest/config.html
 [tool.coverage.run]
 source = ["src", "scripts"]
 branch = true
@@ -229,6 +230,7 @@ output = "coverage.xml" # default “coverage.xml”
 # Helpful for path normalization across OS/CI workers
 [tool.coverage.paths]
 source = ["src"]
+# endregion Coverage.py
 
 # region ----> flake8 <----
 # https://flake8.pycqa.org/en/latest/glossary.html
@@ -286,11 +288,6 @@ class_attributes_order = [
 ]
 
 # endregion flake8
-
-[tool.pytest_env]
-# Test value for the SUPER_SECRET_KEY environment variable
-DATABASE_URL = "sqlite:///:memory:"
-# endregion pytest
 
 # region ----> uv <----
 # uv - An extremely fast Python package and project manager, written in Rust.
