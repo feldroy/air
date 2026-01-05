@@ -13,7 +13,7 @@
 
 ______________________________________________________________________
 
-**Documentation**: <https://feldroy.github.io/air/>
+**Documentation**: <https://docs.airwebframework.org>
 
 **Source Code**: <https://github.com/feldroy/air>
 

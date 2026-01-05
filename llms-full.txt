@@ -19,7 +19,7 @@ Air is a Python web framework that provides a friendly layer over FastAPI for bu
 
 ______________________________________________________________________
 
-**Documentation**: <https://feldroy.github.io/air/>
+**Documentation**: <https://docs.airwebframework.org>
 
 **Source Code**: <https://github.com/feldroy/air>
 
