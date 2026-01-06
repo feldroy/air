@@ -1,0 +1,7 @@
+# ----------------------------------------------------> rumdl.toml <----------------------------------------------------
+# rumdl - A modern, high-performance Markdown linter and formatter, built for speed in Rust.
+# https://tombi-toml.github.io/tombi/docs/configuration
+# https://github.com/rvben/rumdl/blob/main/docs/global-settings.md
+# https://github.com/rvben/rumdl/blob/main/docs/inline-configuration.md
+# https://github.com/rvben/rumdl/blob/main/docs/RULES.md
+

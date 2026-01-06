@@ -159,7 +159,7 @@ repos:
       - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0
   - repo: https://github.com/google/yamlfmt
-    rev: v0.20.0
+    rev: v0.21.0
     hooks:
       - id: yamlfmt # Extensible Yaml linter.
         priority: 0
