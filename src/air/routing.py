@@ -184,7 +184,7 @@ class RouterMixin:
         return helper_function
 
 
-class AirRouter(APIRouter, RouterMixin):
+class AirRouter(RouterMixin):
     """
     `AirRouter` class, used to group *path operations*, for example to structure
     an app in multiple files. It would then be included in the `App` app, or
@@ -427,7 +427,14 @@ class AirRouter(APIRouter, RouterMixin):
         self.path_separator = path_separator
         if default is None:
             default = default_404_router_handler(prefix or "router")
-        super().__init__(
+
+        # Validate prefix before creating router
+        if prefix:
+            assert prefix.startswith("/"), "A path prefix must start with '/'"
+            assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
+
+        # Create internal router using composition
+        self._router = APIRouter(
             prefix=prefix,
             tags=tags,
             dependencies=dependencies,
@@ -446,9 +453,84 @@ class AirRouter(APIRouter, RouterMixin):
             include_in_schema=include_in_schema,
             generate_unique_id_function=generate_unique_id_function,
         )
-        if prefix:
-            assert prefix.startswith("/"), "A path prefix must start with '/'"
-            assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
+
+    # =========================================================================
+    # Proxy Properties - expose APIRouter attributes for include_router() compatibility
+    # =========================================================================
+
+    @property
+    def routes(self) -> list[BaseRoute]:
+        return self._router.routes
+
+    @property
+    def prefix(self) -> str:
+        return self._router.prefix
+
+    @property
+    def tags(self) -> list[str | Enum] | None:
+        return self._router.tags
+
+    @property
+    def dependencies(self) -> Sequence[params.Depends] | None:
+        return self._router.dependencies
+
+    @property
+    def responses(self) -> dict[int | str, dict[str, Any]] | None:
+        return self._router.responses
+
+    @property
+    def callbacks(self) -> list[BaseRoute] | None:
+        return self._router.callbacks
+
+    @property
+    def deprecated(self) -> bool | None:
+        return self._router.deprecated
+
+    @property
+    def include_in_schema(self) -> bool:
+        return self._router.include_in_schema
+
+    @property
+    def default_response_class(self) -> type[Response]:
+        return self._router.default_response_class
+
+    @property
+    def default(self) -> ASGIApp | None:
+        return self._router.default
+
+    @property
+    def redirect_slashes(self) -> bool:
+        return self._router.redirect_slashes
+
+    @property
+    def route_class(self) -> type[APIRoute]:
+        return self._router.route_class
+
+    @property
+    def on_startup(self) -> list[Callable[[], Any]]:
+        return self._router.on_startup
+
+    @property
+    def on_shutdown(self) -> list[Callable[[], Any]]:
+        return self._router.on_shutdown
+
+    @property
+    def lifespan_context(self) -> Any:
+        return self._router.lifespan_context
+
+    @property
+    def dependency_overrides_provider(self) -> Any | None:
+        return self._router.dependency_overrides_provider
+
+    @property
+    def generate_unique_id_function(self) -> Callable[[APIRoute], str]:
+        return self._router.generate_unique_id_function
+
+    async def __call__(self, scope: Any, receive: Any, send: Any) -> None:
+        await self._router(scope, receive, send)
+
+    def url_path_for(self, name: str, /, **path_params: Any) -> str:
+        return str(self._router.url_path_for(name, **path_params))
 
     def get(
         self,
@@ -817,7 +899,7 @@ class AirRouter(APIRouter, RouterMixin):
                 # Force HTML for non-Response results
                 return response_class(result)
 
-            decorated = super(AirRouter, self).get(
+            decorated = self._router.get(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -1198,7 +1280,7 @@ class AirRouter(APIRouter, RouterMixin):
                 # Force HTML for non-Response results
                 return response_class(result)
 
-            decorated = super(AirRouter, self).post(
+            decorated = self._router.post(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -1578,7 +1660,7 @@ class AirRouter(APIRouter, RouterMixin):
                     return result
                 return response_class(result)
 
-            decorated = super(AirRouter, self).patch(
+            decorated = self._router.patch(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -1958,7 +2040,7 @@ class AirRouter(APIRouter, RouterMixin):
                     return result
                 return response_class(result)
 
-            decorated = super(AirRouter, self).put(
+            decorated = self._router.put(
                 path,
                 response_model=response_model,
                 status_code=status_code,
@@ -2338,7 +2420,7 @@ class AirRouter(APIRouter, RouterMixin):
                     return result
                 return response_class(result)
 
-            decorated = super(AirRouter, self).delete(
+            decorated = self._router.delete(
                 path,
                 response_model=response_model,
                 status_code=status_code,
