@@ -130,10 +130,10 @@ plugins:
             merge_init_into_class: true
   - redirects:
       redirect_maps:
-        'about/alternatives.md': 'about/inspirations.md'
-        'roadmap.md': 'about/roadmap.md'
-        'why.md': 'about/why.md'
-        'tools.md': 'community/tools.md'
+        "about/alternatives.md": "about/inspirations.md"
+        "roadmap.md": "about/roadmap.md"
+        "why.md": "about/why.md"
+        "tools.md": "community/tools.md"
   - llmstxt:
       markdown_description: "Air is a Python web framework that provides a friendly layer over FastAPI for building modern
         web applications that combine beautiful HTML pages with powerful REST APIs."

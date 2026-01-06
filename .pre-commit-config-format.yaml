@@ -6,7 +6,7 @@
 ci:
   autofix_prs: false
 fail_fast: false
-minimum_prek_version: '0.2.25'
+minimum_prek_version: "0.2.25"
 repos:
   - repo: builtin
     hooks:
@@ -24,7 +24,7 @@ repos:
         priority: 0
       - id: check-yaml # Attempts to load all yaml files to verify syntax.
         priority: 0
-        args: ['--allow-multiple-documents']
+        args: ["--allow-multiple-documents"]
       - id: detect-private-key # Checks for the existence of private keys.
         priority: 0
       - id: end-of-file-fixer # Ensure newline at EOF.
@@ -39,19 +39,19 @@ repos:
       - id: check-vcs-permalinks # Ensures that links to vcs websites are permalinks.
         priority: 0
       - id: name-tests-test # verifies that test files are named correctly.
-        args: ['--pytest-test-first']
+        args: ["--pytest-test-first"]
         priority: 0
         exclude: ^tests/(utils|components)\.py$
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
-        args: ['--autofix']
+        args: ["--autofix"]
   - repo: meta
     hooks:
       - id: check-hooks-apply # ensures that the configured hooks apply to at least one file in the repository.
         priority: 0
-        files: '^\.pre-commit-config-format\.yaml$'
+        files: "^\\.pre-commit-config-format\\.yaml$"
       - id: check-useless-excludes # ensures that exclude directives apply to any file in the repository.
         priority: 0
-        files: '^\.pre-commit-config-format\.yaml$'
+        files: "^\\.pre-commit-config-format\\.yaml$"
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
     hooks:
@@ -67,7 +67,7 @@ repos:
         language: python
         additional_dependencies:
           - black==25.12.0
-        args: ['--preview', '--line-length=79']
+        args: ["--preview", "--line-length=79"]
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.36.0 # A JSON Schema CLI and pre-commit hook built on jsonschema.
     hooks:
@@ -75,13 +75,13 @@ repos:
         priority: 0
       - id: check-github-issue-config # Validate GitHub Actions against the schema provided by SchemaStore.
         priority: 0
-        files: '^\.github/ISSUE_TEMPLATE/config\.yaml$'
+        files: "^\\.github/ISSUE_TEMPLATE/config\\.yaml$"
       - id: check-github-workflows # Validate GitHub Workflows against the schema provided by SchemaStore.
         priority: 0
       - id: check-renovate # Validate Renovate config against the schema provided by Renovate.
         language: python
         priority: 0
-        additional_dependencies: ['json5']
+        additional_dependencies: ["json5"]
   - repo: https://github.com/rohaquinlop/complexipy-pre-commit
     rev: v4.2.0
     hooks:
@@ -117,16 +117,16 @@ repos:
     rev: v0.14.10
     hooks:
       - id: ruff-format # Format Python files using Ruff's formatter (writes changes to disk).
-        args: ['--output-format=concise']
+        args: ["--output-format=concise"]
         types_or: [python]
       - id: ruff-check # Check for lint violations, apply fixes to resolve lint violations (only for fixable rules).
-        args: ['--fix', '--output-format=concise']
+        args: ["--fix", "--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
     hooks:
       - id: sync-pre-commit-deps # Sync pre-commit hook dependencies based on other installed hooks.
-        files: '^\.pre-commit-config-format\.yaml$'
+        files: "^\\.pre-commit-config-format\\.yaml$"
   - repo: https://github.com/tsvikas/sync-with-uv
     rev: v0.5.0 # Sync .pre-commit-config.yaml from uv.lock
     hooks:
@@ -144,7 +144,7 @@ repos:
     rev: v1.41.0
     hooks:
       - id: typos # Source code spell checker.
-        args: ['--write-changes', '--force-exclude', '--format=brief']
+        args: ["--write-changes", "--force-exclude", "--format=brief"]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.02
     hooks:

@@ -7,7 +7,7 @@ permissions:
 on:
   push:
     tags:
-      - 'v*' # Triggers on tags like v1.0.0
+      - "v*" # Triggers on tags like v1.0.0
 
 jobs:
   publish:
@@ -47,4 +47,4 @@ jobs:
           force-branch: false
           # Directory to use when executing git commands
           # Default: '${{ github.workspace }}'
-          git-directory: '${{ github.workspace }}'
+          git-directory: "${{ github.workspace }}"
