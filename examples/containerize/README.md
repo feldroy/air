@@ -59,6 +59,6 @@ author: Romar Mayer Micabalo (<hardwyrd@gmail.com>)
 
 ## date: 10/28/2025
 
-----------------
+---
 
 ---
