@@ -14,7 +14,7 @@ from typing import (
     override,
 )
 from urllib.parse import urlencode
-from warnings import deprecated
+from warnings import deprecated as warnings_deprecated
 
 from fastapi import params
 from fastapi.params import Depends
@@ -291,7 +291,7 @@ class AirRouter(RouterMixin):
                 A list of routes to serve incoming HTTP and WebSocket requests.
                 """
             ),
-            deprecated(
+            warnings_deprecated(
                 """
                 You normally wouldn't use this parameter with FastAPI, it is inherited
                 from Starlette and supported for compatibility.
