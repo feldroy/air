@@ -1,4 +1,5 @@
 # SQLModel
+
 [SQLModel](https://sqlmodel.tiangolo.com/) is a wrapper around the venerable and proven SQLAlchemy library. Like Typer, FastAPI, pydantic, and Air, SQLModel allows for definition of critical objects with type annotations - in this case database tables. SQLModel makes SQLAlchemy a bit easier to use, although it's possible to drop down to the raw power of SQLAlchemy at any time.
 
 Using the [AirSQLModel](https://github.com/pydanny/airsqlmodel) package requires an understanding of SQLModel. Fortunately, it's an easy library to learn.
@@ -14,7 +15,6 @@ Or if you are on pip:
 ```bash
 pip install airsqlmodel
 ```
-
 
 ## Configuring Air for SQL
 

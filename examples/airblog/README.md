@@ -8,7 +8,7 @@ A markdown-powered blog built with Air.
 uv run airblog.py
 ```
 
-Open http://localhost:8005
+Open <http://localhost:8005>
 
 ## Test
 

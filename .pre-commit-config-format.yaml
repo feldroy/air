@@ -126,7 +126,7 @@ repos:
     rev: v0.0.211
     hooks:
       - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
-        args: [ "--fix" ]
+        args: ["--fix"]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
     hooks:

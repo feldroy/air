@@ -30,6 +30,7 @@ Memory checks
 ```bash
 uv run -q -- pytest tests/benchmarks -m memory
 ```
+
 - Print results for memory scaling (bytes per tag)
 
 ```bash

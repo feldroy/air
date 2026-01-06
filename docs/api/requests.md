@@ -25,9 +25,11 @@ async def request_info(request: Request):
 ```
 
 ## Practical Recipes
+
 Here are smaller, focused examples for specific use cases:
 
 ### Accessing Query Parameters
+
 ```python
 import air
 from air.requests import Request
@@ -42,6 +44,7 @@ async def search(request: Request):
 ```
 
 ### Reading JSON Body
+
 ```python
 import air
 from air.requests import Request
@@ -57,6 +60,7 @@ async def create_item(request: Request):
 ```
 
 ### Reading Form Data
+
 ```python
 import air
 from air.requests import Request
@@ -72,7 +76,6 @@ async def login(request: Request):
         air.Section(air.Aside({"username": form.get("username")}))
     )
 ```
-
 
 ### Accessing the HTMX object
 
@@ -91,7 +94,6 @@ def index(request: air.Request):
         ),
     )
 ```
-
 
 ::: air.requests
     options:

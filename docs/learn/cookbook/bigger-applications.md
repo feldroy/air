@@ -6,7 +6,9 @@ When building larger applications with Air, you may find yourself needing to org
 
 !!! note
 
-    This approach shares state between the composited efforts. This means that authentication, database pooling, and other things will be usable between components. The [API reference](../../api/routing.md) for this documentation displays options for more controls like Router-specific lifespans, URL prefixes, and more.
+```
+This approach shares state between the composited efforts. This means that authentication, database pooling, and other things will be usable between components. The [API reference](../../api/routing.md) for this documentation displays options for more controls like Router-specific lifespans, URL prefixes, and more.
+```
 
 Let's imagine we have a landing page that links to a sophisticated dashboard. While our example dashboard is trivial, let's assume it is complicated enough that we want it in a separate Python module yet share state. We design the `main.py` as we would a normal Air application:
 
@@ -57,15 +59,16 @@ def index():
 
 If run locally these links should work:
 
-- http://localhost:8000
-- http://localhost:8000/dashboard
-
+- <http://localhost:8000>
+- <http://localhost:8000/dashboard>
 
 ## Mounting Air and FastAPI apps inside Air apps
 
 !!! warning
 
-    This approach does not share state between the apps. That means attempting to share authentication and database pooling will not function predictably, if at all.
+```
+This approach does not share state between the apps. That means attempting to share authentication and database pooling will not function predictably, if at all.
+```
 
 One of the really nice features of Air is the ability to mount apps inside each other. This allows you to create modular applications where different parts of your app can be developed and maintained independently. To do this, we lean on Starlette's `mount` functionality that Air inherits through FastAPI.
 

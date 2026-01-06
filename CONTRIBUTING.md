@@ -1,70 +1,70 @@
-# Contributing to the Air 💨 Web Framework!
+# Contributing to the Air 💨 Web Framework
 
 Welcome!
 We’re glad you’re here — every contribution, no matter how small, helps make **Air** better for everyone.
 
-##### Prerequisites:
+## Prerequisites
 
 1. Make sure you have [just](https://just.systems/man/en/packages.html) installed.
 2. Make sure you have [uv](https://docs.astral.sh/uv/getting-started/installation/#installing-uv) installed.
 3. Make sure you have [gh](https://github.com/cli/cli#installation) installed.
 4. Make sure you have [rich-cli](https://github.com/Textualize/rich-cli/tree/main#installation) installed.
 
-#### 1. Create the fork on GitHub, clone it locally, and wire remotes correctly.
+### 1. Create the fork on GitHub, clone it locally, and wire remotes correctly
 
-###### Autoconfigure the remotes(origin[your fork = your_github_username/air], upstream[original repo = feldroy/air]).
+#### Autoconfigure the remotes(origin[your fork = your_github_username/air], upstream[original repo = feldroy/air])
 
 ```bash
 gh repo fork feldroy/air --clone --remote
 ```
 
-#### 2. Move into the new project directory.
+#### 2. Move into the new project directory
 
 ```bash
 cd air
 ```
 
-#### 3. Fetch the latest changes from upstream.
+#### 3. Fetch the latest changes from upstream
 
 ```bash
 git fetch upstream
 ```
 
-#### 4. Create and switch to a new feature branch starting from upstream/main.
+#### 4. Create and switch to a new feature branch starting from upstream/main
 
 ```bash
 git switch -c your-new-branch-name upstream/main
 ```
 
-#### 5. Update the project's environment (ensures that all project dependencies are installed and up-to-date with the lockfile).
+#### 5. Update the project's environment (ensures that all project dependencies are installed and up-to-date with the lockfile)
 
 ```bash
 just sync
 ```
 
-#### 6. Configure your IDE with the uv environment:
+#### 6. Configure your IDE with the uv environment
 
-###### 1. VS Code (macOS, Linux, Windows):
+##### 1. VS Code (macOS, Linux, Windows)
 
 > 1. Open the project folder (air) in VS Code.
 > 2. Open the Command Palette (Cmd+Shift+P on macOS, Ctrl+Shift+P on Windows/Linux) → “Python: Select Interpreter”.
 > 3. Choose “Enter interpreter path…”, paste the path to `.venv/bin/python`, and press Enter.
 > 4. If .venv appears, select it. If not, choose Enter interpreter path… and use:
->     - macOS/Linux: ./.venv/bin/python
->     - Windows: .\.venv\Scripts\python.exe
+>    - macOS/Linux: ./.venv/bin/python
+>    - Windows: .\.venv\Scripts\python.exe
 
-###### 2. PyCharm (macOS, Linux, Windows):
+###### 2. PyCharm (macOS, Linux, Windows)
 
 > 1. Open the project folder (air) in PyCharm → Settings → Python → Interpreter → "Add Interpreter"
 >    → "Add Local Interpreter" → "select existing" → "select existing" → "select existing":
 >    - "Type": `uv`.
 >    - "Path to uv": `$ which uv`
 >    - "uv env use": `<project>/air/.venv/bin/python`.
-> 2. Click OK/Apply. More details: https://www.jetbrains.com/help/pycharm/uv.html
+> 2. Click OK/Apply. More details: <https://www.jetbrains.com/help/pycharm/uv.html>
 
-#### 7. Make your code changes and write/adjust tests to cover them (keep changes focused and small).
+#### 7. Make your code changes and write/adjust tests to cover them (keep changes focused and small)
 
-#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty.
+#### 8. Format the code and auto-fix simple issues(lint) with Ruff and Type check the project with Ty
 
 ```bash
 just qa
@@ -80,7 +80,7 @@ just test
 
 Make sure `just test` does not produce any errors before you open a PR!
 
-#### 10. Make a single commit that includes your tracked file changes with a clear message.
+#### 10. Make a single commit that includes your tracked file changes with a clear message
 
 ```bash
 git commit -am "<type>(<optional scope>): <description><optional body><optional footer>"
@@ -88,17 +88,18 @@ git commit -am "<type>(<optional scope>): <description><optional body><optional 
 
 For more info, see: [Conventional Commits Cheatsheet](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)
 
-#### 11. Push your branch to your fork and set the remote tracking.
+#### 11. Push your branch to your fork and set the remote tracking
 
 ```bash
 git push -u origin your-new-branch-name
 ```
 
-#### 12. Open a Pull Request back to feldroy/air with a prefilled title and body (edit as needed).
+#### 12. Open a Pull Request back to feldroy/air with a prefilled title and body (edit as needed)
 
 ```bash
 gh pr create --fill --repo feldroy/air
 ```
+
 [!IMPORTANT]
 > When opening a pull request, make sure to fill out the **Pull Request Template** completely.
 > This helps maintainers review your contribution quickly and keeps the process consistent.
@@ -109,15 +110,14 @@ gh pr create --fill --repo feldroy/air
 
 We are actively looking for contributions in the following areas:
 
-* **Bug fixes:** If you find a bug, please feel free to submit a pull request with a fix.
-* **Refactoring:** We welcome improvements to the existing codebase for clarity, performance, and maintainability.
-* **Documentation:** Enhancements to our documentation, including docstrings, are always appreciated.
-* **Features:** Any FEAT (feature) ticket marked with `Status: Approved`
+- **Bug fixes:** If you find a bug, please feel free to submit a pull request with a fix.
+- **Refactoring:** We welcome improvements to the existing codebase for clarity, performance, and maintainability.
+- **Documentation:** Enhancements to our documentation, including docstrings, are always appreciated.
+- **Features:** Any FEAT (feature) ticket marked with `Status: Approved`
 
 > [!IMPORTANT]
 > If you have an idea for a **new** feature, discuss it with us by opening an issue before writing any code. We want to
 > keep Air light and breezy instead of adding too much to this package.
-
 
 ### Features: Categories
 
@@ -129,7 +129,6 @@ We have the following categories for features. All new features will be assigned
 |Optional Air Feature|Feature: Optional|
 |Third-Party Integrated Feature|Feature: Third-Party Integrated|
 |Out-of-Scope Feature|Feature: Out-of-Scope|
-
 
 #### Core Air Feature
 
@@ -165,8 +164,8 @@ require complete docstrings. This will help us maintain a high-quality documenta
   `` `<tag>` ``) or inside code blocks (e.g., ```` ```html <tag> ``` ````)
 - Use [Google style docstrings](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) for all
   public functions, classes, and methods.
-    - Use the `Args:` and `Return:` (or `Yields:` for generators) directives to document parameters and return values
-    - Use the `Example:` directive to document how to use the function, class, or method being documented.
+  - Use the `Args:` and `Return:` (or `Yields:` for generators) directives to document parameters and return values
+  - Use the `Example:` directive to document how to use the function, class, or method being documented.
 - [What makes documentation good?](https://github.com/openai/openai-cookbook/blob/main/articles/what_makes_documentation_good.md)
 
 ## Plugins vs. Core Features
@@ -180,8 +179,8 @@ small and focused.
 
 If you run into issues, try the following:
 
-* Delete `.venv/` and run `uv venv` again to recreate the virtualenv.
-* Make sure you are not accidentally activating another virtualenv in your shell startup files.
-* If code changes do not seem to apply, run via `uv run <command>` (which auto-syncs), or re-run `uv sync`.
-* Upgrade uv if needed: `uv self update`.
-* Still stuck? File a GitHub issue with details.
+- Delete `.venv/` and run `uv venv` again to recreate the virtualenv.
+- Make sure you are not accidentally activating another virtualenv in your shell startup files.
+- If code changes do not seem to apply, run via `uv run <command>` (which auto-syncs), or re-run `uv sync`.
+- Upgrade uv if needed: `uv self update`.
+- Still stuck? File a GitHub issue with details.

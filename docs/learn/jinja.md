@@ -12,64 +12,59 @@ We love Jinja. Proven and fast, it's our go-to for when we want to manually craf
 
     In short, to match the Jinja documentation and the intent of the maintainer, in the Air documentation we use the term "Jinja".
 
-
 ## Using Jinja for the HTML Layout
 
 Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes it's easy to construct layouts using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is easier.
 
 Here's a simple Jinja layout file:
 
-```html+jinja title="templates/base.html"
-<!doctype html>
-<html>
+    <!doctype html>
+    <html>
     <head>
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-        <script
-            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
-            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
-            crossorigin="anonymous"></script>
-        <title>{{title}}</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <script
+    src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+    integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
+    crossorigin="anonymous"></script>
+    <title>{{title}}</title>
     </head>
     <body>
-        <main class="container">
-        {# We need to safe the content, which can be
-            a security risk. We'll cover mitigation
-            of such issues later on this page.
-        #}
-        {{content|safe}}
-        </main>
+    <main class="container">
+    {# We need to safe the content, which can be
+    a security risk. We'll cover mitigation
+    of such issues later on this page.
+    #}
+    {{content|safe}}
+    </main>
     </body>
-</html>
-```
+    </html>
 
 If you've used Jinja before this should look familiar. Now let's add in our Air Tags-powered content, which we'll do from the view.
 
-```python title="main.py"
-from air import Air
-from air.requests import Request
-import air
-
-app = Air()
-
-# Set the Jinja render function
-jinja = air.JinjaRenderer(directory="tests/templates")
-
-
-@app.get("/")
-def index(request: Request):
+    from air import Air
+    from air.requests import Request
+    import air
+    
+    app = Air()
+    
+    # Set the Jinja render function
+    jinja = air.JinjaRenderer(directory="tests/templates")
+    
+    
+    @app.get("/")
+    def index(request: Request):
     content = air.Main(
-        air.H2("Does Jinja work with Air Tags?"),
-        air.P("Jinja works great with Air Tags"),
+    air.H2("Does Jinja work with Air Tags?"),
+    air.P("Jinja works great with Air Tags"),
     )
     return jinja(
-        request,
-        name="base.html",
-        title="FAQ",
-        content=content,
+    request,
+    name="base.html",
+    title="FAQ",
+    content=content,
     )
-```
 
 When run, this will look like this:
 

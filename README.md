@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" />
 </p>
 
-## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.
+## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic
 
 [![CI - main](https://img.shields.io/github/actions/workflow/status/feldroy/air/CI.yaml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions/workflows/CI.yaml?query=branch%3Amain+event%3Apush)
 [![CI - Latest Tag](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions&label=CI%20Tag)](https://github.com/feldroy/air/actions/workflows/python-package.yml?query=tag%3Alatest+event%3Apush)
@@ -41,8 +41,7 @@
 
 > [!CAUTION]
 > Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
-
-
+>
 > [!IMPORTANT]
 > If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
 
@@ -59,9 +58,9 @@
 
 ---
 
-**Documentation**: <a href="https://docs.airwebframework.org" target="_blank">https://docs.airwebframework.org</a>
+**Documentation**: <a href="https://docs.airwebframework.org" target="_blank"><https://docs.airwebframework.org></a>
 
-**Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
+**Source Code**: <a href="https://github.com/feldroy/air" target="_blank"><https://github.com/feldroy/air></a>
 
 ## Installation
 
@@ -81,6 +80,7 @@ uv add air
 You can install each optional feature (extras) like this:
 
 1. **Standard** — FastAPI’s recommended extras
+
    ```sh
    uv add "air[standard]"
    ```
