@@ -23,7 +23,7 @@ python -m venv .venv
 pip install -U air
 ```
 
-```
+```text
 or even
 ```
 
@@ -251,7 +251,7 @@ url = filter_items.url(query_params={"tags": ["python", "web"]})
 
 !!! warning
 
-```
+```text
 By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else, like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX allows you to send other HTTP methods from forms and links.
 ```
 

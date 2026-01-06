@@ -58,7 +58,7 @@ print(content)
 
 !!! note
 
-```
+```text
 When returned from an Air view this conversion to HTML happens automatically, much like how FastAPI automatically converts `dict` responses to JSON.
 ```
 
@@ -79,7 +79,7 @@ print(content.pretty_render())
 
 !!! tip
 
-```
+```text
 Combine Air Tag's `.pretty_render()` method with the [rich package](https://github.com/Textualize/rich) for truly lovely colorized output.
 ```
 
@@ -113,7 +113,7 @@ Some HTML attributes are reserved words in Python. To get around that, **Air Tag
 
 !!! note
 
-```
+```text
 These are the reserved words that we've discocevered that conflict with HTML attributes. If you run into others, please open an issue on GitHub.
 ```
 
@@ -198,7 +198,7 @@ Renders as:
 
 !!! note
 
-```
+```text
 For the sake of clarity this example was rendered using `print(content.pretty_render())`.
 ```
 
@@ -238,7 +238,7 @@ This will render the following SVG:
 
 !!! note
 
-```
+```text
 For the sake of clarity this example was rendered using `print(content.pretty_render())`.
 ```
 
@@ -299,7 +299,7 @@ Which produces the following HTML:
 
 !!! note
 
-```
+```text
 For the sake of clarity this example was rendered using `print(card(...).pretty_render())`.
 ```
 

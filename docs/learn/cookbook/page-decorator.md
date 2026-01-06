@@ -4,11 +4,11 @@ For simple HTTP GET requests, Air provides the handy @app.page shortcut. It conv
 
 !!! note "When to use @app.page vs @app.get"
 
-```
+```text
 `@app.page` is convenient when the URL path can be derived from the function name.
 ```
 
-```
+```text
 Use `@app.get("/path")` instead when you need to:
 ```
 

@@ -6,7 +6,7 @@ When building larger applications with Air, you may find yourself needing to org
 
 !!! note
 
-```
+```text
 This approach shares state between the composited efforts. This means that authentication, database pooling, and other things will be usable between components. The [API reference](../../api/routing.md) for this documentation displays options for more controls like Router-specific lifespans, URL prefixes, and more.
 ```
 
@@ -66,7 +66,7 @@ If run locally these links should work:
 
 !!! warning
 
-```
+```text
 This approach does not share state between the apps. That means attempting to share authentication and database pooling will not function predictably, if at all.
 ```
 

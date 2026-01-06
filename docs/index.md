@@ -126,10 +126,10 @@ For `uv` users, just create a virtualenv and install the air package, like:
 Create a `main.py` with:
 
     import air
-    
+
     app = air.Air()
-    
-    
+
+
     @app.get("/")
     async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
@@ -144,11 +144,11 @@ Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML
 
     import air
     from fastapi import FastAPI
-    
+
     app = air.Air()
     api = FastAPI()
-    
-    
+
+
     @app.get("/")
     def landing_page():
     return air.Html(
@@ -158,13 +158,13 @@ Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML
     air.P(air.A("API Docs", target="_blank", href="/api/docs")),
     ),
     )
-    
-    
+
+
     @api.get("/")
     def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
-    
-    
+
+
     # Combining the Air and FastAPI apps into one
     app.mount("/api", api)
 
@@ -174,24 +174,24 @@ Want to use Jinja2 instead of Air Tags? We've got you covered.
 
     import air
     from fastapi import FastAPI
-    
+
     app = air.Air()
     api = FastAPI()
-    
+
     # Air's JinjaRenderer is a shortcut for using Jinja templates
     jinja = air.JinjaRenderer(directory="templates")
-    
-    
+
+
     @app.get("/")
     def index(request: air.Request):
     return jinja(request, name="home.html")
-    
-    
+
+
     @api.get("/")
     def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
-    
-    
+
+
     # Combining the Air and and FastAPI apps into one
     app.mount("/api", api)
 

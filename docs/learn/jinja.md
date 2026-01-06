@@ -46,13 +46,13 @@ If you've used Jinja before this should look familiar. Now let's add in our Air 
     from air import Air
     from air.requests import Request
     import air
-    
+
     app = Air()
-    
+
     # Set the Jinja render function
     jinja = air.JinjaRenderer(directory="tests/templates")
-    
-    
+
+
     @app.get("/")
     def index(request: Request):
     content = air.Main(
