@@ -122,6 +122,11 @@ repos:
       - id: ruff-check # Check for lint violations, apply fixes to resolve lint violations (only for fixable rules).
         args: ["--fix", "--output-format=concise"]
         types_or: [python]
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.0.209
+    hooks:
+      - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
+        args: [ "--fix", "--output-format=concise" ]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
     hooks:
