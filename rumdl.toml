@@ -52,56 +52,56 @@ unfixable = []
 output-format = "grouped"
 
 # Disable specific rules for specific files.
-#[per-file-ignores]
+# [per-file-ignores]
 # ---------------------------------------------------> rumdl Rules <---------------------------------------------------
 # https://github.com/rvben/rumdl/blob/main/docs/RULES.md
 
 [MD013] # https://github.com/rvben/rumdl/blob/main/docs/md013.md
 # MD013 - Keep lines short for better readability
 # Checks that lines don't exceed a maximum length to ensure your content is easy to read on all devices.
-line-length = 120  # Maximum characters per line (default: 80)
-code-blocks = false  # Don't check code blocks (default: true)
-tables = false  # Don't check tables (default: false)
-headings = true  # Check headings (default: true)
-paragraphs = true  # Check paragraph/regular text (default: true)
-strict = false  # Disables exceptions for URLs, etc. (default: false)
-reflow = false  # Enable automatic text reflow/wrapping (default: false)
-length-mode = "visual"  # How to count line length: "visual", "chars", or "bytes" (default: "visual")
+line-length = 120 # Maximum characters per line (default: 80)
+code-blocks = false # Don't check code blocks (default: true)
+tables = false # Don't check tables (default: false)
+headings = true # Check headings (default: true)
+paragraphs = true # Check paragraph/regular text (default: true)
+strict = false # Disables exceptions for URLs, etc. (default: false)
+reflow = false # Enable automatic text reflow/wrapping (default: false)
+length-mode = "visual" # How to count line length: "visual", "chars", or "bytes" (default: "visual")
 
 [MD014] # https://github.com/rvben/rumdl/blob/main/docs/md014.md
 # MD014 - Show command output in documentation
 # Checks that shell commands in code blocks include their output, making documentation more helpful and complete.
-show-output = true  # Whether commands should show output (default: true)
+show-output = true # Whether commands should show output (default: true)
 
 [MD033] # https://github.com/rvben/rumdl/blob/main/docs/md033.md
 # MD033 - No HTML tags
 # Prevents the use of HTML tags in Markdown - use Markdown syntax instead.
-allowed-elements = []  # List of allowed HTML tags (default: none)
+allowed-elements = [] # List of allowed HTML tags (default: none)
 
 [MD044] # https://github.com/rvben/rumdl/blob/main/docs/md044.md
 # MD044 - Use Proper Capitalization for Names
 # Ensures brand names, product names, and technical terms are consistently capitalized throughout your documents.
-names = []             # List of properly capitalized names
-code-blocks = false    # Check inside code blocks (default: false, skips code blocks)
-html-elements = true   # Check inside HTML elements (default: true)
-html-comments = true   # Check inside HTML comments (default: true)
+names = [] # List of properly capitalized names
+code-blocks = false # Check inside code blocks (default: false, skips code blocks)
+html-elements = true # Check inside HTML elements (default: true)
+html-comments = true # Check inside HTML comments (default: true)
 
 [MD049] # https://github.com/rvben/rumdl/blob/main/docs/md049.md
 # MD049 - Keep italic text formatting consistent
 # Ensures all italic text uses the same style throughout your document - either asterisks (*) or underscores (_).
-style = "asterisk"  # Options: "consistent"(default), "asterisk", "underscore"
+style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore"
 
 [MD050] # https://github.com/rvben/rumdl/blob/main/docs/md050.md
 # MD050 - Keep bold text formatting consistent
 # Ensures all bold text uses the same style throughout your document - either (**) or (__).
-style = "asterisk"  # Options: "consistent"(default), "asterisk", "underscore"
+style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore"
 
 [MD046] # https://github.com/rvben/rumdl/blob/main/docs/md046.md
 # MD046 - Use Consistent Code Block Style
 # Ensures all code blocks in your document use the same style - either fenced (with backticks) or indented (with spaces).
-style = "fenced"  # Options: "consistent", "fenced", "indented"
+style = "fenced" # Options: "consistent", "fenced", "indented"
 
 [MD048] # https://github.com/rvben/rumdl/blob/main/docs/md048.md
 # MD048 - Code fence style should be consistent
 # Ensures all code blocks use the same fence markers - either ``` or ~~~ consistently.
-style = "backtick"  # Options: "consistent", "backtick", "tilde"
+style = "backtick" # Options: "consistent", "backtick", "tilde"

@@ -48,7 +48,6 @@ str(content)
 
 The `print()` built-in also does this conversion, but the result goes to `stdout`, so can't be saved to a variable.
 
-
 ```python
 print(content)
 ```
@@ -79,7 +78,6 @@ print(content.pretty_render())
 !!! tip
 
     Combine Air Tag's `.pretty_render()` method with the [rich package](https://github.com/Textualize/rich) for truly lovely colorized output.
-
 
 ## Attributes
 

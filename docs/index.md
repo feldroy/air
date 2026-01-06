@@ -1,5 +1,4 @@
 
-
 <p align="center">
   <a href="https://airwebframework.org"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>
 </p>
@@ -95,7 +94,6 @@
 
 ## Why use Air?
 
-
 - **Powered by FastAPI** - Designed to work with FastAPI so you can serve your API and web pages from one app
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
 - **Air Tags** - Easy to write and performant HTML content generation using Python classes to render HTML
@@ -107,10 +105,9 @@
 
 ---
 
-**Documentation**: <a href="https://docs.airwebframework.org" target="_blank">https://docs.airwebframework.org</a>
+**Documentation**: <a href="https://docs.airwebframework.org" target="_blank"><https://docs.airwebframework.org></a>
 
-**Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
-
+**Source Code**: <a href="https://github.com/feldroy/air" target="_blank"><https://github.com/feldroy/air></a>
 
 ## Installation
 
