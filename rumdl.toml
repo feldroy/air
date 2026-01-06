@@ -3,363 +3,45 @@
 # https://tombi-toml.github.io/tombi/docs/configuration
 # https://github.com/rvben/rumdl/blob/main/docs/global-settings.md
 # https://github.com/rvben/rumdl/blob/main/docs/inline-configuration.md
-# https://github.com/rvben/rumdl/blob/main/docs/RULES.md
-
-# rumdl.toml (TOML v1.1.0)
-# Tuned for a modern open-source Python 3.14 library with Google-style docs and MkDocs.
-# Notes:
-# - Global keys use kebab-case to match the rumdl schema.
-# - Some rule numbers are intentionally missing (MD002, MD006, MD008, MD015, MD016, MD017).
 
 [global]
-flavor = "mkdocs"
-line-length = 120
-respect-gitignore = true
-# Cache lint results for faster local runs and CI.
-cache = true
-cache-dir = ".rumdl_cache"
-# File selection
-include = [
-    "README.md",
-    "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "docs/**/*.md",
-]
+# Enable only specific rules.
+enable = []
+# Disable specific rules.
+disable = []
+# Specifies files and directories to exclude from linting. Supports glob patterns.
+# Default: [] (no files excluded)
 exclude = [
     "site/**",
-    "docs/reference/**",
-    "docs/api/**",
     ".venv/**",
     "dist/**",
     "build/**",
     ".git/**",
     "node_modules/**",
 ]
-# Prefer controlling rules via per-rule sections below.
-enable = []
-disable = []
+# Enforce excludes even for explicitly provided files
+force-exclude = false
+# Specifies files and directories to include in linting. When set, only matching files are processed.
+# Default: [] (all Markdown files included)
+include = []
+# Controls whether rumdl respects .gitignore files when scanning for Markdown files. Default: true
+respect-gitignore = true
+# Sets the global default line length used by rules that check line length. Default: 80
+line-length = 120
+# Specifies the Markdown flavor to use for parsing and linting.
+# Available Flavors: "standard" (default): Standard Markdown syntax, "mkdocs": MkDocs-specific extensions and syntax.
+flavor = "mkdocs"
+# Controls whether rumdl caches linting results to speed up subsequent runs. Default: true
+cache = true
+# Specifies the directory where rumdl stores cache files. Default: .rumdl_cache
+cache-dir = ".rumdl_cache"
 # Fix scoping (empty means no restriction).
 fixable = []
 unfixable = []
-# Practical CI-friendly output.
-output-format = "text"
-# Deprecated: kept for schema completeness; has no effect.
-force-exclude = false
+# Output format for linting results [text, full, concise, grouped, json, json-lines, github, gitlab, pylint]
+output-format = "grouped"
 
+# Disable specific rules for specific files.
 [per-file-ignores]
-# README often starts with badges (HTML) and may not start with an H1.
-"README.md" = ["MD033", "MD041"]
-# Generated API docs can have long lines and repetitive headings.
-"docs/reference/**" = ["MD013", "MD024", "MD025", "MD041", "MD060"]
-"docs/api/**" = ["MD013", "MD024", "MD025", "MD041", "MD060"]
-
-[MD001]
-enabled = true
-severity = "error"
-
-[MD003]
-enabled = true
-severity = "warning"
-style = "atx"
-
-[MD004]
-enabled = true
-severity = "warning"
-style = "dash"
-
-[MD005]
-enabled = true
-severity = "warning"
-indent = 2
-
-[MD007]
-enabled = true
-severity = "warning"
-indent = 2
-start-indented = false
-
-[MD009]
-enabled = true
-severity = "warning"
-br-spaces = 2
-list-item-empty-lines = false
-strict = false
-
-[MD010]
-enabled = true
-severity = "warning"
-code-blocks = true
-
-[MD011]
-enabled = true
-severity = "error"
-
-[MD012]
-enabled = true
-severity = "warning"
-maximum = 1
-
-[MD013]
-enabled = true
-severity = "warning"
-line-length = 80
-code-blocks = false
-tables = false
-headings = false
-strict = false
-
-[MD014]
-enabled = false
-severity = "info"
-code-blocks = true
-
-[MD018]
-enabled = true
-severity = "warning"
-
-[MD019]
-enabled = true
-severity = "warning"
-
-[MD020]
-enabled = true
-severity = "warning"
-
-[MD021]
-enabled = true
-severity = "warning"
-
-[MD022]
-enabled = true
-severity = "warning"
-lines-above = 1
-lines-below = 1
-
-[MD023]
-enabled = true
-severity = "warning"
-
-[MD024]
-enabled = true
-severity = "error"
-allow-different-nesting = false
-siblings-only = false
-
-[MD025]
-enabled = true
-severity = "error"
-level = 1
-front-matter-title = "title"
-
-[MD026]
-enabled = true
-severity = "warning"
-punctuation = ".,;:!?"
-
-[MD027]
-enabled = true
-severity = "warning"
-
-[MD028]
-enabled = true
-severity = "warning"
-
-[MD029]
-enabled = true
-severity = "warning"
-style = "ordered"
-
-[MD030]
-enabled = true
-severity = "warning"
-ul-single = 1
-ol-single = 1
-ul-multi = 1
-ol-multi = 1
-
-[MD031]
-enabled = true
-severity = "warning"
-list-items = true
-
-[MD032]
-enabled = true
-severity = "warning"
-blanks-around-lists = true
-
-[MD033]
-enabled = true
-severity = "warning"
-allowed-elements = ["br", "details", "summary", "kbd", "sub", "sup"]
-
-[MD034]
-enabled = true
-severity = "warning"
-
-[MD035]
-enabled = true
-severity = "warning"
-style = "---"
-
-[MD036]
-enabled = true
-severity = "warning"
-
-[MD037]
-enabled = true
-severity = "warning"
-
-[MD038]
-enabled = true
-severity = "warning"
-
-[MD039]
-enabled = true
-severity = "warning"
-
-[MD040]
-enabled = true
-severity = "warning"
-language-only = true
-allowed-languages = []
-
-[MD041]
-enabled = true
-severity = "warning"
-level = 1
-front-matter-title = "title"
-
-[MD042]
-enabled = true
-severity = "error"
-
-[MD043]
-enabled = false
-severity = "info"
-headings = []
-match-case = false
-
-[MD044]
-enabled = false
-severity = "info"
-names = ["Python", "GitHub", "MkDocs", "mkdocstrings", "Google"]
-code-blocks = false
-
-[MD045]
-enabled = true
-severity = "error"
-
-[MD046]
-enabled = true
-severity = "warning"
-style = "fenced"
-
-[MD047]
-enabled = true
-severity = "warning"
-
-[MD048]
-enabled = true
-severity = "warning"
-style = "backtick"
-
-[MD049]
-enabled = true
-severity = "warning"
-style = "asterisk"
-
-[MD050]
-enabled = true
-severity = "warning"
-style = "asterisk"
-
-[MD051]
-enabled = true
-severity = "error"
-ignored-links = []
-
-[MD052]
-enabled = true
-severity = "warning"
-
-[MD053]
-enabled = true
-severity = "warning"
-ignored-definitions = []
-
-[MD054]
-enabled = true
-severity = "warning"
-
-[MD055]
-enabled = true
-severity = "warning"
-
-[MD056]
-enabled = true
-severity = "warning"
-
-[MD057]
-enabled = true
-severity = "error"
-
-[MD058]
-enabled = true
-severity = "warning"
-
-[MD059]
-enabled = true
-severity = "warning"
-
-[MD060]
-enabled = true
-severity = "warning"
-
-[MD061]
-enabled = true
-severity = "warning"
-
-[MD062]
-enabled = true
-severity = "warning"
-
-[MD063]
-enabled = true
-severity = "warning"
-style = "sentence_case"
-
-[MD064]
-enabled = true
-severity = "warning"
-
-[MD065]
-enabled = true
-severity = "warning"
-
-[MD066]
-enabled = true
-severity = "error"
-
-[MD067]
-enabled = true
-severity = "warning"
-
-[MD068]
-enabled = true
-severity = "error"
-
-[MD069]
-enabled = true
-severity = "warning"
-
-[MD070]
-enabled = true
-severity = "warning"
-
-[MD071]
-enabled = true
-severity = "warning"
-
-[MD072]
-enabled = true
-severity = "warning"
+# ---------------------------------------------------> rumdl Rules <---------------------------------------------------
+# https://github.com/rvben/rumdl/blob/main/docs/RULES.md
