@@ -151,15 +151,22 @@ ipython:
 
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-format OUTPUT_FORMAT="":
+format *ARGS:
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml \
-     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml {{ ARGS }}
+
+# [Stop running hooks after the first failure]
+[group('qa')]
+@format-fail-fast: && (format "--fail-fast")
+
+# [Do not run the hooks, but print the hooks that would have been run]
+[group('qa')]
+@format-dry-runw: && (format "--dry-run")
 
 # [print diagnostics for prek, with hook id and duration]
 [group('qa')]
-@format-verbose: && (format "verbose")
+@format-verbose: && (format "--verbose")
 
 # ruff-format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
@@ -183,15 +190,22 @@ ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-lint OUTPUT_FORMAT="":
+lint *ARGS:
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
-     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml {{ ARGS }}
+
+# [Stop running hooks after the first failure]
+[group('qa')]
+@lint-fail-fast: && (lint "--fail-fast")
+
+# [Do not run the hooks, but print the hooks that would have been run]
+[group('qa')]
+@lint-dry-run: && (lint "--dry-run")
 
 # [print diagnostics for prek, with hook id and duration]
 [group('qa')]
-@lint-verbose: && (lint "verbose")
+@lint-verbose: && (lint "--verbose")
 
 # ruff-check - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]

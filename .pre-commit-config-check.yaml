@@ -166,12 +166,19 @@ repos:
         args: ['-lint']
         # --------------------------------------------------------------------------------------------------------------
         # TODO -> Enable once all lint violations are fixed:
-        #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-        #    rev: v1.19.0
+        #  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+        #    rev: 3.6.0
         #    hooks:
-        #      - id: zizmor # Static analysis tool for GitHub Actions.
-        #        args: [ '--fix=all' ]
+        #      - id: editorconfig-checker # A tool to verify that your files are in harmony with your .editorconfig
+        #        alias: ec
+        #        priority: 0
         #  - repo: https://github.com/google/osv-scanner
         #    rev: v2.3.1 # https://google.github.io/osv-scanner/usage/#pre-commit-integration
         #    hooks:
         #      - id: osv-scanner # Vulnerability scanner written in Go.
+        #        priority: 0
+        #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+        #    rev: v1.19.0
+        #    hooks:
+        #      - id: zizmor # Static analysis tool for GitHub Actions.
+        #        priority: 0
