@@ -2,7 +2,7 @@
 
 Air applications are closely similar to FastAPI applications. Building a Docker image for your Air app is straightforward. You build a Docker image for a FastAPI application, with some minor differences.
 
-## Why build a container image?
+### Why build a container image?
 
 There are many advantages to building a container image for your Air application. For one, the container image you generate becomes a discrete deployable unit making your application more portable. You can then run your container image on Docker Engine, Docker Desktop, other platforms that support Docker images, or deploy your container image into any flavor of Kubernetes.
 
@@ -20,7 +20,7 @@ You can copy the provided sample Dockerfile and put it in your project folder.
 
 Before attempting to build, ensure that you have installed the dependencies required by Air and your application. The following dependencies are for the sample airblog app:
 
-```text
+```
 uv add "air[standard]"
 uv add "uvicorn"
 uv add "frontmatter"
@@ -34,15 +34,15 @@ By running the previous uv commands, the dependencies are added by uv to pyproje
 
 Docker now requires you use `buildx` instead of `build` for building your Docker images.
 
-For multi-platform builds (eg. you want your image to support `linux/amd64` and `linux/arm64`) you will need to add multi-platform support for Docker. You can refer to <https://docs.docker.com/build/building/multi-platform/> for more information.
+For multi-platform builds (eg. you want your image to support `linux/amd64` and `linux/arm64`) you will need to add multi-platform support for Docker. You can refer to https://docs.docker.com/build/building/multi-platform/ for more information.
 
 To run the actual build, run:
 
-`docker buildx build -t <your-registry>/<your-app>:<tag> --push .`
+`docker buildx build -t <your-registry>/<your-app>:<tag> --push . `
 
 For multi-platform build, run:
 
-`docker buildx build --platform linux/amd64,linux/arm64 -t <your-registry>/<your-app>:<tag> --push .`
+`docker buildx build --platform linux/amd64,linux/arm64 -t <your-registry>/<your-app>:<tag> --push . `
 
 Your image will then be pushed automatically to your designated image registry. You can then test it out by pulling your container image and running it:
 
@@ -53,12 +53,7 @@ Your image will then be pushed automatically to your designated image registry. 
 You are now ready to play some more with Air!
 
 ---
-
 title: Containerizing an Air application
-author: Romar Mayer Micabalo (<hardwyrd@gmail.com>)
-
-## date: 10/28/2025
-
----
-
+author: Romar Mayer Micabalo (hardwyrd@gmail.com)
+date: 10/28/2025
 ---

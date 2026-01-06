@@ -1,4 +1,5 @@
 
+
 <p align="center">
   <a href="https://airwebframework.org"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>
 </p>
@@ -94,6 +95,7 @@
 
 ## Why use Air?
 
+
 - **Powered by FastAPI** - Designed to work with FastAPI so you can serve your API and web pages from one app
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
 - **Air Tags** - Easy to write and performant HTML content generation using Python classes to render HTML
@@ -105,9 +107,10 @@
 
 ---
 
-**Documentation**: <a href="https://docs.airwebframework.org" target="_blank"><https://docs.airwebframework.org></a>
+**Documentation**: <a href="https://docs.airwebframework.org" target="_blank">https://docs.airwebframework.org</a>
 
-**Source Code**: <a href="https://github.com/feldroy/air" target="_blank"><https://github.com/feldroy/air></a>
+**Source Code**: <a href="https://github.com/feldroy/air" target="_blank">https://github.com/feldroy/air</a>
+
 
 ## Installation
 
@@ -115,24 +118,28 @@ Install using `pip install -U air` or `conda install air -c conda-forge`.
 
 For `uv` users, just create a virtualenv and install the air package, like:
 
-    uv venv
-    source .venv/bin/activate
-    uv init
-    uv add air
-    uv add "fastapi[standard]"
+```sh
+uv venv
+source .venv/bin/activate
+uv init
+uv add air
+uv add "fastapi[standard]"
+```
 
 ## A Simple Example
 
 Create a `main.py` with:
 
-    import air
+```python
+import air
 
-    app = air.Air()
+app = air.Air()
 
 
-    @app.get("/")
-    async def index():
+@app.get("/")
+async def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
+```
 
 !!! note
 
@@ -142,73 +149,79 @@ Create a `main.py` with:
 
 Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
 
-    import air
-    from fastapi import FastAPI
+```python
+import air
+from fastapi import FastAPI
 
-    app = air.Air()
-    api = FastAPI()
+app = air.Air()
+api = FastAPI()
 
 
-    @app.get("/")
-    def landing_page():
+@app.get("/")
+def landing_page():
     return air.Html(
-    air.Head(air.Title("Awesome SaaS")),
-    air.Body(
-    air.H1("Awesome SaaS"),
-    air.P(air.A("API Docs", target="_blank", href="/api/docs")),
-    ),
+        air.Head(air.Title("Awesome SaaS")),
+        air.Body(
+            air.H1("Awesome SaaS"),
+            air.P(air.A("API Docs", target="_blank", href="/api/docs")),
+        ),
     )
 
 
-    @api.get("/")
-    def api_root():
+@api.get("/")
+def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
 
-    # Combining the Air and FastAPI apps into one
-    app.mount("/api", api)
+# Combining the Air and FastAPI apps into one
+app.mount("/api", api)
+```
 
 ## Combining FastAPI and Air using Jinja2
 
 Want to use Jinja2 instead of Air Tags? We've got you covered.
 
-    import air
-    from fastapi import FastAPI
+```python
+import air
+from fastapi import FastAPI
 
-    app = air.Air()
-    api = FastAPI()
+app = air.Air()
+api = FastAPI()
 
-    # Air's JinjaRenderer is a shortcut for using Jinja templates
-    jinja = air.JinjaRenderer(directory="templates")
+# Air's JinjaRenderer is a shortcut for using Jinja templates
+jinja = air.JinjaRenderer(directory="templates")
 
 
-    @app.get("/")
-    def index(request: air.Request):
+@app.get("/")
+def index(request: air.Request):
     return jinja(request, name="home.html")
 
 
-    @api.get("/")
-    def api_root():
+@api.get("/")
+def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
 
-    # Combining the Air and and FastAPI apps into one
-    app.mount("/api", api)
+# Combining the Air and and FastAPI apps into one
+app.mount("/api", api)
+```
 
 Don't forget the Jinja template!
 
-    <!doctype html>
-    <html>
+```html
+<!doctype html>
+<html>
     <head>
-    <title>Awesome SaaS</title>
+        <title>Awesome SaaS</title>
     </head>
     <body>
-    <h1>Awesome SaaS</h1>
-    <p>
-    <a target="_blank" href="/api/docs">API Docs</a>
-    </p>
+        <h1>Awesome SaaS</h1>
+        <p>
+            <a target="_blank" href="/api/docs">API Docs</a>
+        </p>
     </body>
-    </html>
+</html>
+```
 
 !!! note
 

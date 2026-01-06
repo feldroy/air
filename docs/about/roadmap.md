@@ -24,7 +24,7 @@ While it would be nice to have Air be a Beta project today there's something to 
 
 Here is what is planned for the Beta release, which is tracked on the <a href="https://github.com/orgs/feldroy/projects/2" target="_blank">Air Beta Release Project board</a>:
 
-###  Air Forms
+### Air Forms
 
 Forms are a core part of any web framework. While the foundations for forms are in place with Air Tags, there is still a lot of work to be done. Part of it is that form libraries have to support a lot of edge cases. This includes:
 

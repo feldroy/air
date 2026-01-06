@@ -15,7 +15,6 @@ The `is_htmx_request` dependency allows you to detect whether a request is comin
 ### Examples
 
 #### Basic Usage
-
 ```python
 import air
 from fastapi import Depends
@@ -46,7 +45,6 @@ def get_users(is_htmx: bool = Depends(air.is_htmx_request)):
 ```
 
 #### Form Handling
-
 ```python
 @app.post("/submit")
 def submit_form(is_htmx: bool = Depends(air.is_htmx_request)):

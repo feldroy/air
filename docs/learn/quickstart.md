@@ -18,18 +18,17 @@ uv add air
 !!! note
     You can also do:
 
-```sh
-python -m venv .venv
-pip install -U air
-```
+    ```sh
+    python -m venv .venv
+    pip install -U air
+    ```
 
-```text
-or even
-```
+    or even
 
-```sh
-conda install air -c conda-forge
-```
+    ```sh
+    conda install air -c conda-forge
+    ```
+
 
 ## Hello, Air! Example
 
@@ -52,7 +51,7 @@ Serve your app with:
 air run
 ```
 
-Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank"><http://localhost:8000/></a>
+Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>
 
 Here's a few interesting things about this page:
 
@@ -68,6 +67,8 @@ Here's a few interesting things about this page:
     ```
 
     This requires installation of the `fastapi[standard]` package.
+
+
 
 ## Routing
 
@@ -143,7 +144,7 @@ def air_is_grounded():  # (2)!
 
 ### Variables in Paths
 
-Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete` function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function.
+Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete`  function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function.
 
 ```python hl_lines="5-6"
 import air
@@ -251,9 +252,7 @@ url = filter_items.url(query_params={"tags": ["python", "web"]})
 
 !!! warning
 
-```text
-By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else, like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX allows you to send other HTTP methods from forms and links.
-```
+    By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else, like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX allows you to send other HTTP methods from forms and links.
 
 Air supports the `PATCH`, `PUT`, or `DELETE` methods natively:
 
@@ -307,6 +306,7 @@ air.Form(
 
 [Air Tags](../learn/air_tags.md) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
 
+
 ### JavaScript Files
 
 Using Air Tags to call external JavaScript files:
@@ -327,6 +327,7 @@ def index():
 ### Inline Scripts
 
 When you need to use JavaScript inline in Air Tags:
+
 
 ```python hl_lines="7"
 import air
@@ -407,6 +408,7 @@ Here's a simple Jinja template:
 
 And here's the view that calls it:
 
+
 ```python title="main.py"  hl_lines="6 10 14 16"
 import air
 
@@ -479,6 +481,8 @@ def avatar(request: air.Request):
 
     Where Jinja + Air Tags truly come alive is when the base templates for a project are in Jinja. For some people this makes styling pages a bit easier. Then content, especially HTMX swaps and other fragments are rendered via Air Tags. This keeps the developer in Python, which means less context switching while working on challenges.
 
+
+
 ## Forms
 
 In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet workable example of receiving data using a `Request` object.
@@ -517,13 +521,14 @@ async def email_handler(request: air.Request):  # (1)!
 ```
 
 1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the form data is contained within the `air.Request` object.
-2. Form data needs to be received via an `await` keyword on `request.form()`.
+2.Form data needs to be received via an `await` keyword on `request.form()`.
+
 
 !!! tip "FormData is a dict-like object"
 
     While the value `FormData([('email', 'aang@example.com')])` might be displayed, the keys and values are accessed via traditional methods.
 
-###  AirForms: pydantic+forms
+### AirForms: pydantic+forms
 
 The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use pydantic models to determine how a form is constructed.
 
@@ -654,7 +659,8 @@ async def lottery_numbers():
 5. The `sse_swap` attribute informs HTMX that we only want to receive SSE events of the `message` type. This is a common response and shouldn't be changed unless you have a good reason.
 6. The `air.SSEResponse` needs a generator function or generator expression. Our example just generates random numbers, but people use similar functions to query databases and fetch data from APIs. Of note is that in our example instead of using `return` statements we use `yield` statements to ensure control is not lost.
 7. Air Tags work great, but any type of data can be passed back.
-8. Air does all heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!
+8. Air does all  heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!
+
 
 ## Want to learn more?
 
@@ -668,16 +674,16 @@ Check out these documentation sections:
 What we plan to include in the Quick Start:
 
 - [x] Jinja
-  - [x] The Jinja + Air Tags pattern the core devs love to use
+    - [x] The Jinja + Air Tags pattern the core devs love to use
 - [x] Forms:
-  - [x] Using Pydantic-powered AirForms for validation of incoming data
-  - [ ] `HTTP GET` forms, like those used in search forms
-  - [ ] File uploads (part of forms)
+    - [x] Using Pydantic-powered AirForms for validation of incoming data
+    - [ ] `HTTP GET` forms, like those used in search forms
+    - [ ] File uploads (part of forms)
 - [ ] HTMX basics
 - [x] Routing
-  - [x] Variables in URLs
-  - [x] Variables in paths
-  - [x] Generating URLs
+    - [x] Variables in URLs
+    - [x] Variables in paths
+    - [x] Generating URLs
 - [ ] Custom exception handlers
 - [ ] Sessions
 - [ ] Cookies

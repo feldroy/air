@@ -4,13 +4,9 @@ For simple HTTP GET requests, Air provides the handy @app.page shortcut. It conv
 
 !!! note "When to use @app.page vs @app.get"
 
-```text
-`@app.page` is convenient when the URL path can be derived from the function name.
-```
+    `@app.page` is convenient when the URL path can be derived from the function name.
 
-```text
-Use `@app.get("/path")` instead when you need to:
-```
+    Use `@app.get("/path")` instead when you need to:
 
     - Specify a custom URL path that doesn't match the function name
     - Include path parameters like `/users/{user_id}`

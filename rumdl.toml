@@ -17,6 +17,7 @@ disable = [
     "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
     "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
     "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
+    "MD046", # https://github.com/rvben/rumdl/blob/main/docs/md046.md
 ]
 # Specifies files and directories to exclude from linting. Supports glob patterns.
 # Default: [] (no files excluded)
@@ -96,11 +97,11 @@ style = "asterisk"  # Options: "consistent"(default), "asterisk", "underscore"
 style = "asterisk"  # Options: "consistent"(default), "asterisk", "underscore"
 
 [MD046] # https://github.com/rvben/rumdl/blob/main/docs/md046.md
-# MD048 - Code fence style should be consistent.
-# Ensures all code blocks use the same fence markers - either ``` or ~~~ consistently.
+# MD046 - Use Consistent Code Block Style
+# Ensures all code blocks in your document use the same style - either fenced (with backticks) or indented (with spaces).
 style = "fenced"  # Options: "consistent", "fenced", "indented"
 
 [MD048] # https://github.com/rvben/rumdl/blob/main/docs/md048.md
-# https://github.com/rvben/rumdl/blob/main/docs/md048.md
+# MD048 - Code fence style should be consistent
 # Ensures all code blocks use the same fence markers - either ``` or ~~~ consistently.
 style = "backtick"  # Options: "consistent", "backtick", "tilde"

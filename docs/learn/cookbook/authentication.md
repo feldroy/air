@@ -6,6 +6,7 @@ How to handle login and authentication in your application. It does not cover au
 
 This first example shows how to create a password-less authentication flow using Air. This is a toy example that uses sessions to keep track of the logged-in user. In a real application, you would want to use a more secure method of authentication, with passwords or OAuth.
 
+
 ```python
 import air
 from time import time

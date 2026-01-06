@@ -8,7 +8,7 @@ Welcome to the Air community! This page showcases community-created content, res
 
 Community libraries to help you build more with Air:
 
-- <a href="https://kentro-tech.github.io/airheads/" target="_blank">Airheads</a> - A library to make project discoverability less of a pain. Create you `Head` tag with social, SEO, search engine optimization.
+- <a href="https://kentro-tech.github.io/airheads/" target="_blank">Airheads</a> - A library to make project discoverability less of a pain.  Create you `Head` tag with social, SEO, search engine optimization.
 
 ## Articles
 

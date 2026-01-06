@@ -48,6 +48,7 @@ str(content)
 
 The `print()` built-in also does this conversion, but the result goes to `stdout`, so can't be saved to a variable.
 
+
 ```python
 print(content)
 ```
@@ -58,9 +59,7 @@ print(content)
 
 !!! note
 
-```text
-When returned from an Air view this conversion to HTML happens automatically, much like how FastAPI automatically converts `dict` responses to JSON.
-```
+    When returned from an Air view this conversion to HTML happens automatically, much like how FastAPI automatically converts `dict` responses to JSON.
 
 ## Pretty HTML renders
 
@@ -79,9 +78,8 @@ print(content.pretty_render())
 
 !!! tip
 
-```text
-Combine Air Tag's `.pretty_render()` method with the [rich package](https://github.com/Textualize/rich) for truly lovely colorized output.
-```
+    Combine Air Tag's `.pretty_render()` method with the [rich package](https://github.com/Textualize/rich) for truly lovely colorized output.
+
 
 ## Attributes
 
@@ -113,9 +111,7 @@ Some HTML attributes are reserved words in Python. To get around that, **Air Tag
 
 !!! note
 
-```text
-These are the reserved words that we've discocevered that conflict with HTML attributes. If you run into others, please open an issue on GitHub.
-```
+    These are the reserved words that we've discocevered that conflict with HTML attributes. If you run into others, please open an issue on GitHub.
 
 #### Setting the `class` attribute
 
@@ -198,9 +194,7 @@ Renders as:
 
 !!! note
 
-```text
-For the sake of clarity this example was rendered using `print(content.pretty_render())`.
-```
+    For the sake of clarity this example was rendered using `print(content.pretty_render())`.
 
 If you need a value set to `true`, use `"true"` in Python. For example:
 
@@ -238,9 +232,7 @@ This will render the following SVG:
 
 !!! note
 
-```text
-For the sake of clarity this example was rendered using `print(content.pretty_render())`.
-```
+    For the sake of clarity this example was rendered using `print(content.pretty_render())`.
 
 ## Custom Air Tags
 
@@ -299,9 +291,7 @@ Which produces the following HTML:
 
 !!! note
 
-```text
-For the sake of clarity this example was rendered using `print(card(...).pretty_render())`.
-```
+    For the sake of clarity this example was rendered using `print(card(...).pretty_render())`.
 
 ## Returning Multiple Children (used in HTMX)
 

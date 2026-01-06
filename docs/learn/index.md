@@ -15,7 +15,7 @@ Why and how Air works.
 - **[Layouts](layouts.md)** - Tools for building layouts in Air along with two simple layout systems
 - **[SQLModel](sqlmodel.md)** - One way to use SQL databases in Air apps (to be moved to an external package soon)
 
-## Cookbook
+# Cookbook
 
 A handy Air-themed list of recipes for common web app tasks.
 
