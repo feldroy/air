@@ -54,7 +54,7 @@ jobs:
       - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
         with:
           tool: just
-      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           enable-cache: false
       - name: Check for formatting and linting violations
@@ -70,7 +70,7 @@ jobs:
       - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
         with:
           tool: just
-      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           enable-cache: false
       - name: Type Checking
@@ -94,7 +94,7 @@ jobs:
       - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
         with:
           tool: just
-      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: false
@@ -114,7 +114,7 @@ jobs:
       - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
         with:
           tool: just
-      - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           enable-cache: false
       - name: Generating an XML Coverage Report
