@@ -1,10 +1,16 @@
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 import pytest
+from fastapi import Depends
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
-from starlette.routing import NoMatchFound
+from starlette.routing import BaseRoute, NoMatchFound
 
 import air
 from air import H1
+from air.responses import AirResponse
+from air.routing import AirRoute
 
 
 def test_air_routing() -> None:
@@ -487,19 +493,12 @@ def test_air_router_default_404_handler() -> None:
 
 def test_air_router_proxy_properties() -> None:
     """Test that AirRouter proxy properties correctly delegate to internal router."""
-    from contextlib import asynccontextmanager
-
-    from fastapi import Depends
-    from starlette.routing import BaseRoute
-
-    from air.responses import AirResponse
-    from air.routing import AirRoute
 
     def sample_dependency() -> str:
         return "dependency"
 
     @asynccontextmanager
-    async def lifespan(app: air.AirRouter):  # noqa: ARG001
+    async def lifespan(app: air.AirRouter) -> AsyncGenerator:
         yield
 
     router = air.AirRouter(
