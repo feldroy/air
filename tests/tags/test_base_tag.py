@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import ast
 import json
-from collections.abc import Iterator
 from pathlib import Path
-from typing import Any, Final
+from typing import TYPE_CHECKING, Any, Final
 
 import pytest
 from examples.samples.air_tag_samples import (
@@ -25,9 +24,13 @@ from full_match import match as full_match
 import air
 import air.tags.models.base as base_module
 from air.tags.models.base import BaseTag
-from air.tags.models.types import Renderable, TagDictType
 from air.tags.utils import SafeStr
 from tests.utils import clean_doc
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    from air.tags.models.types import Renderable, TagDictType
 
 HTML_SAMPLES_DIR: Final = Path("examples/samples")
 FRAGMENT_HTML_SAMPLE_FILE_NAME: Final = "fragment_html_sample.html"
