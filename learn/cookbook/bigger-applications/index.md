@@ -63,8 +63,8 @@ def index():
 
 If run locally these links should work:
 
-- http://localhost:8000
-- http://localhost:8000/dashboard
+- <http://localhost:8000>
+- <http://localhost:8000/dashboard>
 
 ## Mounting Air and FastAPI apps inside Air apps
 

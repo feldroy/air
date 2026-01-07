@@ -13,9 +13,9 @@
 
 ______________________________________________________________________
 
-**Documentation**: <https://docs.airwebframework.org>
+**Documentation**: [<https://docs.airwebframework.org>](https://docs.airwebframework.org)
 
-**Source Code**: <https://github.com/feldroy/air>
+**Source Code**: [<https://github.com/feldroy/air>](https://github.com/feldroy/air)
 
 ## Installation
 

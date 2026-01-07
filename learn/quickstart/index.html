@@ -2979,7 +2979,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <p>Serve your app with:</p>
 <div class="highlight"><pre><span></span><code>air<span class="w"> </span>run
 </code></pre></div>
-<p>Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a></p>
+<p>Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank"><a href="http://localhost:8000/">http://localhost:8000/</a></a></p>
 <p>Here's a few interesting things about this page:</p>
 <ol>
 <li>The page has an attractive layout and typography</li>
@@ -3058,7 +3058,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <li><code>app.page</code> used over functions are converted to a route based on their name, with underscores converted to dashes.</li>
 </ol>
 <h3 id="variables-in-paths">Variables in Paths</h3>
-<p>Variables can be added to URLs by marking them in curly braces like <code>{variable}</code> in the <code>application.get</code>, <code>application.post</code>, <code>application.put</code>, and <code>application.delete</code>  function decorators. The function receives the <code>{variable}</code> so long as it is the correct type specified by the function.</p>
+<p>Variables can be added to URLs by marking them in curly braces like <code>{variable}</code> in the <code>application.get</code>, <code>application.post</code>, <code>application.put</code>, and <code>application.delete</code> function decorators. The function receives the <code>{variable}</code> so long as it is the correct type specified by the function.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">air</span><span class="o">.</span><span class="n">Air</span><span class="p">()</span>
@@ -3372,8 +3372,8 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
     <span class="p">)</span>
 </code></pre></div>
 <ol>
-<li>As Air is based off starlette, when we receive data from a form it needs to occur within an <code>async</code> view. Also, the form data is contained within the <code>air.Request</code> object.
-2.Form data needs to be received via an <code>await</code> keyword on <code>request.form()</code>.</li>
+<li>As Air is based off starlette, when we receive data from a form it needs to occur within an <code>async</code> view. Also, the form data is contained within the <code>air.Request</code> object.</li>
+<li>Form data needs to be received via an <code>await</code> keyword on <code>request.form()</code>.</li>
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">FormData is a dict-like object</p>
@@ -3504,7 +3504,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <li>The <code>sse_swap</code> attribute informs HTMX that we only want to receive SSE events of the <code>message</code> type. This is a common response and shouldn't be changed unless you have a good reason.</li>
 <li>The <code>air.SSEResponse</code> needs a generator function or generator expression. Our example just generates random numbers, but people use similar functions to query databases and fetch data from APIs. Of note is that in our example instead of using <code>return</code> statements we use <code>yield</code> statements to ensure control is not lost.</li>
 <li>Air Tags work great, but any type of data can be passed back.</li>
-<li>Air does all  heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!</li>
+<li>Air does all heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!</li>
 </ol>
 <h2 id="want-to-learn-more">Want to learn more?</h2>
 <p>Check out these documentation sections:</p>
@@ -3515,23 +3515,17 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <h2 id="future-segments">Future Segments</h2>
 <p>What we plan to include in the Quick Start:</p>
 <ul class="task-list">
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jinja<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Jinja</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> The Jinja + Air Tags pattern the core devs love to use</li>
-</ul>
-</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Forms:<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Forms:</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Using Pydantic-powered AirForms for validation of incoming data</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>HTTP GET</code> forms, like those used in search forms</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> File uploads (part of forms)</li>
-</ul>
-</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> HTMX basics</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Routing<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Routing</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Variables in URLs</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Variables in paths</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Generating URLs</li>
-</ul>
-</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Custom exception handlers</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Sessions</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Cookies</li>

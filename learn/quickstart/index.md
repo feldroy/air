@@ -53,7 +53,7 @@ Serve your app with:
 air run
 ```
 
-Open your page by clicking this link: <http://localhost:8000/>
+Open your page by clicking this link: [<http://localhost:8000/>](http://localhost:8000/)
 
 Here's a few interesting things about this page:
 
@@ -522,7 +522,8 @@ async def email_handler(request: air.Request):  # (1)!
     )
 ```
 
-1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the form data is contained within the `air.Request` object. 2.Form data needs to be received via an `await` keyword on `request.form()`.
+1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the form data is contained within the `air.Request` object.
+1. Form data needs to be received via an `await` keyword on `request.form()`.
 
 FormData is a dict-like object
 
@@ -673,16 +674,16 @@ Check out these documentation sections:
 What we plan to include in the Quick Start:
 
 - Jinja
-  - The Jinja + Air Tags pattern the core devs love to use
+- The Jinja + Air Tags pattern the core devs love to use
 - Forms:
-  - Using Pydantic-powered AirForms for validation of incoming data
-  - `HTTP GET` forms, like those used in search forms
-  - File uploads (part of forms)
+- Using Pydantic-powered AirForms for validation of incoming data
+- `HTTP GET` forms, like those used in search forms
+- File uploads (part of forms)
 - HTMX basics
 - Routing
-  - Variables in URLs
-  - Variables in paths
-  - Generating URLs
+- Variables in URLs
+- Variables in paths
+- Generating URLs
 - Custom exception handlers
 - Sessions
 - Cookies
