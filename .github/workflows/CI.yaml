@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@d8510c9acdeaed29d14bb7104dfeb31e4b8effc8 # just
+      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
         with:
           enable-cache: false
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@d8510c9acdeaed29d14bb7104dfeb31e4b8effc8 # just
+      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
         with:
           enable-cache: false
@@ -87,7 +87,7 @@ jobs:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@d8510c9acdeaed29d14bb7104dfeb31e4b8effc8 # just
+      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
         with:
           python-version: ${{ matrix.python-version }}
@@ -105,7 +105,7 @@ jobs:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@d8510c9acdeaed29d14bb7104dfeb31e4b8effc8 # just
+      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # just
       - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
         with:
           enable-cache: false
