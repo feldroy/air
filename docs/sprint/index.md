@@ -16,7 +16,7 @@ Past sprint details:
 
 - Date: October 26, 2025
 - Hours: 9:00 AM – 5:00 PM
-- Location: Palpitate Coffee — view on Google Maps: https://maps.app.goo.gl/eJXNvtULXF8Pui6h8
+- Location: Palpitate Coffee — view on Google Maps: <https://maps.app.goo.gl/eJXNvtULXF8Pui6h8>
 - Sprint Leads: Daniel Roy Greenfeld, Audrey Roy Greenfeld, Sony Valdez, Micaela Reyes, Matt Lebrun (wearing bright blue Air t-shirts)
 
 Note: If anything changes last-minute, organizers may post an update in the **#pycon-davao** channel on the [Air Discord server](https://discord.gg/nwpvKnqMb2), but you're good to rely on the details above during the event.
@@ -92,21 +92,21 @@ When you're ready:
 6. Be responsive to feedback—code review is a collaborative learning process!
 
 ??? tip "How to request reviews in GitHub"
-   - Open your PR page on GitHub.
-   - On the right sidebar, find "Reviewers".
-   - Click the reviewer search box and start typing a teammate's GitHub username, then click to add. Repeat to add 2–3 peers.
-   - Also share your PR link in the Discord channel **#pycon-davao** asking for peer reviewers.
-   - If you can't add reviewers due to permissions, just post the PR link in Discord and tag peers or a sprint lead.
+- Open your PR page on GitHub.
+- On the right sidebar, find "Reviewers".
+- Click the reviewer search box and start typing a teammate's GitHub username, then click to add. Repeat to add 2–3 peers.
+- Also share your PR link in the Discord channel **#pycon-davao** asking for peer reviewers.
+- If you can't add reviewers due to permissions, just post the PR link in Discord and tag peers or a sprint lead.
 
 ??? tip "Peer review tips (fast and friendly)"
-   - Timebox to 5–10 minutes; it's okay if it's a quick review.
-   - Try it out: run what's described in the PR (or skim tests) to see if it works.
-   - Clarity: are names, docs, and comments understandable?
-   - Safety: no obvious breakage, tests still pass locally if relevant, and basic edge cases are considered.
-   - Scope: changes are small and focused; bigger refactors can be a follow-up.
-   - Feedback style: be kind and specific; suggest improvements and ask questions rather than demanding changes.
+- Timebox to 5–10 minutes; it's okay if it's a quick review.
+- Try it out: run what's described in the PR (or skim tests) to see if it works.
+- Clarity: are names, docs, and comments understandable?
+- Safety: no obvious breakage, tests still pass locally if relevant, and basic edge cases are considered.
+- Scope: changes are small and focused; bigger refactors can be a follow-up.
+- Feedback style: be kind and specific; suggest improvements and ask questions rather than demanding changes.
 
-## 🎊 Celebrate Your Contribution!
+## 🎊 Celebrate Your Contribution
 
 **Share your wins!** When you submit your PR:
 

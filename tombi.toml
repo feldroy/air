@@ -109,3 +109,7 @@ include = ["pyproject.toml"]
 root = "tool.ty"
 path = "https://json.schemastore.org/ty.json"
 include = ["pyproject.toml"]
+
+[[schemas]] # Root Schema
+path = "https://raw.githubusercontent.com/rvben/rumdl/main/rumdl.schema.json"
+include = ["rumdl.toml"]

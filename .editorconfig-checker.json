@@ -1,0 +1,23 @@
+{
+  "AllowedContentTypes": [],
+  "Debug": false,
+  "Disable": {
+    "Charset": false,
+    "EndOfLine": false,
+    "IndentSize": false,
+    "Indentation": false,
+    "InsertFinalNewline": false,
+    "MaxLineLength": false,
+    "TrimTrailingWhitespace": false
+  },
+  "Exclude": [
+    "^CHANGELOG.md$"
+  ],
+  "Format": "",
+  "IgnoreDefaults": false,
+  "NoColor": false,
+  "PassedFiles": [],
+  "SpacesAfterTabs": false,
+  "Verbose": false,
+  "Version": "v3.6.0"
+}

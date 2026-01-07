@@ -6,7 +6,7 @@
 ci:
   autofix_prs: false
 fail_fast: false
-minimum_prek_version: '0.2.25'
+minimum_prek_version: "0.2.25"
 repos:
   - repo: builtin
     hooks:
@@ -24,7 +24,7 @@ repos:
         priority: 0
       - id: check-yaml # Attempts to load all yaml files to verify syntax.
         priority: 0
-        args: ['--allow-multiple-documents']
+        args: ["--allow-multiple-documents"]
       - id: detect-private-key # Checks for the existence of private keys.
         priority: 0
       - id: end-of-file-fixer # Ensure newline at EOF.
@@ -39,7 +39,7 @@ repos:
       - id: check-vcs-permalinks # Ensures that links to vcs websites are permalinks.
         priority: 0
       - id: name-tests-test # verifies that test files are named correctly.
-        args: ['--pytest-test-first']
+        args: ["--pytest-test-first"]
         priority: 0
         exclude: ^tests/(utils|components)\.py$
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
@@ -48,10 +48,10 @@ repos:
     hooks:
       - id: check-hooks-apply # ensures that the configured hooks apply to at least one file in the repository.
         priority: 0
-        files: '^\.pre-commit-config-check\.yaml$'
+        files: "^\\.pre-commit-config-check\\.yaml$"
       - id: check-useless-excludes # ensures that exclude directives apply to any file in the repository.
         priority: 0
-        files: '^\.pre-commit-config-check\.yaml$'
+        files: "^\\.pre-commit-config-check\\.yaml$"
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
     hooks:
@@ -68,7 +68,7 @@ repos:
         priority: 0
         additional_dependencies:
           - black==25.12.0
-        args: ['--check', '--preview', '--line-length=79']
+        args: ["--check", "--preview", "--line-length=79"]
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.36.0 # A JSON Schema CLI and pre-commit hook built on jsonschema.
     hooks:
@@ -76,13 +76,13 @@ repos:
         priority: 0
       - id: check-github-issue-config # Validate GitHub Actions against the schema provided by SchemaStore.
         priority: 0
-        files: '^\.github/ISSUE_TEMPLATE/config\.yaml$'
+        files: "^\\.github/ISSUE_TEMPLATE/config\\.yaml$"
       - id: check-github-workflows # Validate GitHub Workflows against the schema provided by SchemaStore.
         priority: 0
       - id: check-renovate # Validate Renovate config against the schema provided by Renovate.
         language: python
         priority: 0
-        additional_dependencies: ['json5']
+        additional_dependencies: ["json5"]
   - repo: https://github.com/rohaquinlop/complexipy-pre-commit
     rev: v4.2.0
     hooks:
@@ -120,17 +120,23 @@ repos:
     hooks:
       - id: ruff-format # Check for formatting violations using Ruff.
         priority: 0
-        args: ['--check', '--output-format=concise']
+        args: ["--check", "--output-format=concise"]
         types_or: [python]
       - id: ruff-check # Check for lint violations using Ruff.
         priority: 0
-        args: ['--output-format=concise']
+        args: ["--output-format=concise"]
         types_or: [python]
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.0.211
+    hooks:
+      - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
+        priority: 0
+        args: ["--output-format=concise"]
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
     rev: v0.0.3
     hooks:
       - id: sync-pre-commit-deps # Sync pre-commit hook dependencies based on other installed hooks.
-        files: '^\.pre-commit-config-check\.yaml$'
+        files: "^\\.pre-commit-config-check\\.yaml$"
   - repo: https://github.com/tsvikas/sync-with-uv
     rev: v0.5.0 # Sync .pre-commit-config.yaml from uv.lock
     hooks:
@@ -152,26 +158,33 @@ repos:
     hooks:
       - id: typos # Source code spell checker.
         priority: 0
-        args: ['--force-exclude', '--format=brief']
+        args: ["--force-exclude", "--format=brief"]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.02
     hooks:
       - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0
   - repo: https://github.com/google/yamlfmt
-    rev: v0.20.0
+    rev: v0.21.0
     hooks:
       - id: yamlfmt # Extensible Yaml linter.
         priority: 0
-        args: ['-lint']
+        args: ["-lint"]
         # --------------------------------------------------------------------------------------------------------------
         # TODO -> Enable once all lint violations are fixed:
-        #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
-        #    rev: v1.19.0
+        #  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+        #    rev: 3.6.0
         #    hooks:
-        #      - id: zizmor # Static analysis tool for GitHub Actions.
-        #        args: [ '--fix=all' ]
+        #      - id: editorconfig-checker # A tool to verify that your files are in harmony with your .editorconfig
+        #        alias: ec
+        #        priority: 0
         #  - repo: https://github.com/google/osv-scanner
         #    rev: v2.3.1 # https://google.github.io/osv-scanner/usage/#pre-commit-integration
         #    hooks:
         #      - id: osv-scanner # Vulnerability scanner written in Go.
+        #        priority: 0
+        #  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+        #    rev: v1.19.0
+        #    hooks:
+        #      - id: zizmor # Static analysis tool for GitHub Actions.
+        #        priority: 0

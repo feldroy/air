@@ -109,10 +109,27 @@ run-with-relative-paths +CMD:
 @run-isolated +ARGS:
     just uv-run --isolated {{ ARGS }}
 
+# Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
+[group('uv')]
+upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies
+
+[group('uv')]
+upgrade-prek-hooks:
+    # Update pre-commit hook revisions in the checks config via prek
+    just run -- prek auto-update --config .pre-commit-config-check.yaml
+    # Update pre-commit hook revisions in the formatting config via prek
+    just run -- prek auto-update --config .pre-commit-config-format.yaml
+
 # Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
-upgrade-dependencies:
+upgrade-uv-dependencies:
     uv sync -U {{ UV_CLI_FLAGS }}
+
+# https://github.com/eclipse-csi/octopin
+# Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
+[group('uv')]
+pin-github-action-versions:
+    git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin pin --inplace
 
 # Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
@@ -134,17 +151,22 @@ ipython:
 
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-format OUTPUT_FORMAT="":
+format *ARGS:
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek auto-update --config .pre-commit-config-check.yaml
-    just run -- prek auto-update --config .pre-commit-config-format.yaml
-    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml \
-     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml {{ ARGS }}
+
+# [Stop running hooks after the first failure]
+[group('qa')]
+@format-fail-fast: && (format "--fail-fast")
+
+# [Do not run the hooks, but print the hooks that would have been run]
+[group('qa')]
+@format-dry-runw: && (format "--dry-run")
 
 # [print diagnostics for prek, with hook id and duration]
 [group('qa')]
-@format-verbose: && (format "verbose")
+@format-verbose: && (format "--verbose")
 
 # ruff-format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
@@ -168,17 +190,22 @@ ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-lint OUTPUT_FORMAT="":
+lint *ARGS:
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek auto-update --dry-run --config .pre-commit-config-check.yaml
-    just run -- prek auto-update --dry-run --config .pre-commit-config-format.yaml
-    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml \
-     {{ if OUTPUT_FORMAT == "verbose" { "--verbose" } else { "" } }}
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml {{ ARGS }}
+
+# [Stop running hooks after the first failure]
+[group('qa')]
+@lint-fail-fast: && (lint "--fail-fast")
+
+# [Do not run the hooks, but print the hooks that would have been run]
+[group('qa')]
+@lint-dry-run: && (lint "--dry-run")
 
 # [print diagnostics for prek, with hook id and duration]
 [group('qa')]
-@lint-verbose: && (lint "verbose")
+@lint-verbose: && (lint "--verbose")
 
 # ruff-check - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]

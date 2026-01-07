@@ -6,7 +6,7 @@ Want to help others learn more about Air?
 
 We're happy to assist with both!
 
-## Star **Air** in GitHub  ⭐️
+## Star **Air** in GitHub ⭐️
 
 You can "star" Air in GitHub (clicking the star button at the top right): [github.com/feldroy/air](https://github.com/feldroy/air).
 

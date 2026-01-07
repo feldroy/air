@@ -1,6 +1,6 @@
 # Story of Air
 
-_by Daniel Roy Greenfeld_
+*by Daniel Roy Greenfeld*
 
 I first encountered FastAPI in late 2019. I immediately liked how it used types to define behavior.
 
