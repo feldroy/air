@@ -111,7 +111,7 @@ repos:
           - flake8-class-attributes-order==0.3.0 # A flake8 extension that checks classes attributes order.
           - flake8-pydantic==0.4.0 # A flake8 plugin to check Pydantic related code.
   - repo: https://github.com/lycheeverse/lychee
-    rev: lychee-v0.22.0
+    rev: nightly
     hooks:
       - id: lychee
         types: ["markdown"]
@@ -132,7 +132,7 @@ repos:
         args: ["--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.211
+    rev: v0.0.212
     hooks:
       - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
         priority: 0
@@ -154,12 +154,12 @@ repos:
         name: Sync pre-commit hooks from `.pre-commit-config-format.yaml` with uv.lock
         entry: sync-with-uv --check --pre-commit-config .pre-commit-config-format.yaml
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.14
+    rev: v0.7.16
     hooks:
       - id: tombi-lint # A TOML linter.
         priority: 0
   - repo: https://github.com/crate-ci/typos
-    rev: v1.41.0
+    rev: v1.42.0
     hooks:
       - id: typos # Source code spell checker.
         priority: 0
@@ -171,7 +171,7 @@ repos:
         types: [markdown]
         args: [--output=line, --minAlertLevel=error]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.01.02
+    rev: 2026.01.08
     hooks:
       - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0

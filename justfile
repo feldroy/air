@@ -111,7 +111,7 @@ run-with-relative-paths +CMD:
 
 # Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
 [group('uv')]
-upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies
+upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies upgrade-vale-packages
 
 [group('uv')]
 upgrade-prek-hooks:
