@@ -7,6 +7,24 @@ ci:
   autofix_prs: false
 fail_fast: false
 minimum_prek_version: "0.2.25"
+exclude: |
+  (?x)^(
+    \.venv|
+    \.tox|
+    \.mypy_cache|
+    \.ruff_cache|
+    \.git|
+    \.vale|
+    \.venv|
+    \.cache|
+    dist|
+    build|
+    site|
+    coverage|
+    htmlcov|
+    node_modules
+  )(/|$)
+
 repos:
   - repo: builtin
     hooks:
