@@ -297,8 +297,7 @@ filters:
   - ConfigMap
   - Containerfile
   - Cookiecutter
-  - CPUs
-  - CPUs?
+  - CPU
   - CR
   - CRD
   - CRDs
@@ -313,7 +312,7 @@ filters:
   - dataclass
   - dataclasses
   - Datadog
-  - dataloaders?
+  - dataloader
   - Dependabot
   - Dev
   - DevWorkspace
@@ -321,7 +320,6 @@ filters:
   - DNS
   - Docker
   - Dockerfile
-  - Dockerfiles
   - Dotnet
   - Dyninst
   - Endevor
@@ -352,7 +350,7 @@ filters:
   - GitLab
   - Gluster
   - GNUPro
-  - GPUs?
+  - GPU
   - GraalVM
   - GraphQL
   - Graylog
@@ -371,10 +369,8 @@ filters:
   - HTTP
   - https
   - HTTPS
-  - https?
   - Hunyuan
   - IDE
-  - IDEs
   - IKEv
   - impactful
   - inferencing
@@ -425,7 +421,7 @@ filters:
   - linearization
   - linearize
   - Liquibase
-  - LLMs?
+  - LLM
   - Logstash
   - Lombok
   - Makefile
@@ -512,7 +508,7 @@ filters:
   - rootful
   - rootless
   - RPMs
-  - safetensors?
+  - safetensor
   - Sakila
   - sbt
   - SCM
@@ -543,7 +539,7 @@ filters:
   - Texinfo
   - tokenization
   - Toolset
-  - TPUs?
+  - TPU
   - Traefik
   - Uber
   - UIDs

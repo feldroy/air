@@ -265,3 +265,14 @@ exceptions:
   - vNUMA
   - xDS
   - xterm
+  - Ansible Galaxy
+  - Ansible Tower
+  - Automation Controller
+  - Automation Hub
+  - Automation Mesh
+  - Automation Services Catalog
+  - Event-Driven Ansible
+  - Keycloak
+  - Private Automation Hub
+  - Receptor
+  - Red Hat Ansible Automation Platform

@@ -132,6 +132,7 @@ repos:
     rev: nightly
     hooks:
       - id: lychee
+        priority: 0
         types: ["markdown"]
   - repo: https://github.com/regebro/pyroma
     rev: 5.0.1
@@ -183,9 +184,10 @@ repos:
         priority: 0
         args: ["--force-exclude", "--format=brief"]
   - repo: https://github.com/errata-ai/vale
-    rev: v3.13.0.0
+    rev: v3.13.0
     hooks:
       - id: vale
+        priority: 0
         types: [markdown]
         args: [--output=line, --minAlertLevel=error]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
