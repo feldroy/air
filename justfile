@@ -125,6 +125,11 @@ upgrade-prek-hooks:
 upgrade-uv-dependencies:
     uv sync -U {{ UV_CLI_FLAGS }}
 
+# Upgrade vale packages. <Don’t use! For maintainers only!>
+[group('uv')]
+upgrade-vale-packages:
+    just run -- vale sync
+
 # https://github.com/eclipse-csi/octopin
 # Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
 [group('uv')]
