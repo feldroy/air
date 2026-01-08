@@ -27,6 +27,8 @@ exclude = [
     "dist/**",
     "build/**",
     ".git/**",
+    ".vale/**",
+    ".cache/**",
     "node_modules/**",
 ]
 # Enforce excludes even for explicitly provided files

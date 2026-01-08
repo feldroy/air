@@ -165,7 +165,7 @@ repos:
         priority: 0
         args: ["--force-exclude", "--format=brief"]
   - repo: https://github.com/errata-ai/vale
-    rev: v3.13.0
+    rev: v3.13.0.0
     hooks:
       - id: vale
         types: [markdown]
