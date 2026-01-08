@@ -222,7 +222,7 @@ def test_url_helper_supports_query_params() -> None:
     assert response.text == "<h1>Search: air page 3</h1>"
 
 
-def test_url_helper_supports_query_params_with_Query() -> None:
+def test_url_helper_supports_query_params_with_query() -> None:
     app = air.Air()
 
     @app.get("/search")
