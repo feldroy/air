@@ -3948,9 +3948,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1549</span>
-<span class="normal">1550</span>
-<span class="normal">1551</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1551</span>
 <span class="normal">1552</span>
 <span class="normal">1553</span>
 <span class="normal">1554</span>
@@ -4205,7 +4203,9 @@
 <span class="normal">1803</span>
 <span class="normal">1804</span>
 <span class="normal">1805</span>
-<span class="normal">1806</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span>
+<span class="normal">1806</span>
+<span class="normal">1807</span>
+<span class="normal">1808</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
@@ -4510,16 +4510,16 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">401</span>
 <span class="normal">402</span>
 <span class="normal">403</span>
 <span class="normal">404</span>
 <span class="normal">405</span>
 <span class="normal">406</span>
 <span class="normal">407</span>
-<span class="normal">408</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exception_handler</span><span class="p">(</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">exception_handler</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">exc_class_or_status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -4620,9 +4620,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">450</span>
 <span class="normal">451</span>
 <span class="normal">452</span>
 <span class="normal">453</span>
@@ -4903,7 +4901,9 @@
 <span class="normal">728</span>
 <span class="normal">729</span>
 <span class="normal">730</span>
-<span class="normal">731</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
+<span class="normal">731</span>
+<span class="normal">732</span>
+<span class="normal">733</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
@@ -5249,7 +5249,9 @@
 <span class="normal">394</span>
 <span class="normal">395</span>
 <span class="normal">396</span>
-<span class="normal">397</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">include_router</span><span class="p">(</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">include_router</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">router</span><span class="p">:</span> <span class="n">AirRouter</span> <span class="o">|</span> <span class="n">routing</span><span class="o">.</span><span class="n">APIRouter</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -5264,8 +5266,10 @@
     <span class="n">generate_unique_id_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">routing</span><span class="o">.</span><span class="n">APIRoute</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_unique_id</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Include a router in this application.&quot;&quot;&quot;</span>
+    <span class="c1"># Extract internal APIRouter from AirRouter for type compatibility</span>
+    <span class="n">actual_router</span><span class="p">:</span> <span class="n">routing</span><span class="o">.</span><span class="n">APIRouter</span> <span class="o">=</span> <span class="n">router</span><span class="o">.</span><span class="n">_router</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">router</span><span class="p">,</span> <span class="n">AirRouter</span><span class="p">)</span> <span class="k">else</span> <span class="n">router</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-        <span class="n">router</span><span class="p">,</span>
+        <span class="n">actual_router</span><span class="p">,</span>
         <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
         <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">,</span>
         <span class="n">dependencies</span><span class="o">=</span><span class="n">dependencies</span><span class="p">,</span>
@@ -5323,13 +5327,13 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">412</span>
 <span class="normal">413</span>
 <span class="normal">414</span>
 <span class="normal">415</span>
-<span class="normal">416</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">middleware_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">middleware_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a middleware function using a decorator.</span>
 
 <span class="sd">    Returns:</span>
@@ -5360,14 +5364,14 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">420</span>
 <span class="normal">421</span>
 <span class="normal">422</span>
 <span class="normal">423</span>
 <span class="normal">424</span>
-<span class="normal">425</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mount</span><span class="p">(</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mount</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">app</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
@@ -5440,9 +5444,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1032</span>
-<span class="normal">1033</span>
-<span class="normal">1034</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1034</span>
 <span class="normal">1035</span>
 <span class="normal">1036</span>
 <span class="normal">1037</span>
@@ -5697,7 +5699,9 @@
 <span class="normal">1286</span>
 <span class="normal">1287</span>
 <span class="normal">1288</span>
-<span class="normal">1289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">patch</span><span class="p">(</span>
+<span class="normal">1289</span>
+<span class="normal">1290</span>
+<span class="normal">1291</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">patch</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
@@ -6060,9 +6064,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 733</span>
-<span class="normal"> 734</span>
-<span class="normal"> 735</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 735</span>
 <span class="normal"> 736</span>
 <span class="normal"> 737</span>
 <span class="normal"> 738</span>
@@ -6357,7 +6359,9 @@
 <span class="normal">1027</span>
 <span class="normal">1028</span>
 <span class="normal">1029</span>
-<span class="normal">1030</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span>
+<span class="normal">1030</span>
+<span class="normal">1031</span>
+<span class="normal">1032</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
@@ -6720,9 +6724,7 @@
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/air/applications.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1291</span>
-<span class="normal">1292</span>
-<span class="normal">1293</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1293</span>
 <span class="normal">1294</span>
 <span class="normal">1295</span>
 <span class="normal">1296</span>
@@ -6976,7 +6978,9 @@
 <span class="normal">1544</span>
 <span class="normal">1545</span>
 <span class="normal">1546</span>
-<span class="normal">1547</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span>
+<span class="normal">1547</span>
+<span class="normal">1548</span>
+<span class="normal">1549</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>

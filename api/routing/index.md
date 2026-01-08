@@ -148,7 +148,7 @@ AirRouter(
 )
 ```
 
-Bases: `APIRouter`, `RouterMixin`
+Bases: `RouterMixin`
 
 `AirRouter` class, used to group *path operations*, for example to structure an app in multiple files. It would then be included in the `App` app, or in another `AirRouter` (ultimately included in the app).
 
@@ -251,7 +251,7 @@ routes: Annotated[
         A list of routes to serve incoming HTTP and WebSocket requests.
         """
     ),
-    deprecated(
+    warnings_deprecated(
         """
         You normally wouldn't use this parameter with FastAPI, it is inherited
         from Starlette and supported for compatibility.
@@ -385,7 +385,35 @@ generate_unique_id_function: Annotated[
 path_separator: Annotated[Literal["/", "-"], Doc("An optional path separator.")] = "-",
 ```
 
-) -> None: self.path_separator = path_separator if default is None: default = default_404_router_handler(prefix or "router") super().__init__( prefix=prefix, tags=tags, dependencies=dependencies, default_response_class=default_response_class, responses=responses, callbacks=callbacks, routes=routes, redirect_slashes=redirect_slashes, default=default, dependency_overrides_provider=dependency_overrides_provider, route_class=route_class, on_startup=on_startup, on_shutdown=on_shutdown, lifespan=lifespan, deprecated=deprecated, include_in_schema=include_in_schema, generate_unique_id_function=generate_unique_id_function, ) if prefix: assert prefix.startswith("/"), "A path prefix must start with '/'" assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
+) -> None: self.path_separator = path_separator if default is None: default = default_404_router_handler(prefix or "router")
+
+```
+# Validate prefix before creating router
+if prefix:
+    assert prefix.startswith("/"), "A path prefix must start with '/'"
+    assert not prefix.endswith("/"), "A path prefix must not end with '/' except for the root path"
+
+# Create internal router using composition
+self._router = APIRouter(
+    prefix=prefix,
+    tags=tags,
+    dependencies=dependencies,
+    default_response_class=default_response_class,
+    responses=responses,
+    callbacks=callbacks,
+    routes=routes,
+    redirect_slashes=redirect_slashes,
+    default=default,
+    dependency_overrides_provider=dependency_overrides_provider,
+    route_class=route_class,
+    on_startup=on_startup,
+    on_shutdown=on_shutdown,
+    lifespan=lifespan,
+    deprecated=deprecated,
+    include_in_schema=include_in_schema,
+    generate_unique_id_function=generate_unique_id_function,
+)
+```
 
 ```
 
@@ -754,7 +782,7 @@ def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
             return result
         return response_class(result)
 
-    decorated = super(AirRouter, self).delete(
+    decorated = self._router.delete(
         path,
         response_model=response_model,
         status_code=status_code,
@@ -1184,7 +1212,7 @@ def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
         # Force HTML for non-Response results
         return response_class(result)
 
-    decorated = super(AirRouter, self).get(
+    decorated = self._router.get(
         path,
         response_model=response_model,
         status_code=status_code,
@@ -1583,7 +1611,7 @@ def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
             return result
         return response_class(result)
 
-    decorated = super(AirRouter, self).patch(
+    decorated = self._router.patch(
         path,
         response_model=response_model,
         status_code=status_code,
@@ -1983,7 +2011,7 @@ def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
         # Force HTML for non-Response results
         return response_class(result)
 
-    decorated = super(AirRouter, self).post(
+    decorated = self._router.post(
         path,
         response_model=response_model,
         status_code=status_code,
@@ -2382,7 +2410,7 @@ def decorator[**P, R](func: Callable[P, MaybeAwaitable[R]]) -> RouteCallable:
             return result
         return response_class(result)
 
-    decorated = super(AirRouter, self).put(
+    decorated = self._router.put(
         path,
         response_model=response_model,
         status_code=status_code,
