@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import inspect
-from collections.abc import Callable
 from functools import cache
-from typing import Any, Final, Literal
+from typing import TYPE_CHECKING, Any, Final, Literal
 
 from fastapi.datastructures import Default
 from fastapi.utils import generate_unique_id
 
 from .responses import AirResponse, JSONResponse
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
 
 # Public default so apps/routers can import the same sentinel (meaning: special marker)
 default_html_response: Final = Default(AirResponse)

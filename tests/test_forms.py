@@ -47,7 +47,7 @@ def test_form_validation_dependency_injection() -> None:
         cheese: Annotated[CheeseForm, Depends(CheeseForm.from_request)],
     ) -> air.Html:
         if cheese.is_valid:
-            data = cast(CheeseModel, cheese.data)
+            data = cast("CheeseModel", cheese.data)
             return air.Html(air.H1(data.name))
         assert cheese.errors is not None
         return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))
@@ -81,7 +81,7 @@ def test_form_validation_in_view() -> None:
     async def cheese_form(request: Request) -> air.Html:
         cheese = await CheeseForm.from_request(request)
         if cheese.is_valid:
-            data = cast(CheeseModel, cheese.data)
+            data = cast("CheeseModel", cheese.data)
             return air.Html(air.H1(data.name))
         assert cheese.errors is not None
         return air.Html(air.H1(air.Raw(str(len(cheese.errors)))))

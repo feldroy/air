@@ -6,11 +6,14 @@ generate matching :class:`air.forms.AirForm` subclasses on demand.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 
 from .forms import AirForm, to_form
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
 
 
 class AirModel(BaseModel):

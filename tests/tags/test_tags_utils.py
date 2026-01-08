@@ -3,10 +3,8 @@ from __future__ import annotations
 import sys
 import types
 from collections import UserString
-from collections.abc import Iterator
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from examples.samples.air_tag_samples import AIR_TAG_SAMPLE, SMALL_AIR_TAG_SAMPLE
@@ -19,6 +17,10 @@ from air.exceptions import BrowserOpenError
 from air.tags.utils import SafeStr
 
 from .test_base_tag import FRAGMENT_HTML_SAMPLE_FILE_PATH
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from pathlib import Path
 
 
 @pytest.fixture
