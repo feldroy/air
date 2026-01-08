@@ -1,0 +1,12 @@
+---
+extends: existence
+message: Do not include a link to %s unless it is explicitly approved.
+ignorecase: true
+nonword: true
+level: warning
+scope: raw
+action:
+  name: remove
+tokens:
+  - 'https:\/\/gitlab\.com(?!\/redhat)\/\w+'
+  - 'https:\/\/github\.com(?!\/openshift|\/redhat-developer|\/redhat-documentation|\/quarkusio)'

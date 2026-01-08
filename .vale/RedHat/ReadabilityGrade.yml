@@ -1,0 +1,9 @@
+---
+extends: readability
+grade: 9
+message: "Simplify your language. The calculated Flesch–Kincaid grade level of %s is above the recommended reading grade level of 9."
+link: https://redhat-documentation.github.io/vale-at-red-hat/reference-guide.html#readability-grade
+level: suggestion
+metrics:
+  - Flesch-Kincaid
+

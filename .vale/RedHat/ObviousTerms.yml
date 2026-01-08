@@ -1,0 +1,16 @@
+---
+extends: existence
+level: suggestion
+# link:
+message: "Consider not documenting %s because it is self-explanatory."
+scope: sentence
+# source:
+action:
+  name: remove
+tokens:
+  - 'Description field'
+  - 'Mail field'
+  - 'Name field'
+  - 'Password field'
+  - 'User field'
+  - 'Username field'

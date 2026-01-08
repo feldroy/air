@@ -1,0 +1,11 @@
+---
+extends: existence
+ignorecase: true
+level: warning
+scope: raw
+nonword: true
+link: https://redhat-documentation.github.io/vale-at-red-hat/reference-guide.html#em-dash
+message: Do not use em dashes. Use punctuation marks such as commas, parentheses, or colons instead.
+tokens:
+  - '—'
+  - '&mdash;'
