@@ -1,10 +1,16 @@
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
+
 import pytest
+from fastapi import Depends
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
-from starlette.routing import NoMatchFound
+from starlette.routing import BaseRoute, NoMatchFound
 
 import air
 from air import H1
+from air.responses import AirResponse
+from air.routing import AirRoute
 
 
 def test_air_routing() -> None:
@@ -483,3 +489,78 @@ def test_air_router_default_404_handler() -> None:
     response = client.get("/api/not-found")
     assert response.status_code == 404
     assert "The requested resource was not found on this server." in response.text
+
+
+def test_air_router_proxy_properties() -> None:
+    """Test that AirRouter proxy properties correctly delegate to internal router."""
+
+    def sample_dependency() -> str:
+        return "dependency"
+
+    @asynccontextmanager
+    async def lifespan(app: air.AirRouter) -> AsyncGenerator:
+        yield
+
+    router = air.AirRouter(
+        prefix="/api",
+        tags=["test-tag"],
+        dependencies=[Depends(sample_dependency)],
+        responses={404: {"description": "Not found"}},
+        deprecated=True,
+        include_in_schema=False,
+        redirect_slashes=False,
+        route_class=AirRoute,
+        lifespan=lifespan,
+    )
+
+    @router.get("/test")
+    def test_endpoint() -> air.H1:
+        return air.H1("test")
+
+    # Test routes property
+    assert isinstance(router.routes, list)
+    assert len(router.routes) > 0
+    assert all(isinstance(r, BaseRoute) for r in router.routes)
+
+    # Test tags property
+    assert router.tags == ["test-tag"]
+
+    # Test dependencies property
+    assert router.dependencies is not None
+    assert len(router.dependencies) == 1
+
+    # Test responses property
+    assert router.responses == {404: {"description": "Not found"}}
+
+    # Test callbacks property (empty list by default)
+    assert router.callbacks == []
+
+    # Test deprecated property
+    assert router.deprecated is True
+
+    # Test include_in_schema property
+    assert router.include_in_schema is False
+
+    # Test default_response_class property
+    assert router.default_response_class == AirResponse
+
+    # Test redirect_slashes property
+    assert router.redirect_slashes is False
+
+    # Test route_class property
+    assert router.route_class == AirRoute
+
+    # Test on_startup property (empty by default when using lifespan)
+    assert isinstance(router.on_startup, list)
+
+    # Test on_shutdown property (empty by default when using lifespan)
+    assert isinstance(router.on_shutdown, list)
+
+    # Test lifespan_context property
+    assert router.lifespan_context is not None
+
+    # Test dependency_overrides_provider property (None by default)
+    assert router.dependency_overrides_provider is None
+
+    # Test generate_unique_id_function property
+    assert router.generate_unique_id_function is not None
