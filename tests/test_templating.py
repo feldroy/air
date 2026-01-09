@@ -470,7 +470,7 @@ def test_jinja_renderer_as_string() -> None:
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.page
-    def index(request: Request) -> HTMLResponse:
+    def index(request: Request) -> air.BaseTag:
         jinja_content = jinja(
             request,
             name="jinja_airtags.html",

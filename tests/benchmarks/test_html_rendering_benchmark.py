@@ -11,7 +11,7 @@ from unittest.mock import Mock
 from pytest_benchmark.fixture import BenchmarkFixture
 from starlette.datastructures import URL
 from starlette.requests import Request
-from starlette.templating import _TemplateResponse
+from starlette.responses import HTMLResponse
 
 import air
 from air import Html
@@ -66,7 +66,7 @@ def create_complex_page_with_tags() -> Html:
     )
 
 
-def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: Mock) -> _TemplateResponse:
+def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: Mock) -> HTMLResponse:
     """Generate the same complex HTML page using Jinja2 templates.
 
     Returns:
@@ -143,7 +143,7 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark: BenchmarkFixture) -> N
             return page.render()
 
         # Benchmark Jinja2 rendering
-        def render_with_jinja() -> _TemplateResponse:
+        def render_with_jinja() -> HTMLResponse:
             return create_complex_page_with_jinja(jinja_renderer, mock_request)
 
         # Benchmark Air Tags rendering

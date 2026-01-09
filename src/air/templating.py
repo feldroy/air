@@ -7,11 +7,12 @@ import importlib
 from collections.abc import Callable, Sequence
 from os import PathLike
 from types import ModuleType
-from typing import Any
+from typing import Any, Literal, overload
 
 import jinja2
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request as StarletteRequest
+from starlette.responses import HTMLResponse
 from starlette.templating import _TemplateResponse
 
 from .requests import Request
@@ -86,6 +87,28 @@ class JinjaRenderer:
         """Initialize with template directory path"""
         self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
 
+    @overload
+    def __call__(
+        self,
+        request: Request,
+        name: str,
+        context: dict[Any, Any] | None = None,
+        *,
+        as_string: Literal[False] = False,
+        **kwargs: Any,
+    ) -> HTMLResponse: ...
+
+    @overload
+    def __call__(
+        self,
+        request: Request,
+        name: str,
+        context: dict[Any, Any] | None = None,
+        *,
+        as_string: Literal[True],
+        **kwargs: Any,
+    ) -> SafeStr: ...
+
     def __call__(
         self,
         request: Request,
@@ -94,7 +117,7 @@ class JinjaRenderer:
         *,
         as_string: bool = False,
         **kwargs: Any,
-    ) -> _TemplateResponse | SafeStr:
+    ) -> HTMLResponse | SafeStr:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
 
@@ -103,11 +126,11 @@ class JinjaRenderer:
             name: The template name.
             context: Optional context dictionary.
             as_string: If True, return the rendered HTML as a SafeStr instead of
-                a TemplateResponse. Useful for embedding Jinja output inside AirTags.
+                an HTMLResponse. Useful for embedding Jinja output inside AirTags.
             **kwargs: Additional context variables.
 
         Returns:
-            A TemplateResponse with the rendered template, or a SafeStr if as_string=True.
+            An HTMLResponse with the rendered template, or a SafeStr if as_string=True.
         """
         if context is None:
             context = {}
@@ -118,7 +141,10 @@ class JinjaRenderer:
         context = {k: _jinja_context_item(v) for k, v in context.items()}
         response = self.templates.TemplateResponse(request=request, name=name, context=context)
         if as_string:
-            return SafeStr(response.body.decode("utf-8"))
+            body = response.body
+            if hasattr(body, "decode"):
+                return SafeStr(body.decode("utf-8"))
+            return SafeStr(body)
         return response
 
 
