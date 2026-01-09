@@ -106,6 +106,7 @@ select = [
 ]
 extend-select = [
     "N802", # only function-name-lowercase
+    "N818", # error-suffix-on-exception-name
 ]
 ignore = [
     "D100", # ignore missing docstring in module

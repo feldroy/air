@@ -7,7 +7,7 @@ class HTTPException(FASTAPIHTTPException):
     """Convenience import from FastAPI"""
 
 
-class BaseAirException(Exception):
+class BaseAirException(Exception):  # noqa: N818
     """Base AIR Exception"""
 
 
