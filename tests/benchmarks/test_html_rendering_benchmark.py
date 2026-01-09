@@ -149,6 +149,9 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark: BenchmarkFixture) -> N
         # Benchmark Air Tags rendering
         benchmark(render_with_air_tags)
 
+        # Benchmark Air Tags rendering
+        benchmark(render_with_jinja)
+
 
 def test_simple_air_tags_rendering_benchmark(benchmark: BenchmarkFixture) -> None:
     """Benchmark simple Air Tags rendering for baseline performance."""
