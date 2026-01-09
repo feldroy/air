@@ -461,3 +461,36 @@ def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
     assert "<li>One</li>" in response.text
     assert "<li>Two</li>" in response.text
     assert "<li>Three</li>" in response.text
+
+
+def test_jinja_renderer_as_string() -> None:
+    """Test JinjaRenderer with as_string=True returns a SafeStr for embedding in AirTags."""
+    app = Air()
+
+    jinja = JinjaRenderer(directory="tests/templates")
+
+    @app.page
+    def index(request: Request) -> HTMLResponse:
+        jinja_content = jinja(
+            request,
+            name="jinja_airtags.html",
+            title="Embedded Jinja",
+            content="<p>Hello from Jinja</p>",
+            as_string=True,
+        )
+        # Verify it returns a SafeStr
+        assert isinstance(jinja_content, air.SafeStr)
+        # Now use it inside AirTags (no need to wrap in SafeStr)
+        return air.layouts.mvpcss(
+            air.Title("Wrapper Page"),
+            jinja_content,
+        )
+
+    client = TestClient(app)
+    response = client.get("/")
+    assert response.status_code == 200
+    # The Jinja content should be embedded in the page
+    assert "<h1>Embedded Jinja</h1>" in response.text
+    assert "<p>Hello from Jinja</p>" in response.text
+    # The wrapper page title should also be present
+    assert "<title>Wrapper Page</title>" in response.text

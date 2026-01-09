@@ -16,6 +16,7 @@ from starlette.templating import _TemplateResponse
 
 from .requests import Request
 from .tags.models.base import BaseTag
+from .tags.utils import SafeStr
 from .utils import cached_signature
 
 
@@ -90,13 +91,23 @@ class JinjaRenderer:
         request: Request,
         name: str,
         context: dict[Any, Any] | None = None,
+        *,
+        as_string: bool = False,
         **kwargs: Any,
-    ) -> _TemplateResponse:
+    ) -> _TemplateResponse | SafeStr:
         """Render template with request and context. If an Air Tag
         is found in the context, try to render it.
 
+        Args:
+            request: The request object.
+            name: The template name.
+            context: Optional context dictionary.
+            as_string: If True, return the rendered HTML as a SafeStr instead of
+                a TemplateResponse. Useful for embedding Jinja output inside AirTags.
+            **kwargs: Additional context variables.
+
         Returns:
-            A TemplateResponse with the rendered template.
+            A TemplateResponse with the rendered template, or a SafeStr if as_string=True.
         """
         if context is None:
             context = {}
@@ -105,7 +116,10 @@ class JinjaRenderer:
 
         # Attempt to render any Tags in the context
         context = {k: _jinja_context_item(v) for k, v in context.items()}
-        return self.templates.TemplateResponse(request=request, name=name, context=context)
+        response = self.templates.TemplateResponse(request=request, name=name, context=context)
+        if as_string:
+            return SafeStr(response.body.decode("utf-8"))
+        return response
 
 
 class Renderer:
