@@ -132,8 +132,8 @@ upgrade-uv-dependencies:
 
 # Modify a specific dependency version using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
-modify-uv-dependency-version PACKAGE_VERSION:
-    just sync-lock --upgrade-package {{ PACKAGE_VERSION }}
+modify-uv-dependency-version PACKAGE_NAME PACKAGE_VERSION:
+    just sync-lock --upgrade-package {{ PACKAGE_NAME }}=={{ PACKAGE_VERSION }}
 
 # Upgrade vale packages. <Don’t use! For maintainers only!>
 [group('uv')]
