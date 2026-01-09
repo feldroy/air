@@ -5595,7 +5595,7 @@ if __name__ == "__main__":
 Source code in `src/air/forms.py`
 
 ```
-def AirField(
+def AirField(  # noqa: N802
     default: Any = PydanticUndefined,
     *,
     default_factory: Callable[[], Any] | Callable[[dict[str, Any]], Any] | None = None,
