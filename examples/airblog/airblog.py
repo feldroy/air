@@ -39,14 +39,14 @@ def get_tags() -> dict[str, int]:
     return tags
 
 
-def NavBar(request: air.Request) -> air.Nav:
+def navbar(request: air.Request) -> air.Nav:
     return air.Nav(
         air.A("Home", href=request.url_for("index")),
         air.A("Tags", href=tags.url()),
     )
 
 
-def BlogPostPreview(article: dict, request: air.Request) -> air.Aside:
+def blog_post_preview(article: dict, request: air.Request) -> air.Aside:
     return air.Aside(
         air.H3(
             air.A(
@@ -65,11 +65,11 @@ async def index(request: air.Request) -> air.Html | air.Children:
     return air.layouts.mvpcss(
         air.Title(title),
         air.Header(
-            NavBar(request=request),
+            navbar(request=request),
             air.H1(title),
             air.P("Your go-to platform for blogging with Air."),
         ),
-        air.Section(*[BlogPostPreview(x, request) for x in get_articles()]),
+        air.Section(*[blog_post_preview(x, request) for x in get_articles()]),
     )
 
 
@@ -90,7 +90,7 @@ async def article_detail(slug: str, request: air.Request) -> air.P | air.Html | 
     return air.layouts.mvpcss(
         air.Title(article["attributes"]["title"]),
         air.Header(
-            NavBar(request=request),
+            navbar(request=request),
             air.H1(article["attributes"]["title"]),
             air.P(air.I(article["attributes"].get("description"))),
             air.Time(air.Small(article["attributes"]["date"])),
@@ -112,7 +112,7 @@ def tags(request: air.Request) -> air.Html | air.Children:
     return air.layouts.mvpcss(
         air.Title("Tags"),
         air.Header(
-            NavBar(request=request),
+            navbar(request=request),
             air.H1("Tags"),
             air.P("All the tags"),
         ),
@@ -135,10 +135,10 @@ def tag(slug: str, request: air.Request) -> air.Html | air.Children:
     return air.layouts.mvpcss(
         air.Title(f"Tag: {slug}"),
         air.Header(
-            NavBar(request=request),
+            navbar(request=request),
             air.H1(f"Tag: {slug}"),
         ),
-        air.Section(*[BlogPostPreview(x, request) for x in articles]),
+        air.Section(*[blog_post_preview(x, request) for x in articles]),
         air.Footer(
             air.P(
                 air.A("← Home", href=index.url()),

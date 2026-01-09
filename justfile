@@ -29,6 +29,11 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
+BRANCH_NAME := `git branch --show-current`
+PREK_RUN_ARG := "--all-files"
+# TODO -> Use the line bellow to run prek only on the files changes by the PR branch:
+#PREK_RUN_ARG := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref main" }
+
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -92,12 +97,7 @@ run-with-relative-paths +CMD:
 [private]
 [group('uv')]
 @uv-run +ARGS:
-    just run-with-relative-paths uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
-
-# Run ipython using uv.
-[group('uv')]
-ipython:
-    uv run {{ UV_CLI_FLAGS }} -- ipython
+    uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
@@ -109,10 +109,27 @@ ipython:
 @run-isolated +ARGS:
     just uv-run --isolated {{ ARGS }}
 
+# Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
+[group('uv')]
+upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies
+
+[group('uv')]
+upgrade-prek-hooks:
+    # Update pre-commit hook revisions in the checks config via prek
+    just run -- prek auto-update --config .pre-commit-config-check.yaml
+    # Update pre-commit hook revisions in the formatting config via prek
+    just run -- prek auto-update --config .pre-commit-config-format.yaml
+
 # Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
-upgrade-dependencies:
+upgrade-uv-dependencies:
     uv sync -U {{ UV_CLI_FLAGS }}
+
+# https://github.com/eclipse-csi/octopin
+# Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
+[group('uv')]
+pin-github-action-versions:
+    git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin pin --inplace
 
 # Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
@@ -124,16 +141,39 @@ sync:
 sync-lock *ARGS:
     uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
 
+# Run ipython using uv.
+[group('uv')]
+ipython:
+    just run -- ipython
+
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
-# Format code and auto-fix simple issues with Ruff
+# Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-format OUTPUT_FORMAT="full" UNSAFE="":
+format *ARGS:
+    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
+    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml {{ ARGS }}
+
+# [Stop running hooks after the first failure]
+[group('qa')]
+@format-fail-fast: && (format "--fail-fast")
+
+# [Do not run the hooks, but print the hooks that would have been run]
+[group('qa')]
+@format-dry-runw: && (format "--dry-run")
+
+# [print diagnostics for prek, with hook id and duration]
+[group('qa')]
+@format-verbose: && (format "--verbose")
+
+# ruff-format - Fix formatting and lint violations - Write formatted files back!
+[group('qa')]
+ruff-format OUTPUT_FORMAT="full" UNSAFE="":
     # Format Python files using Ruff's formatter (writes changes to disk).
     just run -- ruff format .
-    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules),
-    # show an enumeration of all fixed lint violations.
+    # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
     # Check for spelling and grammar violations and apply fixes
     just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
@@ -144,29 +184,42 @@ format OUTPUT_FORMAT="full" UNSAFE="":
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
-format-unsafe: && (format "concise" "--unsafe-fixes")
+ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
-@format-concise: && (format "concise")
+@ruff-format-concise: && (ruff-format "concise")
 
 # [group messages by file]
 [group('qa')]
-@format-grouped: && (format "grouped")
+@ruff-format-grouped: && (ruff-format "grouped")
 
-# Check for formatting, lint violations
+# Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-lint OUTPUT_FORMAT="full":
-    # Avoid writing any formatted files back; instead, exit with a non-zero
-    # status code if any files would have been modified, and zero otherwise,
-    # and the difference between the current file and how the formatted file would look like.
+lint *ARGS:
+    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
+    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml {{ ARGS }}
+
+# [Stop running hooks after the first failure]
+[group('qa')]
+@lint-fail-fast: && (lint "--fail-fast")
+
+# [Do not run the hooks, but print the hooks that would have been run]
+[group('qa')]
+@lint-dry-run: && (lint "--dry-run")
+
+# [print diagnostics for prek, with hook id and duration]
+[group('qa')]
+@lint-verbose: && (lint "--verbose")
+
+# ruff-check - Check for formatting and lint violations - Avoid writing any formatted files back!
+[group('qa')]
+ruff-check OUTPUT_FORMAT="full":
+    # Check for formatting violations using Ruff
     just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
-    # Check for lint violations
+    # Check for lint violations using Ruff
     just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
-    # Check for spelling and grammar violations
-    just run -- typos --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
-    just run -- codespell
-    just run -- prek run --all-files --config .pre-commit-config-check.yaml
 
 # Check for lint violations for all rules!
 [group('qa')]
@@ -175,23 +228,21 @@ ruff-check-all TARGET=".":
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
-@lint-concise: && (lint "concise")
+@ruff-check-concise: && (ruff-check "concise")
 
 # [group messages by file]
 [group('qa')]
-@lint-grouped: && (lint "grouped")
+@ruff-check-grouped: && (ruff-check "grouped")
 
-# Type check the project with Ty and pyrefly
+# Type check the project with Ty
 [group('qa')]
 type-check TARGET=".":
     just run -- ty check "{{TARGET}}"
-    just run -- pyrefly check "{{TARGET}}"
 
-# Type check the project with Ty and pyrefly - Print diagnostics concisely, one per line
+# Type check the project with Ty - Print diagnostics concisely, one per line
 [group('qa')]
 type-check-concise TARGET=".":
     just run -- ty check --output-format=concise "{{TARGET}}"
-    just run -- pyrefly check --output-format=min-text "{{TARGET}}"
 
 # Annotate types using pyrefly infer
 [group('qa')]
@@ -200,7 +251,7 @@ type-annotate TARGET="src":
 
 # Run all the formatting, linting, and type checking, for local development.
 [group('qa')]
-qa: format type-check
+qa: format type-check-concise
 
 # Run all the formatting, linting, type checking and tests for local development.
 [group('qa')]

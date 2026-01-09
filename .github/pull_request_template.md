@@ -1,5 +1,5 @@
 <!-- A summary of the changes made here. -->
-<!-- Add any links to other issues or secondary material. --> 
+<!-- Add any links to other issues or secondary material. -->
 
 # Issue(s)
 
@@ -7,16 +7,17 @@
 <!-- Note: Oversized pull requests will be requested to be broken up by the maintainers. -->
 
 ## Pull request type
+
 <!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. -->
 
 Please check the type of change your PR introduces:
 
 - [ ] **Bugfix**
 - [ ] **New feature**
-    - [ ] **Core Air** (Air Tags, Request/Response cycle, etc)
-    - [ ] **Optional** (Authentication, CSRF, etc)
-    - [ ] **Third-Party Integrated** (Cookbook documentation on using Air databases or a task manager, etc)
-    - [ ] **Out-of-Scope** (Formal integration with databases, external task managers, or commercial services etc - won't be accepted, please create a separate project)
+  - [ ] **Core Air** (Air Tags, Request/Response cycle, etc)
+  - [ ] **Optional** (Authentication, CSRF, etc)
+  - [ ] **Third-Party Integrated** (Cookbook documentation on using Air databases or a task manager, etc)
+  - [ ] **Out-of-Scope** (Formal integration with databases, external task managers, or commercial services etc - won't be accepted, please create a separate project)
 - [ ] **Refactoring** (no functional changes, no api changes)
 - [ ] **Chore**: Dependency updates, Python version changes, etc.
 - [ ] **Build related changes**
@@ -33,6 +34,7 @@ The following have been completed for this task:
 - [ ] **Tests on new or altered behaviors**
 
 ## Checklist
+
 <!-- Go over all the following points, and put an `x` in all the boxes that apply -->
 
 - [ ] **I have run `just test` and `just qa`, ensuring my code changes passes all existing tests**

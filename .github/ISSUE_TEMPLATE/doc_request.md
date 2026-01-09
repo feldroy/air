@@ -1,6 +1,6 @@
 ---
 name: Documentation Request
-about: A project lives and breathes on the quality of its documentation. 
+about: A project lives and breathes on the quality of its documentation.
 title: 'DOCS: '
 labels: docs
 assignees: ''

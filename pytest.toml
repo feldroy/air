@@ -1,0 +1,40 @@
+# ---------------------------------------------------> pytest.toml <---------------------------------------------------
+# pytest - Makes it easy to write small tests, yet scales to support complex functional testing for apps and libraries.
+# https://docs.pytest.org/en/latest/reference/customize.html
+# https://docs.pytest.org/en/latest/reference/reference.html
+
+[pytest]
+minversion = "9.0.2"
+# Keep imports simple (src/ layout)
+pythonpath = ["src"]
+# Only look here for tests
+testpaths = ["tests", "examples/src"]
+python_files = ["test_*.py"]
+# Fail on most warnings
+filterwarnings = ["error"] # equals: -W error
+# pytest-asyncio
+asyncio_mode = "auto"
+# Custom markers
+markers = ["memory: marks tests as memory-focused (deselect with '-m \"not memory\"')"]
+# Sets the console output style while running tests.
+console_output_style = "times"
+addopts = [
+    "-rfEsxXp",
+    "--new-first",
+    "--no-header",
+    "--color=yes",
+    "--cov-context=test", # record per-test contexts
+    "--cov-config=pyproject.toml", # be explicit about the config source
+    # TODO -> Uncomment this line, when https://github.com/ipython/ipython/issues/14620 is solved:
+    # "--pdbcls=IPython.terminal.debugger:Pdb",
+]
+# Set directory basename patterns to skip during test discovery recursion; fnmatch patterns match directory basenames.
+norecursedirs = [
+    "tests/benchmarks",
+    "tests/templates",
+]
+# https://docs.pytest.org/en/latest/reference/reference.html#confval-strict
+strict_config = true
+strict_markers = true
+strict_parametrization_ids = true
+strict_xfail = true

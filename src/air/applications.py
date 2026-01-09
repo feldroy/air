@@ -383,8 +383,10 @@ class Air(RouterMixin):
         generate_unique_id_function: Callable[[routing.APIRoute], str] = generate_unique_id,
     ) -> None:
         """Include a router in this application."""
+        # Extract internal APIRouter from AirRouter for type compatibility
+        actual_router: routing.APIRouter = router._router if isinstance(router, AirRouter) else router
         self._app.include_router(
-            router,
+            actual_router,
             prefix=prefix,
             tags=tags,
             dependencies=dependencies,

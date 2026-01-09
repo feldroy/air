@@ -13,23 +13,21 @@ uv venv
 source .venv/bin/activate
 uv init
 uv add air
-uv add "fastapi[standard]"
 ```
 
 !!! note
     You can also do:
 
     ```sh
-    pip install -U air "fastapi[standard]"
+    python -m venv .venv
+    pip install -U air
     ```
 
     or even
 
     ```sh
     conda install air -c conda-forge
-    conda install "fastapi[standard]" -c conda-forge
     ```
-
 
 ## Hello, Air! Example
 
@@ -49,16 +47,25 @@ async def index():
 Serve your app with:
 
 ```sh
-fastapi dev
+air run
 ```
 
-Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank">http://localhost:8000/</a>
+Open your page by clicking this link: <a href="http://localhost:8000/" target="_blank"><http://localhost:8000/></a>
 
 Here's a few interesting things about this page:
 
 1. The page has an attractive layout and typography
 2. The Python for this app is similar in design to how FastAPI code is written
 3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
+
+!!! note
+    Air, being based on FastAPI, can be run with the FastAPI CLI through the use of the `--entrypoint` flag:
+
+    ```sh
+    fastapi dev --entrypoint main:app
+    ```
+
+    This requires installation of the `fastapi[standard]` package.
 
 ## Routing
 
@@ -134,7 +141,7 @@ def air_is_grounded():  # (2)!
 
 ### Variables in Paths
 
-Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete`  function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function.
+Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete` function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function.
 
 ```python hl_lines="5-6"
 import air
@@ -296,7 +303,6 @@ air.Form(
 
 [Air Tags](../learn/air_tags.md) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
 
-
 ### JavaScript Files
 
 Using Air Tags to call external JavaScript files:
@@ -317,7 +323,6 @@ def index():
 ### Inline Scripts
 
 When you need to use JavaScript inline in Air Tags:
-
 
 ```python hl_lines="7"
 import air
@@ -398,7 +403,6 @@ Here's a simple Jinja template:
 
 And here's the view that calls it:
 
-
 ```python title="main.py"  hl_lines="6 10 14 16"
 import air
 
@@ -471,8 +475,6 @@ def avatar(request: air.Request):
 
     Where Jinja + Air Tags truly come alive is when the base templates for a project are in Jinja. For some people this makes styling pages a bit easier. Then content, especially HTMX swaps and other fragments are rendered via Air Tags. This keeps the developer in Python, which means less context switching while working on challenges.
 
-
-
 ## Forms
 
 In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet workable example of receiving data using a `Request` object.
@@ -511,14 +513,13 @@ async def email_handler(request: air.Request):  # (1)!
 ```
 
 1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the form data is contained within the `air.Request` object.
-2.Form data needs to be received via an `await` keyword on `request.form()`.
-
+2. Form data needs to be received via an `await` keyword on `request.form()`.
 
 !!! tip "FormData is a dict-like object"
 
     While the value `FormData([('email', 'aang@example.com')])` might be displayed, the keys and values are accessed via traditional methods.
 
-### AirForms: pydantic+forms
+###  AirForms: pydantic+forms
 
 The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use pydantic models to determine how a form is constructed.
 
@@ -649,8 +650,7 @@ async def lottery_numbers():
 5. The `sse_swap` attribute informs HTMX that we only want to receive SSE events of the `message` type. This is a common response and shouldn't be changed unless you have a good reason.
 6. The `air.SSEResponse` needs a generator function or generator expression. Our example just generates random numbers, but people use similar functions to query databases and fetch data from APIs. Of note is that in our example instead of using `return` statements we use `yield` statements to ensure control is not lost.
 7. Air Tags work great, but any type of data can be passed back.
-8. Air does all  heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!
-
+8. Air does all heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!
 
 ## Want to learn more?
 
@@ -664,16 +664,16 @@ Check out these documentation sections:
 What we plan to include in the Quick Start:
 
 - [x] Jinja
-    - [x] The Jinja + Air Tags pattern the core devs love to use
+  - [x] The Jinja + Air Tags pattern the core devs love to use
 - [x] Forms:
-    - [x] Using Pydantic-powered AirForms for validation of incoming data
-    - [ ] `HTTP GET` forms, like those used in search forms
-    - [ ] File uploads (part of forms)
+  - [x] Using Pydantic-powered AirForms for validation of incoming data
+  - [ ] `HTTP GET` forms, like those used in search forms
+  - [ ] File uploads (part of forms)
 - [ ] HTMX basics
 - [x] Routing
-    - [x] Variables in URLs
-    - [x] Variables in paths
-    - [x] Generating URLs
+  - [x] Variables in URLs
+  - [x] Variables in paths
+  - [x] Generating URLs
 - [ ] Custom exception handlers
 - [ ] Sessions
 - [ ] Cookies

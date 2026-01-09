@@ -25,6 +25,7 @@ async def request_info(request: Request):
 ```
 
 ## Practical Recipes
+
 Here are smaller, focused examples for specific use cases:
 
 ### Accessing Query Parameters
@@ -73,7 +74,6 @@ async def login(request: Request):
     )
 ```
 
-
 ### Accessing the HTMX object
 
 ```python
@@ -92,11 +92,10 @@ def index(request: air.Request):
     )
 ```
 
-
 ::: air.requests
     options:
       group_by_category: false
-      members: 
-        - AirRequest        
-        - HtmxDetails             
-        - Request        
+      members:
+        - AirRequest
+        - HtmxDetails
+        - Request

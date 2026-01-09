@@ -11,18 +11,18 @@ from starlette.responses import HTMLResponse
 import air
 from air import Air, JinjaRenderer, Request
 
-from .components import index as index_callable  # pyrefly: ignore
+from .components import index as index_callable
 from .utils import clean_doc, clean_doc_with_broken_lines
 
 
-def test_JinjaRenderer() -> None:
+def test_jinja_renderer() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="home.html",
@@ -37,14 +37,14 @@ def test_JinjaRenderer() -> None:
     assert response.text == "<html>\n  <title>Test Page</title>\n  <h1>Hello, World!</h1>\n</html>"
 
 
-def test_JinjaRenderer_no_context() -> None:
+def test_jinja_renderer_no_context() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -55,14 +55,14 @@ def test_JinjaRenderer_no_context() -> None:
     assert response.text == "<html>\n  <title></title>\n  <h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_Air() -> None:
+def test_jinja_renderer_with_air() -> None:
     """Test the JinjaRenderer class with air.Air."""
     app = Air()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(request, name="home.html")
 
     client = TestClient(app)
@@ -73,13 +73,13 @@ def test_JinjaRenderer_with_Air() -> None:
     assert response.text == "<html>\n  <title></title>\n  <h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_kwargs() -> None:
+def test_jinja_renderer_with_kwargs() -> None:
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
 
     @app.get("/test")
-    def test_endpoint(request: Request) -> HTMLResponse:
+    def page(request: Request) -> HTMLResponse:
         return jinja(
             request,
             name="home.html",
@@ -163,7 +163,7 @@ def test_jinja_plus_airtags_autorender() -> None:
     assert actual_html == expected_html.rstrip()
 
 
-def test_JinjaRenderer_with_context_processors() -> None:
+def test_jinja_renderer_with_context_processors() -> None:
     """Test JinjaRenderer with context_processors parameter"""
 
     def add_globals(request: Request) -> dict[str, str]:
@@ -175,7 +175,7 @@ def test_JinjaRenderer_with_context_processors() -> None:
     assert jinja.templates is not None
 
 
-def test_JinjaRenderer_with_env() -> None:
+def test_jinja_renderer_with_env() -> None:
     """Test JinjaRenderer with custom env parameter"""
 
     # Create environment with loader since we can't pass directory and env together
@@ -186,7 +186,7 @@ def test_JinjaRenderer_with_env() -> None:
     assert jinja.templates is not None
 
 
-def test_Renderer() -> None:
+def test_renderer() -> None:
     """Test the Renderer class."""
     app = air.Air()
 
@@ -221,7 +221,7 @@ def test_Renderer() -> None:
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
 
 
-def test_Renderer_without_request_for_components() -> None:
+def test_renderer_without_request_for_components() -> None:
     """Test the Renderer class."""
     app = air.Air()
 
@@ -332,7 +332,7 @@ def test_render_callable_wrong_type() -> None:
         render(wrong_type)
 
 
-def test_Renderer_with_context_processors() -> None:
+def test_renderer_with_context_processors() -> None:
     """Test Renderer with context_processors parameter to cover the else branch"""
 
     def add_globals(request: Request) -> dict[str, str]:
@@ -344,13 +344,13 @@ def test_Renderer_with_context_processors() -> None:
     assert render.templates is not None
 
 
-def test_Renderer_render_template_with_air_tags() -> None:
+def test_renderer_render_template_with_air_tags() -> None:
     """Test _render_template method with Air Tags in context"""
     app = air.Air()
     render = air.Renderer(directory="tests/templates")
 
     @app.page
-    def test_with_tags(request: Request) -> str | HTMLResponse:
+    def context_with_tags(request: Request) -> str | HTMLResponse:
         return render(
             name="home.html",
             request=request,
@@ -358,28 +358,28 @@ def test_Renderer_render_template_with_air_tags() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-with-tags")
+    response = client.get("/context-with-tags")
 
     assert response.status_code == 200
     assert "Test content" in response.text
 
 
-def test_Renderer_tag_callable_with_both_args_and_context() -> None:
+def test_renderer_tag_callable_with_both_args_and_context() -> None:
     """Test case where filtered_context and args are both truthy"""
     app = air.Air()
     render = air.Renderer(directory="tests/templates", package="tests")
 
     # Function that can be called with only keyword args to test the specific line 205
-    def test_callable(title: str | None = None) -> str:
+    def callable_function(title: str | None = None) -> str:
         return f"<p>{title}</p>"
 
     # Create a test module to simulate the import
     test_module = types.ModuleType("test_module")
-    test_module.test_func = test_callable
+    test_module.test_func = callable_function
     sys.modules["tests.test_module"] = test_module
 
     @app.page
-    def test_page(request: Request) -> str | HTMLResponse:
+    def page(request: Request) -> str | HTMLResponse:
         return render(
             ".test_module.test_func",
             "Hello",  # This is args - will be ignored due to line 205 behavior
@@ -388,7 +388,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-page")
+    response = client.get("/page")
 
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
@@ -398,7 +398,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
     del sys.modules["tests.test_module"]
 
 
-def test_Renderer_import_module_fallback() -> None:
+def test_renderer_import_module_fallback() -> None:
     """Test the ModuleNotFoundError fallback in _import_module"""
     # Create a mock module that exists as a relative import but not absolute
     mock_module = types.ModuleType("mock_module")
@@ -417,17 +417,17 @@ def test_Renderer_import_module_fallback() -> None:
             del sys.modules["tests.mock_module"]
 
 
-def test_Renderer_filter_context_with_request() -> None:
+def test_renderer_filter_context_with_request() -> None:
     """Test _filter_context_for_callable when callable expects request parameter"""
     render = air.Renderer(directory="tests/templates")
 
-    def test_callable(request: Request, title: str) -> str:
+    def callable_function(request: Request, title: str) -> str:
         return f"<p>{title}</p>"
 
     context = {"title": "Test", "extra": "ignored"}
     request = Request({"type": "http", "method": "GET", "path": "/"})
 
-    filtered = render._filter_context_for_callable(test_callable, context, request)
+    filtered = render._filter_context_for_callable(callable_function, context, request)
 
     assert "title" in filtered
     assert "request" in filtered
@@ -441,7 +441,7 @@ def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
     render = air.Renderer(directory="tests/templates", package="tests")
 
     @app.page
-    def test_page(request: Request) -> str | HTMLResponse:
+    def page(request: Request) -> str | HTMLResponse:
         return render(
             name="lists_and_dicts.html",
             request=request,
@@ -451,7 +451,7 @@ def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
         )
 
     client = TestClient(app)
-    response = client.get("/test-page")
+    response = client.get("/page")
 
     assert "<h1>Lists and Dicts</h1>" in response.text
     assert "<li>One</li>" in response.text

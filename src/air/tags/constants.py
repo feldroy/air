@@ -34,6 +34,12 @@ ATTRIBUTES_TO_AIR: Final = frozendict({
     "as": "as_",
     "async": "async_",
     "type": "type_",
+    "max": "max_",
+    "min": "min_",
+    "open": "open_",
+    "reversed": "reversed_",
+    "list": "list_",
+    "dir": "dir_",
 })
 ATTRIBUTES_TO_HTML: Final = frozendict({
     "class_": "class",
@@ -42,6 +48,12 @@ ATTRIBUTES_TO_HTML: Final = frozendict({
     "as_": "as",
     "async_": "async",
     "type_": "type",
+    "max_": "max",
+    "min_": "min",
+    "open_": "open",
+    "reversed_": "reversed",
+    "list_": "list",
+    "dir_": "dir",
 })
 BOOLEAN_HTML_ATTRIBUTES: Final = {
     # https://html.spec.whatwg.org/multipage/indices.html#attributes-3

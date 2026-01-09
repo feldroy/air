@@ -7,7 +7,7 @@ Layouts in Air provide a way to structure complete HTML documents without the re
 
 ## Understanding Air's Layout Philosophy
 
-Air's layout functions automatically sort your tags into the right places using intelligent filtering.  This allows you eliminate repetitive `air.Html`, `air.Body`, and `air.Head` boilerplate.
+Air's layout functions automatically sort your tags into the right places using intelligent filtering. This allows you eliminate repetitive `air.Html`, `air.Body`, and `air.Head` boilerplate.
 
 ```python
 # Verbose Way
@@ -55,7 +55,7 @@ Air transforms this into proper HTML structure automatically.
 
 ## Built-in Minimal Layouts
 
-Air provides minimal ready-to-use layouts for rapid prototyping, `mvpcss` and `picocss` for MVP.css and PicoCSS respectively.  They both work and are used in the exact same way.
+Air provides minimal ready-to-use layouts for rapid prototyping, `mvpcss` and `picocss` for MVP.css and PicoCSS respectively. They both work and are used in the exact same way.
 
 ```python
 import air
@@ -86,7 +86,7 @@ def home():
 
 ## Beyond Built-in Layouts
 
-The included layouts are designed for **quick prototyping**, not production commercial applications.  Custom layouts give you complete control while preserving Air's automatic tag filtering benefits.
+The included layouts are designed for **quick prototyping**, not production commercial applications. Custom layouts give you complete control while preserving Air's automatic tag filtering benefits.
 
 Here's the foundational pattern for any Air layout:
 

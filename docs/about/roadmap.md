@@ -24,7 +24,7 @@ While it would be nice to have Air be a Beta project today there's something to 
 
 Here is what is planned for the Beta release, which is tracked on the <a href="https://github.com/orgs/feldroy/projects/2" target="_blank">Air Beta Release Project board</a>:
 
-### Air Forms
+###  Air Forms
 
 Forms are a core part of any web framework. While the foundations for forms are in place with Air Tags, there is still a lot of work to be done. Part of it is that form libraries have to support a lot of edge cases. This includes:
 
@@ -44,7 +44,7 @@ There are a number of accessibility improvements that we can make, mostly for bu
 
 ### Bringing AirMarkdown Into Air Core
 
-AirMarkdown is currently a separate package. While it works, it is extremely challenging to alter the configuration. In trying to fix it we discovered that the architecture of AirMarkdown is not quite right, and when combined with the extra layer of abstraction in having it as a separate package makes it hard to correct. 
+AirMarkdown is currently a separate package. While it works, it is extremely challenging to alter the configuration. In trying to fix it we discovered that the architecture of AirMarkdown is not quite right, and when combined with the extra layer of abstraction in having it as a separate package makes it hard to correct.
 
 Our plan is to bring AirMarkdown into Air core with an optional dependency group, and redesign the architecture to make it more flexible and easier to configure. Then we'll extract it again once we're happy with the result.
 
@@ -68,7 +68,7 @@ This will be a layout library that provides elegant defaults for making awesome 
 
 Tools like [shadcn](https://ui.shadcn.com/) and other Tailwind-powered projects are really powerful, but require an understanding of CSS (or tailwind) to be able to use. AirComponents will address this through intelligent defaults so those of us who don't know CSS can use it to make incredible looking sites. Yet AirComponents will be built so that it can be easily modified to support all kinds of usecases.
 
-AirComponents may be a separate repo and package, managed in its own [GitHub repo](https://github.com/feldroy/AirComponents). That will allow for faster velocity and provide room for playing with architecture and design. 
+AirComponents may be a separate repo and package, managed in its own [GitHub repo](https://github.com/feldroy/AirComponents). That will allow for faster velocity and provide room for playing with architecture and design.
 
 ## What's already been completed
 

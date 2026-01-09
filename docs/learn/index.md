@@ -1,4 +1,4 @@
-# Learn 
+# Learn
 
 Resources for learning the fundamentals of the Air web framework.
 
@@ -15,7 +15,7 @@ Why and how Air works.
 - **[Layouts](layouts.md)** - Tools for building layouts in Air along with two simple layout systems
 - **[SQLModel](sqlmodel.md)** - One way to use SQL databases in Air apps (to be moved to an external package soon)
 
-# Cookbook
+## Cookbook
 
 A handy Air-themed list of recipes for common web app tasks.
 
@@ -30,4 +30,3 @@ This section contains short recipes. See the topic pages for details:
 - **[Static files](cookbook/static.md)** - how to serve static files like CSS and JavaScript
 
 If you'd like to contribute a recipe, open a PR with a new file under `docs/learn/cookbook`.
-

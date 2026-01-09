@@ -1,0 +1,16 @@
+# -------------------------------------------------> complexipy.toml <-------------------------------------------------
+# complexipy - Blazingly fast cognitive complexity analysis for Python, written in Rust.
+# https://rohaquinlop.github.io/complexipy/#toml-configuration-files
+
+paths = ["src", "tests"]
+max-complexity-allowed = 10
+snapshot-create = false
+snapshot-ignore = false
+quiet = false
+ignore-complexity = true # TODO -> Change to `false` once all violations are fixed.
+failed = true
+color = "auto"
+sort = "asc"
+exclude = []
+output-csv = false
+output-json = false

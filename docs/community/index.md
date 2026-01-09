@@ -8,7 +8,10 @@ Welcome to the Air community! This page showcases community-created content, res
 
 Community libraries to help you build more with Air:
 
-- <a href="https://kentro-tech.github.io/airheads/" target="_blank">Airheads</a> - A library to make project discoverability less of a pain.  Create you `Head` tag with social, SEO, search engine optimization.
+- <a href="https://github.com/kentro-tech/aircsrf" target="_blank">aircsrf</a> - CSRF protection for AIR/FastAPI/Starlette using the double-submit cookie pattern. This may be absorbed into Air core.
+- <a href="https://kentro-tech.github.io/airheads/" target="_blank">Airheads</a> - A library to make project discoverability less of a pain. Create you `Head` tag with social, SEO, search engine optimization.
+- <a href="https://github.com/kentro-tech/airtasks" target="_blank">airtasks</a> - Expands on the features of Air's starlette-powered background tasks to add logging, persistence, and retries that can survive system reboots.
+- <a href="https://github.com/rennf93/fastapi-guard" target="_blank">fastapi-guard</a> - A security library for FastAPI (and Air) that provides middleware to control IPs, log requests, and detect penetration attempts. It integrates seamlessly with FastAPI to offer robust protection against various security threats.
 
 ## Articles
 

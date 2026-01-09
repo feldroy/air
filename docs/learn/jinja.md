@@ -12,7 +12,6 @@ We love Jinja. Proven and fast, it's our go-to for when we want to manually craf
 
     In short, to match the Jinja documentation and the intent of the maintainer, in the Air documentation we use the term "Jinja".
 
-
 ## Using Jinja for the HTML Layout
 
 Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes it's easy to construct layouts using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is easier.

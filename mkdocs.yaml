@@ -5,68 +5,67 @@ repo_url: https://github.com/feldroy/air
 nav:
   - Home: index.md
   - Learn:
-    - learn/index.md
-    - Quickstart: learn/quickstart.md
-    - Air Tags: learn/air_tags.md
-    - Escaping HTML: learn/escaping_html.md
-    - Forms: learn/forms.md
-    - Jinja: learn/jinja.md
-    - Layouts: learn/layouts.md
-    - SQLModel + Air: learn/sqlmodel.md
-    - Cookbook:
-      - learn/cookbook/index.md
-      - app.page decorator: learn/cookbook/page-decorator.md
-      - Authentication: learn/cookbook/authentication.md
-      - Bigger applications: learn/cookbook/bigger-applications.md
-      - Charts: learn/cookbook/charts.md
-      - Minimal app: learn/cookbook/minimal.md
-      - Forms & validation: learn/cookbook/forms.md
-      - Static files: learn/cookbook/static.md
+      - learn/index.md
+      - Quickstart: learn/quickstart.md
+      - Air Tags: learn/air_tags.md
+      - Escaping HTML: learn/escaping_html.md
+      - Forms: learn/forms.md
+      - Jinja: learn/jinja.md
+      - Layouts: learn/layouts.md
+      - SQLModel + Air: learn/sqlmodel.md
+      - Cookbook:
+          - learn/cookbook/index.md
+          - app.page decorator: learn/cookbook/page-decorator.md
+          - Authentication: learn/cookbook/authentication.md
+          - Bigger applications: learn/cookbook/bigger-applications.md
+          - Charts: learn/cookbook/charts.md
+          - Minimal app: learn/cookbook/minimal.md
+          - Forms & validation: learn/cookbook/forms.md
+          - Static files: learn/cookbook/static.md
   - Reference:
-    - api/index.md
-    - Applications: api/applications.md
-    - Background Tasks: api/background.md
-    - Dependencies: api/dependencies.md
-    - Exception Handlers: api/exception_handlers.md
-    - Exceptions: api/exceptions.md
-    - Forms: api/forms.md
-    - Layouts: api/layouts.md
-    - Middleware: api/middleware.md
-    - Models: api/models.md
-    - Requests: api/requests.md
-    - Responses: api/responses.md
-    - Routing: api/routing.md
-    - SVG:
-      - SVG: api/svg/index.md
-      - "SVG A-D": api/svg/svg-tags-a-d.md
-      - "SVG E-M": api/svg/svg-tags-e-m.md
-      - "SVG N-S": api/svg/svg-tags-n-s.md
-      - "SVG T-Z": api/svg/svg-tags-t-z.md
-    - Tags:
-      - Tags: api/tags/index.md
-      - "Tags A-D": api/tags/tags-a-d.md
-      - "Tags E-M": api/tags/tags-e-m.md
-      - "Tags N-S": api/tags/tags-n-s.md
-      - "Tags T-Z": api/tags/tags-t-z.md
-    - Templating: api/templating.md
-    - Utils: api/utils.md
-
+      - api/index.md
+      - Applications: api/applications.md
+      - Background Tasks: api/background.md
+      - Dependencies: api/dependencies.md
+      - Exception Handlers: api/exception_handlers.md
+      - Exceptions: api/exceptions.md
+      - Forms: api/forms.md
+      - Layouts: api/layouts.md
+      - Middleware: api/middleware.md
+      - Models: api/models.md
+      - Requests: api/requests.md
+      - Responses: api/responses.md
+      - Routing: api/routing.md
+      - SVG:
+          - SVG: api/svg/index.md
+          - "SVG A-D": api/svg/svg-tags-a-d.md
+          - "SVG E-M": api/svg/svg-tags-e-m.md
+          - "SVG N-S": api/svg/svg-tags-n-s.md
+          - "SVG T-Z": api/svg/svg-tags-t-z.md
+      - Tags:
+          - Tags: api/tags/index.md
+          - "Tags A-D": api/tags/tags-a-d.md
+          - "Tags E-M": api/tags/tags-e-m.md
+          - "Tags N-S": api/tags/tags-n-s.md
+          - "Tags T-Z": api/tags/tags-t-z.md
+      - Templating: api/templating.md
+      - Utils: api/utils.md
 
   - About:
-    - about/index.md
-    - Why?: about/why.md
-    - about/inspirations.md
-    - about/help_air.md
-    - about/story.md
-    - about/roadmap.md
+      - about/index.md
+      - Why?: about/why.md
+      - about/inspirations.md
+      - about/help_air.md
+      - about/story.md
+      - about/roadmap.md
 
   - Community:
-    - community/index.md
-    - Tools: community/tools.md
+      - community/index.md
+      - Tools: community/tools.md
 
   - Sprint:
-    - sprint/index.md
-    - Source Examples: sprint/src_examples.md
+      - sprint/index.md
+      - Source Examples: sprint/src_examples.md
 
 theme:
   name: material
@@ -131,24 +130,25 @@ plugins:
             merge_init_into_class: true
   - redirects:
       redirect_maps:
-        'about/alternatives.md': 'about/inspirations.md'
-        'roadmap.md': 'about/roadmap.md'
-        'why.md': 'about/why.md'
-        'tools.md': 'community/tools.md'
+        "about/alternatives.md": "about/inspirations.md"
+        "roadmap.md": "about/roadmap.md"
+        "why.md": "about/why.md"
+        "tools.md": "community/tools.md"
   - llmstxt:
-      markdown_description: "Air is a Python web framework that provides a friendly layer over FastAPI for building modern web applications that combine beautiful HTML pages with powerful REST APIs."
+      markdown_description: "Air is a Python web framework that provides a friendly layer over FastAPI for building modern
+        web applications that combine beautiful HTML pages with powerful REST APIs."
       full_output: llms-full.txt
       sections:
         Usage documentation:
-        - index.md
-        - learn/quickstart.md
-        - learn/air_tags.md
-        - learn/escaping_html.md
-        - learn/forms.md
-        - learn/jinja.md
-        - learn/layouts.md
-        - learn/cookbook/*.md
-        - api/*.md
-        - api/tags/*.md
-        - api/svg/*.md
-        - community/tools.md
+          - index.md
+          - learn/quickstart.md
+          - learn/air_tags.md
+          - learn/escaping_html.md
+          - learn/forms.md
+          - learn/jinja.md
+          - learn/layouts.md
+          - learn/cookbook/*.md
+          - api/*.md
+          - api/tags/*.md
+          - api/svg/*.md
+          - community/tools.md

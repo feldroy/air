@@ -292,7 +292,7 @@ class Bdo(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        dir: Specifies the text direction of the text inside the <bdo> element.
+        dir_: Specifies the text direction of the text inside the <bdo> element.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -302,7 +302,7 @@ class Bdo(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        dir: str | None = None,
+        dir_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -660,7 +660,7 @@ class Details(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        open: Specifies that the details should be visible (open) to the user.
+        open_: Specifies that the details should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -670,7 +670,7 @@ class Details(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        open: str | None = None,
+        open_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -706,7 +706,7 @@ class Dialog(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        open: Specifies that the dialog box should be visible (open) to the user.
+        open_: Specifies that the dialog box should be visible (open) to the user.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -716,7 +716,7 @@ class Dialog(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        open: str | None = None,
+        open_: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1328,10 +1328,10 @@ class Input(SelfClosingTag):
         formnovalidate: Specifies that the form-data should not be validated on submission.
         formtarget: Specifies where to display the response that is received after submitting the form.
         height: Specifies the height of an `<input>` element.
-        list: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
-        max: Specifies the maximum value for an `<input>` element.
+        list_: Refers to a <datalist> element that contains pre-defined options for an `<input>` element.
+        max_: Specifies the maximum value for an `<input>` element.
         maxlength: Specifies the maximum number of characters allowed in an `<input>` element.
-        min: Specifies a minimum value for an `<input>` element.
+        min_: Specifies a minimum value for an `<input>` element.
         minlength: Specifies the minimum number of characters required in an `<input>` element.
         multiple: Specifies that a user can enter more than one value in an `<input>` element.
         pattern: Specifies a regular expression that an `<input>` element's value is checked against.
@@ -1369,10 +1369,10 @@ class Input(SelfClosingTag):
         formnovalidate: bool | None = None,
         formtarget: str | None = None,
         height: str | int | None = None,
-        list: str | None = None,
-        max: str | None = None,
+        list_: str | None = None,
+        max_: str | None = None,
         maxlength: str | None = None,
-        min: str | None = None,
+        min_: str | None = None,
         minlength: str | None = None,
         multiple: bool | None = None,
         pattern: str | None = None,
@@ -1687,8 +1687,8 @@ class Meter(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         value: The current numeric value. Must be between the min and max values.
-        min: The lower bound of the measured range.
-        max: The upper bound of the measured range.
+        min_: The lower bound of the measured range.
+        max_: The upper bound of the measured range.
         low: The upper numeric bound of the low end of the measured range.
         high: The lower numeric bound of the high end of the measured range.
         optimum: The optimal numeric value.
@@ -1702,8 +1702,8 @@ class Meter(BaseTag):
         self,
         *children: Renderable,
         value: str | None = None,
-        min: str | None = None,
-        max: str | None = None,
+        min_: str | None = None,
+        max_: str | None = None,
         low: str | None = None,
         high: str | None = None,
         optimum: str | None = None,
@@ -1812,7 +1812,7 @@ class Ol(BaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         compact: Specifies that the list should be rendered in a compact style.
-        reversed: Specifies that the list order should be descending.
+        reversed_: Specifies that the list order should be descending.
         start: Specifies the start value of an ordered list.
         type_: Specifies the kind of marker to use in the list.
         class_: Substituted as the DOM `class` attribute.
@@ -1825,7 +1825,7 @@ class Ol(BaseTag):
         self,
         *children: Renderable,
         compact: str | None = None,
-        reversed: str | None = None,
+        reversed_: str | None = None,
         start: str | None = None,
         type_: str | None = None,
         class_: str | None = None,
@@ -2014,7 +2014,7 @@ class Progress(BaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        max: The maximum value of the progress bar.
+        max_: The maximum value of the progress bar.
         value: The current value of the progress bar.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -2025,7 +2025,7 @@ class Progress(BaseTag):
     def __init__(
         self,
         *children: Renderable,
-        max: str | None = None,
+        max_: str | None = None,
         value: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
