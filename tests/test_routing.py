@@ -336,7 +336,7 @@ def test_air_router_url_helper_empty_query_params() -> None:
     assert response.text == "<p>Item 5 tags None page 1</p>"
 
 
-def test_air_router_url_helper_supports_query_params_with_Query() -> None:
+def test_air_router_url_helper_supports_query_params_with_query() -> None:
     """Test URL helper with query_params argument when parameters use Query()."""
     app = air.Air()
     router = air.AirRouter()

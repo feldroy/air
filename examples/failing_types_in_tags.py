@@ -16,7 +16,7 @@ import air
 app = air.Air()
 
 
-def TestComponent() -> air.BaseTag:
+def test_component() -> air.BaseTag:
     return air.P("I am a component")
 
 
@@ -24,8 +24,8 @@ def main() -> None:
     return air.layouts.Body(
         air.Div(
             air.P({}),  # ty: ignore[invalid-argument-type]
-            air.P(TestComponent()),
-            air.P(TestComponent),  # ty: ignore[invalid-argument-type]
+            air.P(test_component()),
+            air.P(test_component),  # ty: ignore[invalid-argument-type]
             air.P(air.Span),  # ty: ignore[invalid-argument-type]
             air.P(b"Renders but breaks on types."),  # ty: ignore[invalid-argument-type]
         )

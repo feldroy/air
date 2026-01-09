@@ -607,7 +607,7 @@ def default_form_widget(  # noqa: C901
     return tags.Tags(*fields).render()
 
 
-def AirField(
+def AirField(  # noqa: N802
     default: Any = PydanticUndefined,
     *,
     default_factory: Callable[[], Any] | Callable[[dict[str, Any]], Any] | None = None,

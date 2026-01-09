@@ -104,6 +104,9 @@ select = [
     "RUF", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
     "TRY", # https://docs.astral.sh/ruff/rules/#tryceratops-try
 ]
+extend-select = [
+    "N802", # only function-name-lowercase
+]
 ignore = [
     "D100", # ignore missing docstring in module
     "D102", # ignore missing docstring in public method
