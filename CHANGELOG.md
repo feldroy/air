@@ -1,5 +1,67 @@
 ### Latest Changes
 
+# 0.45 - 2025-01-09
+
+## What's Changed
+
+### New Contributors
+* @ohhaus made their first contribution in https://github.com/feldroy/air/pull/919
+
+### Build items
+
+* BUILD: Added `djhtml` hook to both `.pre-commit-config-check.yaml` and `.pre-commit-config-format.yaml` to automate formatting of HTML files and Jinja Templates! by @pygarap in https://github.com/feldroy/air/pull/932
+* BUILD: Improvements to the project's code quality tooling and configuration management.  by @pygarap in https://github.com/feldroy/air/pull/957
+* BUILD: Add pre-commit-hooks: Some out-of-the-box hooks for pre-commit. by @pygarap in https://github.com/feldroy/air/pull/935
+* BUILD: Added the `validate-pyproject` hook by @pygarap in https://github.com/feldroy/air/pull/959
+* BUILD: Some hooks can run in parallel by priority(the new prek priority feature) & Added new hooks: check-jsonschema, yamlfmt & typos now run inside prek! by @pygarap in https://github.com/feldroy/air/pull/960
+* BUILD: Added several new pre-commit hooks: creosote, complexipy, flake8-class-attributes-order, flake8-pydantic and pyroma! by @pygarap in https://github.com/feldroy/air/pull/962
+* BUILD: Added new pre-commit hooks: rumdl - A modern, high-performance Markdown linter and formatter, built for speed in Rust & editorconfig-checker - A tool to verify that your files are in harmony with your .editorconfig by @pygarap in https://github.com/feldroy/air/pull/966
+* BUILD: hotfix: now renovate will upgrade the just-install action correctly! by @pygarap in https://github.com/feldroy/air/pull/970
+
+### Chores
+
+* CHORE: enable Ruff rule A (builtins shadowing) by @ohhaus in https://github.com/feldroy/air/pull/919
+* CHORE: Remove ruff lint per file ignores by @msaizar in https://github.com/feldroy/air/pull/930
+* CHORE: Remove air_tag_source_samples.py from ruff lint per-file-ignore by @msaizar in https://github.com/feldroy/air/pull/954
+* CHORE: chore(deps): update endbug/latest-tag digest to 52ce15b by @renovate[bot] in https://github.com/feldroy/air/pull/968
+* CHORE: chore(deps): update actions/checkout action to v6.0.1 by @renovate[bot] in https://github.com/feldroy/air/pull/971
+* CHORE: chore(deps): update astral-sh/setup-uv action to v7.2.0 - autoclosed by @renovate[bot] in https://github.com/feldroy/air/pull/972
+* CHORE: chore-ruff-rule: tc-sub-issue task of #642 completed by @sankarebarri in https://github.com/feldroy/air/pull/973
+* CHORE: chore(deps): update pre-commit hook tombi-toml/tombi-pre-commit to v0.7.16 by @renovate[bot] in https://github.com/feldroy/air/pull/974
+* CHORE: chore(deps): update pre-commit hook rvben/rumdl-pre-commit to v0.0.212 by @renovate[bot] in https://github.com/feldroy/air/pull/975
+
+### Doc changes
+
+* DOCS: Make location of docs consistent by @pydanny in https://github.com/feldroy/air/pull/963
+* DOCS: Instructions for serving air uses the air CLI now by @pydanny in https://github.com/feldroy/air/pull/958
+* DOCS: Add a few more tools to the Air site by @pydanny in https://github.com/feldroy/air/pull/980
+
+### New features
+
+* FEAT: Air CLI polish for clarity and joy by @audreyfeldroy in https://github.com/feldroy/air/pull/929
+* FEAT: Convert routing.AirRouter to composition by @pydanny in https://github.com/feldroy/air/pull/964
+* FEAT: Remove extraneous HTTP method args from AirRouter by @pydanny in https://github.com/feldroy/air/pull/976
+
+### Bug fixes
+
+* FIX: `id_` inconsistently used to represent HTML attribute of `id` by @msaizar in https://github.com/feldroy/air/pull/926
+* FIX: Replace type argument with type_ in tags by @msaizar in https://github.com/feldroy/air/pull/931
+* FIX: Rename max argument to max_ in tags to prevent builtin shadowing by @msaizar in https://github.com/feldroy/air/pull/933
+* FIX: Rename min to min_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/936
+* FIX: Rename open to open_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/938
+* FIX: Rename reversed to reversed_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/947
+* FIX: Rename list to list_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/952
+* FIX: Rename dir to dir_ to prevent builtin shadowing in tags by @msaizar in https://github.com/feldroy/air/pull/953
+
+### Refactors
+
+* REFACTOR: Rename nested helper functions inside tests by @msaizar in https://github.com/feldroy/air/pull/934
+
+
+
+
+**Full Changelog**: https://github.com/feldroy/air/compare/v0.44.0...v0.45.0
+
 # 0.44.1 - 2025-12-31
 
 ## What's Changed
