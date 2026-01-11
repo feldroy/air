@@ -106,6 +106,7 @@ select = [
 ]
 extend-select = [
     "N802", # only function-name-lowercase
+    "N803", # invalid-argument-name
 ]
 ignore = [
     "D100", # ignore missing docstring in module
@@ -136,6 +137,7 @@ ignore = [
 "scripts/copy_src_example_to_callable.py" = ["C901"]
 "scripts/missing_examples.py" = ["A004"]
 "src/air/forms.py" = ["A002"]
+"src/air/tags/models/svg.py" = ["N803"]
 
 [lint.flake8-import-conventions]
 # Declare the banned `from` imports.
