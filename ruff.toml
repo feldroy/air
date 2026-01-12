@@ -106,6 +106,7 @@ select = [
 ]
 extend-select = [
     "N802", # only function-name-lowercase
+    "N806", # non-lowercase-variable-in-function
     "N818", # error-suffix-on-exception-name
 ]
 ignore = [
