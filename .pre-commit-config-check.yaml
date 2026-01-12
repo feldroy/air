@@ -154,7 +154,7 @@ repos:
       - id: tombi-lint # A TOML linter.
         priority: 0
   - repo: https://github.com/crate-ci/typos
-    rev: v1.41.0
+    rev: v1.42.0
     hooks:
       - id: typos # Source code spell checker.
         priority: 0
