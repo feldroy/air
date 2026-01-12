@@ -1683,6 +1683,7 @@ This section contains short recipes. See the topic pages for details:
 - **[Charts](https://docs.airwebframework.org/learn/cookbook/charts/index.md)** - Examples of using charts in Air
 - **[Minimal app](https://docs.airwebframework.org/learn/cookbook/minimal/index.md)** - The smallest possible Air app
 - **[Forms & validation](https://docs.airwebframework.org/learn/cookbook/forms/index.md)** - how to create forms and validate user inputs
+- **[Running as FastAPI](https://docs.airwebframework.org/learn/cookbook/running_as_fastapi/index.md)** - Using the fastapi CLI to run Air apps or deployment to FastAPI-compatible platforms
 - **[Static files](https://docs.airwebframework.org/learn/cookbook/static/index.md)** - how to serve static files like CSS and JavaScript
 
 If you'd like to contribute a recipe, open a PR with a new file under `docs/cookbook`.
@@ -2299,6 +2300,21 @@ def about_us():
     # same as app.get('/about/us`)
     return air.H1("About us!")
 ```
+
+# Running as FastAPI
+
+FastAPI is the direct ancestor of Air. A lot of the same concepts apply, and with a little effort Air apps can be run as FastAPI applications. This is useful for deployment scenarios where FastAPI is already supported, such as in [fastapicloud.com](https://fastapicloud.com/)
+
+To run an Air app as a FastAPI app, use the FastAPI entrypoint in your `pyproject.toml`, where `main` is your core Python module and `app` is your Air application instance:
+
+```
+[tool.fastapi]
+entrypoint = "main:app"
+```
+
+Now Air will run with `fastapi dev` or `fastapi run`, and deploy to FastAPI-compatible platforms.
+
+Reference: [FastAPI Custom Entrypoint - Location](https://fastapicloud.com/docs/builds-and-deployments/configuring-fastapi/#custom-entrypoint---location).
 
 # Serving static files
 
@@ -13238,6 +13254,8 @@ In the spirit of helping our users, every **Air Tag** has copious documentationâ
 
 What remains on this page are core **Air Tag** that either have great utility (**Raw** and **Children** come to mind), or are base classes for other tags.
 
+Easy to write and performant HTML content generation using Python classes to render HTML.
+
 ## Tag
 
 ```
@@ -14504,6 +14522,8 @@ def to_source(self) -> str:
 
 # Tags A-D
 
+Easy to write and performant HTML content generation using Python classes to render HTML.
+
 ## A
 
 ```
@@ -15207,6 +15227,8 @@ def __init__(
 ```
 
 # Tags E-M
+
+Easy to write and performant HTML content generation using Python classes to render HTML.
 
 ## Embed
 
@@ -15993,6 +16015,8 @@ def __init__(
 
 # Tags N-S
 
+Easy to write and performant HTML content generation using Python classes to render HTML.
+
 ## Object
 
 ```
@@ -16685,6 +16709,8 @@ def __init__(
 ```
 
 # Tags T-Z
+
+Easy to write and performant HTML content generation using Python classes to render HTML.
 
 ## Td
 

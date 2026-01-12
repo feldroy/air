@@ -18,6 +18,7 @@ Air is a Python web framework that provides a friendly layer over FastAPI for bu
 - [Forms & validation](https://docs.airwebframework.org/learn/cookbook/forms/index.md)
 - [Minimal app](https://docs.airwebframework.org/learn/cookbook/minimal/index.md)
 - [app.page decorator](https://docs.airwebframework.org/learn/cookbook/page-decorator/index.md)
+- [Running as FastAPI](https://docs.airwebframework.org/learn/cookbook/running_as_fastapi/index.md)
 - [Static files](https://docs.airwebframework.org/learn/cookbook/static/index.md)
 - [Air Reference](https://docs.airwebframework.org/api/index.md)
 - [Applications](https://docs.airwebframework.org/api/applications/index.md)

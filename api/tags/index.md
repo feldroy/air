@@ -13,6 +13,8 @@ In the spirit of helping our users, every **Air Tag** has copious documentationâ
 
 What remains on this page are core **Air Tag** that either have great utility (**Raw** and **Children** come to mind), or are base classes for other tags.
 
+Easy to write and performant HTML content generation using Python classes to render HTML.
+
 ## Tag
 
 ```

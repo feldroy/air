@@ -10,6 +10,7 @@ This section contains short recipes. See the topic pages for details:
 - **[Charts](https://docs.airwebframework.org/learn/cookbook/charts/index.md)** - Examples of using charts in Air
 - **[Minimal app](https://docs.airwebframework.org/learn/cookbook/minimal/index.md)** - The smallest possible Air app
 - **[Forms & validation](https://docs.airwebframework.org/learn/cookbook/forms/index.md)** - how to create forms and validate user inputs
+- **[Running as FastAPI](https://docs.airwebframework.org/learn/cookbook/running_as_fastapi/index.md)** - Using the fastapi CLI to run Air apps or deployment to FastAPI-compatible platforms
 - **[Static files](https://docs.airwebframework.org/learn/cookbook/static/index.md)** - how to serve static files like CSS and JavaScript
 
 If you'd like to contribute a recipe, open a PR with a new file under `docs/cookbook`.

@@ -1,5 +1,7 @@
 # Tags E-M
 
+Easy to write and performant HTML content generation using Python classes to render HTML.
+
 ## Embed
 
 ```

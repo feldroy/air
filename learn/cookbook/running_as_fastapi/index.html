@@ -8,31 +8,31 @@
       
       
       
-        <link rel="canonical" href="https://docs.airwebframework.org/api/dependencies/">
+        <link rel="canonical" href="https://docs.airwebframework.org/learn/cookbook/running_as_fastapi/">
       
       
-        <link rel="prev" href="../background/">
+        <link rel="prev" href="../forms/">
       
       
-        <link rel="next" href="../exception_handlers/">
+        <link rel="next" href="../static/">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Dependencies - AIR</title>
+        <title>Running as FastAPI - AIR</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,9 +51,9 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dependencies" class="md-skip">
+        <a href="#running-as-fastapi" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="AIR" class="md-header__button md-logo" aria-label="AIR" data-md-component="logo">
+    <a href="../../.." title="AIR" class="md-header__button md-logo" aria-label="AIR" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Dependencies
+              Running as FastAPI
             
           </span>
         </div>
@@ -230,7 +230,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -247,11 +247,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../learn/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
   
@@ -269,13 +271,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../../api/" class="md-tabs__link">
           
   
   
@@ -297,7 +297,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../about/" class="md-tabs__link">
+        <a href="../../../about/" class="md-tabs__link">
           
   
   
@@ -319,7 +319,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../community/" class="md-tabs__link">
+        <a href="../../../community/" class="md-tabs__link">
           
   
   
@@ -341,7 +341,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../sprint/" class="md-tabs__link">
+        <a href="../../../sprint/" class="md-tabs__link">
           
   
   
@@ -377,7 +377,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="AIR" class="md-nav__button md-logo" aria-label="AIR" data-md-component="logo">
+    <a href="../../.." title="AIR" class="md-nav__button md-logo" aria-label="AIR" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -407,7 +407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -431,6 +431,8 @@
       
   
   
+    
+  
   
   
     
@@ -460,18 +462,21 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../learn/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -489,13 +494,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -515,7 +520,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/quickstart/" class="md-nav__link">
+      <a href="../../quickstart/" class="md-nav__link">
         
   
   
@@ -543,7 +548,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/air_tags/" class="md-nav__link">
+      <a href="../../air_tags/" class="md-nav__link">
         
   
   
@@ -571,7 +576,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/escaping_html/" class="md-nav__link">
+      <a href="../../escaping_html/" class="md-nav__link">
         
   
   
@@ -599,7 +604,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/forms/" class="md-nav__link">
+      <a href="../../forms/" class="md-nav__link">
         
   
   
@@ -627,7 +632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/jinja/" class="md-nav__link">
+      <a href="../../jinja/" class="md-nav__link">
         
   
   
@@ -655,7 +660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/layouts/" class="md-nav__link">
+      <a href="../../layouts/" class="md-nav__link">
         
   
   
@@ -683,7 +688,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/sqlmodel/" class="md-nav__link">
+      <a href="../../sqlmodel/" class="md-nav__link">
         
   
   
@@ -708,6 +713,8 @@
                 
   
   
+    
+  
   
   
     
@@ -740,15 +747,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../learn/cookbook/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -772,7 +779,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_9">
             <span class="md-nav__icon md-icon"></span>
             
@@ -792,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/cookbook/page-decorator/" class="md-nav__link">
+      <a href="../page-decorator/" class="md-nav__link">
         
   
   
@@ -820,7 +827,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/cookbook/authentication/" class="md-nav__link">
+      <a href="../authentication/" class="md-nav__link">
         
   
   
@@ -848,7 +855,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/cookbook/bigger-applications/" class="md-nav__link">
+      <a href="../bigger-applications/" class="md-nav__link">
         
   
   
@@ -876,7 +883,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/cookbook/charts/" class="md-nav__link">
+      <a href="../charts/" class="md-nav__link">
         
   
   
@@ -904,7 +911,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/cookbook/minimal/" class="md-nav__link">
+      <a href="../minimal/" class="md-nav__link">
         
   
   
@@ -932,7 +939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/cookbook/forms/" class="md-nav__link">
+      <a href="../forms/" class="md-nav__link">
         
   
   
@@ -957,10 +964,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../learn/cookbook/running_as_fastapi/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -976,6 +992,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -988,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../learn/cookbook/static/" class="md-nav__link">
+      <a href="../static/" class="md-nav__link">
         
   
   
@@ -1028,8 +1045,6 @@
       
   
   
-    
-  
   
   
     
@@ -1075,21 +1090,18 @@
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../api/" class="md-nav__link ">
               
   
   
@@ -1107,13 +1119,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1133,7 +1145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../applications/" class="md-nav__link">
+      <a href="../../../api/applications/" class="md-nav__link">
         
   
   
@@ -1161,7 +1173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../background/" class="md-nav__link">
+      <a href="../../../api/background/" class="md-nav__link">
         
   
   
@@ -1186,37 +1198,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Dependencies
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../api/dependencies/" class="md-nav__link">
         
   
   
@@ -1232,115 +1217,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#htmx-request-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HTMX Request Detection
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="HTMX Request Detection">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-use-cases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Use Cases
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#form-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Form Handling
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#air.dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        dependencies
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#air.dependencies.is_htmx_request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        is_htmx_request
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1353,7 +1229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../exception_handlers/" class="md-nav__link">
+      <a href="../../../api/exception_handlers/" class="md-nav__link">
         
   
   
@@ -1381,7 +1257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../exceptions/" class="md-nav__link">
+      <a href="../../../api/exceptions/" class="md-nav__link">
         
   
   
@@ -1409,7 +1285,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../forms/" class="md-nav__link">
+      <a href="../../../api/forms/" class="md-nav__link">
         
   
   
@@ -1437,7 +1313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../layouts/" class="md-nav__link">
+      <a href="../../../api/layouts/" class="md-nav__link">
         
   
   
@@ -1465,7 +1341,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../middleware/" class="md-nav__link">
+      <a href="../../../api/middleware/" class="md-nav__link">
         
   
   
@@ -1493,7 +1369,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../models/" class="md-nav__link">
+      <a href="../../../api/models/" class="md-nav__link">
         
   
   
@@ -1521,7 +1397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../requests/" class="md-nav__link">
+      <a href="../../../api/requests/" class="md-nav__link">
         
   
   
@@ -1549,7 +1425,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../responses/" class="md-nav__link">
+      <a href="../../../api/responses/" class="md-nav__link">
         
   
   
@@ -1577,7 +1453,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../routing/" class="md-nav__link">
+      <a href="../../../api/routing/" class="md-nav__link">
         
   
   
@@ -1634,7 +1510,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../svg/" class="md-nav__link ">
+            <a href="../../../api/svg/" class="md-nav__link ">
               
   
   
@@ -1678,7 +1554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../svg/svg-tags-a-d/" class="md-nav__link">
+      <a href="../../../api/svg/svg-tags-a-d/" class="md-nav__link">
         
   
   
@@ -1706,7 +1582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../svg/svg-tags-e-m/" class="md-nav__link">
+      <a href="../../../api/svg/svg-tags-e-m/" class="md-nav__link">
         
   
   
@@ -1734,7 +1610,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../svg/svg-tags-n-s/" class="md-nav__link">
+      <a href="../../../api/svg/svg-tags-n-s/" class="md-nav__link">
         
   
   
@@ -1762,7 +1638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../svg/svg-tags-t-z/" class="md-nav__link">
+      <a href="../../../api/svg/svg-tags-t-z/" class="md-nav__link">
         
   
   
@@ -1827,7 +1703,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../tags/" class="md-nav__link ">
+            <a href="../../../api/tags/" class="md-nav__link ">
               
   
   
@@ -1871,7 +1747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tags/tags-a-d/" class="md-nav__link">
+      <a href="../../../api/tags/tags-a-d/" class="md-nav__link">
         
   
   
@@ -1899,7 +1775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tags/tags-e-m/" class="md-nav__link">
+      <a href="../../../api/tags/tags-e-m/" class="md-nav__link">
         
   
   
@@ -1927,7 +1803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tags/tags-n-s/" class="md-nav__link">
+      <a href="../../../api/tags/tags-n-s/" class="md-nav__link">
         
   
   
@@ -1955,7 +1831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tags/tags-t-z/" class="md-nav__link">
+      <a href="../../../api/tags/tags-t-z/" class="md-nav__link">
         
   
   
@@ -1991,7 +1867,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../templating/" class="md-nav__link">
+      <a href="../../../api/templating/" class="md-nav__link">
         
   
   
@@ -2019,7 +1895,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/" class="md-nav__link">
+      <a href="../../../api/utils/" class="md-nav__link">
         
   
   
@@ -2085,7 +1961,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../about/" class="md-nav__link ">
+            <a href="../../../about/" class="md-nav__link ">
               
   
   
@@ -2129,7 +2005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../about/why/" class="md-nav__link">
+      <a href="../../../about/why/" class="md-nav__link">
         
   
   
@@ -2157,7 +2033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../about/inspirations/" class="md-nav__link">
+      <a href="../../../about/inspirations/" class="md-nav__link">
         
   
   
@@ -2185,7 +2061,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../about/help_air/" class="md-nav__link">
+      <a href="../../../about/help_air/" class="md-nav__link">
         
   
   
@@ -2213,7 +2089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../about/story/" class="md-nav__link">
+      <a href="../../../about/story/" class="md-nav__link">
         
   
   
@@ -2241,7 +2117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../about/roadmap/" class="md-nav__link">
+      <a href="../../../about/roadmap/" class="md-nav__link">
         
   
   
@@ -2299,7 +2175,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../community/" class="md-nav__link ">
+            <a href="../../../community/" class="md-nav__link ">
               
   
   
@@ -2343,7 +2219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../community/tools/" class="md-nav__link">
+      <a href="../../../community/tools/" class="md-nav__link">
         
   
   
@@ -2401,7 +2277,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../sprint/" class="md-nav__link ">
+            <a href="../../../sprint/" class="md-nav__link ">
               
   
   
@@ -2445,7 +2321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sprint/src_examples/" class="md-nav__link">
+      <a href="../../../sprint/src_examples/" class="md-nav__link">
         
   
   
@@ -2493,103 +2369,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#htmx-request-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HTMX Request Detection
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="HTMX Request Detection">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-use-cases" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Use Cases
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#form-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Form Handling
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#air.dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        dependencies
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#air.dependencies.is_htmx_request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        is_htmx_request
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -2608,111 +2387,14 @@
   
 
 
-<h1 id="dependencies">Dependencies</h1>
-<p>Air provides dependency injection utilities to help you build responsive web applications.</p>
-<h2 id="htmx-request-detection">HTMX Request Detection</h2>
-<p>The <code>is_htmx_request</code> dependency allows you to detect whether a request is coming from an HTMX action, enabling you to return different responses for HTMX vs regular HTTP requests.</p>
-<h3 id="common-use-cases">Common Use Cases</h3>
-<ul>
-<li>Return partial HTML fragments for HTMX requests and full pages for regular requests</li>
-<li>Provide different response formats (JSON for HTMX, redirects for forms)</li>
-<li>Implement progressive enhancement patterns</li>
-</ul>
-<h3 id="examples">Examples</h3>
-<h4 id="basic-usage">Basic Usage</h4>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span>
-
-<span class="n">app</span> <span class="o">=</span> <span class="n">air</span><span class="o">.</span><span class="n">App</span><span class="p">()</span>
-
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_users</span><span class="p">(</span><span class="n">is_htmx</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">is_htmx_request</span><span class="p">)):</span>
-    <span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">is_htmx</span><span class="p">:</span>
-        <span class="c1"># Return just the user list for HTMX partial updates</span>
-        <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">Ul</span><span class="p">([</span><span class="n">air</span><span class="o">.</span><span class="n">Li</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Return full page for regular requests</span>
-        <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">Html</span><span class="p">(</span>
-            <span class="p">[</span>
-                <span class="n">air</span><span class="o">.</span><span class="n">Head</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">Title</span><span class="p">(</span><span class="s2">&quot;Users&quot;</span><span class="p">)),</span>
-                <span class="n">air</span><span class="o">.</span><span class="n">Body</span><span class="p">(</span>
-                    <span class="p">[</span>
-                        <span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;User List&quot;</span><span class="p">),</span>
-                        <span class="n">air</span><span class="o">.</span><span class="n">Ul</span><span class="p">([</span><span class="n">air</span><span class="o">.</span><span class="n">Li</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">]),</span>
-                    <span class="p">]</span>
-                <span class="p">),</span>
-            <span class="p">]</span>
-        <span class="p">)</span>
+<h1 id="running-as-fastapi">Running as FastAPI</h1>
+<p>FastAPI is the direct ancestor of Air. A lot of the same concepts apply, and with a little effort Air apps can be run as FastAPI applications. This is useful for deployment scenarios where FastAPI is already supported, such as in <a href="https://fastapicloud.com/">fastapicloud.com</a></p>
+<p>To run an Air app as a FastAPI app, use the FastAPI entrypoint in your <code>pyproject.toml</code>, where <code>main</code> is your core Python module and <code>app</code> is your Air application instance:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.fastapi]</span>
+<span class="n">entrypoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;main:app&quot;</span>
 </code></pre></div>
-<h4 id="form-handling">Form Handling</h4>
-<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/submit&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">submit_form</span><span class="p">(</span><span class="n">is_htmx</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">is_htmx_request</span><span class="p">)):</span>
-    <span class="k">if</span> <span class="n">is_htmx</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="s2">&quot;Success!&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;alert-success&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">RedirectResponse</span><span class="p">(</span><span class="s2">&quot;/success&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="mi">303</span><span class="p">)</span>
-</code></pre></div>
-
-
-<div class="doc doc-object doc-module">
-
-
-
-<a id="air.dependencies"></a>
-    <div class="doc doc-contents first">
-
-        <p>Tools for handling dependencies, for things like handling incoming data from client libraries like HTMX.</p>
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="air.dependencies.is_htmx_request" class="doc doc-heading">
-            <span class="doc doc-object-name doc-attribute-name">is_htmx_request</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-</h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">is_htmx_request</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">_is_htmx_request</span><span class="p">)</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-</div>
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
+<p>Now Air will run with <code>fastapi dev</code> or <code>fastapi run</code>, and deploy to FastAPI-compatible platforms.</p>
+<p>Reference: <a href="https://fastapicloud.com/docs/builds-and-deployments/configuring-fastapi/#custom-entrypoint---location">FastAPI Custom Entrypoint - Location</a>.</p>
 
 
 
@@ -2744,7 +2426,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../background/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Background Tasks">
+          <a href="../forms/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Forms &amp; validation">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2754,20 +2436,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Background Tasks
+                Forms & validation
               </div>
             </div>
           </a>
         
         
           
-          <a href="../exception_handlers/" class="md-footer__link md-footer__link--next" aria-label="Next: Exception Handlers">
+          <a href="../static/" class="md-footer__link md-footer__link--next" aria-label="Next: Static files">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Exception Handlers
+                Static files
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2804,10 +2486,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.copy", "content.code.annotate", "content.tabs.link", "navigation.indexes", "navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "search.share", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["content.code.copy", "content.code.annotate", "content.tabs.link", "navigation.indexes", "navigation.instant", "navigation.instant.prefetch", "navigation.tracking", "navigation.footer", "search.suggest", "search.highlight", "search.share", "navigation.tabs"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
