@@ -4,6 +4,13 @@
 # https://github.com/rvben/rumdl/blob/main/docs/global-settings.md
 # https://github.com/rvben/rumdl/blob/main/docs/inline-configuration.md
 
+# Specifies the Markdown flavor to use for parsing and linting.
+# Available Flavors: "standard" (default): Standard Markdown syntax, "mkdocs": MkDocs-specific extensions and syntax.
+[global.file-flavors]
+"docs/**/*.md" = "mkdocs"
+"*.md" = "gfm"
+"examples/**/*.md" = "gfm"
+
 [global]
 # Enable only specific rules.
 enable = []
@@ -40,9 +47,6 @@ include = []
 respect-gitignore = true
 # Sets the global default line length used by rules that check line length. Default: 80
 line-length = 120
-# Specifies the Markdown flavor to use for parsing and linting.
-# Available Flavors: "standard" (default): Standard Markdown syntax, "mkdocs": MkDocs-specific extensions and syntax.
-flavor = "mkdocs"
 # Controls whether rumdl caches linting results to speed up subsequent runs. Default: true
 cache = true
 # Specifies the directory where rumdl stores cache files. Default: .rumdl_cache
