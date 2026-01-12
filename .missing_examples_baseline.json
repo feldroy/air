@@ -28,7 +28,6 @@
   ],
   "exceptions.py": [
     "class: HTTPException",
-    "class: BaseAirException",
     "class: BrowserOpenError"
   ],
   "forms.py": [
