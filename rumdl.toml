@@ -4,9 +4,7 @@
 # https://github.com/rvben/rumdl/blob/main/docs/global-settings.md
 # https://github.com/rvben/rumdl/blob/main/docs/inline-configuration.md
 
-# Specifies the Markdown flavor to use for parsing and linting.
-# Available Flavors: "standard" (default): Standard Markdown syntax, "mkdocs": MkDocs-specific extensions and syntax.
-[global.file-flavors]
+[per-file-flavor] # Specifies the Markdown flavor to use for parsing and linting.
 "docs/**/*.md" = "mkdocs"
 "*.md" = "gfm"
 "examples/**/*.md" = "gfm"

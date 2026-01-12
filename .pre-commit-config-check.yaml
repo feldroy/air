@@ -132,6 +132,7 @@ repos:
     rev: nightly
     hooks:
       - id: lychee
+        files: ^$
         priority: 0
         types: ["markdown"]
   - repo: https://github.com/regebro/pyroma
@@ -151,7 +152,7 @@ repos:
         args: ["--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.212
+    rev: v0.0.215
     hooks:
       - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
         priority: 0
@@ -176,6 +177,7 @@ repos:
     rev: v3.13.0
     hooks:
       - id: vale
+        files: ^$
         priority: 0
         types: [markdown]
         args: [--output=line, --minAlertLevel=error]
