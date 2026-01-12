@@ -193,11 +193,11 @@ class Renderer:
                 return result
             if hasattr(result, "render"):
                 return result.render()
-            msg = "Callable in name arg must be a string or object with a render method."
+            msg = "'name' must be a string or a callable(returning a string, or an object with a render() method."
             raise TypeError(msg)
 
         if not isinstance(name, str):
-            msg = "Callable in name arg must be a string or object with a render method."
+            msg = "'name' must be a string or a callable(returning a string, or an object with a render() method."
             raise TypeError(msg)
 
         if name.endswith((".html", ".jinja")):
