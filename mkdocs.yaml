@@ -21,6 +21,7 @@ nav:
           - Charts: learn/cookbook/charts.md
           - Minimal app: learn/cookbook/minimal.md
           - Forms & validation: learn/cookbook/forms.md
+          - Running as FastAPI: learn/cookbook/running_as_fastapi.md
           - Static files: learn/cookbook/static.md
   - Reference:
       - api/index.md
