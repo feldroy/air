@@ -107,6 +107,7 @@ select = [
 extend-select = [
     "N802", # only function-name-lowercase
     "N803", # invalid-argument-name
+    "N806", # non-lowercase-variable-in-function
 ]
 ignore = [
     "D100", # ignore missing docstring in module

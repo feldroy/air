@@ -99,7 +99,7 @@ git push -u origin your-new-branch-name
 ```bash
 gh pr create --fill --repo feldroy/air
 ```
-[!IMPORTANT]
+> [!IMPORTANT]
 > When opening a pull request, make sure to fill out the **Pull Request Template** completely.
 > This helps maintainers review your contribution quickly and keeps the process consistent.
 
