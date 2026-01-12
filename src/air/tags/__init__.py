@@ -1,4 +1,4 @@
-__doc__ = """Easy to write and performant HTML content generation using Python classes to render HTML."""
+"""Easy to write and performant HTML content generation using Python classes to render HTML."""
 
 from .models import (
     H1 as H1,
