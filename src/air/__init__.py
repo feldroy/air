@@ -15,7 +15,6 @@ from .background import BackgroundTasks as BackgroundTasks
 from .dependencies import is_htmx_request as is_htmx_request
 from .exceptions import (
     HTTPException as HTTPException,
-    RenderException as RenderException,
 )
 from .forms import (
     AirField as AirField,

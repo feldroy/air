@@ -14,7 +14,6 @@ from fastapi.templating import Jinja2Templates
 from starlette.requests import Request as StarletteRequest
 from starlette.templating import _TemplateResponse
 
-from .exceptions import RenderException
 from .requests import Request
 from .tags.models.base import BaseTag
 from .utils import cached_signature
@@ -183,7 +182,7 @@ class Renderer:
 
         Raises:
             TypeError: If callable result is neither a string nor has a render method.
-            RenderException: If no callable or Jinja template is found.
+            ValueError: If no callable or Jinja template is found.
         """
         context = self._prepare_context(context, kwargs)
 
@@ -194,10 +193,12 @@ class Renderer:
                 return result
             if hasattr(result, "render"):
                 return result.render()
-            msg = "Callable in name arg must a string or object with a render method."
+            msg = "Callable in name arg must be a string or object with a render method."
             raise TypeError(msg)
 
-        assert isinstance(name, str)
+        if not isinstance(name, str):
+            msg = "Callable in name arg must be a string or object with a render method."
+            raise TypeError(msg)
 
         if name.endswith((".html", ".jinja")):
             return self._render_template(name, request, context)
@@ -206,7 +207,7 @@ class Renderer:
             return self._render_tag_callable(name, children, request, context)
 
         msg = "No callable or Jinja template found."
-        raise RenderException(msg)
+        raise ValueError(msg)
 
     def _prepare_context(self, context: dict[Any, Any] | None, kwargs: dict[Any, Any]) -> dict[Any, Any]:
         """Prepare and merge context dictionaries.
