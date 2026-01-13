@@ -4,15 +4,24 @@
 # https://github.com/rvben/rumdl/blob/main/docs/global-settings.md
 # https://github.com/rvben/rumdl/blob/main/docs/inline-configuration.md
 
-[per-file-flavor] # Specifies the Markdown flavor to use for parsing and linting.
+# Specifies Markdown flavors for files or patterns, letting different parts of project use different Markdown dialects.
+# Available Flavors:
+# "standard" (default): Standard Markdown with GFM extensions (tables, task lists, strikethrough)
+# "gfm" or "github": Alias for standard (pulldown-cmark already supports GFM)
+# "commonmark": Alias for standard
+# "mkdocs": MkDocs-specific extensions (auto-references, admonitions)
+# "mdx": MDX flavor with JSX and ESM support
+# "quarto": Quarto/RMarkdown for scientific publishing
+[per-file-flavor]
 "docs/**/*.md" = "mkdocs"
 "*.md" = "gfm"
 "examples/**/*.md" = "gfm"
 
+# Global settings control rumdl's overall behavior and apply to all rules and operations.
 [global]
-# Enable only specific rules.
+# Enable only specific rules. Default: [] (all rules enabled)
 enable = []
-# Disable specific rules.
+# Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
     "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
