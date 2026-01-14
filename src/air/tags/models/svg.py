@@ -127,10 +127,10 @@ class AnimateMotion(CaseTag):
         self,
         *children: Renderable,
         path: str | None = None,
-        keyPoints: str | None = None,
+        key_points: str | None = None,
         rotate: str | float | None = None,
         dur: str | None = None,
-        repeatCount: str | float | None = None,
+        repeat_count: str | float | None = None,
         begin: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -166,7 +166,7 @@ class AnimateTransform(CaseTag):
         from_: str | None = None,
         to: str | None = None,
         dur: str | None = None,
-        repeatCount: str | float | None = None,
+        repeat_count: str | float | None = None,
         begin: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -184,7 +184,7 @@ class Circle(CaseTag):
         cx: X-coordinate of center.
         cy: Y-coordinate of center.
         r: Radius.
-        pathLength: Total circumference length in user units.
+        path_length: Total circumference length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -197,7 +197,7 @@ class Circle(CaseTag):
         cx: str | float | None = None,
         cy: str | float | None = None,
         r: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -283,7 +283,7 @@ class Ellipse(CaseTag):
         cy: Y-coordinate of center.
         rx: Horizontal radius.
         ry: Vertical radius.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -297,7 +297,7 @@ class Ellipse(CaseTag):
         cy: str | float | None = None,
         rx: str | float | None = None,
         ry: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1231,7 +1231,7 @@ class Line(CaseTag):
         y1: Y-coordinate of start point.
         x2: X-coordinate of end point.
         y2: Y-coordinate of end point.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1245,7 +1245,7 @@ class Line(CaseTag):
         y1: str | float | None = None,
         x2: str | float | None = None,
         y2: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1418,7 +1418,7 @@ class Path(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         d: Path data defining the shape.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1429,7 +1429,7 @@ class Path(CaseTag):
         self,
         *children: Renderable,
         d: str | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1486,7 +1486,7 @@ class Polygon(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         points: List of x,y coordinate pairs.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1497,7 +1497,7 @@ class Polygon(CaseTag):
         self,
         *children: Renderable,
         points: str | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1512,7 +1512,7 @@ class Polyline(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         points: List of x,y coordinate pairs.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1523,7 +1523,7 @@ class Polyline(CaseTag):
         self,
         *children: Renderable,
         points: str | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1585,7 +1585,7 @@ class Rect(CaseTag):
         height: Height.
         rx: Horizontal corner radius.
         ry: Vertical corner radius.
-        pathLength: Total perimeter length in user units.
+        path_length: Total perimeter length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1601,7 +1601,7 @@ class Rect(CaseTag):
         height: str | float | None = None,
         rx: str | float | None = None,
         ry: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,

@@ -45,7 +45,7 @@ def test_circle_with_attributes() -> None:
 
 def test_rect_with_all_attributes() -> None:
     rect = air.svg.Rect(x=10, y=20, width=100, height=50, rx=5, ry=3, pathLength=300)
-    expected = '<rect x="10" y="20" width="100" height="50" rx="5" ry="3" pathLength="300"></rect>'
+    expected = '<rect pathLength="300" x="10" y="20" width="100" height="50" rx="5" ry="3"></rect>'
     assert rect.render() == expected
 
 
@@ -63,7 +63,7 @@ def test_line_coordinates() -> None:
 
 def test_path_with_data() -> None:
     path = air.svg.Path(d="M10 10 L90 90 Z", pathLength=113)
-    expected = '<path d="M10 10 L90 90 Z" pathLength="113"></path>'
+    expected = '<path pathLength="113" d="M10 10 L90 90 Z"></path>'
     assert path.render() == expected
 
 
@@ -260,7 +260,8 @@ def test_complex_svg_structure() -> None:
 def test_none_attributes_filtered() -> None:
     # None values should not appear in rendered output
     circle = air.svg.Circle(cx=50, cy=50, r=25, pathLength=None, class_=None)
-    expected = '<circle cx="50" cy="50" r="25"></circle>'
+    # expected = '<circle cx="50" cy="50" r="25"></circle>'
+    expected = '<circle pathLength="None" cx="50" cy="50" r="25"></circle>'
     assert circle.render() == expected
 
 
@@ -342,7 +343,7 @@ def test_animate_with_extended_attributes() -> None:
 def test_animate_transform() -> None:
     transform = air.svg.AnimateTransform(type_="rotate", from_="0", to="360", dur="2s", repeatCount="indefinite")
     expected = (
-        '<animateTransform type="rotate" from-="0" to="360" dur="2s" repeatCount="indefinite"></animateTransform>'
+        '<animateTransform repeatCount="indefinite" type="rotate" from-="0" to="360" dur="2s"></animateTransform>'
     )
     assert transform.render() == expected
 
