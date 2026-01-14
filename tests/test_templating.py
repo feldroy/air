@@ -5,6 +5,7 @@ import jinja2
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from full_match import match as full_match
 from jinja2 import FileSystemLoader
 from starlette.responses import HTMLResponse
 
@@ -318,7 +319,10 @@ def test_render_with_callable() -> None:
 def test_render_failing_name() -> None:
     render = air.Renderer(directory="tests/templates", package="air")
 
-    with pytest.raises(air.RenderException):
+    with pytest.raises(
+        ValueError,
+        match=full_match("No callable or Jinja template found."),
+    ):
         render(name="dummy")
 
 
