@@ -20,7 +20,6 @@ uv add hypercorn
 
 If using `pip` or `uv pip`, you'll need to add hypercorn to whatever file stores your dependency list (often this is `requirements.txt`).
 
-
 ## Basic Configuration
 
 Create a `railway.json` file in your project root:
@@ -39,5 +38,5 @@ Create a `railway.json` file in your project root:
 
 Tips:
 
-* Commit your uv.lock file to the repo. Don't .gitignore or .railwayignore it.
-* Use hypercorn because Railway insists on using it instead of uvicorn.
+- Commit your uv.lock file to the repo. Don't .gitignore or .railwayignore it.
+- Use hypercorn because Railway insists on using it instead of uvicorn.

@@ -70,7 +70,6 @@ nav:
 
   - Deployment: deployment/index.md
 
-
 theme:
   name: material
   features:
