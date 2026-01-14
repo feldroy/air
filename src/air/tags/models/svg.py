@@ -211,7 +211,7 @@ class ClipPath(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        clipPathUnits: Coordinate system (userSpaceOnUse|objectBoundingBox).
+        clip_path_units: Coordinate system (userSpaceOnUse|objectBoundingBox).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -221,7 +221,7 @@ class ClipPath(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        clipPathUnits: str | None = None,
+        clip_path_units: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -437,13 +437,13 @@ class FeConvolveMatrix(CaseTag):
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
         order: Matrix dimensions.
-        kernelMatrix: Matrix values.
+        kernel_matrix: Matrix values.
         divisor: Divisor for matrix sum.
         bias: Bias value.
-        targetX: Target X position.
-        targetY: Target Y position.
-        edgeMode: Edge handling mode.
-        preserveAlpha: Preserve alpha channel.
+        target_x: Target X position.
+        target_y: Target Y position.
+        edge_mode: Edge handling mode.
+        preserve_alpha: Preserve alpha channel.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -456,13 +456,13 @@ class FeConvolveMatrix(CaseTag):
         *children: Renderable,
         in_: str | None = None,
         order: str | None = None,
-        kernelMatrix: str | None = None,
+        kernel_matrix: str | None = None,
         divisor: float | None = None,
         bias: float | None = None,
-        targetX: int | None = None,
-        targetY: int | None = None,
-        edgeMode: str | None = None,
-        preserveAlpha: str | None = None,
+        target_x: int | None = None,
+        target_y: int | None = None,
+        edge_mode: str | None = None,
+        preserve_alpha: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -775,7 +775,7 @@ class FeGaussianBlur(CaseTag):
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
         stdDeviation: Blur amount using bell-curve.
-        edgeMode: Edge handling during blur.
+        edge_mode: Edge handling during blur.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -788,7 +788,7 @@ class FeGaussianBlur(CaseTag):
         *children: Renderable,
         in_: str | None = None,
         stdDeviation: str | float | None = None,
-        edgeMode: str | None = None,
+        edge_mode: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,

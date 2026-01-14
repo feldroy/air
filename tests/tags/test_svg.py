@@ -380,7 +380,7 @@ def test_fe_composite() -> None:
 
 def test_fe_convolve_matrix() -> None:
     convolve = air.svg.FeConvolveMatrix(order="3", kernelMatrix="0 -1 0 -1 5 -1 0 -1 0")
-    expected = '<feConvolveMatrix order="3" kernelMatrix="0 -1 0 -1 5 -1 0 -1 0"></feConvolveMatrix>'
+    expected = '<feConvolveMatrix kernelMatrix="0 -1 0 -1 5 -1 0 -1 0" order="3"></feConvolveMatrix>'
     assert convolve.render() == expected
 
 
