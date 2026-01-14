@@ -70,7 +70,7 @@ def test_path_with_data() -> None:
 # Test SVG container elements
 def test_svg_with_viewbox() -> None:
     svg = air.svg.Svg(width=200, height=200, viewBox="0 0 200 200", id_="main-svg")
-    expected = '<svg width="200" height="200" viewBox="0 0 200 200" id="main-svg"></svg>'
+    expected = '<svg viewBox="0 0 200 200" width="200" height="200" id="main-svg"></svg>'
     assert svg.render() == expected
 
 
@@ -88,7 +88,7 @@ def test_group_with_children() -> None:
 # Test text elements
 def test_text_with_positioning() -> None:
     text = air.svg.Text("Hello SVG", x=50, y=100, dx=5, dy=-10, textLength=80)
-    expected = '<text x="50" y="100" dx="5" dy="-10" textLength="80">Hello SVG</text>'
+    expected = '<text textLength="80" x="50" y="100" dx="5" dy="-10">Hello SVG</text>'
     assert text.render() == expected
 
 
@@ -239,7 +239,7 @@ def test_complex_svg_structure() -> None:
 
     expected = clean_doc(
         """
-        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewbox="0 0 100 100">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100" height="100">
           <defs>
             <lineargradient id="grad1">
               <stop offset="0%" stop-color="red"></stop>
@@ -502,7 +502,7 @@ def test_mpath() -> None:
 
 def test_pattern() -> None:
     pattern = air.svg.Pattern(x=0, y=0, width=20, height=20, patternUnits="userSpaceOnUse", id_="pattern1")
-    expected = '<pattern x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" id="pattern1"></pattern>'
+    expected = '<pattern patternUnits="userSpaceOnUse" x="0" y="0" width="20" height="20" id="pattern1"></pattern>'
     assert pattern.render() == expected
 
 
@@ -544,7 +544,7 @@ def test_symbol() -> None:
 
 def test_text_path() -> None:
     text_path = air.svg.TextPath("Text along path", href="#path1", startOffset="20%")
-    expected = '<textPath href="#path1" startOffset="20%">Text along path</textPath>'
+    expected = '<textPath startOffset="20%" href="#path1">Text along path</textPath>'
     assert text_path.render() == expected
 
 

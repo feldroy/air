@@ -1303,7 +1303,7 @@ class Marker(CaseTag):
         ref_x: X reference point.
         ref_y: Y reference point.
         orient: Marker orientation.
-        viewBox: Viewport bounds.
+        view_box: Viewport bounds.
         preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1320,7 +1320,7 @@ class Marker(CaseTag):
         ref_x: str | float | None = None,
         ref_y: str | float | None = None,
         orient: str | float | None = None,
-        viewBox: str | None = None,
+        view_box: str | None = None,
         preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1339,8 +1339,8 @@ class Mask(CaseTag):
         y: Y-coordinate of top-left corner.
         width: Width of masking area.
         height: Height of masking area.
-        maskUnits: Coordinate system for position/size.
-        maskContentUnits: Coordinate system for contents.
+        mask_units: Coordinate system for position/size.
+        mask_content_units: Coordinate system for contents.
         mask_type: Mask mode (alpha|luminance).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1355,8 +1355,8 @@ class Mask(CaseTag):
         y: str | float | None = None,
         width: str | float | None = None,
         height: str | float | None = None,
-        maskUnits: str | None = None,
-        maskContentUnits: str | None = None,
+        mask_units: str | None = None,
+        mask_content_units: str | None = None,
         mask_type: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1447,11 +1447,11 @@ class Pattern(CaseTag):
         y: Y-coordinate shift of pattern tile.
         width: Width of pattern tile.
         height: Height of pattern tile.
-        patternUnits: Coordinate system for position/size.
-        patternContentUnits: Coordinate system for contents.
-        patternTransform: Additional transformation.
+        pattern_units: Coordinate system for position/size.
+        pattern_content_units: Coordinate system for contents.
+        pattern_transform: Additional transformation.
         href: Reference to template pattern.
-        viewBox: Viewport bounds for pattern.
+        view_box: Viewport bounds for pattern.
         preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1466,11 +1466,11 @@ class Pattern(CaseTag):
         y: str | float | None = None,
         width: str | float | None = None,
         height: str | float | None = None,
-        patternUnits: str | None = None,
-        patternContentUnits: str | None = None,
-        patternTransform: str | None = None,
+        pattern_units: str | None = None,
+        pattern_content_units: str | None = None,
+        pattern_transform: str | None = None,
         href: str | None = None,
-        viewBox: str | None = None,
+        view_box: str | None = None,
         preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1733,7 +1733,7 @@ class Svg(CaseTag):
         height: Displayed height of viewport.
         x: X-coordinate of container.
         y: Y-coordinate of container.
-        viewBox: SVG viewport coordinates.
+        view_box: SVG viewport coordinates.
         preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1748,7 +1748,7 @@ class Svg(CaseTag):
         height: str | float | None = None,
         x: str | float | None = None,
         y: str | float | None = None,
-        viewBox: str | None = None,
+        view_box: str | None = None,
         preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1789,7 +1789,7 @@ class Symbol(CaseTag):
         height: Height of symbol.
         x: X-coordinate.
         y: Y-coordinate.
-        viewBox: Viewport bounds for symbol.
+        view_box: Viewport bounds for symbol.
         preserve_aspect_ratio: Aspect ratio handling.
         ref_x: X reference point.
         ref_y: Y reference point.
@@ -1806,7 +1806,7 @@ class Symbol(CaseTag):
         height: str | float | None = None,
         x: str | float | None = None,
         y: str | float | None = None,
-        viewBox: str | None = None,
+        view_box: str | None = None,
         preserve_aspect_ratio: str | None = None,
         ref_x: str | float | None = None,
         ref_y: str | float | None = None,
@@ -1828,8 +1828,8 @@ class Text(CaseTag):
         dx: Horizontal shift from previous text.
         dy: Vertical shift from previous text.
         rotate: Rotation of individual glyphs.
-        lengthAdjust: Text stretching method.
-        textLength: Target width for text scaling.
+        length_adjust: Text stretching method.
+        text_length: Target width for text scaling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1844,8 +1844,8 @@ class Text(CaseTag):
         dx: str | float | None = None,
         dy: str | float | None = None,
         rotate: str | None = None,
-        lengthAdjust: str | None = None,
-        textLength: str | float | None = None,
+        length_adjust: str | None = None,
+        text_length: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1860,13 +1860,13 @@ class TextPath(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         href: Reference to path element for text layout.
-        lengthAdjust: Length adjustment method.
+        length_adjust: Length adjustment method.
         method: Glyph rendering method.
         path: Path data for text layout.
         side: Which side of path to render text.
         spacing: Glyph spacing handling.
-        startOffset: Offset from path beginning.
-        textLength: Text rendering width.
+        start_offset: Offset from path beginning.
+        text_length: Text rendering width.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1877,13 +1877,13 @@ class TextPath(CaseTag):
         self,
         *children: Renderable,
         href: str | None = None,
-        lengthAdjust: str | None = None,
+        length_adjust: str | None = None,
         method: str | None = None,
         path: str | None = None,
         side: str | None = None,
         spacing: str | None = None,
-        startOffset: str | float | None = None,
-        textLength: str | float | None = None,
+        start_offset: str | float | None = None,
+        text_length: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1924,8 +1924,8 @@ class Tspan(CaseTag):
         dx: Horizontal shift from previous text.
         dy: Vertical shift from previous text.
         rotate: Rotation of individual glyphs.
-        lengthAdjust: Text stretching method.
-        textLength: Target width for text scaling.
+        length_adjust: Text stretching method.
+        text_length: Target width for text scaling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1940,8 +1940,8 @@ class Tspan(CaseTag):
         dx: str | float | None = None,
         dy: str | float | None = None,
         rotate: str | None = None,
-        lengthAdjust: str | None = None,
-        textLength: str | float | None = None,
+        length_adjust: str | None = None,
+        text_length: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1958,8 +1958,8 @@ class Use(CaseTag):
         href: Reference to element to duplicate.
         x: X offset transformation.
         y: Y offset transformation.
-        width: Width (only for elements with viewBox).
-        height: Height (only for elements with viewBox).
+        width: Width (only for elements with view_box).
+        height: Height (only for elements with view_box).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1987,7 +1987,7 @@ class View(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        viewBox: Viewport bounds.
+        view_box: Viewport bounds.
         preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1998,7 +1998,7 @@ class View(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        viewBox: str | None = None,
+        view_box: str | None = None,
         preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
