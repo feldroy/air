@@ -1006,11 +1006,11 @@ class FeSpotLight(CaseTag):
         x: X-coordinate of light position.
         y: Y-coordinate of light position.
         z: Z-coordinate of light position.
-        pointsAtX: X-coordinate of point light points at.
-        pointsAtY: Y-coordinate of point light points at.
-        pointsAtZ: Z-coordinate of point light points at.
+        points_at_x: X-coordinate of point light points at.
+        points_at_y: Y-coordinate of point light points at.
+        points_at_z: Z-coordinate of point light points at.
         specular_exponent: Focus control for light source.
-        limitingConeAngle: Angle of spot light cone.
+        limiting_cone_angle: Angle of spot light cone.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1023,11 +1023,11 @@ class FeSpotLight(CaseTag):
         x: str | float | None = None,
         y: str | float | None = None,
         z: str | float | None = None,
-        pointsAtX: str | float | None = None,
-        pointsAtY: str | float | None = None,
-        pointsAtZ: str | float | None = None,
+        points_at_x: str | float | None = None,
+        points_at_y: str | float | None = None,
+        points_at_z: str | float | None = None,
         specular_exponent: float | None = None,
-        limitingConeAngle: float | None = None,
+        limiting_cone_angle: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1067,10 +1067,10 @@ class FeTurbulence(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        baseFrequency: Base frequency for turbulence.
-        numOctaves: Number of noise octaves.
+        base_frequency: Base frequency for turbulence.
+        num_octaves: Number of noise octaves.
         seed: Random seed for turbulence.
-        stitchTiles: Tile stitching mode (stitch|noStitch).
+        stitch_tiles: Tile stitching mode (stitch|noStitch).
         type_: Turbulence type (fractalNoise|turbulence).
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
@@ -1082,10 +1082,10 @@ class FeTurbulence(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        baseFrequency: str | float | None = None,
-        numOctaves: int | None = None,
+        base_frequency: str | float | None = None,
+        num_octaves: int | None = None,
         seed: float | None = None,
-        stitchTiles: str | None = None,
+        stitch_tiles: str | None = None,
         type_: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -1105,8 +1105,8 @@ class Filter(CaseTag):
         y: Y-coordinate of filter region.
         width: Width of filter region.
         height: Height of filter region.
-        filterUnits: Coordinate system for position/size.
-        primitiveUnits: Coordinate system for primitives.
+        filter_units: Coordinate system for position/size.
+        primitive_units: Coordinate system for primitives.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1120,8 +1120,8 @@ class Filter(CaseTag):
         y: str | float | None = None,
         width: str | float | None = None,
         height: str | float | None = None,
-        filterUnits: str | None = None,
-        primitiveUnits: str | None = None,
+        filter_units: str | None = None,
+        primitive_units: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1263,10 +1263,10 @@ class LinearGradient(CaseTag):
         y1: Y-coordinate of gradient start.
         x2: X-coordinate of gradient end.
         y2: Y-coordinate of gradient end.
-        gradientUnits: Coordinate system.
-        gradientTransform: Additional transformation.
+        gradient_units: Coordinate system.
+        gradient_transform: Additional transformation.
         href: Reference to template gradient.
-        spreadMethod: Gradient behavior outside bounds.
+        spread_method: Gradient behavior outside bounds.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1280,10 +1280,10 @@ class LinearGradient(CaseTag):
         y1: str | float | None = None,
         x2: str | float | None = None,
         y2: str | float | None = None,
-        gradientUnits: str | None = None,
-        gradientTransform: str | None = None,
+        gradient_units: str | None = None,
+        gradient_transform: str | None = None,
         href: str | None = None,
-        spreadMethod: str | None = None,
+        spread_method: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1297,11 +1297,11 @@ class Marker(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        markerWidth: Width of marker viewport.
-        markerHeight: Height of marker viewport.
-        markerUnits: Coordinate system.
-        refX: X reference point.
-        refY: Y reference point.
+        marker_width: Width of marker viewport.
+        marker_height: Height of marker viewport.
+        marker_units: Coordinate system.
+        ref_x: X reference point.
+        ref_y: Y reference point.
         orient: Marker orientation.
         viewBox: Viewport bounds.
         preserve_aspect_ratio: Aspect ratio handling.
@@ -1314,11 +1314,11 @@ class Marker(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        markerWidth: str | float | None = None,
-        markerHeight: str | float | None = None,
-        markerUnits: str | None = None,
-        refX: str | float | None = None,
-        refY: str | float | None = None,
+        marker_width: str | float | None = None,
+        marker_height: str | float | None = None,
+        marker_units: str | None = None,
+        ref_x: str | float | None = None,
+        ref_y: str | float | None = None,
         orient: str | float | None = None,
         viewBox: str | None = None,
         preserve_aspect_ratio: str | None = None,
@@ -1543,10 +1543,10 @@ class RadialGradient(CaseTag):
         fx: X-coordinate of start circle.
         fy: Y-coordinate of start circle.
         fr: Radius of start circle.
-        gradientUnits: Coordinate system.
-        gradientTransform: Additional transformation.
+        gradient_units: Coordinate system.
+        gradient_transform: Additional transformation.
         href: Reference to template gradient.
-        spreadMethod: Gradient behavior.
+        spread_method: Gradient behavior.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1562,10 +1562,10 @@ class RadialGradient(CaseTag):
         fx: str | float | None = None,
         fy: str | float | None = None,
         fr: str | float | None = None,
-        gradientUnits: str | None = None,
-        gradientTransform: str | None = None,
+        gradient_units: str | None = None,
+        gradient_transform: str | None = None,
         href: str | None = None,
-        spreadMethod: str | None = None,
+        spread_method: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1791,8 +1791,8 @@ class Symbol(CaseTag):
         y: Y-coordinate.
         viewBox: Viewport bounds for symbol.
         preserve_aspect_ratio: Aspect ratio handling.
-        refX: X reference point.
-        refY: Y reference point.
+        ref_x: X reference point.
+        ref_y: Y reference point.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1808,8 +1808,8 @@ class Symbol(CaseTag):
         y: str | float | None = None,
         viewBox: str | None = None,
         preserve_aspect_ratio: str | None = None,
-        refX: str | float | None = None,
-        refY: str | float | None = None,
+        ref_x: str | float | None = None,
+        ref_y: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,

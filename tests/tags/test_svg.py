@@ -126,7 +126,7 @@ def test_radial_gradient() -> None:
     )
     expected = clean_doc(
         """
-        <radialgradient cx="50%" cy="50%" r="50%" fx="25%" fy="25%" gradientunits="objectBoundingBox"></radialgradient>
+        <radialgradient gradientunits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="25%" fy="25%"></radialgradient>
         """
     )
     assert gradient.pretty_render() == expected
@@ -466,7 +466,7 @@ def test_fe_specular_lighting() -> None:
 
 def test_fe_spot_light() -> None:
     spot_light = air.svg.FeSpotLight(x=100, y=100, z=50, pointsAtX=0, pointsAtY=0, pointsAtZ=0)
-    expected = '<feSpotLight x="100" y="100" z="50" pointsAtX="0" pointsAtY="0" pointsAtZ="0"></feSpotLight>'
+    expected = '<feSpotLight pointsAtX="0" pointsAtY="0" pointsAtZ="0" x="100" y="100" z="50"></feSpotLight>'
     assert spot_light.render() == expected
 
 
