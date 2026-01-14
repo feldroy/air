@@ -193,10 +193,10 @@ Returns:
 
 Raises:
 
-| Type              | Description                                                     |
-| ----------------- | --------------------------------------------------------------- |
-| `TypeError`       | If callable result is neither a string nor has a render method. |
-| `RenderException` | If no callable or Jinja template is found.                      |
+| Type         | Description                                                     |
+| ------------ | --------------------------------------------------------------- |
+| `TypeError`  | If callable result is neither a string nor has a render method. |
+| `ValueError` | If no callable or Jinja template is found.                      |
 
 Source code in `src/air/templating.py`
 
@@ -217,7 +217,7 @@ def __call__(
 
     Raises:
         TypeError: If callable result is neither a string nor has a render method.
-        RenderException: If no callable or Jinja template is found.
+        ValueError: If no callable or Jinja template is found.
     """
     context = self._prepare_context(context, kwargs)
 
@@ -228,10 +228,12 @@ def __call__(
             return result
         if hasattr(result, "render"):
             return result.render()
-        msg = "Callable in name arg must a string or object with a render method."
+        msg = "'name' must be a string or a callable(returning a string, or an object with a render() method."
         raise TypeError(msg)
 
-    assert isinstance(name, str)
+    if not isinstance(name, str):
+        msg = "'name' must be a string or a callable(returning a string, or an object with a render() method."
+        raise TypeError(msg)
 
     if name.endswith((".html", ".jinja")):
         return self._render_template(name, request, context)
@@ -240,5 +242,5 @@ def __call__(
         return self._render_tag_callable(name, children, request, context)
 
     msg = "No callable or Jinja template found."
-    raise RenderException(msg)
+    raise ValueError(msg)
 ```
