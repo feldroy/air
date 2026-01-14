@@ -54,20 +54,6 @@ ATTRIBUTES_TO_HTML: Final = frozendict({
     "reversed_": "reversed",
     "list_": "list",
     "dir_": "dir",
-    "attribute_name": "attributeName",
-    "attribute_type": "attributeType",
-    "repeat_count": "repeatCount",
-    "repeat_dur": "repeatDur",
-    "key_points": "keyPoints",
-    "path_length": "pathLength",
-})
-ATTRIBUTES_TO_PY: Final = frozendict({
-    "attributeName": "attribute_name",
-    "attributeType": "attribute_type",
-    "repeatCount": "repeat_count",
-    "repeatDur": "repeat_dur",
-    "keyPoints": "key_points",
-    "pathLength": "path_length",
 })
 BOOLEAN_HTML_ATTRIBUTES: Final = {
     # https://html.spec.whatwg.org/multipage/indices.html#attributes-3

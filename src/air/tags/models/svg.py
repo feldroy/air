@@ -66,17 +66,17 @@ class Animate(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         attribute_name: Target attribute to animate.
-        attributeType: Type of target attribute.
+        attribute_type: Type of target attribute.
         values: Values to animate through.
         dur: Total animation duration.
-        repeatCount: Number of repetitions.
-        repeatDur: Total duration for repeating.
+        repeat_count: Number of repetitions.
+        repeat_dur: Total duration for repeating.
         from_: Starting value (from is reserved).
         to: Ending value.
         by: Relative animation value.
         begin: Animation start time.
         end: Animation end time.
-        calcMode: Interpolation mode (discrete|linear|paced|spline).
+        calc_mode: Interpolation mode (discrete|linear|paced|spline).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -112,10 +112,10 @@ class AnimateMotion(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         path: Motion path using path syntax.
-        keyPoints: Progress points along path (0-1 range).
+        key_points: Progress points along path (0-1 range).
         rotate: Rotation along path (Number|auto|auto-reverse).
         dur: Total animation duration.
-        repeatCount: Number of repetitions.
+        repeat_count: Number of repetitions.
         begin: Animation start time.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -150,7 +150,7 @@ class AnimateTransform(CaseTag):
         from_: Starting transformation value.
         to: Ending transformation value.
         dur: Total animation duration.
-        repeatCount: Number of repetitions.
+        repeat_count: Number of repetitions.
         begin: Animation start time.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
