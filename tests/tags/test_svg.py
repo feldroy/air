@@ -163,7 +163,7 @@ def test_fe_drop_shadow() -> None:
 # Test animation elements
 def test_animate_with_values() -> None:
     animate = air.svg.Animate(attributeName="opacity", values="0;1;0", dur="2s", repeatCount="indefinite")
-    expected = '<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"></animate>'
+    expected = '<animate attributeName="opacity" repeatCount="indefinite" values="0;1;0" dur="2s"></animate>'
     assert animate.render() == expected
 
 
@@ -331,8 +331,8 @@ def test_animate_with_extended_attributes() -> None:
     )
     expected = clean_doc_with_broken_lines(
         r"""
-        <animate attributename="opacity" attributetype="CSS" dur="2s" repeatcount="3" repeatdur="10s" from-="0" to="1"\
-            by="0.5" begin="1s" end="5s" calcmode="linear"></animate>
+        <animate attributename="opacity" attributetype="CSS" repeatcount="3" repeatdur="10s" calcmode="linear" dur="2s"\
+            from-="0" to="1" by="0.5" begin="1s" end="5s"></animate>
         """
     )
     assert animate.pretty_render() == expected
