@@ -520,7 +520,7 @@ def test_polyline() -> None:
 
 def test_set() -> None:
     set_elem = air.svg.Set(attributeName="fill", to="red", begin="2s", dur="1s")
-    expected = '<set to="red" attributeName="fill" begin="2s" dur="1s"></set>'
+    expected = '<set attributeName="fill" to="red" begin="2s" dur="1s"></set>'
     assert set_elem.render() == expected
 
 

@@ -65,7 +65,7 @@ class Animate(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        attributeName: Target attribute to animate.
+        attribute_name: Target attribute to animate.
         attributeType: Type of target attribute.
         values: Values to animate through.
         dur: Total animation duration.
@@ -1646,7 +1646,7 @@ class Set(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         to: Value to apply for animation duration.
-        attributeName: Target attribute to set.
+        attribute_name: Target attribute to set.
         begin: Animation start time.
         dur: Animation duration.
         class_: Substituted as the DOM `class` attribute.
@@ -1659,7 +1659,7 @@ class Set(CaseTag):
         self,
         *children: Renderable,
         to: str | None = None,
-        attributeName: str | None = None,
+        attribute_name: str | None = None,
         begin: str | None = None,
         dur: str | None = None,
         class_: str | None = None,
