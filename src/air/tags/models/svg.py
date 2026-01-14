@@ -478,9 +478,9 @@ class FeDiffuseLighting(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
-        surfaceScale: Surface height scale.
-        diffuseConstant: Diffuse lighting constant.
-        kernelUnitLength: Kernel unit length.
+        surface_scale: Surface height scale.
+        diffuse_constant: Diffuse lighting constant.
+        kernel_unit_length: Kernel unit length.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -492,9 +492,9 @@ class FeDiffuseLighting(CaseTag):
         self,
         *children: Renderable,
         in_: str | None = None,
-        surfaceScale: float | None = None,
-        diffuseConstant: float | None = None,
-        kernelUnitLength: str | None = None,
+        surface_scale: float | None = None,
+        diffuse_constant: float | None = None,
+        kernel_unit_length: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -512,8 +512,8 @@ class FeDisplacementMap(CaseTag):
         in_: Input image reference.
         in2: Displacement map reference.
         scale: Displacement scale factor.
-        xChannelSelector: X displacement channel (R|G|B|A).
-        yChannelSelector: Y displacement channel (R|G|B|A).
+        x_channel_selector: X displacement channel (R|G|B|A).
+        y_channel_selector: Y displacement channel (R|G|B|A).
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -527,8 +527,8 @@ class FeDisplacementMap(CaseTag):
         in_: str | None = None,
         in2: str | None = None,
         scale: float | None = None,
-        xChannelSelector: str | None = None,
-        yChannelSelector: str | None = None,
+        x_channel_selector: str | None = None,
+        y_channel_selector: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -571,7 +571,7 @@ class FeDropShadow(CaseTag):
         children: Tags, strings, or other rendered content.
         dx: X offset of drop shadow.
         dy: Y offset of drop shadow.
-        stdDeviation: Blur standard deviation.
+        std_deviation: Blur standard deviation.
         flood_color: Shadow color.
         flood_opacity: Shadow opacity.
         class_: Substituted as the DOM `class` attribute.
@@ -585,7 +585,7 @@ class FeDropShadow(CaseTag):
         *children: Renderable,
         dx: str | float | None = None,
         dy: str | float | None = None,
-        stdDeviation: str | float | None = None,
+        std_deviation: str | float | None = None,
         flood_color: str | None = None,
         flood_opacity: str | float | None = None,
         class_: str | None = None,
@@ -630,7 +630,7 @@ class FeFuncA(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -646,7 +646,7 @@ class FeFuncA(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -666,7 +666,7 @@ class FeFuncB(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -682,7 +682,7 @@ class FeFuncB(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -702,7 +702,7 @@ class FeFuncG(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -718,7 +718,7 @@ class FeFuncG(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -738,7 +738,7 @@ class FeFuncR(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -754,7 +754,7 @@ class FeFuncR(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -774,7 +774,7 @@ class FeGaussianBlur(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
-        stdDeviation: Blur amount using bell-curve.
+        std_deviation: Blur amount using bell-curve.
         edge_mode: Edge handling during blur.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
@@ -787,7 +787,7 @@ class FeGaussianBlur(CaseTag):
         self,
         *children: Renderable,
         in_: str | None = None,
-        stdDeviation: str | float | None = None,
+        std_deviation: str | float | None = None,
         edge_mode: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -804,7 +804,7 @@ class FeImage(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         href: URL to image file.
-        preserveAspectRatio: Image scaling control.
+        preserve_aspect_ratio: Image scaling control.
         crossorigin: CORS credentials flag.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
@@ -817,7 +817,7 @@ class FeImage(CaseTag):
         self,
         *children: Renderable,
         href: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         crossorigin: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -970,10 +970,10 @@ class FeSpecularLighting(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
-        surfaceScale: Surface height scale.
-        specularConstant: Specular lighting constant.
-        specularExponent: Specular lighting exponent.
-        kernelUnitLength: Kernel unit length.
+        surface_scale: Surface height scale.
+        specular_constant: Specular lighting constant.
+        specular_exponent: Specular lighting exponent.
+        kernel_unit_length: Kernel unit length.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -985,10 +985,10 @@ class FeSpecularLighting(CaseTag):
         self,
         *children: Renderable,
         in_: str | None = None,
-        surfaceScale: float | None = None,
-        specularConstant: float | None = None,
-        specularExponent: float | None = None,
-        kernelUnitLength: str | None = None,
+        surface_scale: float | None = None,
+        specular_constant: float | None = None,
+        specular_exponent: float | None = None,
+        kernel_unit_length: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1009,7 +1009,7 @@ class FeSpotLight(CaseTag):
         pointsAtX: X-coordinate of point light points at.
         pointsAtY: Y-coordinate of point light points at.
         pointsAtZ: Z-coordinate of point light points at.
-        specularExponent: Focus control for light source.
+        specular_exponent: Focus control for light source.
         limitingConeAngle: Angle of spot light cone.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1026,7 +1026,7 @@ class FeSpotLight(CaseTag):
         pointsAtX: str | float | None = None,
         pointsAtY: str | float | None = None,
         pointsAtZ: str | float | None = None,
-        specularExponent: float | None = None,
+        specular_exponent: float | None = None,
         limitingConeAngle: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1192,7 +1192,7 @@ class Image(CaseTag):
         width: Width (required).
         height: Height (required).
         href: URL to image file.
-        preserveAspectRatio: Image scaling control.
+        preserve_aspect_ratio: Image scaling control.
         crossorigin: CORS credentials flag.
         decoding: Image decoding hint.
         fetchpriority: Fetch priority hint (experimental).
@@ -1210,7 +1210,7 @@ class Image(CaseTag):
         width: str | float | None = None,
         height: str | float | None = None,
         href: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         crossorigin: str | None = None,
         decoding: str | None = None,
         fetchpriority: str | None = None,
@@ -1304,7 +1304,7 @@ class Marker(CaseTag):
         refY: Y reference point.
         orient: Marker orientation.
         viewBox: Viewport bounds.
-        preserveAspectRatio: Aspect ratio handling.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1321,7 +1321,7 @@ class Marker(CaseTag):
         refY: str | float | None = None,
         orient: str | float | None = None,
         viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1452,7 +1452,7 @@ class Pattern(CaseTag):
         patternTransform: Additional transformation.
         href: Reference to template pattern.
         viewBox: Viewport bounds for pattern.
-        preserveAspectRatio: Aspect ratio handling.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1471,7 +1471,7 @@ class Pattern(CaseTag):
         patternTransform: str | None = None,
         href: str | None = None,
         viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1734,7 +1734,7 @@ class Svg(CaseTag):
         x: X-coordinate of container.
         y: Y-coordinate of container.
         viewBox: SVG viewport coordinates.
-        preserveAspectRatio: Aspect ratio handling.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1749,7 +1749,7 @@ class Svg(CaseTag):
         x: str | float | None = None,
         y: str | float | None = None,
         viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1790,7 +1790,7 @@ class Symbol(CaseTag):
         x: X-coordinate.
         y: Y-coordinate.
         viewBox: Viewport bounds for symbol.
-        preserveAspectRatio: Aspect ratio handling.
+        preserve_aspect_ratio: Aspect ratio handling.
         refX: X reference point.
         refY: Y reference point.
         class_: Substituted as the DOM `class` attribute.
@@ -1807,7 +1807,7 @@ class Symbol(CaseTag):
         x: str | float | None = None,
         y: str | float | None = None,
         viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         refX: str | float | None = None,
         refY: str | float | None = None,
         class_: str | None = None,
@@ -1988,7 +1988,7 @@ class View(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         viewBox: Viewport bounds.
-        preserveAspectRatio: Aspect ratio handling.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1999,7 +1999,7 @@ class View(CaseTag):
         self,
         *children: Renderable,
         viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,

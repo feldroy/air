@@ -140,7 +140,7 @@ def test_filter_with_effects() -> None:
     expected = clean_doc(
         """
         <filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow">
-          <fegaussianblur in-="SourceGraphic" stddeviation="2" result="blur"></fegaussianblur>
+          <fegaussianblur stddeviation="2" in-="SourceGraphic" result="blur"></fegaussianblur>
           <feoffset in-="blur" dx="3" dy="3" result="offset"></feoffset>
         </filter>
         """
@@ -156,7 +156,7 @@ def test_fe_distant_light() -> None:
 
 def test_fe_drop_shadow() -> None:
     shadow = air.svg.FeDropShadow(dx=2, dy=2, stdDeviation=1, flood_color="black", flood_opacity=0.3)
-    expected = '<feDropShadow dx="2" dy="2" stdDeviation="1" flood-color="black" flood-opacity="0.3"></feDropShadow>'
+    expected = '<feDropShadow stdDeviation="1" dx="2" dy="2" flood-color="black" flood-opacity="0.3"></feDropShadow>'
     assert shadow.render() == expected
 
 
@@ -386,14 +386,14 @@ def test_fe_convolve_matrix() -> None:
 
 def test_fe_diffuse_lighting() -> None:
     lighting = air.svg.FeDiffuseLighting(in_="SourceGraphic", surfaceScale=1)
-    expected = '<feDiffuseLighting in-="SourceGraphic" surfaceScale="1"></feDiffuseLighting>'
+    expected = '<feDiffuseLighting surfaceScale="1" in-="SourceGraphic"></feDiffuseLighting>'
     assert lighting.render() == expected
 
 
 def test_fe_displacement_map() -> None:
     displacement = air.svg.FeDisplacementMap(in_="SourceGraphic", in2="displacement", scale=10, xChannelSelector="R")
     expected = (
-        '<feDisplacementMap in-="SourceGraphic" in2="displacement" scale="10" xChannelSelector="R"></feDisplacementMap>'
+        '<feDisplacementMap xChannelSelector="R" in-="SourceGraphic" in2="displacement" scale="10"></feDisplacementMap>'
     )
     assert displacement.render() == expected
 
@@ -412,7 +412,7 @@ def test_fe_func_a() -> None:
 
 def test_fe_func_b() -> None:
     func_b = air.svg.FeFuncB(type_="discrete", tableValues="0 0.5 1")
-    expected = '<feFuncB type="discrete" tableValues="0 0.5 1"></feFuncB>'
+    expected = '<feFuncB tableValues="0 0.5 1" type="discrete"></feFuncB>'
     assert func_b.render() == expected
 
 
@@ -430,7 +430,7 @@ def test_fe_func_r() -> None:
 
 def test_fe_image() -> None:
     image = air.svg.FeImage(href="image.jpg", preserveAspectRatio="xMidYMid meet")
-    expected = '<feImage href="image.jpg" preserveAspectRatio="xMidYMid meet"></feImage>'
+    expected = '<feImage preserveAspectRatio="xMidYMid meet" href="image.jpg"></feImage>'
     assert image.render() == expected
 
 
@@ -460,7 +460,7 @@ def test_fe_point_light() -> None:
 
 def test_fe_specular_lighting() -> None:
     specular = air.svg.FeSpecularLighting(in_="SourceGraphic", surfaceScale=1, specularConstant=1.5)
-    expected = '<feSpecularLighting in-="SourceGraphic" surfaceScale="1" specularConstant="1.5"></feSpecularLighting>'
+    expected = '<feSpecularLighting surfaceScale="1" specularConstant="1.5" in-="SourceGraphic"></feSpecularLighting>'
     assert specular.render() == expected
 
 
