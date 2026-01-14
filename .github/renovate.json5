@@ -26,6 +26,7 @@
     "deps",
     "renovate"
   ],
+  updatePinnedDependencies: true,
   // Limit Renovate to these managers only
   enabledManagers: [
     "pep621",
@@ -41,5 +42,12 @@
       "/(^|/)\\.pre-commit-config-[^/.]+\\.ya?ml$/"
     ],
   },
-  updatePinnedDependencies: true,
+  pep621: {
+    enabled: true,
+    // Default for pep621, kept explicit here
+    managerFilePatterns: [
+      "/(^|/)pyproject\\.toml$/"
+    ],
+  },
+
 }

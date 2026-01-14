@@ -184,3 +184,16 @@ repos:
         #    hooks:
         #      - id: zizmor # Static analysis tool for GitHub Actions.
         #        args: [ '--fix=all' ]
+        #  - repo: https://github.com/lycheeverse/lychee
+        #    rev: nightly
+        #    hooks:
+        #      - id: lychee
+        #        priority: 0
+        #        types: ["markdown"]
+        #  - repo: https://github.com/errata-ai/vale
+        #    rev: v3.13.0
+        #    hooks:
+        #      - id: vale
+        #        priority: 0
+        #        types: [markdown]
+        #        args: [--output=line, --minAlertLevel=error]

@@ -127,13 +127,6 @@ repos:
           - Flake8-pyproject==1.2.4 # Flake8 plug-in loading the configuration from pyproject.toml
           - flake8-class-attributes-order==0.3.0 # A flake8 extension that checks classes attributes order.
           - flake8-pydantic==0.4.0 # A flake8 plugin to check Pydantic related code.
-  - repo: https://github.com/lycheeverse/lychee
-    rev: nightly
-    hooks:
-      - id: lychee
-        files: ^$
-        priority: 0
-        types: ["markdown"]
   - repo: https://github.com/regebro/pyroma
     rev: 5.0.1
     hooks:
@@ -172,14 +165,6 @@ repos:
       - id: typos # Source code spell checker.
         priority: 0
         args: ["--force-exclude", "--format=brief"]
-  - repo: https://github.com/errata-ai/vale
-    rev: v3.13.0
-    hooks:
-      - id: vale
-        files: ^$
-        priority: 0
-        types: [markdown]
-        args: [--output=line, --minAlertLevel=error]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.08
     hooks:
@@ -209,3 +194,16 @@ repos:
         #    hooks:
         #      - id: zizmor # Static analysis tool for GitHub Actions.
         #        priority: 0
+        #  - repo: https://github.com/lycheeverse/lychee
+        #    rev: nightly
+        #    hooks:
+        #      - id: lychee
+        #        priority: 0
+        #        types: ["markdown"]
+        #  - repo: https://github.com/errata-ai/vale
+        #    rev: v3.13.0
+        #    hooks:
+        #      - id: vale
+        #        priority: 0
+        #        types: [markdown]
+        #        args: [--output=line, --minAlertLevel=error]
