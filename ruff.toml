@@ -105,7 +105,6 @@ select = [
     "TRY", # https://docs.astral.sh/ruff/rules/#tryceratops-try
 ]
 ignore = [
-    "D100", # ignore missing docstring in module
     "D102", # ignore missing docstring in public method
     "D104", # ignore missing docstring in public package
     "D105", # ignore missing docstring in magic methods
