@@ -84,7 +84,7 @@ select = [
     # "SLOT", # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
     "TID", # https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
     # "TC", # https://docs.astral.sh/ruff/rules/#flake8-type-checking-tc
-    # "ARG", # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
+    "ARG", # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
     "PTH", # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
     "FLY", # https://docs.astral.sh/ruff/rules/#flynt-fly
     "I", # https://docs.astral.sh/ruff/rules/#isort-i

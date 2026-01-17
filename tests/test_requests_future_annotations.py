@@ -16,7 +16,7 @@ def test_request_param_with_future_annotations() -> None:
     app = air.Air()
 
     @app.get("/test")
-    def htmx_status(request: air.Request, *, is_htmx: bool = air.is_htmx_request) -> air.Div:
+    def htmx_status(_request: air.Request, *, is_htmx: bool = air.is_htmx_request) -> air.Div:
         htmx_status = "htmx" if is_htmx else "no-htmx"
         return air.Div(f"Status: {htmx_status}", class_="status")
 
@@ -32,7 +32,7 @@ def test_request_param_with_htmx_detection() -> None:
     app = air.Air()
 
     @app.get("/htmx")
-    def htmx_endpoint(request: air.Request, *, is_htmx: bool = air.is_htmx_request) -> air.H1:
+    def htmx_endpoint(_request: air.Request, *, is_htmx: bool = air.is_htmx_request) -> air.H1:
         htmx_status = "HTMX" if is_htmx else "no HTMX"
         return air.H1(f"Request status: {htmx_status}")
 
@@ -54,7 +54,7 @@ def test_request_with_query_params() -> None:
     app = air.Air()
 
     @app.get("/query")
-    def query_endpoint(request: air.Request, name: str = "World", *, is_htmx: bool = air.is_htmx_request) -> air.P:
+    def query_endpoint(_request: air.Request, name: str = "World", *, is_htmx: bool = air.is_htmx_request) -> air.P:
         htmx_status = "HTMX" if is_htmx else "no HTMX"
         return air.P(f"Hello, {name}! ({htmx_status})")
 

@@ -19,7 +19,11 @@ set export := true
 # CONFIG:
 # -----------------------------------------------------------------------------
 
-HERE := justfile_directory()
+set shell := ["bash", "-c"]
+
+HERE := "."
+
+
 MARKER_DIR := HERE
 PYTHON_VERSION := trim(read(".python-version"))
 # From pyproject.toml -> version

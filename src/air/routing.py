@@ -54,7 +54,7 @@ class RouteCallable(Protocol):
     __call__: Callable[..., Any]
     __name__: str
 
-    def url(self, **path_params: Any) -> str:
+    def url(self) -> str:
         return ""
 
 

@@ -50,7 +50,7 @@ def test_cached_signature_basic() -> None:
 def test_cached_signature_with_existing_signature_attribute() -> None:
     """Test that cached_signature uses __signature__ if already set."""
 
-    def func_with_sig(x: int, y: str) -> int:
+    def func_with_sig(x: int, _y: str) -> int:
         return x
 
     # Pre-set the __signature__ attribute

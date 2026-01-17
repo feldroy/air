@@ -51,7 +51,7 @@ def default_404_router_handler(router_name: str) -> ASGIApp:
     return app
 
 
-def default_404_exception_handler(request: Request, exc: Exception) -> AirResponse:
+def default_404_exception_handler(request: Request, _exc: Exception) -> AirResponse:
     """Default 404 exception handler. Can be overloaded.
 
     Returns:
@@ -79,7 +79,7 @@ def default_404_exception_handler(request: Request, exc: Exception) -> AirRespon
     )
 
 
-def default_500_exception_handler(request: Request, exc: Exception) -> AirResponse:
+def default_500_exception_handler(_request: Request, _exc: Exception) -> AirResponse:
     """Default 500 exception handler. Can be overloaded.
 
     Returns:

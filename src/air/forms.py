@@ -821,7 +821,7 @@ def to_form(
 
     if widget is not None:
 
-        def _widget(self: AirForm, _widget: Callable = widget) -> Callable:
+        def _widget(_self: AirForm, _widget: Callable = widget) -> Callable:
             return _widget
 
         attrs["widget"] = property(_widget)

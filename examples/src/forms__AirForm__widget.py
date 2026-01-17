@@ -43,7 +43,7 @@ def get_contact_form() -> air.AirForm:
 
 
 @app.page
-def contact(request: air.Request) -> air.Html | air.Children:
+def contact() -> air.Html | air.Children:
 
     form = get_contact_form()
 

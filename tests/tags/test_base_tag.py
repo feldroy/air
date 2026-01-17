@@ -172,7 +172,7 @@ def test_pretty_print_delegates_to_helper(monkeypatch: pytest.MonkeyPatch) -> No
     def fake_pretty_print(html: str) -> None:
         printed.append(html)
 
-    def fake_formatter(html: str, **kwargs: bool) -> str:
+    def fake_formatter(_html: str, **_kwargs: bool) -> str:
         return "formatted"
 
     monkeypatch.setattr(base_module, "pretty_print_html", fake_pretty_print)
@@ -199,7 +199,7 @@ def test_save_writes_rendered_html(tmp_path: Path) -> None:
 def test_pretty_save_writes_pretty_html(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     target = tmp_path / "pretty.html"
 
-    monkeypatch.setattr(base_module, "pretty_format_html", lambda html, **_: "pretty")
+    monkeypatch.setattr(base_module, "pretty_format_html", lambda _html, **_: "pretty")
 
     SampleTag("pretty").pretty_save(file_path=target)
 
@@ -209,7 +209,7 @@ def test_pretty_save_writes_pretty_html(tmp_path: Path, monkeypatch: pytest.Monk
 def test_pretty_display_in_the_browser_delegates(monkeypatch: pytest.MonkeyPatch) -> None:
     calls: list[str] = []
 
-    def fake_formatter(html: str, **kwargs: bool) -> str:
+    def fake_formatter(_html: str, **_kwargs: bool) -> str:
         return "pretty"
 
     def fake_display(html: str) -> None:

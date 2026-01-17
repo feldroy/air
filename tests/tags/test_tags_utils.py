@@ -176,7 +176,7 @@ def test_extract_html_comment_invalid_input() -> None:
 
 
 def test_pretty_format_html_unescapes_entities(monkeypatch: pytest.MonkeyPatch) -> None:
-    def fake_format_html(source: str, **kwargs: bool) -> str:
+    def fake_format_html(_source: str, **kwargs: bool) -> str:
         assert kwargs["pretty"] is True
         return "&lt;div&gt;text&lt;/div&gt;"
 
@@ -225,13 +225,13 @@ def test_compact_format_html_minifies_with_safe_defaults(monkeypatch: pytest.Mon
     }
 
 
-def test_format_html_uses_lxml_document_path(stub_lxml: dict[str, Any]) -> None:
+def test_format_html_uses_lxml_document_path() -> None:
     result = utils.format_html("<p/>", with_body=True, with_head=True, with_doctype=True, pretty=True)
 
     assert result == "<!doctype html>\n<html>\n  <head></head>\n  <body>\n    <p></p>\n  </body>\n</html>\n"
 
 
-def test_format_html_uses_lxml_fragment_path(stub_lxml: dict[str, Any]) -> None:
+def test_format_html_uses_lxml_fragment_path() -> None:
     result = utils.format_html("<span/>", with_body=False, pretty=False)
 
     assert result == "<span></span>"
@@ -290,7 +290,7 @@ def test_open_new_tab_success(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_open_new_tab_failure(monkeypatch: pytest.MonkeyPatch) -> None:
-    def deny(url: str) -> bool:
+    def deny(_url: str) -> bool:
         return False
 
     monkeypatch.setattr(utils.webbrowser, "open_new_tab", deny)
@@ -313,7 +313,7 @@ def test_open_html_blob_in_the_browser_uses_data_url(monkeypatch: pytest.MonkeyP
 
 
 def test_open_html_blob_in_the_browser_limits_size(monkeypatch: pytest.MonkeyPatch) -> None:
-    def noop(url: str) -> None:
+    def noop(_url: str) -> None:
         return None
 
     monkeypatch.setattr(utils, "_open_new_tab", noop)
@@ -347,7 +347,7 @@ def test_save_pretty_html_uses_console(tmp_path: Path, monkeypatch: pytest.Monke
         def save_html(self, path: str) -> None:
             saved.append(path)
 
-    def fake_get_pretty_html_console(source: str, theme: str, *, record: bool) -> RecordingConsole:
+    def fake_get_pretty_html_console(*_args: Any, record: bool, **_kwargs: Any) -> RecordingConsole:
         return RecordingConsole(record=record, file=None)
 
     monkeypatch.setattr(utils, "_get_pretty_html_console", fake_get_pretty_html_console)
@@ -361,7 +361,7 @@ def test_display_pretty_html_in_the_browser_uses_export(monkeypatch: pytest.Monk
     exported: list[str] = []
     displayed: list[str] = []
 
-    def fake_export(source: str, theme: str) -> str:
+    def fake_export(source: str, **_kwargs: Any) -> str:
         exported.append(source)
         return "exported"
 
@@ -386,7 +386,7 @@ def test_export_pretty_html_uses_console(monkeypatch: pytest.MonkeyPatch) -> Non
         def export_html(self) -> str:
             return "panel"
 
-    def fake_get_pretty_html_console(source: str, theme: str, *, record: bool) -> RecordingConsole:
+    def fake_get_pretty_html_console(*_args: Any, record: bool, **_kwargs: Any) -> RecordingConsole:
         return RecordingConsole(record=record, file=None)
 
     monkeypatch.setattr(utils, "_get_pretty_html_console", fake_get_pretty_html_console)
@@ -474,7 +474,7 @@ def test_save_text_writes_content(tmp_path: Path) -> None:
 def test_pretty_print_python_outputs_code(monkeypatch: pytest.MonkeyPatch) -> None:
     captured: list[str] = []
 
-    def fake_pretty_console(source: str, **kwargs: object) -> None:  # pragma: no cover - trivial delegate
+    def fake_pretty_console(source: str, **_kwargs: object) -> None:  # pragma: no cover - trivial delegate
         captured.append(source)
 
     monkeypatch.setattr(utils, "_get_pretty_console", fake_pretty_console)

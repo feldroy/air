@@ -12,7 +12,7 @@ app = air.Air()
 
 
 @app.page
-def index(request: air.Request) -> air.Html | air.Children:
+def index() -> air.Html | air.Children:
     """Index page demonstrating request.htmx interaction.
 
     This page:

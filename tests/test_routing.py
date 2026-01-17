@@ -227,7 +227,7 @@ def test_air_router_get_with_url_method() -> None:
         return air.H1(f"Item URL: {url_helper_endpoint_with_params.url(item_id=42)}")
 
     @router.get("/url-helper-test-with-params/{item_id}")
-    def url_helper_endpoint_with_params(item_id: int) -> H1:
+    def url_helper_endpoint_with_params(_item_id: int) -> H1:
         return air.H1("Item URL with params")
 
     app.include_router(router)
@@ -251,7 +251,7 @@ def test_air_router_get_with_url_method_throws_error() -> None:
             return air.H1(f"Error: {type(e).__name__}")
 
     @router.get("/url-helper-error-test-with-params/{item_id}")
-    def url_helper_error_endpoint_with_params(item_id: int) -> H1:
+    def url_helper_error_endpoint_with_params(_item_id: int) -> H1:
         return air.H1("Item URL with params")
 
     app.include_router(router)
@@ -364,7 +364,7 @@ def test_air_router_post_with_url_method() -> None:
         return air.H1(f"Item URL: {post_url_helper_endpoint_with_params.url(item_id=99)}")
 
     @router.post("/post-url-helper-test-with-params/{item_id}")
-    def post_url_helper_endpoint_with_params(item_id: int) -> H1:
+    def post_url_helper_endpoint_with_params(_item_id: int) -> H1:
         return air.H1("POST Item URL with params")
 
     app.include_router(router)
@@ -388,7 +388,7 @@ def test_air_router_post_with_url_method_throws_error() -> None:
             return air.H1(f"Error: {type(e).__name__}")
 
     @router.post("/post-url-helper-error-test-with-params/{item_id}")
-    def post_url_helper_error_endpoint_with_params(item_id: int) -> H1:
+    def post_url_helper_error_endpoint_with_params(_item_id: int) -> H1:
         return air.H1("POST Item URL with params")
 
     app.include_router(router)

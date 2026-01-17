@@ -169,7 +169,7 @@ def test_default_500_exception_handler() -> None:
 
 
 def test_injection_of_default_exception_handlers() -> None:
-    def handler(request: air.Request, exc: Exception) -> air.AirResponse:
+    def handler(_request: air.Request, _exc: Exception) -> air.AirResponse:
         return air.AirResponse()
 
     CUSTOM_EXCEPTION_HANDLERS = {

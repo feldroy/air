@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Annotated, cast
 
 import annotated_types
@@ -146,7 +145,7 @@ def test_form_render_in_view() -> None:
     app = air.Air()
 
     @app.post("/cheese")
-    async def cheese_form(request: Request) -> air.Form:
+    async def cheese_form(_request: Request) -> air.Form:
         cheese = CheeseForm()
         return air.Form(cheese.render())
 
@@ -620,16 +619,7 @@ def test_air_to_form_generation_with_custom_widget() -> None:
     class AutoModel(air.AirModel):
         name: str
 
-    def custom_widget(
-        *,
-        model: type[BaseModel],
-        data: dict | None = None,
-        errors: list | None = None,
-        includes: Sequence[str] | None = None,
-    ) -> str:
-        return "<custom>"
-
-    autoform = AutoModel.to_form(widget=custom_widget)
+    autoform = AutoModel.to_form(widget=lambda **_kwargs: "<custom>")
 
     rendered = autoform.render()
     assert str(rendered) == "<custom>"

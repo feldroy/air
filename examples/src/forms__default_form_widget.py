@@ -11,7 +11,7 @@ class FlightModel(air.AirModel):
 
 
 @app.page
-def index(request: air.Request) -> air.Html:
+def index() -> air.Html:
     # Render different field groups separately using includes parameter
     basic_info = default_form_widget(
         model=FlightModel,

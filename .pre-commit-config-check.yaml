@@ -143,7 +143,7 @@ repos:
         name: Sync pre-commit hooks from `.pre-commit-config-format.yaml` with uv.lock
         entry: sync-with-uv --check --pre-commit-config .pre-commit-config-format.yaml
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.14
+    rev: v0.7.19
     hooks:
       - id: tombi-lint # A TOML linter.
         priority: 0
@@ -154,12 +154,12 @@ repos:
         priority: 0
         args: ['--force-exclude', '--format=brief']
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.01.02
+    rev: 2026.01.10
     hooks:
       - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0
   - repo: https://github.com/google/yamlfmt
-    rev: v0.20.0
+    rev: v0.21.0
     hooks:
       - id: yamlfmt # Extensible Yaml linter.
         priority: 0

@@ -83,7 +83,7 @@ class BaseTag:
         self._children: TagChildrenType = children
         self._attrs: TagAttributesType = attributes
 
-    def __new__(cls, *children: Renderable, **attributes: AttributeType) -> Self:
+    def __new__(cls, *_children: Renderable, **_attributes: AttributeType) -> Self:
         """Create a tag instance while preventing direct BaseTag instantiation.
 
         Raises:

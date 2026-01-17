@@ -49,12 +49,12 @@ def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
 @decorator
 @decorator
 @decorator
-def decorated_function(x: int, y: str) -> int:
+def decorated_function(x: int, _y: str) -> int:
     """A multiply-decorated function for unwrap testing.
 
     Args:
         x: An integer parameter
-        y: A string parameter (unused)
+        _y: A string parameter (unused)
 
     Returns:
         The input integer x

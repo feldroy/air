@@ -166,7 +166,7 @@ def test_jinja_plus_airtags_autorender() -> None:
 def test_JinjaRenderer_with_context_processors() -> None:
     """Test JinjaRenderer with context_processors parameter"""
 
-    def add_globals(request: Request) -> dict[str, str]:
+    def add_globals(_request: Request) -> dict[str, str]:
         return {"global_var": "test_value"}
 
     jinja = JinjaRenderer(directory="tests/templates", context_processors=[add_globals])
@@ -295,11 +295,11 @@ def test_render_with_callable() -> None:
     render = air.Renderer(directory="tests/templates", package="air")
 
     @app.page
-    def layout(request: Request) -> str | HTMLResponse:
+    def layout(_request: Request) -> str | HTMLResponse:
         return render(air.layouts.mvpcss, air.Title("Test Page"), air.H1("Hello, World"))
 
     @app.page
-    def component(request: Request) -> str | HTMLResponse:
+    def component(_request: Request) -> str | HTMLResponse:
         return render(index_callable, title="Test Page", content="Hello, World!")
 
     client = TestClient(app)
@@ -335,7 +335,7 @@ def test_render_callable_wrong_type() -> None:
 def test_Renderer_with_context_processors() -> None:
     """Test Renderer with context_processors parameter to cover the else branch"""
 
-    def add_globals(request: Request) -> dict[str, str]:
+    def add_globals(_request: Request) -> dict[str, str]:
         return {"global_var": "test_value"}
 
     render = air.Renderer(directory="tests/templates", context_processors=[add_globals])
@@ -422,6 +422,7 @@ def test_Renderer_filter_context_with_request() -> None:
     render = air.Renderer(directory="tests/templates")
 
     def callable_function(request: Request, title: str) -> str:
+        _ = request
         return f"<p>{title}</p>"
 
     context = {"title": "Test", "extra": "ignored"}
