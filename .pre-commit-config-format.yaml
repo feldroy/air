@@ -7,22 +7,23 @@ ci:
   autofix_prs: false
 fail_fast: false
 minimum_prek_version: "0.2.25"
-exclude: |
-  (?x)^(
-    \.venv|
-    \.tox|
-    \.mypy_cache|
-    \.ruff_cache|
-    \.git|
-    \.vale|
-    \.cache|
-    dist|
-    build|
-    site|
-    coverage|
-    htmlcov|
-    node_modules
-  )(/|$)
+exclude:
+  glob:
+    - .venv/**
+    - .tox/**
+    - .mypy_cache/**
+    - .ruff_cache/**
+    - .pytest_cache/**
+    - .git/**
+    - .vale/**
+    - .cache/**
+    - .eggs/**
+    - dist/**
+    - build/**
+    - site/**
+    - coverage/**
+    - htmlcov/**
+    - node_modules/**
 
 repos:
   - repo: builtin
@@ -137,7 +138,7 @@ repos:
     hooks:
       - id: renovate-config-validator
         priority: 0
-        args: [ --strict ]
+        args: [--strict]
         files: "^\\.github/renovate\\.json5$"
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.13
