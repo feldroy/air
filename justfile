@@ -163,7 +163,7 @@ pin-github-action-versions:
 
 # Validate Renovate config
 renovate-config-validator:
-    npx --yes --package renovate -- renovate-config-validator --strict .github/renovate.json5
+    npx --yes --package renovate@latest -- renovate-config-validator --strict .github/renovate.json5
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----

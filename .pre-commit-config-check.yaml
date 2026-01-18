@@ -35,6 +35,8 @@ repos:
         priority: 0
       - id: check-json # Attempts to load all json files to verify syntax.
         priority: 0
+      - id: check-json5 # Attempts to load all JSON5 files to verify syntax.
+        priority: 0
       - id: check-merge-conflict # Check for files that contain merge conflict strings.
         priority: 0
       - id: check-toml # Attempts to load all TOML files to verify syntax.
@@ -136,6 +138,7 @@ repos:
     rev: 42.84.0
     hooks:
       - id: renovate-config-validator
+        priority: 0
         args: [ --strict ]
         files: "^\\.github/renovate\\.json5$"
   - repo: https://github.com/astral-sh/ruff-pre-commit
