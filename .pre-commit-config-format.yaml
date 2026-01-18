@@ -131,7 +131,7 @@ repos:
       - id: pyroma # Rate your Python packages package friendliness.
         priority: 0
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.10
+    rev: v0.14.13
     hooks:
       - id: ruff-format # Format Python files using Ruff's formatter (writes changes to disk).
         args: ["--output-format=concise"]
@@ -140,7 +140,7 @@ repos:
         args: ["--fix", "--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.215
+    rev: v0.0.220
     hooks:
       - id: rumdl-fmt # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
@@ -149,7 +149,7 @@ repos:
       - id: sync-pre-commit-deps # Sync pre-commit hook dependencies based on other installed hooks.
         files: "^\\.pre-commit-config-format\\.yaml$"
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.16
+    rev: v0.7.19
     hooks:
       - id: tombi-format # A TOML formatter.
   - repo: https://github.com/crate-ci/typos
@@ -158,7 +158,7 @@ repos:
       - id: typos # Source code spell checker.
         args: ["--write-changes", "--force-exclude", "--format=brief"]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.01.08
+    rev: 2026.01.10
     hooks:
       - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0

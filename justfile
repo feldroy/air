@@ -161,6 +161,10 @@ ipython:
 pin-github-action-versions:
     git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin@latest pin --inplace
 
+# Validate Renovate config
+renovate-config-validator:
+    npx --yes --package renovate -- renovate-config-validator --strict .github/renovate.json5
+
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 

@@ -3,6 +3,8 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   dependencyDashboard: true,
+  configMigration: true,
+  updatePinnedDependencies: true,
   extends: [
     ":dependencyDashboard",
     "config:best-practices",
@@ -26,7 +28,6 @@
     "deps",
     "renovate"
   ],
-  updatePinnedDependencies: true,
   // Limit Renovate to these managers only
   enabledManagers: [
     "pep621",
