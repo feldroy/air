@@ -61,17 +61,24 @@ repos:
       - id: name-tests-test # verifies that test files are named correctly.
         args: ["--pytest-test-first"]
         priority: 0
-        exclude: ^tests/(utils|components)\.py$
+        exclude:
+          glob:
+            - tests/utils.py
+            - tests/components.py
       - id: pretty-format-json # Checks that all your JSON files are pretty(keys are sorted and indented).
         priority: 0
   - repo: meta
     hooks:
       - id: check-hooks-apply # ensures that the configured hooks apply to at least one file in the repository.
         priority: 0
-        files: "^\\.pre-commit-config-check\\.yaml$"
+        files:
+          glob:
+            - .pre-commit-config-check.yaml
       - id: check-useless-excludes # ensures that exclude directives apply to any file in the repository.
         priority: 0
-        files: "^\\.pre-commit-config-check\\.yaml$"
+        files:
+          glob:
+            - .pre-commit-config-check.yaml
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
     hooks:
@@ -96,7 +103,9 @@ repos:
         priority: 0
       - id: check-github-issue-config # Validate GitHub Actions against the schema provided by SchemaStore.
         priority: 0
-        files: "^\\.github/ISSUE_TEMPLATE/config\\.yaml$"
+        files:
+          glob:
+            - .github/ISSUE_TEMPLATE/config.yaml
       - id: check-github-workflows # Validate GitHub Workflows against the schema provided by SchemaStore.
         priority: 0
       - id: check-renovate # Validate Renovate config against the schema provided by Renovate.
@@ -141,7 +150,9 @@ repos:
       - id: renovate-config-validator
         priority: 0
         args: [--strict]
-        files: "^\\.github/renovate\\.json5$"
+        files:
+          glob:
+            - .github/renovate.json5
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.13
     hooks:
@@ -163,7 +174,9 @@ repos:
     rev: v0.0.3
     hooks:
       - id: sync-pre-commit-deps # Sync pre-commit hook dependencies based on other installed hooks.
-        files: "^\\.pre-commit-config-check\\.yaml$"
+        files:
+          glob:
+            - .pre-commit-config-check.yaml
   - repo: https://github.com/tombi-toml/tombi-pre-commit
     rev: v0.7.19
     hooks:

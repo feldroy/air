@@ -45,8 +45,6 @@ exclude = [
     ".cache/**",
     "node_modules/**",
 ]
-# Enforce excludes even for explicitly provided files
-force-exclude = false
 # Specifies files and directories to include in linting. When set, only matching files are processed.
 # Default: [] (all Markdown files included)
 include = []
