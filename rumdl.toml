@@ -44,6 +44,7 @@ exclude = [
     ".vale/**",
     ".cache/**",
     "node_modules/**",
+    "CHANGELOG.md"
 ]
 # Specifies files and directories to include in linting. When set, only matching files are processed.
 # Default: [] (all Markdown files included)
@@ -75,12 +76,12 @@ style = "atx" # Headings: ATX-style only (# Heading), not Setext (underlines) (d
 [MD004] # https://github.com/rvben/rumdl/blob/main/docs/md004.md
 # MD004 - Unordered list style should be consistent
 # Ensures all unordered lists use the same marker (* or + or -) throughout your document.
-style = "dash" #  Always use - markers [GitHub-Style] (default: "consistent")
+style = "dash" # Always use - markers [GitHub-Style] (default: "consistent")
 
 [MD007] # https://github.com/rvben/rumdl/blob/main/docs/md007.md
 # MD007 - Keep list indentation consistent
 # Ensures nested list items are indented with exactly 2 spaces per level for consistent formatting.
-indent = 4 # The number of spaces to use for each level of list nesting (default: 2) [Google-Style]
+indent = 2 # The number of spaces to use for each level of list nesting (default: 2)
 
 [MD009] # https://github.com/rvben/rumdl/blob/main/docs/md009.md
 # MD009 - Remove trailing spaces
@@ -112,10 +113,10 @@ style = "ordered" # Sequential numbering (1, 2, 3...) (default: "one-or-ordered"
 [MD030] # https://github.com/rvben/rumdl/blob/main/docs/md030.md
 # MD030 - Add consistent spacing after list markers
 # Ensures consistent spacing between list markers (bullets or numbers) and the text that follows them.
-ul-single = 3  # Spaces after bullet for single-line items (default: 1) [Google-Style]
-ol-single = 3  # Spaces after number for single-line items (default: 1) [Google-Style]
-ul-multi = 2  # Spaces after bullet for multi-line items (default: 1) [Google-Style]
-ol-multi = 2  # Spaces after number for multi-line items (default: 1) [Google-Style]
+ul-single = 3 # Spaces after bullet for single-line items (default: 1) [Google-Style]
+ol-single = 3 # Spaces after number for single-line items (default: 1) [Google-Style]
+ul-multi = 2 # Spaces after bullet for multi-line items (default: 1) [Google-Style]
+ol-multi = 2 # Spaces after number for multi-line items (default: 1) [Google-Style]
 
 [MD033] # https://github.com/rvben/rumdl/blob/main/docs/md033.md
 # MD033 - No HTML tags
@@ -153,7 +154,7 @@ style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore" [P
 [MD055] # https://github.com/rvben/rumdl/blob/main/docs/md055.md
 # MD055 - Keep table formatting consistent
 # Ensures all rows in your tables use the same style for leading and trailing pipe characters (|).
-style = "leading_and_trailing" #  Require pipes at start and end: | cell | (default: "consistent")
+style = "leading_and_trailing" # Require pipes at start and end: | cell | (default: "consistent")
 
 [MD060] # https://github.com/rvben/rumdl/blob/main/docs/md060.md
 # MD060 - Table Format
