@@ -33,6 +33,7 @@ disable = [
     "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
     "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
     "MD046", # https://github.com/rvben/rumdl/blob/main/docs/md046.md
+    "MD049", # https://github.com/rvben/rumdl/blob/main/docs/md049.md
     "MD050", # https://github.com/rvben/rumdl/blob/main/docs/md050.md
     "MD060", # https://github.com/rvben/rumdl/blob/main/docs/md060.md
 ]
