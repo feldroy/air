@@ -7,23 +7,6 @@ ci:
   autofix_prs: false
 fail_fast: false
 minimum_prek_version: "0.2.25"
-exclude:
-  glob:
-    - .venv/**
-    - .tox/**
-    - .mypy_cache/**
-    - .ruff_cache/**
-    - .pytest_cache/**
-    - .git/**
-    - .vale/**
-    - .cache/**
-    - .eggs/**
-    - dist/**
-    - build/**
-    - site/**
-    - coverage/**
-    - htmlcov/**
-    - node_modules/**
 
 repos:
   - repo: builtin
@@ -73,11 +56,13 @@ repos:
         priority: 0
         files:
           glob:
+            - .pre-commit-config-check.yaml
             - .pre-commit-config-format.yaml
       - id: check-useless-excludes # ensures that exclude directives apply to any file in the repository.
         priority: 0
         files:
           glob:
+            - .pre-commit-config-check.yaml
             - .pre-commit-config-format.yaml
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
