@@ -24,6 +24,7 @@ enable = []
 # Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
+    "MD004", # https://github.com/rvben/rumdl/blob/main/docs/md004.md
     "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
     "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
     "MD031", # https://github.com/rvben/rumdl/blob/main/docs/md031.md
@@ -32,6 +33,8 @@ disable = [
     "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
     "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
     "MD046", # https://github.com/rvben/rumdl/blob/main/docs/md046.md
+    "MD050", # https://github.com/rvben/rumdl/blob/main/docs/md050.md
+    "MD060", # https://github.com/rvben/rumdl/blob/main/docs/md060.md
 ]
 # Specifies files and directories to exclude from linting. Supports glob patterns.
 # Default: [] (no files excluded)
