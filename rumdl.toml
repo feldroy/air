@@ -49,7 +49,6 @@ exclude = [
     ".vale/**",
     ".cache/**",
     "node_modules/**",
-    "CHANGELOG.md"
 ]
 # Specifies files and directories to include in linting. When set, only matching files are processed.
 # Default: [] (all Markdown files included)
