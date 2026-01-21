@@ -109,6 +109,11 @@ run-with-relative-paths +CMD:
 @run-isolated +ARGS:
     just uv-run --isolated {{ ARGS }}
 
+# Run a command or script using uv, perform an exact sync, removing extraneous packages.
+[group('uv')]
+@run-exact +ARGS:
+    just run --exact {{ ARGS }}
+
 # Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
 [group('uv')]
 upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies
@@ -123,13 +128,17 @@ upgrade-prek-hooks:
 # Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
 upgrade-uv-dependencies:
-    uv sync -U {{ UV_CLI_FLAGS }}
+    just sync-lock --upgrade
 
-# https://github.com/eclipse-csi/octopin
-# Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
+# Modify a specific dependency version using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
-pin-github-action-versions:
-    git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin pin --inplace
+modify-uv-dependency-version PACKAGE_NAME PACKAGE_VERSION:
+    just sync-lock --upgrade-package {{ PACKAGE_NAME }}=={{ PACKAGE_VERSION }}
+
+# Upgrade vale packages. <Don’t use! For maintainers only!>
+[group('uv')]
+upgrade-vale-packages:
+    just run -- vale sync
 
 # Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
@@ -145,6 +154,16 @@ sync-lock *ARGS:
 [group('uv')]
 ipython:
     just run -- ipython
+
+# https://github.com/eclipse-csi/octopin
+# Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
+[group('uv')]
+pin-github-action-versions:
+    git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin@latest pin --inplace
+
+# Validate Renovate config
+renovate-config-validator:
+    npx --yes --package renovate@latest -- renovate-config-validator --strict .github/renovate.json5
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
@@ -269,13 +288,13 @@ qa-plus: qa test
 # Run all the tests
 [group('test')]
 test:
-    just run -- pytest
+    just run-exact -- pytest
 
 # Run all the tests, for CI.
 [private]
 [group('test')]
 test-ci:
-    just uv-run --no-dev --group test -- pytest
+    just uv-run --exact --no-dev --group test -- pytest
 
 # Run tests with lowest compatible versions for direct dependencies and highest compatible versions for indirect ones.
 [group('test')]

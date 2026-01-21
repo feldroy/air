@@ -2,13 +2,14 @@
 // https://docs.renovatebot.com
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  // Enable Renovate.
+  "enabled": true,
   dependencyDashboard: true,
+  configMigration: true,
+  updatePinnedDependencies: true,
   extends: [
-    ":dependencyDashboard",
     "config:best-practices",
     "helpers:pinGitHubActionDigestsToSemver",
-    "schedule:automergeDaily",
-    ":rebaseStalePrs",
     ":semanticCommitType(build)",
     ":maintainLockFilesWeekly",
   ],
@@ -22,6 +23,8 @@
   ],
   // Rebase PRs when they fall behind the base branch
   "rebaseWhen": "behind-base-branch",
+  // Add the renovate/ prefix to all branch names
+  "branchPrefix": "renovate/",
   labels: [
     "deps",
     "renovate"
@@ -41,5 +44,56 @@
       "/(^|/)\\.pre-commit-config-[^/.]+\\.ya?ml$/"
     ],
   },
-  updatePinnedDependencies: true,
+  pep621: {
+    enabled: true,
+    // Default for pep621, kept explicit here
+    managerFilePatterns: [
+      "/(^|/)pyproject\\.toml$/"
+    ],
+  },
+  packageRules: [
+    {
+      description: 'Group lockfile updates by manager',
+      matchUpdateTypes: [
+        'lockFileMaintenance'
+      ],
+      groupName: '{{manager}} lockfile updates',
+      commitMessageSuffix: 'for {{manager}}',
+    },
+    {
+      matchManagers: [
+        "pep621"
+      ],
+      groupName: "Python dependencies (pyproject.toml)",
+      description: "Group updates discovered via PEP 621 project metadata.",
+    },
+    {
+      matchManagers: [
+        "pep723"
+      ],
+      groupName: "Inline script metadata (PEP 723)",
+      description: "Group updates for dependencies declared in PEP 723 script blocks.",
+    },
+    {
+      matchManagers: [
+        "pre-commit"
+      ],
+      groupName: "pre-commit hooks",
+      description: "Group updates for pre-commit hook repos and versions.",
+    },
+    {
+      matchManagers: [
+        "github-actions"
+      ],
+      groupName: "GitHub Actions",
+      description: "Group updates for GitHub Actions used in workflows.",
+    },
+    {
+      matchManagers: [
+        "renovate-config-presets"
+      ],
+      groupName: "Renovate presets",
+      description: "Group updates for Renovate config presets and shared configs.",
+    }
+  ]
 }

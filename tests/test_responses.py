@@ -13,7 +13,7 @@ from .utils import clean_doc
 
 class CustomLayoutResponse(air.AirResponse):
     @override
-    def render(self, tag: BaseTag | str) -> bytes | memoryview:  # ty: ignore[invalid-method-override]
+    def render(self, tag: BaseTag | str) -> bytes | memoryview:
         return super().render(air.Html(air.Body(tag)))
 
 

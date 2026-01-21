@@ -4,20 +4,39 @@
 # https://github.com/rvben/rumdl/blob/main/docs/global-settings.md
 # https://github.com/rvben/rumdl/blob/main/docs/inline-configuration.md
 
+# Specifies Markdown flavors for files or patterns, letting different parts of project use different Markdown dialects.
+# Available Flavors:
+# "standard" (default): Standard Markdown with GFM extensions (tables, task lists, strikethrough)
+# "gfm" or "github": Alias for standard (pulldown-cmark already supports GFM)
+# "commonmark": Alias for standard
+# "mkdocs": MkDocs-specific extensions (auto-references, admonitions)
+# "mdx": MDX flavor with JSX and ESM support
+# "quarto": Quarto/RMarkdown for scientific publishing
+[per-file-flavor]
+"docs/**/*.md" = "mkdocs"
+"*.md" = "gfm"
+"examples/**/*.md" = "gfm"
+
+# Global settings control rumdl's overall behavior and apply to all rules and operations.
 [global]
-# Enable only specific rules.
+# Enable only specific rules. Default: [] (all rules enabled)
 enable = []
-# Disable specific rules.
+# Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
+    "MD004", # https://github.com/rvben/rumdl/blob/main/docs/md004.md
     "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
     "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
+    "MD030", # https://github.com/rvben/rumdl/blob/main/docs/md030.md
     "MD031", # https://github.com/rvben/rumdl/blob/main/docs/md031.md
     "MD032", # https://github.com/rvben/rumdl/blob/main/docs/md032.md
     "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
     "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
     "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
     "MD046", # https://github.com/rvben/rumdl/blob/main/docs/md046.md
+    "MD049", # https://github.com/rvben/rumdl/blob/main/docs/md049.md
+    "MD050", # https://github.com/rvben/rumdl/blob/main/docs/md050.md
+    "MD060", # https://github.com/rvben/rumdl/blob/main/docs/md060.md
 ]
 # Specifies files and directories to exclude from linting. Supports glob patterns.
 # Default: [] (no files excluded)
@@ -27,10 +46,10 @@ exclude = [
     "dist/**",
     "build/**",
     ".git/**",
+    ".vale/**",
+    ".cache/**",
     "node_modules/**",
 ]
-# Enforce excludes even for explicitly provided files
-force-exclude = false
 # Specifies files and directories to include in linting. When set, only matching files are processed.
 # Default: [] (all Markdown files included)
 include = []
@@ -38,9 +57,6 @@ include = []
 respect-gitignore = true
 # Sets the global default line length used by rules that check line length. Default: 80
 line-length = 120
-# Specifies the Markdown flavor to use for parsing and linting.
-# Available Flavors: "standard" (default): Standard Markdown syntax, "mkdocs": MkDocs-specific extensions and syntax.
-flavor = "mkdocs"
 # Controls whether rumdl caches linting results to speed up subsequent runs. Default: true
 cache = true
 # Specifies the directory where rumdl stores cache files. Default: .rumdl_cache
@@ -55,6 +71,26 @@ output-format = "grouped"
 # [per-file-ignores]
 # ---------------------------------------------------> rumdl Rules <---------------------------------------------------
 # https://github.com/rvben/rumdl/blob/main/docs/RULES.md
+
+[MD003] # https://github.com/rvben/rumdl/blob/main/docs/md003.md
+# MD003 - Heading style should be consistent
+# Ensures all headings in your document use the same formatting style.
+style = "atx" # Headings: ATX-style only (# Heading), not Setext (underlines) (default: "consistent") [Google-Style]
+
+[MD004] # https://github.com/rvben/rumdl/blob/main/docs/md004.md
+# MD004 - Unordered list style should be consistent
+# Ensures all unordered lists use the same marker (* or + or -) throughout your document.
+style = "dash" # Always use - markers [GitHub-Style] (default: "consistent")
+
+[MD007] # https://github.com/rvben/rumdl/blob/main/docs/md007.md
+# MD007 - Keep list indentation consistent
+# Ensures nested list items are indented with exactly 2 spaces per level for consistent formatting.
+indent = 2 # The number of spaces to use for each level of list nesting (default: 2)
+
+[MD009] # https://github.com/rvben/rumdl/blob/main/docs/md009.md
+# MD009 - Remove trailing spaces
+# Removes unnecessary spaces at the end of lines to keep your Markdown clean and consistent.
+strict = true # Remove all trailing spaces, even line breaks (default: false) [Google-Style]
 
 [MD013] # https://github.com/rvben/rumdl/blob/main/docs/md013.md
 # MD013 - Keep lines short for better readability
@@ -73,6 +109,19 @@ length-mode = "visual" # How to count line length: "visual", "chars", or "bytes"
 # Checks that shell commands in code blocks include their output, making documentation more helpful and complete.
 show-output = true # Whether commands should show output (default: true)
 
+[MD029] # https://github.com/rvben/rumdl/blob/main/docs/md029.md
+# MD029 - Use consistent numbers for ordered lists
+# Ensures ordered lists use consistent numbering: either all "1." (Markdown auto-numbers) or 1, 2, 3, etc. in each file.
+style = "ordered" # Sequential numbering (1, 2, 3...) (default: "one-or-ordered")
+
+[MD030] # https://github.com/rvben/rumdl/blob/main/docs/md030.md
+# MD030 - Add consistent spacing after list markers
+# Ensures consistent spacing between list markers (bullets or numbers) and the text that follows them.
+ul-single = 3 # Spaces after bullet for single-line items (default: 1) [Google-Style]
+ol-single = 3 # Spaces after number for single-line items (default: 1) [Google-Style]
+ul-multi = 2 # Spaces after bullet for multi-line items (default: 1) [Google-Style]
+ol-multi = 2 # Spaces after number for multi-line items (default: 1) [Google-Style]
+
 [MD033] # https://github.com/rvben/rumdl/blob/main/docs/md033.md
 # MD033 - No HTML tags
 # Prevents the use of HTML tags in Markdown - use Markdown syntax instead.
@@ -86,22 +135,33 @@ code-blocks = false # Check inside code blocks (default: false, skips code block
 html-elements = true # Check inside HTML elements (default: true)
 html-comments = true # Check inside HTML comments (default: true)
 
-[MD049] # https://github.com/rvben/rumdl/blob/main/docs/md049.md
-# MD049 - Keep italic text formatting consistent
-# Ensures all italic text uses the same style throughout your document - either asterisks (*) or underscores (_).
-style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore"
-
-[MD050] # https://github.com/rvben/rumdl/blob/main/docs/md050.md
-# MD050 - Keep bold text formatting consistent
-# Ensures all bold text uses the same style throughout your document - either (**) or (__).
-style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore"
-
 [MD046] # https://github.com/rvben/rumdl/blob/main/docs/md046.md
 # MD046 - Use Consistent Code Block Style
 # Ensures all code blocks in your document use the same style - either fenced (with backticks) or indented (with spaces).
-style = "fenced" # Options: "consistent", "fenced", "indented"
+style = "fenced" # Options: "consistent", "fenced", "indented" [Google-Style]
 
 [MD048] # https://github.com/rvben/rumdl/blob/main/docs/md048.md
 # MD048 - Code fence style should be consistent
 # Ensures all code blocks use the same fence markers - either ``` or ~~~ consistently.
 style = "backtick" # Options: "consistent", "backtick", "tilde"
+
+[MD049] # https://github.com/rvben/rumdl/blob/main/docs/md049.md
+# MD049 - Keep italic text formatting consistent
+# Ensures all italic text uses the same style throughout your document - either asterisks (*) or underscores (_).
+style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore" [Google-Style]
+
+[MD050] # https://github.com/rvben/rumdl/blob/main/docs/md050.md
+# MD050 - Keep bold text formatting consistent
+# Ensures all bold text uses the same style throughout your document - either (**) or (__).
+style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore" [Google-Style]
+
+[MD055] # https://github.com/rvben/rumdl/blob/main/docs/md055.md
+# MD055 - Keep table formatting consistent
+# Ensures all rows in your tables use the same style for leading and trailing pipe characters (|).
+style = "leading_and_trailing" # Require pipes at start and end: | cell | (default: "consistent")
+
+[MD060] # https://github.com/rvben/rumdl/blob/main/docs/md060.md
+# MD060 - Table Format
+# Enforces consistent Markdown table column alignment and padding for readable diffs and editing in docs, like Prettier.
+enabled = true # Default: false
+style = "aligned" # Columns are padded with spaces for visual alignment (recommended for readability) (default: "any")

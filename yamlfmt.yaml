@@ -9,7 +9,9 @@ match_type: standard
 
 exclude:
   - .git/**
+  - .vale/**
   - .venv/**
+  - .cache/**
   - venv/**
   - .tox/**
   - .mypy_cache/**
@@ -17,9 +19,9 @@ exclude:
   - .pytest_cache/**
   - build/**
   - dist/**
+  - site/**
   - node_modules/**
   - .eggs/**
-  - "*.egg-info/**"
 
 gitignore_excludes: true
 gitignore_path: .gitignore
