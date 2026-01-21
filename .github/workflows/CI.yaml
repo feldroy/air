@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
+      - uses: taiki-e/install-action@3522286d40783523f9c7880e33f785905b4c20d0 # 2.66.1
         with:
           tool: just
       - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
@@ -67,7 +67,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
+      - uses: taiki-e/install-action@3522286d40783523f9c7880e33f785905b4c20d0 # 2.66.1
         with:
           tool: just
       - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
@@ -91,7 +91,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
+      - uses: taiki-e/install-action@3522286d40783523f9c7880e33f785905b4c20d0 # 2.66.1
         with:
           tool: just
       - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
@@ -111,7 +111,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@dfcb1ee29051d97c8d0f2d437199570008fd5612 # 2.65.15
+      - uses: taiki-e/install-action@3522286d40783523f9c7880e33f785905b4c20d0 # 2.66.1
         with:
           tool: just
       - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0

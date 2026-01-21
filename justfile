@@ -194,6 +194,12 @@ ruff-format OUTPUT_FORMAT="full" UNSAFE="":
     just run -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
+    # Check for spelling and grammar violations and apply fixes
+    just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
+    just run -- codespell --write-changes
+    # Check for missing examples in docstrings
+    just run -- python scripts/missing_examples.py --mode check
+    just run -- prek run --all-files --config .pre-commit-config-format.yaml
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]

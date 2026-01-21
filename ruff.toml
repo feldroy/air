@@ -83,13 +83,13 @@ select = [
     "SIM", # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
     # "SLOT", # https://docs.astral.sh/ruff/rules/#flake8-slots-slot
     "TID", # https://docs.astral.sh/ruff/rules/#flake8-tidy-imports-tid
-    # "TC", # https://docs.astral.sh/ruff/rules/#flake8-type-checking-tc
+    "TC", # https://docs.astral.sh/ruff/rules/#flake8-type-checking-tc
     # "ARG", # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
     "PTH", # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
     "FLY", # https://docs.astral.sh/ruff/rules/#flynt-fly
     "I", # https://docs.astral.sh/ruff/rules/#isort-i
     "C90", # https://docs.astral.sh/ruff/rules/#mccabe-c90
-    # "N", # https://docs.astral.sh/ruff/rules/#pep8-naming-n
+    "N", # https://docs.astral.sh/ruff/rules/#pep8-naming-n
     "PERF", # https://docs.astral.sh/ruff/rules/#perflint-perf
     "E", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
     "W", # https://docs.astral.sh/ruff/rules/#pycodestyle-e-w
@@ -103,11 +103,6 @@ select = [
     "FURB", # https://docs.astral.sh/ruff/rules/#refurb-furb
     "RUF", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
     "TRY", # https://docs.astral.sh/ruff/rules/#tryceratops-try
-    # Full rule code
-    "TC004", # https://docs.astral.sh/ruff/rules/runtime-import-in-type-checking-block
-    "TC005", # https://docs.astral.sh/ruff/rules/empty-type-checking-block
-    "TC008", # https://docs.astral.sh/ruff/rules/quoted-type-alias
-    "TC010", # https://docs.astral.sh/ruff/rules/runtime-string-union
 ]
 ignore = [
     "D100", # ignore missing docstring in module
@@ -122,6 +117,8 @@ ignore = [
     # TODO -> Remove the rules below this line
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "ANN401", # https://docs.astral.sh/ruff/rules/any-type
+    "N803", # Argument names must be lowercase (snake_case)
+    "N999", # Module (file) names must be snake_case
 ]
 
 # Map file patterns to rule codes/prefixes to exclude for matching files; a leading '!' negates the file pattern.

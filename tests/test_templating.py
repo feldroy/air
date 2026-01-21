@@ -5,6 +5,7 @@ import jinja2
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from full_match import match as full_match
 from jinja2 import FileSystemLoader
 from starlette.responses import HTMLResponse
 
@@ -15,7 +16,7 @@ from .components import index as index_callable
 from .utils import clean_doc, clean_doc_with_broken_lines
 
 
-def test_JinjaRenderer() -> None:
+def test_jinja_renderer() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
@@ -37,7 +38,7 @@ def test_JinjaRenderer() -> None:
     assert response.text == "<html>\n  <title>Test Page</title>\n  <h1>Hello, World!</h1>\n</html>"
 
 
-def test_JinjaRenderer_no_context() -> None:
+def test_jinja_renderer_no_context() -> None:
     """Test the JinjaRenderer class."""
     app = FastAPI()
 
@@ -55,7 +56,7 @@ def test_JinjaRenderer_no_context() -> None:
     assert response.text == "<html>\n  <title></title>\n  <h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_Air() -> None:
+def test_jinja_renderer_with_air() -> None:
     """Test the JinjaRenderer class with air.Air."""
     app = Air()
 
@@ -73,7 +74,7 @@ def test_JinjaRenderer_with_Air() -> None:
     assert response.text == "<html>\n  <title></title>\n  <h1></h1>\n</html>"
 
 
-def test_JinjaRenderer_with_kwargs() -> None:
+def test_jinja_renderer_with_kwargs() -> None:
     app = FastAPI()
 
     jinja = JinjaRenderer(directory="tests/templates")
@@ -163,7 +164,7 @@ def test_jinja_plus_airtags_autorender() -> None:
     assert actual_html == expected_html.rstrip()
 
 
-def test_JinjaRenderer_with_context_processors() -> None:
+def test_jinja_renderer_with_context_processors() -> None:
     """Test JinjaRenderer with context_processors parameter"""
 
     def add_globals(request: Request) -> dict[str, str]:
@@ -175,7 +176,7 @@ def test_JinjaRenderer_with_context_processors() -> None:
     assert jinja.templates is not None
 
 
-def test_JinjaRenderer_with_env() -> None:
+def test_jinja_renderer_with_env() -> None:
     """Test JinjaRenderer with custom env parameter"""
 
     # Create environment with loader since we can't pass directory and env together
@@ -186,7 +187,7 @@ def test_JinjaRenderer_with_env() -> None:
     assert jinja.templates is not None
 
 
-def test_Renderer() -> None:
+def test_renderer() -> None:
     """Test the Renderer class."""
     app = air.Air()
 
@@ -221,7 +222,7 @@ def test_Renderer() -> None:
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
 
 
-def test_Renderer_without_request_for_components() -> None:
+def test_renderer_without_request_for_components() -> None:
     """Test the Renderer class."""
     app = air.Air()
 
@@ -318,7 +319,10 @@ def test_render_with_callable() -> None:
 def test_render_failing_name() -> None:
     render = air.Renderer(directory="tests/templates", package="air")
 
-    with pytest.raises(air.RenderException):
+    with pytest.raises(
+        ValueError,
+        match=full_match("No callable or Jinja template found."),
+    ):
         render(name="dummy")
 
 
@@ -332,7 +336,7 @@ def test_render_callable_wrong_type() -> None:
         render(wrong_type)
 
 
-def test_Renderer_with_context_processors() -> None:
+def test_renderer_with_context_processors() -> None:
     """Test Renderer with context_processors parameter to cover the else branch"""
 
     def add_globals(request: Request) -> dict[str, str]:
@@ -344,7 +348,7 @@ def test_Renderer_with_context_processors() -> None:
     assert render.templates is not None
 
 
-def test_Renderer_render_template_with_air_tags() -> None:
+def test_renderer_render_template_with_air_tags() -> None:
     """Test _render_template method with Air Tags in context"""
     app = air.Air()
     render = air.Renderer(directory="tests/templates")
@@ -364,7 +368,7 @@ def test_Renderer_render_template_with_air_tags() -> None:
     assert "Test content" in response.text
 
 
-def test_Renderer_tag_callable_with_both_args_and_context() -> None:
+def test_renderer_tag_callable_with_both_args_and_context() -> None:
     """Test case where filtered_context and args are both truthy"""
     app = air.Air()
     render = air.Renderer(directory="tests/templates", package="tests")
@@ -398,7 +402,7 @@ def test_Renderer_tag_callable_with_both_args_and_context() -> None:
     del sys.modules["tests.test_module"]
 
 
-def test_Renderer_import_module_fallback() -> None:
+def test_renderer_import_module_fallback() -> None:
     """Test the ModuleNotFoundError fallback in _import_module"""
     # Create a mock module that exists as a relative import but not absolute
     mock_module = types.ModuleType("mock_module")
@@ -417,7 +421,7 @@ def test_Renderer_import_module_fallback() -> None:
             del sys.modules["tests.mock_module"]
 
 
-def test_Renderer_filter_context_with_request() -> None:
+def test_renderer_filter_context_with_request() -> None:
     """Test _filter_context_for_callable when callable expects request parameter"""
     render = air.Renderer(directory="tests/templates")
 

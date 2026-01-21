@@ -172,14 +172,14 @@ def test_injection_of_default_exception_handlers() -> None:
     def handler(request: air.Request, exc: Exception) -> air.AirResponse:
         return air.AirResponse()
 
-    CUSTOM_EXCEPTION_HANDLERS = {
+    custom_exception_handlers = {
         405: handler,
     }
 
-    app = air.Air(exception_handlers=CUSTOM_EXCEPTION_HANDLERS)
+    app = air.Air(exception_handlers=custom_exception_handlers)
 
     # Check injection of both custom and default exception handlers
-    expected_handlers = {**DEFAULT_EXCEPTION_HANDLERS, **CUSTOM_EXCEPTION_HANDLERS}
+    expected_handlers = {**DEFAULT_EXCEPTION_HANDLERS, **custom_exception_handlers}
     assert set(expected_handlers) <= set(app.exception_handlers)
     assert app.exception_handlers[405] is handler
 
@@ -222,7 +222,7 @@ def test_url_helper_supports_query_params() -> None:
     assert response.text == "<h1>Search: air page 3</h1>"
 
 
-def test_url_helper_supports_query_params_with_Query() -> None:
+def test_url_helper_supports_query_params_with_query() -> None:
     app = air.Air()
 
     @app.get("/search")
