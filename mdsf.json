@@ -20,12 +20,15 @@
       "tombi:format",
       "tombi:lint"
     ],
-    "yaml": "yamlfmt"
+    "yaml": "yamlfmt",
+    "markdown": []
   },
   "language_aliases": {
     "bash": "shell",
     "sh": "shell",
-    "zsh": "shell"
+    "zsh": "shell",
+    "py": "python",
+    "md": "markdown"
   },
   "runners": {
     "bunx": true,
