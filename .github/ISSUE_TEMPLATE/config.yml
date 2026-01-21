@@ -1,13 +1,13 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Github discussions
+  - name: GitHub Discussions
     url: https://github.com/feldroy/air/discussions
     about: For general discussions.
 
-  - name: Discord server
+  - name: Discord Server
     url: https://discord.gg/znf8vPsz47
     about: For lightweight questions.
 
   - name: Documentation
-    url: https://docs.airwebframework.org/
-    about: Check the documentation
+    url: https://docs.airwebframework.org
+    about: For documentation and reference.
