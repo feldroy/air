@@ -157,7 +157,7 @@ repos:
           glob:
             - .pre-commit-config-format.yaml
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.19
+    rev: v0.7.22
     hooks:
       - id: tombi-format # A TOML formatter.
   - repo: https://github.com/crate-ci/typos
