@@ -9,7 +9,7 @@ match_type: standard
 
 exclude:
   - .git/**
-  - .vale/**,
+  - .vale/**
   - .venv/**
   - .cache/**
   - venv/**
@@ -22,7 +22,6 @@ exclude:
   - site/**
   - node_modules/**
   - .eggs/**
-  - "*.egg-info/**"
 
 gitignore_excludes: true
 gitignore_path: .gitignore

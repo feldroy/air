@@ -109,7 +109,7 @@ run-with-relative-paths +CMD:
 @run-isolated +ARGS:
     just uv-run --isolated {{ ARGS }}
 
-# Run a command or script using uv, perform an exact sync, removing extraneous packages..
+# Run a command or script using uv, perform an exact sync, removing extraneous packages.
 [group('uv')]
 @run-exact +ARGS:
     just run --exact {{ ARGS }}
