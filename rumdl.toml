@@ -148,12 +148,12 @@ style = "backtick" # Options: "consistent", "backtick", "tilde"
 [MD049] # https://github.com/rvben/rumdl/blob/main/docs/md049.md
 # MD049 - Keep italic text formatting consistent
 # Ensures all italic text uses the same style throughout your document - either asterisks (*) or underscores (_).
-style = "underscore" # Options: "consistent"(default), "asterisk", "underscore" [Prettier-Style]
+style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore" [Google-Style]
 
 [MD050] # https://github.com/rvben/rumdl/blob/main/docs/md050.md
 # MD050 - Keep bold text formatting consistent
 # Ensures all bold text uses the same style throughout your document - either (**) or (__).
-style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore" [Prettier-Style]
+style = "asterisk" # Options: "consistent"(default), "asterisk", "underscore" [Google-Style]
 
 [MD055] # https://github.com/rvben/rumdl/blob/main/docs/md055.md
 # MD055 - Keep table formatting consistent
