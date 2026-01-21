@@ -124,6 +124,15 @@ repos:
           - Flake8-pyproject==1.2.4 # Flake8 plug-in loading the configuration from pyproject.toml
           - flake8-class-attributes-order==0.3.0 # A flake8 extension that checks classes attributes order.
           - flake8-pydantic==0.4.0 # A flake8 plugin to check Pydantic related code.
+  - repo: https://github.com/hougesen/mdsf
+    rev: v0.11.1
+    hooks:
+      - id: mdsf-verify # Lint markdown code snippets using your favorite tools.
+        language: rust
+        args:
+          - --log-level=warn
+          - --on-missing-language-definition=fail
+          - --on-missing-tool-binary=fail
   - repo: https://github.com/regebro/pyroma
     rev: 5.0.1
     hooks:
