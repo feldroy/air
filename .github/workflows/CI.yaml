@@ -20,7 +20,7 @@ env:
   CI: 1
   FORCE_COLOR: 1
   RUFF_OUTPUT_FORMAT: github
-  RUFF_NO_CACHE: true
+  RUMDL_OUTPUT_FORMAT: github
   JUST_COLOR: always
   JUST_COMMAND_COLOR: purple
   JUST_EXPLAIN: true
