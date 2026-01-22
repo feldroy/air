@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: Question or Problem
-    about: Ask a question or ask about a problem in GitHub Discussions.
-    url: https://github.com/feldroy/air/discussions/categories/questions
-  - name: Show and tell
-    about: Show what you built with Air or to be used with Air.
-    url: https://github.com/feldroy/air/discussions/categories/show-and-tell
