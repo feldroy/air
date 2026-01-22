@@ -72,15 +72,6 @@ repos:
         priority: 0
         additional_dependencies:
           - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.11.1"
-  - repo: https://github.com/adamchainz/blacken-docs
-    rev: 1.20.0
-    hooks:
-      - id: blacken-docs # Run Black on Python code blocks in documentation files.
-        language: python
-        priority: 0
-        additional_dependencies:
-          - black==25.12.0
-        args: ["--check", "--preview", "--line-length=79"]
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.36.0 # A JSON Schema CLI and pre-commit hook built on jsonschema.
     hooks:
