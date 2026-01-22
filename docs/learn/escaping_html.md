@@ -21,7 +21,7 @@ This is useful for preventing security issues like code injection by malignant u
 By default, Jinja2 escapes nothing. It puts the burden of safety on the developer. To make Jinja2 escape text, use the `e` filter.
 
 ```jinja
-{% set h1 = '<h1>Hello, World!</h1>' %}
+{% set h1 = "<h1>Hello, World!</h1>" %}
 {{ h1|e }}
 ```
 
@@ -64,13 +64,13 @@ Renders as:
 
 ```html
 <style>
-p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #333;
-  max-width: 60ch;
-  margin: 1em auto;
-}
+  p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+    max-width: 60ch;
+    margin: 1em auto;
+  }
 </style>
 ```
 
@@ -91,10 +91,10 @@ Renders as:
 
 ```html
 <script>
-function capitalize(str) {
-  if (!str) return '';
-  return str[0].toUpperCase() + str.slice(1);
-}
+  function capitalize(str) {
+    if (!str) return "";
+    return str[0].toUpperCase() + str.slice(1);
+  }
 </script>
 ```
 
@@ -109,5 +109,8 @@ air.Raw("<h1>Hello, World<h1>")
 Renders as:
 
 ```html
-<h1>Hello, World<h1>
+<h1>
+  Hello, World
+  <h1></h1>
+</h1>
 ```

@@ -18,9 +18,7 @@ app = air.Air()
 
 @app.page
 def index():
-    return air.layouts.mvpcss(
-        air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard"))
-    )
+    return air.layouts.mvpcss(air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard")))
 ```
 
 Now for the dashboard, instead of using the typical `air.Air` tool to instantiate our application, we use `air.AirRouter` like so:
@@ -33,9 +31,7 @@ router = air.AirRouter()
 
 @router.page
 def dashboard():
-    return air.layouts.mvpcss(
-        air.H1("Avatar Data Dashboard"), air.P(air.A("<- Home", href="/"))
-    )
+    return air.layouts.mvpcss(air.H1("Avatar Data Dashboard"), air.P(air.A("<- Home", href="/")))
 ```
 
 Now if we go back to our `main.py` we can use the `app.include_router()` method to include the dashboard in our app:
@@ -77,9 +73,7 @@ app = air.Air(title="Air")
 
 @app.page
 def index():
-    return air.layouts.mvpcss(
-        air.H1("Air landing page"), air.P(air.A("Shop", href="/shop"))
-    )
+    return air.layouts.mvpcss(air.H1("Air landing page"), air.P(air.A("Shop", href="/shop")))
 
 
 # Creating a separate app for the shop,
@@ -102,8 +96,9 @@ app.mount("/shop", shop)
 You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API, while your main Air app serves the landing, billing, and usage frontends.
 
 ```python
-import air
 from fastapi import FastAPI
+
+import air
 
 # Create the landing page app using Air
 app = air.Air()

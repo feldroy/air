@@ -124,7 +124,7 @@ If you have fastapi installed globally, you may see an error:
 ```sh
 To use the fastapi command, please install "fastapi[standard]":
 
-	pip install "fastapi[standard]"
+pip install "fastapi[standard]"
 ```
 
 In that case, run the app with:
@@ -144,8 +144,9 @@ Then open your browser to <http://127.0.0.1:8000> to see the result.
 Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
 
 ```python
-import air
 from fastapi import FastAPI
+
+import air
 
 app = air.Air()
 api = FastAPI()
@@ -176,9 +177,10 @@ app.mount("/api", api)
 Want to use Jinja2 instead of Air Tags? We've got you covered.
 
 ```python
+from fastapi import FastAPI
+
 import air
 from air.requests import Request
-from fastapi import FastAPI
 
 app = air.Air()
 api = FastAPI()
@@ -206,15 +208,15 @@ Don't forget the Jinja template!
 ```html
 <!doctype html>
 <html>
-    <head>
-        <title>Awesome SaaS</title>
-    </head>
-    <body>
-        <h1>Awesome SaaS</h1>
-        <p>
-            <a target="_blank" href="/api/docs">API Docs</a>
-        </p>
-    </body>
+  <head>
+    <title>Awesome SaaS</title>
+  </head>
+  <body>
+    <h1>Awesome SaaS</h1>
+    <p>
+      <a target="_blank" href="/api/docs">API Docs</a>
+    </p>
+  </body>
 </html>
 ```
 
