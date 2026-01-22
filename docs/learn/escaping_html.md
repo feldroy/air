@@ -79,6 +79,8 @@ Renders as:
 To avoid escaping JavaScript, use the `Script` tag:
 
 ```python
+import air
+
 air.Script("""
 function capitalize(str) {
   if (!str) return '';
@@ -103,14 +105,13 @@ Renders as:
 To avoid escaping anything and everything, use the `Raw` tag:
 
 ```python
-air.Raw("<h1>Hello, World<h1>")
+import air
+
+air.Raw("<h1>Hello, World</h1>")
 ```
 
 Renders as:
 
 ```html
-<h1>
-  Hello, World
-  <h1></h1>
-</h1>
+<h1>Hello, World</h1>
 ```

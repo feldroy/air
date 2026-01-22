@@ -6,7 +6,7 @@
 ci:
   autofix_prs: false
 fail_fast: false
-minimum_prek_version: "0.2.25"
+minimum_prek_version: "0.3.0"
 
 repos:
   - repo: builtin
