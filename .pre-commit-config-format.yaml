@@ -155,7 +155,7 @@ repos:
         args: ["--fix", "--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.223
+    rev: v0.0.224
     hooks:
       - id: rumdl-fmt # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
@@ -166,7 +166,7 @@ repos:
           glob:
             - .pre-commit-config-format.yaml
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.22
+    rev: v0.7.23
     hooks:
       - id: tombi-format # A TOML formatter.
   - repo: https://github.com/crate-ci/typos
@@ -175,7 +175,7 @@ repos:
       - id: typos # Source code spell checker.
         args: ["--write-changes", "--force-exclude", "--format=brief"]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
-    rev: 2026.01.10
+    rev: 2026.01.22
     hooks:
       - id: validate-pyproject # Validation library for a simple check on pyproject.toml.
         priority: 0

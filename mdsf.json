@@ -2,17 +2,22 @@
   "$schema": "https://raw.githubusercontent.com/hougesen/mdsf/refs/heads/main/schemas/v0.11.1/mdsf.schema.json",
   "languages": {
     "json": "oxfmt",
+    "jsonc": "oxfmt",
     "json5": "oxfmt",
     "html": "oxfmt",
     "css": "oxfmt",
     "jinja": "djlint",
-    "env": "dotenv-linter:fix",
     "python": [
       "ruff:format",
       "ruff:check",
       "ty"
     ],
     "shell": [
+      "shfmt",
+      "beautysh",
+      "shellcheck"
+    ],
+    "console": [
       "shfmt",
       "beautysh"
     ],
@@ -21,7 +26,8 @@
       "tombi:lint"
     ],
     "yaml": "yamlfmt",
-    "markdown": []
+    "markdown": [],
+    "pycon": []
   },
   "language_aliases": {
     "bash": "shell",
