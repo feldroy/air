@@ -389,7 +389,7 @@ In addition to Air Tags, Air supports Jinja natively. In addition to being great
 
 Here's a simple Jinja template:
 
-```html+jinja title="templates/base.html"
+```jinja title="templates/base.html"
 <!doctype html>
 <html>
     <body>

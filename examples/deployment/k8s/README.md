@@ -33,7 +33,7 @@ For more details about Kubernetes manifests and objects, a wealth of information
 ### Tweaking the deployment.yaml
 
 Update the `name:` key to your application name. You may also optionally specify a `namespace:`, but ensure that the namespace already exists before running the deployment.
-```text
+```yaml
 kind: Deployment
 metadata:
   name: air-app
@@ -45,7 +45,7 @@ Make sure also to update any occurrence of `app:` to the name of your applicatio
 
 Modify the `replicas:` key to the number of replica pods that you prefer to run for your application. Optionally, you can keep the deployment's `strategy.type` to `RollingUpdate` or set it to `Recreate` whichever you prefer. Other deployment strategies and their pros and cons are beyond the scope of this quick how-to.
 
-```text
+```yaml
 spec:
   replicas: 3
   strategy:
@@ -57,7 +57,7 @@ spec:
 
 Modify `containers.image` to reference your application container image. The `imagePullPolicy:` may be set to either `IfNotPresent` or keep it as is, which is `Always`.
 
-```text
+```yaml
 containers:
   - name: air
     image: hardwyrd/air-blogdemo:0.39.0
@@ -66,14 +66,14 @@ containers:
 
 Kubernetes is very keen on performing liveness probes and readiness probes for your application. Ensure that your application is able to handle these probes by having endpoints for liveness and readiness. The sample deployment.yaml have the following:
 
-```text
+```yaml
 livenessProbe:
   httpGet:
     path: /
     port: 8000
 ```
 
-```text
+```yaml
 readinessProbe:
   httpGet:
     path: /
@@ -88,7 +88,7 @@ Modify the rest of the deployment.yaml as you see fit for your application.
 
 The Ingress section of the sample YAML file shows Traefik-specific ingress configuration this is largely because this was tested out using K3d which utilizes Traefik by default. You may need to modify this section if you plan on using a different Ingress like Nginx or Istio.
 
-```text
+```yaml
 kind: Ingress
 metadata:
   name: air-ingress
@@ -112,7 +112,7 @@ To verify if your application's pods are running, execute the command:
 
 You should get a list of pods similar to the following:
 
-```text
+```console
  kubectl get pods -n air-app
 NAME                      READY   STATUS    RESTARTS   AGE
 air-app-65c99b986-bndnn   1/1     Running   0          11h

@@ -18,7 +18,7 @@ Air Tags are powerful but for those of us with a lot of experience with HTML, so
 
 Here's a simple Jinja layout file:
 
-```html+jinja title="templates/base.html"
+```jinja title="templates/base.html"
 <!doctype html>
 <html>
     <head>

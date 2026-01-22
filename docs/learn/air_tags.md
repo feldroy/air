@@ -83,7 +83,9 @@ print(content.pretty_render())
 
 **Air Tags** convert keyword arguments into attributes. So:
 
-```python+html
+```python
+import air
+
 air.P('Hello', id_="mine")
 ```
 
