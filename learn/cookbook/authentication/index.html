@@ -2578,8 +2578,9 @@
 </code></pre></div>
 <h2 id="authentication-with-dependencies">Authentication with Dependencies</h2>
 <p>In Air and FastAPI apps we frequently rely on dependencies to handle authentication. Dependencies are a powerful way to share logic between different parts of your application. Here's a simple authentication dependency example:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPException</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPException</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">require_login</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">air</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
@@ -2625,8 +2626,9 @@
     <span class="p">)</span>
 </code></pre></div>
 <p>Here's a more complete example that includes a login page, a protected dashboard page, and logout functionality using the <code>require_login</code> dependency:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">HTTPException</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">air</span><span class="o">.</span><span class="n">Air</span><span class="p">()</span>
 <span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">SessionMiddleware</span><span class="p">,</span> <span class="n">secret_key</span><span class="o">=</span><span class="s2">&quot;change-me&quot;</span><span class="p">)</span>
@@ -2649,9 +2651,7 @@
 <span class="c1"># --- Routes ---</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">page</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">air</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span>
-        <span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Landing page&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;Dashboard&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/dashboard&quot;</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Landing page&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;Dashboard&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/dashboard&quot;</span><span class="p">)))</span>
 
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">page</span>

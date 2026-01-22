@@ -2735,7 +2735,7 @@
 <h2 id="air-forms">Air Forms</h2>
 <p>Air Forms are powered by Air Models, which inherit directly from <code>pydantic.BaseModel</code>. That includes both their display and validation of data. If you have any experience with Pydantic, that will go a long way towards helping your understanding of Air Forms.</p>
 <h3 id="a-sample-contact-air-form">A Sample Contact Air Form</h3>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">air</span><span class="w"> </span><span class="kn">import</span> <span class="n">AirForm</span><span class="p">,</span> <span class="n">AirField</span><span class="p">,</span> <span class="n">AirModel</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">air</span><span class="w"> </span><span class="kn">import</span> <span class="n">AirField</span><span class="p">,</span> <span class="n">AirModel</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ContactModel</span><span class="p">(</span><span class="n">AirModel</span><span class="p">):</span>
@@ -2750,12 +2750,14 @@
 <div class="highlight"><pre><span></span><code><span class="n">contact_form</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">fieldset</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>name
-        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>Email
-        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span>
+    <span class="p">&gt;</span>name
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span>
+    <span class="p">&gt;</span>Email
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">fieldset</span><span class="p">&gt;</span>
 </code></pre></div>
 <h2 id="validation-using-forms">Validation using forms</h2>
@@ -2767,16 +2769,16 @@
 <div class="highlight"><pre><span></span><code><span class="n">contact_form</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">fieldset</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
-        name
-        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">aria-invalid</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="p">/&gt;</span>
-        <span class="p">&lt;</span><span class="nt">small</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;name-error&quot;</span><span class="p">&gt;</span>This field is required.<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
-        Email
-        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">aria-invalid</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="p">/&gt;</span>
-        <span class="p">&lt;</span><span class="nt">small</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;email-error&quot;</span><span class="p">&gt;</span>This field is required.<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+    name
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">aria-invalid</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">small</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;name-error&quot;</span><span class="p">&gt;</span>This field is required.<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+    Email
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">aria-invalid</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">small</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;email-error&quot;</span><span class="p">&gt;</span>This field is required.<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">fieldset</span><span class="p">&gt;</span>
 </code></pre></div>
 <h2 id="converting-pydantic-models-to-air-forms">Converting Pydantic Models to Air Forms</h2>

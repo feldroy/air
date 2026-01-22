@@ -317,9 +317,7 @@ app = air.Air()
 
 @app.page
 def index():
-    return air.Script(
-        src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
-    )
+    return air.Script(src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js")
 ```
 
 ### Inline Scripts
@@ -394,12 +392,12 @@ Here's a simple Jinja template:
 templates/base.html
 
 ```
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <body>
         <main class="container">
-          <h1>{{title}}</h1>
-          <p>{{message}}</p>
+            <h1>{{ title }}</h1>
+            <p>{{ message }}</p>
         </main>
     </body>
 </html>
@@ -442,12 +440,12 @@ It is very easy to include Air Tags in Jinja. Let's first create our template:
 templates/avatar.html
 
 ```
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <body>
         <main class="container">
-          <h1>{{title}}</h1>
-          {{fragment|safe}} {# (1)! #}
+            <h1>{{ title }}</h1>
+            {{ fragment|safe }} {# (1)! #}
         </main>
     </body>
 </html>
@@ -473,9 +471,7 @@ def avatar(request: air.Request):
         request,
         name="avatar.html",
         title="Hello, Air Benders",
-        fragment=air.Div(
-            air.P("We are fans of the Last Avatar"), class_="thing"
-        ),  # (1)!
+        fragment=air.Div(air.P("We are fans of the Last Avatar"), class_="thing"),  # (1)!
     )
 ```
 
@@ -535,6 +531,7 @@ The pydantic library isn't just a component of Air and FastAPI, it's an industry
 
 ```
 from pydantic import BaseModel, Field
+
 import air
 
 
@@ -640,9 +637,7 @@ def index():
 
 async def lottery_generator():  # (6)!
     while True:
-        lottery_numbers = ", ".join(
-            [str(random.randint(1, 40)) for x in range(6)]
-        )
+        lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
         # Tags work seamlessly
         yield air.Aside(lottery_numbers)  # (7)!
         await sleep(1)

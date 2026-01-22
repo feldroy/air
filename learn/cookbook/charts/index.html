@@ -2435,8 +2435,9 @@
 
 <h1 id="charts">Charts</h1>
 <p>Air is great for building charts. Using <a href="https://plotly.com/javascript/">plotly</a>, here's a simple chart example.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">air</span><span class="o">.</span><span class="n">Air</span><span class="p">()</span>
 
@@ -2444,27 +2445,23 @@
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">():</span>
     <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Air Chart Demo&quot;</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
-                <span class="p">},</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">],</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Fun charts with Plotly and Air&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span>
-                <span class="s2">&quot;This is a demonstration of how to build a chart using Plotly and Air&quot;</span>
-            <span class="p">),</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Fun charts with Plotly and Air&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;This is a demonstration of how to build a chart using Plotly and Air&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+    <span class="p">})</span>
     <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span>
         <span class="n">air</span><span class="o">.</span><span class="n">Script</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://cdn.plot.ly/plotly-3.0.1.min.js&quot;</span><span class="p">),</span>
         <span class="n">air</span><span class="o">.</span><span class="n">Title</span><span class="p">(</span><span class="n">title</span><span class="p">),</span>
@@ -2482,11 +2479,14 @@
     <span class="p">)</span>
 </code></pre></div>
 <p>Air makes it possible to build charts that pull data from servers and animate the results. Here's an example being supplied with random numbers for the Air server.</p>
-<div class="highlight"><pre><span></span><code><span class="n">air</span><span class="o">.</span><span class="n">Children</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
+
+<span class="n">air</span><span class="o">.</span><span class="n">Children</span><span class="p">(</span>
     <span class="n">air</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">id_</span><span class="o">=</span><span class="s2">&quot;randomChart&quot;</span><span class="p">),</span>
-    <span class="n">air</span><span class="o">.</span><span class="n">Script</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        var data = {&quot;data&quot;: [{&quot;x&quot;: [0, 4, 5, 7, 8, 10], &quot;y&quot;: [2, 9, 0, 4, 3, 6], &quot;type&quot;: &quot;scatter&quot;}, {&quot;x&quot;: [0, 1, 2, 4, 8, 10], &quot;y&quot;: [9, 2, 4, 3, 5, 0], &quot;type&quot;: &quot;scatter&quot;}], &quot;title&quot;: &quot;Fun charts with Plotly and Air&quot;, &quot;description&quot;: &quot;This is a demonstration of how to build a chart using Plotly and Air&quot;, &quot;type&quot;: &quot;scatter&quot;};</span>
-<span class="s2">        Plotly.newPlot(&#39;randomChart&#39;, data);&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="n">air</span><span class="o">.</span><span class="n">Script</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        var data = {&quot;data&quot;: [{&quot;x&quot;: [0, 4, 5, 7, 8, 10], &quot;y&quot;: [2, 9, 0, 4, 3, 6], &quot;type&quot;: &quot;scatter&quot;}, {&quot;x&quot;: [0, 1, 2, 4, 8, 10], &quot;y&quot;: [9, 2, 4, 3, 5, 0], &quot;type&quot;: &quot;scatter&quot;}], &quot;title&quot;: &quot;Fun charts with Plotly and Air&quot;, &quot;description&quot;: &quot;This is a demonstration of how to build a chart using Plotly and Air&quot;, &quot;type&quot;: &quot;scatter&quot;};</span>
+<span class="sd">        Plotly.newPlot(&#39;randomChart&#39;, data);&quot;&quot;&quot;</span><span class="p">,</span>
         <span class="c1"># ID is used to help HTMX know where to replace data</span>
         <span class="n">id_</span><span class="o">=</span><span class="s2">&quot;dataSource&quot;</span><span class="p">,</span>
         <span class="c1"># Trigger HTMX to call new data every 2 seconds</span>
@@ -2495,7 +2495,7 @@
         <span class="n">hx_get</span><span class="o">=</span><span class="s2">&quot;/data&quot;</span><span class="p">,</span>
         <span class="c1"># When the data is fetched, replace the whole tag</span>
         <span class="n">hx_swap</span><span class="o">=</span><span class="s2">&quot;outerHTML&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
 

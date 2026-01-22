@@ -2989,10 +2989,8 @@
 <span class="nd">@app</span><span class="o">.</span><span class="n">page</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">air</span><span class="o">.</span><span class="n">Request</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span>
-        <span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;From HTMX?&quot;</span><span class="p">),</span>
-        <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;This request came from an HTMX element on a page: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">htmx</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="p">),</span>
+        <span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;From HTMX?&quot;</span><span class="p">),</span>
+        <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;This request came from an HTMX element on a page: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">htmx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div>
 

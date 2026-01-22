@@ -63,8 +63,9 @@ async def logout(request: air.Request):
 In Air and FastAPI apps we frequently rely on dependencies to handle authentication. Dependencies are a powerful way to share logic between different parts of your application. Here's a simple authentication dependency example:
 
 ```
-import air
 from fastapi import HTTPException
+
+import air
 
 
 def require_login(request: air.Request):
@@ -117,8 +118,9 @@ async def dashboard(request: air.Request, user=Depends(require_login)):
 Here's a more complete example that includes a login page, a protected dashboard page, and logout functionality using the `require_login` dependency:
 
 ```
-import air
 from fastapi import Depends, HTTPException
+
+import air
 
 app = air.Air()
 app.add_middleware(air.SessionMiddleware, secret_key="change-me")
@@ -141,9 +143,7 @@ def require_login(request: air.Request):
 # --- Routes ---
 @app.page
 async def index(request: air.Request):
-    return air.layouts.mvpcss(
-        air.H1("Landing page"), air.P(air.A("Dashboard", href="/dashboard"))
-    )
+    return air.layouts.mvpcss(air.H1("Landing page"), air.P(air.A("Dashboard", href="/dashboard")))
 
 
 @app.page

@@ -2631,7 +2631,7 @@
 <p>This is useful for preventing security issues like code injection by malignant users who have access to text fields that display text they enter. Escaping blocks the addition of tags, JavaScript, and CSS.</p>
 <h2 id="jinja2-doesnt-play-it-safe">Jinja2 doesn't play it safe</h2>
 <p>By default, Jinja2 escapes nothing. It puts the burden of safety on the developer. To make Jinja2 escape text, use the <code>e</code> filter.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">set</span> <span class="nv">h1</span> <span class="o">=</span> <span class="s1">&#39;&lt;h1&gt;Hello, World!&lt;/h1&gt;&#39;</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">set</span> <span class="nv">h1</span> <span class="o">=</span> <span class="s2">&quot;&lt;h1&gt;Hello, World!&lt;/h1&gt;&quot;</span> <span class="cp">%}</span>
 <span class="cp">{{</span> <span class="nv">h1</span><span class="o">|</span><span class="nf">e</span> <span class="cp">}}</span>
 </code></pre></div>
 <blockquote>
@@ -2660,18 +2660,20 @@
 </code></pre></div>
 <p>Renders as:</p>
 <div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-<span class="nt">p</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.2</span><span class="kt">rem</span><span class="p">;</span>
-<span class="w">  </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6</span><span class="p">;</span>
-<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#333</span><span class="p">;</span>
-<span class="w">  </span><span class="k">max-width</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="kt">ch</span><span class="p">;</span>
-<span class="w">  </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">em</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="nt">p</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.2</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">    </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6</span><span class="p">;</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#333</span><span class="p">;</span>
+<span class="w">    </span><span class="k">max-width</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="kt">ch</span><span class="p">;</span>
+<span class="w">    </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">em</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
 </code></pre></div>
 <h3 id="script-unescaped-javascript"><code>Script</code>: Unescaped JavaScript</h3>
 <p>To avoid escaping JavaScript, use the <code>Script</code> tag:</p>
-<div class="highlight"><pre><span></span><code><span class="n">air</span><span class="o">.</span><span class="n">Script</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
+
+<span class="n">air</span><span class="o">.</span><span class="n">Script</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">function capitalize(str) {</span>
 <span class="s2">  if (!str) return &#39;&#39;;</span>
 <span class="s2">  return str[0].toUpperCase() + str.slice(1);</span>
@@ -2680,18 +2682,20 @@
 </code></pre></div>
 <p>Renders as:</p>
 <div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="kd">function</span><span class="w"> </span><span class="nx">capitalize</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">str</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">toUpperCase</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">str</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="w">  </span><span class="kd">function</span><span class="w"> </span><span class="nx">capitalize</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">str</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">str</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">toUpperCase</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">str</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </code></pre></div>
 <h3 id="raw-unescaped-text"><code>Raw</code>: Unescaped text</h3>
 <p>To avoid escaping anything and everything, use the <code>Raw</code> tag:</p>
-<div class="highlight"><pre><span></span><code><span class="n">air</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;Hello, World&lt;h1&gt;&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
+
+<span class="n">air</span><span class="o">.</span><span class="n">Raw</span><span class="p">(</span><span class="s2">&quot;&lt;h1&gt;Hello, World&lt;/h1&gt;&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Renders as:</p>
-<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello, World<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello, World<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
 </code></pre></div>
 
 

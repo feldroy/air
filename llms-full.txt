@@ -61,8 +61,9 @@ This example uses [Air Tags](https://docs.airwebframework.org/api/tags/index.md)
 Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
 
 ```
-import air
 from fastapi import FastAPI
+
+import air
 
 app = air.Air()
 api = FastAPI()
@@ -93,8 +94,9 @@ app.mount("/api", api)
 Want to use Jinja2 instead of Air Tags? We've got you covered.
 
 ```
-import air
 from fastapi import FastAPI
+
+import air
 
 app = air.Air()
 api = FastAPI()
@@ -122,15 +124,15 @@ Don't forget the Jinja template!
 ```
 <!doctype html>
 <html>
-    <head>
-        <title>Awesome SaaS</title>
-    </head>
-    <body>
-        <h1>Awesome SaaS</h1>
-        <p>
-            <a target="_blank" href="/api/docs">API Docs</a>
-        </p>
-    </body>
+  <head>
+    <title>Awesome SaaS</title>
+  </head>
+  <body>
+    <h1>Awesome SaaS</h1>
+    <p>
+      <a target="_blank" href="/api/docs">API Docs</a>
+    </p>
+  </body>
 </html>
 ```
 
@@ -461,9 +463,7 @@ app = air.Air()
 
 @app.page
 def index():
-    return air.Script(
-        src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
-    )
+    return air.Script(src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js")
 ```
 
 ### Inline Scripts
@@ -538,12 +538,12 @@ Here's a simple Jinja template:
 templates/base.html
 
 ```
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <body>
         <main class="container">
-          <h1>{{title}}</h1>
-          <p>{{message}}</p>
+            <h1>{{ title }}</h1>
+            <p>{{ message }}</p>
         </main>
     </body>
 </html>
@@ -586,12 +586,12 @@ It is very easy to include Air Tags in Jinja. Let's first create our template:
 templates/avatar.html
 
 ```
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <body>
         <main class="container">
-          <h1>{{title}}</h1>
-          {{fragment|safe}} {# (1)! #}
+            <h1>{{ title }}</h1>
+            {{ fragment|safe }} {# (1)! #}
         </main>
     </body>
 </html>
@@ -617,9 +617,7 @@ def avatar(request: air.Request):
         request,
         name="avatar.html",
         title="Hello, Air Benders",
-        fragment=air.Div(
-            air.P("We are fans of the Last Avatar"), class_="thing"
-        ),  # (1)!
+        fragment=air.Div(air.P("We are fans of the Last Avatar"), class_="thing"),  # (1)!
     )
 ```
 
@@ -679,6 +677,7 @@ The pydantic library isn't just a component of Air and FastAPI, it's an industry
 
 ```
 from pydantic import BaseModel, Field
+
 import air
 
 
@@ -784,9 +783,7 @@ def index():
 
 async def lottery_generator():  # (6)!
     while True:
-        lottery_numbers = ", ".join(
-            [str(random.randint(1, 40)) for x in range(6)]
-        )
+        lottery_numbers = ", ".join([str(random.randint(1, 40)) for x in range(6)])
         # Tags work seamlessly
         yield air.Aside(lottery_numbers)  # (7)!
         await sleep(1)
@@ -849,7 +846,7 @@ Used individually or combined into a greater whole, every Air Tag includes a `re
 This example:
 
 ```
-from air import Article, H1, P
+from air import H1, Article, P
 
 content = Article(
     H1("Air Tags"),
@@ -870,7 +867,10 @@ content.render()
 ```
 
 ```
-<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+<article>
+  <h1>Air Tags</h1>
+  <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
+</article>
 ```
 
 A shortcut for the `render()` method is the `str()` built-ins.
@@ -880,7 +880,10 @@ str(content)
 ```
 
 ```
-<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+<article>
+  <h1>Air Tags</h1>
+  <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
+</article>
 ```
 
 The `print()` built-in also does this conversion, but the result goes to `stdout`, so can't be saved to a variable.
@@ -890,7 +893,10 @@ print(content)
 ```
 
 ```
-<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+<article>
+  <h1>Air Tags</h1>
+  <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
+</article>
 ```
 
 Note
@@ -921,7 +927,9 @@ Combine Air Tag's `.pretty_render()` method with the [rich package](https://gith
 **Air Tags** convert keyword arguments into attributes. So:
 
 ```
-air.P('Hello', id_="mine")
+import air
+
+air.P("Hello", id_="mine")
 ```
 
 renders as:
@@ -973,7 +981,7 @@ air.Label("Email", air.Input(name="email", type_="email"), for_="email")
 renders as
 
 ```
-<label for="email">Email<input name="email" type="email"></label>
+<label for="email">Email<input name="email" type="email" /></label>
 ```
 
 #### Setting the `async` attribute
@@ -990,7 +998,9 @@ air.Script(
 renders as
 
 ```
-<script async>console.log("Hello, world!");</script>
+<script async>
+  console.log("Hello, world!");
+</script>
 ```
 
 ### Attributes starting with special characters
@@ -1022,8 +1032,8 @@ Renders as:
 
 ```
 <select>
-    <option selected value="SA">South America</option>
-    <option value="NA">North America</option>
+  <option selected value="SA">South America</option>
+  <option value="NA">North America</option>
 </select>
 ```
 
@@ -1117,10 +1127,10 @@ Which produces the following HTML:
 
 ```
 <article>
-    <header>Card Header</header>
-    <p>This is a card with some content.</p>
-    <p>It can have multiple paragraphs.</p>
-    <footer>Card Footer</footer>
+  <header>Card Header</header>
+  <p>This is a card with some content.</p>
+  <p>It can have multiple paragraphs.</p>
+  <footer>Card Footer</footer>
 </article>
 ```
 
@@ -1164,15 +1174,9 @@ This will generate HTML that looks something like this, without any wrapping tex
 
 ```
 <!-- Mark that an item has been added to the cart -->
-<button
-    hx-post="/cart/add/35"
-    hx-swap-oob="true"
-    id="add-button"
-    >Added!</button>
+<button hx-post="/cart/add/35" hx-swap-oob="true" id="add-button">Added!</button>
 <!-- Cart icon quantity changed -->
-<a id="cart-icon" href="/cart"
-    hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true"
-     >Cart 2</a>
+<a id="cart-icon" href="/cart" hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true">Cart 2</a>
 ```
 
 ## Converting HTML to Air Tags
@@ -1221,7 +1225,7 @@ This is useful for preventing security issues like code injection by malignant u
 By default, Jinja2 escapes nothing. It puts the burden of safety on the developer. To make Jinja2 escape text, use the `e` filter.
 
 ```
-{% set h1 = '<h1>Hello, World!</h1>' %}
+{% set h1 = "<h1>Hello, World!</h1>" %}
 {{ h1|e }}
 ```
 
@@ -1265,13 +1269,13 @@ Renders as:
 
 ```
 <style>
-p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #333;
-  max-width: 60ch;
-  margin: 1em auto;
-}
+  p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #333;
+    max-width: 60ch;
+    margin: 1em auto;
+  }
 </style>
 ```
 
@@ -1280,6 +1284,8 @@ p {
 To avoid escaping JavaScript, use the `Script` tag:
 
 ```
+import air
+
 air.Script("""
 function capitalize(str) {
   if (!str) return '';
@@ -1292,10 +1298,10 @@ Renders as:
 
 ```
 <script>
-function capitalize(str) {
-  if (!str) return '';
-  return str[0].toUpperCase() + str.slice(1);
-}
+  function capitalize(str) {
+    if (!str) return "";
+    return str[0].toUpperCase() + str.slice(1);
+  }
 </script>
 ```
 
@@ -1304,13 +1310,15 @@ function capitalize(str) {
 To avoid escaping anything and everything, use the `Raw` tag:
 
 ```
-air.Raw("<h1>Hello, World<h1>")
+import air
+
+air.Raw("<h1>Hello, World</h1>")
 ```
 
 Renders as:
 
 ```
-<h1>Hello, World<h1>
+<h1>Hello, World</h1>
 ```
 
 # Forms
@@ -1372,7 +1380,7 @@ Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseM
 ### A Sample Contact Air Form
 
 ```
-from air import AirForm, AirField, AirModel
+from air import AirField, AirModel
 
 
 class ContactModel(AirModel):
@@ -1392,12 +1400,14 @@ contact_form.render()
 
 ```
 <fieldset>
-    <label>name
-        <input name="name" type="text" id="name" />
-    </label>
-    <label>Email
-        <input name="email" type="email" id="email" />
-    </label>
+  <label
+    >name
+    <input name="name" type="text" id="name" />
+  </label>
+  <label
+    >Email
+    <input name="email" type="email" id="email" />
+  </label>
 </fieldset>
 ```
 
@@ -1417,16 +1427,16 @@ contact_form.render()
 
 ```
 <fieldset>
-    <label>
-        name
-        <input name="name" type="text" id="name" aria-invalid="true" />
-        <small id="name-error">This field is required.</small>
-    </label>
-    <label>
-        Email
-        <input name="email" type="email" id="email" aria-invalid="true" />
-        <small id="email-error">This field is required.</small>
-    </label>
+  <label>
+    name
+    <input name="name" type="text" id="name" aria-invalid="true" />
+    <small id="name-error">This field is required.</small>
+  </label>
+  <label>
+    Email
+    <input name="email" type="email" id="email" aria-invalid="true" />
+    <small id="email-error">This field is required.</small>
+  </label>
 </fieldset>
 ```
 
@@ -1486,25 +1496,23 @@ Here's a simple Jinja layout file:
 templates/base.html
 
 ```
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-        <script
-            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
-            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
-            crossorigin="anonymous"></script>
-        <title>{{title}}</title>
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+                integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
+                crossorigin="anonymous"></script>
+        <title>{{ title }}</title>
     </head>
     <body>
         <main class="container">
-        {# We need to safe the content, which can be
+            {# We need to safe the content, which can be
             a security risk. We'll cover mitigation
             of such issues later on this page.
         #}
-        {{content|safe}}
+            {{ content|safe }}
         </main>
     </body>
 </html>
@@ -1515,9 +1523,9 @@ If you've used Jinja before this should look familiar. Now let's add in our Air 
 main.py
 
 ```
+import air
 from air import Air
 from air.requests import Request
-import air
 
 app = Air()
 
@@ -1753,8 +1761,9 @@ async def logout(request: air.Request):
 In Air and FastAPI apps we frequently rely on dependencies to handle authentication. Dependencies are a powerful way to share logic between different parts of your application. Here's a simple authentication dependency example:
 
 ```
-import air
 from fastapi import HTTPException
+
+import air
 
 
 def require_login(request: air.Request):
@@ -1807,8 +1816,9 @@ async def dashboard(request: air.Request, user=Depends(require_login)):
 Here's a more complete example that includes a login page, a protected dashboard page, and logout functionality using the `require_login` dependency:
 
 ```
-import air
 from fastapi import Depends, HTTPException
+
+import air
 
 app = air.Air()
 app.add_middleware(air.SessionMiddleware, secret_key="change-me")
@@ -1831,9 +1841,7 @@ def require_login(request: air.Request):
 # --- Routes ---
 @app.page
 async def index(request: air.Request):
-    return air.layouts.mvpcss(
-        air.H1("Landing page"), air.P(air.A("Dashboard", href="/dashboard"))
-    )
+    return air.layouts.mvpcss(air.H1("Landing page"), air.P(air.A("Dashboard", href="/dashboard")))
 
 
 @app.page
@@ -1908,9 +1916,7 @@ app = air.Air()
 
 @app.page
 def index():
-    return air.layouts.mvpcss(
-        air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard"))
-    )
+    return air.layouts.mvpcss(air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard")))
 ```
 
 Now for the dashboard, instead of using the typical `air.Air` tool to instantiate our application, we use `air.AirRouter` like so:
@@ -1925,9 +1931,7 @@ router = air.AirRouter()
 
 @router.page
 def dashboard():
-    return air.layouts.mvpcss(
-        air.H1("Avatar Data Dashboard"), air.P(air.A("<- Home", href="/"))
-    )
+    return air.layouts.mvpcss(air.H1("Avatar Data Dashboard"), air.P(air.A("<- Home", href="/")))
 ```
 
 Now if we go back to our `main.py` we can use the `app.include_router()` method to include the dashboard in our app:
@@ -1971,9 +1975,7 @@ app = air.Air(title="Air")
 
 @app.page
 def index():
-    return air.layouts.mvpcss(
-        air.H1("Air landing page"), air.P(air.A("Shop", href="/shop"))
-    )
+    return air.layouts.mvpcss(air.H1("Air landing page"), air.P(air.A("Shop", href="/shop")))
 
 
 # Creating a separate app for the shop,
@@ -1996,8 +1998,9 @@ app.mount("/shop", shop)
 You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API, while your main Air app serves the landing, billing, and usage frontends.
 
 ```
-import air
 from fastapi import FastAPI
+
+import air
 
 # Create the landing page app using Air
 app = air.Air()
@@ -2035,8 +2038,9 @@ Mounting one FastAPI app is outside the scope of this guide. We recommend readin
 Air is great for building charts. Using [plotly](https://plotly.com/javascript/), here's a simple chart example.
 
 ```
-import air
 import json
+
+import air
 
 app = air.Air()
 
@@ -2044,27 +2048,23 @@ app = air.Air()
 @app.get("/")
 def index():
     title = "Air Chart Demo"
-    data = json.dumps(
-        {
-            "data": [
-                {
-                    "x": [0, 4, 5, 7, 8, 10],
-                    "y": [2, 9, 0, 4, 3, 6],
-                    "type": "scatter",
-                },
-                {
-                    "x": [0, 1, 2, 4, 8, 10],
-                    "y": [9, 2, 4, 3, 5, 0],
-                    "type": "scatter",
-                },
-            ],
-            "title": "Fun charts with Plotly and Air",
-            "description": (
-                "This is a demonstration of how to build a chart using Plotly and Air"
-            ),
-            "type": "scatter",
-        }
-    )
+    data = json.dumps({
+        "data": [
+            {
+                "x": [0, 4, 5, 7, 8, 10],
+                "y": [2, 9, 0, 4, 3, 6],
+                "type": "scatter",
+            },
+            {
+                "x": [0, 1, 2, 4, 8, 10],
+                "y": [9, 2, 4, 3, 5, 0],
+                "type": "scatter",
+            },
+        ],
+        "title": "Fun charts with Plotly and Air",
+        "description": ("This is a demonstration of how to build a chart using Plotly and Air"),
+        "type": "scatter",
+    })
     return air.layouts.mvpcss(
         air.Script(src="https://cdn.plot.ly/plotly-3.0.1.min.js"),
         air.Title(title),
@@ -2085,9 +2085,12 @@ def index():
 Air makes it possible to build charts that pull data from servers and animate the results. Here's an example being supplied with random numbers for the Air server.
 
 ```
+import air
+
 air.Children(
     air.Div(id_="randomChart"),
-    air.Script("""
+    air.Script(
+        """
         var data = {"data": [{"x": [0, 4, 5, 7, 8, 10], "y": [2, 9, 0, 4, 3, 6], "type": "scatter"}, {"x": [0, 1, 2, 4, 8, 10], "y": [9, 2, 4, 3, 5, 0], "type": "scatter"}], "title": "Fun charts with Plotly and Air", "description": "This is a demonstration of how to build a chart using Plotly and Air", "type": "scatter"};
         Plotly.newPlot('randomChart', data);""",
         # ID is used to help HTMX know where to replace data
@@ -2098,7 +2101,7 @@ air.Children(
         hx_get="/data",
         # When the data is fetched, replace the whole tag
         hx_swap="outerHTML",
-    )
+    ),
 )
 ```
 
@@ -6958,10 +6961,8 @@ app = air.Air()
 @app.page
 def index(request: air.Request):
     return air.layouts.mvpcss(
-        air.H1(f"From HTMX?"),
-        air.P(
-            f"This request came from an HTMX element on a page: {request.htmx}"
-        ),
+        air.H1("From HTMX?"),
+        air.P(f"This request came from an HTMX element on a page: {request.htmx}"),
     )
 ```
 

@@ -2513,33 +2513,31 @@
 <h2 id="using-jinja-for-the-html-layout">Using Jinja for the HTML Layout</h2>
 <p>Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes it's easy to construct layouts using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is easier.</p>
 <p>Here's a simple Jinja layout file:</p>
-<div class="highlight"><span class="filename">templates/base.html</span><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="nt">link</span>
-            <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span>
-            <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css&quot;</span> <span class="p">/&gt;</span>
-        <span class="p">&lt;</span><span class="nt">script</span>
-            <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js&quot;</span>
-            <span class="na">integrity</span><span class="o">=</span><span class="s">&quot;sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm&quot;</span>
-            <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span><span class="cp">{{</span><span class="nv">title</span><span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="nt">main</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
-        <span class="c">{# We need to safe the content, which can be</span>
+<div class="highlight"><span class="filename">templates/base.html</span><pre><span></span><code><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">    &lt;head&gt;</span>
+<span class="x">        &lt;link rel=&quot;stylesheet&quot;</span>
+<span class="x">              href=&quot;https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css&quot; /&gt;</span>
+<span class="x">        &lt;script src=&quot;https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js&quot;</span>
+<span class="x">                integrity=&quot;sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm&quot;</span>
+<span class="x">                crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</span>
+<span class="x">        &lt;title&gt;</span><span class="cp">{{</span> <span class="nv">title</span> <span class="cp">}}</span><span class="x">&lt;/title&gt;</span>
+<span class="x">    &lt;/head&gt;</span>
+<span class="x">    &lt;body&gt;</span>
+<span class="x">        &lt;main class=&quot;container&quot;&gt;</span>
+<span class="x">            </span><span class="c">{# We need to safe the content, which can be</span>
 <span class="c">            a security risk. We&#39;ll cover mitigation</span>
 <span class="c">            of such issues later on this page.</span>
 <span class="c">        #}</span>
-        <span class="cp">{{</span><span class="nv">content</span><span class="o">|</span><span class="nf">safe</span><span class="cp">}}</span>
-        <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="x">            </span><span class="cp">{{</span> <span class="nv">content</span><span class="o">|</span><span class="nf">safe</span> <span class="cp">}}</span>
+<span class="x">        &lt;/main&gt;</span>
+<span class="x">    &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
 </code></pre></div>
 <p>If you've used Jinja before this should look familiar. Now let's add in our Air Tags-powered content, which we'll do from the view.</p>
-<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">air</span><span class="w"> </span><span class="kn">import</span> <span class="n">Air</span>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">air</span><span class="w"> </span><span class="kn">import</span> <span class="n">Air</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">air.requests</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Air</span><span class="p">()</span>
 

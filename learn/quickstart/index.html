@@ -3279,9 +3279,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">page</span>
 <span class="hll"><span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">():</span>
-</span>    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">Script</span><span class="p">(</span>
-        <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js&quot;</span>
-    <span class="p">)</span>
+</span>    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">Script</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="inline-scripts">Inline Scripts</h3>
 <p>When you need to use JavaScript inline in Air Tags:</p>
@@ -3337,15 +3335,15 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <h2 id="jinja">Jinja</h2>
 <p>In addition to Air Tags, Air supports Jinja natively. In addition to being great at delivering HTML content, Jinja can be used to render all kinds of content.</p>
 <p>Here's a simple Jinja template:</p>
-<div class="highlight"><span class="filename">templates/base.html</span><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="nt">main</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
-          <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span><span class="cp">{{</span><span class="nv">title</span><span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-          <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="cp">{{</span><span class="nv">message</span><span class="cp">}}</span><span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-        <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+<div class="highlight"><span class="filename">templates/base.html</span><pre><span></span><code><span class="x">&lt;!DOCTYPE html&gt;</span>
+<span class="x">&lt;html&gt;</span>
+<span class="x">    &lt;body&gt;</span>
+<span class="x">        &lt;main class=&quot;container&quot;&gt;</span>
+<span class="x">            &lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">title</span> <span class="cp">}}</span><span class="x">&lt;/h1&gt;</span>
+<span class="x">            &lt;p&gt;</span><span class="cp">{{</span> <span class="nv">message</span> <span class="cp">}}</span><span class="x">&lt;/p&gt;</span>
+<span class="x">        &lt;/main&gt;</span>
+<span class="x">    &lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
 </code></pre></div>
 <p>And here's the view that calls it:</p>
 <div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
@@ -3375,12 +3373,12 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 </ol>
 <h3 id="jinja-air-tags">Jinja + Air Tags</h3>
 <p>It is very easy to include Air Tags in Jinja. Let's first create our template:</p>
-<div class="highlight"><span class="filename">templates/avatar.html</span><pre><span></span><code><span class="x">&lt;!doctype html&gt;</span>
+<div class="highlight"><span class="filename">templates/avatar.html</span><pre><span></span><code><span class="x">&lt;!DOCTYPE html&gt;</span>
 <span class="x">&lt;html&gt;</span>
 <span class="x">    &lt;body&gt;</span>
 <span class="x">        &lt;main class=&quot;container&quot;&gt;</span>
-<span class="x">          &lt;h1&gt;</span><span class="cp">{{</span><span class="nv">title</span><span class="cp">}}</span><span class="x">&lt;/h1&gt;</span>
-<span class="hll"><span class="x">          </span><span class="cp">{{</span><span class="nv">fragment</span><span class="o">|</span><span class="nf">safe</span><span class="cp">}}</span><span class="x"> </span><span class="c">{# (1)! #}</span>
+<span class="x">            &lt;h1&gt;</span><span class="cp">{{</span> <span class="nv">title</span> <span class="cp">}}</span><span class="x">&lt;/h1&gt;</span>
+<span class="hll"><span class="x">            </span><span class="cp">{{</span> <span class="nv">fragment</span><span class="o">|</span><span class="nf">safe</span> <span class="cp">}}</span><span class="x"> </span><span class="c">{# (1)! #}</span>
 </span><span class="x">        &lt;/main&gt;</span>
 <span class="x">    &lt;/body&gt;</span>
 <span class="x">&lt;/html&gt;</span>
@@ -3402,11 +3400,9 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
         <span class="n">request</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="s2">&quot;avatar.html&quot;</span><span class="p">,</span>
 <span class="hll">        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Hello, Air Benders&quot;</span><span class="p">,</span>
-</span><span class="hll">        <span class="n">fragment</span><span class="o">=</span><span class="n">air</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
-</span><span class="hll">            <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;We are fans of the Last Avatar&quot;</span><span class="p">),</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;thing&quot;</span>
-</span><span class="hll">        <span class="p">),</span>  <span class="c1"># (1)!</span>
-</span>    <span class="p">)</span>
-</code></pre></div>
+</span><span class="hll">        <span class="n">fragment</span><span class="o">=</span><span class="n">air</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="s2">&quot;We are fans of the Last Avatar&quot;</span><span class="p">),</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;thing&quot;</span><span class="p">),</span>  <span class="c1"># (1)!</span>
+</span><span class="hll">    <span class="p">)</span>
+</span></code></pre></div>
 <ol>
 <li>We can pass Air Tags into the context of a Jinja template.</li>
 </ol>
@@ -3458,6 +3454,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 <h3 id="airforms-pydanticforms">AirForms: pydantic+forms</h3>
 <p>The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use pydantic models to determine how a form is constructed.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
 
 
@@ -3560,16 +3557,14 @@ pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </s
 </span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lottery_generator</span><span class="p">():</span>  <span class="c1"># (6)!</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-<span class="hll">        <span class="n">lottery_numbers</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-</span>            <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
-        <span class="p">)</span>
-        <span class="c1"># Tags work seamlessly</span>
+<span class="hll">        <span class="n">lottery_numbers</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)])</span>
+</span>        <span class="c1"># Tags work seamlessly</span>
         <span class="k">yield</span> <span class="n">air</span><span class="o">.</span><span class="n">Aside</span><span class="p">(</span><span class="n">lottery_numbers</span><span class="p">)</span>  <span class="c1"># (7)!</span>
         <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="hll">
-</span>
-<span class="nd">@app</span><span class="o">.</span><span class="n">page</span>
-<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lottery_numbers</span><span class="p">():</span>
+
+
+<span class="hll"><span class="nd">@app</span><span class="o">.</span><span class="n">page</span>
+</span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lottery_numbers</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">SSEResponse</span><span class="p">(</span><span class="n">lottery_generator</span><span class="p">())</span>  <span class="c1"># (8)!</span>
 </code></pre></div>
 <ol>

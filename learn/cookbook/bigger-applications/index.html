@@ -2581,9 +2581,7 @@
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">page</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span>
-        <span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Avatar Data&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;Dashboard&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/dashboard&quot;</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Avatar Data&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;Dashboard&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/dashboard&quot;</span><span class="p">)))</span>
 </code></pre></div>
 <p>Now for the dashboard, instead of using the typical <code>air.Air</code> tool to instantiate our application, we use <code>air.AirRouter</code> like so:</p>
 <div class="highlight"><span class="filename">dashboard.py</span><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
@@ -2593,9 +2591,7 @@
 
 <span class="nd">@router</span><span class="o">.</span><span class="n">page</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">dashboard</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span>
-        <span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Avatar Data Dashboard&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;&lt;- Home&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Avatar Data Dashboard&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;&lt;- Home&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">)))</span>
 </code></pre></div>
 <p>Now if we go back to our <code>main.py</code> we can use the <code>app.include_router()</code> method to include the dashboard in our app:</p>
 <div class="highlight"><span class="filename">main.py</span><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
@@ -2630,9 +2626,7 @@
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">page</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span>
-        <span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Air landing page&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;Shop&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/shop&quot;</span><span class="p">))</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">air</span><span class="o">.</span><span class="n">layouts</span><span class="o">.</span><span class="n">mvpcss</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="s2">&quot;Air landing page&quot;</span><span class="p">),</span> <span class="n">air</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">air</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="s2">&quot;Shop&quot;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/shop&quot;</span><span class="p">)))</span>
 
 
 <span class="c1"># Creating a separate app for the shop,</span>
@@ -2651,8 +2645,9 @@
 </code></pre></div>
 <h2 id="mounting-fastapi-inside-of-air-apps">Mounting FastAPI inside of Air apps</h2>
 <p>You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API, while your main Air app serves the landing, billing, and usage frontends.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">air</span>
 
 <span class="c1"># Create the landing page app using Air</span>
 <span class="n">app</span> <span class="o">=</span> <span class="n">air</span><span class="o">.</span><span class="n">Air</span><span class="p">()</span>

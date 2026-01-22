@@ -88,10 +88,8 @@ app = air.Air()
 @app.page
 def index(request: air.Request):
     return air.layouts.mvpcss(
-        air.H1(f"From HTMX?"),
-        air.P(
-            f"This request came from an HTMX element on a page: {request.htmx}"
-        ),
+        air.H1("From HTMX?"),
+        air.P(f"This request came from an HTMX element on a page: {request.htmx}"),
     )
 ```
 
