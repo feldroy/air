@@ -1,20 +1,32 @@
 {
   "$schema": "https://raw.githubusercontent.com/hougesen/mdsf/refs/heads/main/schemas/v0.11.1/mdsf.schema.json",
+  "language_aliases": {
+    "IPython Notebook": "Jupyter Notebook",
+    "bash": "shell",
+    "bash session": "console",
+    "md": "markdown",
+    "py": "python",
+    "sh": "shell",
+    "zsh": "shell"
+  },
   "languages": {
-    "json": "oxfmt",
-    "jsonc": "oxfmt",
-    "json5": "oxfmt",
-    "html": "oxfmt",
+    "Jupyter Notebook": [
+      "ruff:format",
+      "ruff:check"
+    ],
+    "console": [],
     "css": "oxfmt",
+    "html": "oxfmt",
     "jinja": "djlint",
+    "json": "oxfmt",
+    "json5": "oxfmt",
+    "jsonc": "oxfmt",
+    "markdown": [],
+    "pycon": [],
     "python": [
       "ruff:format",
       "ruff:check",
       "ty"
-    ],
-    "Jupyter Notebook": [
-      "ruff:format",
-      "ruff:check"
     ],
     "shell": [
       "shfmt"
@@ -23,19 +35,7 @@
       "tombi:format",
       "tombi:lint"
     ],
-    "yaml": "yamlfmt",
-    "markdown": [],
-    "console": [],
-    "pycon": []
-  },
-  "language_aliases": {
-    "bash": "shell",
-    "sh": "shell",
-    "zsh": "shell",
-    "py": "python",
-    "bash session": "console",
-    "IPython Notebook": "Jupyter Notebook",
-    "md": "markdown"
+    "yaml": "yamlfmt"
   },
   "runners": {
     "bunx": true,
