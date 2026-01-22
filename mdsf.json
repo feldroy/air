@@ -12,14 +12,12 @@
       "ruff:check",
       "ty"
     ],
-    "shell": [
-      "shfmt",
-      "beautysh",
-      "shellcheck"
+    "Jupyter Notebook": [
+      "ruff:format",
+      "ruff:check"
     ],
-    "console": [
-      "shfmt",
-      "beautysh"
+    "shell": [
+      "shfmt"
     ],
     "toml": [
       "tombi:format",
@@ -27,6 +25,7 @@
     ],
     "yaml": "yamlfmt",
     "markdown": [],
+    "console": [],
     "pycon": []
   },
   "language_aliases": {
@@ -34,6 +33,8 @@
     "sh": "shell",
     "zsh": "shell",
     "py": "python",
+    "bash session": "console",
+    "IPython Notebook": "Jupyter Notebook",
     "md": "markdown"
   },
   "runners": {
