@@ -147,8 +147,9 @@ async def index():
 Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
 
 ```python
-import air
 from fastapi import FastAPI
+
+import air
 
 app = air.Air()
 api = FastAPI()
@@ -179,8 +180,9 @@ app.mount("/api", api)
 Want to use Jinja2 instead of Air Tags? We've got you covered.
 
 ```python
-import air
 from fastapi import FastAPI
+
+import air
 
 app = air.Air()
 api = FastAPI()
@@ -208,15 +210,15 @@ Don't forget the Jinja template!
 ```html
 <!doctype html>
 <html>
-    <head>
-        <title>Awesome SaaS</title>
-    </head>
-    <body>
-        <h1>Awesome SaaS</h1>
-        <p>
-            <a target="_blank" href="/api/docs">API Docs</a>
-        </p>
-    </body>
+  <head>
+    <title>Awesome SaaS</title>
+  </head>
+  <body>
+    <h1>Awesome SaaS</h1>
+    <p>
+      <a target="_blank" href="/api/docs">API Docs</a>
+    </p>
+  </body>
 </html>
 ```
 

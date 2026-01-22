@@ -20,7 +20,7 @@ You can copy the provided sample Dockerfile and put it in your project folder.
 
 Before attempting to build, ensure that you have installed the dependencies required by Air and your application. The following dependencies are for the sample airblog app:
 
-```text
+```bash
 uv add "air[standard]"
 uv add "uvicorn"
 uv add "frontmatter"

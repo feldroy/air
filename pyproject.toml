@@ -130,10 +130,15 @@ docs = [
     "mkdocstrings[python]>=0.30.0", # https://pypi.org/project/mkdocstrings
 ]
 lint = [
-    "prek>=0.2.24", # https://pypi.org/project/prek
+    "beautysh>=6.4.2", # https://pypi.org/project/beautysh
+    "djlint>=1.36.4", # https://pypi.org/project/djlint
+    "google-yamlfmt>=0.21.0", # https://pypi.org/project/google-yamlfmt
+    "prek>=0.3.0", # https://pypi.org/project/prek
     "pyrefly>=0.29.1", # https://pypi.org/project/pyrefly
     "ruff>=0.11.13", # https://pypi.org/project/ruff
     "rumdl>=0.0.210", # https://pypi.org/project/rumdl
+    "shellcheck-py>=0.11.0.1", # https://pypi.org/project/shellcheck-py
+    "shfmt-py>=3.12.0.2", # https://pypi.org/project/shfmt-py
     "ty>=0.0.1a16", # https://pypi.org/project/ty
     "types-Markdown>=3.8.0", # https://pypi.org/project/types-Markdown
     "types-lxml>=2025.11.25", # https://pypi.org/project/types-lxml

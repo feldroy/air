@@ -56,7 +56,7 @@ Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseM
 ### A Sample Contact Air Form
 
 ```python
-from air import AirForm, AirField, AirModel
+from air import AirField, AirModel
 
 
 class ContactModel(AirModel):
@@ -76,12 +76,14 @@ contact_form.render()
 
 ```html
 <fieldset>
-    <label>name
-        <input name="name" type="text" id="name" />
-    </label>
-    <label>Email
-        <input name="email" type="email" id="email" />
-    </label>
+  <label
+    >name
+    <input name="name" type="text" id="name" />
+  </label>
+  <label
+    >Email
+    <input name="email" type="email" id="email" />
+  </label>
 </fieldset>
 ```
 
@@ -101,16 +103,16 @@ contact_form.render()
 
 ```html
 <fieldset>
-    <label>
-        name
-        <input name="name" type="text" id="name" aria-invalid="true" />
-        <small id="name-error">This field is required.</small>
-    </label>
-    <label>
-        Email
-        <input name="email" type="email" id="email" aria-invalid="true" />
-        <small id="email-error">This field is required.</small>
-    </label>
+  <label>
+    name
+    <input name="name" type="text" id="name" aria-invalid="true" />
+    <small id="name-error">This field is required.</small>
+  </label>
+  <label>
+    Email
+    <input name="email" type="email" id="email" aria-invalid="true" />
+    <small id="email-error">This field is required.</small>
+  </label>
 </fieldset>
 ```
 

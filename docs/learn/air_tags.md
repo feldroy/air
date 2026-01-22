@@ -12,7 +12,7 @@ Used individually or combined into a greater whole, every Air Tag includes a `re
 This example:
 
 ```python
-from air import Article, H1, P
+from air import H1, Article, P
 
 content = Article(
     H1("Air Tags"),
@@ -33,7 +33,10 @@ content.render()
 ```
 
 ```html
-<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+<article>
+  <h1>Air Tags</h1>
+  <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
+</article>
 ```
 
 A shortcut for the `render()` method is the `str()` built-ins.
@@ -43,7 +46,10 @@ str(content)
 ```
 
 ```html
-<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+<article>
+  <h1>Air Tags</h1>
+  <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
+</article>
 ```
 
 The `print()` built-in also does this conversion, but the result goes to `stdout`, so can't be saved to a variable.
@@ -53,7 +59,10 @@ print(content)
 ```
 
 ```html
-<article><h1>Air Tags</h1><p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p></article>
+<article>
+  <h1>Air Tags</h1>
+  <p class="subtitle">Air Tags are a fast, expressive way to generate HTML.</p>
+</article>
 ```
 
 !!! note
@@ -83,8 +92,10 @@ print(content.pretty_render())
 
 **Air Tags** convert keyword arguments into attributes. So:
 
-```python+html
-air.P('Hello', id_="mine")
+```python
+import air
+
+air.P("Hello", id_="mine")
 ```
 
 renders as:
@@ -136,7 +147,7 @@ air.Label("Email", air.Input(name="email", type_="email"), for_="email")
 renders as
 
 ```html
-<label for="email">Email<input name="email" type="email"></label>
+<label for="email">Email<input name="email" type="email" /></label>
 ```
 
 #### Setting the `async` attribute
@@ -153,7 +164,9 @@ air.Script(
 renders as
 
 ```html
-<script async>console.log("Hello, world!");</script>
+<script async>
+  console.log("Hello, world!");
+</script>
 ```
 
 ### Attributes starting with special characters
@@ -185,8 +198,8 @@ Renders as:
 
 ```html
 <select>
-    <option selected value="SA">South America</option>
-    <option value="NA">North America</option>
+  <option selected value="SA">South America</option>
+  <option value="NA">North America</option>
 </select>
 ```
 
@@ -280,10 +293,10 @@ Which produces the following HTML:
 
 ```html
 <article>
-    <header>Card Header</header>
-    <p>This is a card with some content.</p>
-    <p>It can have multiple paragraphs.</p>
-    <footer>Card Footer</footer>
+  <header>Card Header</header>
+  <p>This is a card with some content.</p>
+  <p>It can have multiple paragraphs.</p>
+  <footer>Card Footer</footer>
 </article>
 ```
 
@@ -327,15 +340,9 @@ This will generate HTML that looks something like this, without any wrapping tex
 
 ```html
 <!-- Mark that an item has been added to the cart -->
-<button
-    hx-post="/cart/add/35"
-    hx-swap-oob="true"
-    id="add-button"
-    >Added!</button>
+<button hx-post="/cart/add/35" hx-swap-oob="true" id="add-button">Added!</button>
 <!-- Cart icon quantity changed -->
-<a id="cart-icon" href="/cart"
-    hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true"
-     >Cart 2</a>
+<a id="cart-icon" href="/cart" hx-trigger="polling 30s" hx-get="/cart-icon" hx-swap-oob="true">Cart 2</a>
 ```
 
 ## Converting HTML to Air Tags

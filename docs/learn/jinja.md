@@ -18,26 +18,24 @@ Air Tags are powerful but for those of us with a lot of experience with HTML, so
 
 Here's a simple Jinja layout file:
 
-```html+jinja title="templates/base.html"
-<!doctype html>
+```jinja title="templates/base.html"
+<!DOCTYPE html>
 <html>
     <head>
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-        <script
-            src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
-            integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
-            crossorigin="anonymous"></script>
-        <title>{{title}}</title>
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
+                integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
+                crossorigin="anonymous"></script>
+        <title>{{ title }}</title>
     </head>
     <body>
         <main class="container">
-        {# We need to safe the content, which can be
+            {# We need to safe the content, which can be
             a security risk. We'll cover mitigation
             of such issues later on this page.
         #}
-        {{content|safe}}
+            {{ content|safe }}
         </main>
     </body>
 </html>
@@ -46,9 +44,9 @@ Here's a simple Jinja layout file:
 If you've used Jinja before this should look familiar. Now let's add in our Air Tags-powered content, which we'll do from the view.
 
 ```python title="main.py"
+import air
 from air import Air
 from air.requests import Request
-import air
 
 app = Air()
 
