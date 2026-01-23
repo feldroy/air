@@ -29,10 +29,6 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
-BRANCH_NAME := `git branch --show-current`
-PREK_RUN_ARG := "--all-files"
-# TODO -> Use the line bellow to run prek only on the files changes by the PR branch:
-#PREK_RUN_ARG := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref main" }
 
 # -----------------------------------------------------------------------------
 # RECIPES:
@@ -165,12 +161,115 @@ pin-github-action-versions:
 renovate-config-validator:
     npx --yes --package renovate@latest -- renovate-config-validator --strict .github/renovate.json5
 
+# --------------------------------------- prek ------------------------------------------------------------------------
+BRANCH_NAME := `git branch --show-current`
+DEFAULT_PREK_FILES := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref upstream/main" }
+PREK_RUN_ARG := "--all-files" # TODO -> Delete this var.
+# prek run --config .pre-commit-config-check.yaml --files $(git ls-files --modified) ✅
+# prek run rumdl --config .pre-commit-config-check.yaml --files $(git ls-files --modified) ✅
+# prek run --last-commit --config .pre-commit-config-check.yaml ✅
+# prek run --from-ref upstream/main --config .pre-commit-config-check.yaml ✅
+# git diff --quiet || { echo "Unstaged changes, stopping."; }
+
+
+
+
+text505 B=BRANCH_NAME:
+    echo {{ B }}
+
+UNCOMMITTED_CHANGES_WARNING_MSG := (
+    "You have uncommitted changes (staged and/or unstaged)." +
+    "Please commit (or stash) them before running this recipe."
+)
+
+# Check for uncommitted changes (staged and/or unstaged)!
+[group('git')]
+@check-uncommitted-changes:
+  git diff --quiet && git diff --cached --quiet || { echo "{{ UNCOMMITTED_CHANGES_WARNING_MSG }}"; exit 1; }
+
+# [arg("HOOKS_OR_PROJECTS", long="hooks-or-projects", help="Include the specified hooks or projects")]
+
+# Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
+[group('prek')]
+[arg("CONFIG_FILE", long="config-file", help="Path to alternate config file")]
+[arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
+[arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
+[arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
+[arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
+[arg("PR_CHANGES", long="pr-changes", value="--from-ref upstream/main", help="Use verbose output")]
+[arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Use verbose output")]
+[arg("UNSTAGED_CHANGES", long="unstaged-changes", value="--files $(git ls-files --modified)", help="Use verbose output")]
+[arg("FILES", long="files", help="Specific filenames to run hooks on")]
+prek-run \
+        CONFIG_FILE \
+        DRY_RUN="" FAIL_FAST="" VERBOSE="" \
+        ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
+        FILES=DEFAULT_PREK_FILES *HOOKS_OR_PROJECTS:
+    just check-uncommitted-changes
+    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+    just run -- prek run {{ HOOKS_OR_PROJECTS }} \
+                         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} \
+                         {{ ALL_FILES }} {{ PR_CHANGES }} {{ LAST_COMMIT }} {{ UNSTAGED_CHANGES }} \
+                         --config {{ CONFIG_FILE }} \
+                         {{ FILES }}
+
+# 1. if BRANCH_NAME == "main" -> --all-files (Default)
+# -. if BRANCH_NAME != "main":
+#    2. --all-files
+#    3. --last-commit
+#    4. --from-ref upstream/main (PR changes) (Default)
+#    5. --files $(git ls-files --modified) (Unstaged changes)
+#    5. --from-ref "@{upstream}" (Local changes(not pushed yet))
+
+#prek-run-old CONFIG_FILE MODE FILES=DEFAULT_PREK_FILES *HOOKS_OR_PROJECTS:
+#   just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
+# 1.
+#   just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --all-files
+# 2.
+#    just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --last-commit
+# 3.
+#    just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --from-ref upstream/main
+# 4.
+#    just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --files $(git ls-files --modified)
+
+# [Run on all files in the repo]
+[group('prek')]
+@prek-run-all-files:
+    just prek-run --files --all-files
+    just prek-run --files --last-commit
+    just prek-run --files --all-files
+
+# [Stop running hooks after the first failure]
+[group('prek')]
+@prek-run-fast: && (prek-run "--fail-fast")
+
+# [Do not run the hooks, but print the hooks that would have been run]
+[group('prek')]
+@prek-run-dry-run: && (prek-run "--dry-run")
+
+# [print diagnostics for prek, with hook id and duration]
+[group('prek')]
+@prek-run-verbose: && (prek-run "--verbose")
+
+# Format - Fix formatting and lint violations - Write formatted files back!
+[group('qa')]
+format *HOOKS_OR_PROJECTS:
+    just prek-run --config-file .pre-commit-config-format.yaml {{ HOOKS_OR_PROJECTS }}
+
+# Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
+[group('qa')]
+lint *HOOKS_OR_PROJECTS:
+    just prek-run --config-file .pre-commit-config-check.yaml {{ HOOKS_OR_PROJECTS }}
+
+# --------------------------------------- prek ------------------------------------------------------------------------
+
+
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-format *ARGS:
+format-old *ARGS:
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml {{ ARGS }}
@@ -181,7 +280,7 @@ format *ARGS:
 
 # [Do not run the hooks, but print the hooks that would have been run]
 [group('qa')]
-@format-dry-runw: && (format "--dry-run")
+@format-dry-run: && (format "--dry-run")
 
 # [print diagnostics for prek, with hook id and duration]
 [group('qa')]
@@ -194,12 +293,6 @@ ruff-format OUTPUT_FORMAT="full" UNSAFE="":
     just run -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
     just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
-    # Check for spelling and grammar violations and apply fixes
-    just run -- typos --write-changes --format={{ if OUTPUT_FORMAT == "concise" { "brief" } else { "long" } }}
-    just run -- codespell --write-changes
-    # Check for missing examples in docstrings
-    just run -- python scripts/missing_examples.py --mode check
-    just run -- prek run --all-files --config .pre-commit-config-format.yaml
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -215,7 +308,7 @@ ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-lint *ARGS:
+lint-old *ARGS:
     # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml {{ ARGS }}
