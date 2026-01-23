@@ -7,6 +7,7 @@
   dependencyDashboard: true,
   configMigration: true,
   updatePinnedDependencies: true,
+  separateMajorMinor: false,
   extends: [
     "config:best-practices",
     "helpers:pinGitHubActionDigestsToSemver",
