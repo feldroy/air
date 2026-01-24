@@ -1,25 +1,28 @@
-# =============================================================================
+# ======================================================================================================================
 # justfile: A makefile like build script -- Command Runner
-# =============================================================================
+# ======================================================================================================================
 # USAGE:
 #   just --list
 #   just <RECIPE>
 #   just <RECIPE> <PARAM_VALUE1> ...
+#   just --usage <RECIPE>
 #
 # Docs:
-#   * https://just.systems/man/en/
-# =============================================================================
-# -- Load environment-variables from "$HERE/.env" file (if exists)
+#   * https://just.systems/man/en
+# ======================================================================================================================
 
+# ----------------------------------------------------------------------------------------------------------------------
+# SETTINGS:
+# ----------------------------------------------------------------------------------------------------------------------
 set dotenv-load := true
 set dotenv-filename := ".env"
 set export := true
 set unstable := true
 
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
 # CONFIG:
-# -----------------------------------------------------------------------------
-
+# ----------------------------------------------------------------------------------------------------------------------
+# region ------------------------------------------------> config <----------------------------------------------------
 HERE := justfile_directory()
 MARKER_DIR := HERE
 PYTHON_VERSION := trim(read(".python-version"))
@@ -35,21 +38,18 @@ UNCOMMITTED_CHANGES_WARNING_MSG := (
     "You have uncommitted changes (staged and/or unstaged)." +
     " Please commit (or stash) them before running this recipe!"
 )
-# -----------------------------------------------------------------------------
+# endregion -----------------------------------------------> config <---------------------------------------------------
+
+# ----------------------------------------------------------------------------------------------------------------------
 # RECIPES:
-# -----------------------------------------------------------------------------
-# region ----> Just CLI helpers (meta) <----
+# ----------------------------------------------------------------------------------------------------------------------
+
+# region -------------------------------------------------> meta <-----------------------------------------------------
 
 # List all the justfile recipes
 [group('meta')]
 @list:
     just --list
-
-# Show the development Python version and the package's supported versions
-[group('meta')]
-@python-versions:
-    echo "Development Python version: {{ PYTHON_VERSION }}"
-    echo "Supported Python versions: {{ PYTHON_VERSIONS }}"
 
 # List recipe groups
 [group('meta')]
@@ -60,6 +60,11 @@ UNCOMMITTED_CHANGES_WARNING_MSG := (
 [group('meta')]
 @variables:
     just --variables
+
+# Print recipe usage information
+[group('meta')]
+@help RECIPE:
+    just --usage {{ RECIPE }}
 
 # just evaluate VARIABLE_NAME
 [group('meta')]
@@ -80,15 +85,54 @@ UNCOMMITTED_CHANGES_WARNING_MSG := (
 @run-if RECIPE ENABLED="":
   if [ -n "{{ENABLED}}" ]; then just "{{ RECIPE }}"; fi
 
+# endregion ------------------------------------------------> meta <----------------------------------------------------
+
+# region -------------------------------------------------> Misc <-----------------------------------------------------
+
+# Upgrade vale packages. <Don’t use! For maintainers only!>
+[group('misc')]
+upgrade-vale-packages:
+    just run -- vale sync
+
+# Show the development Python version and the package's supported versions
+[group('misc')]
+@python-versions:
+    echo "Development Python version: {{ PYTHON_VERSION }}"
+    echo "Supported Python versions: {{ PYTHON_VERSIONS }}"
+
 # Run a command and turn absolute paths into relative paths everywhere in its output
-[doc]
-[group('meta')]
+[group('misc')]
 [no-exit-message]
-[private]
 run-with-relative-paths +CMD:
     #!/usr/bin/env bash
     set -euo pipefail
     {{ CMD }} 2>&1 | sed "s|$HERE||g"
+
+# Run ipython using uv.
+[group('uv')]
+[group('misc')]
+ipython:
+    just run -- ipython
+
+# https://github.com/eclipse-csi/octopin
+# Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
+[group('misc')]
+pin-github-action-versions:
+    git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin@latest pin --inplace
+
+# Validate Renovate config
+renovate-config-validator:
+    npx --yes --package renovate@latest -- renovate-config-validator --strict .github/renovate.json5
+
+# Check for uncommitted changes (staged and/or unstaged)!
+[group('misc')]
+[group('git')]
+@check-uncommitted-changes:
+  git diff --quiet && git diff --staged --quiet || { echo "{{ UNCOMMITTED_CHANGES_WARNING_MSG }}"; exit 1; }
+
+# endregion ------------------------------------------------> Misc <----------------------------------------------------
+
+# region --------------------------------------------------> uv <------------------------------------------------------
 
 # Run a python module using uv
 [group('uv')]
@@ -124,14 +168,8 @@ run-with-relative-paths +CMD:
 
 # Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
 [group('uv')]
+[group('prek')]
 upgrade-dependencies: && upgrade-prek-hooks upgrade-uv-dependencies
-
-[group('uv')]
-upgrade-prek-hooks:
-    # Update pre-commit hook revisions in the checks config via prek
-    just run -- prek auto-update --config .pre-commit-config-check.yaml
-    # Update pre-commit hook revisions in the formatting config via prek
-    just run -- prek auto-update --config .pre-commit-config-format.yaml
 
 # Upgrade all dependencies using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
@@ -143,11 +181,6 @@ upgrade-uv-dependencies:
 modify-uv-dependency-version PACKAGE_NAME PACKAGE_VERSION:
     just sync-lock --upgrade-package {{ PACKAGE_NAME }}=={{ PACKAGE_VERSION }}
 
-# Upgrade vale packages. <Don’t use! For maintainers only!>
-[group('uv')]
-upgrade-vale-packages:
-    just run -- vale sync
-
 # Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
 sync:
@@ -158,42 +191,32 @@ sync:
 sync-lock *ARGS:
     uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
 
-# Run ipython using uv.
-[group('uv')]
-ipython:
-    just run -- ipython
+# endregion -------------------------------------------------> uv <-----------------------------------------------------
 
-# https://github.com/eclipse-csi/octopin
-# Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
-[group('uv')]
-pin-github-action-versions:
-    git ls-files -z -- '.github/workflows/*.y*ml' | xargs -0 uvx octopin@latest pin --inplace
+# region -------------------------------------------------> prek <-----------------------------------------------------
 
-# Validate Renovate config
-renovate-config-validator:
-    npx --yes --package renovate@latest -- renovate-config-validator --strict .github/renovate.json5
-
-# endregion ----> prek <----
-
-# Check for uncommitted changes (staged and/or unstaged)!
-[group('git')]
-@check-uncommitted-changes:
-  git diff --quiet && git diff --staged --quiet || { echo "{{ UNCOMMITTED_CHANGES_WARNING_MSG }}"; exit 1; }
-
-# [arg("HOOKS_OR_PROJECTS", long="hooks-or-projects", help="Include the specified hooks or projects")]
+[group('prek')]
+upgrade-prek-hooks:
+    # Update pre-commit hook revisions in the checks config via prek
+    just run -- prek auto-update --config .pre-commit-config-check.yaml
+    # Update pre-commit hook revisions in the formatting config via prek
+    just run -- prek auto-update --config .pre-commit-config-format.yaml
 
 # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
 [group('prek')]
 [private]
 [arg("CONFIG_FILE", long="config-file", help="Path to alternate config file")]
-[arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
+[arg("DRY_RUN", long="dry-run", value="--dry-run", \
+                help="Do not run the hooks, but print the hooks that would have been run")]
 [arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
 [arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
-[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", help="When hooks fail, run `git diff` directly afterward")]
+[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", \
+                             help="When hooks fail, run `git diff` directly afterward")]
 [arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
 [arg("PR_CHANGES", long="pr-changes", value="--from-ref origin/main", help="Run hooks on PR changes")]
 [arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Run hooks against the last commit")]
-[arg("UNSTAGED_CHANGES", long="unstaged-changes", value="--files $(git ls-files --modified)", help="Run hooks on unstaged changes")]
+[arg("UNSTAGED_CHANGES", long="unstaged-changes", value="--files $(git ls-files --modified)", \
+                         help="Run hooks on unstaged changes")]
 [arg("HOOKS_OR_PROJECTS", help="Include the specified hooks or projects")]
 prek-run \
         CONFIG_FILE \
@@ -209,10 +232,12 @@ prek-run \
 
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-[arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
+[arg("DRY_RUN", long="dry-run", value="--dry-run", \
+                help="Do not run the hooks, but print the hooks that would have been run")]
 [arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
 [arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
-[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", help="When hooks fail, run `git diff` directly afterward")]
+[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", \
+                             help="When hooks fail, run `git diff` directly afterward")]
 [arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
 [arg("PR_CHANGES", long="pr-changes", value="--pr-changes", help="Run hooks on PR changes")]
 [arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Run hooks against the last commit")]
@@ -225,15 +250,17 @@ prek-run \
     just prek-run --config-file .pre-commit-config-format.yaml \
         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
         {{ if ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES == "" { "--pr-changes" } \
-           else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
+           else { PR_CHANGES || ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
         {{ HOOKS_OR_PROJECTS }}
 
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-[arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
+[arg("DRY_RUN", long="dry-run", value="--dry-run", \
+                help="Do not run the hooks, but print the hooks that would have been run")]
 [arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
 [arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
-[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", help="When hooks fail, run `git diff` directly afterward")]
+[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", \
+                             help="When hooks fail, run `git diff` directly afterward")]
 [arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
 [arg("PR_CHANGES", long="pr-changes", value="--pr-changes", help="Run hooks on PR changes")]
 [arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Run hooks against the last commit")]
@@ -246,13 +273,12 @@ prek-run \
     just prek-run --config-file .pre-commit-config-check.yaml \
         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
         {{ if ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES == "" { "--pr-changes" } \
-           else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
+           else { PR_CHANGES || ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
         {{ HOOKS_OR_PROJECTS }}
 
-# endregion ----> prek <----
+# endregion ------------------------------------------------> prek <----------------------------------------------------
 
-# endregion Just CLI helpers (meta)
-# region ----> QA <----
+# region --------------------------------------------------> QA <------------------------------------------------------
 
 # ruff-format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
@@ -285,7 +311,8 @@ ruff-check OUTPUT_FORMAT="full":
 # Check for lint violations for all rules!
 [group('qa')]
 ruff-check-all TARGET=".":
-    just run -- ruff check --output-format=concise --select ALL --ignore CPY001,TC003,COM812,TD,D101,PLR0904,ARG004,FBT001,FBT002,SLF001 "{{TARGET}}"
+    just run -- ruff check --output-format=concise --select ALL \
+                           --ignore CPY001,TC003,COM812,TD,D101,PLR0904,ARG004,FBT001,FBT002,SLF001 "{{TARGET}}"
 
 # [print diagnostics concisely, one per line]
 [group('qa')]
@@ -324,8 +351,9 @@ qa-plus: qa test
 @ruff-graph: (title "Ruff - Graph")
     just run -- ruff analyze graph -q | rich - --force-terminal --json
 
-# endregion QA
-# region ----> Test <----
+# endregion -------------------------------------------------> QA <-----------------------------------------------------
+
+# region -------------------------------------------------> Test <-----------------------------------------------------
 
 # Run all the tests
 [group('test')]
@@ -368,8 +396,9 @@ tdd: && (pdb "1")
 test-durations:
     just run -- pytest --durations=10 -vvv --no-header
 
-# endregion Test
-# region ----> Coverage <----
+# endregion ------------------------------------------------> Test <----------------------------------------------------
+
+# region -----------------------------------------------> Coverage <---------------------------------------------------
 
 # Run Test Coverage
 [group('coverage')]
@@ -393,8 +422,9 @@ coverage-md: coverage-xml
     diff-cover coverage.xml --format "markdown:report.md"
     just readmd "report.md"
 
-# endregion Coverage
-# region ----> Rich <----
+# endregion ----------------------------------------------> Coverage <--------------------------------------------------
+
+# region -------------------------------------------------> Rich <-----------------------------------------------------
 
 # Print a centered title with a magenta rule
 [doc]
@@ -414,8 +444,9 @@ coverage-md: coverage-xml
 @readpy FILE_PATH: (title FILE_PATH)
     rich "{{ FILE_PATH }}" --syntax --line-numbers --guides --theme dracula --pager
 
-# endregion Rich
-# region ----> Docs <----
+# endregion ------------------------------------------------> Rich <----------------------------------------------------
+
+# region -------------------------------------------------> Docs <-----------------------------------------------------
 
 # View a Markdown file with rich using the Dracula theme
 [doc]
@@ -450,10 +481,13 @@ doc-serve-open:
 doc-build:
     just run -- mkdocs gh-deploy --force
 
-# endregion Docs
+# endregion ------------------------------------------------> Docs <----------------------------------------------------
+
+# region ------------------------------------------------> release <----------------------------------------------------
 
 # Build the project, useful for checking that packaging is correct
 [group('build')]
+[group('release')]
 build:
     rm -rf build
     rm -rf dist
@@ -470,3 +504,5 @@ tag:
     echo "Tagging version v{{ VERSION }}"
     git tag -a v{{ VERSION }} -m "Creating version v{{ VERSION }}"
     git push origin v{{ VERSION }}
+
+# endregion ----------------------------------------------> release <--------------------------------------------------
