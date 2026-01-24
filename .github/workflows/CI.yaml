@@ -44,21 +44,42 @@ defaults:
 
 jobs:
   lint:
-    name: Check for formatting and linting violations (via just, uv, ruff)
+    name: Check for formatting and linting violations (via just, uv, prek[pre-commit hooks])
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - name: Checkout (PR)
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Checkout (push)
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+          fetch-depth: 1
       - uses: taiki-e/install-action@3522286d40783523f9c7880e33f785905b4c20d0 # 2.66.1
         with:
           tool: just
       - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
-          enable-cache: false
+          enable-cache: true
+          cache-python: true
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+            .python-version
+            **/.pre-commit-*.y*ml
       - name: Check for formatting and linting violations
         run: just lint
+        env:
+          PREK_HOME: ${{ env.UV_CACHE_DIR }}/prek
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   type-check:
     name: Type Checking (via just, uv, ty)
     runs-on: ubuntu-latest
