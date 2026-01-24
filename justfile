@@ -226,7 +226,7 @@ prek-run \
     ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
     *HOOKS_OR_PROJECTS:
     just prek-run --config-file .pre-commit-config-format.yaml \
-        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
+        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
         {{ if ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES == "" { "--pr-changes" } \
            else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
         {{ HOOKS_OR_PROJECTS }}
@@ -247,7 +247,7 @@ prek-run \
     ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
     *HOOKS_OR_PROJECTS:
     just prek-run --config-file .pre-commit-config-check.yaml \
-        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
+        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
         {{ if ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES == "" { "--pr-changes" } \
            else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
         {{ HOOKS_OR_PROJECTS }}
