@@ -31,8 +31,6 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
 BRANCH_NAME := `git branch --show-current`
-PREK_RUN_ARG := "--all-files" # TODO -> Delete this var.
-
 UNCOMMITTED_CHANGES_WARNING_MSG := (
     "You have uncommitted changes (staged and/or unstaged)." +
     " Please commit (or stash) them before running this recipe!"
@@ -257,25 +255,6 @@ prek-run \
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
 
-# Format - Fix formatting and lint violations - Write formatted files back!
-[group('qa')]
-format-old *ARGS:
-    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
-    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-format.yaml {{ ARGS }}
-
-# [Stop running hooks after the first failure]
-[group('qa')]
-@format-fail-fast: && (format "--fail-fast")
-
-# [Do not run the hooks, but print the hooks that would have been run]
-[group('qa')]
-@format-dry-run: && (format "--dry-run")
-
-# [print diagnostics for prek, with hook id and duration]
-[group('qa')]
-@format-verbose: && (format "--verbose")
-
 # ruff-format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
 ruff-format OUTPUT_FORMAT="full" UNSAFE="":
@@ -295,25 +274,6 @@ ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 # [group messages by file]
 [group('qa')]
 @ruff-format-grouped: && (ruff-format "grouped")
-
-# Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
-[group('qa')]
-lint-old *ARGS:
-    # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
-    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek run {{ PREK_RUN_ARG }} --config .pre-commit-config-check.yaml {{ ARGS }}
-
-# [Stop running hooks after the first failure]
-[group('qa')]
-@lint-fail-fast: && (lint "--fail-fast")
-
-# [Do not run the hooks, but print the hooks that would have been run]
-[group('qa')]
-@lint-dry-run: && (lint "--dry-run")
-
-# [print diagnostics for prek, with hook id and duration]
-[group('qa')]
-@lint-verbose: && (lint "--verbose")
 
 # ruff-check - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
