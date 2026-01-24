@@ -60,7 +60,18 @@ jobs:
           tool: just
       - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
-          enable-cache: false
+          enable-cache: true
+          cache-python: true
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+            .python-version
+            **/.pre-commit-*.y*ml
+      - uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        with:
+          path: ~/.cache/prek
+          key: prek-v1-ubuntu-${{ hashFiles('uv.lock', 'pyproject.toml', '.python-version', '**/.pre-commit-*.y*ml') }}
+          restore-keys: prek-v1-ubuntu-
       - name: Check for formatting and linting violations
         run: just lint
   type-check:
