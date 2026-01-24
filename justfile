@@ -30,7 +30,13 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
+BRANCH_NAME := `git branch --show-current`
+PREK_RUN_ARG := "--all-files" # TODO -> Delete this var.
 
+UNCOMMITTED_CHANGES_WARNING_MSG := (
+    "You have uncommitted changes (staged and/or unstaged)." +
+    " Please commit (or stash) them before running this recipe!"
+)
 # -----------------------------------------------------------------------------
 # RECIPES:
 # -----------------------------------------------------------------------------
@@ -169,71 +175,7 @@ pin-github-action-versions:
 renovate-config-validator:
     npx --yes --package renovate@latest -- renovate-config-validator --strict .github/renovate.json5
 
-# --------------------------------------- old ------------------------------------------------------------------------
-# prek run --config .pre-commit-config-check.yaml --files $(git ls-files --modified) ✅
-# prek run rumdl --config .pre-commit-config-check.yaml --files $(git ls-files --modified) ✅
-# prek run --last-commit --config .pre-commit-config-check.yaml ✅
-# prek run --from-ref upstream/main --config .pre-commit-config-check.yaml ✅
-# git diff --quiet || { echo "Unstaged changes, stopping."; }
-
-#          {{ ALL_FILES }} {{ PR_CHANGES }} {{ LAST_COMMIT }} {{ UNSTAGED_CHANGES }} \
-#DEFAULT_PREK_FILES := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref upstream/main" }
-
-# Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
-#[group('prek')]
-#[arg("CONFIG_FILE", long="config-file", help="Path to alternate config file")]
-#[arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
-#[arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
-#[arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
-#[arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
-#[arg("PR_CHANGES", long="pr-changes", value="--from-ref upstream/main", help="Use verbose output")]
-#[arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Run hooks against the last commit")]
-#[arg("UNSTAGED_CHANGES", long="unstaged-changes", value="--files $(git ls-files --modified)", help="Use verbose output")]
-#[arg("FILES", long="files", help="Specific filenames to run hooks on")]
-#prek-run-old \
-#        CONFIG_FILE \
-#        DRY_RUN="" FAIL_FAST="" VERBOSE="" \
-#        ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
-#        FILES=DEFAULT_PREK_FILES *HOOKS_OR_PROJECTS:
-#    just check-uncommitted-changes
-#    just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-#    just run -- prek run {{ HOOKS_OR_PROJECTS }} \
-#                         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} \
-#                         {{ ALL_FILES }} {{ PR_CHANGES }} {{ LAST_COMMIT }} {{ UNSTAGED_CHANGES }} \
-#                         --config {{ CONFIG_FILE }} \
-#                         {{ FILES }}
-
-# 1. if BRANCH_NAME == "main" -> --all-files (Default)
-# -. if BRANCH_NAME != "main":
-#    2. --all-files
-#    3. --last-commit
-#    4. --from-ref upstream/main (PR changes) (Default)
-#    5. --files $(git ls-files --modified) (Unstaged changes)
-#    5. --from-ref "@{upstream}" (Local changes(not pushed yet))
-#prek-run-old CONFIG_FILE MODE FILES=DEFAULT_PREK_FILES *HOOKS_OR_PROJECTS:
-#   just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-# 1.
-#   just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --all-files
-# 2.
-#    just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --last-commit
-# 3.
-#    just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --from-ref upstream/main
-# 4.
-#    just run -- prek run {{ HOOKS }} {{ PROJECTS }} --config {{ CONFIG_FILE }} --files $(git ls-files --modified)
-text505 B=BRANCH_NAME:
-    echo {{ B }}
-# --------------------------------------- old ------------------------------------------------------------------------
-
-
-# --------------------------------------- prek ------------------------------------------------------------------------
-BRANCH_NAME := `git branch --show-current`
-DEFAULT_PREK_FILES := if BRANCH_NAME == "main" { "--all-files" } else { "--from-ref upstream/main" }
-PREK_RUN_ARG := "--all-files" # TODO -> Delete this var.
-
-UNCOMMITTED_CHANGES_WARNING_MSG := (
-    "You have uncommitted changes (staged and/or unstaged)." +
-    " Please commit (or stash) them before running this recipe!"
-)
+# endregion ----> prek <----
 
 # Check for uncommitted changes (staged and/or unstaged)!
 [group('git')]
@@ -260,7 +202,7 @@ prek-run \
         DRY_RUN="" FAIL_FAST="" VERBOSE="" SHOW_DIFF_ON_FAILURE="" \
         ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
         *HOOKS_OR_PROJECTS:
-    # @if [ -z "{{UNSTAGED_CHANGES}}" ]; then just check-uncommitted-changes; fi
+    @if [ -z "{{UNSTAGED_CHANGES}}" ]; then just check-uncommitted-changes; fi
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek run {{ HOOKS_OR_PROJECTS }}\
                          --config {{ CONFIG_FILE }} \
@@ -305,11 +247,11 @@ prek-run \
     *HOOKS_OR_PROJECTS:
     just prek-run --config-file .pre-commit-config-check.yaml \
         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
-        {{ ALL_FILES }} {{ PR_CHANGES }} {{ LAST_COMMIT }} {{ UNSTAGED_CHANGES }} \
+        {{ if ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES == "" { "--pr-changes" } \
+                    else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
         {{ HOOKS_OR_PROJECTS }}
 
-# --------------------------------------- prek ------------------------------------------------------------------------
-
+# endregion ----> prek <----
 
 # endregion Just CLI helpers (meta)
 # region ----> QA <----
