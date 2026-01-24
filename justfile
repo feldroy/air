@@ -191,7 +191,7 @@ renovate-config-validator:
 [arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
 [arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", help="When hooks fail, run `git diff` directly afterward")]
 [arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
-[arg("PR_CHANGES", long="pr-changes", value="--from-ref upstream/main", help="Run hooks on PR changes")]
+[arg("PR_CHANGES", long="pr-changes", value="--from-ref origin/main", help="Run hooks on PR changes")]
 [arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Run hooks against the last commit")]
 [arg("UNSTAGED_CHANGES", long="unstaged-changes", value="--files $(git ls-files --modified)", help="Run hooks on unstaged changes")]
 [arg("HOOKS_OR_PROJECTS", help="Include the specified hooks or projects")]
