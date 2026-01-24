@@ -69,6 +69,13 @@ UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
 @run-each RECIPE +ARGS:
     for ARG in {{ ARGS }}; do just "{{ RECIPE }}" "$ARG"; done
 
+# Run RECIPE only when ENABLED is set
+[doc]
+[group('meta')]
+[private]
+@run-if RECIPE ENABLED="":
+  if [ -n "{{ENABLED}}" ]; then just "{{ RECIPE }}"; fi
+
 # Run a command and turn absolute paths into relative paths everywhere in its output
 [doc]
 [group('meta')]
@@ -237,6 +244,7 @@ UNCOMMITTED_CHANGES_WARNING_MSG := (
 
 # Run pre-commit hooks using prek a better `pre-commit`, re-engineered in Rust!
 [group('prek')]
+[private]
 [arg("CONFIG_FILE", long="config-file", help="Path to alternate config file")]
 [arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
 [arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
@@ -252,42 +260,53 @@ prek-run \
         DRY_RUN="" FAIL_FAST="" VERBOSE="" SHOW_DIFF_ON_FAILURE="" \
         ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
         *HOOKS_OR_PROJECTS:
-    @just check-uncommitted-changes
+    @if [ -z "{{UNSTAGED_CHANGES}}" ]; then just check-uncommitted-changes; fi
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek run {{ HOOKS_OR_PROJECTS }} \
+    just run -- prek run {{ HOOKS_OR_PROJECTS }}\
                          --config {{ CONFIG_FILE }} \
-                         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
-                         {{ if BRANCH_NAME == "main" { "--all-files" } \
+                         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
+                         {{ if BRANCH_NAME == "main" { "--all-files" }\
                             else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }}
-
-# [Run on all files in the repo]
-[group('prek')]
-@prek-run-all-files:
-    just prek-run --files --all-files
-    just prek-run --files --last-commit
-    just prek-run --files --all-files
-
-# [Stop running hooks after the first failure]
-[group('prek')]
-@prek-run-fast: && (prek-run "--fail-fast")
-
-# [Do not run the hooks, but print the hooks that would have been run]
-[group('prek')]
-@prek-run-dry-run: && (prek-run "--dry-run")
-
-# [print diagnostics for prek, with hook id and duration]
-[group('prek')]
-@prek-run-verbose: && (prek-run "--verbose")
 
 # Format - Fix formatting and lint violations - Write formatted files back!
 [group('qa')]
-@format *HOOKS_OR_PROJECTS:
-    just prek-run --config-file .pre-commit-config-format.yaml {{ HOOKS_OR_PROJECTS }}
+[arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
+[arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
+[arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
+[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", help="When hooks fail, run `git diff` directly afterward")]
+[arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
+[arg("PR_CHANGES", long="pr-changes", value="--pr-changes", help="Run hooks on PR changes")]
+[arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Run hooks against the last commit")]
+[arg("UNSTAGED_CHANGES", long="unstaged-changes", value="--unstaged-changes", help="Run hooks on unstaged changes")]
+[arg("HOOKS_OR_PROJECTS", help="Include the specified hooks or projects")]
+@format \
+    DRY_RUN="" FAIL_FAST="" VERBOSE="" SHOW_DIFF_ON_FAILURE="" \
+    ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
+    *HOOKS_OR_PROJECTS:
+    just prek-run --config-file .pre-commit-config-format.yaml \
+        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
+        {{ ALL_FILES }} {{ PR_CHANGES }} {{ LAST_COMMIT }} {{ UNSTAGED_CHANGES }} \
+        {{ HOOKS_OR_PROJECTS }}
 
 # Lint - Check for formatting and lint violations - Avoid writing any formatted files back!
 [group('qa')]
-@lint *HOOKS_OR_PROJECTS:
-    just prek-run --config-file .pre-commit-config-check.yaml {{ HOOKS_OR_PROJECTS }}
+[arg("DRY_RUN", long="dry-run", value="--dry-run", help="Do not run the hooks, but print the hooks that would have been run")]
+[arg("FAIL_FAST", long="fail-fast", value="--fail-fast", help="Stop running hooks after the first failure")]
+[arg("VERBOSE", long="verbose", value="--verbose", help="Use verbose output")]
+[arg("SHOW_DIFF_ON_FAILURE", long="show-diff-on-failure", value="--show-diff-on-failure", help="When hooks fail, run `git diff` directly afterward")]
+[arg("ALL_FILES", long="all-files", value="--all-files", help="Run on all files in the repo")]
+[arg("PR_CHANGES", long="pr-changes", value="--pr-changes", help="Run hooks on PR changes")]
+[arg("LAST_COMMIT", long="last-commit", value="--last-commit", help="Run hooks against the last commit")]
+[arg("UNSTAGED_CHANGES", long="unstaged-changes", value="--unstaged-changes", help="Run hooks on unstaged changes")]
+[arg("HOOKS_OR_PROJECTS", help="Include the specified hooks or projects")]
+@lint \
+    DRY_RUN="" FAIL_FAST="" VERBOSE="" SHOW_DIFF_ON_FAILURE="" \
+    ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
+    *HOOKS_OR_PROJECTS:
+    just prek-run --config-file .pre-commit-config-check.yaml \
+        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
+        {{ ALL_FILES }} {{ PR_CHANGES }} {{ LAST_COMMIT }} {{ UNSTAGED_CHANGES }} \
+        {{ HOOKS_OR_PROJECTS }}
 
 # --------------------------------------- prek ------------------------------------------------------------------------
 
