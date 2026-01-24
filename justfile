@@ -260,12 +260,12 @@ prek-run \
         DRY_RUN="" FAIL_FAST="" VERBOSE="" SHOW_DIFF_ON_FAILURE="" \
         ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
         *HOOKS_OR_PROJECTS:
-    @if [ -z "{{UNSTAGED_CHANGES}}" ]; then just check-uncommitted-changes; fi
+    # @if [ -z "{{UNSTAGED_CHANGES}}" ]; then just check-uncommitted-changes; fi
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
     just run -- prek run {{ HOOKS_OR_PROJECTS }}\
                          --config {{ CONFIG_FILE }} \
                          {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
-                         {{ if BRANCH_NAME == "main" { "--all-files" }\
+                         {{ if BRANCH_NAME == "main" { "--all-files" } \
                             else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }}
 
 # Format - Fix formatting and lint violations - Write formatted files back!
