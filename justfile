@@ -34,7 +34,7 @@ PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
 UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
 DEFAULT_BRANCH := env("DEFAULT_BRANCH", "main")
-BRANCH_NAME := `git branch --show-current` || DEFAULT_BRANCH
+BRANCH_NAME := env("BRANCH_NAME", `git branch --show-current`)
 UNCOMMITTED_CHANGES_WARNING_MSG := (
     "You have uncommitted changes (staged and/or unstaged)." +
     " Please commit (or stash) them before running this recipe!"
