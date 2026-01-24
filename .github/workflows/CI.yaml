@@ -67,13 +67,10 @@ jobs:
             pyproject.toml
             .python-version
             **/.pre-commit-*.y*ml
-      - uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
-        with:
-          path: ~/.cache/prek
-          key: prek-v1-ubuntu-${{ hashFiles('uv.lock', 'pyproject.toml', '.python-version', '**/.pre-commit-*.y*ml') }}
-          restore-keys: prek-v1-ubuntu-
       - name: Check for formatting and linting violations
         run: just lint
+        env:
+          PREK_HOME: ${{ env.UV_CACHE_DIR }}/prek
   type-check:
     name: Type Checking (via just, uv, ty)
     runs-on: ubuntu-latest
