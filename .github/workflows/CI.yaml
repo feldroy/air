@@ -44,13 +44,15 @@ defaults:
 
 jobs:
   lint:
-    name: Check for formatting and linting violations (via just, uv, ruff)
+    name: Check for formatting and linting violations (via just, uv, prek[pre-commit hooks])
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }} # PR HEAD, not merge commit
+          fetch-depth: 0
       - uses: taiki-e/install-action@3522286d40783523f9c7880e33f785905b4c20d0 # 2.66.1
         with:
           tool: just

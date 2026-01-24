@@ -178,7 +178,7 @@ renovate-config-validator:
 # Check for uncommitted changes (staged and/or unstaged)!
 [group('git')]
 @check-uncommitted-changes:
-  git diff --quiet && git diff --cached --quiet || { echo "{{ UNCOMMITTED_CHANGES_WARNING_MSG }}"; exit 1; }
+  git diff --quiet && git diff --staged --quiet || { echo "{{ UNCOMMITTED_CHANGES_WARNING_MSG }}"; exit 1; }
 
 # [arg("HOOKS_OR_PROJECTS", long="hooks-or-projects", help="Include the specified hooks or projects")]
 
