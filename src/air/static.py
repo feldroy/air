@@ -128,7 +128,7 @@ class StaticDigest:
             if not file_path.is_file():
                 continue
 
-            relative = str(file_path.relative_to(self.directory))
+            relative = file_path.relative_to(self.directory).as_posix()
             content = file_path.read_bytes()
             hash_val = hashlib.sha256(content).hexdigest()[: self.hash_length]
 
