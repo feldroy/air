@@ -264,6 +264,36 @@ def test_static_returns_404_for_deleted_file(tmp_path: Path) -> None:
     assert response.status_code == 404
 
 
+def test_air_auto_detects_static_directory(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test that Air auto-detects and mounts static/ when it exists."""
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "app.js").write_text("console.log('hello');")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    assert app.static is not None
+    assert isinstance(app.static, Static)
+
+    # Verify it's mounted and serving files
+    client = TestClient(app)
+    response = client.get("/static/app.js")
+    assert response.status_code == 200
+
+
+def test_air_no_static_when_directory_missing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test that Air.static is None when no static/ directory exists."""
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    assert app.static is None
+
+
 def test_jinja_renderer_auto_wires_static_from_app(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
