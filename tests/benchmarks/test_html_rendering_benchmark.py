@@ -5,9 +5,11 @@ against traditional Jinja2 template rendering for equivalent HTML output.
 """
 
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
 from unittest.mock import Mock
 
+import pytest
 from pytest_benchmark.fixture import BenchmarkFixture
 from starlette.datastructures import URL
 from starlette.requests import Request
@@ -82,14 +84,7 @@ def create_complex_page_with_jinja(jinja_renderer: JinjaRenderer, mock_request: 
     return jinja_renderer(mock_request, "complex_page.html", context=context)
 
 
-def test_air_tags_vs_jinja_rendering_benchmark(benchmark: BenchmarkFixture) -> None:
-    """Benchmark Air Tags vs Jinja2 template rendering for equivalent HTML.
-
-    This tests the performance of Air's tag-based approach against traditional template rendering.
-    """
-
-    # Create a temporary template for Jinja2
-    template_content = """<html>
+JINJA_TEMPLATE_CONTENT = """<html>
 <head>
     <title>{{ title }}</title>
     <meta charset="utf-8">
@@ -126,31 +121,40 @@ def test_air_tags_vs_jinja_rendering_benchmark(benchmark: BenchmarkFixture) -> N
 </body>
 </html>"""
 
-    # Set up temporary template directory
+
+@pytest.fixture
+def jinja_setup() -> Generator[tuple[JinjaRenderer, Mock], None, None]:
+    """Set up Jinja renderer and mock request for benchmarking."""
     with tempfile.TemporaryDirectory() as temp_dir:
         template_path = Path(temp_dir) / "complex_page.html"
-        template_path.write_text(template_content)
-
+        template_path.write_text(JINJA_TEMPLATE_CONTENT)
         jinja_renderer = JinjaRenderer(directory=temp_dir)
-
-        # Create minimal mock request object
         mock_request = Mock(spec=Request)
         mock_request.url = URL("http://localhost/test")
+        yield jinja_renderer, mock_request
 
-        # Benchmark Air Tags rendering
-        def render_with_air_tags() -> str:
-            page = create_complex_page_with_tags()
-            return page.render()
 
-        # Benchmark Jinja2 rendering
-        def render_with_jinja() -> HTMLResponse:
-            return create_complex_page_with_jinja(jinja_renderer, mock_request)
+def test_air_tags_complex_rendering_benchmark(benchmark: BenchmarkFixture) -> None:
+    """Benchmark Air Tags rendering for complex HTML page."""
 
-        # Benchmark Air Tags rendering
-        benchmark(render_with_air_tags)
+    def render_with_air_tags() -> str:
+        page = create_complex_page_with_tags()
+        return page.render()
 
-        # Benchmark Air Tags rendering
-        benchmark(render_with_jinja)
+    benchmark(render_with_air_tags)
+
+
+def test_jinja_complex_rendering_benchmark(
+    benchmark: BenchmarkFixture,
+    jinja_setup: tuple[JinjaRenderer, Mock],
+) -> None:
+    """Benchmark Jinja2 rendering for complex HTML page."""
+    jinja_renderer, mock_request = jinja_setup
+
+    def render_with_jinja() -> HTMLResponse:
+        return create_complex_page_with_jinja(jinja_renderer, mock_request)
+
+    benchmark(render_with_jinja)
 
 
 def test_simple_air_tags_rendering_benchmark(benchmark: BenchmarkFixture) -> None:

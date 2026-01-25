@@ -1,5 +1,6 @@
 import sys
 import types
+from unittest.mock import Mock
 
 import jinja2
 import pytest
@@ -7,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from full_match import match as full_match
 from jinja2 import FileSystemLoader
+from starlette.datastructures import URL
 from starlette.responses import HTMLResponse
 
 import air
@@ -463,8 +465,44 @@ def test_jinja_renderer_only_stringifies_tags_by_default() -> None:
     assert "<li>Three</li>" in response.text
 
 
-def test_jinja_renderer_as_string() -> None:
-    """Test JinjaRenderer with as_string=True returns a SafeStr for embedding in AirTags."""
+def test_jinja_renderer_as_string_returns_safestr() -> None:
+    """Test that as_string=True returns a SafeStr."""
+    jinja = JinjaRenderer(directory="tests/templates")
+    mock_request = Mock(spec=Request)
+    mock_request.url = URL("http://localhost/test")
+
+    result = jinja(
+        mock_request,
+        name="jinja_airtags.html",
+        title="Test Title",
+        content="<p>Test content</p>",
+        as_string=True,
+    )
+
+    assert isinstance(result, air.SafeStr)
+    assert "<h1>Test Title</h1>" in result
+    assert "<p>Test content</p>" in result
+
+
+def test_jinja_renderer_as_string_false_returns_html_response() -> None:
+    """Test that as_string=False (default) returns HTMLResponse."""
+    jinja = JinjaRenderer(directory="tests/templates")
+    mock_request = Mock(spec=Request)
+    mock_request.url = URL("http://localhost/test")
+
+    result = jinja(
+        mock_request,
+        name="jinja_airtags.html",
+        title="Test Title",
+        content="<p>Test content</p>",
+        as_string=False,
+    )
+
+    assert isinstance(result, HTMLResponse)
+
+
+def test_jinja_renderer_as_string_embedded_in_airtags() -> None:
+    """Test that SafeStr from as_string=True can be embedded in AirTags."""
     app = Air()
 
     jinja = JinjaRenderer(directory="tests/templates")
@@ -478,9 +516,6 @@ def test_jinja_renderer_as_string() -> None:
             content="<p>Hello from Jinja</p>",
             as_string=True,
         )
-        # Verify it returns a SafeStr
-        assert isinstance(jinja_content, air.SafeStr)
-        # Now use it inside AirTags (no need to wrap in SafeStr)
         return air.layouts.mvpcss(
             air.Title("Wrapper Page"),
             jinja_content,
@@ -489,8 +524,6 @@ def test_jinja_renderer_as_string() -> None:
     client = TestClient(app)
     response = client.get("/")
     assert response.status_code == 200
-    # The Jinja content should be embedded in the page
     assert "<h1>Embedded Jinja</h1>" in response.text
     assert "<p>Hello from Jinja</p>" in response.text
-    # The wrapper page title should also be present
     assert "<title>Wrapper Page</title>" in response.text
