@@ -11,7 +11,7 @@ from unittest.mock import Mock
 from pytest_benchmark.fixture import BenchmarkFixture
 from starlette.datastructures import URL
 from starlette.requests import Request
-from starlette.templating import _TemplateResponse
+from starlette.responses import HTMLResponse
 
 from air.templating import JinjaRenderer
 
@@ -79,7 +79,7 @@ def test_jinja_complex_page_rendering_benchmark(benchmark: BenchmarkFixture) -> 
             ],
         }
 
-        def render_jinja_page() -> _TemplateResponse:
+        def render_jinja_page() -> HTMLResponse:
             return jinja_renderer(mock_request, "complex_page.html", context=context)
 
         benchmark(render_jinja_page)
