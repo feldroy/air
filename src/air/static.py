@@ -136,7 +136,7 @@ class StaticAssets:
             # Insert hash before extension: style.css -> style.a1b2c3d4.css
             p = Path(relative)
             if p.parent != Path():
-                hashed = str(p.parent / f"{p.stem}.{hash_val}{p.suffix}")
+                hashed = (p.parent / f"{p.stem}.{hash_val}{p.suffix}").as_posix()
             else:
                 hashed = f"{p.stem}.{hash_val}{p.suffix}"
 
