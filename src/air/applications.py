@@ -308,11 +308,11 @@ class Air(RouterMixin):
         self._app.router.route_class = AirRoute
 
         # Auto-detect and mount static files
-        self.static_assets = None
+        self.static = None
         if Path("static").is_dir():
-            from .static import StaticAssets  # noqa: PLC0415
+            from .static import Static  # noqa: PLC0415
 
-            self.static_assets = StaticAssets("static", app=self)
+            self.static = Static("static", app=self)
 
     # =========================================================================
     # ASGI Interface

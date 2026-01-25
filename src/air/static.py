@@ -5,13 +5,13 @@ Example: styles.css -> styles.a1b2c3d4.css
 
 Usage:
     import air
-    from air.static import StaticAssets
+    from air.static import Static
 
     app = air.Air()
     jinja = air.JinjaRenderer(directory="templates")
 
     # One line. Auto-mounts, auto-registers template function.
-    StaticAssets("static", app=app, jinja=jinja)
+    Static("static", app=app, jinja=jinja)
 
     # Or use enable() for zero-config:
     from air.static import enable
@@ -41,7 +41,7 @@ def enable(
     jinja: JinjaRenderer,
     directory: str = "static",
     prefix: str = "/static",
-) -> StaticAssets | None:
+) -> Static | None:
     """Enable static assets if the directory exists. Zero config.
 
     Args:
@@ -51,7 +51,7 @@ def enable(
         prefix: The URL prefix for static files. Defaults to "/static".
 
     Returns:
-        The StaticAssets instance if the directory exists, None otherwise.
+        The Static instance if the directory exists, None otherwise.
 
     Example:
         import air
@@ -65,10 +65,10 @@ def enable(
     if not path.exists():
         return None
 
-    return StaticAssets(directory, app=app, jinja=jinja, prefix=prefix)
+    return Static(directory, app=app, jinja=jinja, prefix=prefix)
 
 
-class StaticAssets:
+class Static:
     """Static file server with content-based filename hashing.
 
     Computes SHA256 hashes of file contents at startup and serves files with
@@ -86,7 +86,7 @@ class StaticAssets:
         jinja = air.JinjaRenderer(directory="templates")
 
         # One line. Auto-mounts, auto-registers template function.
-        StaticAssets("static", app=app, jinja=jinja)
+        Static("static", app=app, jinja=jinja)
 
         # Templates just work:
         {{ static('styles.css') }}  ->  /static/styles.a1b2c3d4.css
