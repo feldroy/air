@@ -262,3 +262,37 @@ def test_static_returns_404_for_deleted_file(tmp_path: Path) -> None:
     response = client.get(hashed_url)
 
     assert response.status_code == 404
+
+
+def test_jinja_renderer_auto_wires_static_from_app(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Test that JinjaRenderer auto-wires static() when passed an app with static files."""
+    # Create static directory with a file
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "app.css").write_text("body { margin: 0; }")
+
+    # Create template directory with a template that uses static()
+    template_dir = tmp_path / "templates"
+    template_dir.mkdir()
+    (template_dir / "page.html").write_text('<link href="{{ static(\'app.css\') }}">')
+
+    # Change to tmp_path so Air auto-detects static/
+    monkeypatch.chdir(tmp_path)
+
+    app = Air()
+    # JinjaRenderer should auto-wire static() when passed the app
+    jinja = JinjaRenderer(directory=str(template_dir), app=app)
+
+    @app.get("/")
+    def page(request: Request) -> HTMLResponse:
+        return jinja(request, "page.html")
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    # Should contain hashed URL, not the original
+    assert "/static/app." in response.text
+    assert '.css">' in response.text

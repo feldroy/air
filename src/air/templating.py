@@ -7,7 +7,7 @@ import importlib
 from collections.abc import Callable, Sequence
 from os import PathLike
 from types import ModuleType
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import jinja2
 from fastapi.templating import Jinja2Templates
@@ -15,6 +15,9 @@ from starlette.requests import Request as StarletteRequest
 from starlette.templating import _TemplateResponse
 
 from .requests import Request
+
+if TYPE_CHECKING:
+    from .applications import Air
 from .tags.models.base import BaseTag
 from .utils import cached_signature
 
@@ -45,11 +48,13 @@ class JinjaRenderer:
         env: The env is the central Jinja object that holds configuration, filters, globals,
             and template loading settings, and is responsible for compiling and rendering
             templates.
+        app: Optional Air application. If provided and app.static exists, automatically
+            registers the static() template function for cache-busted static file URLs.
 
     Example:
 
-        # Instantiate the render callable
-        jinja = JinjaRenderer('templates')
+        app = air.Air()  # auto-detects static/ directory
+        jinja = JinjaRenderer('templates', app=app)  # auto-wires static()
 
         # Use for returning Jinja from views
         @app.get('/')
@@ -81,9 +86,14 @@ class JinjaRenderer:
         directory: str | PathLike[str] | Sequence[str | PathLike[str]],
         context_processors: list[Callable[[StarletteRequest], dict[str, Any]]] | None = None,
         env: jinja2.Environment | None = None,
+        app: "Air | None" = None,
     ) -> None:
         """Initialize with template directory path"""
         self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
+
+        # Auto-wire static() template function if app has static files
+        if app is not None and app.static is not None:
+            self.templates.env.globals["static"] = app.static.url
 
     def __call__(
         self,
