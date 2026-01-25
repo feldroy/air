@@ -9,11 +9,11 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     tags:
       - "*" # matches any tag name
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   COLUMNS: 150
@@ -100,9 +100,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        python-version: [ "3.13", "3.14" ]
-        resolution-strategy: [ "highest", "lowest-direct" ]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.13", "3.14"]
+        resolution-strategy: ["highest", "lowest-direct"]
     name: >-
       Tests • ${{ matrix.os }} • Python ${{ matrix.python-version }}
       • resolution-strategy ${{ matrix.resolution-strategy }} (via just, uv, pytest, pytest-pretty)
