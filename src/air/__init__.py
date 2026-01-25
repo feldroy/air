@@ -4,6 +4,7 @@ from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
 
 from . import (
+    static as static,
     layouts as layouts,
     responses as responses,
 )
@@ -161,6 +162,9 @@ from .tags import (
     Video as Video,
     Wbr as Wbr,
     svg as svg,
+)
+from .static import (
+    StaticDigest as StaticDigest,
 )
 from .templating import (
     JinjaRenderer as JinjaRenderer,
