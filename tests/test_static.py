@@ -237,3 +237,28 @@ async def test_static_returns_404_for_path_outside_prefix() -> None:
     await static(scope, receive, send)
 
     assert received[0]["status"] == 404
+
+
+def test_static_returns_404_for_deleted_file(tmp_path: Path) -> None:
+    """Test that Static returns 404 when a hashed file is deleted after startup."""
+    # Create a temporary file
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    temp_file = static_dir / "temp.css"
+    temp_file.write_text("body { color: blue; }")
+
+    # Create Static instance (hashes the file)
+    app = Air()
+    static = Static(str(static_dir), app=app)
+
+    # Get the hashed URL before deleting
+    hashed_url = static.url("temp.css")
+
+    # Delete the file after hashing
+    temp_file.unlink()
+
+    # Request the hashed URL - should get 404
+    client = TestClient(app)
+    response = client.get(hashed_url)
+
+    assert response.status_code == 404
