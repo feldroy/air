@@ -1,17 +1,17 @@
-"""Static file digest for cache busting.
+"""Static assets with content-based cache busting.
 
 Computes content hashes at startup and serves files with hashed filenames.
 Example: styles.css -> styles.a1b2c3d4.css
 
 Usage:
     import air
-    from air.static import StaticDigest
+    from air.static import StaticAssets
 
     app = air.Air()
     jinja = air.JinjaRenderer(directory="templates")
 
     # One line. Auto-mounts, auto-registers template function.
-    StaticDigest("static", app=app, jinja=jinja)
+    StaticAssets("static", app=app, jinja=jinja)
 
     # Or use enable() for zero-config:
     from air.static import enable
@@ -41,8 +41,8 @@ def enable(
     jinja: JinjaRenderer,
     directory: str = "static",
     prefix: str = "/static",
-) -> StaticDigest | None:
-    """Enable static file digest if the directory exists. Zero config.
+) -> StaticAssets | None:
+    """Enable static assets if the directory exists. Zero config.
 
     Args:
         app: The Air application to mount the static file handler on.
@@ -51,7 +51,7 @@ def enable(
         prefix: The URL prefix for static files. Defaults to "/static".
 
     Returns:
-        The StaticDigest instance if the directory exists, None otherwise.
+        The StaticAssets instance if the directory exists, None otherwise.
 
     Example:
         import air
@@ -65,10 +65,10 @@ def enable(
     if not path.exists():
         return None
 
-    return StaticDigest(directory, app=app, jinja=jinja, prefix=prefix)
+    return StaticAssets(directory, app=app, jinja=jinja, prefix=prefix)
 
 
-class StaticDigest:
+class StaticAssets:
     """Static file server with content-based filename hashing.
 
     Computes SHA256 hashes of file contents at startup and serves files with
@@ -86,7 +86,7 @@ class StaticDigest:
         jinja = air.JinjaRenderer(directory="templates")
 
         # One line. Auto-mounts, auto-registers template function.
-        StaticDigest("static", app=app, jinja=jinja)
+        StaticAssets("static", app=app, jinja=jinja)
 
         # Templates just work:
         {{ static('styles.css') }}  ->  /static/styles.a1b2c3d4.css

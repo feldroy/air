@@ -38,7 +38,7 @@ from .responses import (
 )
 from .routing import AirRouter as AirRouter
 from .static import (
-    StaticDigest as StaticDigest,
+    StaticAssets as StaticAssets,
 )
 from .tags import (
     H1 as H1,

@@ -5,14 +5,14 @@ from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
 
 from air import Air, JinjaRenderer, Request
-from air.static import StaticDigest, enable
+from air.static import StaticAssets, enable
 
 TEST_STATIC_DIR = "tests/static_test_files"
 
 
 def test_static_digest_hashes_files() -> None:
-    """Test that StaticDigest computes hashes for files."""
-    digest = StaticDigest(TEST_STATIC_DIR)
+    """Test that StaticAssets computes hashes for files."""
+    digest = StaticAssets(TEST_STATIC_DIR)
 
     assert "styles.css" in digest.file_map
     assert "images/logo.png" in digest.file_map
@@ -28,7 +28,7 @@ def test_static_digest_hashes_files() -> None:
 
 def test_static_digest_url() -> None:
     """Test that url() returns correct hashed URL."""
-    digest = StaticDigest(TEST_STATIC_DIR, prefix="/static")
+    digest = StaticAssets(TEST_STATIC_DIR, prefix="/static")
 
     url = digest.url("styles.css")
     assert url.startswith("/static/styles.")
@@ -41,7 +41,7 @@ def test_static_digest_url() -> None:
 
 def test_static_digest_url_subdirectory() -> None:
     """Test url() with files in subdirectories."""
-    digest = StaticDigest(TEST_STATIC_DIR)
+    digest = StaticAssets(TEST_STATIC_DIR)
 
     url = digest.url("images/logo.png")
     assert url.startswith("/static/images/logo.")
@@ -50,7 +50,7 @@ def test_static_digest_url_subdirectory() -> None:
 
 def test_static_digest_url_unknown_file() -> None:
     """Test url() returns original path for unknown files."""
-    digest = StaticDigest(TEST_STATIC_DIR)
+    digest = StaticAssets(TEST_STATIC_DIR)
 
     url = digest.url("nonexistent.js")
     assert url == "/static/nonexistent.js"
@@ -59,7 +59,7 @@ def test_static_digest_url_unknown_file() -> None:
 def test_static_digest_serves_hashed_file() -> None:
     """Test serving files with hashed URLs."""
     app = Air()
-    digest = StaticDigest(TEST_STATIC_DIR, app=app)
+    digest = StaticAssets(TEST_STATIC_DIR, app=app)
 
     client = TestClient(app)
     url = digest.url("styles.css")
@@ -73,7 +73,7 @@ def test_static_digest_serves_hashed_file() -> None:
 def test_static_digest_serves_unhashed_file() -> None:
     """Test serving files with direct (unhashed) URLs."""
     app = Air()
-    StaticDigest(TEST_STATIC_DIR, app=app)
+    StaticAssets(TEST_STATIC_DIR, app=app)
 
     client = TestClient(app)
     response = client.get("/static/styles.css")
@@ -87,7 +87,7 @@ def test_static_digest_serves_unhashed_file() -> None:
 def test_static_digest_404_for_missing() -> None:
     """Test 404 for missing files."""
     app = Air()
-    StaticDigest(TEST_STATIC_DIR, app=app)
+    StaticAssets(TEST_STATIC_DIR, app=app)
 
     client = TestClient(app)
     response = client.get("/static/nonexistent.css")
@@ -96,11 +96,11 @@ def test_static_digest_404_for_missing() -> None:
 
 
 def test_static_digest_auto_registers_jinja_global() -> None:
-    """Test that StaticDigest registers static() in Jinja globals."""
+    """Test that StaticAssets registers static() in Jinja globals."""
     app = Air()
     jinja = JinjaRenderer(directory="tests/templates")
 
-    StaticDigest(TEST_STATIC_DIR, app=app, jinja=jinja)
+    StaticAssets(TEST_STATIC_DIR, app=app, jinja=jinja)
 
     assert "static" in jinja.templates.env.globals
     static_func = jinja.templates.env.globals["static"]
@@ -110,9 +110,9 @@ def test_static_digest_auto_registers_jinja_global() -> None:
 
 
 def test_static_digest_custom_prefix() -> None:
-    """Test StaticDigest with custom URL prefix."""
+    """Test StaticAssets with custom URL prefix."""
     app = Air()
-    digest = StaticDigest(TEST_STATIC_DIR, app=app, prefix="/assets")
+    digest = StaticAssets(TEST_STATIC_DIR, app=app, prefix="/assets")
 
     url = digest.url("styles.css")
     assert url.startswith("/assets/styles.")
@@ -123,8 +123,8 @@ def test_static_digest_custom_prefix() -> None:
 
 
 def test_static_digest_custom_hash_length() -> None:
-    """Test StaticDigest with custom hash length."""
-    digest = StaticDigest(TEST_STATIC_DIR, hash_length=16)
+    """Test StaticAssets with custom hash length."""
+    digest = StaticAssets(TEST_STATIC_DIR, hash_length=16)
 
     hashed = digest.file_map["styles.css"]
     parts = hashed.split(".")
@@ -132,14 +132,14 @@ def test_static_digest_custom_hash_length() -> None:
 
 
 def test_enable_creates_digest_when_directory_exists() -> None:
-    """Test enable() returns StaticDigest when directory exists."""
+    """Test enable() returns StaticAssets when directory exists."""
     app = Air()
     jinja = JinjaRenderer(directory="tests/templates")
 
     result = enable(app, jinja, directory=TEST_STATIC_DIR)
 
     assert result is not None
-    assert isinstance(result, StaticDigest)
+    assert isinstance(result, StaticAssets)
     assert "static" in jinja.templates.env.globals
 
 
@@ -159,7 +159,7 @@ def test_static_digest_hash_is_content_based() -> None:
     content = Path(TEST_STATIC_DIR, "styles.css").read_bytes()
     expected_hash = hashlib.sha256(content).hexdigest()[:8]
 
-    digest = StaticDigest(TEST_STATIC_DIR)
+    digest = StaticAssets(TEST_STATIC_DIR)
     hashed = digest.file_map["styles.css"]
 
     assert expected_hash in hashed
@@ -175,7 +175,7 @@ def test_static_digest_in_template(tmp_path: Path) -> None:
 
     app = Air()
     jinja = JinjaRenderer(directory=str(template_dir))
-    StaticDigest(TEST_STATIC_DIR, app=app, jinja=jinja)
+    StaticAssets(TEST_STATIC_DIR, app=app, jinja=jinja)
 
     @app.get("/test")
     def page(request: Request) -> HTMLResponse:
@@ -190,8 +190,8 @@ def test_static_digest_in_template(tmp_path: Path) -> None:
 
 
 def test_static_digest_nonexistent_directory() -> None:
-    """Test StaticDigest handles nonexistent directory gracefully."""
-    digest = StaticDigest("nonexistent_directory_12345")
+    """Test StaticAssets handles nonexistent directory gracefully."""
+    digest = StaticAssets("nonexistent_directory_12345")
 
     assert len(digest.file_map) == 0
     assert len(digest._reverse) == 0
