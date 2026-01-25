@@ -123,8 +123,12 @@ JINJA_TEMPLATE_CONTENT = """<html>
 
 
 @pytest.fixture
-def jinja_setup() -> Generator[tuple[JinjaRenderer, Mock], None, None]:
-    """Set up Jinja renderer and mock request for benchmarking."""
+def jinja_setup() -> Generator[tuple[JinjaRenderer, Mock]]:
+    """Set up Jinja renderer and mock request for benchmarking.
+
+    Yields:
+        Tuple of JinjaRenderer and mock request.
+    """
     with tempfile.TemporaryDirectory() as temp_dir:
         template_path = Path(temp_dir) / "complex_page.html"
         template_path.write_text(JINJA_TEMPLATE_CONTENT)
