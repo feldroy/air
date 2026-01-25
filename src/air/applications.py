@@ -6,6 +6,7 @@ import inspect
 from collections.abc import Callable, Sequence
 from enum import Enum
 from functools import wraps
+from pathlib import Path
 from typing import Annotated, Any, Literal
 from warnings import deprecated
 
@@ -305,6 +306,13 @@ class Air(RouterMixin):
 
         # Use Air's custom route class
         self._app.router.route_class = AirRoute
+
+        # Auto-detect and mount static files
+        self.static_assets = None
+        if Path("static").is_dir():
+            from .static import StaticAssets  # noqa: PLC0415
+
+            self.static_assets = StaticAssets("static", app=self)
 
     # =========================================================================
     # ASGI Interface
