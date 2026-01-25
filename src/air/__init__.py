@@ -4,9 +4,9 @@ from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
 
 from . import (
-    static as static,
     layouts as layouts,
     responses as responses,
+    static as static,
 )
 from .applications import (
     Air as Air,
@@ -37,6 +37,9 @@ from .responses import (
     TagResponse as TagResponse,
 )
 from .routing import AirRouter as AirRouter
+from .static import (
+    StaticDigest as StaticDigest,
+)
 from .tags import (
     H1 as H1,
     H2 as H2,
@@ -162,9 +165,6 @@ from .tags import (
     Video as Video,
     Wbr as Wbr,
     svg as svg,
-)
-from .static import (
-    StaticDigest as StaticDigest,
 )
 from .templating import (
     JinjaRenderer as JinjaRenderer,

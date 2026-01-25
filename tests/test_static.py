@@ -1,14 +1,11 @@
 import hashlib
 from pathlib import Path
 
-import pytest
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
 
-import air
 from air import Air, JinjaRenderer, Request
 from air.static import StaticDigest, enable
-
 
 TEST_STATIC_DIR = "tests/static_test_files"
 

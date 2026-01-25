@@ -28,9 +28,10 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from starlette.responses import FileResponse, Response
-from starlette.types import Receive, Scope, Send
 
 if TYPE_CHECKING:
+    from starlette.types import Receive, Scope, Send
+
     from .applications import Air
     from .templating import JinjaRenderer
 
@@ -134,7 +135,7 @@ class StaticDigest:
 
             # Insert hash before extension: style.css -> style.a1b2c3d4.css
             p = Path(relative)
-            if p.parent != Path("."):
+            if p.parent != Path():
                 hashed = str(p.parent / f"{p.stem}.{hash_val}{p.suffix}")
             else:
                 hashed = f"{p.stem}.{hash_val}{p.suffix}"
