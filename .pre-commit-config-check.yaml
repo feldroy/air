@@ -148,7 +148,7 @@ repos:
         args: ["--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.0.224
+    rev: v0.1.0
     hooks:
       - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
         priority: 0
@@ -161,7 +161,7 @@ repos:
           glob:
             - .pre-commit-config-check.yaml
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.23
+    rev: v0.7.25
     hooks:
       - id: tombi-lint # A TOML linter.
         priority: 0
