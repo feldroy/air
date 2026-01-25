@@ -9,6 +9,10 @@ permissions:
 
 jobs:
   deploy:
+    if: >
+      github.actor != 'dependabot[bot]' &&
+      github.actor != 'renovate[bot]' &&
+      github.actor != 'renovate'
     name: Deploy docs
     runs-on: ubuntu-latest
     steps:
