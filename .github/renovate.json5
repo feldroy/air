@@ -4,6 +4,7 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   // Enable Renovate.
   "enabled": true,
+  // https://docs.renovatebot.com/key-concepts/automerge/#if-you-use-github-actions
   platformAutomerge: true,
   dependencyDashboard: true,
   configMigration: true,
