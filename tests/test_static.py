@@ -1,6 +1,7 @@
 import hashlib
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse
 
@@ -199,3 +200,40 @@ def test_static_digest_nonexistent_directory() -> None:
     # url() still works, returns original path
     url = digest.url("styles.css")
     assert url == "/static/styles.css"
+
+
+@pytest.mark.asyncio
+async def test_static_ignores_non_http_scope() -> None:
+    """Test that Static passes through non-HTTP scopes without responding."""
+    static = Static(TEST_STATIC_DIR)
+    scope = {"type": "websocket", "path": "/static/styles.css"}
+    received: list[dict] = []
+
+    async def receive() -> dict:
+        return {}
+
+    async def send(message: dict) -> None:
+        received.append(message)
+
+    await static(scope, receive, send)
+
+    # Non-HTTP scopes should be ignored (no response sent)
+    assert received == []
+
+
+@pytest.mark.asyncio
+async def test_static_returns_404_for_path_outside_prefix() -> None:
+    """Test that Static returns 404 for paths outside its prefix."""
+    static = Static(TEST_STATIC_DIR, prefix="/static")
+    scope = {"type": "http", "path": "/other/styles.css"}
+    received: list[dict] = []
+
+    async def receive() -> dict:
+        return {}
+
+    async def send(message: dict) -> None:
+        received.append(message)
+
+    await static(scope, receive, send)
+
+    assert received[0]["status"] == 404
