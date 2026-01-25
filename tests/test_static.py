@@ -264,9 +264,7 @@ def test_static_returns_404_for_deleted_file(tmp_path: Path) -> None:
     assert response.status_code == 404
 
 
-def test_air_auto_detects_static_directory(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_air_auto_detects_static_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Test that Air auto-detects and mounts static/ when it exists."""
     static_dir = tmp_path / "static"
     static_dir.mkdir()
@@ -284,9 +282,7 @@ def test_air_auto_detects_static_directory(
     assert response.status_code == 200
 
 
-def test_air_no_static_when_directory_missing(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_air_no_static_when_directory_missing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Test that Air.static is None when no static/ directory exists."""
     monkeypatch.chdir(tmp_path)
     app = Air()
@@ -294,9 +290,7 @@ def test_air_no_static_when_directory_missing(
     assert app.static is None
 
 
-def test_jinja_renderer_auto_wires_static_from_app(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_jinja_renderer_auto_wires_static_from_app(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Test that JinjaRenderer auto-wires static() when passed an app with static files."""
     # Create static directory with a file
     static_dir = tmp_path / "static"
@@ -306,7 +300,7 @@ def test_jinja_renderer_auto_wires_static_from_app(
     # Create template directory with a template that uses static()
     template_dir = tmp_path / "templates"
     template_dir.mkdir()
-    (template_dir / "page.html").write_text('<link href="{{ static(\'app.css\') }}">')
+    (template_dir / "page.html").write_text("<link href=\"{{ static('app.css') }}\">")
 
     # Change to tmp_path so Air auto-detects static/
     monkeypatch.chdir(tmp_path)
