@@ -8,6 +8,8 @@
 name: CI
 
 on:
+  # https://docs.renovatebot.com/key-concepts/automerge/#if-you-use-github-actions
+  merge_group:
   push:
     branches: [main]
     tags:
