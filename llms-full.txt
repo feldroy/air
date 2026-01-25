@@ -9365,16 +9365,55 @@ def __init__(
 ### __call__
 
 ```
-__call__(request, name, context=None, **kwargs)
+__call__(
+    request: Request,
+    name: str,
+    context: dict[Any, Any] | None = None,
+    *,
+    as_string: Literal[False] = False,
+    **kwargs: Any,
+) -> HTMLResponse
+```
+
+```
+__call__(
+    request: Request,
+    name: str,
+    context: dict[Any, Any] | None = None,
+    *,
+    as_string: Literal[True],
+    **kwargs: Any,
+) -> SafeStr
+```
+
+```
+__call__(
+    request,
+    name,
+    context=None,
+    *,
+    as_string=False,
+    **kwargs,
+)
 ```
 
 Render template with request and context. If an Air Tag is found in the context, try to render it.
 
+Parameters:
+
+| Name        | Type             | Description                                                                                                                  | Default                      |
+| ----------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| `request`   | `Request`        | The request object.                                                                                                          | *required*                   |
+| `name`      | `str`            | The template name.                                                                                                           | *required*                   |
+| `context`   | \`dict[Any, Any] | None\`                                                                                                                       | Optional context dictionary. |
+| `as_string` | `bool`           | If True, return the rendered HTML as a SafeStr instead of an HTMLResponse. Useful for embedding Jinja output inside AirTags. | `False`                      |
+| `**kwargs`  | `Any`            | Additional context variables.                                                                                                | `{}`                         |
+
 Returns:
 
-| Type                | Description                                    |
-| ------------------- | ---------------------------------------------- |
-| `_TemplateResponse` | A TemplateResponse with the rendered template. |
+| Type           | Description |
+| -------------- | ----------- |
+| \`HTMLResponse | SafeStr\`   |
 
 Source code in `src/air/templating.py`
 
@@ -9384,13 +9423,23 @@ def __call__(
     request: Request,
     name: str,
     context: dict[Any, Any] | None = None,
+    *,
+    as_string: bool = False,
     **kwargs: Any,
-) -> _TemplateResponse:
+) -> HTMLResponse | SafeStr:
     """Render template with request and context. If an Air Tag
     is found in the context, try to render it.
 
+    Args:
+        request: The request object.
+        name: The template name.
+        context: Optional context dictionary.
+        as_string: If True, return the rendered HTML as a SafeStr instead of
+            an HTMLResponse. Useful for embedding Jinja output inside AirTags.
+        **kwargs: Additional context variables.
+
     Returns:
-        A TemplateResponse with the rendered template.
+        An HTMLResponse with the rendered template, or a SafeStr if as_string=True.
     """
     if context is None:
         context = {}
@@ -9399,7 +9448,13 @@ def __call__(
 
     # Attempt to render any Tags in the context
     context = {k: _jinja_context_item(v) for k, v in context.items()}
-    return self.templates.TemplateResponse(request=request, name=name, context=context)
+    response = self.templates.TemplateResponse(request=request, name=name, context=context)
+    if as_string:
+        body = response.body
+        if hasattr(body, "decode"):
+            return SafeStr(body.decode("utf-8"))
+        return SafeStr(body)
+    return response
 ```
 
 ## Renderer
