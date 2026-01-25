@@ -4,6 +4,8 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   // Enable Renovate.
   "enabled": true,
+  // https://docs.renovatebot.com/key-concepts/automerge/#if-you-use-github-actions
+  platformAutomerge: true,
   dependencyDashboard: true,
   configMigration: true,
   updatePinnedDependencies: true,
@@ -13,6 +15,10 @@
     "helpers:pinGitHubActionDigestsToSemver",
     ":semanticCommitType(build)",
     ":maintainLockFilesWeekly",
+    // Automerge only after all required GitHub status checks pass
+    ":automergeAll",
+    ":automergePr",
+    ":automergeRequireAllStatusChecks"
   ],
   // Keep semantic commit scope explicit
   semanticCommitScope: "deps",
