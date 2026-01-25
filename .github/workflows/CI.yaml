@@ -146,3 +146,17 @@ jobs:
           files: coverage.xml
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
+  # https://github.com/marketplace/actions/alls-green#why
+  all-green: # This job does nothing and is only used for the branch protection
+    name: All required jobs passed
+    if: always()
+    needs:
+      - lint
+      - type-check
+      - test-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@05ac9388f0aebcb5727afa17fcccfecd6f8ec5fe # release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
