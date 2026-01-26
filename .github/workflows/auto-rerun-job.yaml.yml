@@ -1,10 +1,12 @@
 name: Auto rerun failed CI
 on:
-  workflow_run:
+  workflow_run: # zizmor: ignore[dangerous-triggers]
     workflows: [CI]
     types: [completed]
-permissions:
-  actions: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -15,6 +17,8 @@ jobs:
     if: github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.run_attempt == 1
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      actions: read
     outputs:
       ids: ${{ steps.collect-job-ids.outputs.ids }}
     steps:
@@ -33,6 +37,8 @@ jobs:
     if: needs.job-ids.outputs.ids != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      actions: write
     strategy:
       fail-fast: false
       matrix:
