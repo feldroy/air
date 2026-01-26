@@ -28,18 +28,17 @@ jobs:
         # Job is waiting for a hosted runner to come online.
         run: |
           ids="$(
-            gh run view "$WORKFLOW_RUN_ID" --log-failed --jq '
             gh run view "$WORKFLOW_RUN_ID" --json jobs --jq '
               [
                 .jobs[]
-                | select(.conclusion | IN("failure","cancelled","timed_out"))
+                | select(.conclusion | IN("timed_out"))
                 | .databaseId
               ]'
           )"
           echo "ids=$ids" >> "$GITHUB_OUTPUT"
   rerun:
     needs: job-ids
-    if: needs.job-ids.outputs.ids != '[]'
+    if: ${{ needs.job-ids.outputs.ids != '[]' }}
     name: Rerun failed jobs
     runs-on: ubuntu-latest
     timeout-minutes: 45
