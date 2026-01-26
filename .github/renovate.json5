@@ -72,7 +72,6 @@
       "at any time"
     ],
     "recreateWhen": "always",
-    "rebaseStalePrs": true,
     "branchTopic": "lock-file-maintenance",
     "commitMessageAction": "Lock file maintenance",
     "prBodyDefinitions": {
