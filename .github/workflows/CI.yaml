@@ -121,6 +121,8 @@ jobs:
         with:
           enable-cache: true
           cache-python: true
+          cache-local-path: ${{ runner.temp }}/setup-uv-cache
+          cache-suffix: ${{ matrix.resolution-strategy }}
           python-version: ${{ matrix.python-version }}
           cache-dependency-glob: |
             uv.lock

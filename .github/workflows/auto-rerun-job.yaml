@@ -23,8 +23,10 @@ jobs:
       ids: ${{ steps.collect-job-ids.outputs.ids }}
     steps:
       - id: collect-job-ids
+        # Job is waiting for a hosted runner to come online.
         run: |
           ids="$(
+            gh run view "$WORKFLOW_RUN_ID" --log-failed --jq '
             gh run view "$WORKFLOW_RUN_ID" --json jobs --jq '
               [
                 .jobs[]
