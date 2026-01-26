@@ -131,6 +131,8 @@ repos:
     rev: 42.84.0
     hooks:
       - id: renovate-config-validator
+        language: bun
+        language_version: default
         priority: 0
         args: [--strict]
         files:
