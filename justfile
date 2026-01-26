@@ -167,6 +167,16 @@ renovate-config-validator:
 @run-exact +ARGS:
     just run --exact {{ ARGS }}
 
+# Sync all dependencies using uv, without updating the uv.lock file.
+[group('uv')]
+sync:
+    uv sync --frozen {{ UV_CLI_FLAGS }}
+
+# Sync all dependencies using uv, and updating the uv.lock file. <Don’t use! For maintainers only!>
+[group('uv')]
+sync-lock *ARGS:
+    uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
+
 # Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
 [group('uv')]
 [group('prek')]
@@ -182,15 +192,9 @@ upgrade-uv-dependencies:
 modify-uv-dependency-version PACKAGE_NAME PACKAGE_VERSION:
     just sync-lock --upgrade-package {{ PACKAGE_NAME }}=={{ PACKAGE_VERSION }}
 
-# Sync all dependencies using uv, without updating the uv.lock file.
-[group('uv')]
-sync:
-    uv sync --frozen {{ UV_CLI_FLAGS }}
-
-# Sync all dependencies using uv, and updating the uv.lock file. <Don’t use! For maintainers only!>
-[group('uv')]
-sync-lock *ARGS:
-    uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
+# Upgrade dependencies in pyproject.toml files with uv. <Don’t use! For maintainers only!>
+upgrade-dependencies-in-pyproject-toml:
+    uvx uv-upx@latest upgrade run --profile with_pinned --preserve-original-package-names
 
 # endregion -------------------------------------------------> uv <-----------------------------------------------------
 
