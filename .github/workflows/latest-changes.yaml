@@ -7,16 +7,27 @@ on:
     types:
       - closed
 
+permissions:
+  contents: write
+
 jobs:
   latest-changes:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    if: >
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.user.login != 'dependabot[bot]' &&
+      github.event.pull_request.user.login != 'renovate[bot]' &&
+      github.event.pull_request.user.login != 'renovate' &&
+      github.actor != 'dependabot[bot]' &&
+      github.actor != 'renovate[bot]' &&
+      github.actor != 'renovate'
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: false
-      - uses: tiangolo/latest-changes@dd39d11d7dd4f4ebf30206448ad4baff5c477eca # 0.4.0
+          # Required for git push (CHANGELOG.md)
+          persist-credentials: true # zizmor: ignore[artipacked]
+      - uses: tiangolo/latest-changes@c9d329cb147f0ddf4fb631214e3f838ff17ccbbd # 0.4.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           latest_changes_file: CHANGELOG.md
