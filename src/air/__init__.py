@@ -171,5 +171,5 @@ from .templating import (
 
 try:  # noqa: RUF067
     __version__ = version("air")
-except PackageNotFoundError:
-    __version__ = "0.0.0.dev0"  # Running from source without install
+except PackageNotFoundError:  # pragma: no cover
+    __version__ = "0.0.0.dev0"
