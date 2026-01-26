@@ -37,7 +37,7 @@ jobs:
           enable-cache: true
           cache-dependency-glob: uv.lock
       - name: Install just
-        uses: taiki-e/install-action@887bc4e03483810873d617344dd5189cd82e7b8b # 2.67.11
+        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
         with:
           tool: just
       - name: Deploy the documentation to GitHub Pages
