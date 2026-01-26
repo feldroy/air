@@ -26,8 +26,9 @@ jobs:
         run: |
           ids="$(
             gh run view "$WORKFLOW_RUN_ID" --json jobs --jq '
-              [.jobs[]
-                | select(((.steps // []) | length) == 0 and (.conclusion | IN("failure","cancelled","timed_out")))
+              [
+                .jobs[]
+                | select(.conclusion | IN("failure","cancelled","timed_out"))
                 | .databaseId
               ]'
           )"
