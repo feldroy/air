@@ -1,5 +1,7 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
+from importlib.metadata import PackageNotFoundError, version
+
 from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
 
@@ -166,3 +168,8 @@ from .templating import (
     JinjaRenderer as JinjaRenderer,
     Renderer as Renderer,
 )
+
+try:  # noqa: RUF067
+    __version__ = version("air")
+except PackageNotFoundError:
+    __version__ = "0.0.0.dev0"  # Running from source without install
