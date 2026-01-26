@@ -73,7 +73,7 @@ repos:
         additional_dependencies:
           - "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.11.1"
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.36.0 # A JSON Schema CLI and pre-commit hook built on jsonschema.
+    rev: 0.36.1 # A JSON Schema CLI and pre-commit hook built on jsonschema.
     hooks:
       - id: check-codecov # Validate Codecov config against the schema provided by SchemaStore.
         priority: 0
@@ -91,7 +91,7 @@ repos:
       - id: complexipy # Run the cognitive complexity checker.
         priority: 0
   - repo: https://github.com/fredrikaverpil/creosote
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
       - id: creosote # Identify unused dependencies and avoid a bloated virtual environment.
         priority: 0
@@ -166,7 +166,7 @@ repos:
       - id: tombi-lint # A TOML linter.
         priority: 0
   - repo: https://github.com/crate-ci/typos
-    rev: v1.42.1
+    rev: v1.42.2
     hooks:
       - id: typos # Source code spell checker.
         priority: 0
