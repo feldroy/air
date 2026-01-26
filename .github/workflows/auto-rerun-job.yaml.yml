@@ -8,7 +8,7 @@ permissions:
 
 env:
   GH_TOKEN: ${{ github.token }}
-  RUN_ID: ${{ github.event.workflow_run.id }}
+  WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
 
 jobs:
   job-ids:
@@ -21,7 +21,7 @@ jobs:
       - id: collect-job-ids
         run: |
           ids="$(
-            gh run view "$RUN_ID" --json jobs --jq '
+            gh run view "$WORKFLOW_RUN_ID" --json jobs --jq '
               [.jobs[]
                 | select(((.steps // []) | length) == 0 and (.conclusion | IN("failure","cancelled","timed_out")))
                 | .databaseId
@@ -30,7 +30,7 @@ jobs:
           echo "ids=$ids" >> "$GITHUB_OUTPUT"
   rerun:
     needs: job-ids
-    if: needs.ids.outputs.ids != '[]'
+    if: needs.job-ids.outputs.ids != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
