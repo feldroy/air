@@ -29,7 +29,8 @@
   prConcurrentLimit: 3,
   prHourlyLimit: 3,
   suppressNotifications: [
-    'prEditedNotification'
+    "prEditedNotification",
+    "prIgnoreNotification"
   ],
   // Rebase PRs when they fall behind the base branch
   "rebaseWhen": "behind-base-branch",
@@ -104,13 +105,13 @@
     },
     {
       matchUpdateTypes: [
-        'lockFileMaintenance'
+        "lockFileMaintenance"
       ],
       matchFileNames: [
         "uv.lock",
         "**/uv.lock"
       ],
-      groupName: 'lockfile updates',
+      groupName: "lockfile updates",
       description: "Lock file maintenance only for uv.lock"
     },
     {
