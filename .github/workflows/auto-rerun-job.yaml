@@ -14,6 +14,7 @@ env:
 
 jobs:
   job-ids:
+    name: Collect failed job IDs
     if: github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.run_attempt == 1
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -22,7 +23,8 @@ jobs:
     outputs:
       ids: ${{ steps.collect-job-ids.outputs.ids }}
     steps:
-      - id: collect-job-ids
+      - name: Collect failed job IDs
+        id: collect-job-ids
         # Job is waiting for a hosted runner to come online.
         run: |
           ids="$(
@@ -38,6 +40,7 @@ jobs:
   rerun:
     needs: job-ids
     if: needs.job-ids.outputs.ids != '[]'
+    name: Rerun failed jobs
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
