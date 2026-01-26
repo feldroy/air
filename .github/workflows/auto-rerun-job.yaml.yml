@@ -1,0 +1,36 @@
+name: Auto rerun failed CI
+on:
+  workflow_run:
+    workflows: [ CI ]
+    types: [ completed ]
+permissions:
+  actions: write
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  RUN_ID: ${{ github.event.workflow_run.id }}
+
+jobs:
+  job-ids:
+    if: github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      ids: ${ { steps.i.outputs.ids } } }
+    steps:
+      - id: i
+        run: echo "ids=$(gh run view "$RUN_ID" --json jobs --jq '[.jobs[]|select(((.steps//[])|length==0) and (.conclusion|IN("failure","cancelled","timed_out")))|.databaseId]')" >>"$GITHUB_OUTPUT"
+  rerun:
+    needs: job-ids
+    if: needs.ids.outputs.ids != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        job-id: ${{ fromJson(needs.ids.outputs.ids) }}
+    steps:
+      - name: Rerun failed jobs
+        env:
+          JOB_ID: ${{  matrix.job-id }}
+        run: gh run rerun "$WORKFLOW_RUN_ID" --failed --job "$JOB_ID"

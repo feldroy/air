@@ -119,8 +119,13 @@ jobs:
           tool: just
       - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
+          enable-cache: true
+          cache-python: true
           python-version: ${{ matrix.python-version }}
-          enable-cache: false
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+            .python-version
       - name: Run all the tests
         env:
           UV_RESOLUTION: ${{ matrix.resolution-strategy }}
