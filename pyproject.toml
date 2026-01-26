@@ -134,7 +134,7 @@ lint = [
     "djlint==1.36.4", # https://pypi.org/project/djlint
     "google-yamlfmt==0.21.0", # https://pypi.org/project/google-yamlfmt
     "prek==0.3.0", # https://pypi.org/project/prek
-    "pyrefly==0.49.0", # https://pypi.org/project/pyrefly
+    "pyrefly==0.50.0", # https://pypi.org/project/pyrefly
     "ruff==0.14.14", # https://pypi.org/project/ruff
     "rumdl==0.1.1", # https://pypi.org/project/rumdl
     "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
