@@ -168,7 +168,7 @@ dev = [
     { name = "types-markdown", specifier = "==3.10.0.20251106" },
     { name = "types-pygments", specifier = "==2.19.0.20251121" },
     { name = "typos", specifier = "==1.42.2" },
-    { name = "vale", specifier = ">=3.13.0.0" },
+    { name = "vale", specifier = "==3.13.0.0" },
 ]
 devtools = []
 docs = [
@@ -198,7 +198,7 @@ lint = [
     { name = "types-markdown", specifier = "==3.10.0.20251106" },
     { name = "types-pygments", specifier = "==2.19.0.20251121" },
     { name = "typos", specifier = "==1.42.2" },
-    { name = "vale", specifier = ">=3.13.0.0" },
+    { name = "vale", specifier = "==3.13.0.0" },
 ]
 test = [
     { name = "coverage", extras = ["toml"], specifier = "==7.13.2" },
