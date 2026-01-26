@@ -129,8 +129,6 @@ jobs:
       - name: Run all the tests
         env:
           UV_RESOLUTION: ${{ matrix.resolution-strategy }}
-          UV_MANAGED_PYTHON: "1"
-          UV_PYTHON_PREFERENCE: "managed"
         run: just test-ci
   coverage-xml:
     if: >

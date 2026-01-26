@@ -317,6 +317,8 @@ class_attributes_order = [
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
 required-version = ">=0.9.8"
+# Only use managed Python installations; never use system Python installations.
+python-preference = "only-managed"
 # Whether to enable experimental, preview features.
 preview = true
 # Treat this repo as a package, so uv sync/run installs it editable, enabling CLI scripts, plugins, and package info.
