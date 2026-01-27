@@ -14,7 +14,7 @@ jobs:
   latest-changes:
     name: Update latest changes
     runs-on: ubuntu-latest
-    if: >
+    if: >-
       github.event.pull_request.merged == true &&
       github.event.pull_request.user.login != 'dependabot[bot]' &&
       github.event.pull_request.user.login != 'renovate[bot]' &&

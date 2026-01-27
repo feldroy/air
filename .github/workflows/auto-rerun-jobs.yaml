@@ -1,4 +1,5 @@
 name: Auto rerun failed CI
+
 on:
   workflow_run: # zizmor: ignore[dangerous-triggers]
     workflows: [CI]
@@ -8,6 +9,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.workflow_run.id }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 env:
   GH_TOKEN: ${{ github.token }}
   WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}
@@ -15,7 +19,10 @@ env:
 jobs:
   job-ids:
     name: Collect failed job IDs
-    if: github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.run_attempt == 1
+    if: >-
+      github.event.workflow_run.run_attempt == 1 &&
+      github.event.workflow_run.conclusion != 'success' &&
+      github.event.workflow_run.conclusion != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -23,13 +30,14 @@ jobs:
     outputs:
       ids: ${{ steps.collect-job-ids.outputs.ids }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Collect failed job IDs
         id: collect-job-ids
         run: |
           ids="$(
             gh run view "$WORKFLOW_RUN_ID" --json jobs --jq '
-              [ .jobs[] | select(.conclusion == "timed_out") | (.databaseId | tostring) ]
-              | join(",")
+              [ .jobs[] | select(.conclusion == "timed_out") | .databaseId ] | @json
             '
           )"
           echo "ids=$ids" >> "$GITHUB_OUTPUT"
@@ -46,6 +54,8 @@ jobs:
       matrix:
         job-id: ${{ fromJson(needs.job-ids.outputs.ids) }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Rerun failed jobs
         env:
           JOB_ID: ${{ matrix.job-id }}
