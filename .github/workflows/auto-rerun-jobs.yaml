@@ -19,7 +19,7 @@ env:
 jobs:
   job-ids:
     name: Collect failed job IDs
-    if: ${{ github.event.workflow_run.conclusion == 'timed_out' && github.event.workflow_run.run_attempt == 1 }}
+    if: ${{ github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.run_attempt == 1 }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     outputs:
@@ -32,7 +32,7 @@ jobs:
         run: |
           ids="$(
             gh run view "$WORKFLOW_RUN_ID" --json jobs --jq '
-              [ .jobs[] | select(.conclusion == "timed_out") | .databaseId ]
+              [ .jobs[] | select(.conclusion == "timed_out") | .databaseId ] | @json
             '
           )"
           echo "ids=$ids" >> "$GITHUB_OUTPUT"
@@ -44,6 +44,7 @@ jobs:
     timeout-minutes: 45
     permissions:
       actions: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
