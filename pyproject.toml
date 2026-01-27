@@ -139,7 +139,7 @@ lint = [
     "rumdl==0.1.1", # https://pypi.org/project/rumdl
     "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
     "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
-    "ty==0.0.13", # https://pypi.org/project/ty
+    "ty==0.0.14", # https://pypi.org/project/ty
     "types-Markdown==3.10.0.20251106", # https://pypi.org/project/types-Markdown
     "types-lxml==2026.1.1", # https://pypi.org/project/types-lxml
     "types-pygments==2.19.0.20251121", # https://pypi.org/project/types-pygments
