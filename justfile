@@ -26,8 +26,6 @@ set unstable := true
 HERE := justfile_directory()
 MARKER_DIR := HERE
 PYTHON_VERSION := trim(read(".python-version"))
-# From pyproject.toml -> version
-VERSION := `awk -F\" '/^version/{print $2}' pyproject.toml`
 # From pyproject.toml -> requires-python
 PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
 # Alternative option: From pyproject.toml -> classifiers
@@ -39,6 +37,7 @@ UNCOMMITTED_CHANGES_WARNING_MSG := (
     "You have uncommitted changes (staged and/or unstaged)." +
     " Please commit (or stash) them before running this recipe!"
 )
+PROJECT_VERSION := `uv version --short`
 # endregion -----------------------------------------------> config <---------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -195,6 +194,16 @@ modify-uv-dependency-version PACKAGE_NAME PACKAGE_VERSION:
 # Upgrade dependencies in pyproject.toml files with uv. <Don’t use! For maintainers only!>
 upgrade-dependencies-in-pyproject-toml:
     uvx uv-upx@latest upgrade run --profile with_pinned --preserve-original-package-names
+
+# Bump the project version. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-version--bump
+[group('uv')]
+bump-project-version:
+    uv version --bump patch --bump alpha
+
+# Builds all packages in the workspace. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-build--all-packages
+[group('uv')]
+build-all-packages:
+    uv build --all-packages
 
 # endregion -------------------------------------------------> uv <-----------------------------------------------------
 

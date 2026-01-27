@@ -23,7 +23,13 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
-          enable-cache: false
+          enable-cache: true
+          cache-python: true
+          cache-local-path: ${{ runner.temp }}/setup-uv-cache
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+            .python-version
 
       - name: Build with uv
         run: uv build
