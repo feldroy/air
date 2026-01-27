@@ -13,8 +13,8 @@
   extends: [
     "config:best-practices",
     "helpers:pinGitHubActionDigestsToSemver",
-    // Automerge only after all required GitHub status checks pass
-    ":automergeAll",
+    // Disable automerging feature - wait for humans to merge all PRs.
+    ":automergeDisabled",
     ":automergePr",
     ":automergeRequireAllStatusChecks",
     // conventional commits
