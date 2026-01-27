@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   deploy:
-    if: >
+    if: >-
       github.actor != 'dependabot[bot]' &&
       github.actor != 'renovate[bot]' &&
       github.actor != 'renovate'

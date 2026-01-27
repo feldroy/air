@@ -19,9 +19,14 @@ env:
 jobs:
   job-ids:
     name: Collect failed job IDs
-    if: ${{ github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.run_attempt == 1 }}
+    if: >-
+      github.event.workflow_run.run_attempt == 1 &&
+      github.event.workflow_run.conclusion != 'success' &&
+      github.event.workflow_run.conclusion != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      actions: read
     outputs:
       ids: ${{ steps.collect-job-ids.outputs.ids }}
     steps:
@@ -44,7 +49,6 @@ jobs:
     timeout-minutes: 45
     permissions:
       actions: write
-      contents: read
     strategy:
       fail-fast: false
       matrix:
