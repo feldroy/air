@@ -64,10 +64,12 @@ jobs:
           persist-credentials: false
           ref: ${{ github.sha }}
           fetch-depth: 1
-      - uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
+      - name: Install just
+        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
         with:
           tool: just
-      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+      - name: Set up uv
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           enable-cache: true
           cache-python: true
@@ -87,13 +89,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
+      - name: Install just
+        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
         with:
           tool: just
-      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+      - name: Set up uv
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           enable-cache: false
       - name: Type Checking
@@ -111,16 +116,26 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
+      - name: Install just
+        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
         with:
           tool: just
-      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+      - name: Set up uv
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
+          enable-cache: true
+          cache-python: true
+          cache-local-path: ${{ runner.temp }}/setup-uv-cache
+          cache-suffix: ${{ matrix.resolution-strategy }}
           python-version: ${{ matrix.python-version }}
-          enable-cache: false
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+            .python-version
       - name: Run all the tests
         env:
           UV_RESOLUTION: ${{ matrix.resolution-strategy }}
@@ -137,13 +152,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
+      - name: Install just
+        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
         with:
           tool: just
-      - uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+      - name: Set up uv
+        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
           enable-cache: false
       - name: Generating an XML Coverage Report
@@ -157,6 +175,7 @@ jobs:
   # https://github.com/marketplace/actions/alls-green#why
   all-green: # This job does nothing and is only used for the branch protection
     name: All required jobs passed
+    timeout-minutes: 45
     if: always()
     needs:
       - lint

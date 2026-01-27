@@ -16,7 +16,8 @@ jobs:
     name: Deploy docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           persist-credentials: true
@@ -24,8 +25,10 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-      - run: printf 'cache_id=%s\n' "$(date -u '+%V')" >> "$GITHUB_ENV"
-      - uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+      - name: Set cache identifier
+        run: printf 'cache_id=%s\n' "$(date -u '+%V')" >> "$GITHUB_ENV"
+      - name: Cache MkDocs assets
+        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
         with:
           key: mkdocs-material-${{ env.cache_id }}
           path: .cache

@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   latest-changes:
+    name: Update latest changes
     runs-on: ubuntu-latest
     if: >
       github.event.pull_request.merged == true &&
@@ -22,12 +23,14 @@ jobs:
       github.actor != 'renovate[bot]' &&
       github.actor != 'renovate'
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           # Required for git push (CHANGELOG.md)
           persist-credentials: true # zizmor: ignore[artipacked]
-      - uses: tiangolo/latest-changes@c9d329cb147f0ddf4fb631214e3f838ff17ccbbd # 0.4.1
+      - name: Generate latest changes entry
+        uses: tiangolo/latest-changes@c9d329cb147f0ddf4fb631214e3f838ff17ccbbd # 0.4.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           latest_changes_file: CHANGELOG.md
