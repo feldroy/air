@@ -1,0 +1,10 @@
+# .github/dependabot.yml
+version: 2
+
+# Intentionally empty: this disables all scheduled Dependabot "version update" PRs
+# (the regular dependency bump PRs).
+updates: []
+
+# Note:
+# Security update PRs are controlled by repo/org settings, not by entries here.
+# Keep "Dependabot alerts" and "Dependabot security updates" enabled in Settings.
