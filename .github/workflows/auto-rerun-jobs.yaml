@@ -25,15 +25,12 @@ jobs:
     steps:
       - name: Collect failed job IDs
         id: collect-job-ids
-        # Job is waiting for a hosted runner to come online.
         run: |
           ids="$(
             gh run view "$WORKFLOW_RUN_ID" --json jobs --jq '
-              [
-                .jobs[]
-                | select(.conclusion | IN("timed_out"))
-                | .databaseId
-              ]'
+              [ .jobs[] | select(.conclusion == "timed_out") | (.databaseId | tostring) ]
+              | join(",")
+            '
           )"
           echo "ids=$ids" >> "$GITHUB_OUTPUT"
   rerun:
