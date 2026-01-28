@@ -112,11 +112,11 @@ Some HTML attributes are reserved words in Python. To get around that, **Air Tag
 
 | Reserved Word | Use This Keyword Argument |
 | ------------- | ------------------------- |
-|     class     |          class_           |
-|      for      |           for_            |
-|     async     |          async_           |
-|      id       |            id_            |
-|      as       |            as_            |
+| class         | class_                    |
+| for           | for_                      |
+| async         | async_                    |
+| id            | id_                       |
+| as            | as_                       |
 
 !!! note
 
