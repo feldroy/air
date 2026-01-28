@@ -24,19 +24,19 @@ enable = []
 # Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
-    "MD004", # https://github.com/rvben/rumdl/blob/main/docs/md004.md
-    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
-    "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
-    "MD030", # https://github.com/rvben/rumdl/blob/main/docs/md030.md
-    "MD031", # https://github.com/rvben/rumdl/blob/main/docs/md031.md
-    "MD032", # https://github.com/rvben/rumdl/blob/main/docs/md032.md
-    "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
-    "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
-    "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
-    "MD046", # https://github.com/rvben/rumdl/blob/main/docs/md046.md
-    "MD049", # https://github.com/rvben/rumdl/blob/main/docs/md049.md
-    "MD050", # https://github.com/rvben/rumdl/blob/main/docs/md050.md
-    "MD060", # https://github.com/rvben/rumdl/blob/main/docs/md060.md
+#    "MD004", # https://github.com/rvben/rumdl/blob/main/docs/md004.md
+#    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
+#    "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
+#    "MD030", # https://github.com/rvben/rumdl/blob/main/docs/md030.md
+#    "MD031", # https://github.com/rvben/rumdl/blob/main/docs/md031.md
+#    "MD032", # https://github.com/rvben/rumdl/blob/main/docs/md032.md
+#    "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
+#    "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
+#    "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
+#    "MD046", # https://github.com/rvben/rumdl/blob/main/docs/md046.md
+#    "MD049", # https://github.com/rvben/rumdl/blob/main/docs/md049.md
+#    "MD050", # https://github.com/rvben/rumdl/blob/main/docs/md050.md
+#    "MD060", # https://github.com/rvben/rumdl/blob/main/docs/md060.md
 ]
 # Specifies files and directories to exclude from linting. Supports glob patterns.
 # Default: [] (no files excluded)
@@ -166,3 +166,14 @@ style = "leading_and_trailing" # Require pipes at start and end: | cell | (defau
 enabled = true # Default: false
 style = "aligned" # Columns are padded with spaces for visual alignment (recommended for readability) (default: "any")
 column-align = "center" # Options: "auto", "left", "center", "right" (default: "auto")
+
+[MD073] # https://github.com/rvben/rumdl/blob/main/docs/md073.md
+# MD073 - Table of Contents Validation
+# Validates TOC entries match document headings; flags missing, stale, or mismatched items.
+detection = "both" # Detection method: "markers", "heading", or "both" (default: "both")
+min-level = 2 # Minimum heading level to include (default: 2)
+max-level = 4 # Maximum heading level to include (default: 4)
+enforce-order = true # Whether TOC order must match document order (default: true)
+nested = true # Whether to use nested indentation (default: true)
+anchor-style = "github" # Anchor generation style (default: "github")
+toc-headings = ["Table of Contents"] # Headings that indicate a TOC section (default: ["Table of Contents", "Contents", "TOC"])
