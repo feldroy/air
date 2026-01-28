@@ -159,6 +159,7 @@ test = [
     "pytest-env==1.2.0", # https://pypi.org/project/pytest-env
     "pytest-github-actions-annotate-failures==0.3.0", # https://pypi.org/project/pytest-github-actions-annotate-failures
     "pytest-pretty==1.3.0", # https://pypi.org/project/pytest-pretty
+    "pytest-smoke==0.10.0", # https://pypi.org/project/pytest-smoke
 ]
 
 # endregion dependencies

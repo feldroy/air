@@ -13,8 +13,9 @@
   extends: [
     "config:best-practices",
     "helpers:pinGitHubActionDigestsToSemver",
-    // Automerge only after all required GitHub status checks pass
-    ":automergeAll",
+    ":maintainLockFilesWeekly",
+    // Disable automerging feature - wait for humans to merge all PRs.
+    ":automergeDisabled",
     ":automergePr",
     ":automergeRequireAllStatusChecks",
     // conventional commits
@@ -26,8 +27,11 @@
   semanticCommitType: "build",
   semanticCommitScope: "deps",
   prCreation: "immediate",
-  prConcurrentLimit: 3,
-  prHourlyLimit: 3,
+  prConcurrentLimit: 5,
+  prHourlyLimit: 5,
+  // Default blanket cooldown of 2 days to all dependencies.
+  minimumReleaseAge: '2 days',
+  internalChecksFilter: 'strict',
   suppressNotifications: [
     "prEditedNotification",
     "prIgnoreNotification"
@@ -68,9 +72,6 @@
   },
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": [
-      "at any time"
-    ],
     "recreateWhen": "always",
     "branchTopic": "lock-file-maintenance",
     "commitMessageAction": "Lock file maintenance",
@@ -79,29 +80,9 @@
     }
   },
   packageRules: [
-    {
-      matchManagers: [
-        "pep621"
-      ],
-      matchDepTypes: [
-        "project.dependencies",
-        "project.optional-dependencies"
-      ],
-      rangeStrategy: "update-lockfile",
-      groupName: "Python dependencies (pyproject.toml) - [project.dependencies, project.optional-dependencies]",
-      description: "Keep library constraints (>=) stable, update only uv.lock"
-    },
-    {
-      matchManagers: [
-        "pep621"
-      ],
-      matchDepTypes: [
-        "dependency-groups"
-      ],
-      rangeStrategy: "pin",
-      groupName: "Python dependencies (pyproject.toml) - [dependency-groups]",
-      description: "Pin dependency-groups to exact versions (==) and keep them updated"
-    },
+    // Order your packageRules so the least important rules are at the top,
+    // and the most important rules are at the bottom.
+    // This way, important rules override earlier rule settings when needed.
     {
       matchUpdateTypes: [
         "lockFileMaintenance"
@@ -122,13 +103,6 @@
     },
     {
       matchManagers: [
-        "pre-commit"
-      ],
-      groupName: "pre-commit hooks",
-      description: "Group updates for pre-commit hook repos and versions.",
-    },
-    {
-      matchManagers: [
         "github-actions"
       ],
       groupName: "GitHub Actions",
@@ -140,6 +114,37 @@
       ],
       groupName: "Renovate presets",
       description: "Group updates for Renovate config presets and shared configs.",
+    },
+    {
+      matchManagers: [
+        "pre-commit"
+      ],
+      groupName: "pre-commit hooks",
+      description: "Group updates for pre-commit hook repos and versions.",
+    },
+    {
+      matchManagers: [
+        "pep621"
+      ],
+      matchDepTypes: [
+        "dependency-groups"
+      ],
+      rangeStrategy: "pin",
+      groupName: "Python dependencies (pyproject.toml) - [dependency-groups]",
+      description: "Pin dependency-groups to exact versions (==) and keep them updated"
+    },
+    {
+      matchManagers: [
+        "pep621"
+      ],
+      matchDepTypes: [
+        "project.dependencies",
+        "project.optional-dependencies"
+      ],
+      rangeStrategy: "update-lockfile",
+      groupName: "Python dependencies (pyproject.toml) - [project.dependencies, project.optional-dependencies]",
+      description: "Keep library constraints (>=) stable, update only uv.lock",
+      minimumReleaseAge: null
     }
   ]
 }
