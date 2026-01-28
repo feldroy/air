@@ -165,7 +165,7 @@ style = "leading_and_trailing" # Require pipes at start and end: | cell | (defau
 # Enforces consistent Markdown table column alignment and padding for readable diffs and editing in docs, like Prettier.
 enabled = true # Default: false
 style = "aligned" # Columns are padded with spaces for visual alignment (recommended for readability) (default: "any")
-column-align = "center" # Options: "auto", "left", "center", "right" (default: "auto")
+column-align = "left" # Options: "auto", "left", "center", "right" (default: "auto")
 
 [MD073] # https://github.com/rvben/rumdl/blob/main/docs/md073.md
 # MD073 - Table of Contents Validation
