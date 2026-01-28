@@ -4,8 +4,8 @@ Air applications can be deployed in several ways. We provide detailed examples f
 
 ## Examples
 
-* [Containerizing an Air application](https://github.com/feldroy/air/tree/main/examples/containerize)
-* [Deploying an Air application to Kubernetes](https://github.com/feldroy/air/tree/main/examples/deployment/k8s)
+- [Containerizing an Air application](https://github.com/feldroy/air/tree/main/examples/containerize)
+- [Deploying an Air application to Kubernetes](https://github.com/feldroy/air/tree/main/examples/deployment/k8s)
 
 ## Hosting Platforms
 
@@ -13,16 +13,16 @@ We have experience deploying Air on the following hosting platforms. If you're u
 
 ### Railway
 
-* [Our Railway referral link to get $20 in Railway credit](https://railway.com?referralCode=5EX8pI)
-* [Example Railway config for Air](railway.md)
+- [Our Railway referral link to get $20 in Railway credit](https://railway.com?referralCode=5EX8pI)
+- [Example Railway config for Air](railway.md)
 
 ### Vultr
 
-* [Our Vultr link to get $300 of Vultr credit](https://www.vultr.com/?ref=9686150)
+- [Our Vultr link to get $300 of Vultr credit](https://www.vultr.com/?ref=9686150)
 
 ### FastAPI Cloud
 
-* Not open to the public yet, but you can join the [FastAPI Cloud waitlist](https://fastapicloud.com/)
+- Not open to the public yet, but you can join the [FastAPI Cloud waitlist](https://fastapicloud.com/)
 
 ## Contributing
 

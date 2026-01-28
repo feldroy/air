@@ -29,6 +29,7 @@ async def request_info(request: Request):
 Here are smaller, focused examples for specific use cases:
 
 ### Accessing Query Parameters
+
 ```python
 import air
 from air.requests import Request
@@ -43,6 +44,7 @@ async def search(request: Request):
 ```
 
 ### Reading JSON Body
+
 ```python
 import air
 from air.requests import Request
@@ -58,6 +60,7 @@ async def create_item(request: Request):
 ```
 
 ### Reading Form Data
+
 ```python
 import air
 from air.requests import Request

@@ -80,6 +80,7 @@ uv add air
 You can install each optional feature (extras) like this:
 
 1. **Standard** — FastAPI’s recommended extras
+
    ```sh
    uv add "air[standard]"
    ```
