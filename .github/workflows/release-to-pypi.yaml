@@ -17,7 +17,7 @@ on:
       - "v*" # Triggers on tags like v1.0.0
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.workflow_run.id }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
