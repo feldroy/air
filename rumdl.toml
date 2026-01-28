@@ -25,7 +25,7 @@ enable = []
 disable = [
     # TODO -> Enable once all lint violations are fixed:
 #    "MD004", # https://github.com/rvben/rumdl/blob/main/docs/md004.md
-#    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
+    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
 #    "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
 #    "MD030", # https://github.com/rvben/rumdl/blob/main/docs/md030.md
 #    "MD031", # https://github.com/rvben/rumdl/blob/main/docs/md031.md
