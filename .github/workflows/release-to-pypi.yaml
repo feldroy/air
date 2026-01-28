@@ -1,4 +1,11 @@
-# .github/workflows/publish-on-tag.yml
+# .github/workflows/release-to-pypi.yaml
+# https://docs.astral.sh/uv/guides/package/#building-and-publishing-a-package
+# https://docs.astral.sh/uv/guides/integration/github/#publishing-to-pypi
+
+# TODO -> Trusted Publishing + publish attestations:
+# 1. https://docs.pypi.org/trusted-publishers/adding-a-publisher
+# 2. https://github.com/astral-sh/attest-action/blob/main/README.md
+
 name: Publish Python Package with uv
 
 permissions:
@@ -8,6 +15,19 @@ on:
   push:
     tags:
       - "v*" # Triggers on tags like v1.0.0
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.id }}
+  cancel-in-progress: true
+
+env:
+  COLUMNS: 150
+  CI: 1
+  FORCE_COLOR: 1
+  JUST_COLOR: always
+  JUST_COMMAND_COLOR: purple
+  JUST_EXPLAIN: true
+  JUST_HIGHLIGHT: true
 
 jobs:
   publish:
@@ -19,7 +39,6 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-
       - name: Set up uv
         uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
         with:
@@ -30,16 +49,22 @@ jobs:
             uv.lock
             pyproject.toml
             .python-version
-
+      - name: Install just
+        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
+        with:
+          tool: just
       - name: Build with uv
-        run: uv build
-
+        run: just build
+      - name: Smoke test (wheel)
+        run: just test-smoke-on-wheel
+      - name: Smoke test (source distribution)
+        run: just test-smoke-on-source-distribution
       - name: Publish with uv
         env:
           UV_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         run: uv publish --token "$UV_PYPI_TOKEN"
 
-      - name: Run latest-tag
+      - name: Set the latest tag
         uses: EndBug/latest-tag@cce4de6d46f34a17b99785d5574a351f4289fd59 # latest
         with:
           # You can change the name of the tag or branch with this input.

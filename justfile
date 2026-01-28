@@ -166,6 +166,27 @@ renovate-config-validator:
 @run-exact +ARGS:
     just run --exact {{ ARGS }}
 
+# Run isolated `uv run` using selected wheel or sdist from `dist/`;
+[group('uv')]
+[private]
+[arg("WITH_WHEEL", long="with-wheel", value="dist/*.whl", \
+     help="Use the wheel artifact from dist/*.whl for the isolated run.")]
+[arg("WITH_SOURCE_DISTRIBUTION", long="with-source-distribution", value="dist/*.tar.gz", \
+     help="Use the source distribution artifact from dist/*.tar.gz for the isolated run.")]
+[arg("ARGS", help="Extra Args for uv run")]
+run-on-build WITH_WHEEL="" WITH_SOURCE_DISTRIBUTION="" *ARGS:
+    uv run --isolated --no-project --with {{ WITH_WHEEL || WITH_SOURCE_DISTRIBUTION }} {{ ARGS }}
+
+# Run isolated `uv run` using the wheel from `dist/`
+[group('uv')]
+@run-on-wheel +ARGS:
+    just run-on-build --with-wheel {{ ARGS }}
+
+# Run isolated `uv run` using the sdist from `dist/`
+[group('uv')]
+@run-on-source-distribution +ARGS:
+    just run-on-build --with-source-distribution {{ ARGS }}
+
 # Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
 sync:
@@ -197,13 +218,15 @@ upgrade-dependencies-in-pyproject-toml:
 
 # Bump the project version. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-version--bump
 [group('uv')]
-bump-project-version:
+bump-version:
     uv version --bump patch --bump alpha
 
 # Builds all packages in the workspace. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-build--all-packages
 [group('uv')]
-build-all-packages:
-    uv build --all-packages
+[arg("CLEAR", long="clear", value="--clear", \
+                help="Clear the output directory before the build, removing stale artifacts")]
+build CLEAR="":
+    uv build --all-packages {{ CLEAR }}
 
 # endregion -------------------------------------------------> uv <-----------------------------------------------------
 
@@ -410,6 +433,21 @@ tdd: && (pdb "1")
 test-durations:
     just run -- pytest --durations=10 -vvv --no-header
 
+# Run a smoke test
+[group('test')]
+test-smoke:
+    just run-exact -- pytest --smoke
+
+# Run a smoke test using the wheel from `dist/`
+[group('test')]
+test-smoke-on-wheel:
+    just run-on-wheel -- pytest --smoke
+
+# Run a smoke test using the sdist from `dist/`
+[group('test')]
+test-smoke-on-source-distribution:
+    just run-on-source-distribution -- pytest --smoke
+
 # endregion ------------------------------------------------> Test <----------------------------------------------------
 
 # region -----------------------------------------------> Coverage <---------------------------------------------------
@@ -499,24 +537,23 @@ doc-build:
 
 # region ------------------------------------------------> release <----------------------------------------------------
 
-# Build the project, useful for checking that packaging is correct
+# Force clean the build
 [group('build')]
 [group('release')]
-build:
+build-force-clean:
     rm -rf build
     rm -rf dist
-    uv build
 
 # Print the current version of the project
 [group('release')]
 version:
-    @echo "Current version is {{ VERSION }}"
+    @echo "{{ PROJECT_VERSION }}"
 
 # Tag the current version in git and push to GitHub
 [group('release')]
 tag:
-    echo "Tagging version v{{ VERSION }}"
-    git tag -a v{{ VERSION }} -m "Creating version v{{ VERSION }}"
-    git push origin v{{ VERSION }}
+    echo "Tagging version v{{ PROJECT_VERSION }}"
+    git tag -a v{{ PROJECT_VERSION }} -m "Creating version v{{ PROJECT_VERSION }}"
+    git push origin v{{ PROJECT_VERSION }}
 
 # endregion ----------------------------------------------> release <--------------------------------------------------
