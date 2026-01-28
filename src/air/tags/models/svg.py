@@ -65,18 +65,18 @@ class Animate(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        attributeName: Target attribute to animate.
-        attributeType: Type of target attribute.
+        attribute_name: Target attribute to animate.
+        attribute_type: Type of target attribute.
         values: Values to animate through.
         dur: Total animation duration.
-        repeatCount: Number of repetitions.
-        repeatDur: Total duration for repeating.
+        repeat_count: Number of repetitions.
+        repeat_dur: Total duration for repeating.
         from_: Starting value (from is reserved).
         to: Ending value.
         by: Relative animation value.
         begin: Animation start time.
         end: Animation end time.
-        calcMode: Interpolation mode (discrete|linear|paced|spline).
+        calc_mode: Interpolation mode (discrete|linear|paced|spline).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -86,18 +86,18 @@ class Animate(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        attributeName: str | None = None,
-        attributeType: str | None = None,
+        attribute_name: str | None = None,
+        attribute_type: str | None = None,
         values: str | None = None,
         dur: str | None = None,
-        repeatCount: str | float | None = None,
-        repeatDur: str | None = None,
+        repeat_count: str | float | None = None,
+        repeat_dur: str | None = None,
         from_: str | None = None,
         to: str | None = None,
         by: str | None = None,
         begin: str | None = None,
         end: str | None = None,
-        calcMode: str | None = None,
+        calc_mode: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -112,10 +112,10 @@ class AnimateMotion(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         path: Motion path using path syntax.
-        keyPoints: Progress points along path (0-1 range).
+        key_points: Progress points along path (0-1 range).
         rotate: Rotation along path (Number|auto|auto-reverse).
         dur: Total animation duration.
-        repeatCount: Number of repetitions.
+        repeat_count: Number of repetitions.
         begin: Animation start time.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -127,10 +127,10 @@ class AnimateMotion(CaseTag):
         self,
         *children: Renderable,
         path: str | None = None,
-        keyPoints: str | None = None,
+        key_points: str | None = None,
         rotate: str | float | None = None,
         dur: str | None = None,
-        repeatCount: str | float | None = None,
+        repeat_count: str | float | None = None,
         begin: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -150,7 +150,7 @@ class AnimateTransform(CaseTag):
         from_: Starting transformation value.
         to: Ending transformation value.
         dur: Total animation duration.
-        repeatCount: Number of repetitions.
+        repeat_count: Number of repetitions.
         begin: Animation start time.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -166,7 +166,7 @@ class AnimateTransform(CaseTag):
         from_: str | None = None,
         to: str | None = None,
         dur: str | None = None,
-        repeatCount: str | float | None = None,
+        repeat_count: str | float | None = None,
         begin: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -184,7 +184,7 @@ class Circle(CaseTag):
         cx: X-coordinate of center.
         cy: Y-coordinate of center.
         r: Radius.
-        pathLength: Total circumference length in user units.
+        path_length: Total circumference length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -197,7 +197,7 @@ class Circle(CaseTag):
         cx: str | float | None = None,
         cy: str | float | None = None,
         r: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -211,7 +211,7 @@ class ClipPath(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        clipPathUnits: Coordinate system (userSpaceOnUse|objectBoundingBox).
+        clip_path_units: Coordinate system (userSpaceOnUse|objectBoundingBox).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -221,7 +221,7 @@ class ClipPath(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        clipPathUnits: str | None = None,
+        clip_path_units: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -283,7 +283,7 @@ class Ellipse(CaseTag):
         cy: Y-coordinate of center.
         rx: Horizontal radius.
         ry: Vertical radius.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -297,7 +297,7 @@ class Ellipse(CaseTag):
         cy: str | float | None = None,
         rx: str | float | None = None,
         ry: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -437,13 +437,13 @@ class FeConvolveMatrix(CaseTag):
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
         order: Matrix dimensions.
-        kernelMatrix: Matrix values.
+        kernel_matrix: Matrix values.
         divisor: Divisor for matrix sum.
         bias: Bias value.
-        targetX: Target X position.
-        targetY: Target Y position.
-        edgeMode: Edge handling mode.
-        preserveAlpha: Preserve alpha channel.
+        target_x: Target X position.
+        target_y: Target Y position.
+        edge_mode: Edge handling mode.
+        preserve_alpha: Preserve alpha channel.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -456,13 +456,13 @@ class FeConvolveMatrix(CaseTag):
         *children: Renderable,
         in_: str | None = None,
         order: str | None = None,
-        kernelMatrix: str | None = None,
+        kernel_matrix: str | None = None,
         divisor: float | None = None,
         bias: float | None = None,
-        targetX: int | None = None,
-        targetY: int | None = None,
-        edgeMode: str | None = None,
-        preserveAlpha: str | None = None,
+        target_x: int | None = None,
+        target_y: int | None = None,
+        edge_mode: str | None = None,
+        preserve_alpha: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -478,9 +478,9 @@ class FeDiffuseLighting(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
-        surfaceScale: Surface height scale.
-        diffuseConstant: Diffuse lighting constant.
-        kernelUnitLength: Kernel unit length.
+        surface_scale: Surface height scale.
+        diffuse_constant: Diffuse lighting constant.
+        kernel_unit_length: Kernel unit length.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -492,9 +492,9 @@ class FeDiffuseLighting(CaseTag):
         self,
         *children: Renderable,
         in_: str | None = None,
-        surfaceScale: float | None = None,
-        diffuseConstant: float | None = None,
-        kernelUnitLength: str | None = None,
+        surface_scale: float | None = None,
+        diffuse_constant: float | None = None,
+        kernel_unit_length: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -512,8 +512,8 @@ class FeDisplacementMap(CaseTag):
         in_: Input image reference.
         in2: Displacement map reference.
         scale: Displacement scale factor.
-        xChannelSelector: X displacement channel (R|G|B|A).
-        yChannelSelector: Y displacement channel (R|G|B|A).
+        x_channel_selector: X displacement channel (R|G|B|A).
+        y_channel_selector: Y displacement channel (R|G|B|A).
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -527,8 +527,8 @@ class FeDisplacementMap(CaseTag):
         in_: str | None = None,
         in2: str | None = None,
         scale: float | None = None,
-        xChannelSelector: str | None = None,
-        yChannelSelector: str | None = None,
+        x_channel_selector: str | None = None,
+        y_channel_selector: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -571,7 +571,7 @@ class FeDropShadow(CaseTag):
         children: Tags, strings, or other rendered content.
         dx: X offset of drop shadow.
         dy: Y offset of drop shadow.
-        stdDeviation: Blur standard deviation.
+        std_deviation: Blur standard deviation.
         flood_color: Shadow color.
         flood_opacity: Shadow opacity.
         class_: Substituted as the DOM `class` attribute.
@@ -585,7 +585,7 @@ class FeDropShadow(CaseTag):
         *children: Renderable,
         dx: str | float | None = None,
         dy: str | float | None = None,
-        stdDeviation: str | float | None = None,
+        std_deviation: str | float | None = None,
         flood_color: str | None = None,
         flood_opacity: str | float | None = None,
         class_: str | None = None,
@@ -630,7 +630,7 @@ class FeFuncA(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -646,7 +646,7 @@ class FeFuncA(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -666,7 +666,7 @@ class FeFuncB(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -682,7 +682,7 @@ class FeFuncB(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -702,7 +702,7 @@ class FeFuncG(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -718,7 +718,7 @@ class FeFuncG(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -738,7 +738,7 @@ class FeFuncR(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         type_: Transfer function type.
-        tableValues: Lookup table values.
+        table_values: Lookup table values.
         slope: Linear function slope.
         intercept: Linear function intercept.
         amplitude: Gamma function amplitude.
@@ -754,7 +754,7 @@ class FeFuncR(CaseTag):
         self,
         *children: Renderable,
         type_: str | None = None,
-        tableValues: str | None = None,
+        table_values: str | None = None,
         slope: float | None = None,
         intercept: float | None = None,
         amplitude: float | None = None,
@@ -774,8 +774,8 @@ class FeGaussianBlur(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
-        stdDeviation: Blur amount using bell-curve.
-        edgeMode: Edge handling during blur.
+        std_deviation: Blur amount using bell-curve.
+        edge_mode: Edge handling during blur.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -787,8 +787,8 @@ class FeGaussianBlur(CaseTag):
         self,
         *children: Renderable,
         in_: str | None = None,
-        stdDeviation: str | float | None = None,
-        edgeMode: str | None = None,
+        std_deviation: str | float | None = None,
+        edge_mode: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -804,7 +804,7 @@ class FeImage(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         href: URL to image file.
-        preserveAspectRatio: Image scaling control.
+        preserve_aspect_ratio: Image scaling control.
         crossorigin: CORS credentials flag.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
@@ -817,7 +817,7 @@ class FeImage(CaseTag):
         self,
         *children: Renderable,
         href: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         crossorigin: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -970,10 +970,10 @@ class FeSpecularLighting(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         in_: Input image reference.
-        surfaceScale: Surface height scale.
-        specularConstant: Specular lighting constant.
-        specularExponent: Specular lighting exponent.
-        kernelUnitLength: Kernel unit length.
+        surface_scale: Surface height scale.
+        specular_constant: Specular lighting constant.
+        specular_exponent: Specular lighting exponent.
+        kernel_unit_length: Kernel unit length.
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -985,10 +985,10 @@ class FeSpecularLighting(CaseTag):
         self,
         *children: Renderable,
         in_: str | None = None,
-        surfaceScale: float | None = None,
-        specularConstant: float | None = None,
-        specularExponent: float | None = None,
-        kernelUnitLength: str | None = None,
+        surface_scale: float | None = None,
+        specular_constant: float | None = None,
+        specular_exponent: float | None = None,
+        kernel_unit_length: str | None = None,
         result: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1006,11 +1006,11 @@ class FeSpotLight(CaseTag):
         x: X-coordinate of light position.
         y: Y-coordinate of light position.
         z: Z-coordinate of light position.
-        pointsAtX: X-coordinate of point light points at.
-        pointsAtY: Y-coordinate of point light points at.
-        pointsAtZ: Z-coordinate of point light points at.
-        specularExponent: Focus control for light source.
-        limitingConeAngle: Angle of spot light cone.
+        points_at_x: X-coordinate of point light points at.
+        points_at_y: Y-coordinate of point light points at.
+        points_at_z: Z-coordinate of point light points at.
+        specular_exponent: Focus control for light source.
+        limiting_cone_angle: Angle of spot light cone.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1023,11 +1023,11 @@ class FeSpotLight(CaseTag):
         x: str | float | None = None,
         y: str | float | None = None,
         z: str | float | None = None,
-        pointsAtX: str | float | None = None,
-        pointsAtY: str | float | None = None,
-        pointsAtZ: str | float | None = None,
-        specularExponent: float | None = None,
-        limitingConeAngle: float | None = None,
+        points_at_x: str | float | None = None,
+        points_at_y: str | float | None = None,
+        points_at_z: str | float | None = None,
+        specular_exponent: float | None = None,
+        limiting_cone_angle: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1067,10 +1067,10 @@ class FeTurbulence(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        baseFrequency: Base frequency for turbulence.
-        numOctaves: Number of noise octaves.
+        base_frequency: Base frequency for turbulence.
+        num_octaves: Number of noise octaves.
         seed: Random seed for turbulence.
-        stitchTiles: Tile stitching mode (stitch|noStitch).
+        stitch_tiles: Tile stitching mode (stitch|noStitch).
         type_: Turbulence type (fractalNoise|turbulence).
         result: Result identifier.
         class_: Substituted as the DOM `class` attribute.
@@ -1082,10 +1082,10 @@ class FeTurbulence(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        baseFrequency: str | float | None = None,
-        numOctaves: int | None = None,
+        base_frequency: str | float | None = None,
+        num_octaves: int | None = None,
         seed: float | None = None,
-        stitchTiles: str | None = None,
+        stitch_tiles: str | None = None,
         type_: str | None = None,
         result: str | None = None,
         class_: str | None = None,
@@ -1105,8 +1105,8 @@ class Filter(CaseTag):
         y: Y-coordinate of filter region.
         width: Width of filter region.
         height: Height of filter region.
-        filterUnits: Coordinate system for position/size.
-        primitiveUnits: Coordinate system for primitives.
+        filter_units: Coordinate system for position/size.
+        primitive_units: Coordinate system for primitives.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1120,8 +1120,8 @@ class Filter(CaseTag):
         y: str | float | None = None,
         width: str | float | None = None,
         height: str | float | None = None,
-        filterUnits: str | None = None,
-        primitiveUnits: str | None = None,
+        filter_units: str | None = None,
+        primitive_units: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1192,7 +1192,7 @@ class Image(CaseTag):
         width: Width (required).
         height: Height (required).
         href: URL to image file.
-        preserveAspectRatio: Image scaling control.
+        preserve_aspect_ratio: Image scaling control.
         crossorigin: CORS credentials flag.
         decoding: Image decoding hint.
         fetchpriority: Fetch priority hint (experimental).
@@ -1210,7 +1210,7 @@ class Image(CaseTag):
         width: str | float | None = None,
         height: str | float | None = None,
         href: str | None = None,
-        preserveAspectRatio: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         crossorigin: str | None = None,
         decoding: str | None = None,
         fetchpriority: str | None = None,
@@ -1231,7 +1231,7 @@ class Line(CaseTag):
         y1: Y-coordinate of start point.
         x2: X-coordinate of end point.
         y2: Y-coordinate of end point.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1245,7 +1245,7 @@ class Line(CaseTag):
         y1: str | float | None = None,
         x2: str | float | None = None,
         y2: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1263,10 +1263,10 @@ class LinearGradient(CaseTag):
         y1: Y-coordinate of gradient start.
         x2: X-coordinate of gradient end.
         y2: Y-coordinate of gradient end.
-        gradientUnits: Coordinate system.
-        gradientTransform: Additional transformation.
+        gradient_units: Coordinate system.
+        gradient_transform: Additional transformation.
         href: Reference to template gradient.
-        spreadMethod: Gradient behavior outside bounds.
+        spread_method: Gradient behavior outside bounds.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1280,10 +1280,10 @@ class LinearGradient(CaseTag):
         y1: str | float | None = None,
         x2: str | float | None = None,
         y2: str | float | None = None,
-        gradientUnits: str | None = None,
-        gradientTransform: str | None = None,
+        gradient_units: str | None = None,
+        gradient_transform: str | None = None,
         href: str | None = None,
-        spreadMethod: str | None = None,
+        spread_method: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1297,14 +1297,14 @@ class Marker(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        markerWidth: Width of marker viewport.
-        markerHeight: Height of marker viewport.
-        markerUnits: Coordinate system.
-        refX: X reference point.
-        refY: Y reference point.
+        marker_width: Width of marker viewport.
+        marker_height: Height of marker viewport.
+        marker_units: Coordinate system.
+        ref_x: X reference point.
+        ref_y: Y reference point.
         orient: Marker orientation.
-        viewBox: Viewport bounds.
-        preserveAspectRatio: Aspect ratio handling.
+        view_box: Viewport bounds.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1314,14 +1314,14 @@ class Marker(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        markerWidth: str | float | None = None,
-        markerHeight: str | float | None = None,
-        markerUnits: str | None = None,
-        refX: str | float | None = None,
-        refY: str | float | None = None,
+        marker_width: str | float | None = None,
+        marker_height: str | float | None = None,
+        marker_units: str | None = None,
+        ref_x: str | float | None = None,
+        ref_y: str | float | None = None,
         orient: str | float | None = None,
-        viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        view_box: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1339,8 +1339,8 @@ class Mask(CaseTag):
         y: Y-coordinate of top-left corner.
         width: Width of masking area.
         height: Height of masking area.
-        maskUnits: Coordinate system for position/size.
-        maskContentUnits: Coordinate system for contents.
+        mask_units: Coordinate system for position/size.
+        mask_content_units: Coordinate system for contents.
         mask_type: Mask mode (alpha|luminance).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
@@ -1355,8 +1355,8 @@ class Mask(CaseTag):
         y: str | float | None = None,
         width: str | float | None = None,
         height: str | float | None = None,
-        maskUnits: str | None = None,
-        maskContentUnits: str | None = None,
+        mask_units: str | None = None,
+        mask_content_units: str | None = None,
         mask_type: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
@@ -1418,7 +1418,7 @@ class Path(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         d: Path data defining the shape.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1429,7 +1429,7 @@ class Path(CaseTag):
         self,
         *children: Renderable,
         d: str | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1447,12 +1447,12 @@ class Pattern(CaseTag):
         y: Y-coordinate shift of pattern tile.
         width: Width of pattern tile.
         height: Height of pattern tile.
-        patternUnits: Coordinate system for position/size.
-        patternContentUnits: Coordinate system for contents.
-        patternTransform: Additional transformation.
+        pattern_units: Coordinate system for position/size.
+        pattern_content_units: Coordinate system for contents.
+        pattern_transform: Additional transformation.
         href: Reference to template pattern.
-        viewBox: Viewport bounds for pattern.
-        preserveAspectRatio: Aspect ratio handling.
+        view_box: Viewport bounds for pattern.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1466,12 +1466,12 @@ class Pattern(CaseTag):
         y: str | float | None = None,
         width: str | float | None = None,
         height: str | float | None = None,
-        patternUnits: str | None = None,
-        patternContentUnits: str | None = None,
-        patternTransform: str | None = None,
+        pattern_units: str | None = None,
+        pattern_content_units: str | None = None,
+        pattern_transform: str | None = None,
         href: str | None = None,
-        viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        view_box: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1486,7 +1486,7 @@ class Polygon(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         points: List of x,y coordinate pairs.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1497,7 +1497,7 @@ class Polygon(CaseTag):
         self,
         *children: Renderable,
         points: str | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1512,7 +1512,7 @@ class Polyline(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         points: List of x,y coordinate pairs.
-        pathLength: Total path length in user units.
+        path_length: Total path length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1523,7 +1523,7 @@ class Polyline(CaseTag):
         self,
         *children: Renderable,
         points: str | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1543,10 +1543,10 @@ class RadialGradient(CaseTag):
         fx: X-coordinate of start circle.
         fy: Y-coordinate of start circle.
         fr: Radius of start circle.
-        gradientUnits: Coordinate system.
-        gradientTransform: Additional transformation.
+        gradient_units: Coordinate system.
+        gradient_transform: Additional transformation.
         href: Reference to template gradient.
-        spreadMethod: Gradient behavior.
+        spread_method: Gradient behavior.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1562,10 +1562,10 @@ class RadialGradient(CaseTag):
         fx: str | float | None = None,
         fy: str | float | None = None,
         fr: str | float | None = None,
-        gradientUnits: str | None = None,
-        gradientTransform: str | None = None,
+        gradient_units: str | None = None,
+        gradient_transform: str | None = None,
         href: str | None = None,
-        spreadMethod: str | None = None,
+        spread_method: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1585,7 +1585,7 @@ class Rect(CaseTag):
         height: Height.
         rx: Horizontal corner radius.
         ry: Vertical corner radius.
-        pathLength: Total perimeter length in user units.
+        path_length: Total perimeter length in user units.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1601,7 +1601,7 @@ class Rect(CaseTag):
         height: str | float | None = None,
         rx: str | float | None = None,
         ry: str | float | None = None,
-        pathLength: float | None = None,
+        path_length: float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1646,7 +1646,7 @@ class Set(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         to: Value to apply for animation duration.
-        attributeName: Target attribute to set.
+        attribute_name: Target attribute to set.
         begin: Animation start time.
         dur: Animation duration.
         class_: Substituted as the DOM `class` attribute.
@@ -1659,7 +1659,7 @@ class Set(CaseTag):
         self,
         *children: Renderable,
         to: str | None = None,
-        attributeName: str | None = None,
+        attribute_name: str | None = None,
         begin: str | None = None,
         dur: str | None = None,
         class_: str | None = None,
@@ -1733,8 +1733,8 @@ class Svg(CaseTag):
         height: Displayed height of viewport.
         x: X-coordinate of container.
         y: Y-coordinate of container.
-        viewBox: SVG viewport coordinates.
-        preserveAspectRatio: Aspect ratio handling.
+        view_box: SVG viewport coordinates.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1748,8 +1748,8 @@ class Svg(CaseTag):
         height: str | float | None = None,
         x: str | float | None = None,
         y: str | float | None = None,
-        viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        view_box: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1789,10 +1789,10 @@ class Symbol(CaseTag):
         height: Height of symbol.
         x: X-coordinate.
         y: Y-coordinate.
-        viewBox: Viewport bounds for symbol.
-        preserveAspectRatio: Aspect ratio handling.
-        refX: X reference point.
-        refY: Y reference point.
+        view_box: Viewport bounds for symbol.
+        preserve_aspect_ratio: Aspect ratio handling.
+        ref_x: X reference point.
+        ref_y: Y reference point.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1806,10 +1806,10 @@ class Symbol(CaseTag):
         height: str | float | None = None,
         x: str | float | None = None,
         y: str | float | None = None,
-        viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
-        refX: str | float | None = None,
-        refY: str | float | None = None,
+        view_box: str | None = None,
+        preserve_aspect_ratio: str | None = None,
+        ref_x: str | float | None = None,
+        ref_y: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1828,8 +1828,8 @@ class Text(CaseTag):
         dx: Horizontal shift from previous text.
         dy: Vertical shift from previous text.
         rotate: Rotation of individual glyphs.
-        lengthAdjust: Text stretching method.
-        textLength: Target width for text scaling.
+        length_adjust: Text stretching method.
+        text_length: Target width for text scaling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1844,8 +1844,8 @@ class Text(CaseTag):
         dx: str | float | None = None,
         dy: str | float | None = None,
         rotate: str | None = None,
-        lengthAdjust: str | None = None,
-        textLength: str | float | None = None,
+        length_adjust: str | None = None,
+        text_length: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1860,13 +1860,13 @@ class TextPath(CaseTag):
     Args:
         children: Tags, strings, or other rendered content.
         href: Reference to path element for text layout.
-        lengthAdjust: Length adjustment method.
+        length_adjust: Length adjustment method.
         method: Glyph rendering method.
         path: Path data for text layout.
         side: Which side of path to render text.
         spacing: Glyph spacing handling.
-        startOffset: Offset from path beginning.
-        textLength: Text rendering width.
+        start_offset: Offset from path beginning.
+        text_length: Text rendering width.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1877,13 +1877,13 @@ class TextPath(CaseTag):
         self,
         *children: Renderable,
         href: str | None = None,
-        lengthAdjust: str | None = None,
+        length_adjust: str | None = None,
         method: str | None = None,
         path: str | None = None,
         side: str | None = None,
         spacing: str | None = None,
-        startOffset: str | float | None = None,
-        textLength: str | float | None = None,
+        start_offset: str | float | None = None,
+        text_length: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1924,8 +1924,8 @@ class Tspan(CaseTag):
         dx: Horizontal shift from previous text.
         dy: Vertical shift from previous text.
         rotate: Rotation of individual glyphs.
-        lengthAdjust: Text stretching method.
-        textLength: Target width for text scaling.
+        length_adjust: Text stretching method.
+        text_length: Target width for text scaling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1940,8 +1940,8 @@ class Tspan(CaseTag):
         dx: str | float | None = None,
         dy: str | float | None = None,
         rotate: str | None = None,
-        lengthAdjust: str | None = None,
-        textLength: str | float | None = None,
+        length_adjust: str | None = None,
+        text_length: str | float | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
@@ -1958,8 +1958,8 @@ class Use(CaseTag):
         href: Reference to element to duplicate.
         x: X offset transformation.
         y: Y offset transformation.
-        width: Width (only for elements with viewBox).
-        height: Height (only for elements with viewBox).
+        width: Width (only for elements with view_box).
+        height: Height (only for elements with view_box).
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1987,8 +1987,8 @@ class View(CaseTag):
 
     Args:
         children: Tags, strings, or other rendered content.
-        viewBox: Viewport bounds.
-        preserveAspectRatio: Aspect ratio handling.
+        view_box: Viewport bounds.
+        preserve_aspect_ratio: Aspect ratio handling.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
         style: Inline style attribute.
@@ -1998,8 +1998,8 @@ class View(CaseTag):
     def __init__(
         self,
         *children: Renderable,
-        viewBox: str | None = None,
-        preserveAspectRatio: str | None = None,
+        view_box: str | None = None,
+        preserve_aspect_ratio: str | None = None,
         class_: str | None = None,
         id_: str | None = None,
         style: str | None = None,
