@@ -1,7 +1,7 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
 from importlib.metadata import PackageNotFoundError as _PackageNotFoundError
-from importlib.metadata import version
+from importlib.metadata import version as version
 
 from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
