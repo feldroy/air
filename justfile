@@ -78,7 +78,7 @@ PROJECT_VERSION := `uv version --short`
 [private]
 [positional-arguments]
 @run-each RECIPE +ARGS:
-    for ARG in "$@"; do just "{{ RECIPE }}" "$ARG"; done
+    for ARG in "${@:2}"; do just "{{ RECIPE }}" "$ARG"; done
 
 # Run RECIPE only when ENABLED is set
 [doc]
@@ -184,7 +184,7 @@ renovate-config-validator:
 [arg("ARGS", help="Extra Args for uv run")]
 [positional-arguments]
 run-on-build WITH_WHEEL="" WITH_SOURCE_DISTRIBUTION="" *ARGS:
-    uv run --isolated --no-project --with "{{ WITH_WHEEL || WITH_SOURCE_DISTRIBUTION }}" "$@"
+    uv run --isolated --no-project --with "{{ WITH_WHEEL || WITH_SOURCE_DISTRIBUTION }}" "${@:3}"
 
 # Run isolated `uv run` using the wheel from `dist/`
 [group('uv')]
@@ -434,8 +434,8 @@ test-on PY_VERSION:
 [group('test')]
 [positional-arguments]
 pdb MAXFAIL="10" *ARGS:
-    @echo "Running with arg: $*"
-    just run -- pytest --pdb --maxfail="{{ MAXFAIL }}" "$@"
+    @echo "Running with arg: ${*:2}"
+    just run -- pytest --pdb --maxfail="{{ MAXFAIL }}" "${@:2}"
 
 # TDD mode: stop at the first test failure
 [group('test')]
