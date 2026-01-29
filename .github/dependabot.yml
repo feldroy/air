@@ -1,10 +1,26 @@
 # .github/dependabot.yml
 version: 2
 
-# Intentionally empty: this disables all scheduled Dependabot "version update" PRs
-# (the regular dependency bump PRs).
-updates: []
-
-# Note:
-# Security update PRs are controlled by repo/org settings, not by entries here.
+# Disabling all version updates from Dependabot.
 # Keep "Dependabot alerts" and "Dependabot security updates" enabled in Settings.
+# This file exists to satisfy Dependabot's schema (updates must have at least 1 item)
+# while disabling all scheduled version update PRs via `open-pull-requests-limit: 0`.
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "yearly"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "yearly"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "yearly"
+    open-pull-requests-limit: 0
