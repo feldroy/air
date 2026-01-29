@@ -318,6 +318,8 @@ class_attributes_order = [
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
 required-version = ">=0.9.25"
+# Let uv manage the project environment for run/sync operations.
+managed = true
 # Only use managed Python installations; never use system Python installations.
 python-preference = "only-managed"
 # Whether to enable experimental, preview features.
