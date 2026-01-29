@@ -30,7 +30,7 @@ PYTHON_VERSION := trim(read(".python-version"))
 PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
-UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
+UV_CLI_FLAGS := "--all-extras"
 DEFAULT_BRANCH := env("DEFAULT_BRANCH", "main")
 BRANCH_NAME := env("BRANCH_NAME", `git branch --show-current`)
 UNCOMMITTED_CHANGES_WARNING_MSG := (
@@ -221,12 +221,12 @@ upgrade-dependencies-in-pyproject-toml:
 bump-version:
     uv version --bump patch --bump alpha
 
-# Builds all packages in the workspace. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-build--all-packages
+# Builds the project. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-build
 [group('uv')]
 [arg("CLEAR", long="clear", value="--clear", \
                 help="Clear the output directory before the build, removing stale artifacts")]
 build CLEAR="":
-    uv build --all-packages {{ CLEAR }}
+    uv build {{ CLEAR }}
 
 # endregion -------------------------------------------------> uv <-----------------------------------------------------
 
