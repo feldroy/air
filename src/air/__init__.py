@@ -1,6 +1,7 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError as _PackageNotFoundError
+from importlib.metadata import version
 
 from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
@@ -171,5 +172,5 @@ from .templating import (
 
 try:  # noqa: RUF067
     __version__ = version("air")
-except PackageNotFoundError:  # pragma: no cover
+except _PackageNotFoundError:  # pragma: no cover
     __version__ = "0.0.0.dev0"
