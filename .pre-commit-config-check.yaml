@@ -128,7 +128,7 @@ repos:
       - id: pyroma # Rate your Python packages package friendliness.
         priority: 0
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 42.92.11
+    rev: 42.94.6
     hooks:
       - id: renovate-config-validator
         language: bun
@@ -150,7 +150,7 @@ repos:
         args: ["--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.0
+    rev: v0.1.4
     hooks:
       - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
         priority: 0
@@ -168,7 +168,7 @@ repos:
       - id: tombi-lint # A TOML linter.
         priority: 0
   - repo: https://github.com/crate-ci/typos
-    rev: v1.42.2
+    rev: v1.42.3
     hooks:
       - id: typos # Source code spell checker.
         priority: 0

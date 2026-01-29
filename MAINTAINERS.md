@@ -26,12 +26,12 @@ This will deploy the new package to PyPI. Once confirmed the new package has bee
 
 Finally, create a new release on GitHub:
 
-* Create a new release on GitHub by clicking "Create a new release"
-* From the tag dropdown, choose the tag you just created
-* Click "Generate release notes" to auto-populate the release notes
-* Copy in whatever notes you have from the `CHANGELOG.md` file
-* Revise the notes as needed
-* Click "Publish release"
+- Create a new release on GitHub by clicking "Create a new release"
+- From the tag dropdown, choose the tag you just created
+- Click "Generate release notes" to auto-populate the release notes
+- Copy in whatever notes you have from the `CHANGELOG.md` file
+- Revise the notes as needed
+- Click "Publish release"
 
 ## Categorizing Features
 

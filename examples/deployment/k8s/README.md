@@ -33,6 +33,7 @@ For more details about Kubernetes manifests and objects, a wealth of information
 ### Tweaking the deployment.yaml
 
 Update the `name:` key to your application name. You may also optionally specify a `namespace:`, but ensure that the namespace already exists before running the deployment.
+
 ```yaml
 kind: Deployment
 metadata:
