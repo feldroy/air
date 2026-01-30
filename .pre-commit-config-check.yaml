@@ -173,6 +173,11 @@ repos:
       - id: typos # Source code spell checker.
         priority: 0
         args: ["--force-exclude", "--format=brief"]
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.27
+    hooks:
+      - id: uv-lock # Check if the lockfile is up-to-date.
+        args: [ "--check" ]
   - repo: https://github.com/henryiii/validate-pyproject-schema-store
     rev: 2026.01.22
     hooks:
