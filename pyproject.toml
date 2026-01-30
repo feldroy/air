@@ -168,7 +168,7 @@ test = [
 # PEP 517/518: tells pip/uv how to build/install; uv installs your package (editable).
 [build-system]
 # Ensure the chosen backend is available; a version range keeps CI reproducible while allowing safe updates.
-requires = ["uv_build>=0.9.26,<0.10.0"]
+requires = ["uv_build>=0.9.27,<0.10.0"]
 # Use uv’s build backend: fast and strict, supports PEP 660 editable installs, and produces correct tooling metadata.
 build-backend = "uv_build"
 # endregion build-system

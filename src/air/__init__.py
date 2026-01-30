@@ -7,6 +7,7 @@ from . import (
     layouts as layouts,
     responses as responses,
 )
+from ._version import __version__ as __version__
 from .applications import (
     Air as Air,
     AirRoute as AirRoute,

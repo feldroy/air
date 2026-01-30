@@ -114,6 +114,12 @@ run-with-relative-paths +CMD:
 ipython:
     just run -- ipython
 
+# Run ipython using uv.
+[group('uv')]
+[group('misc')]
+python-execute CMD:
+    just run -- python -c "{{ CMD }}"
+
 # https://github.com/eclipse-csi/octopin
 # Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
 [group('misc')]
