@@ -102,6 +102,7 @@ upgrade-vale-packages:
 
 # Run a command and turn absolute paths into relative paths everywhere in its output
 [group('misc')]
+[doc]
 [no-exit-message]
 run-with-relative-paths +CMD:
     #!/usr/bin/env bash
@@ -233,6 +234,23 @@ bump-version:
                 help="Clear the output directory before the build, removing stale artifacts")]
 build CLEAR="":
     uv build {{ CLEAR }}
+
+# Show compressed wheel sizes for packages in the dependency tree (prod only).
+[group('uv')]
+[arg("DEPTH", long="depth", \
+                help="Maximum display depth of the dependency tree")]
+@uv-tree-sizes DEPTH="2" *ARGS:
+    uv tree --frozen --depth {{ DEPTH }} --no-dev --show-sizes {{ ARGS }}
+
+# Show the latest available version of each package in the dependency tree (prod only).
+[group('uv')]
+@uv-tree-outdated *ARGS:
+    uv tree --frozen --depth 1 --no-dev --outdated {{ ARGS }}
+
+# View metadata about the current workspace.
+[group('uv')]
+@workspace:
+    uv workspace metadata
 
 # endregion -------------------------------------------------> uv <-----------------------------------------------------
 

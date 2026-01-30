@@ -336,7 +336,7 @@ cache-keys = [
     { dir = "src" }, # Rebuild on library source edits.
     { dir = "tests" }, # Rebuild on test edits (keeps test env fresh).
 ]
-
+reinstall-package = ["air"]
 # Settings specific to uv_build.
 [tool.uv.build-backend]
 # Declare the “src/” layout so imports come from installed package, preventing path leaks and matching user installs.
