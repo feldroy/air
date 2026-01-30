@@ -28,7 +28,6 @@ disable = [
     "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
     "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
     "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
-    "MD046", # https://github.com/rvben/rumdl/blob/main/docs/md046.md
 ]
 # Specifies files and directories to exclude from linting. Supports glob patterns.
 # Default: [] (no files excluded)
@@ -62,7 +61,7 @@ output-format = "grouped"
 # Disable specific rules for specific files.
 [per-file-ignores]
 "CHANGELOG.md" = [
-    "MD024" # https://github.com/rvben/rumdl/blob/main/docs/md024.md
+    "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
 ]
 
 # ---------------------------------------------------> rumdl Rules <---------------------------------------------------
@@ -97,7 +96,8 @@ tables = false # Don't check tables (default: false)
 headings = true # Check headings (default: true)
 paragraphs = true # Check paragraph/regular text (default: true)
 strict = false # Disables exceptions for URLs, etc. (default: false)
-reflow = false # Enable automatic text reflow/wrapping (default: false)
+reflow = true # Enable automatic text reflow/wrapping (default: false)
+reflow-mode = "default" # Reflow mode: "default", "normalize", or "sentence-per-line" (default: "default")
 length-mode = "visual" # How to count line length: "visual", "chars", or "bytes" (default: "visual")
 
 [MD014] # https://github.com/rvben/rumdl/blob/main/docs/md014.md
@@ -161,7 +161,8 @@ style = "leading_and_trailing" # Require pipes at start and end: | cell | (defau
 # Enforces consistent Markdown table column alignment and padding for readable diffs and editing in docs, like Prettier.
 enabled = true # Default: false
 style = "aligned" # Columns are padded with spaces for visual alignment (recommended for readability) (default: "any")
-column-align = "left" # Options: "auto", "left", "center", "right" (default: "auto")
+column-align-header = "center" # Header row alignment only: auto|left|center|right (default: auto)
+column-align-body = "left" # Body row alignment only: auto|left|center|right (default: auto)
 
 [MD073] # https://github.com/rvben/rumdl/blob/main/docs/md073.md
 # MD073 - Table of Contents Validation
