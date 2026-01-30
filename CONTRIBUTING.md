@@ -123,7 +123,7 @@ We are actively looking for contributions in the following areas:
 
 We have the following categories for features. All new features will be assigned a category label to determine whether or not it should be added to Air and what role it will take in terms of maintenance. The categories and their definitions are below:
 
-| Category                       | Label                           |
+|            Category            |              Label              |
 | ------------------------------ | ------------------------------- |
 | Core Air Feature               | Feature: Core                   |
 | Optional Air Feature           | Feature: Optional               |
