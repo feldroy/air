@@ -122,6 +122,12 @@ ol-multi = 1 # Spaces after number for multi-line items (default: 1)
 # MD033 - No HTML tags
 # Prevents the use of HTML tags in Markdown - use Markdown syntax instead.
 allowed-elements = [] # List of allowed HTML tags (default: none)
+fix = true # Enable auto-fix to convert simple HTML to Markdown (default: false)
+
+[MD036] # https://github.com/rvben/rumdl/blob/main/docs/md036.md
+# MD036 - Use real headings, not just bold text
+# Detects when bold or italic text is used as a standalone heading.
+fix = true # Enable auto-fix (opt-in, default: false)
 
 [MD044] # https://github.com/rvben/rumdl/blob/main/docs/md044.md
 # MD044 - Use Proper Capitalization for Names
