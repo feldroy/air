@@ -117,6 +117,7 @@ repos:
     hooks:
       - id: mdsf-verify # Lint markdown code snippets using your favorite tools.
         language: rust
+        require_serial: true
         priority: 0
         args:
           - --log-level=warn
@@ -150,7 +151,7 @@ repos:
         args: ["--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.7
+    rev: v0.1.8
     hooks:
       - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
         priority: 0
