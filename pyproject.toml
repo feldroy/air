@@ -133,17 +133,17 @@ lint = [
     "beautysh==6.4.2", # https://pypi.org/project/beautysh
     "djlint==1.36.4", # https://pypi.org/project/djlint
     "google-yamlfmt==0.21.0", # https://pypi.org/project/google-yamlfmt
-    "prek==0.3.0", # https://pypi.org/project/prek
-    "pyrefly==0.50.0", # https://pypi.org/project/pyrefly
+    "prek==0.3.1", # https://pypi.org/project/prek
+    "pyrefly==0.50.1", # https://pypi.org/project/pyrefly
     "ruff==0.14.14", # https://pypi.org/project/ruff
-    "rumdl==0.1.1", # https://pypi.org/project/rumdl
+    "rumdl==0.1.7", # https://pypi.org/project/rumdl
     "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
     "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
     "ty==0.0.14", # https://pypi.org/project/ty
     "types-Markdown==3.10.0.20251106", # https://pypi.org/project/types-Markdown
     "types-lxml==2026.1.1", # https://pypi.org/project/types-lxml
     "types-pygments==2.19.0.20251121", # https://pypi.org/project/types-pygments
-    "typos==1.42.2", # https://pypi.org/project/typos
+    "typos==1.42.3", # https://pypi.org/project/typos
     "vale==3.13.0.0", # https://pypi.org/project/vale
 ]
 test = [
