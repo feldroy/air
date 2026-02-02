@@ -13,20 +13,28 @@
   extends: [
     "config:best-practices",
     "helpers:pinGitHubActionDigestsToSemver",
-    ":semanticCommitType(build)",
     ":maintainLockFilesWeekly",
-    // Automerge only after all required GitHub status checks pass
-    ":automergeAll",
+    // Disable automerging feature - wait for humans to merge all PRs.
+    ":automergeDisabled",
     ":automergePr",
-    ":automergeRequireAllStatusChecks"
+    ":automergeRequireAllStatusChecks",
+    // conventional commits
+    ":semanticCommitType(build)",
+    ":semanticCommitScope(deps)"
   ],
   // Keep semantic commit scope explicit
+  semanticCommits: "enabled",
+  semanticCommitType: "build",
   semanticCommitScope: "deps",
   prCreation: "immediate",
-  prConcurrentLimit: 3,
-  prHourlyLimit: 3,
+  prConcurrentLimit: 5,
+  prHourlyLimit: 5,
+  // Default blanket cooldown of 2 days to all dependencies.
+  minimumReleaseAge: '2 days',
+  internalChecksFilter: 'strict',
   suppressNotifications: [
-    'prEditedNotification'
+    "prEditedNotification",
+    "prIgnoreNotification"
   ],
   // Rebase PRs when they fall behind the base branch
   "rebaseWhen": "behind-base-branch",
@@ -38,10 +46,14 @@
   ],
   // Limit Renovate to these managers only
   enabledManagers: [
+    // Python: pyproject.toml (PEP 621) with uv.lock
     "pep621",
+    // Inline script dependencies
     "pep723",
+    // Other repo automation
     "pre-commit",
     "github-actions",
+    // Keep renovate config presets updated
     "renovate-config-presets"
   ],
   "pre-commit": {
@@ -58,21 +70,29 @@
       "/(^|/)pyproject\\.toml$/"
     ],
   },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "recreateWhen": "always",
+    "branchTopic": "lock-file-maintenance",
+    "commitMessageAction": "Lock file maintenance",
+    "prBodyDefinitions": {
+      "Change": "All locks refreshed"
+    }
+  },
   packageRules: [
+    // Order your packageRules so the least important rules are at the top,
+    // and the most important rules are at the bottom.
+    // This way, important rules override earlier rule settings when needed.
     {
-      description: 'Group lockfile updates by manager',
       matchUpdateTypes: [
-        'lockFileMaintenance'
+        "lockFileMaintenance"
       ],
-      groupName: '{{manager}} lockfile updates',
-      commitMessageSuffix: 'for {{manager}}',
-    },
-    {
-      matchManagers: [
-        "pep621"
+      matchFileNames: [
+        "uv.lock",
+        "**/uv.lock"
       ],
-      groupName: "Python dependencies (pyproject.toml)",
-      description: "Group updates discovered via PEP 621 project metadata.",
+      groupName: "lockfile updates",
+      description: "Lock file maintenance only for uv.lock"
     },
     {
       matchManagers: [
@@ -80,13 +100,6 @@
       ],
       groupName: "Inline script metadata (PEP 723)",
       description: "Group updates for dependencies declared in PEP 723 script blocks.",
-    },
-    {
-      matchManagers: [
-        "pre-commit"
-      ],
-      groupName: "pre-commit hooks",
-      description: "Group updates for pre-commit hook repos and versions.",
     },
     {
       matchManagers: [
@@ -101,6 +114,37 @@
       ],
       groupName: "Renovate presets",
       description: "Group updates for Renovate config presets and shared configs.",
+    },
+    {
+      matchManagers: [
+        "pre-commit"
+      ],
+      groupName: "pre-commit hooks",
+      description: "Group updates for pre-commit hook repos and versions.",
+    },
+    {
+      matchManagers: [
+        "pep621"
+      ],
+      matchDepTypes: [
+        "dependency-groups"
+      ],
+      rangeStrategy: "pin",
+      groupName: "Python dependencies (pyproject.toml) - [dependency-groups]",
+      description: "Pin dependency-groups to exact versions (==) and keep them updated"
+    },
+    {
+      matchManagers: [
+        "pep621"
+      ],
+      matchDepTypes: [
+        "project.dependencies",
+        "project.optional-dependencies"
+      ],
+      rangeStrategy: "update-lockfile",
+      groupName: "Python dependencies (pyproject.toml) - [project.dependencies, project.optional-dependencies]",
+      description: "Keep library constraints (>=) stable, update only uv.lock",
+      minimumReleaseAge: null
     }
   ]
 }

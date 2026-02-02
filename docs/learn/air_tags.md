@@ -110,13 +110,13 @@ Let's take a look at some additional scenarios.
 
 Some HTML attributes are reserved words in Python. To get around that, **Air Tags** uses specific keyword arguments for these reserved words.
 
-|Reserved Word|Use This Keyword Argument|
-|-------------|------------------------|
-|class        |class_                  |
-|for          |for_                    |
-|async        |async_                  |
-|id        |id_                  |
-|as        |as_                  |
+| Reserved Word | Use This Keyword Argument |
+| ------------- | ------------------------- |
+| class         | class_                    |
+| for           | for_                      |
+| async         | async_                    |
+| id            | id_                       |
+| as            | as_                       |
 
 !!! note
 

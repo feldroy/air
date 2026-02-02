@@ -92,6 +92,7 @@ When you're ready:
 6. Be responsive to feedback—code review is a collaborative learning process!
 
 ??? tip "How to request reviews in GitHub"
+
 - Open your PR page on GitHub.
 - On the right sidebar, find "Reviewers".
 - Click the reviewer search box and start typing a teammate's GitHub username, then click to add. Repeat to add 2–3 peers.
@@ -99,6 +100,7 @@ When you're ready:
 - If you can't add reviewers due to permissions, just post the PR link in Discord and tag peers or a sprint lead.
 
 ??? tip "Peer review tips (fast and friendly)"
+
 - Timebox to 5–10 minutes; it's okay if it's a quick review.
 - Try it out: run what's described in the PR (or skim tests) to see if it works.
 - Clarity: are names, docs, and comments understandable?
