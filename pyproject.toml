@@ -168,7 +168,7 @@ test = [
 # PEP 517/518: tells pip/uv how to build/install; uv installs your package (editable).
 [build-system]
 # Ensure the chosen backend is available; a version range keeps CI reproducible while allowing safe updates.
-requires = ["uv_build>=0.9.26,<0.10.0"]
+requires = ["uv_build>=0.9.27,<0.10.0"]
 # Use uv’s build backend: fast and strict, supports PEP 660 editable installs, and produces correct tooling metadata.
 build-backend = "uv_build"
 # endregion build-system
@@ -317,7 +317,9 @@ class_attributes_order = [
 # https://docs.astral.sh/uv/reference/settings
 # uv’s own config block for this project (not PyPI metadata).
 [tool.uv]
-required-version = ">=0.9.8"
+required-version = ">=0.9.25"
+# Let uv manage the project environment for run/sync operations.
+managed = true
 # Only use managed Python installations; never use system Python installations.
 python-preference = "only-managed"
 # Whether to enable experimental, preview features.
@@ -334,12 +336,7 @@ cache-keys = [
     { dir = "src" }, # Rebuild on library source edits.
     { dir = "tests" }, # Rebuild on test edits (keeps test env fresh).
 ]
-
-# Control where uv resolves packages from.
-[tool.uv.sources]
-# Always use the local workspace copy of "air" instead of PyPI; in a monorepo or dev, uv uses your checked-out code.
-air = { workspace = true }
-
+reinstall-package = ["air"]
 # Settings specific to uv_build.
 [tool.uv.build-backend]
 # Declare the “src/” layout so imports come from installed package, preventing path leaks and matching user installs.

@@ -30,7 +30,7 @@ PYTHON_VERSION := trim(read(".python-version"))
 PYTHON_VERSIONS := `awk -F'[^0-9]+' '/requires-python/{for(i=$3;i<$5;)printf(i-$3?" ":"")$2"."i++}' pyproject.toml`
 # Alternative option: From pyproject.toml -> classifiers
 # PYTHON_VERSIONS := `awk -F'"| :: ' '/Python :: 3\.1/{print $4}' pyproject.toml`
-UV_CLI_FLAGS := "--all-extras --all-packages --refresh --reinstall-package air"
+UV_CLI_FLAGS := "--all-extras"
 DEFAULT_BRANCH := env("DEFAULT_BRANCH", "main")
 BRANCH_NAME := env("BRANCH_NAME", `git branch --show-current`)
 UNCOMMITTED_CHANGES_WARNING_MSG := (
@@ -102,6 +102,7 @@ upgrade-vale-packages:
 
 # Run a command and turn absolute paths into relative paths everywhere in its output
 [group('misc')]
+[doc]
 [no-exit-message]
 run-with-relative-paths +CMD:
     #!/usr/bin/env bash
@@ -113,6 +114,12 @@ run-with-relative-paths +CMD:
 [group('misc')]
 ipython:
     just run -- ipython
+
+# Run ipython using uv.
+[group('uv')]
+[group('misc')]
+python-execute CMD:
+    just run -- python -c "{{ CMD }}"
 
 # https://github.com/eclipse-csi/octopin
 # Pins GitHub Action versions to use the SHA-1 hash instead of tag to improve security as Git tags are not immutable.
@@ -221,12 +228,29 @@ upgrade-dependencies-in-pyproject-toml:
 bump-version:
     uv version --bump patch --bump alpha
 
-# Builds all packages in the workspace. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-build--all-packages
+# Builds the project. <Don’t use! For maintainers only!> https://docs.astral.sh/uv/reference/cli/#uv-build
 [group('uv')]
 [arg("CLEAR", long="clear", value="--clear", \
                 help="Clear the output directory before the build, removing stale artifacts")]
 build CLEAR="":
-    uv build --all-packages {{ CLEAR }}
+    uv build {{ CLEAR }}
+
+# Show compressed wheel sizes for packages in the dependency tree (prod only).
+[group('uv')]
+[arg("DEPTH", long="depth", \
+                help="Maximum display depth of the dependency tree")]
+@uv-tree-sizes DEPTH="2" *ARGS:
+    uv tree --frozen --depth {{ DEPTH }} --no-dev --show-sizes {{ ARGS }}
+
+# Show the latest available version of each package in the dependency tree (prod only).
+[group('uv')]
+@uv-tree-outdated *ARGS:
+    uv tree --frozen --depth 1 --no-dev --outdated {{ ARGS }}
+
+# View metadata about the current workspace.
+[group('uv')]
+@workspace:
+    uv workspace metadata
 
 # endregion -------------------------------------------------> uv <-----------------------------------------------------
 
