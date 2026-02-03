@@ -28,19 +28,19 @@ jobs:
       - name: Set cache identifier
         run: printf 'cache_id=%s\n' "$(date -u '+%V')" >> "$GITHUB_ENV"
       - name: Cache MkDocs assets
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           key: mkdocs-material-${{ env.cache_id }}
           path: .cache
           restore-keys: |
             mkdocs-material-
       - name: Install uv (with cache)
-        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+        uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
       - name: Install just
-        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
+        uses: taiki-e/install-action@650c5ca14212efbbf3e580844b04bdccf68dac31 # 2.67.18
         with:
           tool: just
       - name: Deploy the documentation to GitHub Pages
