@@ -136,7 +136,7 @@ lint = [
     "prek==0.3.0", # https://pypi.org/project/prek
     "pyrefly==0.50.0", # https://pypi.org/project/pyrefly
     "ruff==0.14.14", # https://pypi.org/project/ruff
-    "rumdl==0.1.9", # https://pypi.org/project/rumdl
+    "rumdl==0.1.11", # https://pypi.org/project/rumdl
     "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
     "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
     "ty==0.0.14", # https://pypi.org/project/ty

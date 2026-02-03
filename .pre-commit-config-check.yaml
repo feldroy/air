@@ -151,7 +151,7 @@ repos:
         args: ["--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.9
+    rev: v0.1.11
     hooks:
       - id: rumdl # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
         priority: 0
