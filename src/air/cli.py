@@ -1,13 +1,14 @@
 """Air CLI - Command-line interface for running Air applications."""
 
 import sys
-from importlib.metadata import version
 from pathlib import Path
 from typing import Annotated
 
 import typer
 import uvicorn
 from rich.console import Console
+
+from air.constants import AIR_VERSION, ATTRIBUTION, DEFAULT_REDOC_URL, DEFAULT_SWAGGER_URL
 
 app = typer.Typer(add_completion=False, rich_markup_mode="rich")
 console = Console()
@@ -37,7 +38,7 @@ LOG_CONFIG = {
 
 def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback signature
     if value:
-        typer.echo(f"Air {version('air')}\nCrafted with care by Two Scoops authors pydanny and audreyfeldroy")
+        typer.echo(f"Air {AIR_VERSION}\n{ATTRIBUTION}")
         raise typer.Exit
 
 
@@ -95,11 +96,15 @@ def run(
 
     # Print startup banner
     url = f"http://{host}:{port}"
+    swagger_url = f"{url}{DEFAULT_SWAGGER_URL}"
+    redoc_url = f"{url}{DEFAULT_REDOC_URL}"
     console.print()
-    console.print(f"  [bold cyan]Air[/bold cyan] v{version('air')}")
+    console.print(f"  [bold cyan]Air[/bold cyan] v{AIR_VERSION}")
     console.print()
-    console.print(f"  [dim]➜[/dim]  [bold]App:[/bold]     {app_path}")
-    console.print(f"  [dim]➜[/dim]  [bold]Server:[/bold]  [link={url}]{url}[/link]")
+    console.print(f"  [dim]➜[/dim]  [bold]App:[/bold]      {app_path}")
+    console.print(f"  [dim]➜[/dim]  [bold]Server:[/bold]   [link={url}]{url}[/link]")
+    console.print(f"  [dim]➜[/dim]  [bold]API docs:[/bold] [link={swagger_url}]{swagger_url}[/link]")
+    console.print(f"  [dim]➜[/dim]              [link={redoc_url}]{redoc_url}[/link]")
     console.print()
 
     uvicorn.run(
