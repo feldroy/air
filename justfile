@@ -64,19 +64,21 @@ PROJECT_VERSION := `uv version --short`
 # Print recipe usage information
 [group('meta')]
 @help RECIPE:
-    just --usage {{ RECIPE }}
+    just --usage "{{ RECIPE }}"
 
 # just evaluate VARIABLE_NAME
 [group('meta')]
+[positional-arguments]
 @evaluate *ARGS:
-    just --evaluate {{ ARGS }}
+    just --evaluate "$*"
 
 # Run a recipe for each argument value in ARGS (calls RECIPE once per ARG)
 [doc]
 [group('meta')]
 [private]
+[positional-arguments]
 @run-each RECIPE +ARGS:
-    for ARG in {{ ARGS }}; do just "{{ RECIPE }}" "$ARG"; done
+    for ARG in "$@"; do just "{{ RECIPE }}" "$ARG"; done
 
 # Run RECIPE only when ENABLED is set
 [doc]
@@ -103,10 +105,12 @@ upgrade-vale-packages:
 # Run a command and turn absolute paths into relative paths everywhere in its output
 [group('misc')]
 [no-exit-message]
+[positional-arguments]
 run-with-relative-paths +CMD:
     #!/usr/bin/env bash
     set -euo pipefail
-    {{ CMD }} 2>&1 | sed "s|$HERE||g"
+    if [ "${1-}" = "--" ]; then shift; fi
+    "$@" 2>&1 | sed "s|$HERE||g"
 
 # Run ipython using uv.
 [group('uv')]
@@ -148,23 +152,27 @@ renovate-config-validator:
 [doc]
 [private]
 [group('uv')]
+[positional-arguments]
 @uv-run +ARGS:
-    uv run {{ UV_CLI_FLAGS }} {{ ARGS }}
+    uv run {{ UV_CLI_FLAGS }} "$@"
 
 # Run a command or script using uv, without updating the uv.lock file.
 [group('uv')]
-@run +ARGS:
-    just uv-run -q --frozen {{ ARGS }}
+[positional-arguments]
+@run *ARGS:
+    if [ "$#" -eq 0 ]; then just --usage run || true; else uv run {{ UV_CLI_FLAGS }} -q --frozen "$@"; fi
 
 # Run a command or script using uv, in an isolated virtual environment.
 [group('uv')]
+[positional-arguments]
 @run-isolated +ARGS:
-    just uv-run --isolated {{ ARGS }}
+    uv run {{ UV_CLI_FLAGS }} --isolated "$@"
 
 # Run a command or script using uv, perform an exact sync, removing extraneous packages.
 [group('uv')]
+[positional-arguments]
 @run-exact +ARGS:
-    just run --exact {{ ARGS }}
+    uv run {{ UV_CLI_FLAGS }} -q --frozen --exact "$@"
 
 # Run isolated `uv run` using selected wheel or sdist from `dist/`;
 [group('uv')]
@@ -174,18 +182,21 @@ renovate-config-validator:
 [arg("WITH_SOURCE_DISTRIBUTION", long="with-source-distribution", value="dist/*.tar.gz", \
      help="Use the source distribution artifact from dist/*.tar.gz for the isolated run.")]
 [arg("ARGS", help="Extra Args for uv run")]
+[positional-arguments]
 run-on-build WITH_WHEEL="" WITH_SOURCE_DISTRIBUTION="" *ARGS:
-    uv run --isolated --no-project --with {{ WITH_WHEEL || WITH_SOURCE_DISTRIBUTION }} {{ ARGS }}
+    uv run --isolated --no-project --with "{{ WITH_WHEEL || WITH_SOURCE_DISTRIBUTION }}" "$@"
 
 # Run isolated `uv run` using the wheel from `dist/`
 [group('uv')]
+[positional-arguments]
 @run-on-wheel +ARGS:
-    just run-on-build --with-wheel {{ ARGS }}
+    just run-on-build --with-wheel "$@"
 
 # Run isolated `uv run` using the sdist from `dist/`
 [group('uv')]
+[positional-arguments]
 @run-on-source-distribution +ARGS:
-    just run-on-build --with-source-distribution {{ ARGS }}
+    just run-on-build --with-source-distribution "$@"
 
 # Sync all dependencies using uv, without updating the uv.lock file.
 [group('uv')]
@@ -194,8 +205,9 @@ sync:
 
 # Sync all dependencies using uv, and updating the uv.lock file. <Don’t use! For maintainers only!>
 [group('uv')]
+[positional-arguments]
 sync-lock *ARGS:
-    uv sync {{ UV_CLI_FLAGS }} {{ ARGS }}
+    uv sync {{ UV_CLI_FLAGS }} "$@"
 
 # Upgrade all dependencies using uv and prek. <Don’t use! For maintainers only!>
 [group('uv')]
@@ -210,7 +222,7 @@ upgrade-uv-dependencies:
 # Modify a specific dependency version using uv (uv don't support pyproject.toml update yet). <Don’t use! For maintainers only!>
 [group('uv')]
 modify-uv-dependency-version PACKAGE_NAME PACKAGE_VERSION:
-    just sync-lock --upgrade-package {{ PACKAGE_NAME }}=={{ PACKAGE_VERSION }}
+    just sync-lock --upgrade-package "{{ PACKAGE_NAME }}"=="{{ PACKAGE_VERSION }}"
 
 # Upgrade dependencies in pyproject.toml files with uv. <Don’t use! For maintainers only!>
 upgrade-dependencies-in-pyproject-toml:
@@ -259,11 +271,11 @@ prek-run \
         CONFIG_FILE \
         DRY_RUN="" FAIL_FAST="" VERBOSE="" SHOW_DIFF_ON_FAILURE="" \
         ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
-        *HOOKS_OR_PROJECTS:
+    *HOOKS_OR_PROJECTS:
     @if [ -z "{{ UNSTAGED_CHANGES }}{{ ALL_FILES }}" ]; then just check-uncommitted-changes; fi
     just run -- prek validate-config .pre-commit-config-format.yaml .pre-commit-config-check.yaml
-    just run -- prek run {{ HOOKS_OR_PROJECTS }} --config {{ CONFIG_FILE }} \
-                         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
+    just run -- prek run {{ HOOKS_OR_PROJECTS }} --config "{{ CONFIG_FILE }}" \
+                         {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
                          {{ if BRANCH_NAME == DEFAULT_BRANCH { "--all-files" } \
                             else { ALL_FILES || PR_CHANGES || LAST_COMMIT || UNSTAGED_CHANGES } }}
 
@@ -285,7 +297,7 @@ prek-run \
     ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
     *HOOKS_OR_PROJECTS:
     just prek-run --config-file .pre-commit-config-format.yaml \
-        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
+        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
         {{ if ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES == "" { "--pr-changes" } \
            else { PR_CHANGES || ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
         {{ HOOKS_OR_PROJECTS }}
@@ -308,7 +320,7 @@ prek-run \
     ALL_FILES="" PR_CHANGES="" LAST_COMMIT="" UNSTAGED_CHANGES="" \
     *HOOKS_OR_PROJECTS:
     just prek-run --config-file .pre-commit-config-check.yaml \
-        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }}\
+        {{ DRY_RUN }} {{ FAIL_FAST }} {{ VERBOSE }} {{ SHOW_DIFF_ON_FAILURE }} \
         {{ if ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES == "" { "--pr-changes" } \
            else { PR_CHANGES || ALL_FILES || LAST_COMMIT || UNSTAGED_CHANGES } }} \
         {{ HOOKS_OR_PROJECTS }}
@@ -323,7 +335,7 @@ ruff-format OUTPUT_FORMAT="full" UNSAFE="":
     # Format Python files using Ruff's formatter (writes changes to disk).
     just run -- ruff format .
     # Check for lint violations, apply fixes to resolve lint violations(only for fixable rules).
-    just run -- ruff check --fix --output-format={{OUTPUT_FORMAT}} {{UNSAFE}} .
+    just run -- ruff check --fix --output-format="{{OUTPUT_FORMAT}}" {{UNSAFE}} .
 
 # [including *unsafe* fixes, NOTE: --unsafe-fixes may change code intent (be careful)]
 [group('qa')]
@@ -341,9 +353,9 @@ ruff-format-unsafe: && (ruff-format "concise" "--unsafe-fixes")
 [group('qa')]
 ruff-check OUTPUT_FORMAT="full":
     # Check for formatting violations using Ruff
-    just run -- ruff format --check --output-format={{OUTPUT_FORMAT}} .
+    just run -- ruff format --check --output-format="{{OUTPUT_FORMAT}}" .
     # Check for lint violations using Ruff
-    just run -- ruff check --output-format={{OUTPUT_FORMAT}} .
+    just run -- ruff check --output-format="{{OUTPUT_FORMAT}}" .
 
 # Check for lint violations for all rules!
 [group('qa')]
@@ -401,7 +413,7 @@ test:
 [private]
 [group('test')]
 test-ci:
-    just uv-run --exact --no-dev --group test -- pytest
+    uv run {{ UV_CLI_FLAGS }} --exact --no-dev --group test pytest
 
 # Run tests with lowest compatible versions for direct dependencies and highest compatible versions for indirect ones.
 [group('test')]
@@ -411,7 +423,7 @@ test-lowest-direct-resolution:
 # Run all the tests on a specified Python version
 [group('test')]
 test-on PY_VERSION:
-    just run-isolated --python={{ PY_VERSION }} -- pytest
+    just run-isolated --python="{{ PY_VERSION }}" -- pytest
 
 # Run all the tests for all the supported Python versions
 [group('test')]
@@ -420,9 +432,10 @@ test-on PY_VERSION:
 
 # Run all the tests, but on failure, drop into the debugger
 [group('test')]
+[positional-arguments]
 pdb MAXFAIL="10" *ARGS:
-    @echo "Running with arg: {{ ARGS }}"
-    just run -- pytest --pdb --maxfail={{ MAXFAIL }} {{ ARGS }}
+    @echo "Running with arg: $*"
+    just run -- pytest --pdb --maxfail="{{ MAXFAIL }}" "$@"
 
 # TDD mode: stop at the first test failure
 [group('test')]
@@ -553,7 +566,7 @@ version:
 [group('release')]
 tag:
     echo "Tagging version v{{ PROJECT_VERSION }}"
-    git tag -a v{{ PROJECT_VERSION }} -m "Creating version v{{ PROJECT_VERSION }}"
-    git push origin v{{ PROJECT_VERSION }}
+    git tag -a "v{{ PROJECT_VERSION }}" -m "Creating version v{{ PROJECT_VERSION }}"
+    git push origin "v{{ PROJECT_VERSION }}"
 
 # endregion ----------------------------------------------> release <--------------------------------------------------
