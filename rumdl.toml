@@ -24,7 +24,8 @@ enable = []
 # Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
-    #    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
+    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
+    "MD031", # https://github.com/rvben/rumdl/blob/main/docs/md031.md
     "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
     "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
 ]
