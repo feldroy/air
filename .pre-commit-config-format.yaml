@@ -86,7 +86,7 @@ repos:
         priority: 0
         additional_dependencies: ["json5"]
   - repo: https://github.com/rohaquinlop/complexipy-pre-commit
-    rev: v4.2.0
+    rev: v5.1.0
     hooks:
       - id: complexipy # Run the cognitive complexity checker.
         priority: 0
@@ -127,7 +127,7 @@ repos:
       - id: pyroma # Rate your Python packages package friendliness.
         priority: 0
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 42.94.6
+    rev: 43.4.3
     hooks:
       - id: renovate-config-validator
         priority: 0
@@ -138,7 +138,7 @@ repos:
           glob:
             - .github/renovate.json5
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.14
+    rev: v0.15.0
     hooks:
       - id: ruff-format # Format Python files using Ruff's formatter (writes changes to disk).
         args: ["--output-format=concise"]
@@ -147,7 +147,7 @@ repos:
         args: ["--fix", "--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.11
+    rev: v0.1.15
     hooks:
       - id: rumdl-fmt # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
@@ -158,11 +158,11 @@ repos:
           glob:
             - .pre-commit-config-format.yaml
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.7.25
+    rev: v0.7.28
     hooks:
       - id: tombi-format # A TOML formatter.
   - repo: https://github.com/crate-ci/typos
-    rev: v1.42.3
+    rev: v1.43.3
     hooks:
       - id: typos # Source code spell checker.
         args: ["--write-changes", "--force-exclude", "--format=brief"]
