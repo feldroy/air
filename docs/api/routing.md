@@ -1,8 +1,10 @@
 Routing
 
-If you need to knit several Python modules with their own Air views into one, that's where Routing is used. They allow the near seamless combination of multiple Air apps into one. Larger sites are often built from multiple routers.
+If you need to knit several Python modules with their own Air views into one, that's where Routing is used. They allow
+the near seamless combination of multiple Air apps into one. Larger sites are often built from multiple routers.
 
-Let's imagine we have an e-commerce store with a shopping cart app. Use instantiate a `router` object using `air.AirRouter()` just as we would with `air.App()`:
+Let's imagine we have an e-commerce store with a shopping cart app. Use instantiate a `router` object using
+`air.AirRouter()` just as we would with `air.App()`:
 
 ```python
 # cart.py
@@ -33,7 +35,8 @@ def index():
 
 Note that the router allows sharing of sessions and other application states.
 
-In addition, we can add links through the `.url()` method available on route functions, which generates URLs programmatically:
+In addition, we can add links through the `.url()` method available on route functions, which generates URLs
+programmatically:
 
 ```python
 import air
@@ -71,7 +74,8 @@ def index():
     )
 ```
 
-The `.url()` method accepts a `query_params` argument for generating URLs with query strings. This works with both scalar values and lists:
+The `.url()` method accepts a `query_params` argument for generating URLs with query strings. This works with both
+scalar values and lists:
 
 ```python
 @app.get("/filter")

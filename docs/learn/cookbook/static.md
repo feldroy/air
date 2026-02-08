@@ -1,6 +1,8 @@
 # Serving static files
 
-You can serve static files like CSS, JavaScript, and images using Air's built-in static file serving capabilities. In this example, we’ll create a simple Air app that serves static files from a `static` directory, but the name of the directory can be anything (`public` is also common).
+You can serve static files like CSS, JavaScript, and images using Air's built-in static file serving capabilities. In
+this example, we’ll create a simple Air app that serves static files from a `static` directory, but the name of the
+directory can be anything (`public` is also common).
 
 ```python
 import air

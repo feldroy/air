@@ -10,13 +10,19 @@
 
 ### Build items
 
-- BUILD: Added `djhtml` hook to both `.pre-commit-config-check.yaml` and `.pre-commit-config-format.yaml` to automate formatting of HTML files and Jinja Templates! by @pygarap in <https://github.com/feldroy/air/pull/932>
-- BUILD: Improvements to the project's code quality tooling and configuration management. by @pygarap in <https://github.com/feldroy/air/pull/957>
+- BUILD: Added `djhtml` hook to both `.pre-commit-config-check.yaml` and `.pre-commit-config-format.yaml` to automate
+  formatting of HTML files and Jinja Templates! by @pygarap in <https://github.com/feldroy/air/pull/932>
+- BUILD: Improvements to the project's code quality tooling and configuration management. by @pygarap in
+  <https://github.com/feldroy/air/pull/957>
 - BUILD: Add pre-commit-hooks: Some out-of-the-box hooks for pre-commit. by @pygarap in <https://github.com/feldroy/air/pull/935>
 - BUILD: Added the `validate-pyproject` hook by @pygarap in <https://github.com/feldroy/air/pull/959>
-- BUILD: Some hooks can run in parallel by priority(the new prek priority feature) & Added new hooks: check-jsonschema, yamlfmt & typos now run inside prek! by @pygarap in <https://github.com/feldroy/air/pull/960>
-- BUILD: Added several new pre-commit hooks: creosote, complexipy, flake8-class-attributes-order, flake8-pydantic and pyroma! by @pygarap in <https://github.com/feldroy/air/pull/962>
-- BUILD: Added new pre-commit hooks: rumdl - A modern, high-performance Markdown linter and formatter, built for speed in Rust & editorconfig-checker - A tool to verify that your files are in harmony with your .editorconfig by @pygarap in <https://github.com/feldroy/air/pull/966>
+- BUILD: Some hooks can run in parallel by priority(the new prek priority feature) & Added new hooks: check-jsonschema,
+  yamlfmt & typos now run inside prek! by @pygarap in <https://github.com/feldroy/air/pull/960>
+- BUILD: Added several new pre-commit hooks: creosote, complexipy, flake8-class-attributes-order, flake8-pydantic and
+  pyroma! by @pygarap in <https://github.com/feldroy/air/pull/962>
+- BUILD: Added new pre-commit hooks: rumdl - A modern, high-performance Markdown linter and formatter, built for speed
+  in Rust & editorconfig-checker - A tool to verify that your files are in harmony with your .editorconfig by @pygarap
+  in <https://github.com/feldroy/air/pull/966>
 - BUILD: hotfix: now renovate will upgrade the just-install action correctly! by @pygarap in <https://github.com/feldroy/air/pull/970>
 
 ###  Chores
@@ -28,7 +34,8 @@
 - CHORE: chore(deps): update actions/checkout action to v6.0.1 by @renovate[bot] in <https://github.com/feldroy/air/pull/971>
 - CHORE: chore(deps): update astral-sh/setup-uv action to v7.2.0 - autoclosed by @renovate[bot] in <https://github.com/feldroy/air/pull/972>
 - CHORE: chore-ruff-rule: tc-sub-issue task of #642 completed by @sankarebarri in <https://github.com/feldroy/air/pull/973>
-- CHORE: chore(deps): update pre-commit hook tombi-toml/tombi-pre-commit to v0.7.16 by @renovate[bot] in <https://github.com/feldroy/air/pull/974>
+- CHORE: chore(deps): update pre-commit hook tombi-toml/tombi-pre-commit to v0.7.16 by @renovate [bot] in
+  <https://github.com/feldroy/air/pull/974>
 - CHORE: chore(deps): update pre-commit hook rvben/rumdl-pre-commit to v0.0.212 by @renovate[bot] in <https://github.com/feldroy/air/pull/975>
 
 ### Doc changes
@@ -69,7 +76,8 @@
 - CHORE: `id_` inconsistently used to represent HTML attribute of `id` by @msaizar in <https://github.com/feldroy/air/pull/926>
 - CHORE: Replace type argument with type_ in tags by @msaizar in <https://github.com/feldroy/air/pull/931>
 - CHORE: Remove ruff lint per file ignores by @msaizar in <https://github.com/feldroy/air/pull/930>
-- CHORE: Added `djhtml` hook to both `.pre-commit-config-check.yaml` and `.pre-commit-config-format.yaml` to automate formatting of HTML files and Jinja Templates! by @pygarap in <https://github.com/feldroy/air/pull/932>
+- CHORE: Added `djhtml` hook to both `.pre-commit-config-check.yaml` and `.pre-commit-config-format.yaml` to automate
+  formatting of HTML files and Jinja Templates! by @pygarap in <https://github.com/feldroy/air/pull/932>
 - CHORE: Rename max argument to max_ in tags to prevent builtin shadowing by @msaizar in <https://github.com/feldroy/air/pull/933>
 - CHORE: Rename min to min_ to prevent builtin shadowing in tags by @msaizar in <https://github.com/feldroy/air/pull/936>
 - CHORE: Rename open to open_ to prevent builtin shadowing in tags by @msaizar in <https://github.com/feldroy/air/pull/938>
@@ -92,7 +100,8 @@
 ### Features
 
 - FEAT: Add "air run" and "air version" CLI commands, make uvicorn a main dep by @audreyfeldroy in <https://github.com/feldroy/air/pull/920>
-- FEAT: add `prek` a better `pre-commit`, re-engineered in Rust & blacken-docs, Run `black` on python code blocks in documentation files! by @pygarap in <https://github.com/feldroy/air/pull/918>
+- FEAT: add `prek` a better `pre-commit`, re-engineered in Rust & blacken-docs, Run `black` on python code blocks in
+  documentation files! by @pygarap in <https://github.com/feldroy/air/pull/918>
 - FEAT: Introduced two new class methods to `BaseTag` in `src/air/tags/models/base.py` by @pygarap in <https://github.com/feldroy/air/pull/917:>
   - `from_html_file` for building an air-tag tree from a file
   - `from_html_file_to_source` for generating the instantiable source from a file
@@ -106,7 +115,8 @@
 
 ### Docs
 
-- DOC: Added remaining docstrings to HTML air tags, finishing the awesome effort by @vanessapigwin! by @pydanny in <https://github.com/feldroy/air/pull/923>
+- DOC: Added remaining docstrings to HTML air tags, finishing the awesome effort by @vanessapigwin! by @pydanny in
+  <https://github.com/feldroy/air/pull/923>
 
 ### Bugfixes
 
@@ -157,7 +167,8 @@
 
 ## What's Changed
 
-- feat: migrate AirConvert functionality to air-tags by introducing `BaseTag.from_html_to_source`! by @pygarap in <https://github.com/feldroy/air/pull/879>
+- feat: migrate AirConvert functionality to air-tags by introducing `BaseTag.from_html_to_source`! by @pygarap in
+  <https://github.com/feldroy/air/pull/879>
 - [FEAT] Add new AirConvert functionality powered by selectolax by @pygarap in <https://github.com/feldroy/air/pull/879>
 - [FEAT] Improvements to AirTag typing and constants management by @pygarap in <https://github.com/feldroy/air/pull/879>
 - [FEAT] New utility methods for BaseTag and children by @pygarap in <https://github.com/feldroy/air/pull/879>
@@ -206,7 +217,8 @@
 ## Documentation
 
 - DOC: Added `CHANGELOG.md` to the `extend-exclude` list of typos by @pygarap in <https://github.com/feldroy/air/pull/803>
-- DOC: Removes all code and documentation related to the optional authentication ("auth") feature by @pygarap in <https://github.com/feldroy/air/pull/801>
+- DOC: Removes all code and documentation related to the optional authentication ("auth") feature by @pygarap in
+  <https://github.com/feldroy/air/pull/801>
 - DOC: SRC/EXAMPLE for AirForm class by @pydanny in <https://github.com/feldroy/air/pull/819>
 - DOC: examples request htmx by @sankarebarri in <https://github.com/feldroy/air/pull/799>
 - DOC: Adds a new section on agentic coding to `README.md` by @pygarap in <https://github.com/feldroy/air/pull/821>
@@ -217,7 +229,8 @@
 - DOC: add src example for AirForm.from_request by @msaizar in <https://github.com/feldroy/air/pull/824>
 - DOC: add src example for default_form_widget by @msaizar in <https://github.com/feldroy/air/pull/827>
 - DOC: src_example(airform-widget): Add custom widget example for AirForm.widget by @sankarebarri in <https://github.com/feldroy/air/pull/826>
-- DOC: : update `README.md` with PePy reference and `pyproject.toml` with `Repository` and `Sponsor` URLs by @pygarap in <https://github.com/feldroy/air/pull/828>
+- DOC:: update `README.md` with PePy reference and `pyproject.toml` with `Repository` and `Sponsor` URLs by @pygarap in
+  <https://github.com/feldroy/air/pull/828>
 - DOC: Remove links to old docs by @pydanny in <https://github.com/feldroy/air/pull/831>
 - DOC: improving test readability! by @pygarap in <https://github.com/feldroy/air/pull/836>
 - DOC: : fix Air.get src example for copy_src_example_to_callable.py by @msaizar in <https://github.com/feldroy/air/pull/832>
@@ -235,12 +248,14 @@
 
 ## Dependency Management
 
-- ⬆(deps): bump click from 8.2.1 to 8.3.0 in the python-dependencies group across 1 directory by @dependabot[bot] in <https://github.com/feldroy/air/pull/807>
+- ⬆(deps): bump click from 8.2.1 to 8.3.0 in the python-dependencies group across 1 directory by @dependabot [bot] in
+  <https://github.com/feldroy/air/pull/807>
 - DEPS: Update dependencies and describe the process by @pydanny in <https://github.com/feldroy/air/pull/810>
 - BUILD: Removed `rust-just` from the `devtools` section in `pyproject.toml` by @pygarap in <https://github.com/feldroy/air/pull/783>
 - chore(deps): update dependency click to v8.3.1 by @renovate[bot] in <https://github.com/feldroy/air/pull/822>
 - chore(deps): update actions/checkout digest to 93cb6ef by @renovate[bot] in <https://github.com/feldroy/air/pull/834>
-- ⬆(deps): bump astral-sh/setup-uv from 7.1.2 to 7.1.4 in the gha-minor-patch group by @dependabot[bot] in <https://github.com/feldroy/air/pull/843>
+- ⬆(deps): bump astral-sh/setup-uv from 7.1.2 to 7.1.4 in the gha-minor-patch group by @dependabot [bot] in
+  <https://github.com/feldroy/air/pull/843>
 - REFACTOR: Remove ruff rule 'n' by @pydanny in <https://github.com/feldroy/air/pull/860>
 
 ## New Contributors
@@ -268,7 +283,8 @@
 - docs(examples): move src_examples to examples/src and update paths (#743) by @sankarebarri in <https://github.com/feldroy/air/pull/764>
 - Add support for 'async_' key in HTML attributes by @Isaac-Flath in <https://github.com/feldroy/air/pull/772>
 - Add deprecation working for ext.auth by @pydanny in <https://github.com/feldroy/air/pull/771>
-- Added a link to "What makes documentation good?" to the documentation section in `CONTRIBUTING.md` by @pygarap in <https://github.com/feldroy/air/pull/782>
+- Added a link to "What makes documentation good?" to the documentation section in `CONTRIBUTING.md` by @pygarap in
+  <https://github.com/feldroy/air/pull/782>
 - Migrate from Material for MkDocs to Zensical! Stage 1! by @pygarap in <https://github.com/feldroy/air/pull/777>
 - Fix broken pages deployment by @pydanny in <https://github.com/feldroy/air/pull/786>
 - docs: add PyPI stats and star history sections to README by @pygarap in <https://github.com/feldroy/air/pull/788>
@@ -276,8 +292,11 @@
 - docs: Small README fix by @pygarap in <https://github.com/feldroy/air/pull/790>
 - Updates the `pyproject.toml` file to improve project metadata and discoverability by @pygarap in <https://github.com/feldroy/air/pull/774>
 - add args to docstrings for T elements by @vanessapigwin in <https://github.com/feldroy/air/pull/791>
-- When publishing libraries, it is recommended to separately run tests with --resolution lowest or --resolution lowest-direct in continuous integration to ensure compatibility with the declared lower bounds. by @pygarap in <https://github.com/feldroy/air/pull/795>
-- refactor: simplify `pretty` implementation and Integrated `lxml` and `rich` as default dependencies for improved usability. by @pygarap in <https://github.com/feldroy/air/pull/784>
+- When publishing libraries, it is recommended to separately run tests with --resolution lowest or --resolution
+  lowest-direct in continuous integration to ensure compatibility with the declared lower bounds. by @pygarap in
+  <https://github.com/feldroy/air/pull/795>
+- refactor: simplify `pretty` implementation and Integrated `lxml` and `rich` as default dependencies for improved
+  usability. by @pygarap in <https://github.com/feldroy/air/pull/784>
 - Update air tag docs for all reserved Python words by @pydanny in <https://github.com/feldroy/air/pull/798>
 - Refactor duplicated methods from applications.Air and router.AirRouter into one by @pydanny in <https://github.com/feldroy/air/pull/749>
 - chore(deps): update astral-sh/setup-uv digest to 5a7eac6 by @renovate[bot] in <https://github.com/feldroy/air/pull/793>
@@ -320,8 +339,10 @@
 ## What's changed by new contributors
 
 - feat: add .url() method to route functions by @nedpals in <https://github.com/feldroy/air/pull/706>
-- docs: removed one slash in the link preview, and added one slash in the link url (issue #613) by @kindadailybren in <https://github.com/feldroy/air/pull/671>
-- docs: issue 618 - Change 'Reference for all the entire' to 'Reference for the entire' by @edchelstephens in <https://github.com/feldroy/air/pull/670>
+- docs: removed one slash in the link preview, and added one slash in the link url (issue #613) by @kindadailybren in
+  <https://github.com/feldroy/air/pull/671>
+- docs: issue 618 - Change 'Reference for all the entire' to 'Reference for the entire' by @edchelstephens in
+  <https://github.com/feldroy/air/pull/670>
 - docs: fix inspirations grammatical error by @gabbyxiane in <https://github.com/feldroy/air/pull/672>
 - docs: Correct example usage from 'app = air.App()' to 'app = air.Air()'. by @edchelstephens in <https://github.com/feldroy/air/pull/674>
 - fix: remove self-closing slashes from void elements by @alasdiel in <https://github.com/feldroy/air/pull/673>
@@ -407,7 +428,8 @@ New contributors!
 
 Awesome stuff from existing contributors
 
-- BUG: Fix a bug where basedpyright and pyright as well as Zed editor could not parse our pyproject.toml file! by @tallerasaf in <https://github.com/feldroy/air/pull/578>
+- BUG: Fix a bug where basedpyright and pyright as well as Zed editor could not parse our pyproject.toml file! by
+  @tallerasaf in <https://github.com/feldroy/air/pull/578>
 - BUG: Fix all errors from the newest ty version! by @tallerasaf in <https://github.com/feldroy/air/pull/590>
 - DOCS: Quickstart jinja by @pydanny in <https://github.com/feldroy/air/pull/583>
 - CHORE: Improve the PR template by @pydanny in <https://github.com/feldroy/air/pull/584>
@@ -416,7 +438,9 @@ Awesome stuff from existing contributors
 - DOCS: Add segment on articles and videos by @pydanny in <https://github.com/feldroy/air/pull/595>
 - CHORE: Update sponsors config by @pydanny in <https://github.com/feldroy/air/pull/596>
 - CHORE: Update FastAPI dependency to >=0.119.1 by @pydanny in <https://github.com/feldroy/air/pull/600>
-- CHORE: When publishing libraries, it is recommended to separately run tests with --resolution lowest or --resolution lowest-direct in continuous integration to ensure compatibility with the declared lower bounds. by @tallerasaf in <https://github.com/feldroy/air/pull/59>
+- CHORE: When publishing libraries, it is recommended to separately run tests with --resolution lowest or --resolution
+  lowest-direct in continuous integration to ensure compatibility with the declared lower bounds. by @tallerasaf in
+  <https://github.com/feldroy/air/pull/59>
 
 ## New Contributors
 
@@ -430,10 +454,12 @@ Awesome stuff from existing contributors
 ## What's Changed
 
 - BOOK: The Air Book by @audreyfeldroy in <https://github.com/feldroy/air/pull/504>
-- BUG: Constrain renderers to only stringify items inheriting from BaseTag by @bluerosej and @pydanny in <https://github.com/feldroy/air/pull/561>
+- BUG: Constrain renderers to only stringify items inheriting from BaseTag by @bluerosej and @pydanny in
+  <https://github.com/feldroy/air/pull/561>
 - DOCS: book example uses the wrong library #576 by @MrValdez in <https://github.com/feldroy/air/pull/577>
 - docs(tags): add docstring Args for S to Small by @vanessapigwin in <https://github.com/feldroy/air/pull/558>
-- Integrate spelling and grammar checkers (`codespell` and `typos`) for the entire project! by @tallerasaf in <https://github.com/feldroy/air/pull/548>
+- Integrate spelling and grammar checkers (`codespell` and `typos`) for the entire project! by @tallerasaf in
+  <https://github.com/feldroy/air/pull/548>
 - Fix link to air tags by @pydanny in <https://github.com/feldroy/air/pull/567>
 - docs: add Args for Source to Sup tags by @vanessapigwin in <https://github.com/feldroy/air/pull/568>
 - chore(deps): update astral-sh/setup-uv digest to 3259c62 by @renovate[bot] in <https://github.com/feldroy/air/pull/562>
@@ -477,7 +503,8 @@ Awesome stuff from existing contributors
 
 ## What's Changed
 
-- FEAT: add option for app.page decorator to convert underscores to forward slashes by default by @alaminopu in <https://github.com/feldroy/air/pull/522>
+- FEAT: add option for app.page decorator to convert underscores to forward slashes by default by @alaminopu in
+  <https://github.com/feldroy/air/pull/522>
 - FEAT: Add support for Python 3.14! by @tallerasaf in <https://github.com/feldroy/air/pull/529>
 - DOCS: : add usage and recipes for requests.Request by @zorexsalvo in <https://github.com/feldroy/air/pull/527>
 - DOCS: Add mixed bread AI search on docs by @pydanny and @audreyfeldroy in <https://github.com/feldroy/air/pull/530>
@@ -575,9 +602,11 @@ Awesome stuff from existing contributors
 - Add missing doc pages by @pydanny in <https://github.com/feldroy/air/pull/452>
 - Add requests to documentation by @pydanny in <https://github.com/feldroy/air/pull/455>
 - Add PR checklist by @pydanny in <https://github.com/feldroy/air/pull/456>
-- ⬆(deps): Bump rich from 12.6.0 to 14.1.0 in the python-dependencies group across 1 directory by @dependabot[bot] in <https://github.com/feldroy/air/pull/457>
+- ⬆(deps): Bump rich from 12.6.0 to 14.1.0 in the python-dependencies group across 1 directory by @dependabot [bot] in
+  <https://github.com/feldroy/air/pull/457>
 - Small refactor extracted from a big PR by @tallerasaf in <https://github.com/feldroy/air/pull/459>
-- Add type annotations to the entire codebase using pyrefly and ruff(What they could do, still not 100%) by @tallerasaf in <https://github.com/feldroy/air/pull/441>
+- Add type annotations to the entire codebase using pyrefly and ruff(What they could do, still not 100%) by @tallerasaf
+  in <https://github.com/feldroy/air/pull/441>
 - chore: update Codecov config and refine coverage exclusions by @tallerasaf in <https://github.com/feldroy/air/pull/469>
 - Drop Python 3.10 and 3.11 by @tallerasaf in <https://github.com/feldroy/air/pull/470>
 - Added get_object_or_404 to air.ext.sql. by @pydanny and @audreyfeldroy in <https://github.com/feldroy/air/pull/466>
@@ -611,7 +640,8 @@ Awesome stuff from existing contributors
 
 ### Everything else
 
-- ⬆(deps): Bump pytest-asyncio from 1.1.0 to 1.2.0 in the python-dependencies group by @dependabot[bot] in <https://github.com/feldroy/air/pull/413>
+- ⬆(deps): Bump pytest-asyncio from 1.1.0 to 1.2.0 in the python-dependencies group by @dependabot [bot] in
+  <https://github.com/feldroy/air/pull/413>
 - BUG: Move content of db to ext by @pydanny in <https://github.com/feldroy/air/pull/421>
 - TOOL: Migrate airdocs to mkdocs by @pydanny in <https://github.com/feldroy/air/pull/422>
 - TOOL: Add build command back by @pydanny in <https://github.com/feldroy/air/pull/424>
@@ -623,7 +653,8 @@ Awesome stuff from existing contributors
 - DOCS: Include ext.sql in docs by @pydanny in <https://github.com/feldroy/air/pull/433>
 - TOOL: Improve Justfile by @tallerasaf in <https://github.com/feldroy/air/pull/431>
 - BUG: Fix broken links by @Isaac-Flath in <https://github.com/feldroy/air/pull/440>
-- BUG: Updated the example usage command to `just run-py-module examples.tags_render`. by @tallerasaf in <https://github.com/feldroy/air/pull/439>
+- BUG: Updated the example usage command to `just run-py-module examples.tags_render`. by @tallerasaf in
+  <https://github.com/feldroy/air/pull/439>
 - DOCS: SQL doc cleanup and fix why page by @pydanny in <https://github.com/feldroy/air/pull/442>
 
 - BUG: Cleanup ext namespace by @pydanny in <https://github.com/feldroy/air/pull/445>
@@ -684,7 +715,8 @@ Awesome stuff from existing contributors
 - CHORE: Remove docs GH workflow by @pydanny in <https://github.com/feldroy/air/pull/365>
 - TEST: increase test coverage by adding some tests by @mecit-san in <https://github.com/feldroy/air/pull/371>
 - FEAT: Add includes argument to AirForm rendering by @pydanny in <https://github.com/feldroy/air/pull/378>
-- FEAT: Add AirRouter for combining multiple Air apps into with shared middleware and dependencies by @pydanny in <https://github.com/feldroy/air/pull/367>
+- FEAT: Add AirRouter for combining multiple Air apps into with shared middleware and dependencies by @pydanny in
+  <https://github.com/feldroy/air/pull/367>
 - ⬆(deps): Bump ruff from 0.12.10 to 0.12.11 in the python-dependencies group by @dependabot[bot] in <https://github.com/feldroy/air/pull/370>
 
 ## New Contributors
@@ -805,7 +837,9 @@ Awesome stuff from existing contributors
 
 ## Summary
 
-For users, the function signatures on Air SVG tags by @dfundako will make building SVGs much easier for both humans and LLMs. @tallerasaf vastly improves our code coverage build and turns Air poetic with this statement about the wall of badges they have created for us:
+For users, the function signatures on Air SVG tags by @dfundako will make building SVGs much easier for both humans and
+LLMs. @tallerasaf vastly improves our code coverage build and turns Air poetic with this statement about the wall of
+badges they have created for us:
 
 > "Each badge gleams like a prayer stitched in code, blessing the dawn of an open-source journey."
 
@@ -835,12 +869,14 @@ For users, the function signatures on Air SVG tags by @dfundako will make buildi
 
 ## What's Changed
 
-This is mostly a CI release, which doesn't affect users of Air itself. Many thanks to @tallerasaf who put most of these together.
+This is mostly a CI release, which doesn't affect users of Air itself. Many thanks to @tallerasaf who put most of these
+together.
 
 - Feat Improved development environment setup by @tallerasaf in <https://github.com/feldroy/air/pull/267>
 - Switch from pytest-rich to pytest-modern by @pydanny in <https://github.com/feldroy/air/pull/275>
 - Full - CI Test Coverage by @tallerasaf in <https://github.com/feldroy/air/pull/272>
-- Improve CI workflows, annotations in the GitHub using GitHub Actions and CI for ubuntu-latest, windows-latest, macos-latest by @tallerasaf in <https://github.com/feldroy/air/pull/279>
+- Improve CI workflows, annotations in the GitHub using GitHub Actions and CI for ubuntu-latest, windows-latest,
+  macos-latest by @tallerasaf in <https://github.com/feldroy/air/pull/279>
 - BUG: Fix logo in README by @pydanny in <https://github.com/feldroy/air/pull/281>
 - Refine test coverage tasks and commands in Justfile by @tallerasaf in <https://github.com/feldroy/air/pull/283>
 
@@ -986,7 +1022,8 @@ We did get in one feature to Air itself:
 - Add function signature for Tag A by @pydanny in <https://github.com/feldroy/air/pull/140>
 - Passthru all the responses by @pydanny in <https://github.com/feldroy/air/pull/141>
 - Pass through starlette staticfiles by @pydanny in <https://github.com/feldroy/air/pull/144>
-- Stringify/escape unsupported tag children so 500 errors aren't thrown on tag children type failures by @pydanny in <https://github.com/feldroy/air/pull/147>
+- Stringify/escape unsupported tag children so 500 errors aren't thrown on tag children type failures by @pydanny in
+  <https://github.com/feldroy/air/pull/147>
 - Explaining how to use Jinja with Air Tags by @pydanny in <https://github.com/feldroy/air/pull/148>
 - Add boolean attributes to Air Tags plus improve docs by @pydanny in <https://github.com/feldroy/air/pull/152>
 - Properly make self-closing tags like input and img self-close by @pydanny in <https://github.com/feldroy/air/pull/154>

@@ -6,7 +6,10 @@ labels: feature
 assignees: ''
 ---
 
-Most feature requests for air core are probably best executed as a new package. In case that is not possible, to suggest an idea or ask about a feature, [consider asking about it in the discussions](https://github.com/feldroy/air/discussions/categories/questions). There might be a way to do it already.
+Most feature requests for air core are probably best executed as a new package. In case that is not possible, to suggest
+an idea or ask about a feature,
+[consider asking about it in the discussions](https://github.com/feldroy/air/discussions/categories/questions). There
+might be a way to do it already.
 
 ## Describe the feature
 

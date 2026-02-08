@@ -7,7 +7,8 @@ Forms are how data is collected from users on web pages.
 
 ## A simple form example
 
-This contact form is in the classic Starlette way, with no validation of data. However, it does show a method to build forms quickly.
+This contact form is in the classic Starlette way, with no validation of data. However, it does show a method to build
+forms quickly.
 
 ```python
 import air
@@ -51,7 +52,9 @@ async def add(request: air.Request):
 
 ## Air Forms
 
-Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. That includes both their display and validation of data. If you have any experience with Pydantic, that will go a long way towards helping your understanding of Air Forms.
+Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. That includes both their display
+and validation of data. If you have any experience with Pydantic, that will go a long way towards helping your
+understanding of Air Forms.
 
 ### A Sample Contact Air Form
 
@@ -145,4 +148,5 @@ Air Forms automatically display user-friendly error messages that clearly explai
 - **URL validation**: "Please enter a valid URL."
 - **And many more...**
 
-For unknown error types, the system falls back to the technical Pydantic error message, ensuring developers always get meaningful feedback.
+For unknown error types, the system falls back to the technical Pydantic error message, ensuring developers always get
+meaningful feedback.

@@ -56,7 +56,8 @@ Here's a few interesting things about this page:
 
 1. The page has an attractive layout and typography
 2. The Python for this app is similar in design to how FastAPI code is written
-3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction. Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
+3. If you typed the code out in an IDE with intellisense, you'll have seen every Air object includes useful instruction.
+   Air is designed to be friendly to both humans and LLMs, hence every object is carefully typed and documented
 
 !!! note
     Air, being based on FastAPI, can be run with the FastAPI CLI through the use of the `--entrypoint` flag:
@@ -105,11 +106,13 @@ async def form_handler(request: air.Request):  # (1)!
     ...
 ```
 
-1. Form handling in Air requires `async` functions and usually an `air.Request` argument. We cover forms later on this page as well as in numerous places across the Air documentation.
+1. Form handling in Air requires `async` functions and usually an `air.Request` argument. We cover forms later on this
+   page as well as in numerous places across the Air documentation.
 
 ### app.page decorator
 
-To expedite `HTTP GET` pages we provide the `app.page` decorator, which can replace the `app.get()` decorator for views without arguments. `app.page` converts the name of the function to the route, converting underscores to dashes:
+To expedite `HTTP GET` pages we provide the `app.page` decorator, which can replace the `app.get()` decorator for views
+without arguments. `app.page` converts the name of the function to the route, converting underscores to dashes:
 
 ```python hl_lines="5-6 12-13"
 import air
@@ -141,7 +144,9 @@ def air_is_grounded():  # (2)!
 
 ### Variables in Paths
 
-Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`, `application.post`, `application.put`, and `application.delete` function decorators. The function receives the `{variable}` so long as it is the correct type specified by the function.
+Variables can be added to URLs by marking them in curly braces like `{variable}` in the `application.get`,
+`application.post`, `application.put`, and `application.delete` function decorators. The function receives the
+`{variable}` so long as it is the correct type specified by the function.
 
 ```python hl_lines="5-6"
 import air
@@ -155,7 +160,8 @@ def user_detail(username: str):  # (2)!
 ```
 
 1. We've specified a variable called `username`.
-2. We have defined a function argument named `username`, which is identical to the variable specified in the decorator. We also specified the Python type in this definition.
+2. We have defined a function argument named `username`, which is identical to the variable specified in the decorator.
+   We also specified the Python type in this definition.
 
 Try it out by going to <http://localhost:8000/users/Aang>
 
@@ -176,7 +182,8 @@ def user_detail(username: str):  # (1)!
     return air.layouts.mvpcss(air.Title(username), air.H1(username))
 ```
 
-1. We have defined a function argument named `username`. Because `username` is not part of the decorator's URL path ('/users'), Air automatically treats it as a query parameter.
+1. We have defined a function argument named `username`. Because `username` is not part of the decorator's URL path
+   ('/users'), Air automatically treats it as a query parameter.
 
 Try it out by going to <http://localhost:8000/users/?username=Aang>
 
@@ -249,7 +256,9 @@ url = filter_items.url(query_params={"tags": ["python", "web"]})
 
 !!! warning
 
-    By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else, like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX allows you to send other HTTP methods from forms and links.
+    By default all HTML forms can only send `GET` and `POST` requests. If you set the form method to something else,
+    like `PUT`, `PATCH`, or `DELETE`, the browser will actually fall back to a GET request. However, the magic of HTMX
+    allows you to send other HTTP methods from forms and links.
 
 Air supports the `PATCH`, `PUT`, or `DELETE` methods natively:
 
@@ -274,11 +283,15 @@ async def delete_item(request: air.Request, slug: str):  # (3)!
     ...
 ```
 
-1. `PATCH` requests are used for partial updates of resources, such as one field being updated. The `slug` variable in the URL is passed as an argument to the function. While `POST` requests can be used for updates and is the classic method, `PATCH` is more specific to the action being taken.
+1. `PATCH` requests are used for partial updates of resources, such as one field being updated. The `slug` variable in
+   the URL is passed as an argument to the function. While `POST` requests can be used for updates and is the classic
+   method, `PATCH` is more specific to the action being taken.
 
-2. `PUT` requests are used for creating or replacing resources. The function can handle the incoming data, typically from the request body. Like `POST`, `PUT` requests usually require `async` functions and an `air.Request` argument.
+2. `PUT` requests are used for creating or replacing resources. The function can handle the incoming data, typically
+   from the request body. Like `POST`, `PUT` requests usually require `async` functions and an `air.Request` argument.
 
-3. `DELETE` requests are used to delete resources. Similar to `PATCH`, the `slug` variable in the URL is passed as an argument to the function.
+3. `DELETE` requests are used to delete resources. Similar to `PATCH`, the `slug` variable in the URL is passed as an
+   argument to the function.
 
 Calling these can be done via HTMX or other methods that support these HTTP verbs. Here are examples using HTMX in Air:
 
@@ -301,7 +314,8 @@ air.Form(
 
 ## Air Tags
 
-[Air Tags](../learn/air_tags.md) are one of Air's two ways to generate HTML output. They are useful for keeping file size down, general HTML delivery, and especially with fragment responses via HTMX.
+[Air Tags](../learn/air_tags.md) are one of Air's two ways to generate HTML output. They are useful for keeping file
+size down, general HTML delivery, and especially with fragment responses via HTMX.
 
 ### JavaScript Files
 
@@ -383,7 +397,8 @@ def index():
 
 ## Jinja
 
-In addition to Air Tags, Air supports Jinja natively. In addition to being great at delivering HTML content, Jinja can be used to render all kinds of content.
+In addition to Air Tags, Air supports Jinja natively. In addition to being great at delivering HTML content, Jinja can
+be used to render all kinds of content.
 
 Here's a simple Jinja template:
 
@@ -443,7 +458,8 @@ It is very easy to include Air Tags in Jinja. Let's first create our template:
 </html>
 ```
 
-1. The `safe` filter is necessary for using Air Tags in Jinja. This has security implications, so be careful what content you allow.
+1. The `safe` filter is necessary for using Air Tags in Jinja. This has security implications, so be careful what
+   content you allow.
 
 And here is our Python code describing the view:
 
@@ -469,11 +485,14 @@ def avatar(request: air.Request):
 
 !!! tip
 
-    Where Jinja + Air Tags truly come alive is when the base templates for a project are in Jinja. For some people this makes styling pages a bit easier. Then content, especially HTMX swaps and other fragments are rendered via Air Tags. This keeps the developer in Python, which means less context switching while working on challenges.
+    Where Jinja + Air Tags truly come alive is when the base templates for a project are in Jinja. For some people this
+    makes styling pages a bit easier. Then content, especially HTMX swaps and other fragments are rendered via Air Tags.
+    This keeps the developer in Python, which means less context switching while working on challenges.
 
 ## Forms
 
-In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet workable example of receiving data using a `Request` object.
+In HTML, forms are the primary method of receiving data from users. Most forms receive `POST` data. Here's a basic yet
+workable example of receiving data using a `Request` object.
 
 ```python hl_lines="19 20"
 import air
@@ -508,16 +527,20 @@ async def email_handler(request: air.Request):  # (1)!
     )
 ```
 
-1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the form data is contained within the `air.Request` object.
+1. As Air is based off starlette, when we receive data from a form it needs to occur within an `async` view. Also, the
+   form data is contained within the `air.Request` object.
 2. Form data needs to be received via an `await` keyword on `request.form()`.
 
 !!! tip "FormData is a dict-like object"
 
-    While the value `FormData([('email', 'aang@example.com')])` might be displayed, the keys and values are accessed via traditional methods.
+    While the value `FormData([('email', 'aang@example.com')])` might be displayed, the keys and values are accessed via
+    traditional methods.
 
 ###  AirForms: pydantic+forms
 
-The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use pydantic models to determine how a form is constructed.
+The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using
+Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use
+pydantic models to determine how a form is constructed.
 
 ```python
 from pydantic import BaseModel, Field
@@ -591,14 +614,18 @@ async def handle_form(request: air.Request):
 1. `ContactModel` is a pydantic model that represents data we want to collect from the user.
 2. `ContactForm` is an `AirForm` whose model is the `ContactModel`.
 3. This instantiates the form without data.
-4. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
+4. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()`
+   methods.
 5. AirForms have `.from_request()` method which takes the form from an `air.Request` and loads it into the form.
-6. The `.is_valid` property of an AirForm is powered by pydantic. It returns a `bool` that can be used to control logic of what to do with form successes or failures.
-7. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()` methods.
+6. The `.is_valid` property of an AirForm is powered by pydantic. It returns a `bool` that can be used to control logic
+   of what to do with form successes or failures.
+7. Calling `.render()` on an AirForm generates the form in HTML. This follows a common pattern in Air with `.render()`
+   methods.
 
 ## Server-Sent Events
 
-Part of the HTTP specification, Server-Sent Events (SSE) allow the server to push things to the user. Air makes SSE easy to implement and maintain. Here's an example of using it to generate random lottery numbers every second.
+Part of the HTTP specification, Server-Sent Events (SSE) allow the server to push things to the user. Air makes SSE easy
+to implement and maintain. Here's an example of using it to generate random lottery numbers every second.
 
 ```python hl_lines="11 16 17 18 19 23 27 33"
 import random
@@ -641,11 +668,16 @@ async def lottery_numbers():
 1. To use SSE, the source for the HTMX plugin for them has to be included in the page.
 2. The `hx_ext` attribute is used to initialize the SSE plugin.
 3. `sse_connect` is the endpoint where the SSE pushes from.
-4. `hx_swap` tells HTMX how to swap or place elements. In this case, it says to place the incoming HTML underneath all the other content in this section. The move the focus of the page to that location.
-5. The `sse_swap` attribute informs HTMX that we only want to receive SSE events of the `message` type. This is a common response and shouldn't be changed unless you have a good reason.
-6. The `air.SSEResponse` needs a generator function or generator expression. Our example just generates random numbers, but people use similar functions to query databases and fetch data from APIs. Of note is that in our example instead of using `return` statements we use `yield` statements to ensure control is not lost.
+4. `hx_swap` tells HTMX how to swap or place elements. In this case, it says to place the incoming HTML underneath all
+   the other content in this section. The move the focus of the page to that location.
+5. The `sse_swap` attribute informs HTMX that we only want to receive SSE events of the `message` type. This is a common
+   response and shouldn't be changed unless you have a good reason.
+6. The `air.SSEResponse` needs a generator function or generator expression. Our example just generates random numbers,
+   but people use similar functions to query databases and fetch data from APIs. Of note is that in our example instead
+   of using `return` statements we use `yield` statements to ensure control is not lost.
 7. Air Tags work great, but any type of data can be passed back.
-8. Air does all heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions or generator expressions into it and it just works!
+8. Air does all heavy lifting of setting up a streaming response for us. All we need to do is pass generator functions
+   or generator expressions into it and it just works!
 
 ## Want to learn more?
 

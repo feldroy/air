@@ -2,7 +2,9 @@
 
 # SVG
 
-In the spirit of helping our users, every **Air SVG Tag** has copious documentation—enough that sometimes it breaks the documentation build process. Therefore, **Air SVG Tag** that directly correspond to their SVG equivalents can be found in smaller, easier-to-compile pages.
+In the spirit of helping our users, every **Air SVG Tag** has copious documentation—enough that sometimes it breaks the
+documentation build process. Therefore, **Air SVG Tag** that directly correspond to their SVG equivalents can be found
+in smaller, easier-to-compile pages.
 
 - [SVG Air Tags A-D](svg-tags-a-d.md)
 - [SVG Air Tags E-M](svg-tags-e-m.md)

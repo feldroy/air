@@ -1,6 +1,7 @@
 # Deployment
 
-Air applications can be deployed in several ways. We provide detailed examples for containerization and Kubernetes deployment, and have successfully deployed Air apps on various hosting platforms.
+Air applications can be deployed in several ways. We provide detailed examples for containerization and Kubernetes
+deployment, and have successfully deployed Air apps on various hosting platforms.
 
 ## Examples
 
@@ -9,7 +10,8 @@ Air applications can be deployed in several ways. We provide detailed examples f
 
 ## Hosting Platforms
 
-We have experience deploying Air on the following hosting platforms. If you're using these services, please consider using our referral links - they help sustain the Air project! 💚
+We have experience deploying Air on the following hosting platforms. If you're using these services, please consider
+using our referral links - they help sustain the Air project! 💚
 
 ### Railway
 
@@ -26,4 +28,5 @@ We have experience deploying Air on the following hosting platforms. If you're u
 
 ## Contributing
 
-Have you deployed Air on other platforms? We'd love to hear about your experience! Consider contributing deployment guides or examples back to the [Air repository](https://github.com/feldroy/air) to help the community.
+Have you deployed Air on other platforms? We'd love to hear about your experience! Consider contributing deployment
+guides or examples back to the [Air repository](https://github.com/feldroy/air) to help the community.

@@ -1,10 +1,13 @@
 # Authentication
 
-How to handle login and authentication in your application. It does not cover authorization, which is a separate topic covering what permissions a user has.
+How to handle login and authentication in your application. It does not cover authorization, which is a separate topic
+covering what permissions a user has.
 
 ## A minimal authentication example
 
-This first example shows how to create a password-less authentication flow using Air. This is a toy example that uses sessions to keep track of the logged-in user. In a real application, you would want to use a more secure method of authentication, with passwords or OAuth.
+This first example shows how to create a password-less authentication flow using Air. This is a toy example that uses
+sessions to keep track of the logged-in user. In a real application, you would want to use a more secure method of
+authentication, with passwords or OAuth.
 
 ```python
 import air
@@ -60,7 +63,8 @@ async def logout(request: air.Request):
 
 ## Authentication with Dependencies
 
-In Air and FastAPI apps we frequently rely on dependencies to handle authentication. Dependencies are a powerful way to share logic between different parts of your application. Here's a simple authentication dependency example:
+In Air and FastAPI apps we frequently rely on dependencies to handle authentication. Dependencies are a powerful way to
+share logic between different parts of your application. Here's a simple authentication dependency example:
 
 ```python
 from fastapi import HTTPException
@@ -81,9 +85,13 @@ def require_login(request: air.Request):
     return user
 ```
 
-In Air, like FastAPI, session objects need to be serializable to JSON. That means you can't store complex objects like database models directly in the session. Instead, store simple identifiers (like user IDs) and fetch the full user details from your database as needed.
+In Air, like FastAPI, session objects need to be serializable to JSON. That means you can't store complex objects like
+database models directly in the session. Instead, store simple identifiers (like user IDs) and fetch the full user
+details from your database as needed.
 
-Attaching this dependency to a route ensures that only authenticated users can access it. If a user is not authenticated, they will be redirected to the login page. Here's how you can use the `require_login` dependency in a route:
+Attaching this dependency to a route ensures that only authenticated users can access it. If a user is not
+authenticated, they will be redirected to the login page. Here's how you can use the `require_login` dependency in a
+route:
 
 ```python
 import air
@@ -115,7 +123,8 @@ async def dashboard(request: air.Request, user=Depends(require_login)):
     )
 ```
 
-Here's a more complete example that includes a login page, a protected dashboard page, and logout functionality using the `require_login` dependency:
+Here's a more complete example that includes a login page, a protected dashboard page, and logout functionality using
+the `require_login` dependency:
 
 ```python
 from fastapi import Depends, HTTPException

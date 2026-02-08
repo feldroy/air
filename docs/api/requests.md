@@ -1,6 +1,7 @@
 # Requests
 
-`air.requests.Request` is an wrapper for [`starlette.requests.Request`](https://www.starlette.io/requests/), giving Air users a consistent import path. It adds an `htmx` object that includes a lot of quite useful utility methods.
+`air.requests.Request` is an wrapper for [`starlette.requests.Request`](https://www.starlette.io/requests/), giving Air
+users a consistent import path. It adds an `htmx` object that includes a lot of quite useful utility methods.
 
 ---
 

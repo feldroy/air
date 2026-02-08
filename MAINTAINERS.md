@@ -35,7 +35,8 @@ Finally, create a new release on GitHub:
 
 ## Categorizing Features
 
-In the `Features: Categories` section of CONTRIBUTING.md there are four categories, each should be assigned to feature issues and pull requests.
+In the `Features: Categories` section of CONTRIBUTING.md there are four categories, each should be assigned to feature
+issues and pull requests.
 
 ## Updating Dependencies
 

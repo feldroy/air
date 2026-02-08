@@ -1,6 +1,7 @@
 # The app.page decorator
 
-For simple HTTP GET requests, Air provides the handy @app.page shortcut. It converts the name of the function to a URL, where underscores are replaced with dashes and `index` is replaced with '/'.
+For simple HTTP GET requests, Air provides the handy @app.page shortcut. It converts the name of the function to a URL,
+where underscores are replaced with dashes and `index` is replaced with '/'.
 
 !!! note "When to use @app.page vs @app.get"
 

@@ -18,7 +18,8 @@ You can "watch" Air in GitHub (clicking the "watch" button at the top right): [g
 
 There you can select "Releases only".
 
-By doing it, you will receive notifications (in your email) whenever there's a new release (a new version) of Air with bug fixes and new features.
+By doing it, you will receive notifications (in your email) whenever there's a new release (a new version) of Air with
+bug fixes and new features.
 
 ## Participate in discussions
 
@@ -30,4 +31,6 @@ See you there!
 
 ## Sponsor the project
 
-Air is an open-source project that is free to use. We are constantly working to improve it. If you want to support the project financially, you can do so via <a href="https://github.com/sponsors/feldroy" target="_blank">our GitHub Sponsors page</a>.
+Air is an open-source project that is free to use. We are constantly working to improve it. If you want to support the
+project financially, you can do so via <a href="https://github.com/sponsors/feldroy" target="_blank">our GitHub Sponsors
+page </a>.

@@ -2,7 +2,8 @@
 
 Resources for learning the fundamentals of the Air web framework.
 
-- **[Quickstart](quickstart.md)** - The TL;DR for getting started with Air, including many fundamental operations necessary for web development.
+- **[Quickstart](quickstart.md)** - The TL;DR for getting started with Air, including many fundamental operations
+  necessary for web development.
 
 ## Concepts
 

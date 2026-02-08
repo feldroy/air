@@ -1,6 +1,7 @@
 # Escaping HTML
 
-Escaping HTML is where text is converted from tags and script that will interact with the DOM to representations of those things. For example:
+Escaping HTML is where text is converted from tags and script that will interact with the DOM to representations of
+those things. For example:
 
 Unscaped HTML:
 
@@ -14,11 +15,13 @@ Escaped HTML:
 &lt;h1&gt;Hello, World!&lt;/h1&gt;
 ```
 
-This is useful for preventing security issues like code injection by malignant users who have access to text fields that display text they enter. Escaping blocks the addition of tags, JavaScript, and CSS.
+This is useful for preventing security issues like code injection by malignant users who have access to text fields that
+display text they enter. Escaping blocks the addition of tags, JavaScript, and CSS.
 
 ## Jinja2 doesn't play it safe
 
-By default, Jinja2 escapes nothing. It puts the burden of safety on the developer. To make Jinja2 escape text, use the `e` filter.
+By default, Jinja2 escapes nothing. It puts the burden of safety on the developer. To make Jinja2 escape text, use the
+`e` filter.
 
 ```jinja
 {% set h1 = "<h1>Hello, World!</h1>" %}
@@ -42,7 +45,8 @@ renders as:
 &lt;h1&gt;Hello, World!&lt;/h1&gt;
 ```
 
-To provide unescaped code, Air Tags provides three options: the `Style`, `Script`, and `Raw` tags - which are described below.
+To provide unescaped code, Air Tags provides three options: the `Style`, `Script`, and `Raw` tags - which are described
+below.
 
 ### `Style`: Unescaped CSS
 

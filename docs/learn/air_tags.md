@@ -1,13 +1,16 @@
 # Air Tags
 
-**Air Tags**, sometimes shortened to **Tags**, are Python classes that render HTML. They can be combined to render web pages or small components. **Air Tags** are typed and documented, working well with any code completion tool. They are designed to be an easy to write and performant HTML content generation system using Python classes to render HTML.
+**Air Tags**, sometimes shortened to **Tags**, are Python classes that render HTML. They can be combined to render web
+pages or small components. **Air Tags** are typed and documented, working well with any code completion tool. They are
+designed to be an easy to write and performant HTML content generation system using Python classes to render HTML.
 
 !!! Note
     This document covers how **Air Tags** work. The full reference for them is the [Air Tags reference](../api/tags/index.md).
 
 ## How **Air Tags** work
 
-Used individually or combined into a greater whole, every Air Tag includes a `render()` method. When the `render()` method is called it returns a HTML representation of the Air Tag, as well as all the children of the Air Tag.
+Used individually or combined into a greater whole, every Air Tag includes a `render()` method. When the `render()`
+method is called it returns a HTML representation of the Air Tag, as well as all the children of the Air Tag.
 
 This example:
 
@@ -24,7 +27,8 @@ content = Article(
 print(content)  # <air.Article("Defines an article")>
 ```
 
-In constructing this example, the `Article` tag has wrapped the `H1` and `P` tags. You can't see that the `H1` and `P` tags are inside, but they have been carefully stored.
+In constructing this example, the `Article` tag has wrapped the `H1` and `P` tags. You can't see that the `H1` and `P`
+tags are inside, but they have been carefully stored.
 
 This is the output of the `render()` method for the example above:
 
@@ -67,7 +71,8 @@ print(content)
 
 !!! note
 
-    When returned from an Air view this conversion to HTML happens automatically, much like how FastAPI automatically converts `dict` responses to JSON.
+    When returned from an Air view this conversion to HTML happens automatically, much like how FastAPI automatically
+    converts `dict` responses to JSON.
 
 ## Pretty HTML renders
 
@@ -108,7 +113,8 @@ Let's take a look at some additional scenarios.
 
 ### Python reserved words as attributes
 
-Some HTML attributes are reserved words in Python. To get around that, **Air Tags** uses specific keyword arguments for these reserved words.
+Some HTML attributes are reserved words in Python. To get around that, **Air Tags** uses specific keyword arguments for
+these reserved words.
 
 | Reserved Word | Use This Keyword Argument |
 | ------------- | ------------------------- |
@@ -120,7 +126,8 @@ Some HTML attributes are reserved words in Python. To get around that, **Air Tag
 
 !!! note
 
-    These are the reserved words that we've discocevered that conflict with HTML attributes. If you run into others, please open an issue on GitHub.
+    These are the reserved words that we've discocevered that conflict with HTML attributes. If you run into others,
+    please open an issue on GitHub.
 
 #### Setting the `class` attribute
 
@@ -171,7 +178,8 @@ renders as
 
 ### Attributes starting with special characters
 
-To get around that in Python we can't begin function arguments with special characters, we lean into how **Air Tags** is kwargs friendly.
+To get around that in Python we can't begin function arguments with special characters, we lean into how **Air Tags** is
+kwargs friendly.
 
 ```python
 air.P("Hello", class_="plain", **{"@data": 6})
@@ -221,7 +229,8 @@ Renders as:
 
 ## Works well with SVGs
 
-Unlike HTML, SVG tags are case-sensitive. You can access SVG tags by importing them from the `air.svg` module. Here's a simple example:
+Unlike HTML, SVG tags are case-sensitive. You can access SVG tags by importing them from the `air.svg` module. Here's a
+simple example:
 
 ```python
 from air import svg
@@ -271,7 +280,9 @@ This will produce the following HTML:
 
 ## Functions as Custom **Air Tags**
 
-Subclasses are not the only way to create custom Air Tags. You can also use functions to create Air Tags. This is particularly useful for putting together components quickly without needing to define a class. Here's an example of a function that creates a custom Air Tag for a [picocss card](https://picocss.com/docs/card):
+Subclasses are not the only way to create custom Air Tags. You can also use functions to create Air Tags. This is
+particularly useful for putting together components quickly without needing to define a class. Here's an example of a
+function that creates a custom Air Tag for a [picocss card](https://picocss.com/docs/card):
 
 ```python
 def card(*content, header: str, footer: str):
@@ -306,7 +317,9 @@ Which produces the following HTML:
 
 ## Returning Multiple Children (used in HTMX)
 
-When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace existing DOM elements with new ones. **Air Tags** are hierarchical, you need a base tag that just serves as a wrapper that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
+When using HTMX to add reactivity to pages, it is common to return several **Air Tags** so that HTMX can then replace
+existing DOM elements with new ones. **Air Tags** are hierarchical, you need a base tag that just serves as a wrapper
+that doesn't generate any HTML. That tag is the `air.Tags`. Here's how to use it:
 
 ```python
 import air
@@ -336,7 +349,8 @@ def update_cart(request: air.Request, product_id: int):
     )
 ```
 
-This will generate HTML that looks something like this, without any wrapping text around the elements we are passing to the user's browser:
+This will generate HTML that looks something like this, without any wrapping text around the elements we are passing to
+the user's browser:
 
 ```html
 <!-- Mark that an item has been added to the cart -->

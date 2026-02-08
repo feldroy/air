@@ -24,7 +24,8 @@ uv run -q -- pytest tests/benchmarks --benchmark-compare=baseline
 
 Memory checks
 
-- Memory-focused tests (tracemalloc) should be marked with a custom marker, e.g. `@pytest.mark.memory`, and run separately since they can be fragile.
+- Memory-focused tests (tracemalloc) should be marked with a custom marker, e.g. `@pytest.mark.memory`, and run
+  separately since they can be fragile.
 - Example: run memory tests only:
 
 ```bash
@@ -40,4 +41,5 @@ uv run -- pytest -s tests/benchmarks -m memory --log-cli-level=INFO
 CI recommendations
 
 - Run microbenchmarks nightly and upload results (JSON) to detect regressions.
-- Run memory-retention tests on a scheduled job or release build and keep thresholds flexible to account for interpreter noise.
+- Run memory-retention tests on a scheduled job or release build and keep thresholds flexible to account for interpreter
+  noise.

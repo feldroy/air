@@ -47,7 +47,8 @@ def index():
     )
 ```
 
-Air makes it possible to build charts that pull data from servers and animate the results. Here's an example being supplied with random numbers for the Air server.
+Air makes it possible to build charts that pull data from servers and animate the results. Here's an example being
+supplied with random numbers for the Air server.
 
 ```python
 import air

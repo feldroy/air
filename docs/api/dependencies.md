@@ -4,7 +4,8 @@ Air provides dependency injection utilities to help you build responsive web app
 
 ## HTMX Request Detection
 
-The `is_htmx_request` dependency allows you to detect whether a request is coming from an HTMX action, enabling you to return different responses for HTMX vs regular HTTP requests.
+The `is_htmx_request` dependency allows you to detect whether a request is coming from an HTMX action, enabling you to
+return different responses for HTMX vs regular HTTP requests.
 
 ### Common Use Cases
 

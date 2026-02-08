@@ -1,14 +1,20 @@
 # Bigger Applications
 
-When building larger applications with Air, you may find yourself needing to organize your code better, manage multiple routes, or even mount different applications together. This guide will help you understand how to structure your Air applications for scalability and maintainability.
+When building larger applications with Air, you may find yourself needing to organize your code better, manage multiple
+routes, or even mount different applications together. This guide will help you understand how to structure your Air
+applications for scalability and maintainability.
 
 ## Routing Separate Apps Together
 
 !!! note
 
-    This approach shares state between the composited efforts. This means that authentication, database pooling, and other things will be usable between components. The [API reference](../../api/routing.md) for this documentation displays options for more controls like Router-specific lifespans, URL prefixes, and more.
+    This approach shares state between the composited efforts. This means that authentication, database pooling, and
+    other things will be usable between components. The [API reference](../../api/routing.md) for this documentation
+    displays options for more controls like Router-specific lifespans, URL prefixes, and more.
 
-Let's imagine we have a landing page that links to a sophisticated dashboard. While our example dashboard is trivial, let's assume it is complicated enough that we want it in a separate Python module yet share state. We design the `main.py` as we would a normal Air application:
+Let's imagine we have a landing page that links to a sophisticated dashboard. While our example dashboard is trivial,
+let's assume it is complicated enough that we want it in a separate Python module yet share state. We design the
+`main.py` as we would a normal Air application:
 
 ```python title="main.py"
 import air
@@ -21,7 +27,8 @@ def index():
     return air.layouts.mvpcss(air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard")))
 ```
 
-Now for the dashboard, instead of using the typical `air.Air` tool to instantiate our application, we use `air.AirRouter` like so:
+Now for the dashboard, instead of using the typical `air.Air` tool to instantiate our application, we use
+`air.AirRouter` like so:
 
 ```python title="dashboard.py" hl_lines="3"
 import air
@@ -60,9 +67,12 @@ If run locally these links should work:
 
 !!! warning
 
-    This approach does not share state between the apps. That means attempting to share authentication and database pooling will not function predictably, if at all.
+    This approach does not share state between the apps. That means attempting to share authentication and database
+    pooling will not function predictably, if at all.
 
-One of the really nice features of Air is the ability to mount apps inside each other. This allows you to create modular applications where different parts of your app can be developed and maintained independently. To do this, we lean on Starlette's `mount` functionality that Air inherits through FastAPI.
+One of the really nice features of Air is the ability to mount apps inside each other. This allows you to create modular
+applications where different parts of your app can be developed and maintained independently. To do this, we lean on
+Starlette's `mount` functionality that Air inherits through FastAPI.
 
 ```python
 import air
@@ -93,7 +103,8 @@ app.mount("/shop", shop)
 
 ## Mounting FastAPI inside of Air apps
 
-You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API, while your main Air app serves the landing, billing, and usage frontends.
+You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API,
+while your main Air app serves the landing, billing, and usage frontends.
 
 ```python
 from fastapi import FastAPI
@@ -129,4 +140,5 @@ app.mount("/api", api)
 
 ## Mounting FastAPI apps inside each other
 
-Mounting one FastAPI app is outside the scope of this guide. We recommend reading [FastAPI's Bigger Application](https://fastapi.tiangolo.com/tutorial/bigger-applications) reference.
+Mounting one FastAPI app is outside the scope of this guide. We recommend reading
+[FastAPI's Bigger Application](https://fastapi.tiangolo.com/tutorial/bigger-applications) reference.

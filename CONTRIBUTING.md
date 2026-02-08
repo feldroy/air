@@ -121,7 +121,9 @@ We are actively looking for contributions in the following areas:
 
 ### Features: Categories
 
-We have the following categories for features. All new features will be assigned a category label to determine whether or not it should be added to Air and what role it will take in terms of maintenance. The categories and their definitions are below:
+We have the following categories for features. All new features will be assigned a category label to determine whether
+or not it should be added to Air and what role it will take in terms of maintenance. The categories and their
+definitions are below:
 
 |            Category            |              Label              |
 | ------------------------------ | ------------------------------- |
@@ -132,19 +134,25 @@ We have the following categories for features. All new features will be assigned
 
 #### Core Air Feature
 
-Implemented and maintained in the main Air repository; enabled by default. Fully documented and covered by tests; receives security and bug fixes promptly. Examples include Air Tags and FastAPI integration controls.
+Implemented and maintained in the main Air repository; enabled by default. Fully documented and covered by tests;
+receives security and bug fixes promptly. Examples include Air Tags and FastAPI integration controls.
 
 #### Optional Air Feature
 
-Implemented in the Air repository but off by default; installed via extras. Documented and tested, but opt-in to keep the core small and fast. Receives updates together with Air releases and follows the same support policy. Examples include authentication and CSRF validation.
+Implemented in the Air repository but off by default; installed via extras. Documented and tested, but opt-in to keep
+the core small and fast. Receives updates together with Air releases and follows the same support policy. Examples
+include authentication and CSRF validation.
 
 #### Third-Party Integrated Feature
 
-Not implemented by Air; we provide official guides and examples for integrating an external library. Docs may include minimal glue code and recommended settings, but ownership stays with the third party. An example would be SQL integration or a quick guide on using a frontend library that isn't HTMX.
+Not implemented by Air; we provide official guides and examples for integrating an external library. Docs may include
+minimal glue code and recommended settings, but ownership stays with the third party. An example would be SQL
+integration or a quick guide on using a frontend library that isn't HTMX.
 
 #### Out-of-Scope Feature
 
-Not implemented, not documented, and not supported by the project. Requests are redirected to community solutions or closed as "out of scope."
+Not implemented, not documented, and not supported by the project. Requests are redirected to community solutions or
+closed as "out of scope."
 
 ### Documentation: Docstrings and API Reference
 
