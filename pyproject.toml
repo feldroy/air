@@ -127,7 +127,7 @@ docs = [
     "mkdocs-llmstxt==0.5.0", # https://pypi.org/project/mkdocs-llmstxt
     "mkdocs-material[imaging]==9.7.1", # https://pypi.org/project/mkdocs-material
     "mkdocs-redirects==1.2.2", # https://pypi.org/project/mkdocs-redirects
-    "mkdocstrings-python==2.0.1", # https://pypi.org/project/mkdocstrings-python
+    "mkdocstrings-python==2.0.2", # https://pypi.org/project/mkdocstrings-python
     "mkdocstrings[python]==1.0.3", # https://pypi.org/project/mkdocstrings
 ]
 prek-hooks = [
@@ -145,22 +145,22 @@ prek-hooks = [
     "google-yamlfmt==0.21.0", # https://pypi.org/project/google-yamlfmt
     "pre-commit-hooks==6.0.0", # https://pypi.org/project/pre-commit-hooks
     "prek==0.3.2", # https://pypi.org/project/prek
-    "pyrefly==0.51.2", # https://pypi.org/project/pyrefly
+    "pyrefly==0.52.0", # https://pypi.org/project/pyrefly
     "pyroma==5.0.1", # https://pypi.org/project/pyroma
     "ruff==0.15.0", # https://pypi.org/project/ruff
-    "rumdl==0.1.15", # https://pypi.org/project/rumdl
+    "rumdl==0.1.16", # https://pypi.org/project/rumdl
     "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
     "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
     "sync-pre-commit-deps==0.0.3", # https://pypi.org/project/shfmt-py
     "tombi==0.7.28", # https://pypi.org/project/tombi
     "ty==0.0.15", # https://pypi.org/project/ty
-    "typos==1.43.3", # https://pypi.org/project/typos
+    "typos==1.43.4", # https://pypi.org/project/typos
     "vale==3.13.0.0", # https://pypi.org/project/vale
     "validate-pyproject-schema-store[all]==2026.1.22", # https://pypi.org/project/validate-pyproject-schema-store
     "zizmor==1.22.0", # https://pypi.org/project/zizmor
 ]
 test = [
-    "coverage[toml]==7.13.3", # https://pypi.org/project/coverage
+    "coverage[toml]==7.13.4", # https://pypi.org/project/coverage
     "diff-cover==10.2.0", # https://pypi.org/project/diff-cover
     "full-match==0.0.3", # https://pypi.org/project/full-match
     "httpx==0.28.1", # https://pypi.org/project/httpx

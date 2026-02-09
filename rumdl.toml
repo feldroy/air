@@ -64,7 +64,8 @@ output-format = "grouped"
     "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
 ]
 
-# ---------------------------------------------------> rumdl Rules <---------------------------------------------------
+# region ----------------------------------------------> rumdl Rules <--------------------------------------------------
+
 # https://github.com/rvben/rumdl/blob/main/docs/RULES.md
 
 [MD003] # https://github.com/rvben/rumdl/blob/main/docs/md003.md
@@ -177,3 +178,5 @@ enabled = true # Enable the rule (opt-in, disabled by default)
 min-level = 2 # Minimum heading level to include (default: 2)
 max-level = 4 # Maximum heading level to include (default: 4)
 enforce-order = true # Whether TOC order must match document order (default: true)
+
+# endregion --------------------------------------------> rumdl Rules <-------------------------------------------------
