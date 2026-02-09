@@ -130,6 +130,11 @@ fix = true # Enable auto-fix to convert simple HTML to Markdown (default: false)
 # Detects when bold or italic text is used as a standalone heading.
 fix = true # Enable auto-fix (opt-in, default: false)
 
+[MD041] # https://github.com/rvben/rumdl/blob/main/docs/md041.md
+# MD041 - Start Your Document with a Clear Title
+# Ensures each document starts with a top-level heading (# Title), clearly defining its title and purpose.
+fix = true # Enable auto-fix (opt-in, default: false)
+
 [MD044] # https://github.com/rvben/rumdl/blob/main/docs/md044.md
 # MD044 - Use Proper Capitalization for Names
 # Ensures brand names, product names, and technical terms are consistently capitalized throughout your documents.

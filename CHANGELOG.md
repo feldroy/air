@@ -1,6 +1,6 @@
-### Latest Changes
+# Latest Changes
 
-# 0.45 - 2025-01-09
+## 0.45 - 2025-01-09
 
 ## What's Changed
 
