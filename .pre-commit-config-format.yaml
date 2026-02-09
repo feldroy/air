@@ -147,7 +147,7 @@ repos:
         args: ["--fix", "--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.15
+    rev: v0.1.16
     hooks:
       - id: rumdl-fmt # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
   - repo: https://github.com/pre-commit/sync-pre-commit-deps
