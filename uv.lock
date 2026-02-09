@@ -58,7 +58,6 @@ dev = [
     { name = "pre-commit-hooks" },
     { name = "prek" },
     { name = "pyinstrument" },
-    { name = "pyproject" },
     { name = "pyrefly" },
     { name = "pyroma" },
     { name = "pytest" },
@@ -111,7 +110,6 @@ prek-hooks = [
     { name = "google-yamlfmt" },
     { name = "pre-commit-hooks" },
     { name = "prek" },
-    { name = "pyproject" },
     { name = "pyrefly" },
     { name = "pyroma" },
     { name = "ruff" },
@@ -197,7 +195,6 @@ dev = [
     { name = "pre-commit-hooks", specifier = "==6.0.0" },
     { name = "prek", specifier = "==0.3.2" },
     { name = "pyinstrument", specifier = "==5.1.2" },
-    { name = "pyproject", specifier = "==1!0.1.2" },
     { name = "pyrefly", specifier = "==0.51.2" },
     { name = "pyroma", specifier = "==5.0.1" },
     { name = "pytest", specifier = "==9.0.2" },
@@ -251,7 +248,6 @@ prek-hooks = [
     { name = "google-yamlfmt", specifier = "==0.21.0" },
     { name = "pre-commit-hooks", specifier = "==6.0.0" },
     { name = "prek", specifier = "==0.3.2" },
-    { name = "pyproject", specifier = "==1!0.1.2" },
     { name = "pyrefly", specifier = "==0.51.2" },
     { name = "pyroma", specifier = "==5.0.1" },
     { name = "ruff", specifier = "==0.15.0" },
@@ -2380,19 +2376,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/f3/91/9c6ee907786a473bf81c5f53cf703ba0957b23ab84c264080fb5a450416f/pyparsing-3.3.2.tar.gz", hash = "sha256:c777f4d763f140633dcb6d8a3eda953bf7a214dc4eff598413c070bcdc117cbc", size = 6851574, upload-time = "2026-01-21T03:57:59.36Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/10/bd/c038d7cc38edc1aa5bf91ab8068b63d4308c66c4c8bb3cbba7dfbc049f9c/pyparsing-3.3.2-py3-none-any.whl", hash = "sha256:850ba148bd908d7e2411587e247a1e4f0327839c40e2e5e6d05a007ecc69911d", size = 122781, upload-time = "2026-01-21T03:57:55.912Z" },
-]
-
-[[package]]
-name = "pyproject"
-version = "1!0.1.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/2b/8c/f749559abe2656434154462cd4a8488d67dd3a59f71bba9d3eff7246ea05/pyproject-1!0.1.2.tar.gz", hash = "sha256:584abf6b337b72de56e8e94d10a34c8aba1f1861ac3c4948ca207061355de5a6", size = 1151184, upload-time = "2025-11-27T19:32:26.773Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1d/95/17a346298c2e3abb6b415a285a943a7a5b8bdba0714d29a481285a49c105/pyproject-1!0.1.2-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:61541c95f5a76690414a355a9bb9a0fc2fc13631acfcf7f9c1959d611ca1785c", size = 5404547, upload-time = "2025-11-27T19:32:18.003Z" },
-    { url = "https://files.pythonhosted.org/packages/70/c8/b78c329e28a6b5fc3df97b7fdb4806a2ae9ac445bdb25c781a869be3f78e/pyproject-1!0.1.2-py3-none-macosx_11_0_arm64.whl", hash = "sha256:2f22afcd38064b0edc8334163d4397bfeb8ba7835599612a8820dbce32ac8aeb", size = 5141554, upload-time = "2025-11-27T19:32:19.413Z" },
-    { url = "https://files.pythonhosted.org/packages/22/5b/a3fefdaf37acd93a09fd1df6169c1969f8bef6ca03166972d810da902240/pyproject-1!0.1.2-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ed094ce1cdab1f13fafdbcd972997297c488041eb406a7ce402234c89486e135", size = 5332621, upload-time = "2025-11-27T19:32:20.784Z" },
-    { url = "https://files.pythonhosted.org/packages/33/26/f353efafe45d1f117c214b37cc16c015685d46e9c00dc998e19c5f2c4b07/pyproject-1!0.1.2-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b3cc332cfd5b9b1b86af6780148eaa17af7330fad48556445cd0c1bb07c624fb", size = 5580839, upload-time = "2025-11-27T19:32:23.11Z" },
-    { url = "https://files.pythonhosted.org/packages/a5/86/649f964f1e1457f91db481b518c168e251e388ba06421d247c78ca314999/pyproject-1!0.1.2-py3-none-win_amd64.whl", hash = "sha256:2ffb2e52acc289d51f869df8ecb873f13a4de67528dc91f57b296e37da1c093e", size = 5739122, upload-time = "2025-11-27T19:32:25.017Z" },
 ]
 
 [[package]]
