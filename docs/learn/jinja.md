@@ -1,27 +1,20 @@
 # Using Jinja with Air
 
-We love Jinja. Proven and fast, it's our go-to for when we want to manually craft templates containing programmatic
-content. To that end, we've ensured Air works great at combining Jinja and Air Tags together.
+We love Jinja. Proven and fast, it's our go-to for when we want to manually craft templates containing programmatic content. To that end, we've ensured Air works great at combining Jinja and Air Tags together.
 
-!!! note This document covers the concepts and how Jinja2 works in Air. The full reference for the tooling can be found
-at the [Templates API Reference](https://feldroy.github.io/air/api/templates/).
+!!! note
+    This document covers the concepts and how Jinja2 works in Air. The full reference for the tooling can be found at the [Templates API Reference](https://feldroy.github.io/air/api/templates/).
 
-!!! info "Jinja or Jinja2?" While the package is listed on [PyPI as Jinja2](https://pypi.org/project/jinja2/), that
-package and the [official Jinja docs](https://jinja.palletsprojects.com/) refers to Jinja as just "Jinja". Also, Jinja
-was released in 2008 and is well into the 3.x release cycle. If we want to lean into pedantry, we are arguably using
-Jinja 5 (base plus major releases cycles of 0.x, 1.x, 2.x, and 3.x).
+!!! info "Jinja or Jinja2?"
+    While the package is listed on [PyPI as Jinja2](https://pypi.org/project/jinja2/), that package and the [official Jinja docs](https://jinja.palletsprojects.com/) refers to Jinja as just "Jinja". Also, Jinja was released in 2008 and is well into the 3.x release cycle. If we want to lean into pedantry, we are arguably using Jinja 5 (base plus major releases cycles of 0.x, 1.x, 2.x, and 3.x).
 
-Most importantly, it is the intent of the maintainer of Jinja to not only document the package as 'Jinja' but to
-even provide a `jinja` namespace in addition to `jinja2`.
+    Most importantly, it is the intent of the maintainer of Jinja to not only document the package as 'Jinja' but to even provide a `jinja` namespace in addition to `jinja2`.
 
-In short, to match the Jinja documentation and the intent of the maintainer, in the Air documentation we use the
-term "Jinja".
+    In short, to match the Jinja documentation and the intent of the maintainer, in the Air documentation we use the term "Jinja".
 
 ## Using Jinja for the HTML Layout
 
-Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes it's easy to construct layouts
-using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is
-easier.
+Air Tags are powerful but for those of us with a lot of experience with HTML, sometimes it's easy to construct layouts using Jinja. As it is closer in look-and-feel to HTML for some of us that makes ensuring the end result looks good is easier.
 
 Here's a simple Jinja layout file:
 
@@ -48,8 +41,7 @@ Here's a simple Jinja layout file:
 </html>
 ```
 
-If you've used Jinja before this should look familiar. Now let's add in our Air Tags-powered content, which we'll do
-from the view.
+If you've used Jinja before this should look familiar. Now let's add in our Air Tags-powered content, which we'll do from the view.
 
 ```python title="main.py"
 import air
@@ -82,6 +74,4 @@ TODO: ADD SCREEN CAPTURE
 
 !!! info "Why don't we call the `jinja()` function `render()`?"
 
-    Because Air uses `.render()` as a method name in a lot of places, especially with Air Tags. So even though
-    `render()` instead of `jinja()` is more semantically correct, to avoid confusion and collision, we use `jinja()`
-    instead.
+    Because Air uses `.render()` as a method name in a lot of places, especially with Air Tags. So even though `render()` instead of `jinja()` is more semantically correct, to avoid confusion and collision, we use `jinja()` instead.
