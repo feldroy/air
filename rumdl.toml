@@ -24,7 +24,7 @@ enable = []
 # Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
-#    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
+    "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
 #    "MD031", # https://github.com/rvben/rumdl/blob/main/docs/md031.md
 #    "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
 #    "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
@@ -98,7 +98,8 @@ headings = true # Check headings (default: true)
 paragraphs = true # Check paragraph/regular text (default: true)
 strict = false # Disables exceptions for URLs, etc. (default: false)
 reflow = true # Enable automatic text reflow/wrapping (default: false)
-reflow-mode = "default" # Reflow mode: "default", "normalize", or "sentence-per-line" (default: "default")
+# Reflow mode: "default", "normalize", "sentence-per-line", or "semantic-line-breaks" (default: "default")
+reflow-mode = "semantic-line-breaks" # 1 sentence/line; split long ones at clauses/break-words to fit line-length.
 length-mode = "visual" # How to count line length: "visual", "chars", or "bytes" (default: "visual")
 
 [MD014] # https://github.com/rvben/rumdl/blob/main/docs/md014.md
