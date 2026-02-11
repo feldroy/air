@@ -127,7 +127,7 @@ repos:
       - id: pyroma # Rate your Python packages package friendliness.
         priority: 0
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 43.6.0
+    rev: 43.8.2
     hooks:
       - id: renovate-config-validator
         priority: 0
@@ -147,7 +147,7 @@ repos:
         args: ["--fix", "--output-format=concise"]
         types_or: [python]
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: v0.1.17
+    rev: v0.1.18
     hooks:
       - id: rumdl-fmt # A modern, high-performance Markdown linter and formatter, built for speed in Rust.
   - repo: https://github.com/pre-commit/sync-pre-commit-deps

@@ -83,7 +83,7 @@ urls.Sponsor = "https://github.com/sponsors/feldroy"
 scripts.air = "air.cli:main"
 dependencies = [
     "Jinja2>=3.1.6", # https://pypi.org/project/Jinja2
-    "fastapi>=0.128.7", # https://pypi.org/project/fastapi
+    "fastapi>=0.128.8", # https://pypi.org/project/fastapi
     "frozendict>=2.4.7", # https://pypi.org/project/frozendict
     "itsdangerous>=2.2.0", # https://pypi.org/project/itsdangerous
     "lxml>=6.0.2", # https://pypi.org/project/lxml
@@ -93,7 +93,7 @@ dependencies = [
     "python-multipart>=0.0.22", # https://pypi.org/project/python-multipart
     "rich>=14.3.2", # https://pypi.org/project/rich
     "selectolax>=0.4.6", # https://pypi.org/project/selectolax
-    "typer>=0.21.1", # https://pypi.org/project/typer
+    "typer>=0.23.0", # https://pypi.org/project/typer
     "uvicorn>=0.40.0", # https://pypi.org/project/uvicorn
 ]
 # endregion project
@@ -104,7 +104,7 @@ dependencies = [
 # Make `air[standard]` install FastAPI’s “standard” extras so users can run: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
-    "fastapi[standard]>=0.128.7",
+    "fastapi[standard]>=0.128.8",
 ]
 
 # Contributor-only groups under [dependency-groups]; install via uv sync --group NAME (not published to PyPI).
@@ -121,7 +121,7 @@ devtools = []
 docs = [
     "click==8.3.1", # https://pypi.org/project/click
     "mkdocs==1.6.1", # https://pypi.org/project/mkdocs
-    "mkdocs-autorefs==1.4.3", # https://pypi.org/project/mkdocs-autorefs
+    "mkdocs-autorefs==1.4.4", # https://pypi.org/project/mkdocs-autorefs
     "mkdocs-exclude==1.0.2", # https://pypi.org/project/mkdocs-exclude
     "mkdocs-jupyter==0.25.1", # https://pypi.org/project/mkdocs-jupyter
     "mkdocs-llmstxt==0.5.0", # https://pypi.org/project/mkdocs-llmstxt
@@ -148,12 +148,12 @@ prek-hooks = [
     "pyrefly==0.52.0", # https://pypi.org/project/pyrefly
     "pyroma==5.0.1", # https://pypi.org/project/pyroma
     "ruff==0.15.0", # https://pypi.org/project/ruff
-    "rumdl==0.1.17", # https://pypi.org/project/rumdl
+    "rumdl==0.1.18", # https://pypi.org/project/rumdl
     "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
     "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
     "sync-pre-commit-deps==0.0.3", # https://pypi.org/project/shfmt-py
     "tombi==0.7.28", # https://pypi.org/project/tombi
-    "ty==0.0.15", # https://pypi.org/project/ty
+    "ty==0.0.16", # https://pypi.org/project/ty
     "typos==1.43.4", # https://pypi.org/project/typos
     "vale==3.13.0.0", # https://pypi.org/project/vale
     "validate-pyproject-schema-store[all]==2026.1.22", # https://pypi.org/project/validate-pyproject-schema-store
@@ -169,13 +169,13 @@ test = [
     "pytest-asyncio==1.3.0", # https://pypi.org/project/pytest-asyncio
     "pytest-benchmark==5.2.3", # https://pypi.org/project/pytest-benchmark
     "pytest-cov==7.0.0", # https://pypi.org/project/pytest-cov
-    "pytest-env==1.2.0", # https://pypi.org/project/pytest-env
+    "pytest-env==1.3.0", # https://pypi.org/project/pytest-env
     "pytest-github-actions-annotate-failures==0.3.0", # https://pypi.org/project/pytest-github-actions-annotate-failures
     "pytest-pretty==1.3.0", # https://pypi.org/project/pytest-pretty
     "pytest-smoke==0.10.0", # https://pypi.org/project/pytest-smoke
 ]
 typing-stubs = [
-    "types-Markdown==3.10.0.20251106", # https://pypi.org/project/types-Markdown
+    "types-Markdown==3.10.2.20260211", # https://pypi.org/project/types-Markdown
     "types-lxml==2026.1.1", # https://pypi.org/project/types-lxml
     "types-pygments==2.19.0.20251121", # https://pypi.org/project/types-pygments
 ]
