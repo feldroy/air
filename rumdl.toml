@@ -19,8 +19,8 @@
 
 # Global settings control rumdl's overall behavior and apply to all rules and operations.
 [global]
-# Enable only specific rules. Default: [] (all rules enabled)
-enable = []
+# Explicitly enables every rule, equivalent to the default; disable still applies on top.
+enable = ["ALL"]
 # Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
