@@ -252,7 +252,7 @@ see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.
 
 Thanks to all the contributors to the Air 💨 web framework!
 
-[![](https://contrib.rocks/image?repo=feldroy/air)](https://github.com/feldroy/air/graphs/contributors)
+[![Air Contributors](https://contrib.rocks/image?repo=feldroy/air)](https://github.com/feldroy/air/graphs/contributors)
 
 ## PyPI Stats
 
