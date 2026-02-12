@@ -1,0 +1,79 @@
+name: Bug Report
+description: Let us know where the bug is so we can stamp it out!
+title: "BUG: "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: >
+        A clear description of what the bug is. Include code snippets or
+        screenshots if they help illustrate the problem.
+      placeholder: When I do X, Y happens instead of Z...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: >
+        Minimal steps to reproduce the behavior. A small, self-contained code
+        example is ideal.
+      placeholder: |
+        1. Create an Air app with...
+        2. Add a route that...
+        3. Run with `air run`
+        4. Navigate to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen instead?
+    validations:
+      required: true
+
+  - type: input
+    id: air-version
+    attributes:
+      label: Air version
+      description: >
+        Output of `uv pip show air | grep Version` or `air --version`.
+      placeholder: "0.45.0"
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      description: Output of `python --version`.
+      placeholder: "3.13.2"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: >
+        Anything else that might be relevant: error tracebacks, related issues,
+        environment details, etc.
+    validations:
+      required: false
