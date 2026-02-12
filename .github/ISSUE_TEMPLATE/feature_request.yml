@@ -1,0 +1,52 @@
+name: Feature Request
+description: Most feature requests for Air core are probably best executed as a new package.
+title: "FEAT: "
+labels: [feature]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Most feature requests for Air core are probably best executed as a new
+        package. Before filing, consider
+        [asking in Discussions](https://github.com/feldroy/air/discussions/categories/questions)
+        to see if there's already a way to do what you need.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the feature
+      description: >
+        Tell us what you think Air needs. If possible, add code and screenshots
+        demonstrating how you think it should work.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: >
+        What problem does this solve? What are you trying to accomplish that is
+        difficult or impossible today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: >
+        Have you considered other approaches? Are there workarounds you're
+        currently using?
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: >
+        Anything else that helps explain the request: links to related projects,
+        screenshots, prior art, etc.
+    validations:
+      required: false
