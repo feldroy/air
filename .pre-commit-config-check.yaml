@@ -129,7 +129,7 @@ repos:
       - id: pyroma # Rate your Python packages package friendliness.
         priority: 0
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 43.8.2
+    rev: 43.8.5
     hooks:
       - id: renovate-config-validator
         language: bun
