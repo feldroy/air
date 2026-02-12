@@ -8,7 +8,7 @@ assignees: ''
 
 We believe that concise carefully curated documentation is a very important component of modern projects.
 
-**Describe the Documentation**
+## Describe the Documentation
 
 Tell us what you think Air needs in terms of doc improvements.
 
