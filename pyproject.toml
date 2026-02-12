@@ -141,7 +141,7 @@ prek-hooks = [
     "flake8==7.3.0", # https://pypi.org/project/flake8
     "flake8-class-attributes-order==0.3.0", # https://pypi.org/project/flake8-class-attributes-order
     "flake8-pydantic==0.4.0", # https://pypi.org/project/flake8-pydantic
-    "flake8-pyproject==1.2.4", # https://pypi.org/project/flake8-pyproject=
+    "flake8-pyproject==1.2.4", # https://pypi.org/project/flake8-pyproject
     "google-yamlfmt==0.21.0", # https://pypi.org/project/google-yamlfmt
     "pre-commit-hooks==6.0.0", # https://pypi.org/project/pre-commit-hooks
     "prek==0.3.2", # https://pypi.org/project/prek
@@ -151,7 +151,7 @@ prek-hooks = [
     "rumdl==0.1.18", # https://pypi.org/project/rumdl
     "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
     "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
-    "sync-pre-commit-deps==0.0.3", # https://pypi.org/project/shfmt-py
+    "sync-pre-commit-deps==0.0.3", # https://pypi.org/project/sync-pre-commit-deps
     "tombi==0.7.28", # https://pypi.org/project/tombi
     "ty==0.0.14", # https://pypi.org/project/ty
     "typos==1.43.4", # https://pypi.org/project/typos
