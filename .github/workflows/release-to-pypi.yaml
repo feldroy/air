@@ -40,7 +40,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Set up uv
-        uses: astral-sh/setup-uv@61cb8a9741eeb8a550a1b8544337180c0fc8476b # v7.2.0
+        uses: astral-sh/setup-uv@803947b9bd8e9f986429fa0c5a41c367cd732b41 # v7.2.1
         with:
           enable-cache: true
           cache-python: true
@@ -50,7 +50,7 @@ jobs:
             pyproject.toml
             .python-version
       - name: Install just
-        uses: taiki-e/install-action@710817a1645ef40daad5bcde7431ceccf6cc3528 # 2.67.13
+        uses: taiki-e/install-action@650c5ca14212efbbf3e580844b04bdccf68dac31 # 2.67.18
         with:
           tool: just
       - name: Build with uv
