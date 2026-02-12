@@ -19,14 +19,13 @@
 
 # Global settings control rumdl's overall behavior and apply to all rules and operations.
 [global]
-# Enable only specific rules. Default: [] (all rules enabled)
-enable = []
+# Explicitly enables every rule, equivalent to the default; disable still applies on top.
+enable = ["ALL"]
 # Disable specific rules. Default: [] (no rules disabled)
 disable = [
     # TODO -> Enable once all lint violations are fixed:
     "MD013", # https://github.com/rvben/rumdl/blob/main/docs/md013.md
     "MD033", # https://github.com/rvben/rumdl/blob/main/docs/md033.md
-    "MD036", # https://github.com/rvben/rumdl/blob/main/docs/md036.md
     "MD041", # https://github.com/rvben/rumdl/blob/main/docs/md041.md
 ]
 # Specifies files and directories to exclude from linting. Supports glob patterns.
@@ -64,7 +63,8 @@ output-format = "grouped"
     "MD024", # https://github.com/rvben/rumdl/blob/main/docs/md024.md
 ]
 
-# ---------------------------------------------------> rumdl Rules <---------------------------------------------------
+# region ----------------------------------------------> rumdl Rules <--------------------------------------------------
+
 # https://github.com/rvben/rumdl/blob/main/docs/RULES.md
 
 [MD003] # https://github.com/rvben/rumdl/blob/main/docs/md003.md
@@ -97,7 +97,8 @@ headings = true # Check headings (default: true)
 paragraphs = true # Check paragraph/regular text (default: true)
 strict = false # Disables exceptions for URLs, etc. (default: false)
 reflow = true # Enable automatic text reflow/wrapping (default: false)
-reflow-mode = "default" # Reflow mode: "default", "normalize", or "sentence-per-line" (default: "default")
+# Reflow mode: "default", "normalize", "sentence-per-line", or "semantic-line-breaks" (default: "default")
+reflow-mode = "semantic-line-breaks" # 1 sentence/line; split long ones at clauses/break-words to fit line-length.
 length-mode = "visual" # How to count line length: "visual", "chars", or "bytes" (default: "visual")
 
 [MD014] # https://github.com/rvben/rumdl/blob/main/docs/md014.md
@@ -127,6 +128,11 @@ fix = true # Enable auto-fix to convert simple HTML to Markdown (default: false)
 [MD036] # https://github.com/rvben/rumdl/blob/main/docs/md036.md
 # MD036 - Use real headings, not just bold text
 # Detects when bold or italic text is used as a standalone heading.
+fix = true # Enable auto-fix (opt-in, default: false)
+
+[MD041] # https://github.com/rvben/rumdl/blob/main/docs/md041.md
+# MD041 - Start Your Document with a Clear Title
+# Ensures each document starts with a top-level heading (# Title), clearly defining its title and purpose.
 fix = true # Enable auto-fix (opt-in, default: false)
 
 [MD044] # https://github.com/rvben/rumdl/blob/main/docs/md044.md
@@ -177,3 +183,5 @@ enabled = true # Enable the rule (opt-in, disabled by default)
 min-level = 2 # Minimum heading level to include (default: 2)
 max-level = 4 # Maximum heading level to include (default: 4)
 enforce-order = true # Whether TOC order must match document order (default: true)
+
+# endregion --------------------------------------------> rumdl Rules <-------------------------------------------------

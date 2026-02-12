@@ -54,3 +54,9 @@ check-filename = true
 check-file = true
 unicode = true
 locale = "en-us"
+
+[type.justfile]
+extend-glob = ["justfile"]
+
+[type.justfile.extend-words]
+CPY = "CPY"
