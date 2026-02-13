@@ -10,7 +10,10 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
-maintainers = [{ name = "pygarap", email = "pygarap@gmail.com" }]
+maintainers = [
+    { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
+    { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" },
+]
 keywords = [
     "air",
     "air-tags",
