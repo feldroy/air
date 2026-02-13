@@ -1,14 +1,19 @@
 <p align="center">
+  <br>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="img/air-dark.svg" />
     <source media="(prefers-color-scheme: light)" srcset="img/air.svg" />
-    <img alt="Air" src="img/air.svg" width="280" />
+    <img alt="Air" src="img/air.svg" width="180" />
   </picture>
+  <br>
+  <br>
 </p>
 
 <p align="center">
   The web framework that breathes fresh air into Python web development.<br>
   Built with FastAPI, Starlette, and Pydantic.
+  <br>
+  <br>
 </p>
 
 <p align="center">
