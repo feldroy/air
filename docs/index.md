@@ -1,7 +1,13 @@
 
 <p align="center">
   <br>
-  <a href="https://airwebframework.org"><img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" width="180" alt="Air"></a>
+  <a href="https://airwebframework.org">
+    <picture>
+      <source srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg" media="(prefers-color-scheme: dark)">
+      <source srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" media="(prefers-color-scheme: light)">
+      <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" width="180" alt="Air">
+    </picture>
+  </a>
   <br>
   <br>
 </p>
