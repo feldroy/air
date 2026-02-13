@@ -3,8 +3,8 @@
   <br>
   <a href="https://airwebframework.org">
     <picture>
-      <source srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg" media="(prefers-color-scheme: dark)">
-      <source srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" media="(prefers-color-scheme: light)">
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg">
       <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" width="180" alt="Air">
     </picture>
   </a>
