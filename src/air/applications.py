@@ -35,11 +35,8 @@ class Air(RouterMixin):
         dependencies: A list of global dependencies, they will be applied to each *path operation*,
                 including in sub-routers.
         middleware: List of middleware to be added when creating the application.
-        default_response_class: The default response class to be used.
         redirect_slashes: Whether to detect and redirect slashes in URLs when the client doesn't
                 use the same format.
-        on_startup: A list of startup event handler functions.
-        on_shutdown: A list of shutdown event handler functions.
         lifespan: A `Lifespan` context manager handler. This replaces `startup` and
                 `shutdown` functions with a single context manager.
         path_separator: An optional path separator, default to "-". valid option available ["/", "-"]
