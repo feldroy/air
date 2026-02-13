@@ -1,41 +1,58 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="img/air-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="img/air.svg" />
+    <img alt="Air" src="img/air.svg" width="280" />
+  </picture>
 </p>
 
-## Air 💨: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic
+<p align="center">
+  The web framework that breathes fresh air into Python web development.<br>
+  Built with FastAPI, Starlette, and Pydantic.
+</p>
 
-[![CI - main](https://img.shields.io/github/actions/workflow/status/feldroy/air/CI.yaml?branch=main&logo=githubactions&label=CI)](https://github.com/feldroy/air/actions/workflows/CI.yaml?query=branch%3Amain+event%3Apush)
-[![CI - Latest Tag](https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions&label=CI%20Tag)](https://github.com/feldroy/air/actions/workflows/python-package.yml?query=tag%3Alatest+event%3Apush)
-[![codecov](https://codecov.io/gh/feldroy/air/graph/badge.svg?token=928SXPA1SU)](https://codecov.io/gh/feldroy/air)
-[![GitHub License](https://img.shields.io/github/license/feldroy/air?logo=github&label=License)](https://github.com/feldroy/air/blob/main/LICENSE)
+<p align="center">
+  <a href="https://github.com/feldroy/air/actions/workflows/CI.yaml?query=branch%3Amain+event%3Apush"><img src="https://img.shields.io/github/actions/workflow/status/feldroy/air/CI.yaml?branch=main&logo=githubactions&label=CI" alt="CI - main" /></a>
+  <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=tag%3Alatest+event%3Apush"><img src="https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions&label=CI%20Tag" alt="CI - Latest Tag" /></a>
+  <a href="https://codecov.io/gh/feldroy/air"><img src="https://codecov.io/gh/feldroy/air/graph/badge.svg?token=928SXPA1SU" alt="codecov" /></a>
+  <a href="https://github.com/feldroy/air/blob/main/LICENSE"><img src="https://img.shields.io/github/license/feldroy/air?logo=github&label=License" alt="GitHub License" /></a>
+</p>
 
-[![PyPI - Version](https://img.shields.io/pypi/v/air?logo=pypi&label=Pypi&logoColor=fff)](https://pypi.org/project/air)
-[![PyPI Total Downloads](https://static.pepy.tech/badge/air)](https://pepy.tech/projects/air)
-[![PyPI Monthly Downloads](https://static.pepy.tech/badge/air/month)](https://pepy.tech/projects/air)
-[![PyPI Weekly Downloads](https://static.pepy.tech/badge/air/week)](https://pepy.tech/projects/air)
+<p align="center">
+  <a href="https://pypi.org/project/air"><img src="https://img.shields.io/pypi/v/air?logo=pypi&label=Pypi&logoColor=fff" alt="PyPI - Version" /></a>
+  <a href="https://pypi.org/project/air"><img src="https://img.shields.io/pypi/pyversions/air?logo=python&logoColor=fff&label=Python" alt="Python Versions" /></a>
+  <a href="https://pepy.tech/projects/air"><img src="https://static.pepy.tech/badge/air" alt="PyPI Total Downloads" /></a>
+  <a href="https://pepy.tech/projects/air"><img src="https://static.pepy.tech/badge/air/month" alt="PyPI Monthly Downloads" /></a>
+  <a href="https://pepy.tech/projects/air"><img src="https://static.pepy.tech/badge/air/week" alt="PyPI Weekly Downloads" /></a>
+</p>
 
-![Running on](https://img.shields.io/badge/Running%20on:-magenta?labelColor=black&logo=hotwire&logoColor=yellow)
-![Windows](https://custom-icon-badges.demolab.com/badge/Windows%2011-%230079d5?logo=windows11&logoColor=white)
-![macOS](https://img.shields.io/badge/MacOS-000000?logo=apple&logoColor=white&color=2e2e2e)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&color=orange)
-[![Python Versions](https://img.shields.io/pypi/pyversions/air?logo=python&logoColor=fff&label=Python)](https://pypi.org/project/air)
+<p align="center">
+  <img src="https://custom-icon-badges.demolab.com/badge/Windows%2011-%230079d5?logo=windows11&logoColor=white" alt="Windows" />
+  <img src="https://img.shields.io/badge/MacOS-000000?logo=apple&logoColor=white&color=2e2e2e" alt="macOS" />
+  <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&color=orange" alt="Ubuntu" />
+</p>
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github&label=Commits)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github)
-[![GitHub last commit](https://img.shields.io/github/last-commit/feldroy/air?logo=github&label=Last%20Commit)](https://github.com/feldroy/air/commit/main)
-[![GitHub Release Date](https://img.shields.io/github/release-date/feldroy/air?logo=github&label=Release%20Date)](https://github.com/feldroy/air/releases/latest)
+<p align="center">
+  <img src="https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github&label=Commits" alt="GitHub commit activity" />
+  <img src="https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github" alt="GitHub commits since latest release" />
+  <a href="https://github.com/feldroy/air/commit/main"><img src="https://img.shields.io/github/last-commit/feldroy/air?logo=github&label=Last%20Commit" alt="GitHub last commit" /></a>
+  <a href="https://github.com/feldroy/air/releases/latest"><img src="https://img.shields.io/github/release-date/feldroy/air?logo=github&label=Release%20Date" alt="GitHub Release Date" /></a>
+</p>
 
-[![GitHub contributors](https://img.shields.io/github/contributors/feldroy/air?logo=github&label=Contributors)](https://github.com/feldroy/air/graphs/contributors)
-[![Discord](https://img.shields.io/discord/1388403469505007696?logo=discord&label=Discord)](https://discord.gg/znf8vPsz47)
-[![X](https://img.shields.io/badge/Air%20💨-%23000000.svg?logo=X&logoColor=white)](https://x.com/AirWebFramework)
-[![Bluesky](https://img.shields.io/badge/Air%20💨-0285FF?logo=bluesky&logoColor=fff)](https://bsky.app/profile/airwebframework.bsky.social)
-[![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff)](https://feldroy.github.io/air)
+<p align="center">
+  <a href="https://github.com/feldroy/air/graphs/contributors"><img src="https://img.shields.io/github/contributors/feldroy/air?logo=github&label=Contributors" alt="GitHub contributors" /></a>
+  <a href="https://discord.gg/znf8vPsz47"><img src="https://img.shields.io/discord/1388403469505007696?logo=discord&label=Discord" alt="Discord" /></a>
+  <a href="https://x.com/AirWebFramework"><img src="https://img.shields.io/badge/Air%20💨-%23000000.svg?logo=X&logoColor=white" alt="X" /></a>
+  <a href="https://bsky.app/profile/airwebframework.bsky.social"><img src="https://img.shields.io/badge/Air%20💨-0285FF?logo=bluesky&logoColor=fff" alt="Bluesky" /></a>
+  <a href="https://feldroy.github.io/air"><img src="https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff" alt="MkDocs" /></a>
+</p>
 
-![Frameworks](https://img.shields.io/badge/Frameworks:-magenta?labelColor=black&logo=framework&logoColor=yellow)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Pydantic](https://img.shields.io/badge/Pydantic-1B0613.svg?logo=pydantic&logoColor=E35AF3)](https://docs.pydantic.dev/latest)
-[![Jinja](https://img.shields.io/badge/jinja-white.svg?&logo=Jinja&logoColor=black)](https://jinja.palletsprojects.com/en/latest)
-[![Astral](https://img.shields.io/badge/uv|ruff|ty-black.svg?logo=astral&logoColor=D1FF4F)](https://docs.astral.sh)
+<p align="center">
+  <a href="https://fastapi.tiangolo.com"><img src="https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white" alt="FastAPI" /></a>
+  <a href="https://docs.pydantic.dev/latest"><img src="https://img.shields.io/badge/Pydantic-1B0613.svg?logo=pydantic&logoColor=E35AF3" alt="Pydantic" /></a>
+  <a href="https://jinja.palletsprojects.com/en/latest"><img src="https://img.shields.io/badge/jinja-white.svg?&logo=Jinja&logoColor=black" alt="Jinja" /></a>
+  <a href="https://docs.astral.sh"><img src="https://img.shields.io/badge/uv|ruff|ty-black.svg?logo=astral&logoColor=D1FF4F" alt="Astral" /></a>
+</p>
 
 ---
 
