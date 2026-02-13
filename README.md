@@ -1,9 +1,9 @@
 <p align="center">
   <br>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="img/air-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="img/air.svg" />
-    <img alt="Air" src="img/air.svg" width="180" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" />
+    <img alt="Air" src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" width="180" />
   </picture>
   <br>
   <br>
