@@ -1662,7 +1662,6 @@ class Meta(SelfClosingTag):
         name: Specifies a name for the metadata.
         class_: Substituted as the DOM `class` attribute.
         id_: DOM ID attribute.
-        style: Inline style attribute.
         custom_attributes: Keyword arguments transformed into tag attributes.
     """
 
@@ -1764,7 +1763,8 @@ class Object(BaseTag):
         children: Tags, strings, or other rendered content.
         archive: A space-separated list of URIs for archives of resources for the object.
         border: The width of a border around the object.
-        classidcodebase: The codebase URL for the object.
+        classid_: The class identifier for the object.
+        codebase: The base URL for the object.
         codetype: The content type of the code.
         data: The address of the object's data.
         declare: Declares the object without instantiating it.
