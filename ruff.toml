@@ -36,7 +36,7 @@ exclude = [
 [format]
 indent-style = "space" # match EditorConfig
 line-ending = "lf" # enforce LF newlines
-quote-style = "double" # keep quotes in sync with flake8-quotes
+quote-style = "double"
 # Docstring code formatting
 docstring-code-format = true # format Python code blocks in docstrings
 # tombi: lint.rules.type-mismatch.disabled = true
