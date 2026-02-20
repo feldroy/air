@@ -84,9 +84,7 @@
 
 ## Installation
 
-Install using `pip install -U air` or `conda install air -c conda-forge`.
-
-For `uv` users, just create a virtualenv and install the air package, like:
+Install Air with `uv`:
 
 ```sh
 uv venv
@@ -130,7 +128,7 @@ app = air.Air()
 
 
 @app.get("/")
-async def index():
+def index():
     return air.Html(air.H1("Hello, world!", style="color: blue;"))
 ```
 
@@ -220,7 +218,7 @@ def api_root():
     return {"message": "Awesome SaaS is powered by FastAPI"}
 
 
-# Combining the Air and and FastAPI apps into one
+# Combining the Air and FastAPI apps into one
 app.mount("/api", api)
 ```
 
