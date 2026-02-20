@@ -17,8 +17,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/feldroy/air/actions/workflows/CI.yaml?query=branch%3Amain+event%3Apush"><img src="https://img.shields.io/github/actions/workflow/status/feldroy/air/CI.yaml?branch=main&logo=githubactions&label=CI" alt="CI - main" /></a>
-  <a href="https://codecov.io/gh/feldroy/air"><img src="https://codecov.io/gh/feldroy/air/graph/badge.svg?token=928SXPA1SU" alt="codecov" /></a>
+  <a href="https://github.com/feldroy/air/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush"><img src="https://img.shields.io/github/actions/workflow/status/feldroy/air/ci.yml?branch=main&logo=githubactions&label=CI" alt="CI - main" /></a>
   <a href="https://github.com/feldroy/air/blob/main/LICENSE"><img src="https://img.shields.io/github/license/feldroy/air?logo=github&label=License" alt="GitHub License" /></a>
 </p>
 
