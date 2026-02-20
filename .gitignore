@@ -83,7 +83,6 @@ nbs
 .venv
 .playground
 .benchmarks
-.complexipy_cache
 
 # User config and extension
 .specstory
