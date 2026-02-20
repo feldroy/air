@@ -116,8 +116,12 @@ standard = [
 dev = [
     { include-group = "devtools" },
     { include-group = "docs" },
+    { include-group = "examples" },
     { include-group = "test" },
     { include-group = "typing-stubs" },
+]
+examples = [
+    "pyinstrument>=5.1.2", # https://pypi.org/project/pyinstrument
 ]
 devtools = [
     "pyrefly>=0.52.0", # https://pypi.org/project/pyrefly
