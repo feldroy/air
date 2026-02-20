@@ -132,7 +132,7 @@ docs = [
     "mkdocs-exclude==1.0.2", # https://pypi.org/project/mkdocs-exclude
     "mkdocs-jupyter==0.25.1", # https://pypi.org/project/mkdocs-jupyter
     "mkdocs-llmstxt==0.5.0", # https://pypi.org/project/mkdocs-llmstxt
-    "mkdocs-material[imaging]==9.7.1", # https://pypi.org/project/mkdocs-material
+    "mkdocs-material[imaging]==9.7.2", # https://pypi.org/project/mkdocs-material
     "mkdocs-redirects==1.2.2", # https://pypi.org/project/mkdocs-redirects
     "mkdocstrings-python==2.0.2", # https://pypi.org/project/mkdocstrings-python
     "mkdocstrings[python]==1.0.3", # https://pypi.org/project/mkdocstrings
