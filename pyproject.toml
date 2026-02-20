@@ -64,10 +64,6 @@ classifiers = [
     "Topic :: Internet",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
-    "Topic :: Internet :: WWW/HTTP :: WSGI",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -124,10 +120,8 @@ examples = [
     "pyinstrument>=5.1.2", # https://pypi.org/project/pyinstrument
 ]
 devtools = [
-    "pyrefly>=0.52.0", # https://pypi.org/project/pyrefly
     "ruff>=0.15.0", # https://pypi.org/project/ruff
     "ty>=0.0.14", # https://pypi.org/project/ty
-    "vale>=3.13.0.0", # https://pypi.org/project/vale
 ]
 docs = [
     "click>=8.3.1", # https://pypi.org/project/click

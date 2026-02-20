@@ -195,7 +195,7 @@ def update_example_section(
     new_docstring_content = "\n".join(indented_docstring_lines) + "\n\n" + docstring_indent + "Example:" + new_example
 
     # Reconstruct the file
-    docstring_end_line = docstring_node.end_lineno - 1  # pyrefly: ignore
+    docstring_end_line = docstring_node.end_lineno - 1
     before_docstring = "\n".join(lines[:docstring_start_line])
     after_docstring = "\n".join(lines[docstring_end_line + 1 :])
 
