@@ -72,6 +72,23 @@ jobs:
           path: .coverage.*
           include-hidden-files: true
 
+  test-windows:
+    name: Test Windows (Python ${{ matrix.python-version }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@eac588ad8def6316056a12d4907a9d4d84ff7a3b # v7.3.0
+
+      - name: Run tests
+        run: uv run --python=${{ matrix.python-version }} pytest
+
   coverage:
     name: Coverage
     needs: test
@@ -102,7 +119,7 @@ jobs:
   all-checks-pass:
     name: All checks pass
     if: always()
-    needs: [lint, type-check, test, coverage]
+    needs: [lint, type-check, test, coverage, test-windows]
     runs-on: ubuntu-latest
     steps:
       - name: Check job results
