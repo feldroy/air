@@ -165,7 +165,7 @@ build-backend = "uv_build"
 # region ----> Coverage.py <----
 # https://coverage.readthedocs.io/en/latest/config.html
 [tool.coverage.run]
-source = ["src", "scripts"]
+source = ["src"]
 branch = true
 parallel = true
 sigterm = true
