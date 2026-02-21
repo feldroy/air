@@ -142,7 +142,7 @@ app = air.Air()
 jinja = air.JinjaRenderer(directory="templates")
 
 
-@app.get("/")
+@app.page
 def index(request: air.Request):
     return jinja(request, name="index.html")
 ```
@@ -159,7 +159,7 @@ import air
 app = air.Air()
 
 
-@app.get("/")
+@app.page
 def index():
     return air.Html(air.H1("Hello, world!"))
 ```
