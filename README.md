@@ -114,9 +114,47 @@ For AI context, use [llms-full.txt](https://docs.airwebframework.org/llms-full.t
 
 Third-party context providers: [Code Wiki by Google](https://codewiki.google/github.com/feldroy/air), [DeepWiki by Devin](https://deepwiki.com/feldroy/air).
 
-## A Simple Example
+## Two Ways to Build
 
-Create a `main.py` with:
+Air gives you two paths to HTML. Start with whichever fits your workflow.
+
+### Start with HTML
+
+Have your AI generate an HTML mockup, or write one yourself. Drop it in a template, wire it up with minimal Python:
+
+`templates/index.html`:
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <title>My App</title>
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+  </body>
+</html>
+```
+
+`main.py`:
+
+```python
+import air
+
+app = air.Air()
+jinja = air.JinjaRenderer(directory="templates")
+
+
+@app.get("/")
+def index(request: air.Request):
+    return jinja(request, name="index.html")
+```
+
+### Start with Python
+
+Write HTML as typed Python classes. Your editor autocompletes attributes, your type checker validates nesting:
+
+`main.py`:
 
 ```python
 import air
@@ -126,34 +164,16 @@ app = air.Air()
 
 @app.get("/")
 def index():
-    return air.Html(air.H1("Hello, world!", style="color: blue;"))
+    return air.Html(air.H1("Hello, world!"))
 ```
 
-Run the app with:
+### Run either one
 
 ```sh
 air run
 ```
 
-If you have fastapi installed globally, you may see an error:
-
-```sh
-To use the fastapi command, please install "fastapi[standard]":
-
-pip install "fastapi[standard]"
-```
-
-In that case, run the app with:
-
-```sh
-uv run air run
-```
-
-> [!NOTE]
-> This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
-> You can also run this with `uv run uvicorn main:app --reload` if you prefer using Uvicorn directly.
-
-Then open your browser to <http://127.0.0.1:8000> to see the result.
+Open <http://127.0.0.1:8000> to see the result. Both paths produce the same thing: a working web page.
 
 ## Combining FastAPI and Air
 
