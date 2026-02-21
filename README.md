@@ -10,8 +10,8 @@
 </p>
 
 <p align="center">
-  The web framework that breathes fresh air into Python web development.<br>
-  Built with FastAPI, Starlette, and Pydantic.
+  The first web framework designed for AI to write.<br>
+  Built on FastAPI, Pydantic, and HTMX.
   <br>
   <br>
 </p>
@@ -67,6 +67,7 @@
 
 ## Why use Air?
 
+- **Designed for AI to write** - No magic, no implicit behavior. Comprehensive types and docstrings mean AI agents and editors understand the API without external docs
 - **Powered by FastAPI** - Designed to work with FastAPI so you can serve your API and web pages from one app
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
 - **Air Tags** - Easy to write and performant HTML content generation using Python classes to render HTML
@@ -77,6 +78,8 @@
 - **Easy to learn yet well documented** - Hopefully Air is so intuitive and well-typed you'll barely need to use the documentation. In case you do need to look something up we're taking our experience writing technical books and using it to make documentation worth boasting about
 
 ---
+
+**Website**: <a href="https://airwebframework.org" target="_blank"><https://airwebframework.org></a>
 
 **Documentation**: <a href="https://docs.airwebframework.org" target="_blank"><https://docs.airwebframework.org></a>
 
@@ -103,19 +106,13 @@ You can install each optional feature (extras) like this:
    uv add "air[standard]"
    ```
 
-## Agentic Coding
+## Built for AI-Assisted Development
 
-The library and its dependencies are available through [Context7](https://context7.com/feldroy/air).
-For effective AI assistance, register the Context7 MCP server in your coding environment and configure your agent to use
-it.
+Air's API is fully typed and comprehensively documented in-source. AI coding assistants can understand the framework by reading the installed package, without fetching external documentation.
 
-You can also use:
+For AI context, use [llms-full.txt](https://docs.airwebframework.org/llms-full.txt) (complete docs) or [llms.txt](https://docs.airwebframework.org/llms.txt) (index with links to individual sections).
 
-- [Code Wiki by Google](https://codewiki.google/github.com/feldroy/air)
-- [DeepWiki powered by Devin](https://deepwiki.com/feldroy/air)
-
-For the canonical long-form context, please use: [llms-full.txt](https://feldroy.github.io/air/llms-full.txt), it
-follows the [llmstxt](https://llmstxt.org/#format) format.
+Third-party context providers: [Code Wiki by Google](https://codewiki.google/github.com/feldroy/air), [DeepWiki by Devin](https://deepwiki.com/feldroy/air).
 
 ## A Simple Example
 
