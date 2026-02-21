@@ -59,12 +59,6 @@
 
 ---
 
-> [!CAUTION]
-> Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
-
-> [!IMPORTANT]
-> If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
-
 ## Why use Air?
 
 - **Designed for AI to write** - No magic, no implicit behavior. Comprehensive types and docstrings mean AI agents and editors understand the API without external docs
@@ -84,6 +78,9 @@
 **Documentation**: <a href="https://docs.airwebframework.org" target="_blank"><https://docs.airwebframework.org></a>
 
 **Source Code**: <a href="https://github.com/feldroy/air" target="_blank"><https://github.com/feldroy/air></a>
+
+> [!CAUTION]
+> Air is in alpha. APIs may change between releases.
 
 ## Installation
 
@@ -275,6 +272,9 @@ Consider this low-barrier form of contribution yourself.
 Your [support](https://github.com/sponsors/feldroy) is much appreciated.
 
 ## Contributing
+
+> [!IMPORTANT]
+> Have a feature idea? Open an issue first. Air's core is intentionally minimal: new features are built as separate packages in the Air ecosystem, not added to this base package.
 
 For guidance on setting up a development environment and how to make a contribution to Air,
 see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).
