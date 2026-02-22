@@ -144,7 +144,7 @@ class RouterMixin:
         self,
         func: Callable[..., Any],
         response_class: type[Response],
-        status_code: int = 200,
+        status_code: int | None = None,
     ) -> Callable[..., Any]:
         """Wrap func to convert non-Response returns using response_class.
 
@@ -155,6 +155,12 @@ class RouterMixin:
         Returns:
             A wrapped endpoint function with the same sync/async signature.
         """
+        # Only override the response_class default (200) when the caller
+        # explicitly set a status code.
+        response_kwargs: dict[str, Any] = {}
+        if status_code is not None:
+            response_kwargs["status_code"] = status_code
+
         if inspect.iscoroutinefunction(func):
 
             @wraps(func)
@@ -162,7 +168,7 @@ class RouterMixin:
                 result = await func(*args, **kw)
                 if isinstance(result, Response):
                     return result
-                return response_class(result, status_code=status_code)
+                return response_class(result, **response_kwargs)
 
         else:
 
@@ -171,7 +177,7 @@ class RouterMixin:
                 result = func(*args, **kw)
                 if isinstance(result, Response):
                     return result
-                return response_class(result, status_code=status_code)
+                return response_class(result, **response_kwargs)
 
         return endpoint
 
@@ -291,7 +297,7 @@ class RouterMixin:
         """
         name = kwargs.get("name")
         response_class = kwargs.pop("response_class", AirResponse)
-        status_code = kwargs.pop("status_code", 200)
+        status_code = kwargs.pop("status_code", None)
 
         def decorator(func: Callable[..., Any]) -> RouteCallable:
             endpoint = self._wrap_endpoint(func, response_class, status_code)
