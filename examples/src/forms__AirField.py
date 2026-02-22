@@ -32,7 +32,7 @@ def index(request: air.Request) -> air.Html | air.Children:
             form.render(),
             air.Button("Submit", type_="submit"),
             method="post",
-            action=submit.url(),  # ty: ignore[unresolved-attribute]
+            action=submit.url(),
         ),
     )
 
@@ -68,7 +68,7 @@ async def submit(request: air.Request) -> air.Html:
                 form.render(),
                 air.Button("Submit", type_="submit"),
                 method="post",
-                action=submit.url(),  # ty: ignore[unresolved-attribute]
+                action=submit.url(),
             ),
         )
     )
