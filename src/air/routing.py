@@ -22,7 +22,6 @@ import fastapi.encoders
 from fastapi import params
 from fastapi.params import Depends
 from fastapi.routing import APIRoute, APIRouter
-from fastapi.utils import generate_unique_id
 from starlette.responses import Response
 from starlette.routing import (
     BaseRoute,
@@ -158,6 +157,9 @@ class RouterMixin:
         Preserves the original sync/async nature so FastAPI dispatches
         sync handlers to a threadpool instead of blocking the event
         loop (#1067).
+
+        Returns:
+            A wrapped endpoint function with the same sync/async signature.
         """
         if inspect.iscoroutinefunction(func):
 
@@ -184,27 +186,115 @@ class RouterMixin:
     # =========================================================================
 
     def get(self, path: str, **kwargs: Unpack[RouteKwargs]) -> Callable[[Callable[..., Any]], RouteCallable]:
-        """HTTP GET route decorator. Accepts all FastAPI path operation kwargs."""
+        """Register a GET route. The decorated function can return Air tags
+        (``air.H1("Hello")``), strings, or Response objects. Tags and strings
+        are automatically rendered as HTML responses. Sync handlers run in a
+        threadpool; async handlers run on the event loop.
+
+        The decorated function gains a ``.url()`` method for reverse URL
+        generation: ``my_handler.url(user_id=42)`` returns ``"/users/42"``.
+
+        Accepts all FastAPI path operation kwargs (``status_code``, ``tags``,
+        ``dependencies``, etc.) via ``**kwargs``.
+
+        Example::
+
+            @app.get("/users/{user_id}")
+            def user_profile(user_id: int) -> air.Div:
+                return air.Div(air.H1(f"User {user_id}"))
+
+
+            user_profile.url(user_id=42)  # "/users/42"
+        """
         return self._route("get", path, **kwargs)
 
     def post(self, path: str, **kwargs: Unpack[RouteKwargs]) -> Callable[[Callable[..., Any]], RouteCallable]:
-        """HTTP POST route decorator. Accepts all FastAPI path operation kwargs."""
+        """Register a POST route. The decorated function can return Air tags,
+        strings, or Response objects. Tags and strings are automatically
+        rendered as HTML responses. Sync handlers run in a threadpool; async
+        handlers run on the event loop.
+
+        For form handling, use ``await request.form()`` or Air's
+        ``AirForm.from_request(request)`` to access submitted data. Return a
+        ``RedirectResponse`` after successful processing to follow the
+        Post/Redirect/Get pattern.
+
+        The decorated function gains a ``.url()`` method for reverse URL
+        generation, useful as a form ``action``::
+
+            @app.post("/submit")
+            async def submit(request: air.Request) -> air.Div:
+                form_data = await request.form()
+                return air.Div(air.P("Received!"))
+
+
+            air.Form(..., method="post", action=submit.url())
+        """
         return self._route("post", path, **kwargs)
 
     def put(self, path: str, **kwargs: Unpack[RouteKwargs]) -> Callable[[Callable[..., Any]], RouteCallable]:
-        """HTTP PUT route decorator. Accepts all FastAPI path operation kwargs."""
+        """Register a PUT route. The decorated function can return Air tags,
+        strings, or Response objects. Tags and strings are automatically
+        rendered as HTML responses. Sync handlers run in a threadpool; async
+        handlers run on the event loop.
+
+        The decorated function gains a ``.url()`` method for reverse URL
+        generation: ``update_user.url(user_id=42)`` returns ``"/users/42"``.
+
+        Accepts all FastAPI path operation kwargs (``status_code``, ``tags``,
+        ``dependencies``, etc.) via ``**kwargs``.
+
+        Example::
+
+            @app.put("/users/{user_id}")
+            def update_user(user_id: int, user: UserUpdate) -> air.Div:
+                return air.Div(air.P(f"Updated user {user_id}"))
+        """
         return self._route("put", path, **kwargs)
 
     def patch(self, path: str, **kwargs: Unpack[RouteKwargs]) -> Callable[[Callable[..., Any]], RouteCallable]:
-        """HTTP PATCH route decorator. Accepts all FastAPI path operation kwargs."""
+        """Register a PATCH route. The decorated function can return Air tags,
+        strings, or Response objects. Tags and strings are automatically
+        rendered as HTML responses. Sync handlers run in a threadpool; async
+        handlers run on the event loop.
+
+        Commonly used with HTMX for partial page updates, where the handler
+        returns an HTML fragment rather than a full page.
+
+        The decorated function gains a ``.url()`` method for reverse URL
+        generation. Accepts all FastAPI path operation kwargs via ``**kwargs``.
+
+        Example::
+
+            @app.patch("/users/{user_id}")
+            def patch_user(user_id: int) -> air.Span:
+                return air.Span(f"Updated field for user {user_id}")
+        """
         return self._route("patch", path, **kwargs)
 
     def delete(self, path: str, **kwargs: Unpack[RouteKwargs]) -> Callable[[Callable[..., Any]], RouteCallable]:
-        """HTTP DELETE route decorator. Accepts all FastAPI path operation kwargs."""
+        """Register a DELETE route. The decorated function can return Air tags,
+        strings, or Response objects. Tags and strings are automatically
+        rendered as HTML responses. Sync handlers run in a threadpool; async
+        handlers run on the event loop.
+
+        The decorated function gains a ``.url()`` method for reverse URL
+        generation. Accepts all FastAPI path operation kwargs via ``**kwargs``.
+
+        Example::
+
+            @app.delete("/items/{item_id}")
+            def delete_item(item_id: int) -> air.H1:
+                return air.H1(f"Deleted item {item_id}")
+        """
         return self._route("delete", path, **kwargs)
 
     def _route(self, method: str, path: str, **kwargs: Any) -> Callable[[Callable[..., Any]], RouteCallable]:
-        """Shared implementation for all HTTP method decorators."""
+        """Shared implementation for all HTTP method decorators.
+
+        Returns:
+            A decorator that registers the function as a route.
+        """
         name = kwargs.get("name")
         response_class = kwargs.get("response_class", AirResponse)
 
