@@ -67,7 +67,6 @@ class RouteCallable(Protocol):
 
 
 # Type alias matching FastAPI's IncEx for response_model include/exclude
-_IncEx = set[int] | set[str] | dict[int, Any] | dict[str, Any]
 
 
 class RouteKwargs(TypedDict, total=False):
@@ -88,12 +87,6 @@ class RouteKwargs(TypedDict, total=False):
     responses: dict[int | str, dict[str, Any]] | None
     deprecated: bool | None
     operation_id: str | None
-    response_model_include: _IncEx | None
-    response_model_exclude: _IncEx | None
-    response_model_by_alias: bool
-    response_model_exclude_unset: bool
-    response_model_exclude_defaults: bool
-    response_model_exclude_none: bool
     include_in_schema: bool
     response_class: type[Response]
     name: str | None
