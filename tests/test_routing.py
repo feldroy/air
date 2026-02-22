@@ -477,6 +477,33 @@ def test_air_router_delete_endpoint() -> None:
     assert response.text == "<h1>Updated item 42</h1>"
 
 
+def test_air_router_sync_dispatch() -> None:
+    """AirRouter sync endpoints run in a threadpool, not on the event loop (#1067)."""
+    import threading  # noqa: PLC0415
+
+    app = air.Air()
+    router = air.AirRouter()
+    thread_names: dict[str, str] = {}
+
+    @router.get("/sync")
+    def sync_page() -> air.H1:
+        thread_names["sync"] = threading.current_thread().name
+        return air.H1("Sync")
+
+    @router.get("/async")
+    async def async_page() -> air.H1:
+        thread_names["async"] = threading.current_thread().name
+        return air.H1("Async")
+
+    app.include_router(router)
+    client = TestClient(app)
+    client.get("/sync")
+    client.get("/async")
+
+    assert "worker" in thread_names["sync"].lower() or "thread" in thread_names["sync"].lower()
+    assert thread_names["sync"] != thread_names["async"]
+
+
 def test_air_router_default_404_handler() -> None:
     """Test that AirRouter correctly configures the default 404 handler."""
     router = air.AirRouter(prefix="/api")
