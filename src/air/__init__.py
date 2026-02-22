@@ -1,6 +1,8 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
-import importlib.metadata
+from importlib.metadata import version
+
+__version__: str = version(__name__)
 
 from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
@@ -168,8 +170,3 @@ from .templating import (
     JinjaRenderer as JinjaRenderer,
     Renderer as Renderer,
 )
-
-try:  # noqa: RUF067
-    __version__ = importlib.metadata.version("air")
-except importlib.metadata.PackageNotFoundError:  # pragma: no cover
-    __version__ = "0.0.0.dev0"
