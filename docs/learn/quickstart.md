@@ -101,11 +101,11 @@ def air_is_grounded():
 
 
 @app.post("/form-handler")
-def form_handler(name: str = air.Form(...)):  # (1)!
+async def form_handler(request: air.Request):  # (1)!
     ...
 ```
 
-1. We cover forms later on this page as well as in numerous places across the Air documentation.
+1. Form handling in Air requires `async` functions and usually an `air.Request` argument. We cover forms later on this page as well as in numerous places across the Air documentation.
 
 ### app.page decorator
 
