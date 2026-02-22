@@ -144,6 +144,7 @@ class RouterMixin:
         self,
         func: Callable[..., Any],
         response_class: type[Response],
+        status_code: int = 200,
     ) -> Callable[..., Any]:
         """Wrap func to convert non-Response returns using response_class.
 
@@ -161,7 +162,7 @@ class RouterMixin:
                 result = await func(*args, **kw)
                 if isinstance(result, Response):
                     return result
-                return response_class(result)
+                return response_class(result, status_code=status_code)
 
         else:
 
@@ -170,7 +171,7 @@ class RouterMixin:
                 result = func(*args, **kw)
                 if isinstance(result, Response):
                     return result
-                return response_class(result)
+                return response_class(result, status_code=status_code)
 
         return endpoint
 
@@ -290,11 +291,14 @@ class RouterMixin:
         """
         name = kwargs.get("name")
         response_class = kwargs.pop("response_class", AirResponse)
+        status_code = kwargs.pop("status_code", 200)
 
         def decorator(func: Callable[..., Any]) -> RouteCallable:
-            endpoint = self._wrap_endpoint(func, response_class)
+            endpoint = self._wrap_endpoint(func, response_class, status_code)
             register = getattr(self._target, method)
-            decorated = register(path, response_model=None, response_class=response_class, **kwargs)(endpoint)
+            decorated = register(
+                path, response_model=None, response_class=response_class, status_code=status_code, **kwargs
+            )(endpoint)
             decorated.url = self._url_helper(name or getattr(func, "__name__", "unknown"))
             return decorated
 
