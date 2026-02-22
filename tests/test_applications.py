@@ -359,3 +359,64 @@ def test_fastapi_app_property() -> None:
 
     assert isinstance(app.fastapi_app, FastAPI)
     assert app.fastapi_app is app._app
+
+
+def test_sync_endpoint_returns_html() -> None:
+    """Sync endpoints produce correct HTML (#1067)."""
+    app = air.Air()
+
+    @app.get("/sync")
+    def sync_page():
+        return air.H1("Sync")
+
+    @app.get("/async")
+    async def async_page():
+        return air.H1("Async")
+
+    client = TestClient(app)
+    for path in ["/sync", "/async"]:
+        response = client.get(path)
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "text/html; charset=utf-8"
+
+
+def test_sync_endpoint_not_on_event_loop() -> None:
+    """Sync endpoints run in a threadpool, not blocking the event loop (#1067)."""
+    import threading
+
+    app = air.Air()
+    thread_names: dict[str, str] = {}
+
+    @app.get("/sync")
+    def sync_page():
+        thread_names["sync"] = threading.current_thread().name
+        return air.H1("Sync")
+
+    @app.get("/async")
+    async def async_page():
+        thread_names["async"] = threading.current_thread().name
+        return air.H1("Async")
+
+    client = TestClient(app)
+    client.get("/sync")
+    client.get("/async")
+
+    assert "worker" in thread_names["sync"].lower() or "thread" in thread_names["sync"].lower()
+
+
+def test_response_passthrough_sync_and_async() -> None:
+    """Response objects pass through without conversion."""
+    app = air.Air()
+
+    @app.get("/sync-redirect")
+    def sync_redirect():
+        return air.RedirectResponse("/target")
+
+    @app.get("/async-redirect")
+    async def async_redirect():
+        return air.RedirectResponse("/target")
+
+    client = TestClient(app)
+    for path in ["/sync-redirect", "/async-redirect"]:
+        response = client.get(path, follow_redirects=False)
+        assert response.status_code == 307
