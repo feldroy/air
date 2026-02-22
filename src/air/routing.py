@@ -296,12 +296,12 @@ class RouterMixin:
             A decorator that registers the function as a route.
         """
         name = kwargs.get("name")
-        response_class = kwargs.get("response_class", AirResponse)
+        response_class = kwargs.pop("response_class", AirResponse)
 
         def decorator(func: Callable[..., Any]) -> RouteCallable:
             endpoint = self._wrap_endpoint(func, response_class)
             register = getattr(self._target, method)
-            decorated = register(path, response_model=None, **kwargs)(endpoint)
+            decorated = register(path, response_model=None, response_class=response_class, **kwargs)(endpoint)
             decorated.url = self._url_helper(name or getattr(func, "__name__", "unknown"))
             return decorated
 
