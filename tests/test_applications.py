@@ -366,11 +366,11 @@ def test_sync_endpoint_returns_html() -> None:
     app = air.Air()
 
     @app.get("/sync")
-    def sync_page():
+    def sync_page() -> air.H1:
         return air.H1("Sync")
 
     @app.get("/async")
-    async def async_page():
+    async def async_page() -> air.H1:
         return air.H1("Async")
 
     client = TestClient(app)
@@ -382,18 +382,18 @@ def test_sync_endpoint_returns_html() -> None:
 
 def test_sync_endpoint_not_on_event_loop() -> None:
     """Sync endpoints run in a threadpool, not blocking the event loop (#1067)."""
-    import threading
+    import threading  # noqa: PLC0415
 
     app = air.Air()
     thread_names: dict[str, str] = {}
 
     @app.get("/sync")
-    def sync_page():
+    def sync_page() -> air.H1:
         thread_names["sync"] = threading.current_thread().name
         return air.H1("Sync")
 
     @app.get("/async")
-    async def async_page():
+    async def async_page() -> air.H1:
         thread_names["async"] = threading.current_thread().name
         return air.H1("Async")
 
@@ -409,11 +409,11 @@ def test_response_passthrough_sync_and_async() -> None:
     app = air.Air()
 
     @app.get("/sync-redirect")
-    def sync_redirect():
+    def sync_redirect() -> air.RedirectResponse:
         return air.RedirectResponse("/target")
 
     @app.get("/async-redirect")
-    async def async_redirect():
+    async def async_redirect() -> air.RedirectResponse:
         return air.RedirectResponse("/target")
 
     client = TestClient(app)
