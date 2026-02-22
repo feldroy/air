@@ -434,6 +434,27 @@ def test_custom_kwargs_forwarded() -> None:
     assert response.text == "<h1>Created</h1>"
 
 
+def test_custom_response_class() -> None:
+    """Custom response_class is used instead of AirResponse."""
+    app = air.Air()
+
+    class WrappingResponse(air.AirResponse):
+        """Custom response that wraps content in an <article> tag."""
+
+        def render(self, tag: object) -> bytes:
+            return str(air.Article(tag)).encode()
+
+    @app.get("/custom", response_class=WrappingResponse)
+    def custom_page() -> air.H1:
+        return air.H1("Inside article")
+
+    client = TestClient(app)
+    response = client.get("/custom")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<article><h1>Inside article</h1></article>"
+
+
 def test_response_passthrough_sync_and_async() -> None:
     """Response objects pass through without conversion."""
     app = air.Air()
