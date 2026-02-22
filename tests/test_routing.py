@@ -479,20 +479,28 @@ def test_air_router_delete_endpoint() -> None:
 
 def test_air_router_sync_dispatch() -> None:
     """AirRouter sync endpoints run in a threadpool, not on the event loop (#1067)."""
-    import threading  # noqa: PLC0415
+    import asyncio  # noqa: PLC0415
 
     app = air.Air()
     router = air.AirRouter()
-    thread_names: dict[str, str] = {}
+    has_loop: dict[str, bool] = {}
 
     @router.get("/sync")
     def sync_page() -> air.H1:
-        thread_names["sync"] = threading.current_thread().name
+        try:
+            asyncio.get_running_loop()
+            has_loop["sync"] = True
+        except RuntimeError:
+            has_loop["sync"] = False
         return air.H1("Sync")
 
     @router.get("/async")
     async def async_page() -> air.H1:
-        thread_names["async"] = threading.current_thread().name
+        try:
+            asyncio.get_running_loop()
+            has_loop["async"] = True
+        except RuntimeError:
+            has_loop["async"] = False
         return air.H1("Async")
 
     app.include_router(router)
@@ -500,8 +508,8 @@ def test_air_router_sync_dispatch() -> None:
     client.get("/sync")
     client.get("/async")
 
-    assert "worker" in thread_names["sync"].lower() or "thread" in thread_names["sync"].lower()
-    assert thread_names["sync"] != thread_names["async"]
+    assert has_loop["sync"] is False, "sync handler should not be on the event loop"
+    assert has_loop["async"] is True, "async handler should be on the event loop"
 
 
 def test_air_router_default_404_handler() -> None:
