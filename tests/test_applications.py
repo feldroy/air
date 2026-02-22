@@ -402,6 +402,36 @@ def test_sync_endpoint_not_on_event_loop() -> None:
     client.get("/async")
 
     assert "worker" in thread_names["sync"].lower() or "thread" in thread_names["sync"].lower()
+    assert thread_names["sync"] != thread_names["async"]
+
+
+def test_sync_endpoint_exception_propagates() -> None:
+    """Exceptions in sync handlers propagate through the threadpool (#1067)."""
+    app = air.Air()
+
+    @app.get("/error")
+    def error_page() -> air.H1:
+        msg = "sync handler error"
+        raise ValueError(msg)
+
+    client = TestClient(app, raise_server_exceptions=False)
+    response = client.get("/error")
+    assert response.status_code == 500
+
+
+def test_custom_kwargs_forwarded() -> None:
+    """Route kwargs like status_code and tags reach FastAPI."""
+    app = air.Air()
+
+    @app.post("/created", status_code=201, tags=["items"])
+    def create_item() -> air.H1:
+        return air.H1("Created")
+
+    client = TestClient(app)
+    response = client.post("/created")
+    assert response.status_code == 201
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Created</h1>"
 
 
 def test_response_passthrough_sync_and_async() -> None:
