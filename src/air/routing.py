@@ -39,10 +39,8 @@ from .utils import cached_signature, cached_unwrap, compute_page_path, default_g
 # Register BaseTag in FastAPI's encoder so jsonable_encoder calls str(tag)
 # instead of vars(tag). This eliminates the need for endpoint wrappers.
 fastapi.encoders.ENCODERS_BY_TYPE[BaseTag] = str
-fastapi.encoders.encoders_by_class_tuples = (
-    fastapi.encoders.generate_encoders_by_class_tuples(
-        fastapi.encoders.ENCODERS_BY_TYPE
-    )
+fastapi.encoders.encoders_by_class_tuples = fastapi.encoders.generate_encoders_by_class_tuples(
+    fastapi.encoders.ENCODERS_BY_TYPE
 )
 
 
@@ -173,7 +171,7 @@ class RouterMixin:
         else:
 
             @wraps(func)
-            def endpoint(*args: Any, **kw: Any) -> Response:  # type: ignore[misc]
+            def endpoint(*args: Any, **kw: Any) -> Response:
                 result = func(*args, **kw)
                 if isinstance(result, Response):
                     return result
@@ -205,9 +203,7 @@ class RouterMixin:
         """HTTP DELETE route decorator. Accepts all FastAPI path operation kwargs."""
         return self._route("delete", path, **kwargs)
 
-    def _route(
-        self, method: str, path: str, **kwargs: Any
-    ) -> Callable[[Callable[..., Any]], RouteCallable]:
+    def _route(self, method: str, path: str, **kwargs: Any) -> Callable[[Callable[..., Any]], RouteCallable]:
         """Shared implementation for all HTTP method decorators."""
         name = kwargs.get("name")
         response_class = kwargs.get("response_class", AirResponse)
@@ -216,7 +212,7 @@ class RouterMixin:
             endpoint = self._wrap_endpoint(func, response_class)
             register = getattr(self._target, method)
             decorated = register(path, response_model=None, **kwargs)(endpoint)
-            decorated.url = self._url_helper(name or func.__name__)
+            decorated.url = self._url_helper(name or getattr(func, "__name__", "unknown"))
             return decorated
 
         return decorator
