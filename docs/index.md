@@ -2,11 +2,8 @@
 <p align="center">
   <br>
   <a href="https://airwebframework.org">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg">
-      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg">
-      <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg" width="180" alt="Air">
-    </picture>
+    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg#only-light" width="180" alt="Air">
+    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg#only-dark" width="180" alt="Air">
   </a>
   <br>
   <br>
