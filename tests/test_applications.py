@@ -186,6 +186,7 @@ def test_injection_of_default_exception_handlers() -> None:
 
 def test_custom_exception_handlers_not_overwritten_by_defaults() -> None:
     """User-provided handlers for 404/500 must not be overwritten by defaults."""
+
     def my_404(request: air.Request, exc: Exception) -> air.AirResponse:
         return air.AirResponse(air.H1("Custom 404"), status_code=404)
 
