@@ -184,6 +184,35 @@ def test_injection_of_default_exception_handlers() -> None:
     assert app.exception_handlers[405] is handler
 
 
+def test_custom_exception_handlers_not_overwritten_by_defaults() -> None:
+    """User-provided handlers for 404/500 must not be overwritten by defaults."""
+    def my_404(request: air.Request, exc: Exception) -> air.AirResponse:
+        return air.AirResponse(air.H1("Custom 404"), status_code=404)
+
+    def my_500(request: air.Request, exc: Exception) -> air.AirResponse:
+        return air.AirResponse(air.H1("Custom 500"), status_code=500)
+
+    app = air.Air(exception_handlers={404: my_404, 500: my_500})
+
+    assert app.exception_handlers[404] is my_404
+    assert app.exception_handlers[500] is my_500
+
+    client = TestClient(app, raise_server_exceptions=False)
+
+    response = client.get("/nonexistent")
+    assert response.status_code == 404
+    assert response.text == "<h1>Custom 404</h1>"
+
+    @app.get("/error")
+    def error_page() -> air.H1:
+        msg = "boom"
+        raise RuntimeError(msg)
+
+    response = client.get("/error")
+    assert response.status_code == 500
+    assert response.text == "<h1>Custom 500</h1>"
+
+
 def test_url_helper_method() -> None:
     """Test that route decorators have .url() method for URL generation."""
     app = air.Air()
