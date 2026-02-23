@@ -271,7 +271,7 @@ class Air(RouterMixin):
         self.path_separator = path_separator
         if exception_handlers is None:
             exception_handlers = {}
-        exception_handlers |= DEFAULT_EXCEPTION_HANDLERS
+        exception_handlers = DEFAULT_EXCEPTION_HANDLERS | exception_handlers
 
         # Create internal FastAPI instance
         if fastapi_app is None:
