@@ -7,7 +7,7 @@ Additional scenarios cover exporting tags to dict/JSON, saving prettified HTML, 
 representations.
 
 Run:
-    `just run-py-module examples.tags_render`
+    `just run-example examples.tags_render`
 """
 
 from __future__ import annotations

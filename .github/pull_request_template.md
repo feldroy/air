@@ -37,7 +37,7 @@ The following have been completed for this task:
 
 <!-- Go over all the following points, and put an `x` in all the boxes that apply -->
 
-- [ ] **I have run `just test` and `just qa`, ensuring my code changes passes all existing tests**
+- [ ] **I have run `just test` and `just qa`, ensuring my code changes pass all checks**
 - [ ] **I have performed a self-review of my own code**
 - [ ] **I have ensured that there are tests to cover my changes**
 
