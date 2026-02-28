@@ -8,7 +8,7 @@ To have the failures show up in type checking, remove the # ty: ignore
 statements on lines 26, 28, 29, and 30.
 
 Run:
-    `just run-py-module examples.failing_types_in_tags`
+    `just run-example examples.failing_types_in_tags`
 """
 
 import air
