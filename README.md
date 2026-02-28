@@ -10,15 +10,14 @@
 </p>
 
 <p align="center">
-  The web framework that breathes fresh air into Python web development.<br>
-  Built with FastAPI, Starlette, and Pydantic.
+  The first web framework designed for AI to write.<br>
+  Built on FastAPI, Pydantic, and HTMX.
   <br>
   <br>
 </p>
 
 <p align="center">
-  <a href="https://github.com/feldroy/air/actions/workflows/CI.yaml?query=branch%3Amain+event%3Apush"><img src="https://img.shields.io/github/actions/workflow/status/feldroy/air/CI.yaml?branch=main&logo=githubactions&label=CI" alt="CI - main" /></a>
-  <a href="https://codecov.io/gh/feldroy/air"><img src="https://codecov.io/gh/feldroy/air/graph/badge.svg?token=928SXPA1SU" alt="codecov" /></a>
+  <a href="https://github.com/feldroy/air/actions/workflows/ci.yml?query=branch%3Amain+event%3Apush"><img src="https://img.shields.io/github/actions/workflow/status/feldroy/air/ci.yml?branch=main&logo=githubactions&label=CI" alt="CI - main" /></a>
   <a href="https://github.com/feldroy/air/blob/main/LICENSE"><img src="https://img.shields.io/github/license/feldroy/air?logo=github&label=License" alt="GitHub License" /></a>
 </p>
 
@@ -60,15 +59,10 @@
 
 ---
 
-> [!CAUTION]
-> Air is currently in an alpha state. While breaking changes are becoming less common, nevertheless, anything and everything could change.
-
-> [!IMPORTANT]
-> If you have an idea for a new feature, discuss it with us by opening an issue before writing any code. Do understand that we are working to remove features from core, and for new features you will almost always create your own package that extends or uses Air instead of adding to this package. This is by design, as our vision is for the Air package ecosystem to be as much a "core" part of Air as the code in this minimalist base package.
-
 ## Why use Air?
 
-- **Powered by FastAPI** - Designed to work with FastAPI so you can serve your API and web pages from one app
+- **Designed for AI to write** - No magic, no implicit behavior. Comprehensive types and docstrings mean AI agents and editors understand the API without external docs
+- **Powered by FastAPI** - Your FastAPI knowledge and routes carry over. Serve your API and web pages from one project
 - **Fast to code** - Tons of intuitive shortcuts and optimizations designed to expedite coding HTML with FastAPI
 - **Air Tags** - Easy to write and performant HTML content generation using Python classes to render HTML
 - **Jinja Friendly** - No need to write `response_class=HtmlResponse` and `templates.TemplateResponse` for every HTML view
@@ -79,15 +73,18 @@
 
 ---
 
+**Website**: <a href="https://airwebframework.org" target="_blank"><https://airwebframework.org></a>
+
 **Documentation**: <a href="https://docs.airwebframework.org" target="_blank"><https://docs.airwebframework.org></a>
 
 **Source Code**: <a href="https://github.com/feldroy/air" target="_blank"><https://github.com/feldroy/air></a>
 
+> [!CAUTION]
+> Air is in alpha. APIs may change between releases.
+
 ## Installation
 
-Install using `pip install -U air` or `conda install air -c conda-forge`.
-
-For `uv` users, just create a virtualenv and install the air package, like:
+Install Air with `uv`:
 
 ```sh
 uv venv
@@ -106,23 +103,55 @@ You can install each optional feature (extras) like this:
    uv add "air[standard]"
    ```
 
-## Agentic Coding
+## Built for AI-Assisted Development
 
-The library and its dependencies are available through [Context7](https://context7.com/feldroy/air).
-For effective AI assistance, register the Context7 MCP server in your coding environment and configure your agent to use
-it.
+Air's API is fully typed and comprehensively documented in-source. AI coding assistants can understand the framework by reading the installed package, without fetching external documentation.
 
-You can also use:
+For AI context, use [llms-full.txt](https://docs.airwebframework.org/llms-full.txt) (complete docs) or [llms.txt](https://docs.airwebframework.org/llms.txt) (index with links to individual sections).
 
-- [Code Wiki by Google](https://codewiki.google/github.com/feldroy/air)
-- [DeepWiki powered by Devin](https://deepwiki.com/feldroy/air)
+Third-party context providers: [Code Wiki by Google](https://codewiki.google/github.com/feldroy/air), [DeepWiki by Devin](https://deepwiki.com/feldroy/air).
 
-For the canonical long-form context, please use: [llms-full.txt](https://feldroy.github.io/air/llms-full.txt), it
-follows the [llmstxt](https://llmstxt.org/#format) format.
+## Two Ways to Build
 
-## A Simple Example
+Air gives you two paths to HTML. Start with whichever fits your workflow.
 
-Create a `main.py` with:
+### Start with HTML
+
+Have your AI generate an HTML mockup, or write one yourself. Drop it in a template, wire it up with minimal Python:
+
+`templates/index.html`:
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <title>My Website</title>
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+  </body>
+</html>
+```
+
+`main.py`:
+
+```python
+import air
+
+app = air.Air()
+jinja = air.JinjaRenderer(directory="templates")
+
+
+@app.page
+def index(request: air.Request):
+    return jinja(request, name="index.html")
+```
+
+### Start with Python
+
+Write HTML as typed Python classes. Your editor autocompletes attributes, your type checker validates nesting:
+
+`main.py`:
 
 ```python
 import air
@@ -130,40 +159,26 @@ import air
 app = air.Air()
 
 
-@app.get("/")
-async def index():
-    return air.Html(air.H1("Hello, world!", style="color: blue;"))
+@app.page
+def index():
+    return air.Html(air.H1("Hello, world!"))
 ```
 
-Run the app with:
+### Run either one
 
 ```sh
 air run
 ```
 
-If you have fastapi installed globally, you may see an error:
+Open <http://127.0.0.1:8000> to see the result. Both paths produce the same thing: a working web page.
 
-```sh
-To use the fastapi command, please install "fastapi[standard]":
+## Use FastAPI Alongside Air
 
-pip install "fastapi[standard]"
-```
+Air is powered by FastAPI. You get Air's HTML tools for your pages and FastAPI's full capabilities for your API, all in one app.
 
-In that case, run the app with:
+### Mount a FastAPI sub-app
 
-```sh
-uv run air run
-```
-
-> [!NOTE]
-> This example uses Air Tags, which are Python classes that render as HTML. Air Tags are typed and documented, designed to work well with any code completion tool.
-> You can also run this with `uv run uvicorn main:app --reload` if you prefer using Uvicorn directly.
-
-Then open your browser to <http://127.0.0.1:8000> to see the result.
-
-## Combining FastAPI and Air
-
-Air is just a layer over FastAPI. So it is trivial to combine sophisticated HTML pages and a REST API into one app.
+Two separate apps, clean split. Air serves pages, FastAPI serves your API at `/api`.
 
 ```python
 from fastapi import FastAPI
@@ -174,12 +189,12 @@ app = air.Air()
 api = FastAPI()
 
 
-@app.get("/")
-def landing_page():
+@app.page
+def index():
     return air.Html(
-        air.Head(air.Title("Awesome SaaS")),
+        air.Head(air.Title("My Website")),
         air.Body(
-            air.H1("Awesome SaaS"),
+            air.H1("My Website"),
             air.P(air.A("API Docs", target="_blank", href="/api/docs")),
         ),
     )
@@ -187,63 +202,35 @@ def landing_page():
 
 @api.get("/")
 def api_root():
-    return {"message": "Awesome SaaS is powered by FastAPI"}
+    return {"message": "My Website is powered by FastAPI"}
 
 
-# Combining the Air and FastAPI apps into one
+# Mount the FastAPI app under /api
 app.mount("/api", api)
 ```
 
-## Combining FastAPI and Air using Jinja2
+### Wrap a single FastAPI instance
 
-Want to use Jinja2 instead of Air Tags? We've got you covered.
+One app. Air adds its features on top. You get OpenAPI docs, `response_model`, and WebSockets alongside your pages.
 
 ```python
 from fastapi import FastAPI
 
 import air
-from air.requests import Request
 
-app = air.Air()
-api = FastAPI()
-
-# Air's JinjaRenderer is a shortcut for using Jinja templates
-jinja = air.JinjaRenderer(directory="templates")
+fastapi_app = FastAPI()
+app = air.Air(fastapi_app=fastapi_app)
 
 
-@app.get("/")
-def index(request: Request):
-    return jinja(request, name="home.html")
+@app.page
+def index():
+    return air.H1("Hello, world!")
 
 
-@api.get("/")
-def api_root():
-    return {"message": "Awesome SaaS is powered by FastAPI"}
-
-
-# Combining the Air and and FastAPI apps into one
-app.mount("/api", api)
+@app.fastapi_app.get("/api/users")
+def api_users():
+    return [{"name": "Audrey M. Roy Greenfeld"}]
 ```
-
-Don't forget the Jinja template!
-
-```html
-<!doctype html>
-<html>
-  <head>
-    <title>Awesome SaaS</title>
-  </head>
-  <body>
-    <h1>Awesome SaaS</h1>
-    <p>
-      <a target="_blank" href="/api/docs">API Docs</a>
-    </p>
-  </body>
-</html>
-```
-
-> [!NOTE]
-> Using Jinja with Air is easier than with FastAPI. That's because as much as we enjoy Air Tags, we also love Jinja!
 
 ## Sponsors
 
@@ -261,6 +248,9 @@ Consider this low-barrier form of contribution yourself.
 Your [support](https://github.com/sponsors/feldroy) is much appreciated.
 
 ## Contributing
+
+> [!IMPORTANT]
+> Have a feature idea? Open an issue first. Air's core is intentionally minimal: new features are built as separate packages in the Air ecosystem, not added to this base package.
 
 For guidance on setting up a development environment and how to make a contribution to Air,
 see [Contributing to Air](https://github.com/feldroy/air/blob/main/CONTRIBUTING.md).

@@ -64,10 +64,6 @@ classifiers = [
     "Topic :: Internet",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
-    "Topic :: Internet :: WWW/HTTP :: WSGI",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -116,71 +112,43 @@ standard = [
 dev = [
     { include-group = "devtools" },
     { include-group = "docs" },
-    { include-group = "prek-hooks" },
+    { include-group = "examples" },
     { include-group = "test" },
     { include-group = "typing-stubs" },
 ]
-devtools = []
-docs = [
-    "click==8.3.1", # https://pypi.org/project/click
-    "mkdocs==1.6.1", # https://pypi.org/project/mkdocs
-    "mkdocs-autorefs==1.4.4", # https://pypi.org/project/mkdocs-autorefs
-    "mkdocs-exclude==1.0.2", # https://pypi.org/project/mkdocs-exclude
-    "mkdocs-jupyter==0.25.1", # https://pypi.org/project/mkdocs-jupyter
-    "mkdocs-llmstxt==0.5.0", # https://pypi.org/project/mkdocs-llmstxt
-    "mkdocs-material[imaging]==9.7.1", # https://pypi.org/project/mkdocs-material
-    "mkdocs-redirects==1.2.2", # https://pypi.org/project/mkdocs-redirects
-    "mkdocstrings-python==2.0.2", # https://pypi.org/project/mkdocstrings-python
-    "mkdocstrings[python]==1.0.3", # https://pypi.org/project/mkdocstrings
+examples = [
+    "pyinstrument>=5.1.2", # https://pypi.org/project/pyinstrument
 ]
-prek-hooks = [
-    "beautysh==6.4.2", # https://pypi.org/project/beautysh
-    "check-jsonschema==0.36.1", # https://pypi.org/project/check-jsonschema
-    "complexipy==5.2.0", # https://pypi.org/project/complexipy
-    "creosote==4.1.0", # https://pypi.org/project/creosote
-    "djhtml==3.0.10", # https://pypi.org/project/djhtml
-    "djlint==1.36.4", # https://pypi.org/project/djlint
-    "editorconfig-checker==3.6.0", # https://pypi.org/project/editorconfig-checker
-    "flake8==7.3.0", # https://pypi.org/project/flake8
-    "flake8-class-attributes-order==0.3.0", # https://pypi.org/project/flake8-class-attributes-order
-    "flake8-pydantic==0.4.0", # https://pypi.org/project/flake8-pydantic
-    "flake8-pyproject==1.2.4", # https://pypi.org/project/flake8-pyproject
-    "google-yamlfmt==0.21.0", # https://pypi.org/project/google-yamlfmt
-    "pre-commit-hooks==6.0.0", # https://pypi.org/project/pre-commit-hooks
-    "prek==0.3.2", # https://pypi.org/project/prek
-    "pyrefly==0.52.0", # https://pypi.org/project/pyrefly
-    "pyroma==5.0.1", # https://pypi.org/project/pyroma
-    "ruff==0.15.0", # https://pypi.org/project/ruff
-    "rumdl==0.1.18", # https://pypi.org/project/rumdl
-    "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
-    "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
-    "sync-pre-commit-deps==0.0.3", # https://pypi.org/project/sync-pre-commit-deps
-    "tombi==0.7.28", # https://pypi.org/project/tombi
-    "ty==0.0.14", # https://pypi.org/project/ty
-    "typos==1.43.4", # https://pypi.org/project/typos
-    "vale==3.13.0.0", # https://pypi.org/project/vale
-    "validate-pyproject-schema-store[all]==2026.1.22", # https://pypi.org/project/validate-pyproject-schema-store
-    "zizmor==1.22.0", # https://pypi.org/project/zizmor
+devtools = [
+    "ruff>=0.15.0", # https://pypi.org/project/ruff
+    "ty>=0.0.19", # https://pypi.org/project/ty
+]
+docs = [
+    "click>=8.3.1", # https://pypi.org/project/click
+    "mkdocs>=1.6.1", # https://pypi.org/project/mkdocs
+    "mkdocs-autorefs>=1.4.4", # https://pypi.org/project/mkdocs-autorefs
+    "mkdocs-exclude>=1.0.2", # https://pypi.org/project/mkdocs-exclude
+    "mkdocs-jupyter>=0.25.1", # https://pypi.org/project/mkdocs-jupyter
+    "mkdocs-llmstxt>=0.5.0", # https://pypi.org/project/mkdocs-llmstxt
+    "mkdocs-material[imaging]>=9.7.2", # https://pypi.org/project/mkdocs-material
+    "mkdocs-redirects>=1.2.2", # https://pypi.org/project/mkdocs-redirects
+    "mkdocstrings-python>=2.0.2", # https://pypi.org/project/mkdocstrings-python
+    "mkdocstrings[python]>=1.0.3", # https://pypi.org/project/mkdocstrings
 ]
 test = [
-    "coverage[toml]==7.13.4", # https://pypi.org/project/coverage
-    "diff-cover==10.2.0", # https://pypi.org/project/diff-cover
-    "full-match==0.0.3", # https://pypi.org/project/full-match
-    "httpx==0.28.1", # https://pypi.org/project/httpx
-    "pyinstrument==5.1.2", # https://pypi.org/project/pyinstrument
-    "pytest==9.0.2", # https://pypi.org/project/pytest
-    "pytest-asyncio==1.3.0", # https://pypi.org/project/pytest-asyncio
-    "pytest-benchmark==5.2.3", # https://pypi.org/project/pytest-benchmark
-    "pytest-cov==7.0.0", # https://pypi.org/project/pytest-cov
-    "pytest-env==1.3.2", # https://pypi.org/project/pytest-env
-    "pytest-github-actions-annotate-failures==0.3.0", # https://pypi.org/project/pytest-github-actions-annotate-failures
-    "pytest-pretty==1.3.0", # https://pypi.org/project/pytest-pretty
-    "pytest-smoke==0.10.0", # https://pypi.org/project/pytest-smoke
+    "coverage[toml]>=7.13.4", # https://pypi.org/project/coverage
+    "full-match>=0.0.3", # https://pypi.org/project/full-match
+    "httpx>=0.28.1", # https://pypi.org/project/httpx
+    "pytest>=9.0.2", # https://pypi.org/project/pytest
+    "pytest-asyncio>=1.3.0", # https://pypi.org/project/pytest-asyncio
+    "pytest-benchmark>=5.2.3", # https://pypi.org/project/pytest-benchmark
+    "pytest-github-actions-annotate-failures>=0.3.0", # https://pypi.org/project/pytest-github-actions-annotate-failures
+    "pytest-pretty>=1.3.0", # https://pypi.org/project/pytest-pretty
 ]
 typing-stubs = [
-    "types-Markdown==3.10.2.20260211", # https://pypi.org/project/types-Markdown
-    "types-lxml==2026.1.1", # https://pypi.org/project/types-lxml
-    "types-pygments==2.19.0.20251121", # https://pypi.org/project/types-pygments
+    "types-Markdown>=3.10.2.20260211", # https://pypi.org/project/types-Markdown
+    "types-lxml>=2026.1.1", # https://pypi.org/project/types-lxml
+    "types-pygments>=2.19.0.20251121", # https://pypi.org/project/types-pygments
 ]
 
 # endregion dependencies
@@ -197,7 +165,7 @@ build-backend = "uv_build"
 # region ----> Coverage.py <----
 # https://coverage.readthedocs.io/en/latest/config.html
 [tool.coverage.run]
-source = ["src", "scripts"]
+source = ["src"]
 branch = true
 parallel = true
 sigterm = true
@@ -261,77 +229,6 @@ output = "coverage.xml" # default “coverage.xml”
 [tool.coverage.paths]
 source = ["src"]
 # endregion Coverage.py
-
-# region ----> creosote <----
-# https://github.com/fredrikaverpil/creosote
-[tool.creosote]
-venvs = [".venv"]
-paths = ["src"]
-deps-file = "pyproject.toml"
-sections = ["project.dependencies", "project.optional-dependencies"]
-exclude-deps = [
-    # TODO -> Enable once we uninstall these dependencies:
-    "itsdangerous",
-    "python-multipart"
-]
-# endregion creosote
-
-# region ----> flake8 <----
-# https://flake8.pycqa.org/en/latest/glossary.html
-# https://flake8.pycqa.org/en/latest/user/error-codes.html
-# https://flake8.pycqa.org/en/latest/user/configuration.html
-# https://github.com/john-hen/Flake8-pyproject
-[tool.flake8]
-extend-ignore = [
-    "E", # pycodestyle
-    "W", # pycodestyle
-    "F", # pyflakes
-    "C901", # McCabe
-    # TODO -> Enable once all lint violations are fixed:
-    "CCE001", # flake8-class-attributes-order
-    "PYD001", # flake8-pydantic
-]
-per-file-ignores = []
-count = false # Print the total number of errors.
-show-source = false # Print the source code generating the error/warning in question.
-statistics = true # Count the number of occurrences of each error/warning code and print a report.
-format = "default"
-require-plugins = [
-    "Flake8-pyproject",
-    "flake8-class-attributes-order",
-    "flake8-pydantic",
-]
-# https://github.com/best-doctor/flake8-class-attributes-order
-class_attributes_order = [
-    "meta_class",
-    "nested_class",
-    "constant",
-    "outer_field",
-    "field",
-    "protected_field",
-    "private_field",
-    "__new__",
-    "__init__",
-    "__post_init__",
-    "__str__",
-    "magic_method",
-    "save",
-    "delete",
-    "property_method",
-    "protected_property_method",
-    "private_property_method",
-    "static_method",
-    "protected_static_method",
-    "private_static_method",
-    "class_method",
-    "protected_class_method",
-    "private_class_method",
-    "private_method",
-    "protected_method",
-    "method",
-]
-
-# endregion flake8
 
 # region ----> uv <----
 # uv - An extremely fast Python package and project manager, written in Rust.

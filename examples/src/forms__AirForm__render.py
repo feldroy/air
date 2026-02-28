@@ -30,7 +30,7 @@ def contact(request: air.Request) -> air.Html | air.Children:
             form.render(),
             air.Button("Send message", type_="submit"),
             method="post",
-            action=submit.url(),  # type: ignore[unresolved-attribute]
+            action=submit.url(),
         ),
     )
 
@@ -59,7 +59,7 @@ async def submit(request: air.Request) -> air.Html:
             form.render(),
             air.Button("Send message", type_="submit"),
             method="post",
-            action=submit.url(),  # type: ignore[unresolved-attribute]
+            action=submit.url(),
         ),
     )
 

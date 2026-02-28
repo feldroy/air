@@ -1,13 +1,14 @@
 """Air CLI - Command-line interface for running Air applications."""
 
 import sys
-from importlib.metadata import version
 from pathlib import Path
 from typing import Annotated
 
 import typer
 import uvicorn
 from rich.console import Console
+
+import air
 
 app = typer.Typer(add_completion=False, rich_markup_mode="rich")
 console = Console()
@@ -37,7 +38,7 @@ LOG_CONFIG = {
 
 def _version_callback(value: bool) -> None:  # noqa: FBT001 - Typer callback signature
     if value:
-        typer.echo(f"Air {version('air')}\nCrafted with care by Two Scoops authors pydanny and audreyfeldroy")
+        typer.echo(f"Air {air.__version__}\nCrafted with care by Two Scoops authors pydanny and audreyfeldroy")
         raise typer.Exit
 
 
@@ -96,7 +97,7 @@ def run(
     # Print startup banner
     url = f"http://{host}:{port}"
     console.print()
-    console.print(f"  [bold cyan]Air[/bold cyan] v{version('air')}")
+    console.print(f"  [bold cyan]Air[/bold cyan] v{air.__version__}")
     console.print()
     console.print(f"  [dim]➜[/dim]  [bold]App:[/bold]     {app_path}")
     console.print(f"  [dim]➜[/dim]  [bold]Server:[/bold]  [link={url}]{url}[/link]")

@@ -7,6 +7,7 @@ nav:
   - Learn:
       - learn/index.md
       - Quickstart: learn/quickstart.md
+      - "def vs async def": learn/def_vs_async_def.md
       - Air Tags: learn/air_tags.md
       - Escaping HTML: learn/escaping_html.md
       - Forms: learn/forms.md
@@ -145,6 +146,7 @@ plugins:
         Usage documentation:
           - index.md
           - learn/quickstart.md
+          - learn/def_vs_async_def.md
           - learn/air_tags.md
           - learn/escaping_html.md
           - learn/forms.md
