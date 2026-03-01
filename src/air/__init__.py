@@ -23,7 +23,10 @@ from .forms import (
     AirForm as AirForm,
     to_form as to_form,
 )
-from .middleware import SessionMiddleware as SessionMiddleware
+from .middleware import (
+    CSRFMiddleware as CSRFMiddleware,
+    SessionMiddleware as SessionMiddleware,
+)
 from .models import (
     AirModel as AirModel,
 )

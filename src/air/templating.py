@@ -11,10 +11,15 @@ from typing import Any, Literal, overload
 
 import jinja2
 from fastapi.templating import Jinja2Templates
+from markupsafe import Markup, escape
 from starlette.requests import Request as StarletteRequest
 from starlette.responses import HTMLResponse
 from starlette.templating import _TemplateResponse
 
+from .csrf import (
+    get_csrf_form_field_name_from_request,
+    get_csrf_token_from_request,
+)
 from .requests import Request
 from .tags.models.base import BaseTag
 from .tags.utils import SafeStr
@@ -34,6 +39,35 @@ def _jinja_context_item(item: Any) -> Any:
     if isinstance(item, BaseTag):
         return str(item)
     return item
+
+
+def _template_request(context: jinja2.runtime.Context) -> StarletteRequest:
+    request = context.get("request")
+    if not isinstance(request, StarletteRequest):
+        msg = "CSRF template helpers require a request in template context."
+        raise TypeError(msg)
+    return request
+
+
+@jinja2.pass_context
+def _jinja_csrf_token(context: jinja2.runtime.Context) -> str:
+    request = _template_request(context)
+    return get_csrf_token_from_request(request)
+
+
+@jinja2.pass_context
+def _jinja_csrf_input(context: jinja2.runtime.Context) -> Markup:
+    request = _template_request(context)
+    token = get_csrf_token_from_request(request)
+    field_name = get_csrf_form_field_name_from_request(request)
+    return Markup(
+        f'<input type="hidden" name="{escape(field_name)}" value="{escape(token)}">'
+    )
+
+
+def _configure_csrf_template_helpers(templates: Jinja2Templates) -> None:
+    templates.env.globals.setdefault("csrf_token", _jinja_csrf_token)
+    templates.env.globals.setdefault("csrf_input", _jinja_csrf_input)
 
 
 class JinjaRenderer:
@@ -86,6 +120,7 @@ class JinjaRenderer:
     ) -> None:
         """Initialize with template directory path"""
         self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
+        _configure_csrf_template_helpers(self.templates)
 
     @overload
     def __call__(
@@ -204,6 +239,7 @@ class Renderer:
     ) -> None:
         """Initialize with template directory path"""
         self.templates = Jinja2Templates(directory=directory, context_processors=context_processors, env=env)
+        _configure_csrf_template_helpers(self.templates)
         self.package = package
 
     def __call__(
