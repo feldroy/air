@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import secrets
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from starlette.types import Scope
@@ -32,16 +32,9 @@ def set_csrf_state(scope: Scope, *, token: str, cookie_name: str, form_field_nam
     state[CSRF_STATE_FORM_FIELD_NAME_KEY] = form_field_name
 
 
-def _get_request_state_attr(request: Request, attr: str) -> Any:
-    try:
-        return getattr(request.state, attr)
-    except AttributeError:
-        return None
-
-
 def get_csrf_cookie_name_from_request(request: Request) -> str:
     """Get the active CSRF cookie name for a request."""
-    cookie_name = _get_request_state_attr(request, CSRF_STATE_COOKIE_NAME_KEY)
+    cookie_name = getattr(request.state, CSRF_STATE_COOKIE_NAME_KEY, None)
     if isinstance(cookie_name, str):
         return cookie_name
     return DEFAULT_CSRF_COOKIE_NAME
@@ -49,7 +42,7 @@ def get_csrf_cookie_name_from_request(request: Request) -> str:
 
 def get_csrf_form_field_name_from_request(request: Request) -> str:
     """Get the active CSRF form field name for a request."""
-    form_field_name = _get_request_state_attr(request, CSRF_STATE_FORM_FIELD_NAME_KEY)
+    form_field_name = getattr(request.state, CSRF_STATE_FORM_FIELD_NAME_KEY, None)
     if isinstance(form_field_name, str):
         return form_field_name
     return DEFAULT_CSRF_FORM_FIELD_NAME
@@ -61,7 +54,7 @@ def get_csrf_token_from_request(request: Request) -> str:
     Raises:
         RuntimeError: If token is unavailable, typically because CSRFMiddleware is not installed.
     """
-    token = _get_request_state_attr(request, CSRF_STATE_TOKEN_KEY)
+    token = getattr(request.state, CSRF_STATE_TOKEN_KEY, None)
     if isinstance(token, str):
         return token
 
