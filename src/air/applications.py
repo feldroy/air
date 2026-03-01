@@ -296,6 +296,9 @@ class Air(RouterMixin):
             )
         else:
             self._app = fastapi_app
+            for code, handler in exception_handlers.items():
+                if code not in self._app.exception_handlers:
+                    self._app.exception_handlers[code] = handler
 
         # Use Air's custom route class
         self._app.router.route_class = AirRoute
