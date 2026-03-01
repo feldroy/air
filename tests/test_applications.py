@@ -214,6 +214,43 @@ def test_custom_exception_handlers_not_overwritten_by_defaults() -> None:
     assert response.text == "<h1>Custom 500</h1>"
 
 
+def test_fastapi_app_gets_default_exception_handlers() -> None:
+    """When a user provides a custom FastAPI instance, Air's default exception handlers should be applied."""
+    fastapi_app = FastAPI()
+    app = air.Air(fastapi_app=fastapi_app)
+
+    # Default handlers should be present
+    assert 404 in app.exception_handlers
+    assert 500 in app.exception_handlers
+
+    client = TestClient(app, raise_server_exceptions=False)
+
+    # Should get Air's styled 404, not Starlette's plain-text "Not Found"
+    response = client.get("/nonexistent")
+    assert response.status_code == 404
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+
+
+def test_fastapi_app_preserves_existing_exception_handlers() -> None:
+    """User-set handlers on a custom FastAPI instance must not be overridden by Air's defaults."""
+
+    def my_404(request: air.Request, exc: Exception) -> air.AirResponse:
+        return air.AirResponse(air.H1("My 404"), status_code=404)
+
+    fastapi_app = FastAPI(exception_handlers={404: my_404})
+    app = air.Air(fastapi_app=fastapi_app)
+
+    # User's 404 handler should be preserved
+    assert app.exception_handlers[404] is my_404
+    # Air's default 500 handler should still be injected
+    assert 500 in app.exception_handlers
+
+    client = TestClient(app)
+    response = client.get("/nonexistent")
+    assert response.status_code == 404
+    assert response.text == "<h1>My 404</h1>"
+
+
 def test_url_helper_method() -> None:
     """Test that route decorators have .url() method for URL generation."""
     app = air.Air()
