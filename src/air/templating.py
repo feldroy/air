@@ -60,9 +60,7 @@ def _jinja_csrf_input(context: jinja2.runtime.Context) -> Markup:
     request = _template_request(context)
     token = get_csrf_token_from_request(request)
     field_name = get_csrf_form_field_name_from_request(request)
-    return Markup(
-        f'<input type="hidden" name="{escape(field_name)}" value="{escape(token)}">'
-    )
+    return Markup(f'<input type="hidden" name="{escape(field_name)}" value="{escape(token)}">')
 
 
 def _configure_csrf_template_helpers(templates: Jinja2Templates) -> None:
