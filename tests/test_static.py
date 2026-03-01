@@ -1,5 +1,9 @@
 import hashlib
 from pathlib import Path
+from typing import TYPE_CHECKING, cast
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 import pytest
 from fastapi.testclient import TestClient
@@ -104,7 +108,7 @@ def test_static_digest_auto_registers_jinja_global() -> None:
     Static(TEST_STATIC_DIR, app=app, jinja=jinja)
 
     assert "static" in jinja.templates.env.globals
-    static_func = jinja.templates.env.globals["static"]
+    static_func = cast("Callable[[str], str]", jinja.templates.env.globals["static"])
     url = static_func("styles.css")
     assert url.startswith("/static/styles.")
     assert url.endswith(".css")
