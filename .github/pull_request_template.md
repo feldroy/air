@@ -1,52 +1,41 @@
-<!-- A summary of the changes made here. -->
-<!-- Add any links to other issues or secondary material. -->
+<!--
+Before submitting:
+- Read CONTRIBUTING.md for workflow
+- Read AGENTS.md for architecture (especially if AI-generated)
 
-# Issue(s)
+Air's design principles: semantic APIs with clear docstrings,
+concise docs mindful of context window sizes, max readability,
+less code is better, zero config is ideal. — airwebframework.org
+-->
 
-<!-- A link to an issue(s) on GitHub. If there isn't an issue(s), remove this section. -->
-<!-- Note: Oversized pull requests will be requested to be broken up by the maintainers. -->
+## What
 
-## Pull request type
+<!-- 1-3 sentences. If you need more, the PR might be too big. -->
 
-<!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. -->
+Fixes issue #TODO
 
-Please check the type of change your PR introduces:
+## AI Provenance (omit for human‑authored PRs)
 
-- [ ] **Bugfix**
-- [ ] **New feature**
-  - [ ] **Core Air** (Air Tags, Request/Response cycle, etc)
-  - [ ] **Optional** (Authentication, CSRF, etc)
-  - [ ] **Third-Party Integrated** (Cookbook documentation on using Air databases or a task manager, etc)
-  - [ ] **Out-of-Scope** (Formal integration with databases, external task managers, or commercial services etc - won't be accepted, please create a separate project)
-- [ ] **Refactoring** (no functional changes, no api changes)
-- [ ] **Chore**: Dependency updates, Python version changes, etc.
-- [ ] **Build related changes**
-- [ ] **Documentation content changes**
-- [ ] **Other** (please describe):
+<!-- Delete this section for human-authored PRs. -->
 
-## Pull request tasks
+- **Tool:** <!-- Amp, Cursor, Copilot, Claude Code, Codex, etc. -->
+- **Model:** <!-- Claude Opus 4.6, GPT-4o, etc. -->
+- **Thread / prompt:**  <!-- copy the thread URL or your exact prompts here -->
 
-The following have been completed for this task:
+## Pattern
 
-- [ ] **Code changes**
-- [ ] **Documentation changes for new or changed features**
-- [ ] **Alterations of behavior come with a working implementation in the `examples` folder**
-- [ ] **Tests on new or altered behaviors**
+<!-- Which existing file or function did you follow? Link it.
+     If this establishes a new pattern, explain why. -->
+
+## Reviewer Focus
+
+<!-- What's the riskiest part? What are you uncertain about? Where 
+should reviewers pay special attention? -->
 
 ## Checklist
 
-<!-- Go over all the following points, and put an `x` in all the boxes that apply -->
-
-- [ ] **I have run `just test` and `just qa`, ensuring my code changes passes all existing tests**
-- [ ] **I have performed a self-review of my own code**
-- [ ] **I have ensured that there are tests to cover my changes**
-
-## Demo or screenshot
-
-<!-- If possible, link to a demo or screenshot of your change. -->
-<!-- If not possible, remove this section. -->
-
-## Other information
-
-<!-- If there's anything else not covered above, provide it here -->
-<!-- If there's nothing else, remove this section. -->
+- [ ] Diff contains only changes for this task — no unrelated refactoring or cleanup
+- [ ] Addresses exactly one issue or feature
+- [ ] New or changed behavior has test coverage
+- [ ] This is the simplest viable approach
+- [ ] AI provenance section removed or accurate

@@ -10,7 +10,10 @@ authors = [
     { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
     { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" }
 ]
-maintainers = [{ name = "pygarap", email = "pygarap@gmail.com" }]
+maintainers = [
+    { name = "Audrey M. Roy Greenfeld", email = "audrey@feldroy.com" },
+    { name = "Daniel Roy Greenfeld", email = "daniel@feldroy.com" },
+]
 keywords = [
     "air",
     "air-tags",
@@ -61,10 +64,6 @@ classifiers = [
     "Topic :: Internet",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
-    "Topic :: Internet :: WWW/HTTP :: WSGI",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Middleware",
-    "Topic :: Internet :: WWW/HTTP :: WSGI :: Server",
     "Topic :: Software Development",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -83,7 +82,7 @@ urls.Sponsor = "https://github.com/sponsors/feldroy"
 scripts.air = "air.cli:main"
 dependencies = [
     "Jinja2>=3.1.6", # https://pypi.org/project/Jinja2
-    "fastapi>=0.128.0", # https://pypi.org/project/fastapi
+    "fastapi>=0.128.8", # https://pypi.org/project/fastapi
     "frozendict>=2.4.7", # https://pypi.org/project/frozendict
     "itsdangerous>=2.2.0", # https://pypi.org/project/itsdangerous
     "lxml>=6.0.2", # https://pypi.org/project/lxml
@@ -91,9 +90,9 @@ dependencies = [
     "nh3>=0.3.2", # https://pypi.org/project/nh3
     "pygments>=2.19.2", # https://pypi.org/project/pygments
     "python-multipart>=0.0.22", # https://pypi.org/project/python-multipart
-    "rich>=14.3.1", # https://pypi.org/project/rich
+    "rich>=14.3.2", # https://pypi.org/project/rich
     "selectolax>=0.4.6", # https://pypi.org/project/selectolax
-    "typer>=0.21.1", # https://pypi.org/project/typer
+    "typer>=0.23.0", # https://pypi.org/project/typer
     "uvicorn>=0.40.0", # https://pypi.org/project/uvicorn
 ]
 # endregion project
@@ -104,7 +103,7 @@ dependencies = [
 # Make `air[standard]` install FastAPI’s “standard” extras so users can run: uv pip install "air[standard]".
 standard = [
     # Re-install FastAPI with its “standard” extra.
-    "fastapi[standard]>=0.128.0",
+    "fastapi[standard]>=0.128.8",
 ]
 
 # Contributor-only groups under [dependency-groups]; install via uv sync --group NAME (not published to PyPI).
@@ -113,53 +112,43 @@ standard = [
 dev = [
     { include-group = "devtools" },
     { include-group = "docs" },
-    { include-group = "lint" },
+    { include-group = "examples" },
     { include-group = "test" },
+    { include-group = "typing-stubs" },
 ]
-devtools = []
+examples = [
+    "pyinstrument>=5.1.2", # https://pypi.org/project/pyinstrument
+]
+devtools = [
+    "ruff>=0.15.0", # https://pypi.org/project/ruff
+    "ty>=0.0.19", # https://pypi.org/project/ty
+]
 docs = [
-    "click==8.3.1", # https://pypi.org/project/click
-    "mkdocs==1.6.1", # https://pypi.org/project/mkdocs
-    "mkdocs-autorefs==1.4.3", # https://pypi.org/project/mkdocs-autorefs
-    "mkdocs-exclude==1.0.2", # https://pypi.org/project/mkdocs-exclude
-    "mkdocs-jupyter==0.25.1", # https://pypi.org/project/mkdocs-jupyter
-    "mkdocs-llmstxt==0.5.0", # https://pypi.org/project/mkdocs-llmstxt
-    "mkdocs-material[imaging]==9.7.1", # https://pypi.org/project/mkdocs-material
-    "mkdocs-redirects==1.2.2", # https://pypi.org/project/mkdocs-redirects
-    "mkdocstrings-python==2.0.1", # https://pypi.org/project/mkdocstrings-python
-    "mkdocstrings[python]==1.0.2", # https://pypi.org/project/mkdocstrings
-]
-lint = [
-    "beautysh==6.4.2", # https://pypi.org/project/beautysh
-    "djlint==1.36.4", # https://pypi.org/project/djlint
-    "google-yamlfmt==0.21.0", # https://pypi.org/project/google-yamlfmt
-    "prek==0.3.0", # https://pypi.org/project/prek
-    "pyrefly==0.50.0", # https://pypi.org/project/pyrefly
-    "ruff==0.14.14", # https://pypi.org/project/ruff
-    "rumdl==0.1.1", # https://pypi.org/project/rumdl
-    "shellcheck-py==0.11.0.1", # https://pypi.org/project/shellcheck-py
-    "shfmt-py==3.12.0.2", # https://pypi.org/project/shfmt-py
-    "ty==0.0.14", # https://pypi.org/project/ty
-    "types-Markdown==3.10.0.20251106", # https://pypi.org/project/types-Markdown
-    "types-lxml==2026.1.1", # https://pypi.org/project/types-lxml
-    "types-pygments==2.19.0.20251121", # https://pypi.org/project/types-pygments
-    "typos==1.42.2", # https://pypi.org/project/typos
-    "vale==3.13.0.0", # https://pypi.org/project/vale
+    "click>=8.3.1", # https://pypi.org/project/click
+    "mkdocs>=1.6.1", # https://pypi.org/project/mkdocs
+    "mkdocs-autorefs>=1.4.4", # https://pypi.org/project/mkdocs-autorefs
+    "mkdocs-exclude>=1.0.2", # https://pypi.org/project/mkdocs-exclude
+    "mkdocs-jupyter>=0.25.1", # https://pypi.org/project/mkdocs-jupyter
+    "mkdocs-llmstxt>=0.5.0", # https://pypi.org/project/mkdocs-llmstxt
+    "mkdocs-material[imaging]>=9.7.2", # https://pypi.org/project/mkdocs-material
+    "mkdocs-redirects>=1.2.2", # https://pypi.org/project/mkdocs-redirects
+    "mkdocstrings-python>=2.0.2", # https://pypi.org/project/mkdocstrings-python
+    "mkdocstrings[python]>=1.0.3", # https://pypi.org/project/mkdocstrings
 ]
 test = [
-    "coverage[toml]==7.13.2", # https://pypi.org/project/coverage
-    "diff-cover==10.2.0", # https://pypi.org/project/diff-cover
-    "full-match==0.0.3", # https://pypi.org/project/full-match
-    "httpx==0.28.1", # https://pypi.org/project/httpx
-    "pyinstrument==5.1.2", # https://pypi.org/project/pyinstrument
-    "pytest==9.0.2", # https://pypi.org/project/pytest
-    "pytest-asyncio==1.3.0", # https://pypi.org/project/pytest-asyncio
-    "pytest-benchmark==5.2.3", # https://pypi.org/project/pytest-benchmark
-    "pytest-cov==7.0.0", # https://pypi.org/project/pytest-cov
-    "pytest-env==1.2.0", # https://pypi.org/project/pytest-env
-    "pytest-github-actions-annotate-failures==0.3.0", # https://pypi.org/project/pytest-github-actions-annotate-failures
-    "pytest-pretty==1.3.0", # https://pypi.org/project/pytest-pretty
-    "pytest-smoke==0.10.0", # https://pypi.org/project/pytest-smoke
+    "coverage[toml]>=7.13.4", # https://pypi.org/project/coverage
+    "full-match>=0.0.3", # https://pypi.org/project/full-match
+    "httpx>=0.28.1", # https://pypi.org/project/httpx
+    "pytest>=9.0.2", # https://pypi.org/project/pytest
+    "pytest-asyncio>=1.3.0", # https://pypi.org/project/pytest-asyncio
+    "pytest-benchmark>=5.2.3", # https://pypi.org/project/pytest-benchmark
+    "pytest-github-actions-annotate-failures>=0.3.0", # https://pypi.org/project/pytest-github-actions-annotate-failures
+    "pytest-pretty>=1.3.0", # https://pypi.org/project/pytest-pretty
+]
+typing-stubs = [
+    "types-Markdown>=3.10.2.20260211", # https://pypi.org/project/types-Markdown
+    "types-lxml>=2026.1.1", # https://pypi.org/project/types-lxml
+    "types-pygments>=2.19.0.20251121", # https://pypi.org/project/types-pygments
 ]
 
 # endregion dependencies
@@ -176,7 +165,7 @@ build-backend = "uv_build"
 # region ----> Coverage.py <----
 # https://coverage.readthedocs.io/en/latest/config.html
 [tool.coverage.run]
-source = ["src", "scripts"]
+source = ["src"]
 branch = true
 parallel = true
 sigterm = true
@@ -240,77 +229,6 @@ output = "coverage.xml" # default “coverage.xml”
 [tool.coverage.paths]
 source = ["src"]
 # endregion Coverage.py
-
-# region ----> creosote <----
-# https://github.com/fredrikaverpil/creosote
-[tool.creosote]
-venvs = [".venv"]
-paths = ["src"]
-deps-file = "pyproject.toml"
-sections = ["project.dependencies", "project.optional-dependencies"]
-exclude-deps = [
-    # TODO -> Enable once we uninstall these dependencies:
-    "itsdangerous",
-    "python-multipart"
-]
-# endregion creosote
-
-# region ----> flake8 <----
-# https://flake8.pycqa.org/en/latest/glossary.html
-# https://flake8.pycqa.org/en/latest/user/error-codes.html
-# https://flake8.pycqa.org/en/latest/user/configuration.html
-# https://github.com/john-hen/Flake8-pyproject
-[tool.flake8]
-extend-ignore = [
-    "E", # pycodestyle
-    "W", # pycodestyle
-    "F", # pyflakes
-    "C901", # McCabe
-    # TODO -> Enable once all lint violations are fixed:
-    "CCE001", # flake8-class-attributes-order
-    "PYD001", # flake8-pydantic
-]
-per-file-ignores = []
-count = false # Print the total number of errors.
-show-source = false # Print the source code generating the error/warning in question.
-statistics = true # Count the number of occurrences of each error/warning code and print a report.
-format = "default"
-require-plugins = [
-    "Flake8-pyproject",
-    "flake8-class-attributes-order",
-    "flake8-pydantic",
-]
-# https://github.com/best-doctor/flake8-class-attributes-order
-class_attributes_order = [
-    "meta_class",
-    "nested_class",
-    "constant",
-    "outer_field",
-    "field",
-    "protected_field",
-    "private_field",
-    "__new__",
-    "__init__",
-    "__post_init__",
-    "__str__",
-    "magic_method",
-    "save",
-    "delete",
-    "property_method",
-    "protected_property_method",
-    "private_property_method",
-    "static_method",
-    "protected_static_method",
-    "private_static_method",
-    "class_method",
-    "protected_class_method",
-    "private_class_method",
-    "private_method",
-    "protected_method",
-    "method",
-]
-
-# endregion flake8
 
 # region ----> uv <----
 # uv - An extremely fast Python package and project manager, written in Rust.

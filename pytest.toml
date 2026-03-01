@@ -23,8 +23,6 @@ addopts = [
     "--new-first",
     "--no-header",
     "--color=yes",
-    "--cov-context=test", # record per-test contexts
-    "--cov-config=pyproject.toml", # be explicit about the config source
     # TODO -> Uncomment this line, when https://github.com/ipython/ipython/issues/14620 is solved:
     # "--pdbcls=IPython.terminal.debugger:Pdb",
 ]

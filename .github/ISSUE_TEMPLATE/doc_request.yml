@@ -1,0 +1,56 @@
+name: Documentation Request
+description: A project lives and breathes on the quality of its documentation.
+title: "DOCS: "
+labels: [docs]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        We believe that concise carefully curated documentation is a very
+        important component of modern projects. Whether something is missing,
+        unclear, or outdated, we want to hear about it.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of documentation change?
+      options:
+        - Missing documentation
+        - Unclear or confusing documentation
+        - Outdated documentation
+        - Typo or formatting issue
+        - New tutorial or guide
+        - API reference improvement
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Relevant documentation URL
+      description: >
+        Link to the page on
+        [docs.airwebframework.org](https://docs.airwebframework.org) if this is
+        about an existing page.
+      placeholder: https://docs.airwebframework.org/...
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the improvement
+      description: >
+        What should be added, changed, or clarified? Be as specific as you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: >
+        Links to external references, related issues, or anything else that
+        helps explain the request.
+    validations:
+      required: false

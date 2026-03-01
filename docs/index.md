@@ -1,30 +1,39 @@
 
 <p align="center">
-  <a href="https://airwebframework.org"><img src="https://raw.githubusercontent.com/feldroy/air/refs/heads/main/img/air-neon.svg" height="369" width="369" alt="Air: A FastAPI-powered breath of fresh air in Python web development."></a>
+  <br>
+  <a href="https://airwebframework.org">
+    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg#only-light" width="180" alt="Air">
+    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg#only-dark" width="180" alt="Air">
+  </a>
+  <br>
+  <br>
 </p>
 
 <p align="center">
-    <em>AIR: The new web framework that breathes fresh air into Python web development. Built with FastAPI, Starlette, and Pydantic.</em>
+    <em>The web framework that breathes fresh air into Python web development.<br>
+    Built with FastAPI, Starlette, and Pydantic.</em>
+    <br>
+    <br>
 </p>
 
 <p align="center">
     <a href="https://github.com/feldroy/air/actions/workflows/CI.yaml?query=branch%3Amain+event%3Apush" target="_blank">
         <img src="https://img.shields.io/github/actions/workflow/status/feldroy/air/CI.yaml?branch=main&logo=githubactions&label=CI" alt="CI - main">
     </a>
-    <a href="https://github.com/feldroy/air/actions/workflows/python-package.yml?query=tag%3Alatest+event%3Apush" target="_blank">
-        <img src="https://img.shields.io/github/check-runs/feldroy/air/latest?logo=githubactions&label=CI%20Tag" alt="CI - Latest Tag">
-    </a>
     <a href="https://codecov.io/gh/feldroy/air" target="_blank">
         <img src="https://codecov.io/gh/feldroy/air/graph/badge.svg?token=928SXPA1SU" alt="codecov">
     </a>
     <a href="https://github.com/feldroy/air/blob/main/LICENSE" target="_blank">
-        <img src="https://img.shields.io/github/license/feldroy/air?logo=github&label=License" alt="Github License">
+        <img src="https://img.shields.io/github/license/feldroy/air?logo=github&label=License" alt="GitHub License">
     </a>
 </p>
 
 <p align="center">
     <a href="https://pypi.org/project/air" target="_blank">
-        <img src="https://img.shields.io/pypi/v/air?logo=pypi&label=Pypi&logoColor=fff" alt="PyPi - Version">
+        <img src="https://img.shields.io/pypi/v/air?logo=pypi&label=Pypi&logoColor=fff" alt="PyPI - Version">
+    </a>
+    <a href="https://pypi.org/project/air" target="_blank">
+        <img src="https://img.shields.io/pypi/pyversions/air?logo=python&logoColor=fff&label=Python" alt="Python Versions">
     </a>
     <a href="https://pepy.tech/projects/air" target="_blank">
         <img src="https://static.pepy.tech/badge/air" alt="PyPI Total Downloads">
@@ -38,13 +47,9 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Running%20on:-magenta?labelColor=black&logo=hotwire&logoColor=yellow" alt="Running on">
     <img src="https://custom-icon-badges.demolab.com/badge/Windows%2011-%230079d5?logo=windows11&logoColor=white" alt="Windows">
     <img src="https://img.shields.io/badge/MacOS-000000?logo=apple&logoColor=white&color=2e2e2e" alt="macOS">
     <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&color=orange" alt="Ubuntu">
-    <a href="https://pypi.org/project/air" target="_blank">
-        <img src="https://img.shields.io/pypi/pyversions/air?logo=python&logoColor=fff&label=Python" alt="Python Versions">
-    </a>
 </p>
 
 <p align="center">
@@ -71,13 +76,12 @@
     <a href="https://bsky.app/profile/airwebframework.bsky.social" target="_blank">
         <img src="https://img.shields.io/badge/Air%20💨-0285FF?logo=bluesky&logoColor=fff" alt="Bluesky">
     </a>
-    <a href="https://feldroy.github.io/air" target="_blank">
+    <a href="https://docs.airwebframework.org" target="_blank">
         <img src="https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff" alt="MkDocs">
     </a>
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Frameworks:-magenta?labelColor=black&logo=framework&logoColor=yellow" alt="Frameworks">
     <a href="https://fastapi.tiangolo.com" target="_blank">
         <img src="https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white" alt="FastAPI">
     </a>

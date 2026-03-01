@@ -1,8 +1,8 @@
 """
-This project requires the "pyinstrument" package, intentionally not
-included in the dependencies of the Air project.
+Profile any page by adding '?profile=1' to the URL.
 
-Call pyinstrument by adding '?profile=1' after any URL
+Requires the "pyinstrument" package (installed via the examples
+dependency group: uv sync --group examples).
 """
 
 from pyinstrument import Profiler

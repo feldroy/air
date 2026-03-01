@@ -36,7 +36,7 @@ exclude = [
 [format]
 indent-style = "space" # match EditorConfig
 line-ending = "lf" # enforce LF newlines
-quote-style = "double" # keep quotes in sync with flake8-quotes
+quote-style = "double"
 # Docstring code formatting
 docstring-code-format = true # format Python code blocks in docstrings
 # tombi: lint.rules.type-mismatch.disabled = true
@@ -112,6 +112,7 @@ ignore = [
     "D107", # ignore missing docstring in __init__ methods
     "D206", # docstring-tab-indentation (formatter handles indentation)
     "D300", # triple-single-quotes (formatter enforces double quotes)
+    "DOC201", # type hints + summary lines suffice; Returns sections added only when they add info beyond the signature (#1078)
     "ERA001", # commented-out code
     "PLC0414", # keep explicit alias
     # TODO -> Remove the rules below this line

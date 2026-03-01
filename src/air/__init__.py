@@ -1,5 +1,7 @@
 """A FastAPI-powered breath of fresh air in Python web development."""
 
+from importlib.metadata import version
+
 from fastapi import Query as Query
 from starlette.staticfiles import StaticFiles as StaticFiles
 
@@ -170,3 +172,5 @@ from .templating import (
     JinjaRenderer as JinjaRenderer,
     Renderer as Renderer,
 )
+
+__version__ = version("air")

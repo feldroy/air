@@ -184,6 +184,36 @@ def test_injection_of_default_exception_handlers() -> None:
     assert app.exception_handlers[405] is handler
 
 
+def test_custom_exception_handlers_not_overwritten_by_defaults() -> None:
+    """User-provided handlers for 404/500 must not be overwritten by defaults."""
+
+    def my_404(request: air.Request, exc: Exception) -> air.AirResponse:
+        return air.AirResponse(air.H1("Custom 404"), status_code=404)
+
+    def my_500(request: air.Request, exc: Exception) -> air.AirResponse:
+        return air.AirResponse(air.H1("Custom 500"), status_code=500)
+
+    app = air.Air(exception_handlers={404: my_404, 500: my_500})
+
+    assert app.exception_handlers[404] is my_404
+    assert app.exception_handlers[500] is my_500
+
+    client = TestClient(app, raise_server_exceptions=False)
+
+    response = client.get("/nonexistent")
+    assert response.status_code == 404
+    assert response.text == "<h1>Custom 404</h1>"
+
+    @app.get("/error")
+    def error_page() -> air.H1:
+        msg = "boom"
+        raise RuntimeError(msg)
+
+    response = client.get("/error")
+    assert response.status_code == 500
+    assert response.text == "<h1>Custom 500</h1>"
+
+
 def test_url_helper_method() -> None:
     """Test that route decorators have .url() method for URL generation."""
     app = air.Air()
@@ -359,3 +389,123 @@ def test_fastapi_app_property() -> None:
 
     assert isinstance(app.fastapi_app, FastAPI)
     assert app.fastapi_app is app._app
+
+
+def test_sync_endpoint_returns_html() -> None:
+    """Sync endpoints produce correct HTML (#1067)."""
+    app = air.Air()
+
+    @app.get("/sync")
+    def sync_page() -> air.H1:
+        return air.H1("Sync")
+
+    @app.get("/async")
+    async def async_page() -> air.H1:
+        return air.H1("Async")
+
+    client = TestClient(app)
+    for path in ["/sync", "/async"]:
+        response = client.get(path)
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "text/html; charset=utf-8"
+
+
+def test_sync_endpoint_not_on_event_loop() -> None:
+    """Sync endpoints run in a threadpool, not blocking the event loop (#1067)."""
+    import asyncio  # noqa: PLC0415
+
+    app = air.Air()
+    has_loop: dict[str, bool] = {}
+
+    @app.get("/sync")
+    def sync_page() -> air.H1:
+        try:
+            asyncio.get_running_loop()
+            has_loop["sync"] = True
+        except RuntimeError:
+            has_loop["sync"] = False
+        return air.H1("Sync")
+
+    @app.get("/async")
+    async def async_page() -> air.H1:
+        try:
+            asyncio.get_running_loop()
+            has_loop["async"] = True
+        except RuntimeError:
+            has_loop["async"] = False
+        return air.H1("Async")
+
+    client = TestClient(app)
+    client.get("/sync")
+    client.get("/async")
+
+    assert has_loop["sync"] is False, "sync handler should not be on the event loop"
+    assert has_loop["async"] is True, "async handler should be on the event loop"
+
+
+def test_sync_endpoint_exception_propagates() -> None:
+    """Exceptions in sync handlers propagate through the threadpool (#1067)."""
+    app = air.Air()
+
+    @app.get("/error")
+    def error_page() -> air.H1:
+        msg = "sync handler error"
+        raise ValueError(msg)
+
+    client = TestClient(app, raise_server_exceptions=False)
+    response = client.get("/error")
+    assert response.status_code == 500
+
+
+def test_custom_kwargs_forwarded() -> None:
+    """Route kwargs like status_code and tags reach FastAPI."""
+    app = air.Air()
+
+    @app.post("/created", status_code=201, tags=["items"])
+    def create_item() -> air.H1:
+        return air.H1("Created")
+
+    client = TestClient(app)
+    response = client.post("/created")
+    assert response.status_code == 201
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<h1>Created</h1>"
+
+
+def test_custom_response_class() -> None:
+    """Custom response_class is used instead of AirResponse."""
+    app = air.Air()
+
+    class WrappingResponse(air.AirResponse):
+        """Custom response that wraps content in an <article> tag."""
+
+        def render(self, tag: object) -> bytes:
+            return str(air.Article(tag)).encode()
+
+    @app.get("/custom", response_class=WrappingResponse)
+    def custom_page() -> air.H1:
+        return air.H1("Inside article")
+
+    client = TestClient(app)
+    response = client.get("/custom")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "text/html; charset=utf-8"
+    assert response.text == "<article><h1>Inside article</h1></article>"
+
+
+def test_response_passthrough_sync_and_async() -> None:
+    """Response objects pass through without conversion."""
+    app = air.Air()
+
+    @app.get("/sync-redirect")
+    def sync_redirect() -> air.RedirectResponse:
+        return air.RedirectResponse("/target")
+
+    @app.get("/async-redirect")
+    async def async_redirect() -> air.RedirectResponse:
+        return air.RedirectResponse("/target")
+
+    client = TestClient(app)
+    for path in ["/sync-redirect", "/async-redirect"]:
+        response = client.get(path, follow_redirects=False)
+        assert response.status_code == 307
