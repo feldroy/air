@@ -130,14 +130,14 @@ dev = [
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },
     { name = "pytest-pretty", specifier = ">=1.3.0" },
     { name = "ruff", specifier = ">=0.15.0" },
-    { name = "ty", specifier = ">=0.0.14" },
+    { name = "ty", specifier = ">=0.0.19" },
     { name = "types-lxml", specifier = ">=2026.1.1" },
     { name = "types-markdown", specifier = ">=3.10.2.20260211" },
     { name = "types-pygments", specifier = ">=2.19.0.20251121" },
 ]
 devtools = [
     { name = "ruff", specifier = ">=0.15.0" },
-    { name = "ty", specifier = ">=0.0.14" },
+    { name = "ty", specifier = ">=0.0.19" },
 ]
 docs = [
     { name = "click", specifier = ">=8.3.1" },

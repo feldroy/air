@@ -189,6 +189,25 @@ def test_jinja_renderer_with_env() -> None:
     assert jinja.templates is not None
 
 
+def test_jinja_csrf_helpers_render_token_and_hidden_input() -> None:
+    app = Air()
+    app.add_middleware(air.CSRFMiddleware)
+    jinja = JinjaRenderer(directory="tests/templates")
+
+    @app.get("/form")
+    def form(request: Request) -> HTMLResponse:
+        return jinja(request, name="csrf_form.html")
+
+    client = TestClient(app)
+    response = client.get("/form")
+
+    assert response.status_code == 200
+    token = response.cookies.get("air_csrf_token")
+    assert token is not None
+    assert f'name="csrf_token" value="{token}"' in response.text
+    assert f'<p id="token">{token}</p>' in response.text
+
+
 def test_renderer() -> None:
     """Test the Renderer class."""
     app = air.Air()

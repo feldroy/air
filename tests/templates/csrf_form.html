@@ -1,0 +1,6 @@
+<form method="post" action="/submit">
+  {{ csrf_input() }}
+  <input type="text" name="name" />
+  <button type="submit">Submit</button>
+</form>
+<p id="token">{{ csrf_token() }}</p>
