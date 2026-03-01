@@ -6,9 +6,8 @@ import secrets
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from starlette.requests import Request
     from starlette.types import Scope
-
-    from air.requests import Request
 
 DEFAULT_CSRF_COOKIE_NAME = "air_csrf_token"
 DEFAULT_CSRF_HEADER_NAME = "X-CSRF-Token"
