@@ -4,6 +4,7 @@ Instantiating Air applications.
 
 from collections.abc import Callable, Sequence
 from enum import Enum
+from pathlib import Path
 from typing import Annotated, Any, Literal
 from warnings import deprecated
 
@@ -299,6 +300,13 @@ class Air(RouterMixin):
 
         # Use Air's custom route class
         self._app.router.route_class = AirRoute
+
+        # Auto-detect and mount static files
+        self.static = None
+        if Path("static").is_dir():
+            from .static import Static  # noqa: PLC0415
+
+            self.static = Static("static", app=self)
 
     # =========================================================================
     # ASGI Interface

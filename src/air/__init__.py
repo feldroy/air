@@ -8,6 +8,7 @@ from starlette.staticfiles import StaticFiles as StaticFiles
 from . import (
     layouts as layouts,
     responses as responses,
+    static as static,
 )
 from .applications import (
     Air as Air,
@@ -38,6 +39,9 @@ from .responses import (
     TagResponse as TagResponse,
 )
 from .routing import AirRouter as AirRouter
+from .static import (
+    Static as Static,
+)
 from .tags import (
     H1 as H1,
     H2 as H2,
