@@ -41,6 +41,7 @@ from .responses import (
 from .routing import AirRouter as AirRouter
 from .static import (
     Static as Static,
+    StaticRewriteMiddleware as StaticRewriteMiddleware,
 )
 from .tags import (
     H1 as H1,

@@ -7,8 +7,9 @@ if TYPE_CHECKING:
 
 import pytest
 from fastapi.testclient import TestClient
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, JSONResponse
 
+import air
 from air import Air, JinjaRenderer, Request
 from air.static import Static, enable
 
@@ -324,3 +325,163 @@ def test_jinja_renderer_auto_wires_static_from_app(tmp_path: Path, monkeypatch: 
     # Should contain hashed URL, not the original
     assert "/static/app." in response.text
     assert '.css">' in response.text
+
+
+# =============================================================================
+# StaticRewriteMiddleware tests
+# =============================================================================
+
+
+def test_rewrite_middleware_rewrites_html(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Normal HTML paths like /static/styles.css get rewritten to hashed versions."""
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "styles.css").write_text("body { color: red; }")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    @app.get("/")
+    def page() -> str:
+        return '<link href="/static/styles.css" rel="stylesheet">'
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "/static/styles.css" not in response.text
+    assert "/static/styles." in response.text
+    assert '.css" rel="stylesheet">' in response.text
+
+
+def test_rewrite_middleware_skips_non_html(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """JSON and other non-HTML responses are passed through unchanged."""
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "styles.css").write_text("body { color: red; }")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    @app.get("/api")
+    def api() -> JSONResponse:
+        return JSONResponse({"url": "/static/styles.css"})
+
+    client = TestClient(app)
+    response = client.get("/api")
+
+    assert response.status_code == 200
+    assert response.json()["url"] == "/static/styles.css"
+
+
+def test_rewrite_middleware_leaves_unknown_paths(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Paths not in the file_map are left as-is."""
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "styles.css").write_text("body { color: red; }")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    @app.get("/")
+    def page() -> str:
+        return '<script src="/static/unknown.js"></script>'
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert '/static/unknown.js"' in response.text
+
+
+def test_rewrite_middleware_does_not_double_rewrite(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Already-hashed paths are not rewritten again."""
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "styles.css").write_text("body { color: red; }")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    hashed = app.static.file_map["styles.css"]
+
+    @app.get("/")
+    def page() -> str:
+        return f'<link href="/static/{hashed}">'
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert f"/static/{hashed}" in response.text
+
+
+def test_rewrite_middleware_handles_subdirectories(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Paths with subdirectories like /static/css/app.css get rewritten."""
+    static_dir = tmp_path / "static"
+    css_dir = static_dir / "css"
+    css_dir.mkdir(parents=True)
+    (css_dir / "app.css").write_text("body { margin: 0; }")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    @app.get("/")
+    def page() -> str:
+        return '<link href="/static/css/app.css">'
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "/static/css/app.css" not in response.text
+    assert "/static/css/app." in response.text
+    assert '.css">' in response.text
+
+
+def test_rewrite_middleware_works_with_air_tags(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Auto-rewriting works with Air tags, not just Jinja."""
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "styles.css").write_text("body { color: red; }")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    @app.get("/")
+    def page() -> air.Html:
+        return air.Html(
+            air.Head(air.Link(rel="stylesheet", href="/static/styles.css")),
+            air.Body(air.H1("Hello")),
+        )
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "/static/styles.css" not in response.text
+    assert "/static/styles." in response.text
+
+
+def test_rewrite_middleware_multiple_paths(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Multiple static paths in one response all get rewritten."""
+    static_dir = tmp_path / "static"
+    static_dir.mkdir()
+    (static_dir / "styles.css").write_text("body { color: red; }")
+    (static_dir / "app.js").write_text("console.log('hi');")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    @app.get("/")
+    def page() -> str:
+        return '<link href="/static/styles.css"><script src="/static/app.js"></script>'
+
+    client = TestClient(app)
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "/static/styles.css" not in response.text
+    assert "/static/app.js" not in response.text
+    assert "/static/styles." in response.text
+    assert "/static/app." in response.text

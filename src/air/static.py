@@ -3,34 +3,27 @@
 Computes content hashes at startup and serves files with hashed filenames.
 Example: styles.css -> styles.a1b2c3d4.css
 
-Usage:
-    import air
-    from air.static import Static
+Zero-config: Air auto-detects ``static/`` and rewrites URLs in HTML responses.
 
-    app = air.Air()
-    jinja = air.JinjaRenderer(directory="templates")
+    # Just write normal paths in templates or Air tags:
+    <link href="/static/styles.css">
+    air.Link(href="/static/styles.css")
 
-    # One line. Auto-mounts, auto-registers template function.
-    Static("static", app=app, jinja=jinja)
-
-    # Or use enable() for zero-config:
-    from air.static import enable
-    enable(app, jinja)  # If static/ exists, just works
-
-    # Templates just work:
-    {{ static('styles.css') }}  ->  /static/styles.a1b2c3d4.css
+    # Air automatically rewrites to:
+    <link href="/static/styles.a1b2c3d4.css">
 """
 
 from __future__ import annotations
 
 import hashlib
+import re
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from starlette.responses import FileResponse, Response
 
 if TYPE_CHECKING:
-    from starlette.types import Receive, Scope, Send
+    from starlette.types import ASGIApp, Receive, Scope, Send
 
     from .applications import Air
     from .templating import JinjaRenderer
@@ -189,3 +182,74 @@ class Static:
             return
 
         await Response("Not Found", status_code=404)(scope, receive, send)
+
+
+class StaticRewriteMiddleware:
+    """ASGI middleware that rewrites static file paths in HTML responses.
+
+    Automatically transforms ``/static/styles.css`` to ``/static/styles.a1b2c3d4.css``
+    in HTML responses. Works with Jinja templates, Air tags, and hardcoded HTML.
+    """
+
+    def __init__(self, app: ASGIApp, *, static: Static) -> None:
+        self.app = app
+        self.static = static
+        escaped = re.escape(static.prefix)
+        self._pattern = re.compile(escaped + r"/([^\"'>\s)#?]+)")
+
+    def _replace(self, match: re.Match[str]) -> str:
+        path = match.group(1)
+        if path in self.static.file_map:
+            return f"{self.static.prefix}/{self.static.file_map[path]}"
+        return match.group(0)
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        response_start: dict[str, Any] | None = None
+        body_parts: list[bytes] = []
+        is_html = False
+
+        async def send_wrapper(message: dict[str, Any]) -> None:
+            nonlocal response_start, is_html
+
+            if message["type"] == "http.response.start":
+                response_start = message
+                headers = dict(message.get("headers", []))
+                content_type = headers.get(b"content-type", b"").decode("latin-1")
+                is_html = "text/html" in content_type
+                if not is_html:
+                    await send(message)
+                return
+
+            if message["type"] == "http.response.body":
+                if not is_html:
+                    await send(message)
+                    return
+
+                body = message.get("body", b"")
+                more_body = message.get("more_body", False)
+                body_parts.append(body)
+
+                if not more_body:
+                    full_body = b"".join(body_parts)
+                    try:
+                        text = full_body.decode("utf-8")
+                        text = self._pattern.sub(self._replace, text)
+                        full_body = text.encode("utf-8")
+                    except UnicodeDecodeError:
+                        pass
+
+                    assert response_start is not None
+                    new_headers = [
+                        (k, str(len(full_body)).encode("latin-1")) if k == b"content-length" else (k, v)
+                        for k, v in response_start.get("headers", [])
+                    ]
+                    response_start["headers"] = new_headers
+                    await send(response_start)
+                    await send({"type": "http.response.body", "body": full_body})
+                return
+
+        await self.app(scope, receive, send_wrapper)
