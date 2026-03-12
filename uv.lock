@@ -18,6 +18,7 @@ dependencies = [
     { name = "python-multipart" },
     { name = "rich" },
     { name = "selectolax" },
+    { name = "staticware" },
     { name = "typer" },
     { name = "uvicorn" },
 ]
@@ -103,6 +104,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.22" },
     { name = "rich", specifier = ">=14.3.2" },
     { name = "selectolax", specifier = ">=0.4.6" },
+    { name = "staticware", editable = "../staticware" },
     { name = "typer", specifier = ">=0.23.0" },
     { name = "uvicorn", specifier = ">=0.40.0" },
 ]
@@ -2397,6 +2399,33 @@ sdist = { url = "https://files.pythonhosted.org/packages/c4/68/79977123bb7be889a
 wheels = [
     { url = "https://files.pythonhosted.org/packages/81/0d/13d1d239a25cbfb19e740db83143e95c772a1fe10202dda4b76792b114dd/starlette-0.52.1-py3-none-any.whl", hash = "sha256:0029d43eb3d273bc4f83a08720b4912ea4b071087a3b48db01b7c839f7954d74", size = 74272, upload-time = "2026-01-18T13:34:09.188Z" },
 ]
+
+[[package]]
+name = "staticware"
+version = "0.1.0"
+source = { editable = "../staticware" }
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "ruff" },
+    { name = "ty" },
+]
+docs = [
+    { name = "mkdocstrings-python" },
+    { name = "zensical" },
+]
+lint = [{ name = "ruff" }]
+test = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+]
+typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "tinycss2"

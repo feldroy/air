@@ -92,6 +92,7 @@ dependencies = [
     "python-multipart>=0.0.22", # https://pypi.org/project/python-multipart
     "rich>=14.3.2", # https://pypi.org/project/rich
     "selectolax>=0.4.6", # https://pypi.org/project/selectolax
+    "staticware", # https://pypi.org/project/staticware
     "typer>=0.23.0", # https://pypi.org/project/typer
     "uvicorn>=0.40.0", # https://pypi.org/project/uvicorn
 ]
@@ -257,6 +258,7 @@ cache-keys = [
 [tool.uv.sources]
 # Always use the local workspace copy of "air" instead of PyPI; in a monorepo or dev, uv uses your checked-out code.
 air = { workspace = true }
+staticware = { path = "../staticware", editable = true }
 
 # Settings specific to uv_build.
 [tool.uv.build-backend]
