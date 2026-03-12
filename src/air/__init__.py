@@ -3,7 +3,10 @@
 from importlib.metadata import version
 
 from fastapi import Query as Query
-from starlette.staticfiles import StaticFiles as StaticFiles
+from staticware import (
+    StaticFiles as StaticFiles,
+    StaticRewriteMiddleware as StaticRewriteMiddleware,
+)
 
 from . import (
     layouts as layouts,
