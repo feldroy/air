@@ -104,7 +104,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.22" },
     { name = "rich", specifier = ">=14.3.2" },
     { name = "selectolax", specifier = ">=0.4.6" },
-    { name = "staticware", editable = "../staticware" },
+    { name = "staticware", git = "https://github.com/feldroy/staticware.git" },
     { name = "typer", specifier = ">=0.23.0" },
     { name = "uvicorn", specifier = ">=0.40.0" },
 ]
@@ -2400,29 +2400,7 @@ wheels = [
 [[package]]
 name = "staticware"
 version = "0.1.0"
-source = { editable = "../staticware" }
-
-[package.metadata]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "ruff" },
-    { name = "ty" },
-]
-docs = [
-    { name = "mkdocstrings-python" },
-    { name = "zensical" },
-]
-lint = [{ name = "ruff" }]
-test = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-]
-typecheck = [{ name = "ty" }]
+source = { git = "https://github.com/feldroy/staticware.git#191ba51dbfc03591410fb254ed700c7635ea48a3" }
 
 [[package]]
 name = "tinycss2"

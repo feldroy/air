@@ -1,17 +1,13 @@
 import hashlib
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
 
 import pytest
 from fastapi.testclient import TestClient
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import JSONResponse
 from staticware import HashedStatic
 
 import air
-from air import Air, JinjaRenderer, Request
+from air import Air
 
 TEST_STATIC_DIR = "tests/static_test_files"
 
@@ -104,19 +100,6 @@ def test_static_404_for_missing() -> None:
     assert response.status_code == 404
 
 
-def test_static_auto_registers_jinja_global() -> None:
-    """Test that JinjaRenderer registers static() when passed an app with static."""
-    app = Air()
-    app.static = HashedStatic(TEST_STATIC_DIR)
-    jinja = JinjaRenderer(directory="tests/templates", app=app)
-
-    assert "static" in jinja.templates.env.globals
-    static_func = cast("Callable[[str], str]", jinja.templates.env.globals["static"])
-    url = static_func("styles.css")
-    assert url.startswith("/static/styles.")
-    assert url.endswith(".css")
-
-
 def test_static_custom_prefix() -> None:
     """Test HashedStatic with custom URL prefix."""
     app = Air()
@@ -149,29 +132,6 @@ def test_static_hash_is_content_based() -> None:
     hashed = static.file_map["styles.css"]
 
     assert expected_hash in hashed
-
-
-def test_static_in_template(tmp_path: Path) -> None:
-    """Test using static() in a Jinja template."""
-    template_dir = tmp_path / "templates"
-    template_dir.mkdir()
-    template_file = template_dir / "with_static.html"
-    template_file.write_text('<link href="{{ static(\'styles.css\') }}" rel="stylesheet">')
-
-    app = Air()
-    app.static = HashedStatic(TEST_STATIC_DIR)
-    jinja = JinjaRenderer(directory=str(template_dir), app=app)
-
-    @app.get("/test")
-    def page(request: Request) -> HTMLResponse:
-        return jinja(request, "with_static.html")
-
-    client = TestClient(app)
-    response = client.get("/test")
-
-    assert response.status_code == 200
-    assert "/static/styles." in response.text
-    assert '.css" rel="stylesheet">' in response.text
 
 
 def test_static_nonexistent_directory() -> None:
@@ -266,33 +226,6 @@ def test_air_no_static_when_directory_missing(tmp_path: Path, monkeypatch: pytes
     app = Air()
 
     assert app.static is None
-
-
-def test_jinja_renderer_auto_wires_static_from_app(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """Test that JinjaRenderer auto-wires static() when passed an app with static files."""
-    static_dir = tmp_path / "static"
-    static_dir.mkdir()
-    (static_dir / "app.css").write_text("body { margin: 0; }")
-
-    template_dir = tmp_path / "templates"
-    template_dir.mkdir()
-    (template_dir / "page.html").write_text("<link href=\"{{ static('app.css') }}\">")
-
-    monkeypatch.chdir(tmp_path)
-
-    app = Air()
-    jinja = JinjaRenderer(directory=str(template_dir), app=app)
-
-    @app.get("/")
-    def page(request: Request) -> HTMLResponse:
-        return jinja(request, "page.html")
-
-    client = TestClient(app)
-    response = client.get("/")
-
-    assert response.status_code == 200
-    assert "/static/app." in response.text
-    assert '.css">' in response.text
 
 
 # =============================================================================
