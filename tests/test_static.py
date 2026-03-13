@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 import pytest
 from fastapi.testclient import TestClient
 from starlette.responses import HTMLResponse, JSONResponse
-from staticware import StaticFiles
+from staticware import HashedStatic
 
 import air
 from air import Air, JinjaRenderer, Request
@@ -17,8 +17,8 @@ TEST_STATIC_DIR = "tests/static_test_files"
 
 
 def test_static_hashes_files() -> None:
-    """Test that StaticFiles computes hashes for files."""
-    static = StaticFiles(TEST_STATIC_DIR)
+    """Test that HashedStatic computes hashes for files."""
+    static = HashedStatic(TEST_STATIC_DIR)
 
     assert "styles.css" in static.file_map
     assert "images/logo.png" in static.file_map
@@ -34,7 +34,7 @@ def test_static_hashes_files() -> None:
 
 def test_static_url() -> None:
     """Test that url() returns correct hashed URL."""
-    static = StaticFiles(TEST_STATIC_DIR, prefix="/static")
+    static = HashedStatic(TEST_STATIC_DIR, prefix="/static")
 
     url = static.url("styles.css")
     assert url.startswith("/static/styles.")
@@ -47,7 +47,7 @@ def test_static_url() -> None:
 
 def test_static_url_subdirectory() -> None:
     """Test url() with files in subdirectories."""
-    static = StaticFiles(TEST_STATIC_DIR)
+    static = HashedStatic(TEST_STATIC_DIR)
 
     url = static.url("images/logo.png")
     assert url.startswith("/static/images/logo.")
@@ -56,7 +56,7 @@ def test_static_url_subdirectory() -> None:
 
 def test_static_url_unknown_file() -> None:
     """Test url() returns original path for unknown files."""
-    static = StaticFiles(TEST_STATIC_DIR)
+    static = HashedStatic(TEST_STATIC_DIR)
 
     url = static.url("nonexistent.js")
     assert url == "/static/nonexistent.js"
@@ -65,7 +65,7 @@ def test_static_url_unknown_file() -> None:
 def test_static_serves_hashed_file() -> None:
     """Test serving files with hashed URLs."""
     app = Air()
-    static = StaticFiles(TEST_STATIC_DIR)
+    static = HashedStatic(TEST_STATIC_DIR)
     app.mount("/static", static, name="static")
 
     client = TestClient(app)
@@ -80,7 +80,7 @@ def test_static_serves_hashed_file() -> None:
 def test_static_serves_unhashed_file() -> None:
     """Test serving files with direct (unhashed) URLs."""
     app = Air()
-    static = StaticFiles(TEST_STATIC_DIR)
+    static = HashedStatic(TEST_STATIC_DIR)
     app.mount("/static", static, name="static")
 
     client = TestClient(app)
@@ -95,7 +95,7 @@ def test_static_serves_unhashed_file() -> None:
 def test_static_404_for_missing() -> None:
     """Test 404 for missing files."""
     app = Air()
-    static = StaticFiles(TEST_STATIC_DIR)
+    static = HashedStatic(TEST_STATIC_DIR)
     app.mount("/static", static, name="static")
 
     client = TestClient(app)
@@ -107,7 +107,7 @@ def test_static_404_for_missing() -> None:
 def test_static_auto_registers_jinja_global() -> None:
     """Test that JinjaRenderer registers static() when passed an app with static."""
     app = Air()
-    app.static = StaticFiles(TEST_STATIC_DIR)
+    app.static = HashedStatic(TEST_STATIC_DIR)
     jinja = JinjaRenderer(directory="tests/templates", app=app)
 
     assert "static" in jinja.templates.env.globals
@@ -118,9 +118,9 @@ def test_static_auto_registers_jinja_global() -> None:
 
 
 def test_static_custom_prefix() -> None:
-    """Test StaticFiles with custom URL prefix."""
+    """Test HashedStatic with custom URL prefix."""
     app = Air()
-    static = StaticFiles(TEST_STATIC_DIR, prefix="/assets")
+    static = HashedStatic(TEST_STATIC_DIR, prefix="/assets")
     app.mount("/assets", static, name="static")
 
     url = static.url("styles.css")
@@ -132,8 +132,8 @@ def test_static_custom_prefix() -> None:
 
 
 def test_static_custom_hash_length() -> None:
-    """Test StaticFiles with custom hash length."""
-    static = StaticFiles(TEST_STATIC_DIR, hash_length=16)
+    """Test HashedStatic with custom hash length."""
+    static = HashedStatic(TEST_STATIC_DIR, hash_length=16)
 
     hashed = static.file_map["styles.css"]
     parts = hashed.split(".")
@@ -145,7 +145,7 @@ def test_static_hash_is_content_based() -> None:
     content = Path(TEST_STATIC_DIR, "styles.css").read_bytes()
     expected_hash = hashlib.sha256(content).hexdigest()[:8]
 
-    static = StaticFiles(TEST_STATIC_DIR)
+    static = HashedStatic(TEST_STATIC_DIR)
     hashed = static.file_map["styles.css"]
 
     assert expected_hash in hashed
@@ -159,7 +159,7 @@ def test_static_in_template(tmp_path: Path) -> None:
     template_file.write_text('<link href="{{ static(\'styles.css\') }}" rel="stylesheet">')
 
     app = Air()
-    app.static = StaticFiles(TEST_STATIC_DIR)
+    app.static = HashedStatic(TEST_STATIC_DIR)
     jinja = JinjaRenderer(directory=str(template_dir), app=app)
 
     @app.get("/test")
@@ -175,8 +175,8 @@ def test_static_in_template(tmp_path: Path) -> None:
 
 
 def test_static_nonexistent_directory() -> None:
-    """Test StaticFiles handles nonexistent directory gracefully."""
-    static = StaticFiles("nonexistent_directory_12345")
+    """Test HashedStatic handles nonexistent directory gracefully."""
+    static = HashedStatic("nonexistent_directory_12345")
 
     assert len(static.file_map) == 0
     assert len(static._reverse) == 0
@@ -188,8 +188,8 @@ def test_static_nonexistent_directory() -> None:
 
 @pytest.mark.asyncio
 async def test_static_ignores_non_http_scope() -> None:
-    """Test that StaticFiles passes through non-HTTP scopes without responding."""
-    static = StaticFiles(TEST_STATIC_DIR)
+    """Test that HashedStatic passes through non-HTTP scopes without responding."""
+    static = HashedStatic(TEST_STATIC_DIR)
     scope = {"type": "websocket", "path": "/static/styles.css"}
     received: list[dict] = []
 
@@ -207,8 +207,8 @@ async def test_static_ignores_non_http_scope() -> None:
 
 @pytest.mark.asyncio
 async def test_static_returns_404_for_path_outside_prefix() -> None:
-    """Test that StaticFiles returns 404 for paths outside its prefix."""
-    static = StaticFiles(TEST_STATIC_DIR, prefix="/static")
+    """Test that HashedStatic returns 404 for paths outside its prefix."""
+    static = HashedStatic(TEST_STATIC_DIR, prefix="/static")
     scope = {"type": "http", "path": "/other/styles.css"}
     received: list[dict] = []
 
@@ -224,14 +224,14 @@ async def test_static_returns_404_for_path_outside_prefix() -> None:
 
 
 def test_static_returns_404_for_deleted_file(tmp_path: Path) -> None:
-    """Test that StaticFiles returns 404 when a hashed file is deleted after startup."""
+    """Test that HashedStatic returns 404 when a hashed file is deleted after startup."""
     static_dir = tmp_path / "static"
     static_dir.mkdir()
     temp_file = static_dir / "temp.css"
     temp_file.write_text("body { color: blue; }")
 
     app = Air()
-    static = StaticFiles(str(static_dir))
+    static = HashedStatic(str(static_dir))
     app.mount("/static", static, name="static")
 
     hashed_url = static.url("temp.css")
@@ -253,7 +253,7 @@ def test_air_auto_detects_static_directory(tmp_path: Path, monkeypatch: pytest.M
     app = Air()
 
     assert app.static is not None
-    assert isinstance(app.static, StaticFiles)
+    assert isinstance(app.static, HashedStatic)
 
     client = TestClient(app)
     response = client.get("/static/app.js")

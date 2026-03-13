@@ -4,7 +4,7 @@ from importlib.metadata import version
 
 from fastapi import Query as Query
 from staticware import (
-    StaticFiles as StaticFiles,
+    HashedStatic as HashedStatic,
     StaticRewriteMiddleware as StaticRewriteMiddleware,
 )
 
