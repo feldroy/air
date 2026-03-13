@@ -2400,7 +2400,7 @@ wheels = [
 [[package]]
 name = "staticware"
 version = "0.1.0"
-source = { git = "https://github.com/feldroy/staticware.git#191ba51dbfc03591410fb254ed700c7635ea48a3" }
+source = { git = "https://github.com/feldroy/staticware.git#ad9cdb5d0e82895b8141d882882837b9f8b384e3" }
 
 [[package]]
 name = "tinycss2"
