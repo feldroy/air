@@ -307,9 +307,9 @@ class Air(RouterMixin):
         # Auto-detect and mount static files
         self.static = None
         if Path("static").is_dir():
-            from staticware import StaticFiles, StaticRewriteMiddleware  # noqa: PLC0415
+            from staticware import HashedStatic, StaticRewriteMiddleware  # noqa: PLC0415
 
-            self.static = StaticFiles("static")
+            self.static = HashedStatic("static")
             self.mount("/static", self.static, name="static")
             self.add_middleware(StaticRewriteMiddleware, static=self.static)
 
