@@ -258,7 +258,7 @@ cache-keys = [
 [tool.uv.sources]
 # Always use the local workspace copy of "air" instead of PyPI; in a monorepo or dev, uv uses your checked-out code.
 air = { workspace = true }
-staticware = { path = "../staticware", editable = true }
+staticware = { git = "https://github.com/feldroy/staticware.git" }
 
 # Settings specific to uv_build.
 [tool.uv.build-backend]
