@@ -99,3 +99,35 @@ The API reference is generated from docstrings in this repo and built with [MkDo
 - If code changes don't apply, use `uv run <command>` (auto-syncs) or re-run `uv sync`
 - Upgrade uv: `uv self update`
 - Still stuck? File a GitHub issue with details
+
+## Releasing a New Version
+
+1. **Bump the version** and **write the changelog:**
+   ```bash
+   uv version <version>        # or: uv version --bump minor
+   ```
+   Then write `CHANGELOG/<version>.md`. See previous entries for the format.
+2. **Commit:**
+   ```bash
+   git add pyproject.toml uv.lock CHANGELOG/
+   git commit -m "Release <version>"
+   ```
+3. **Tag and push:**
+   ```bash
+   just tag
+   ```
+   This creates an annotated `v*` tag from the version in `pyproject.toml`
+   and pushes the commit and tag to GitHub.
+4. **Wait for the publish workflow.** The tag triggers `.github/workflows/publish.yml`,
+   which builds the package, generates SLSA provenance attestations, and publishes
+   to PyPI via trusted publishing.
+5. **Create the GitHub Release:**
+   ```bash
+   gh release create v<version> --verify-tag \
+     --title "Air <version>" \
+     --notes-file CHANGELOG/<version>.md
+   ```
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
