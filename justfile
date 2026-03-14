@@ -29,13 +29,9 @@ fix:
     uv run ruff format .
     uv run ruff check --fix .
 
-VERSION := `uv version --short`
-
-# Tag the current version and push to GitHub
-tag:
-    echo "Tagging version v{{ VERSION }}"
-    git tag -a v{{ VERSION }} -m "Creating version v{{ VERSION }}"
-    git push origin v{{ VERSION }}
+# Tag, push, and create a GitHub release
+release:
+    uv run scripts/release.py
 
 # Run a Python module (e.g., just run-example examples.tags_render)
 run-example mod:
