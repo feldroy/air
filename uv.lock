@@ -104,7 +104,7 @@ requires-dist = [
     { name = "python-multipart", specifier = ">=0.0.22" },
     { name = "rich", specifier = ">=14.3.2" },
     { name = "selectolax", specifier = ">=0.4.6" },
-    { name = "staticware", git = "https://github.com/feldroy/staticware.git" },
+    { name = "staticware" },
     { name = "typer", specifier = ">=0.23.0" },
     { name = "uvicorn", specifier = ">=0.40.0" },
 ]
@@ -2399,8 +2399,12 @@ wheels = [
 
 [[package]]
 name = "staticware"
-version = "0.1.0"
-source = { git = "https://github.com/feldroy/staticware.git#ad9cdb5d0e82895b8141d882882837b9f8b384e3" }
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9a/47/f3effaeff071e7d87b64ded37073e1728fbdc432bc166b689ba442050fb2/staticware-0.2.0.tar.gz", hash = "sha256:991c4d0c74a5173b5f058b8e7e81314a569f95d8497a3120811d62fc30629838", size = 53899, upload-time = "2026-03-13T13:22:31.022Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/37/89/69c791f2bb2b5fa6d7bf8e2fd236e6a10490b06dacfd8e4e9f48d8a8ae0a/staticware-0.2.0-py3-none-any.whl", hash = "sha256:679c612a30eb50a7c77b07978acebf34496f4a41921a1b49ab8d98473f1f1069", size = 6946, upload-time = "2026-03-13T13:22:29.611Z" },
+]
 
 [[package]]
 name = "tinycss2"
