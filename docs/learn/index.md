@@ -27,6 +27,6 @@ This section contains short recipes. See the topic pages for details:
 - **[Charts](cookbook/charts.md)** - Examples of using charts in Air
 - **[Minimal app](cookbook/minimal.md)** - The smallest possible Air app
 - **[Forms & validation](cookbook/forms.md)** - how to create forms and validate user input
-- **[Static files](cookbook/static.md)** - how to serve static files like CSS and JavaScript
+- **[Static files](cookbook/static.md)** - zero-config static file serving with cache-busted URLs
 
 If you'd like to contribute a recipe, open a PR with a new file under `docs/learn/cookbook`.
