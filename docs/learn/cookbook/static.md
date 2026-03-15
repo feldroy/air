@@ -1,12 +1,21 @@
 # Serving static files
 
-You can serve static files like CSS, JavaScript, and images using Air's built-in static file serving capabilities. In this example, we’ll create a simple Air app that serves static files from a `static` directory, but the name of the directory can be anything (`public` is also common).
+Drop a `static/` directory into your project and Air serves it automatically with cache-busted URLs. Every file gets a content hash in its URL and is served with immutable cache headers. Any `/static/` paths in your HTML responses are rewritten to their hashed versions automatically.
+
+```
+myproject/
+    main.py
+    static/
+        styles.css
+        scripts.js
+        images/
+            logo.png
+```
 
 ```python
 import air
 
 app = air.Air()
-app.mount("/static", air.StaticFiles(directory="static"), name="static")
 
 
 @app.page
@@ -18,3 +27,5 @@ def index():
         air.Img(src="/static/images/logo.png", alt="Logo"),
     )
 ```
+
+The `/static/styles.css` path in your HTML is rewritten to something like `/static/styles.a1b2c3d4.css` in the response, so browsers cache aggressively and always get the latest version when you change a file.
