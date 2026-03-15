@@ -86,7 +86,7 @@ A light ASGI framework/toolkit, Starlette is the HTTP server that Air (and FastA
 - In-process background tasks.
 - Startup and shutdown events.
 - Test client built on HTTPX.
-- CORS, GZip, Static Files, Streaming responses.
+- CORS, GZip, StaticFiles, Streaming responses.
 - Session and Cookie support.
 - 100% test coverage.
 - 100% type annotated codebase.
