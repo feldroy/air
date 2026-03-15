@@ -11,6 +11,6 @@ This section contains short recipes. See the topic pages for details:
 - **[Minimal app](minimal.md)** - The smallest possible Air app
 - **[Forms & validation](forms.md)** - how to create forms and validate user inputs
 - **[Running as FastAPI](running_as_fastapi.md)** - Using the fastapi CLI to run Air apps or deployment to FastAPI-compatible platforms
-- **[Static files](static.md)** - how to serve static files like CSS and JavaScript
+- **[Static files](static.md)** - zero-config static file serving with cache-busted URLs
 
 If you'd like to contribute a recipe, open a PR with a new file under `docs/cookbook`.
