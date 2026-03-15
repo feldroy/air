@@ -313,12 +313,12 @@ class Air(RouterMixin):
             self.mount("/static", self.static, name="static")
             self.add_middleware(StaticRewriteMiddleware, static=self.static)
 
-        # Auto-detect templates directory
-        self.jinja = None
-        if Path("templates").is_dir():
-            from .templating import JinjaRenderer  # noqa: PLC0415
+        # Always create a JinjaRenderer pointing at templates/.
+        # If the directory doesn't exist, construction succeeds but
+        # rendering raises a clear TemplateNotFound error.
+        from .templating import JinjaRenderer  # noqa: PLC0415
 
-            self.jinja = JinjaRenderer("templates")
+        self.jinja = JinjaRenderer("templates")
 
     # =========================================================================
     # ASGI Interface
