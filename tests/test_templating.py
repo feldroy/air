@@ -539,7 +539,6 @@ def test_air_auto_detects_templates_directory(tmp_path: Path, monkeypatch: pytes
     monkeypatch.chdir(tmp_path)
     app = Air()
 
-    assert app.jinja is not None
     assert isinstance(app.jinja, JinjaRenderer)
 
     @app.get("/")
@@ -552,9 +551,9 @@ def test_air_auto_detects_templates_directory(tmp_path: Path, monkeypatch: pytes
     assert "<h1>Hi</h1>" in response.text
 
 
-def test_air_no_jinja_when_templates_missing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """Test that Air.jinja is None when no templates/ directory exists."""
+def test_air_jinja_exists_without_templates_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test that app.jinja exists but raises TemplateNotFound without templates/."""
     monkeypatch.chdir(tmp_path)
     app = Air()
 
-    assert app.jinja is None
+    assert isinstance(app.jinja, JinjaRenderer)
