@@ -48,7 +48,6 @@ include = ["tests/**", "**/test_*.py", "**/*_test.py", "examples/airblog/**"]
 
 [overrides.rules]
 # TODO -> Remove all error code below
-unresolved-import = "ignore"
 invalid-argument-type = "ignore"
 too-many-positional-arguments = "ignore"
 unresolved-attribute = "ignore"
