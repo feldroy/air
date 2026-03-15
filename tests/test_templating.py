@@ -1,5 +1,6 @@
 import sys
 import types
+from pathlib import Path
 from unittest.mock import Mock
 
 import jinja2
@@ -527,3 +528,33 @@ def test_jinja_renderer_as_string_embedded_in_airtags() -> None:
     assert "<h1>Embedded Jinja</h1>" in response.text
     assert "<p>Hello from Jinja</p>" in response.text
     assert "<title>Wrapper Page</title>" in response.text
+
+
+def test_air_auto_detects_templates_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test that Air auto-detects templates/ and creates app.jinja."""
+    templates_dir = tmp_path / "templates"
+    templates_dir.mkdir()
+    (templates_dir / "hello.html").write_text("<h1>{{ greeting }}</h1>")
+
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    assert app.jinja is not None
+    assert isinstance(app.jinja, JinjaRenderer)
+
+    @app.get("/")
+    def index(request: Request) -> HTMLResponse:
+        return app.jinja(request, "hello.html", greeting="Hi")
+
+    client = TestClient(app)
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "<h1>Hi</h1>" in response.text
+
+
+def test_air_no_jinja_when_templates_missing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test that Air.jinja is None when no templates/ directory exists."""
+    monkeypatch.chdir(tmp_path)
+    app = Air()
+
+    assert app.jinja is None
