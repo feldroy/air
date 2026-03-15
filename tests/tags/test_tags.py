@@ -128,7 +128,7 @@ def test_raw_html_with_script() -> None:
 def test_raw_html_invalid_args() -> None:
     """Test that Raw raises errors with invalid arguments."""
     with pytest.raises(TypeError):
-        air.Raw("first", "second")
+        air.Raw("first", "second")  # type: ignore[too-many-positional-arguments]
 
     with pytest.raises(TypeError):
         air.Raw(123)
