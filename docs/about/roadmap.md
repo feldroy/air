@@ -9,7 +9,7 @@ Through our own experiences and feedback from users we can say the following is 
 - **Air Tags** are really popular and most people enjoy the API. That it plugs so well into IDEs and LLMs is a super power. Performance could be better, but optimization will happen once Air reaches Beta
 - **AirResponse** makes writing views powered by Jinja or Air Tags easy and fast. Like Air Tags the API feature for this is complete
 - **Examples** in all the doc strings makes it much easier for both humans and LLMs. This is an ongoing effort
-- **Jinja + Air Tags** base templates for layout and Air Tags for content is a really sweet pattern we should talk about more. Unfortunately Jinja inside of Air Tags is a challenge not yet solved
+- **Jinja + Air Tags** base templates for layout and Air Tags for content is a really sweet pattern we should talk about more. As of 0.46.0, `JinjaRenderer` accepts `as_string=True` so rendered templates can be embedded directly in Air tag trees
 - **Ecosystem** Leaning into FastAPI-isms means its easy to plug into the large and vibrant FastAPI ecosystem. Deployment is also easy - Air deploys precisely the same way as FastAPI
 
 For all of these accomplishments we've got a ways to go before I feel confident about taking Air from Alpha to Beta. It's not just a matter of stability, it is also features that I believe are core to the vision. I want the project to be easier and more powerful for app builders and end users alike.
