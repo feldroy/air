@@ -481,6 +481,33 @@ dependencies = ["air"]
 
 Air brings FastAPI, Starlette, Pydantic, Jinja2, uvicorn, and HTMX. You don't need to install them separately.
 
+## Deploying to Railway
+
+Air is open source and runs on Railway. Sign up through [our link](https://railway.com?referralCode=5EX8pI) to get $20 in free credits. The referral helps cover Air's own hosting costs, so every signup directly supports the project.
+
+Two files are all you need. Add `hypercorn` to your dependencies:
+
+```toml
+[project]
+dependencies = ["air", "hypercorn"]
+```
+
+Create `railway.json`:
+
+```json
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "RAILPACK"
+  },
+  "deploy": {
+    "startCommand": "uv run hypercorn main:app --bind \"[::]:$PORT\""
+  }
+}
+```
+
+Push to GitHub, connect the repo in Railway, and it deploys automatically. Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is provided by Railway at runtime.
+
 ## What NOT to do
 
 - Don't create a `settings.py` or config module. Air has no settings.
