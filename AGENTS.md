@@ -72,7 +72,7 @@ Run: add `[tool.fastapi]` to `pyproject.toml`, then `air run` or `uv run air run
 app = "main:app"
 ```
 
-That's it. No settings file, no config module, no URL dispatcher files.
+That's it. No settings file, no config module, no URL dispatcher files. Air reads everything from decorators and directory conventions (`static/`, `templates/`), so there's nothing to configure in a separate file. Customization happens through composition: add routers with `app.include_router()`, add middleware, pass parameters to `air.Air()`. Don't subclass `Air` or `AirRouter`.
 
 ## Routing
 
@@ -202,7 +202,7 @@ def index():
 
 ## Static Files
 
-Zero config. Put files in `static/` and reference them with plain HTML paths:
+Zero config. Put files in `static/` and reference them with plain HTML paths. Unlike Django, there's no `{% load static %}` or template tag system for static files. Air handles path rewriting at the ASGI layer, so templates and Air tags both use the same plain `/static/` paths:
 
 ```python
 air.Link(rel="stylesheet", href="/static/css/main.css")
@@ -521,7 +521,7 @@ myproject/
   pyproject.toml       # [tool.fastapi] app = "main:app"
 ```
 
-Compare to Django's 12+ files for the same functionality.
+A single `main.py` works because Air discovers routes from decorators, not by scanning a package tree. No `__init__.py` needed unless your app grows large enough to split across modules (see Routers). Compare to Django's 12+ files for the same functionality.
 
 ## Dependencies
 
@@ -558,13 +558,3 @@ Create `railway.json`:
 ```
 
 Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is injected at runtime. For the full Railway CLI workflow (init, deploy, domains, custom domains), use the `/railway-deploy` skill.
-
-## What NOT to do
-
-- Don't create a `settings.py` or config module. Air has no settings.
-- Don't create separate URL dispatcher files. Routes are inline decorators.
-- Don't use `{% load static %}` or template tags for static files. Use plain HTML paths.
-- Don't subclass `Air` or `AirRouter`. They use composition, not inheritance.
-- Don't use `HTMLResponse` to wrap tag output. Air tags render as HTML automatically.
-- Don't create `__init__.py` files for your app package unless you need them. A single `main.py` works.
-- Don't instantiate `JinjaRenderer` manually. Use `app.jinja` which is auto-created.
