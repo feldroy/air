@@ -86,6 +86,7 @@ nbs
 
 # User config and extension
 .specstory
+.claude/
 .cursor/
 .vscode/
 .idea/
