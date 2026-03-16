@@ -506,7 +506,16 @@ Create `railway.json`:
 }
 ```
 
-Push to GitHub, connect the repo in Railway, and it deploys automatically. Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is provided by Railway at runtime.
+Then deploy with the Railway CLI:
+
+```bash
+npm i -g @railway/cli       # or: brew install railway
+railway login               # opens browser to authenticate
+railway init                # creates a new Railway project
+railway up                  # deploys the current directory
+```
+
+Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is injected at runtime. After the first deploy, connect the repo in Railway's dashboard for automatic deploys on every push.
 
 ## What NOT to do
 
