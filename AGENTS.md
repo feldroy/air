@@ -4,7 +4,9 @@ Air is a Python web framework built on FastAPI/Starlette. HTML-first, zero confi
 
 ## Working from HTML Mockups
 
-When the user provides static HTML files as mockups, follow this workflow:
+If the user doesn't have mockups yet, use the `/frontend-design` skill to create static HTML files first. Then follow this workflow:
+
+When the user provides static HTML files as mockups (or after generating them), follow this workflow:
 
 1. **Archive the originals.** Move the HTML files into `mockups/` so the raw design is preserved as a reference. Create the directory if it doesn't exist.
 
