@@ -247,7 +247,19 @@ def home(request: air.Request):
 
 Pass template variables as kwargs. You can also pass `context={"title": "Home"}` as a dict, but kwargs are cleaner for simple cases. Both work and get merged.
 
-Air tags work in Jinja context: `app.jinja(request, "page.html", sidebar=air.Nav(air.A("Home", href="/")))`.
+**Avoid `name` as a kwarg.** The `name` parameter is used internally for the template filename, so `app.jinja(request, "page.html", name="Alice")` raises `TypeError: got multiple values for argument 'name'`. Use a different variable name (e.g. `applicant_name`) or pass it via the context dict: `context={"name": "Alice"}`.
+
+Air tags work in Jinja context, but Jinja auto-escapes them. Use `|safe` in the template:
+
+```python
+# Python
+app.jinja(request, "page.html", sidebar=air.Nav(air.A("Home", href="/")))
+```
+
+```html
+{# Template: use |safe or you'll see escaped HTML #}
+{{ sidebar|safe }}
+```
 
 Use `as_string=True` to get a `SafeStr` for embedding Jinja output inside Air tags.
 
@@ -374,6 +386,38 @@ async def login(request: air.Request):
 ```
 
 Default status is 307 (temporary redirect, preserves method).
+
+## Startup Tasks
+
+Don't use `@app.on_event("startup")`. It's deprecated in both FastAPI and Starlette and will be removed in Starlette 1.0. Use the `lifespan` context manager instead:
+
+```python
+from contextlib import asynccontextmanager
+
+import air
+
+@asynccontextmanager
+async def lifespan(app):
+    # Runs on startup: connect to DB, load config, warm caches
+    print("Starting up")
+    yield
+    # Runs on shutdown: close connections, flush buffers
+    print("Shutting down")
+
+app = air.Air(lifespan=lifespan)
+```
+
+For simple one-shot initialization (loading a config file, setting up a global variable), module-level code works fine:
+
+```python
+import air
+
+DATA = load_initial_data()  # runs once at import time
+
+app = air.Air()
+```
+
+Use `lifespan` when you need async operations, cleanup on shutdown, or when the initialization depends on the app instance.
 
 ## Common Patterns
 
