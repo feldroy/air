@@ -513,25 +513,7 @@ Create `railway.json`:
 }
 ```
 
-Then deploy with the Railway CLI:
-
-```bash
-npm i -g @railway/cli       # or: brew install railway
-railway login               # opens browser to authenticate
-railway init                # creates a new Railway project
-railway up                  # deploys the current directory
-```
-
-**Important:** `railway init` requires `--workspace` if the account has multiple workspaces. Use `railway init --name my-app --workspace "Workspace Name"`. After deploying, link the service and generate a domain:
-
-```bash
-railway service my-app      # link to the service
-railway domain              # generate a .up.railway.app domain
-```
-
-Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is injected at runtime. After the first deploy, connect the repo in Railway's dashboard for automatic deploys on every push.
-
-To add a custom domain (e.g. `myapp.com`), use `railway domain` in the dashboard or CLI and point your DNS CNAME to the generated Railway domain.
+Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is injected at runtime. For the full Railway CLI workflow (init, deploy, domains, custom domains), use the `/railway-deploy` skill.
 
 ## What NOT to do
 
