@@ -210,7 +210,7 @@ air.Script(src="/static/js/app.js")
 air.Img(src="/static/img/logo.png")
 ```
 
-Air auto-detects and mounts `static/` at startup with content-hash cache busting. No settings, no template tags, no configuration.
+Air auto-detects and mounts `static/` at startup. Every static file gets a content hash appended to its URL (e.g. `/static/css/main.css` becomes `/static/css/main.abc123.css` in the served HTML), and the hashed URLs are served with immutable cache headers. Air rewrites `/static/` paths in HTML responses automatically, so you always write plain paths in your code and templates.
 
 ## Layouts
 
@@ -430,6 +430,13 @@ HTML is the default. No wrapping in `HTMLResponse` needed.
 
 ## Testing
 
+Starlette's `TestClient` requires `httpx`. Add it as a test dependency:
+
+```toml
+[dependency-groups]
+test = ["httpx>=0.28.1", "pytest>=9.0.2"]
+```
+
 ```python
 from starlette.testclient import TestClient
 
@@ -476,10 +483,10 @@ Compare to Django's 12+ files for the same functionality.
 
 ```toml
 [project]
-dependencies = ["air"]
+dependencies = ["air>=0.47.0"]
 ```
 
-Air brings FastAPI, Starlette, Pydantic, Jinja2, uvicorn, and HTMX. You don't need to install them separately.
+Air brings FastAPI, Starlette, Pydantic, Jinja2, uvicorn, and HTMX. You don't need to install them separately. The `>=0.47.0` pin ensures Jinja template support (`app.jinja`) is available. If a newer version of Air exists, use it here.
 
 ## Deploying to Railway
 
@@ -489,7 +496,7 @@ Two files are all you need. Add `hypercorn` to your dependencies:
 
 ```toml
 [project]
-dependencies = ["air", "hypercorn"]
+dependencies = ["air>=0.47.0", "hypercorn"]
 ```
 
 Create `railway.json`:
@@ -515,7 +522,16 @@ railway init                # creates a new Railway project
 railway up                  # deploys the current directory
 ```
 
+**Important:** `railway init` requires `--workspace` if the account has multiple workspaces. Use `railway init --name my-app --workspace "Workspace Name"`. After deploying, link the service and generate a domain:
+
+```bash
+railway service my-app      # link to the service
+railway domain              # generate a .up.railway.app domain
+```
+
 Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is injected at runtime. After the first deploy, connect the repo in Railway's dashboard for automatic deploys on every push.
+
+To add a custom domain (e.g. `myapp.com`), use `railway domain` in the dashboard or CLI and point your DNS CNAME to the generated Railway domain.
 
 ## What NOT to do
 
