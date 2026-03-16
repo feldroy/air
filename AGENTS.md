@@ -8,9 +8,9 @@ If the user doesn't have mockups yet, use the `/frontend-design` skill to create
 
 When the user provides static HTML files as mockups, follow this workflow:
 
-1. **Archive the originals.** If the HTML files aren't already in `mockups/`, move them there so the raw design is preserved as a reference. Create the directory if it doesn't exist.
+1. **Archive the originals.** If the HTML files aren't already in `mockups/`, move them there so the raw design is preserved as a reference. Delete any copies left behind (e.g. at the project root). Create the directory if it doesn't exist.
 
-2. **Copy to templates/.** Copy each mockup from `mockups/` into `templates/`. This is where Air's Jinja renderer looks for templates. Create the directory if it doesn't exist.
+2. **Copy to templates/.** Copy each mockup from `mockups/` into `templates/`. This is where Air's Jinja renderer looks for templates. The originals stay in `mockups/` as a reference. Create the directory if it doesn't exist.
 
 3. **Template them.** Convert the static HTML into Jinja templates:
    - Extract repeated structure (nav, footer, head) into a `base.html` with `{% block %}` tags
@@ -106,6 +106,10 @@ async def submit(request: air.Request) -> air.Div:
 ```
 
 All standard HTTP methods: `app.get()`, `app.post()`, `app.put()`, `app.patch()`, `app.delete()`.
+
+### async def vs def
+
+Use `async def` when the handler calls `await` (e.g. `await request.form()`, `await request.json()`). Use plain `def` for everything else. Both work in all cases, but mixing `await` into a `def` route is a syntax error, and using `async def` without `await` wastes no resources but is unnecessary.
 
 ### Reverse URL resolution
 
@@ -238,8 +242,10 @@ app = air.Air()
 
 @app.get("/")
 def home(request: air.Request):
-    return app.jinja(request, "home.html", context={"title": "Home"})
+    return app.jinja(request, "home.html", title="Home")
 ```
+
+Pass template variables as kwargs. You can also pass `context={"title": "Home"}` as a dict, but kwargs are cleaner for simple cases. Both work and get merged.
 
 Air tags work in Jinja context: `app.jinja(request, "page.html", sidebar=air.Nav(air.A("Home", href="/")))`.
 
@@ -369,6 +375,47 @@ async def login(request: air.Request):
 
 Default status is 307 (temporary redirect, preserves method).
 
+## Common Patterns
+
+### Return JSON
+
+```python
+from air.responses import JSONResponse
+
+@app.post("/api/data")
+async def api_data(request: air.Request):
+    body = await request.json()
+    return JSONResponse({"status": "ok", "id": 42})
+```
+
+Air's default response class is HTML, so returning a bare dict won't auto-convert to JSON. Use `JSONResponse` explicitly.
+
+### Return a bare status code
+
+```python
+from air.responses import Response
+
+@app.post("/webhook")
+async def webhook(request: air.Request):
+    body = await request.json()
+    # process webhook...
+    return Response(status_code=200)
+```
+
+### Redirect after form submission
+
+```python
+from fastapi import status
+
+@app.post("/submit")
+async def submit(request: air.Request):
+    form_data = await request.form()
+    # process form...
+    return air.RedirectResponse(url="/thanks", status_code=status.HTTP_303_SEE_OTHER)
+```
+
+Use 303 (See Other) after POST so the browser switches to GET for the redirect target.
+
 ## Responses
 
 Return types from routes:
@@ -376,6 +423,7 @@ Return types from routes:
 - Strings - rendered as HTML
 - `air.RedirectResponse` - HTTP redirect
 - `air.SSEResponse` - server-sent events
+- `JSONResponse`, `Response`, `PlainTextResponse` - import from `air.responses`
 - Any Starlette `Response` subclass
 
 HTML is the default. No wrapping in `HTMLResponse` needed.
