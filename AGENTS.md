@@ -2,6 +2,55 @@
 
 Air is a Python web framework built on FastAPI/Starlette. HTML-first, zero config. This file tells you everything you need to build a complete Air app from scratch.
 
+## Working from HTML Mockups
+
+When the user provides static HTML files as mockups, follow this workflow:
+
+1. **Archive the originals.** Move the HTML files into `mockups/` so the raw design is preserved as a reference. Create the directory if it doesn't exist.
+
+2. **Copy to templates/.** Copy each mockup from `mockups/` into `templates/`. This is where Air's Jinja renderer looks for templates. Create the directory if it doesn't exist.
+
+3. **Template them.** Convert the static HTML into Jinja templates:
+   - Extract repeated structure (nav, footer, head) into a `base.html` with `{% block %}` tags
+   - Replace hardcoded text with `{{ variables }}` where the content should come from Python
+   - Replace hardcoded URLs with route references
+   - Keep `href="/static/..."` paths as-is (Air serves static files at `/static/` automatically)
+   - Add `{% extends "base.html" %}` and `{% block content %}` to page templates
+
+4. **Wire up routes.** In `main.py`, use `app.jinja` (auto-created, points at `templates/`) to render:
+
+```python
+import air
+
+app = air.Air()
+
+@app.page
+def index(request: air.Request):
+    return app.jinja(request, "index.html", title="Home")
+
+@app.page
+def about(request: air.Request):
+    return app.jinja(request, "about.html", title="About")
+```
+
+5. **Move static assets.** If the mockups reference CSS, JS, or images, move those into `static/` and update the paths in templates to use `/static/...`.
+
+### Example: mockup to working app
+
+Given a file `landing.html`:
+
+```
+mockups/
+  landing.html         <- original, untouched
+templates/
+  base.html            <- extracted layout
+  landing.html         <- templated version
+static/
+  css/style.css        <- extracted from mockup
+main.py                <- routes using app.jinja
+pyproject.toml
+```
+
 ## Minimal App
 
 ```python
@@ -178,18 +227,19 @@ When `is_htmx=True`, returns `Children` (fragment) instead of full `Html` docume
 
 ## Jinja Templates
 
+`app.jinja` is available on every `air.Air()` instance automatically, pointing at `templates/`. No setup needed.
+
 ```python
 import air
 
 app = air.Air()
-jinja = air.JinjaRenderer("templates")
 
 @app.get("/")
 def home(request: air.Request):
-    return jinja(request, "home.html", context={"title": "Home"})
+    return app.jinja(request, "home.html", context={"title": "Home"})
 ```
 
-Air tags work in Jinja context: `jinja(request, "page.html", sidebar=air.Nav(air.A("Home", href="/")))`.
+Air tags work in Jinja context: `app.jinja(request, "page.html", sidebar=air.Nav(air.A("Home", href="/")))`.
 
 Use `as_string=True` to get a `SafeStr` for embedding Jinja output inside Air tags.
 
@@ -358,11 +408,13 @@ A typical Air app:
 ```
 myproject/
   main.py              # app = air.Air(), routes
+  mockups/             # original HTML mockups (reference only)
+    landing.html
   static/
     css/main.css
     js/app.js
     img/logo.png
-  templates/           # if using Jinja
+  templates/           # Jinja templates (auto-detected by app.jinja)
     base.html
     home.html
   pyproject.toml       # [tool.fastapi] app = "main:app"
@@ -387,3 +439,4 @@ Air brings FastAPI, Starlette, Pydantic, Jinja2, uvicorn, and HTMX. You don't ne
 - Don't subclass `Air` or `AirRouter`. They use composition, not inheritance.
 - Don't use `HTMLResponse` to wrap tag output. Air tags render as HTML automatically.
 - Don't create `__init__.py` files for your app package unless you need them. A single `main.py` works.
+- Don't instantiate `JinjaRenderer` manually. Use `app.jinja` which is auto-created.
