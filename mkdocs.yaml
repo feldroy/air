@@ -119,6 +119,9 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
 
+hooks:
+  - docs/hooks/copy_agents_md.py
+
 plugins:
   - search
   - mkdocstrings:
