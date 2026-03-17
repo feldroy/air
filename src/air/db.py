@@ -33,6 +33,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import datetime
 from types import UnionType
+from uuid import UUID
 from typing import Any, Self, get_args, get_origin
 
 from pydantic import (
@@ -52,6 +53,7 @@ _PY_TO_PG: dict[type, str] = {
     float: "DOUBLE PRECISION",
     bool: "BOOLEAN",
     datetime: "TIMESTAMP WITH TIME ZONE",
+    UUID: "UUID",
 }
 
 

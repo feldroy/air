@@ -7,6 +7,7 @@ in-memory model behavior.
 """
 
 from datetime import datetime
+from uuid import UUID
 
 import pytest
 
@@ -99,6 +100,13 @@ class TestTypeMapping:
 
     def test_datetime_maps_to_timestamptz(self) -> None:
         assert _PY_TO_PG[datetime] == "TIMESTAMP WITH TIME ZONE"
+
+
+    def test_uuid_maps_to_uuid(self) -> None:
+        assert _PY_TO_PG[UUID] == "UUID"
+
+    def test_pg_type_returns_uuid_for_uuid(self) -> None:
+        assert _pg_type(UUID) == "UUID"
 
     def test_unmapped_type_raises_type_error(self) -> None:
         from decimal import Decimal
@@ -483,3 +491,35 @@ class TestAirModelExport:
         assert '"title" TEXT NOT NULL' in sql
         assert '"body" TEXT NOT NULL' in sql
         assert '"draft" BOOLEAN NOT NULL' in sql
+
+# ---------------------------------------------------------------------------
+# UUID field support
+# ---------------------------------------------------------------------------
+
+
+class MagicPotion(AirModel):
+    id: int | None = Field(default=None, primary_key=True)
+    batch_id: UUID
+    label: str
+
+
+class TestUUIDField:
+    def test_uuid_column_def(self) -> None:
+        cols = MagicPotion._column_defs()
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
+        assert '"batch_id" UUID NOT NULL' == col_dict["batch_id"]
+
+    def test_uuid_in_create_table_sql(self) -> None:
+        sql = MagicPotion._create_table_sql()
+        assert '"batch_id" UUID NOT NULL' in sql
+
+    def test_optional_uuid_no_not_null(self) -> None:
+        class OptionalUUIDModel(AirModel):
+            id: int | None = Field(default=None, primary_key=True)
+            trace_id: UUID | None = None
+
+        cols = OptionalUUIDModel._column_defs()
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
+        assert "UUID" in col_dict["trace_id"]
+        assert "NOT NULL" not in col_dict["trace_id"]
+
