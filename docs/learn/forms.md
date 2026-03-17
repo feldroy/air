@@ -51,18 +51,17 @@ async def add(request: air.Request):
 
 ## Air Forms
 
-Air Forms are powered by Pydantic models. You define your data model once, and the form inherits its validation rules, field types, and constraints automatically.
+Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. You define your data model once, and the form inherits its validation rules, field types, and constraints automatically. Air Forms also work with plain `BaseModel` if you prefer.
 
 ### Defining a form
 
 Pass your model as a type parameter to `AirForm`:
 
 ```python
-from pydantic import BaseModel
-
 import air
 
-class JeepneyRouteModel(BaseModel):
+
+class JeepneyRouteModel(air.AirModel):
     route_name: str
     origin: str
     destination: str

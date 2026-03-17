@@ -630,7 +630,7 @@ def test_air_to_form_generation_with_custom_widget() -> None:
 def test_airform_generic_type_parameter() -> None:
     """AirForm[M] sets model from the type parameter and makes form.data typed as M."""
 
-    class JeepneyRouteModel(BaseModel):
+    class JeepneyRouteModel(air.AirModel):
         route_name: str
         origin: str
         destination: str
