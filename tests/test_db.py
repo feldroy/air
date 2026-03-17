@@ -232,6 +232,28 @@ class TestPydanticIntegration:
 # ---------------------------------------------------------------------------
 
 
+class TestLimitOffset:
+    @pytest.mark.asyncio
+    async def test_all_with_limit_raises_without_pool(self) -> None:
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await BetaApplication.all(limit=10)
+
+    @pytest.mark.asyncio
+    async def test_all_with_offset_raises_without_pool(self) -> None:
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await BetaApplication.all(offset=5)
+
+    @pytest.mark.asyncio
+    async def test_filter_with_limit_raises_without_pool(self) -> None:
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await BetaApplication.filter(name="test", limit=5)
+
+    @pytest.mark.asyncio
+    async def test_filter_with_offset_raises_without_pool(self) -> None:
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await BetaApplication.filter(name="test", limit=5, offset=10)
+
+
 class TestMultipleObjectsReturned:
     def test_is_an_exception(self) -> None:
         assert issubclass(MultipleObjectsReturned, Exception)

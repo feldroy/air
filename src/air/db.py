@@ -373,30 +373,47 @@ class Model(BaseModel, metaclass=_TableMeta):
         return cls.model_validate(dict(rows[0]))
 
     @classmethod
-    async def filter(cls, **kwargs: Any) -> list[Self]:
+    async def filter(cls, *, limit: int | None = None, offset: int | None = None, **kwargs: Any) -> list[Self]:
         """Fetch all rows matching the given keyword filters.
+
+        Args:
+            limit: Maximum number of rows to return.
+            offset: Number of rows to skip before returning results.
+            **kwargs: Column name/value pairs to filter by.
 
         Returns:
             A list of model instances (possibly empty).
         """
         pool = _get_pool()
         if not kwargs:
-            return await cls.all()
+            return await cls.all(limit=limit, offset=offset)
         conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
         where = " AND ".join(conditions)
         sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
+        if limit is not None:
+            sql += f" LIMIT {limit}"
+        if offset is not None:
+            sql += f" OFFSET {offset}"
         rows = await pool.fetch(sql, *kwargs.values())
         return [cls.model_validate(dict(r)) for r in rows]
 
     @classmethod
-    async def all(cls) -> list[Self]:
+    async def all(cls, *, limit: int | None = None, offset: int | None = None) -> list[Self]:
         """Fetch every row from the table.
+
+        Args:
+            limit: Maximum number of rows to return.
+            offset: Number of rows to skip before returning results.
 
         Returns:
             A list of all model instances.
         """
         pool = _get_pool()
         sql = f'SELECT * FROM "{cls._table_name()}"'  # noqa: S608
+        if limit is not None:
+            sql += f" LIMIT {limit}"
+        if offset is not None:
+            sql += f" OFFSET {offset}"
         rows = await pool.fetch(sql)
         return [cls.model_validate(dict(r)) for r in rows]
 
