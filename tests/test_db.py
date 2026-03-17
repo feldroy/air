@@ -1530,3 +1530,134 @@ class TestBulkOperations:
             assert count == 12
         finally:
             _unwire_pool()
+
+
+# ---------------------------------------------------------------------------
+# save(update_fields=...) — partial updates
+# ---------------------------------------------------------------------------
+
+
+class TestSaveUpdateFields:
+    """save(update_fields=[...]) should UPDATE only the specified columns."""
+
+    def _make_pool(self, row: dict[str, object] | None = None) -> FakePool:
+        """Build a FakePool that returns a full DragonFruit row."""
+        default_row = {
+            "id": 1,
+            "created_at": datetime(2026, 3, 17),
+            "name": "Pink Pitaya",
+            "color": "magenta",
+            "sweetness": "high",
+            "origin": "Vietnam",
+        }
+        return FakePool(fetchrow_return=row or default_row)
+
+    def _wire_pool(self, pool: FakePool) -> None:
+        from air.db import _set_current_db
+
+        db = AirDB()
+        db.pool = pool
+        _set_current_db(db)
+
+    def _unwire_pool(self) -> None:
+        from air.db import _set_current_db
+
+        _set_current_db(None)
+
+    # 1 — only the specified column appears in SET
+    async def test_save_with_update_fields_only_sets_specified_columns(self) -> None:
+        """SET clause should contain only the column passed in update_fields."""
+        pool = self._make_pool()
+        self._wire_pool(pool)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta",
+                sweetness="high", origin="Vietnam",
+            )
+            fruit.name = "White Pitaya"
+            await fruit.save(update_fields=["name"])
+
+            sql = pool.last_sql
+            assert sql is not None
+            # "name" must be in the SET clause
+            assert '"name"' in sql
+            # Other non-PK columns must NOT be in the SET clause
+            for col in ("color", "sweetness", "origin", "created_at"):
+                assert f'"{col}"' not in sql.split("WHERE")[0], (
+                    f'"{col}" should not appear in SET when update_fields=["name"]'
+                )
+        finally:
+            self._unwire_pool()
+
+    # 2 — RETURNING * is still present
+    async def test_save_with_update_fields_still_uses_returning(self) -> None:
+        """Even with partial updates the SQL must end with RETURNING *."""
+        pool = self._make_pool()
+        self._wire_pool(pool)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta",
+                sweetness="high", origin="Vietnam",
+            )
+            fruit.name = "White Pitaya"
+            await fruit.save(update_fields=["name"])
+
+            assert pool.last_sql is not None
+            assert "RETURNING *" in pool.last_sql
+        finally:
+            self._unwire_pool()
+
+    # 3 — only values for specified fields (plus PK) are passed
+    async def test_save_with_update_fields_passes_correct_values(self) -> None:
+        """Parameters should be the values for update_fields plus the PK value."""
+        pool = self._make_pool()
+        self._wire_pool(pool)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta",
+                sweetness="high", origin="Vietnam",
+            )
+            fruit.name = "White Pitaya"
+            await fruit.save(update_fields=["name"])
+
+            # $1 = "White Pitaya" (the updated name), $2 = 1 (the PK)
+            assert pool.last_args == ("White Pitaya", 1)
+        finally:
+            self._unwire_pool()
+
+    # 4 — omitting update_fields still updates every non-PK column
+    async def test_save_without_update_fields_still_updates_all(self) -> None:
+        """Backward compat: save() with no update_fields sets all non-PK fields."""
+        pool = self._make_pool()
+        self._wire_pool(pool)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta",
+                sweetness="high", origin="Vietnam",
+            )
+            await fruit.save()
+
+            sql = pool.last_sql
+            assert sql is not None
+            set_clause = sql.split("SET")[1].split("WHERE")[0]
+            for col in ("created_at", "name", "color", "sweetness", "origin"):
+                assert f'"{col}"' in set_clause, (
+                    f'"{col}" should appear in SET when no update_fields given'
+                )
+        finally:
+            self._unwire_pool()
+
+    # 5 — empty list should raise ValueError
+    async def test_save_with_empty_update_fields_raises(self) -> None:
+        """An empty update_fields list means nothing to update — raise ValueError."""
+        pool = self._make_pool()
+        self._wire_pool(pool)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta",
+                sweetness="high", origin="Vietnam",
+            )
+            with pytest.raises(ValueError, match="update_fields"):
+                await fruit.save(update_fields=[])
+        finally:
+            self._unwire_pool()

@@ -545,7 +545,7 @@ class AirModel(BaseModel):
 
         # -- Instance methods ----------------------------------------------------
 
-    async def save(self) -> None:
+    async def save(self, *, update_fields: list[str] | None = None) -> None:
         """Update the row identified by this instance's primary key.
 
         All non-PK fields are written. Raises :class:`ValueError` if the
@@ -561,7 +561,12 @@ class AirModel(BaseModel):
             msg = "Cannot save a row without a primary key value. Use create() for new rows."
             raise ValueError(msg)
 
-        fields = self._non_pk_fields()
+
+        if update_fields is not None and len(update_fields) == 0:
+            msg = "update_fields cannot be empty. Omit the argument to update all fields."
+            raise ValueError(msg)
+
+        fields = update_fields if update_fields is not None else self._non_pk_fields()
         set_clauses = [f'"{f}" = ${i + 1}' for i, f in enumerate(fields)]
         values = [getattr(self, f) for f in fields]
         pk_placeholder = f"${len(fields) + 1}"
