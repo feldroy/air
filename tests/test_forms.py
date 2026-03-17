@@ -764,13 +764,14 @@ def test_to_form_generic_data_access() -> None:
 
 
 def test_airmodel_to_form_generic_data_access() -> None:
-    """AirModel.to_form() produces a form whose data property works after validation."""
+    """air.to_form() produces a form whose data property works after validation."""
+    from pydantic import BaseModel
 
-    class TricycleModel(air.AirModel):
+    class TricycleModel(BaseModel):
         route: str
         fare: int
 
-    form = TricycleModel.to_form()
+    form = air.to_form(TricycleModel)
     form.validate({"route": "Rizal Ave", "fare": 15})
     assert form.is_valid
     assert form.data.route == "Rizal Ave"
