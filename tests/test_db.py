@@ -10,8 +10,7 @@ from datetime import datetime
 
 import pytest
 
-from air.db import AirDB, AirModel, Field, MultipleObjectsReturned, _PY_TO_PG, _pg_type, _table_registry
-
+from air.db import _PY_TO_PG, AirDB, AirModel, Field, MultipleObjectsReturned, _pg_type, _table_registry
 
 # ---------------------------------------------------------------------------
 # Helpers: define models used across tests
