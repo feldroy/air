@@ -421,6 +421,7 @@ class AirModel(BaseModel):
 
         sql = f'DELETE FROM "{self._table_name()}" WHERE "{pk}" = $1'
         await pool.execute(sql, pk_value)
+        object.__setattr__(self, pk, None)
 
 
 # ---------------------------------------------------------------------------

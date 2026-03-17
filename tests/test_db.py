@@ -640,3 +640,33 @@ class TestSaveRefreshesInstance:
             assert fruit.origin == "Philippines"
         finally:
             _set_current_db(None)
+
+
+# ---------------------------------------------------------------------------
+# delete() should clear the primary key
+# ---------------------------------------------------------------------------
+
+
+class TestDeleteClearsPrimaryKey:
+    """After delete(), the instance's PK should be None so accidental
+    save() or delete() calls fail with a clear ValueError instead of
+    silently operating on a deleted row."""
+
+    async def test_delete_clears_pk(self) -> None:
+        from air.db import _set_current_db
+
+        fake_pool = FakePool(fetchrow_return={})
+        db = AirDB()
+        db.pool = fake_pool
+        _set_current_db(db)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta"
+            )
+            assert fruit.id == 1
+
+            await fruit.delete()
+
+            assert fruit.id is None
+        finally:
+            _set_current_db(None)
