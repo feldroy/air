@@ -182,9 +182,11 @@ class AirDB:
         Tables are registered automatically when their class body is executed,
         so simply importing your models is enough.
         """
+        if self.pool is None:
+            msg = "Database pool is not initialized. Did you forget to use db.lifespan()?"
+            raise RuntimeError(msg)
         for table_cls in _table_registry:
             sql = table_cls._create_table_sql()
-            assert self.pool is not None, "Database pool is not initialized. Did you forget to use db.lifespan()?"
             await self.pool.execute(sql)
 
 

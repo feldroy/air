@@ -236,6 +236,12 @@ class TestAirDB:
         lifespan = db.lifespan("postgresql://localhost/test")
         assert callable(lifespan)
 
+    @pytest.mark.asyncio
+    async def test_create_tables_without_pool_raises(self) -> None:
+        db = AirDB()
+        with pytest.raises(RuntimeError, match="Database pool is not initialized"):
+            await db.create_tables()
+
 
 # ---------------------------------------------------------------------------
 # Error conditions: CRUD without a pool
