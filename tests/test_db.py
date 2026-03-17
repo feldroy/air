@@ -1126,3 +1126,205 @@ class TestLookupOperators:
             assert result == 3
         finally:
             _unwire_pool()
+
+
+# ---------------------------------------------------------------------------
+# Transaction context manager
+# ---------------------------------------------------------------------------
+
+
+class FakeTransaction:
+    """Test double for an asyncpg transaction object."""
+
+    def __init__(self) -> None:
+        self.committed = False
+        self.rolled_back = False
+
+    async def start(self) -> "FakeTransaction":
+        return self
+
+    async def commit(self) -> None:
+        self.committed = True
+
+    async def rollback(self) -> None:
+        self.rolled_back = True
+
+
+class FakeConnection:
+    """Test double for an asyncpg connection acquired from a pool.
+
+    Supports the same query methods as the pool (fetchrow, fetch, fetchval,
+    execute) plus a transaction() method that returns a FakeTransaction.
+    """
+
+    def __init__(
+        self,
+        *,
+        fetchrow_return: dict[str, object] | None = None,
+        fetch_return: list[dict[str, object]] | None = None,
+        fetchval_return: object = None,
+    ) -> None:
+        self.last_sql: str | None = None
+        self.last_args: tuple[object, ...] = ()
+        self.fetchrow_called = False
+        self.fetch_called = False
+        self.fetchval_called = False
+        self.execute_called = False
+        self._fetchrow_return = fetchrow_return or {}
+        self._fetch_return = fetch_return if fetch_return is not None else []
+        self._fetchval_return = fetchval_return
+        self._transaction = FakeTransaction()
+
+    async def fetchrow(self, sql: str, *args: object) -> dict[str, object]:
+        self.fetchrow_called = True
+        self.last_sql = sql
+        self.last_args = args
+        return self._fetchrow_return
+
+    async def fetch(self, sql: str, *args: object) -> list[dict[str, object]]:
+        self.fetch_called = True
+        self.last_sql = sql
+        self.last_args = args
+        return self._fetch_return
+
+    async def fetchval(self, sql: str, *args: object) -> object:
+        self.fetchval_called = True
+        self.last_sql = sql
+        self.last_args = args
+        return self._fetchval_return
+
+    async def execute(self, sql: str, *args: object) -> None:
+        self.execute_called = True
+        self.last_sql = sql
+        self.last_args = args
+
+    def transaction(self) -> FakeTransaction:
+        return self._transaction
+
+
+class FakeAcquireContext:
+    """Async context manager returned by TransactionPool.acquire()."""
+
+    def __init__(self, connection: FakeConnection) -> None:
+        self._connection = connection
+
+    async def __aenter__(self) -> FakeConnection:
+        return self._connection
+
+    async def __aexit__(self, *args: object) -> None:
+        pass
+
+
+class TransactionPool(CRUDPool):
+    """Extends CRUDPool with acquire() that yields a FakeConnection.
+
+    This simulates what asyncpg pools do: pool.acquire() returns an async
+    context manager that yields a connection, and the connection has its
+    own transaction() method.
+    """
+
+    def __init__(
+        self,
+        connection: FakeConnection,
+        **kwargs: object,
+    ) -> None:
+        super().__init__(**kwargs)  # type: ignore[arg-type]
+        self._connection = connection
+        self.acquire_called = False
+
+    def acquire(self) -> FakeAcquireContext:
+        self.acquire_called = True
+        return FakeAcquireContext(self._connection)
+
+
+class TestTransaction:
+    """Tests for db.transaction() -- an async context manager on AirDB
+    that groups CRUD operations into a single database transaction.
+
+    These tests should FAIL because db.transaction() does not exist yet.
+    """
+
+    def test_transaction_exists(self) -> None:
+        """AirDB should have a transaction method."""
+        db = AirDB()
+        assert hasattr(db, "transaction")
+        assert callable(db.transaction)
+
+    def test_transaction_is_async_context_manager(self) -> None:
+        """transaction() should return an object with __aenter__ and __aexit__."""
+        db = AirDB()
+        db.pool = TransactionPool(
+            connection=FakeConnection(),
+        )
+        ctx = db.transaction()
+        assert hasattr(ctx, "__aenter__"), "transaction() return value must have __aenter__"
+        assert hasattr(ctx, "__aexit__"), "transaction() return value must have __aexit__"
+
+    async def test_transaction_acquires_connection(self) -> None:
+        """Entering the transaction block should acquire a connection from the pool."""
+        conn = FakeConnection()
+        pool = TransactionPool(connection=conn)
+        db = AirDB()
+        db.pool = pool
+
+        async with db.transaction():
+            pass
+
+        assert pool.acquire_called, "transaction() should call pool.acquire()"
+
+    async def test_transaction_commits_on_success(self) -> None:
+        """On clean exit from the block, commit() should be called on the transaction."""
+        conn = FakeConnection()
+        pool = TransactionPool(connection=conn)
+        db = AirDB()
+        db.pool = pool
+
+        async with db.transaction():
+            pass
+
+        assert conn._transaction.committed, "transaction should be committed on clean exit"
+        assert not conn._transaction.rolled_back, "transaction should not be rolled back on clean exit"
+
+    async def test_transaction_rolls_back_on_exception(self) -> None:
+        """When an exception propagates out of the block, rollback() should be called."""
+        conn = FakeConnection()
+        pool = TransactionPool(connection=conn)
+        db = AirDB()
+        db.pool = pool
+
+        with pytest.raises(ValueError, match="something went wrong"):
+            async with db.transaction():
+                raise ValueError("something went wrong")
+
+        assert conn._transaction.rolled_back, "transaction should be rolled back on exception"
+        assert not conn._transaction.committed, "transaction should not be committed on exception"
+
+    async def test_crud_inside_transaction_uses_connection(self) -> None:
+        """CRUD operations inside the block should use the transaction's
+        connection, not the pool directly.
+
+        We verify by checking that the FakeConnection's fetchrow was called
+        (for create()) and the pool-level fetchrow was NOT called.
+        """
+        from air.db import _set_current_db
+
+        conn = FakeConnection(
+            fetchrow_return=dict(_DRAGON_ROW),
+        )
+        pool = TransactionPool(
+            connection=conn,
+            fetchrow_return=dict(_DRAGON_ROW),
+        )
+        db = AirDB()
+        db.pool = pool
+        _set_current_db(db)
+        try:
+            async with db.transaction():
+                await DragonFruit.create(name="Pink Pitaya", color="magenta")
+
+            # The connection's fetchrow should have been called, not the pool's
+            assert conn.fetchrow_called, (
+                "create() inside transaction should use the connection, not the pool"
+            )
+        finally:
+            _set_current_db(None)

@@ -31,6 +31,7 @@ from __future__ import annotations
 import re
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from contextvars import ContextVar
 from datetime import datetime
 from types import UnionType
 from uuid import UUID
@@ -220,6 +221,7 @@ class MultipleObjectsReturned(Exception):
 
 _current_db: AirDB | None = None
 _table_registry: list[type[AirModel]] = []
+_current_connection: ContextVar[Any | None] = ContextVar("_current_connection", default=None)
 
 
 def _set_current_db(db: AirDB | None) -> None:
@@ -228,7 +230,10 @@ def _set_current_db(db: AirDB | None) -> None:
 
 
 def _get_pool() -> Any:
-    """Return the current asyncpg pool, raising if unavailable."""
+    """Return the active transaction connection or the asyncpg pool."""
+    conn = _current_connection.get()
+    if conn is not None:
+        return conn
     if _current_db is None or _current_db.pool is None:
         msg = "No database connection. Ensure AirDB.lifespan() is active."
         raise RuntimeError(msg)
@@ -554,6 +559,39 @@ class AirDB:
                 _set_current_db(None)
 
         return _lifespan
+
+    # -- transactions --------------------------------------------------------
+
+    @asynccontextmanager
+    async def transaction(self) -> AsyncIterator[None]:
+        """Async context manager that wraps a block in a database transaction.
+
+        Acquires a connection from the pool, starts a transaction on it, and
+        routes all CRUD operations inside the block through that connection
+        instead of the pool.
+
+        On clean exit the transaction is committed. If an exception propagates
+        out of the block, the transaction is rolled back and the exception is
+        re-raised.
+
+        Example::
+
+            async with db.transaction():
+                await Item.create(name="a]")
+                await Item.create(name="b")  # atomic with the first
+        """
+        async with self.pool.acquire() as conn:
+            txn = conn.transaction()
+            await txn.start()
+            token = _current_connection.set(conn)
+            try:
+                yield
+                await txn.commit()
+            except BaseException:
+                await txn.rollback()
+                raise
+            finally:
+                _current_connection.reset(token)
 
     # -- table management ----------------------------------------------------
 
