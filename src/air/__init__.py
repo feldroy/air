@@ -21,6 +21,7 @@ from .background import BackgroundTasks as BackgroundTasks
 from .db import (
     AirDB as AirDB,
     AirModel as AirModel,
+    Field as Field,
     MultipleObjectsReturned as MultipleObjectsReturned,
 )
 from .dependencies import is_htmx_request as is_htmx_request

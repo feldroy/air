@@ -110,7 +110,7 @@ class TestField:
 class TestColumnDefs:
     def test_pk_column_is_serial_primary_key(self) -> None:
         cols = BetaApp._column_defs()
-        assert cols[0] == '"id" SERIAL PRIMARY KEY'
+        assert cols[0] == '"id" BIGSERIAL PRIMARY KEY'
 
     def test_str_field_with_no_default_is_not_null(self) -> None:
         cols = BetaApp._column_defs()
@@ -152,7 +152,7 @@ class TestCreateTableSQL:
 
     def test_create_table_contains_all_columns(self) -> None:
         sql = BetaApp._create_table_sql()
-        assert '"id" SERIAL PRIMARY KEY' in sql
+        assert '"id" BIGSERIAL PRIMARY KEY' in sql
         assert '"name" TEXT NOT NULL' in sql
         assert '"email" TEXT NOT NULL' in sql
         assert '"making" TEXT' in sql
@@ -167,7 +167,7 @@ class TestCreateTableSQL:
     def test_simple_model_create_table(self) -> None:
         sql = SimpleModel._create_table_sql()
         assert '"simplemodel"' in sql
-        assert '"id" SERIAL PRIMARY KEY' in sql
+        assert '"id" BIGSERIAL PRIMARY KEY' in sql
         assert '"title" TEXT NOT NULL' in sql
         assert '"score" DOUBLE PRECISION NOT NULL' in sql
         assert '"active" BOOLEAN NOT NULL' in sql
@@ -447,7 +447,7 @@ class TestAirModelExport:
 
         sql = Article._create_table_sql()
         assert sql.startswith('CREATE TABLE IF NOT EXISTS "article" (')
-        assert '"id" SERIAL PRIMARY KEY' in sql
+        assert '"id" BIGSERIAL PRIMARY KEY' in sql
         assert '"title" TEXT NOT NULL' in sql
         assert '"body" TEXT NOT NULL' in sql
         assert '"draft" BOOLEAN NOT NULL' in sql

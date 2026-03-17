@@ -32,10 +32,11 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import datetime
 from types import UnionType
-from typing import Any, ClassVar, Self, get_args, get_origin
+from typing import Any, Self, get_args, get_origin
 
 from pydantic import (
     BaseModel,
+    ConfigDict,
     Field as PydanticField,
 )
 from pydantic.fields import FieldInfo
@@ -182,7 +183,7 @@ class AirModel(BaseModel):
             email: str
     """
 
-    model_config: ClassVar[dict[str, Any]] = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
@@ -211,7 +212,7 @@ class AirModel(BaseModel):
             is_pk = _is_primary_key(field_info)
 
             if is_pk:
-                cols.append(f'"{field_name}" SERIAL PRIMARY KEY')
+                cols.append(f'"{field_name}" BIGSERIAL PRIMARY KEY')
                 continue
 
             # Determine the base Python type (unwrap Optional if needed)
@@ -460,6 +461,13 @@ class AirDB:
 
         Tables are registered automatically when their class body is executed,
         so simply importing your models is enough.
+
+        .. warning::
+
+            This creates tables that don't exist yet but will **not** alter
+            existing tables. If you add a column to a model after the table
+            has been created, you must run the ALTER TABLE yourself or use
+            a migration tool.
         """
         if self.pool is None:
             msg = "Database pool is not initialized. Did you forget to use db.lifespan()?"
