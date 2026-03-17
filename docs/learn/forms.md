@@ -5,57 +5,67 @@ Forms are how data is collected from users on web pages.
 > ## Note
 > This document covers how **Forms** work. The full reference for them is the [Forms reference](https://feldroy.github.io/air/api/forms/).
 
-## A simple form example
+## A complete example
 
-This contact form is in the classic Starlette way, with no validation of data. However, it does show a method to build forms quickly.
+Here is a contact form that renders on GET, validates on POST, re-renders with errors if validation fails, and uses the typed data on success:
 
 ```python
 import air
+
+
+class ContactModel(air.AirModel):
+    name: str
+    email: str = air.AirField(type="email", label="Email Address")
+
+
+class ContactForm(air.AirForm[ContactModel]):
+    pass
+
 
 app = air.Air()
 
 
 @app.page
-def index():
+def contact(request: air.Request) -> air.Html | air.Children:
+    form = ContactForm()
     return air.layouts.mvpcss(
-        air.Title("Contact Form"),
-        air.H1("Contact Form"),
-        air.Article(
-            air.Form(
-                air.Label(
-                    "Email",
-                    air.Input(name="email", type_="email"),
-                    for_="Email",
-                ),
-                air.Label(
-                    "Name",
-                    air.Input(name="name"),
-                ),
-                air.Button("submit", type_="submit"),
-                action="/add-contact",
-                method="post",
-            )
+        air.H1("Contact us"),
+        air.Form(
+            form.render(),
+            air.Button("Send message", type_="submit"),
+            method="post",
+            action="/submit",
         ),
     )
 
 
-@app.post("/add-contact")
-async def add(request: air.Request):
-    form = await request.body()
-    return air.layouts.mvpcss(
-        air.Title("Contact Form Result"),
-        air.H1("Contact Form Result"),
-        air.Pre(air.Code(form)),
+@app.post("/submit")
+async def submit(request: air.Request) -> air.Html:
+    form = await ContactForm.from_request(request)
+
+    if form.is_valid:
+        return air.Html(
+            air.H1("Thank you!"),
+            air.P(f"Name: {form.data.name}"),
+            air.P(f"Email: {form.data.email}"),
+        )
+
+    return air.Html(
+        air.H1("Please fix the errors below."),
+        air.Form(
+            form.render(),
+            air.Button("Send message", type_="submit"),
+            method="post",
+            action="/submit",
+        ),
     )
 ```
 
-## Air Forms
+The rest of this page breaks down what each piece does.
 
-Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. You define your data model once, and the form inherits its validation rules, field types, and constraints automatically. Air Forms also work with plain `BaseModel` if you prefer.
+## Defining a model
 
-### Defining a form
-
-Pass your model as a type parameter to `AirForm`:
+Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. You define your data model once, and the form inherits its validation rules, field types, and constraints automatically.
 
 ```python
 import air
@@ -65,22 +75,68 @@ class JeepneyRouteModel(air.AirModel):
     route_name: str
     origin: str
     destination: str
+```
 
+## Defining a form
 
+Pass your model as a type parameter to `AirForm`:
+
+```python
 class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
     pass
 ```
 
 That's it. No `model = JeepneyRouteModel` declaration needed. Air reads the type parameter and sets the model automatically. The model is specified exactly once.
 
-### Type-safe validated data
+## Rendering a form
 
-After validation, `form.data` is the model instance with full type information:
+Call `render()` to get the form HTML:
+
+```python
+form = JeepneyRouteForm()
+form.render()
+```
+
+```html
+<label>route_name <input name="route_name" type="text" id="route_name" required /></label>
+<label>origin <input name="origin" type="text" id="origin" required /></label>
+<label>destination <input name="destination" type="text" id="destination" required /></label>
+```
+
+Air generates `<label>` and `<input>` pairs from the model fields, with HTML5 validation attributes (`required`, `minlength`, `maxlength`) derived from Pydantic constraints.
+
+## Validating a form
+
+### From a request
+
+The most common pattern in a POST handler. `from_request` reads the form data and validates it in one step:
+
+```python
+@app.post("/submit")
+async def submit(request: air.Request) -> air.Html:
+    form = await JeepneyRouteForm.from_request(request)
+
+    if form.is_valid:
+        form.data.route_name  # typed as str
+        form.data.destination  # autocomplete works
+    else:
+        form.render()  # re-renders with error messages and preserved values
+```
+
+### From a dict
+
+You can also validate a plain dict directly:
 
 ```python
 form = JeepneyRouteForm()
 form.validate({"route_name": "01C", "origin": "Antipolo", "destination": "Cubao"})
+```
 
+## Type-safe validated data
+
+After validation, `form.data` is the model instance with full type information:
+
+```python
 if form.is_valid:
     form.data.route_name    # your editor knows this is a str
     form.data.destination   # autocomplete works
@@ -91,7 +147,108 @@ In Django, `form.cleaned_data["route_name"]` is an untyped dict access. Typos be
 
 If you access `form.data` before validating or after validation fails, you get a clear `AttributeError` instead of a silent `None`.
 
-### How the type parameter works
+## Error display
+
+Here is how `render()` output changes after failed validation. First, the empty form:
+
+```python
+form = ContactForm()
+form.render()
+```
+
+```html
+<label>name <input name="name" type="text" id="name" required /></label>
+<label>Email Address <input name="email" type="email" id="email" required /></label>
+```
+
+Now the same form after submitting with an empty name and a valid email:
+
+```python
+form.validate({"name": "", "email": "audreyfeldroy@example.com"})
+form.render()
+```
+
+```html
+<label>
+  name
+  <input name="name" type="text" id="name" aria-invalid="true" required />
+  <small id="name-error">This field is required.</small>
+</label>
+<label>
+  Email Address
+  <input name="email" type="email" id="email" value="audreyfeldroy@example.com" required />
+</label>
+```
+
+The email field preserves the submitted value so the user doesn't have to retype it. The name field gets `aria-invalid="true"` and a `<small>` error message.
+
+Air automatically converts Pydantic's technical errors to user-friendly messages. For unknown error types, it falls back to the technical Pydantic message.
+
+- **Missing fields**: "This field is required."
+- **Invalid numbers**: "Please enter a valid number."
+- **Invalid email addresses**: "Please enter a valid email address."
+- **Values too short/long**: "This value is too short." / "This value is too long."
+- **URL validation**: "Please enter a valid URL."
+
+## AirField: customizing HTML output
+
+`AirField` wraps `pydantic.Field` and adds HTML-specific metadata. All standard `pydantic.Field` parameters (`min_length`, `max_length`, `gt`, `ge`, `pattern`, etc.) work alongside the HTML ones:
+
+```python
+class ContactModel(air.AirModel):
+    name: str = air.AirField(label="Full Name", min_length=2, max_length=100)
+    email: str = air.AirField(type="email", label="Email Address")
+    message: str = air.AirField(label="Message", min_length=10)
+```
+
+The HTML-specific parameters are:
+
+- **`type`**: HTML input type (`"email"`, `"password"`, `"url"`, `"hidden"`, etc.)
+- **`label`**: Custom label text (defaults to the field name)
+- **`autofocus`**: Set to `True` to autofocus the field
+
+Pydantic constraints like `min_length` and `max_length` automatically become HTML5 `minlength` and `maxlength` attributes, so browser-side validation matches server-side rules.
+
+## Three ways to create a form
+
+These all produce the same thing. Pick whichever fits your situation:
+
+**1. Subclass (recommended).** Best when you want a reusable form class with type safety:
+
+```python
+class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+    pass
+```
+
+**2. AirModel.to_form().** Best for quick one-off forms:
+
+```python
+form = JeepneyRouteModel.to_form()
+```
+
+**3. air.to_form().** Works with any `pydantic.BaseModel`, not just AirModel:
+
+```python
+from pydantic import BaseModel
+
+class PlainModel(BaseModel):
+    name: str
+
+form = air.to_form(PlainModel)
+```
+
+All three paths produce an `AirForm` instance. The subclass approach gives the type checker the most information. The `to_form()` shortcuts are convenient when you don't need a named class.
+
+## Rendering a subset of fields
+
+Use `includes` to render only specific fields. This is useful for multi-step forms or splitting a form into fieldsets:
+
+```python
+form = JeepneyRouteModel.to_form(includes=["route_name"])
+form.render()  # only renders route_name
+```
+
+## How the type parameter works
 
 When you write `class JeepneyRouteForm(AirForm[JeepneyRouteModel])`, two things happen:
 
@@ -105,98 +262,3 @@ If you prefer to set the model explicitly, that still works:
 class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
     model = JeepneyRouteModel  # optional, Air sets this from the type parameter
 ```
-
-### Using AirField for HTML customization
-
-`AirField` lets you add HTML-specific metadata like input types and labels:
-
-```python
-from air import AirField, AirModel
-
-
-class ContactModel(AirModel):
-    name: str
-    email: str = AirField(type="email", label="Email")
-
-
-contact_form = ContactModel.to_form()
-```
-
-### Displaying an Air Form
-
-```python
-contact_form.render()
-```
-
-```html
-<fieldset>
-  <label
-    >name
-    <input name="name" type="text" id="name" />
-  </label>
-  <label
-    >Email
-    <input name="email" type="email" id="email" />
-  </label>
-</fieldset>
-```
-
-## Validation using forms
-
-```python
-# This empty dict represents a user who submitted without adding data
-empty_form = {}
-contact_form.validate(empty_form)
-```
-
-## Displaying a failed form
-
-```python
-contact_form.render()
-```
-
-```html
-<fieldset>
-  <label>
-    name
-    <input name="name" type="text" id="name" aria-invalid="true" />
-    <small id="name-error">This field is required.</small>
-  </label>
-  <label>
-    Email
-    <input name="email" type="email" id="email" aria-invalid="true" />
-    <small id="email-error">This field is required.</small>
-  </label>
-</fieldset>
-```
-
-## Converting Pydantic Models to Air Forms
-
-You can convert any Pydantic model into an Air Form using the `to_form` function:
-
-```python
-from pydantic import BaseModel, EmailStr
-
-
-class ContactModel(BaseModel):
-    name: str
-    email: EmailStr
-
-
-contact_form = air.to_form(ContactModel)
-```
-
-The returned form carries the generic type parameter, so `contact_form.data` is typed as `ContactModel` after validation.
-
-## Enhanced Error Messages
-
-Air Forms automatically display user-friendly error messages that clearly explain validation failures:
-
-- **Missing fields**: "This field is required."
-- **Invalid numbers**: "Please enter a valid number."
-- **Invalid email addresses**: "Please enter a valid email address."
-- **Values too short/long**: "This value is too short." / "This value is too long."
-- **URL validation**: "Please enter a valid URL."
-- **And many more...**
-
-For unknown error types, the system falls back to the technical Pydantic error message, ensuring developers always get meaningful feedback.
