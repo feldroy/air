@@ -51,9 +51,65 @@ async def add(request: air.Request):
 
 ## Air Forms
 
-Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. That includes both their display and validation of data. If you have any experience with Pydantic, that will go a long way towards helping your understanding of Air Forms.
+Air Forms are powered by Pydantic models. You define your data model once, and the form inherits its validation rules, field types, and constraints automatically.
 
-### A Sample Contact Air Form
+### Defining a form
+
+Pass your model as a type parameter to `AirForm`:
+
+```python
+from pydantic import BaseModel
+
+import air
+
+class JeepneyRouteModel(BaseModel):
+    route_name: str
+    origin: str
+    destination: str
+
+
+class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+    pass
+```
+
+That's it. No `model = JeepneyRouteModel` declaration needed. Air reads the type parameter and sets the model automatically. The model is specified exactly once.
+
+### Type-safe validated data
+
+After validation, `form.data` is the model instance with full type information:
+
+```python
+form = JeepneyRouteForm()
+form.validate({"route_name": "01C", "origin": "Antipolo", "destination": "Cubao"})
+
+if form.is_valid:
+    form.data.route_name    # your editor knows this is a str
+    form.data.destination   # autocomplete works
+    form.data.orign         # typo caught by the type checker
+```
+
+In Django, `form.cleaned_data["route_name"]` is an untyped dict access. Typos become runtime bugs. In WTForms, `form.route_name.data` has no type information. Air is the first Python form system where your editor knows the shape of validated data, because `form.data` is the actual Pydantic model.
+
+If you access `form.data` before validating or after validation fails, you get a clear `AttributeError` instead of a silent `None`.
+
+### How the type parameter works
+
+When you write `class JeepneyRouteForm(AirForm[JeepneyRouteModel])`, two things happen:
+
+1. **For your editor**: the type parameter tells the type checker that `form.data` returns a `JeepneyRouteModel`. This is what powers autocomplete and catches typos.
+
+2. **For Air**: Python stores the type argument at class creation time. Air's `__init_subclass__` hook reads it and sets `model = JeepneyRouteModel` on the form class automatically. No need to write it yourself.
+
+If you prefer to set the model explicitly, that still works:
+
+```python
+class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+    model = JeepneyRouteModel  # optional, Air sets this from the type parameter
+```
+
+### Using AirField for HTML customization
+
+`AirField` lets you add HTML-specific metadata like input types and labels:
 
 ```python
 from air import AirField, AirModel
@@ -64,7 +120,6 @@ class ContactModel(AirModel):
     email: str = AirField(type="email", label="Email")
 
 
-# Create an Air Form instance from the Air Model
 contact_form = ContactModel.to_form()
 ```
 
@@ -118,7 +173,7 @@ contact_form.render()
 
 ## Converting Pydantic Models to Air Forms
 
-You can easily convert any Pydantic model into an Air Form using the `to_form` function:
+You can convert any Pydantic model into an Air Form using the `to_form` function:
 
 ```python
 from pydantic import BaseModel, EmailStr
@@ -129,10 +184,10 @@ class ContactModel(BaseModel):
     email: EmailStr
 
 
-ContactForm = air.to_form(ContactModel)
-
-contact_form = ContactForm()
+contact_form = air.to_form(ContactModel)
 ```
+
+The returned form carries the generic type parameter, so `contact_form.data` is typed as `ContactModel` after validation.
 
 ## Enhanced Error Messages
 

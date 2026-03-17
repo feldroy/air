@@ -633,3 +633,73 @@ def test_air_to_form_generation_with_custom_widget() -> None:
 
     rendered = autoform.render()
     assert str(rendered) == "<custom>"
+
+
+def test_airform_generic_type_parameter() -> None:
+    """AirForm[M] sets model from the type parameter and makes form.data typed as M."""
+
+    class JeepneyRouteModel(BaseModel):
+        route_name: str
+        origin: str
+        destination: str
+
+    class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+        pass  # no model = JeepneyRouteModel needed
+
+    # model was auto-set from the type parameter
+    assert JeepneyRouteForm.model is JeepneyRouteModel
+
+    form = JeepneyRouteForm()
+    form.validate({"route_name": "01C", "origin": "Antipolo", "destination": "Cubao"})
+    assert form.is_valid
+
+    # form.data is typed as JeepneyRouteModel, no cast() needed
+    assert form.data.route_name == "01C"
+    assert form.data.origin == "Antipolo"
+    assert form.data.destination == "Cubao"
+    assert isinstance(form.data, JeepneyRouteModel)
+
+
+def test_airform_data_before_validation_raises() -> None:
+    """Accessing form.data before validation raises AttributeError."""
+
+    class IslandModel(BaseModel):
+        name: str
+
+    class IslandForm(air.AirForm[IslandModel]):
+        pass
+
+    form = IslandForm()
+    with pytest.raises(AttributeError, match="No validated data"):
+        form.data  # noqa: B018
+
+
+def test_airform_data_after_failed_validation_raises() -> None:
+    """Accessing form.data after failed validation raises AttributeError."""
+
+    class IslandModel(BaseModel):
+        name: str
+
+    class IslandForm(air.AirForm[IslandModel]):
+        pass
+
+    form = IslandForm()
+    form.validate({})  # missing required field
+    assert not form.is_valid
+    with pytest.raises(AttributeError, match="No validated data"):
+        form.data  # noqa: B018
+
+
+def test_airform_explicit_model_not_overridden() -> None:
+    """Explicit model = X in class body takes priority over type parameter."""
+
+    class ModelA(BaseModel):
+        x: str
+
+    class ModelB(BaseModel):
+        y: str
+
+    class ExplicitForm(air.AirForm[ModelA]):
+        model = ModelB  # explicit wins
+
+    assert ExplicitForm.model is ModelB

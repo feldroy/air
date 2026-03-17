@@ -6,7 +6,7 @@ generate matching :class:`air.forms.AirForm` subclasses on demand.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 from pydantic import BaseModel
 
@@ -26,7 +26,7 @@ class AirModel(BaseModel):
         name: str | None = None,
         includes: Sequence[str] | None = None,
         widget: Callable | None = None,
-    ) -> AirForm:
+    ) -> AirForm[Self]:
         """Return an :class:`AirForm` instance bound to ``cls``.
 
         Args:
