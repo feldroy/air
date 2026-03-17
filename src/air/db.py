@@ -6,12 +6,10 @@ against PostgreSQL.
 
 Example::
 
-    from air.db import AirDB, AirModel, Field
+    from air import AirDB, AirModel, Field
     from datetime import datetime
 
-    db = AirDB()
-
-    class BetaApplication(db.Model):
+    class BetaApplication(AirModel):
         id: int | None = Field(default=None, primary_key=True)
         created_at: datetime = Field(default_factory=datetime.now)
         name: str
@@ -19,6 +17,7 @@ Example::
         making: str = Field(default="")
         why: str = Field(default="")
 
+    db = AirDB()
     app = air.Air(lifespan=db.lifespan("postgresql://..."))
 
     # Then in async handlers:
@@ -38,8 +37,10 @@ from datetime import datetime
 from types import UnionType
 from typing import Any, ClassVar, Self, get_args, get_origin
 
-from pydantic import BaseModel
-from pydantic import Field as PydanticField
+from pydantic import (
+    BaseModel,
+    Field as PydanticField,
+)
 from pydantic.fields import FieldInfo
 
 # ---------------------------------------------------------------------------
@@ -186,10 +187,9 @@ class AirModel(BaseModel):
 
     model_config: ClassVar[dict[str, Any]] = {"from_attributes": True}
 
-    def __init_subclass__(cls, _scoped: bool = False, **kwargs: Any) -> None:
+    def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
-        if not _scoped:
-            _table_registry.append(cls)  # type: ignore[arg-type]
+        _table_registry.append(cls)  # type: ignore[arg-type]
 
     # -- SQL generation helpers ----------------------------------------------
 
@@ -406,33 +406,12 @@ class AirModel(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Scoped Model factory (must come after AirModel is defined)
-# ---------------------------------------------------------------------------
-
-
-def _make_scoped_model(db_instance: AirDB) -> type[AirModel]:
-    """Create a per-instance AirModel base class whose subclasses register to *db_instance*.models."""
-    registry = db_instance.models
-
-    class ScopedModel(AirModel, _scoped=True):
-        """Per-instance AirModel base. Subclasses are tracked on the owning AirDB."""
-
-        def __init_subclass__(cls, **kwargs: Any) -> None:
-            super().__init_subclass__(_scoped=True, **kwargs)
-            registry.append(cls)  # type: ignore[arg-type]
-
-    ScopedModel.__name__ = "AirModel"
-    ScopedModel.__qualname__ = "AirModel"
-    return ScopedModel  # type: ignore[return-value]
-
-
-# ---------------------------------------------------------------------------
-# AirDB: connection pool + table registry
+# AirDB: connection pool + table management
 # ---------------------------------------------------------------------------
 
 
 class AirDB:
-    """Manages an asyncpg connection pool and the registry of :class:`AirModel` subclasses.
+    """Manages an asyncpg connection pool for :class:`AirModel` subclasses.
 
     Example::
 
@@ -442,17 +421,6 @@ class AirDB:
 
     def __init__(self) -> None:
         self.pool: Any | None = None  # asyncpg.Pool once connected
-        self.models: list[type[AirModel]] = []
-        self._scoped_model: type[AirModel] | None = None
-
-    # -- per-instance Model base class ---------------------------------------
-
-    @property
-    def Model(self) -> type[AirModel]:  # noqa: N802
-        """A base class whose subclasses are tracked in this instance's :attr:`models` list."""
-        if self._scoped_model is None:
-            self._scoped_model = _make_scoped_model(self)
-        return self._scoped_model
 
     # -- connection lifecycle ------------------------------------------------
 
@@ -499,6 +467,6 @@ class AirDB:
         if self.pool is None:
             msg = "Database pool is not initialized. Did you forget to use db.lifespan()?"
             raise RuntimeError(msg)
-        for table_cls in self.models:
+        for table_cls in _table_registry:
             sql = table_cls._create_table_sql()
             await self.pool.execute(sql)
