@@ -269,7 +269,7 @@ class Model(BaseModel, metaclass=_TableMeta):
             is_pk = _is_primary_key(field_info)
 
             if is_pk:
-                cols.append(f"{field_name} SERIAL PRIMARY KEY")
+                cols.append(f'"{field_name}" SERIAL PRIMARY KEY')
                 continue
 
             # Determine the base Python type (unwrap Optional if needed)
@@ -288,7 +288,7 @@ class Model(BaseModel, metaclass=_TableMeta):
             if is_required and not nullable:
                 constraint = " NOT NULL"
 
-            cols.append(f"{field_name} {pg_type}{constraint}")
+            cols.append(f'"{field_name}" {pg_type}{constraint}')
 
         return cols
 
@@ -297,7 +297,7 @@ class Model(BaseModel, metaclass=_TableMeta):
         """Generate a ``CREATE TABLE IF NOT EXISTS`` statement."""
         cols = cls._column_defs()
         cols_sql = ", ".join(cols)
-        return f"CREATE TABLE IF NOT EXISTS {cls._table_name()} ({cols_sql})"
+        return f'CREATE TABLE IF NOT EXISTS "{cls._table_name()}" ({cols_sql})'
 
     @classmethod
     def _non_pk_fields(cls) -> list[str]:
@@ -321,11 +321,11 @@ class Model(BaseModel, metaclass=_TableMeta):
         pool = _get_pool()
         fields = cls._non_pk_fields()
         insert_fields = [f for f in fields if f in kwargs]
-        columns = ", ".join(insert_fields)
+        columns = ", ".join(f'"{f}"' for f in insert_fields)
         placeholders = ", ".join(f"${i + 1}" for i in range(len(insert_fields)))
         values = [kwargs[f] for f in insert_fields]
 
-        sql = f"INSERT INTO {cls._table_name()} ({columns}) VALUES ({placeholders}) RETURNING *"  # noqa: S608
+        sql = f'INSERT INTO "{cls._table_name()}" ({columns}) VALUES ({placeholders}) RETURNING *'  # noqa: S608
         row = await pool.fetchrow(sql, *values)
         return cls.model_validate(dict(row))
 
@@ -337,9 +337,9 @@ class Model(BaseModel, metaclass=_TableMeta):
             An instance of this Table subclass, or ``None`` if no row matches.
         """
         pool = _get_pool()
-        conditions = [f"{k} = ${i + 1}" for i, k in enumerate(kwargs)]
+        conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
         where = " AND ".join(conditions)
-        sql = f"SELECT * FROM {cls._table_name()} WHERE {where}"  # noqa: S608
+        sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
         row = await pool.fetchrow(sql, *kwargs.values())
         if row is None:
             return None
@@ -355,9 +355,9 @@ class Model(BaseModel, metaclass=_TableMeta):
         pool = _get_pool()
         if not kwargs:
             return await cls.all()
-        conditions = [f"{k} = ${i + 1}" for i, k in enumerate(kwargs)]
+        conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
         where = " AND ".join(conditions)
-        sql = f"SELECT * FROM {cls._table_name()} WHERE {where}"  # noqa: S608
+        sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
         rows = await pool.fetch(sql, *kwargs.values())
         return [cls.model_validate(dict(r)) for r in rows]
 
@@ -369,7 +369,7 @@ class Model(BaseModel, metaclass=_TableMeta):
             A list of all model instances.
         """
         pool = _get_pool()
-        sql = f"SELECT * FROM {cls._table_name()}"  # noqa: S608
+        sql = f'SELECT * FROM "{cls._table_name()}"'  # noqa: S608
         rows = await pool.fetch(sql)
         return [cls.model_validate(dict(r)) for r in rows]
 
@@ -382,11 +382,11 @@ class Model(BaseModel, metaclass=_TableMeta):
         """
         pool = _get_pool()
         if kwargs:
-            conditions = [f"{k} = ${i + 1}" for i, k in enumerate(kwargs)]
+            conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
             where = " AND ".join(conditions)
-            sql = f"SELECT COUNT(*) FROM {cls._table_name()} WHERE {where}"  # noqa: S608
+            sql = f'SELECT COUNT(*) FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
             return await pool.fetchval(sql, *kwargs.values())
-        sql = f"SELECT COUNT(*) FROM {cls._table_name()}"  # noqa: S608
+        sql = f'SELECT COUNT(*) FROM "{cls._table_name()}"'  # noqa: S608
         return await pool.fetchval(sql)
 
     # -- Instance methods ----------------------------------------------------
@@ -408,11 +408,11 @@ class Model(BaseModel, metaclass=_TableMeta):
             raise ValueError(msg)
 
         fields = self._non_pk_fields()
-        set_clauses = [f"{f} = ${i + 1}" for i, f in enumerate(fields)]
+        set_clauses = [f'"{f}" = ${i + 1}' for i, f in enumerate(fields)]
         values = [getattr(self, f) for f in fields]
         pk_placeholder = f"${len(fields) + 1}"
 
-        sql = f"UPDATE {self._table_name()} SET {', '.join(set_clauses)} WHERE {pk} = {pk_placeholder}"
+        sql = f'UPDATE "{self._table_name()}" SET {", ".join(set_clauses)} WHERE "{pk}" = {pk_placeholder}'
         await pool.execute(sql, *values, pk_value)
 
     async def delete(self) -> None:
@@ -431,5 +431,5 @@ class Model(BaseModel, metaclass=_TableMeta):
             msg = "Cannot delete a row without a primary key value."
             raise ValueError(msg)
 
-        sql = f"DELETE FROM {self._table_name()} WHERE {pk} = $1"
+        sql = f'DELETE FROM "{self._table_name()}" WHERE "{pk}" = $1'
         await pool.execute(sql, pk_value)

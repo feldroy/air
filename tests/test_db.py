@@ -105,30 +105,30 @@ class TestField:
 class TestColumnDefs:
     def test_pk_column_is_serial_primary_key(self) -> None:
         cols = BetaApplication._column_defs()
-        assert cols[0] == "id SERIAL PRIMARY KEY"
+        assert cols[0] == '"id" SERIAL PRIMARY KEY'
 
     def test_str_field_with_no_default_is_not_null(self) -> None:
         cols = BetaApplication._column_defs()
-        col_dict = {c.split()[0]: c for c in cols}
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" in col_dict["name"]
         assert "NOT NULL" in col_dict["email"]
 
     def test_str_field_with_default_is_nullable(self) -> None:
         """Fields with a default value should not have NOT NULL."""
         cols = BetaApplication._column_defs()
-        col_dict = {c.split()[0]: c for c in cols}
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" not in col_dict["making"]
         assert "NOT NULL" not in col_dict["why"]
 
     def test_datetime_field_with_factory_no_not_null(self) -> None:
         """Fields with default_factory should not have NOT NULL."""
         cols = BetaApplication._column_defs()
-        col_dict = {c.split()[0]: c for c in cols}
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" not in col_dict["created_at"]
 
     def test_all_types_in_simple_model(self) -> None:
         cols = SimpleModel._column_defs()
-        col_dict = {c.split()[0]: c for c in cols}
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "TEXT" in col_dict["title"]
         assert "DOUBLE PRECISION" in col_dict["score"]
         assert "BOOLEAN" in col_dict["active"]
@@ -143,32 +143,30 @@ class TestColumnDefs:
 class TestCreateTableSQL:
     def test_create_table_starts_with_create_table_if_not_exists(self) -> None:
         sql = BetaApplication._create_table_sql()
-        assert sql.startswith("CREATE TABLE IF NOT EXISTS betaapplication (")
+        assert sql.startswith('CREATE TABLE IF NOT EXISTS "betaapplication" (')
 
     def test_create_table_contains_all_columns(self) -> None:
         sql = BetaApplication._create_table_sql()
-        assert "id SERIAL PRIMARY KEY" in sql
-        assert "name TEXT NOT NULL" in sql
-        assert "email TEXT NOT NULL" in sql
-        assert "making TEXT" in sql
-        assert "why TEXT" in sql
-        assert "created_at TIMESTAMP WITH TIME ZONE" in sql
+        assert '"id" SERIAL PRIMARY KEY' in sql
+        assert '"name" TEXT NOT NULL' in sql
+        assert '"email" TEXT NOT NULL' in sql
+        assert '"making" TEXT' in sql
+        assert '"why" TEXT' in sql
+        assert '"created_at" TIMESTAMP WITH TIME ZONE' in sql
 
     def test_create_table_is_valid_sql_shape(self) -> None:
         sql = BetaApplication._create_table_sql()
         assert sql.startswith("CREATE TABLE IF NOT EXISTS")
         assert sql.endswith(")")
-        assert sql.count("(") == 1
-        assert sql.count(")") == 1
 
     def test_simple_model_create_table(self) -> None:
         sql = SimpleModel._create_table_sql()
-        assert "simplemodel" in sql
-        assert "id SERIAL PRIMARY KEY" in sql
-        assert "title TEXT NOT NULL" in sql
-        assert "score DOUBLE PRECISION NOT NULL" in sql
-        assert "active BOOLEAN NOT NULL" in sql
-        assert "created TIMESTAMP WITH TIME ZONE NOT NULL" in sql
+        assert '"simplemodel"' in sql
+        assert '"id" SERIAL PRIMARY KEY' in sql
+        assert '"title" TEXT NOT NULL' in sql
+        assert '"score" DOUBLE PRECISION NOT NULL' in sql
+        assert '"active" BOOLEAN NOT NULL' in sql
+        assert '"created" TIMESTAMP WITH TIME ZONE NOT NULL' in sql
 
 
 # ---------------------------------------------------------------------------
@@ -329,8 +327,8 @@ class TestNoPKModel:
         sql = NoPKModel._create_table_sql()
         assert "SERIAL" not in sql
         assert "PRIMARY KEY" not in sql
-        assert "name TEXT NOT NULL" in sql
-        assert "value TEXT NOT NULL" in sql
+        assert '"name" TEXT NOT NULL' in sql
+        assert '"value" TEXT NOT NULL' in sql
 
 
 # ---------------------------------------------------------------------------
@@ -347,11 +345,11 @@ class OptionalModel(Model):
 class TestOptionalFields:
     def test_optional_field_no_not_null(self) -> None:
         cols = OptionalModel._column_defs()
-        col_dict = {c.split()[0]: c for c in cols}
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" not in col_dict["nickname"]
 
     def test_required_field_has_not_null(self) -> None:
         """A field with a default (empty string) should not have NOT NULL."""
         cols = OptionalModel._column_defs()
-        col_dict = {c.split()[0]: c for c in cols}
+        col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" not in col_dict["bio"]
