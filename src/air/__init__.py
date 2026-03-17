@@ -14,6 +14,7 @@ from . import (
     responses as responses,
 )
 from .db import AirDB as AirDB
+from .db import Model as Model
 from .applications import (
     Air as Air,
     AirRoute as AirRoute,

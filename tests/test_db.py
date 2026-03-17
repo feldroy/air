@@ -10,7 +10,7 @@ from datetime import datetime
 
 import pytest
 
-from air.db import AirDB, Field, Table, _PY_TO_PG, _table_registry
+from air.db import AirDB, Field, Model, _PY_TO_PG, _table_registry
 
 
 # ---------------------------------------------------------------------------
@@ -18,7 +18,7 @@ from air.db import AirDB, Field, Table, _PY_TO_PG, _table_registry
 # ---------------------------------------------------------------------------
 
 
-class BetaApplication(Table):
+class BetaApplication(Model):
     id: int | None = Field(default=None, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.now)
     name: str
@@ -27,7 +27,7 @@ class BetaApplication(Table):
     why: str = Field(default="")
 
 
-class SimpleModel(Table):
+class SimpleModel(Model):
     id: int | None = Field(default=None, primary_key=True)
     title: str
     score: float
@@ -182,9 +182,9 @@ class TestTableRegistry:
         assert "BetaApplication" in registered_names
         assert "SimpleModel" in registered_names
 
-    def test_base_table_not_registered(self) -> None:
+    def test_base_model_not_registered(self) -> None:
         registered_names = [t.__name__ for t in _table_registry]
-        assert "Table" not in registered_names
+        assert "Model" not in registered_names
 
 
 # ---------------------------------------------------------------------------
@@ -313,7 +313,7 @@ class TestInstanceMethodErrors:
 # ---------------------------------------------------------------------------
 
 
-class NoPKModel(Table):
+class NoPKModel(Model):
     name: str
     value: str
 
@@ -338,7 +338,7 @@ class TestNoPKModel:
 # ---------------------------------------------------------------------------
 
 
-class OptionalModel(Table):
+class OptionalModel(Model):
     id: int | None = Field(default=None, primary_key=True)
     nickname: str | None = None
     bio: str = Field(default="")

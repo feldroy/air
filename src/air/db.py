@@ -6,12 +6,12 @@ against PostgreSQL.
 
 Example::
 
-    from air.db import AirDB, Table, Field
+    from air.db import AirDB, Model, Field
     from datetime import datetime
 
     db = AirDB()
 
-    class BetaApplication(Table):
+    class BetaApplication(Model):
         id: int | None = Field(default=None, primary_key=True)
         created_at: datetime = Field(default_factory=datetime.now)
         name: str
@@ -129,7 +129,7 @@ def _is_primary_key(field_info: FieldInfo) -> bool:
 
 
 class AirDB:
-    """Manages an asyncpg connection pool and the registry of :class:`Table` subclasses.
+    """Manages an asyncpg connection pool and the registry of :class:`Model` subclasses.
 
     Example::
 
@@ -177,7 +177,7 @@ class AirDB:
     # -- table management ----------------------------------------------------
 
     async def create_tables(self) -> None:
-        """Execute ``CREATE TABLE IF NOT EXISTS`` for every registered :class:`Table`.
+        """Execute ``CREATE TABLE IF NOT EXISTS`` for every registered :class:`Model`.
 
         Tables are registered automatically when their class body is executed,
         so simply importing your models is enough.
@@ -193,7 +193,7 @@ class AirDB:
 # ---------------------------------------------------------------------------
 
 _current_db: AirDB | None = None
-_table_registry: list[type[Table]] = []
+_table_registry: list[type[Model]] = []
 
 
 def _set_current_db(db: AirDB | None) -> None:
@@ -215,18 +215,18 @@ def _get_pool() -> Any:
 
 
 class _TableMeta(type(BaseModel)):
-    """Metaclass that auto-registers Table subclasses in the global registry."""
+    """Metaclass that auto-registers Model subclasses in the global registry."""
 
     def __init__(cls, name: str, bases: tuple[type, ...], namespace: dict[str, Any], **kwargs: Any) -> None:
         super().__init__(name, bases, namespace, **kwargs)
-        # Skip the base Table class itself; register any concrete subclass
+        # Skip the base Model class itself; register any concrete subclass
         for base in bases:
-            if getattr(base, "__name__", "") == "Table":
+            if getattr(base, "__name__", "") == "Model":
                 _table_registry.append(cls)  # type: ignore[arg-type]
                 break
 
 
-class Table(BaseModel, metaclass=_TableMeta):
+class Model(BaseModel, metaclass=_TableMeta):
     """Base class for database-backed Pydantic models.
 
     Subclass this and declare fields using standard Pydantic annotations.
@@ -238,7 +238,7 @@ class Table(BaseModel, metaclass=_TableMeta):
 
     Example::
 
-        class User(Table):
+        class User(Model):
             id: int | None = Field(default=None, primary_key=True)
             name: str
             email: str
