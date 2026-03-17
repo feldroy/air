@@ -300,10 +300,12 @@ class AirModel(BaseModel):
         return cls.model_validate(dict(rows[0]))
 
     @classmethod
-    async def filter(cls, *, limit: int | None = None, offset: int | None = None, **kwargs: Any) -> list[Self]:
+    async def filter(cls, *, order_by: str | None = None, limit: int | None = None, offset: int | None = None, **kwargs: Any) -> list[Self]:
         """Fetch all rows matching the given keyword filters.
 
         Args:
+            order_by: Optional field name to sort by. Prefix with ``-`` for
+                descending order (e.g. ``"-name"``).
             limit: Maximum number of rows to return.
             offset: Number of rows to skip before returning results.
             **kwargs: Column name/value pairs to filter by.
@@ -313,10 +315,15 @@ class AirModel(BaseModel):
         """
         pool = _get_pool()
         if not kwargs:
-            return await cls.all(limit=limit, offset=offset)
+            return await cls.all(order_by=order_by, limit=limit, offset=offset)
         conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
         where = " AND ".join(conditions)
         sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
+        if order_by is not None:
+            if order_by.startswith("-"):
+                sql += f' ORDER BY "{order_by[1:]}" DESC'
+            else:
+                sql += f' ORDER BY "{order_by}" ASC'
         if limit is not None:
             sql += f" LIMIT {limit}"
         if offset is not None:
@@ -325,10 +332,12 @@ class AirModel(BaseModel):
         return [cls.model_validate(dict(r)) for r in rows]
 
     @classmethod
-    async def all(cls, *, limit: int | None = None, offset: int | None = None) -> list[Self]:
+    async def all(cls, *, order_by: str | None = None, limit: int | None = None, offset: int | None = None) -> list[Self]:
         """Fetch every row from the table.
 
         Args:
+            order_by: Optional field name to sort by. Prefix with ``-`` for
+                descending order (e.g. ``"-name"``).
             limit: Maximum number of rows to return.
             offset: Number of rows to skip before returning results.
 
@@ -337,6 +346,11 @@ class AirModel(BaseModel):
         """
         pool = _get_pool()
         sql = f'SELECT * FROM "{cls._table_name()}"'  # noqa: S608
+        if order_by is not None:
+            if order_by.startswith("-"):
+                sql += f' ORDER BY "{order_by[1:]}" DESC'
+            else:
+                sql += f' ORDER BY "{order_by}" ASC'
         if limit is not None:
             sql += f" LIMIT {limit}"
         if offset is not None:

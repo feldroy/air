@@ -523,3 +523,34 @@ class TestUUIDField:
         assert "UUID" in col_dict["trace_id"]
         assert "NOT NULL" not in col_dict["trace_id"]
 
+
+
+# ---------------------------------------------------------------------------
+# order_by parameter
+# ---------------------------------------------------------------------------
+
+
+class TestOrderBy:
+    @pytest.mark.asyncio
+    async def test_all_order_by_ascending(self) -> None:
+        """all(order_by="name") should accept a field name for ascending sort."""
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await DragonFruit.all(order_by="name")
+
+    @pytest.mark.asyncio
+    async def test_all_order_by_descending(self) -> None:
+        """all(order_by="-name") should use a leading dash to mean DESC."""
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await DragonFruit.all(order_by="-name")
+
+    @pytest.mark.asyncio
+    async def test_filter_order_by_ascending(self) -> None:
+        """filter() should accept order_by alongside column filters."""
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await DragonFruit.filter(color="yellow", order_by="name")
+
+    @pytest.mark.asyncio
+    async def test_filter_order_by_descending(self) -> None:
+        """filter() with order_by="-name" should sort descending."""
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await DragonFruit.filter(color="yellow", order_by="-name")
