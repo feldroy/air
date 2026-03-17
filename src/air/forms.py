@@ -93,7 +93,7 @@ class AirForm[M: BaseModel]:
             AttributeError: If accessed before successful validation.
         """
         if self._data is None:
-            msg = "No validated data available. Call validate() first and check is_valid."
+            msg = "No validated data available. Check is_valid before accessing data."
             raise AttributeError(msg)
         return self._data
 
@@ -141,6 +141,10 @@ class AirForm[M: BaseModel]:
                     air.P(f"Errors: {len(flight_form.errors or [])}"),
                 )
         """
+        # Reset state from any previous validation
+        self._data = None
+        self.is_valid = False
+        self.errors = None
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
         try:
