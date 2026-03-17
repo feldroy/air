@@ -397,8 +397,11 @@ class AirModel(BaseModel):
         values = [getattr(self, f) for f in fields]
         pk_placeholder = f"${len(fields) + 1}"
 
-        sql = f'UPDATE "{self._table_name()}" SET {", ".join(set_clauses)} WHERE "{pk}" = {pk_placeholder}'
-        await pool.execute(sql, *values, pk_value)
+        sql = f'UPDATE "{self._table_name()}" SET {", ".join(set_clauses)} WHERE "{pk}" = {pk_placeholder} RETURNING *'
+        row = await pool.fetchrow(sql, *values, pk_value)
+        for field_name in type(self).model_fields:
+            if field_name in row:
+                object.__setattr__(self, field_name, row[field_name])
 
     async def delete(self) -> None:
         """Delete the row identified by this instance's primary key.

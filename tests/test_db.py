@@ -554,3 +554,89 @@ class TestOrderBy:
         """filter() with order_by="-name" should sort descending."""
         with pytest.raises(RuntimeError, match="No database connection"):
             await DragonFruit.filter(color="yellow", order_by="-name")
+
+
+# ---------------------------------------------------------------------------
+# save() should refresh the instance from the database
+# ---------------------------------------------------------------------------
+
+
+class FakePool:
+    """Test double that captures SQL and returns canned rows from fetchrow."""
+
+    def __init__(self, fetchrow_return: dict[str, object]) -> None:
+        self.last_sql: str | None = None
+        self.last_args: tuple[object, ...] = ()
+        self._fetchrow_return = fetchrow_return
+
+    async def execute(self, sql: str, *args: object) -> None:
+        self.last_sql = sql
+        self.last_args = args
+
+    async def fetchrow(self, sql: str, *args: object) -> dict[str, object]:
+        self.last_sql = sql
+        self.last_args = args
+        return self._fetchrow_return
+
+
+class TestSaveRefreshesInstance:
+    """save() should use RETURNING * and update the instance's fields."""
+
+    async def test_save_sql_contains_returning(self) -> None:
+        """The UPDATE statement should end with RETURNING *."""
+        from air.db import _set_current_db
+
+        fake_pool = FakePool(
+            fetchrow_return={
+                "id": 1,
+                "created_at": datetime(2026, 3, 17),
+                "name": "Pink Pitaya",
+                "color": "magenta",
+                "sweetness": "high",
+                "origin": "Vietnam",
+            }
+        )
+        db = AirDB()
+        db.pool = fake_pool
+        _set_current_db(db)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta"
+            )
+            await fruit.save()
+            assert fake_pool.last_sql is not None
+            assert "RETURNING *" in fake_pool.last_sql
+        finally:
+            _set_current_db(None)
+
+    async def test_save_refreshes_fields_from_returned_row(self) -> None:
+        """After save(), instance fields should reflect what the database returned."""
+        from air.db import _set_current_db
+
+        fake_pool = FakePool(
+            fetchrow_return={
+                "id": 1,
+                "created_at": datetime(2026, 3, 17, 12, 0, 0),
+                "name": "Pink Pitaya",
+                "color": "hot pink",
+                "sweetness": "extreme",
+                "origin": "Philippines",
+            }
+        )
+        db = AirDB()
+        db.pool = fake_pool
+        _set_current_db(db)
+        try:
+            fruit = DragonFruit(
+                id=1, name="Pink Pitaya", color="magenta",
+                sweetness="", origin=""
+            )
+            await fruit.save()
+
+            # The database returned different values for these fields.
+            # save() should have updated the instance to match.
+            assert fruit.color == "hot pink"
+            assert fruit.sweetness == "extreme"
+            assert fruit.origin == "Philippines"
+        finally:
+            _set_current_db(None)
