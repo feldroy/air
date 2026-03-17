@@ -7,25 +7,22 @@ against PostgreSQL.
 Example::
 
     from air import AirDB, AirModel, Field
-    from datetime import datetime
 
-    class BetaApplication(AirModel):
+    class UnicornSighting(AirModel):
         id: int | None = Field(default=None, primary_key=True)
-        created_at: datetime = Field(default_factory=datetime.now)
-        name: str
-        email: str
-        making: str = Field(default="")
-        why: str = Field(default="")
+        location: str
+        sparkle_rating: int
+        confirmed: bool = Field(default=False)
 
     db = AirDB()
     app = air.Air(lifespan=db.lifespan("postgresql://..."))
 
     # Then in async handlers:
-    await BetaApplication.create(name="Alice", email="alice@example.com")
-    apps = await BetaApplication.filter(email="alice@example.com")
-    app_row = await BetaApplication.get(id=1)
-    all_rows = await BetaApplication.all()
-    count = await BetaApplication.count()
+    await UnicornSighting.create(location="Rainbow Falls", sparkle_rating=11)
+    sightings = await UnicornSighting.filter(confirmed=True)
+    one = await UnicornSighting.get(id=1)
+    all_rows = await UnicornSighting.all()
+    count = await UnicornSighting.count()
     await db.create_tables()
 """
 
