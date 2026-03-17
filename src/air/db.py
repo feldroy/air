@@ -134,6 +134,78 @@ def _is_primary_key(field_info: FieldInfo) -> bool:
 
 
 # ---------------------------------------------------------------------------
+# Lookup operators (Django-style double-underscore)
+# ---------------------------------------------------------------------------
+
+# Maps suffix -> SQL operator for simple binary comparisons.
+_LOOKUP_OPS: dict[str, str] = {
+    "gt": ">",
+    "gte": ">=",
+    "lt": "<",
+    "lte": "<=",
+}
+
+
+def _parse_kwargs(kwargs: dict[str, Any]) -> tuple[list[str], list[Any]]:
+    """Parse keyword arguments into SQL WHERE conditions and parameter values.
+
+    Supports Django-style ``__`` lookups (gt, gte, lt, lte, contains,
+    icontains, in, isnull) alongside plain equality.
+
+    Returns:
+        A ``(conditions, values)`` tuple. *conditions* is a list of SQL
+        fragments like ``"sparkle_rating" > $1`` and *values* is the
+        corresponding list of bind parameters. The two lists may differ in
+        length because ``isnull`` produces a condition with no parameter.
+    """
+    conditions: list[str] = []
+    values: list[Any] = []
+    param_idx = 1  # asyncpg uses $1, $2, ...
+
+    for key, value in kwargs.items():
+        # Split off a lookup suffix if present.
+        if "__" in key:
+            field, lookup = key.rsplit("__", 1)
+        else:
+            field, lookup = key, "exact"
+
+        if lookup == "exact":
+            conditions.append(f'"{field}" = ${param_idx}')
+            values.append(value)
+            param_idx += 1
+        elif lookup in _LOOKUP_OPS:
+            conditions.append(f'"{field}" {_LOOKUP_OPS[lookup]} ${param_idx}')
+            values.append(value)
+            param_idx += 1
+        elif lookup == "contains":
+            conditions.append(f'"{field}" LIKE \'%\' || ${param_idx} || \'%\'')
+            values.append(value)
+            param_idx += 1
+        elif lookup == "icontains":
+            conditions.append(f'"{field}" ILIKE \'%\' || ${param_idx} || \'%\'')
+            values.append(value)
+            param_idx += 1
+        elif lookup == "in":
+            conditions.append(f'"{field}" = ANY(${param_idx})')
+            values.append(value)
+            param_idx += 1
+        elif lookup == "isnull":
+            if value:
+                conditions.append(f'"{field}" IS NULL')
+            else:
+                conditions.append(f'"{field}" IS NOT NULL')
+            # No parameter consumed.
+        else:
+            # Unknown lookup -- treat the whole key as a column name for
+            # backward compatibility (e.g. a column that contains "__").
+            conditions.append(f'"{key}" = ${param_idx}')
+            values.append(value)
+            param_idx += 1
+
+    return conditions, values
+
+
+# ---------------------------------------------------------------------------
 # Exceptions
 # ---------------------------------------------------------------------------
 
@@ -279,6 +351,9 @@ class AirModel(BaseModel):
     async def get(cls, **kwargs: Any) -> Self | None:
         """Fetch exactly one row matching the given keyword filters.
 
+        Supports Django-style ``__`` lookups (gt, gte, lt, lte, contains,
+        icontains, in, isnull) in addition to plain equality.
+
         Returns:
             An instance of this Model subclass, or ``None`` if no row matches.
 
@@ -286,10 +361,8 @@ class AirModel(BaseModel):
             MultipleObjectsReturned: If more than one row matches the filters.
         """
         pool = _get_pool()
-        items = list(kwargs.items())
-        conditions = [f'"{k}" = ${i + 1}' for i, (k, _) in enumerate(items)]
+        conditions, values = _parse_kwargs(kwargs)
         where = " AND ".join(conditions)
-        values = [v for _, v in items]
         sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where} LIMIT 2'  # noqa: S608
         rows = await pool.fetch(sql, *values)
         if not rows:
@@ -303,12 +376,16 @@ class AirModel(BaseModel):
     async def filter(cls, *, order_by: str | None = None, limit: int | None = None, offset: int | None = None, **kwargs: Any) -> list[Self]:
         """Fetch all rows matching the given keyword filters.
 
+        Supports Django-style ``__`` lookups (gt, gte, lt, lte, contains,
+        icontains, in, isnull) in addition to plain equality.
+
         Args:
             order_by: Optional field name to sort by. Prefix with ``-`` for
                 descending order (e.g. ``"-name"``).
             limit: Maximum number of rows to return.
             offset: Number of rows to skip before returning results.
-            **kwargs: Column name/value pairs to filter by.
+            **kwargs: Column name/value pairs to filter by, with optional
+                ``__lookup`` suffixes.
 
         Returns:
             A list of model instances (possibly empty).
@@ -316,7 +393,7 @@ class AirModel(BaseModel):
         pool = _get_pool()
         if not kwargs:
             return await cls.all(order_by=order_by, limit=limit, offset=offset)
-        conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
+        conditions, values = _parse_kwargs(kwargs)
         where = " AND ".join(conditions)
         sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
         if order_by is not None:
@@ -328,7 +405,7 @@ class AirModel(BaseModel):
             sql += f" LIMIT {limit}"
         if offset is not None:
             sql += f" OFFSET {offset}"
-        rows = await pool.fetch(sql, *kwargs.values())
+        rows = await pool.fetch(sql, *values)
         return [cls.model_validate(dict(r)) for r in rows]
 
     @classmethod
@@ -362,15 +439,18 @@ class AirModel(BaseModel):
     async def count(cls, **kwargs: Any) -> int:
         """Return the number of rows, optionally filtered by keyword arguments.
 
+        Supports Django-style ``__`` lookups (gt, gte, lt, lte, contains,
+        icontains, in, isnull) in addition to plain equality.
+
         Returns:
             Integer row count.
         """
         pool = _get_pool()
         if kwargs:
-            conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
+            conditions, values = _parse_kwargs(kwargs)
             where = " AND ".join(conditions)
             sql = f'SELECT COUNT(*) FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
-            return await pool.fetchval(sql, *kwargs.values())
+            return await pool.fetchval(sql, *values)
         sql = f'SELECT COUNT(*) FROM "{cls._table_name()}"'  # noqa: S608
         return await pool.fetchval(sql)
 

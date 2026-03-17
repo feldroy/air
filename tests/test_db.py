@@ -898,3 +898,231 @@ class TestCRUDWithMockPool:
             assert result == 7
         finally:
             _unwire_pool()
+
+
+# ---------------------------------------------------------------------------
+# Lookup operators (Django-style double-underscore)
+# ---------------------------------------------------------------------------
+
+
+class RainbowWaterfall(AirModel):
+    """Test model with fields suited to lookup operator tests."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    location: str
+    sparkle_rating: int
+    confirmed: bool = Field(default=False)
+
+
+_WATERFALL_ROW: dict[str, object] = {
+    "id": 1,
+    "location": "Rainbow Falls",
+    "sparkle_rating": 11,
+    "confirmed": True,
+}
+
+
+class TestLookupOperators:
+    """Verify that Django-style __lookup kwargs produce the correct SQL.
+
+    Each test wires a CRUDPool mock and checks last_sql / last_args after
+    calling filter(), get(), or count(). These tests should FAIL against
+    the current implementation, which treats the full kwarg key (e.g.
+    ``sparkle_rating__gt``) as a literal column name.
+    """
+
+    # -- gt ------------------------------------------------------------------
+
+    async def test_filter_gt(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(sparkle_rating__gt=5)
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" > $1' in pool.last_sql
+            assert pool.last_args == (5,)
+        finally:
+            _unwire_pool()
+
+    # -- gte -----------------------------------------------------------------
+
+    async def test_filter_gte(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(sparkle_rating__gte=5)
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" >= $1' in pool.last_sql
+            assert pool.last_args == (5,)
+        finally:
+            _unwire_pool()
+
+    # -- lt ------------------------------------------------------------------
+
+    async def test_filter_lt(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(sparkle_rating__lt=10)
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" < $1' in pool.last_sql
+            assert pool.last_args == (10,)
+        finally:
+            _unwire_pool()
+
+    # -- lte -----------------------------------------------------------------
+
+    async def test_filter_lte(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(sparkle_rating__lte=10)
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" <= $1' in pool.last_sql
+            assert pool.last_args == (10,)
+        finally:
+            _unwire_pool()
+
+    # -- contains ------------------------------------------------------------
+
+    async def test_filter_contains(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(location__contains="Falls")
+
+            assert pool.last_sql is not None
+            assert "LIKE" in pool.last_sql
+            assert "'%' || $1 || '%'" in pool.last_sql
+            assert pool.last_args == ("Falls",)
+        finally:
+            _unwire_pool()
+
+    # -- icontains -----------------------------------------------------------
+
+    async def test_filter_icontains(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(location__icontains="falls")
+
+            assert pool.last_sql is not None
+            assert "ILIKE" in pool.last_sql
+            assert "'%' || $1 || '%'" in pool.last_sql
+            assert pool.last_args == ("falls",)
+        finally:
+            _unwire_pool()
+
+    # -- in ------------------------------------------------------------------
+
+    async def test_filter_in(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(sparkle_rating__in=[5, 8, 11])
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" = ANY($1)' in pool.last_sql
+            assert pool.last_args == ([5, 8, 11],)
+        finally:
+            _unwire_pool()
+
+    # -- isnull=True ---------------------------------------------------------
+
+    async def test_filter_isnull_true(self) -> None:
+        pool = CRUDPool(fetch_return=[])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(confirmed__isnull=True)
+
+            assert pool.last_sql is not None
+            assert '"confirmed" IS NULL' in pool.last_sql
+            # isnull=True should not add a parameter
+            assert pool.last_args == ()
+        finally:
+            _unwire_pool()
+
+    # -- isnull=False --------------------------------------------------------
+
+    async def test_filter_isnull_false(self) -> None:
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(confirmed__isnull=False)
+
+            assert pool.last_sql is not None
+            assert '"confirmed" IS NOT NULL' in pool.last_sql
+            # isnull=False should not add a parameter either
+            assert pool.last_args == ()
+        finally:
+            _unwire_pool()
+
+    # -- plain equality still works ------------------------------------------
+
+    async def test_plain_equality_still_works(self) -> None:
+        """Backward compatibility: plain kwargs remain simple equality."""
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(location="Rainbow Falls")
+
+            assert pool.last_sql is not None
+            assert '"location" = $1' in pool.last_sql
+            assert pool.last_args == ("Rainbow Falls",)
+        finally:
+            _unwire_pool()
+
+    # -- combining lookups with plain equality --------------------------------
+
+    async def test_filter_combined_lookups(self) -> None:
+        """Multiple lookups in one call should all appear in the WHERE clause."""
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.filter(sparkle_rating__gte=5, confirmed=True)
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" >= $' in pool.last_sql
+            assert '"confirmed" = $' in pool.last_sql
+            # Both values should be in args (order depends on dict iteration,
+            # so check membership rather than position)
+            assert 5 in pool.last_args
+            assert True in pool.last_args
+            assert len(pool.last_args) == 2
+        finally:
+            _unwire_pool()
+
+    # -- lookups work in get() -----------------------------------------------
+
+    async def test_get_with_lookup(self) -> None:
+        """get() should support lookup operators the same way filter() does."""
+        pool = CRUDPool(fetch_return=[dict(_WATERFALL_ROW)])
+        _wire_pool(pool)
+        try:
+            await RainbowWaterfall.get(sparkle_rating__gte=11)
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" >= $1' in pool.last_sql
+            assert pool.last_args == (11,)
+        finally:
+            _unwire_pool()
+
+    # -- lookups work in count() ---------------------------------------------
+
+    async def test_count_with_lookup(self) -> None:
+        """count() should support lookup operators the same way filter() does."""
+        pool = CRUDPool(fetchval_return=3)
+        _wire_pool(pool)
+        try:
+            result = await RainbowWaterfall.count(sparkle_rating__gt=5)
+
+            assert pool.last_sql is not None
+            assert '"sparkle_rating" > $1' in pool.last_sql
+            assert pool.last_args == (5,)
+            assert result == 3
+        finally:
+            _unwire_pool()
