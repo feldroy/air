@@ -14,7 +14,7 @@ from . import (
     responses as responses,
 )
 from .db import AirDB as AirDB
-from .db import Model as Model
+from .db import AirModel as AirModel
 from .db import MultipleObjectsReturned as MultipleObjectsReturned
 from .applications import (
     Air as Air,
@@ -31,9 +31,6 @@ from .forms import (
     to_form as to_form,
 )
 from .middleware import SessionMiddleware as SessionMiddleware
-from .models import (
-    AirModel as AirModel,
-)
 from .requests import (
     AirRequest as AirRequest,
     Request as Request,

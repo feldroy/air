@@ -583,23 +583,27 @@ def test_to_form_helper_generates_form() -> None:
 
 
 def test_air_to_form_generation() -> None:
-    class AutoModel(air.AirModel):
+    from pydantic import BaseModel
+
+    class AutoModel(BaseModel):
         name: str
         age: int
 
-    form = AutoModel.to_form()
+    form = air.to_form(AutoModel)
 
     form.validate({"name": "Test", "age": 5})
     assert form.is_valid is True
 
 
 def test_air_to_form_generation_with_includes() -> None:
-    class AutoModel(air.AirModel):
+    from pydantic import BaseModel
+
+    class AutoModel(BaseModel):
         id: int
         name: str
         age: int
 
-    autoform = AutoModel.to_form(includes=("name", "age"))
+    autoform = air.to_form(AutoModel, includes=("name", "age"))
 
     html = autoform.render()
     assert 'name="id"' not in html
@@ -609,7 +613,9 @@ def test_air_to_form_generation_with_includes() -> None:
 
 
 def test_air_to_form_generation_with_custom_widget() -> None:
-    class AutoModel(air.AirModel):
+    from pydantic import BaseModel as PydanticBase
+
+    class AutoModel(PydanticBase):
         name: str
 
     def custom_widget(
@@ -621,7 +627,7 @@ def test_air_to_form_generation_with_custom_widget() -> None:
     ) -> str:
         return "<custom>"
 
-    autoform = AutoModel.to_form(widget=custom_widget)
+    autoform = air.to_form(AutoModel, widget=custom_widget)
 
     rendered = autoform.render()
     assert str(rendered) == "<custom>"

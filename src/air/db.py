@@ -6,12 +6,12 @@ against PostgreSQL.
 
 Example::
 
-    from air.db import AirDB, Model, Field
+    from air.db import AirDB, AirModel, Field
     from datetime import datetime
 
     db = AirDB()
 
-    class BetaApplication(Model):
+    class BetaApplication(db.Model):
         id: int | None = Field(default=None, primary_key=True)
         created_at: datetime = Field(default_factory=datetime.now)
         name: str
@@ -137,74 +137,7 @@ def _is_primary_key(field_info: FieldInfo) -> bool:
 
 
 class MultipleObjectsReturned(Exception):
-    """Raised by :meth:`Model.get` when the query matches more than one row."""
-
-
-# ---------------------------------------------------------------------------
-# AirDB: connection pool + table registry
-# ---------------------------------------------------------------------------
-
-
-class AirDB:
-    """Manages an asyncpg connection pool and the registry of :class:`Model` subclasses.
-
-    Example::
-
-        db = AirDB()
-        app = air.Air(lifespan=db.lifespan("postgresql://user:pass@host/dbname"))
-    """
-
-    def __init__(self) -> None:
-        self.pool: Any | None = None  # asyncpg.Pool once connected
-
-    # -- connection lifecycle ------------------------------------------------
-
-    def lifespan(self, url: str, **pool_kwargs: Any) -> Any:
-        """Return an async context manager suitable for Air/FastAPI lifespan.
-
-        Args:
-            url: PostgreSQL connection string (supports ``postgresql://`` and
-                ``postgres://`` schemes, including ``?sslmode=require`` for
-                TLS connections like NeonDB).
-            **pool_kwargs: Extra keyword arguments forwarded to
-                :func:`asyncpg.create_pool`.
-
-        Returns:
-            An async context manager that opens the pool on entry and closes
-            it on exit.
-        """
-        db = self
-
-        @asynccontextmanager
-        async def _lifespan(app: Any) -> AsyncIterator[None]:
-            import asyncpg  # noqa: PLC0415
-
-            db.pool = await asyncpg.create_pool(url, **pool_kwargs)
-            _set_current_db(db)
-            try:
-                yield
-            finally:
-                if db.pool is not None:
-                    await db.pool.close()
-                    db.pool = None
-                _set_current_db(None)
-
-        return _lifespan
-
-    # -- table management ----------------------------------------------------
-
-    async def create_tables(self) -> None:
-        """Execute ``CREATE TABLE IF NOT EXISTS`` for every registered :class:`Model`.
-
-        Tables are registered automatically when their class body is executed,
-        so simply importing your models is enough.
-        """
-        if self.pool is None:
-            msg = "Database pool is not initialized. Did you forget to use db.lifespan()?"
-            raise RuntimeError(msg)
-        for table_cls in _table_registry:
-            sql = table_cls._create_table_sql()
-            await self.pool.execute(sql)
+    """Raised by :meth:`AirModel.get` when the query matches more than one row."""
 
 
 # ---------------------------------------------------------------------------
@@ -212,7 +145,7 @@ class AirDB:
 # ---------------------------------------------------------------------------
 
 _current_db: AirDB | None = None
-_table_registry: list[type[Model]] = []
+_table_registry: list[type[AirModel]] = []
 
 
 def _set_current_db(db: AirDB | None) -> None:
@@ -229,23 +162,11 @@ def _get_pool() -> Any:
 
 
 # ---------------------------------------------------------------------------
-# Table base class
+# ORM base class
 # ---------------------------------------------------------------------------
 
 
-class _TableMeta(type(BaseModel)):
-    """Metaclass that auto-registers Model subclasses in the global registry."""
-
-    def __init__(cls, name: str, bases: tuple[type, ...], namespace: dict[str, Any], **kwargs: Any) -> None:
-        super().__init__(name, bases, namespace, **kwargs)
-        # Skip the base Model class itself; register any concrete subclass
-        for base in bases:
-            if getattr(base, "__name__", "") == "Model":
-                _table_registry.append(cls)  # type: ignore[arg-type]
-                break
-
-
-class Model(BaseModel, metaclass=_TableMeta):
+class AirModel(BaseModel):
     """Base class for database-backed Pydantic models.
 
     Subclass this and declare fields using standard Pydantic annotations.
@@ -257,13 +178,18 @@ class Model(BaseModel, metaclass=_TableMeta):
 
     Example::
 
-        class User(Model):
+        class User(AirModel):
             id: int | None = Field(default=None, primary_key=True)
             name: str
             email: str
     """
 
     model_config: ClassVar[dict[str, Any]] = {"from_attributes": True}
+
+    def __init_subclass__(cls, _scoped: bool = False, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+        if not _scoped:
+            _table_registry.append(cls)  # type: ignore[arg-type]
 
     # -- SQL generation helpers ----------------------------------------------
 
@@ -477,3 +403,102 @@ class Model(BaseModel, metaclass=_TableMeta):
 
         sql = f'DELETE FROM "{self._table_name()}" WHERE "{pk}" = $1'
         await pool.execute(sql, pk_value)
+
+
+# ---------------------------------------------------------------------------
+# Scoped Model factory (must come after AirModel is defined)
+# ---------------------------------------------------------------------------
+
+
+def _make_scoped_model(db_instance: AirDB) -> type[AirModel]:
+    """Create a per-instance AirModel base class whose subclasses register to *db_instance*.models."""
+    registry = db_instance.models
+
+    class ScopedModel(AirModel, _scoped=True):
+        """Per-instance AirModel base. Subclasses are tracked on the owning AirDB."""
+
+        def __init_subclass__(cls, **kwargs: Any) -> None:
+            super().__init_subclass__(_scoped=True, **kwargs)
+            registry.append(cls)  # type: ignore[arg-type]
+
+    ScopedModel.__name__ = "AirModel"
+    ScopedModel.__qualname__ = "AirModel"
+    return ScopedModel  # type: ignore[return-value]
+
+
+# ---------------------------------------------------------------------------
+# AirDB: connection pool + table registry
+# ---------------------------------------------------------------------------
+
+
+class AirDB:
+    """Manages an asyncpg connection pool and the registry of :class:`AirModel` subclasses.
+
+    Example::
+
+        db = AirDB()
+        app = air.Air(lifespan=db.lifespan("postgresql://user:pass@host/dbname"))
+    """
+
+    def __init__(self) -> None:
+        self.pool: Any | None = None  # asyncpg.Pool once connected
+        self.models: list[type[AirModel]] = []
+        self._scoped_model: type[AirModel] | None = None
+
+    # -- per-instance Model base class ---------------------------------------
+
+    @property
+    def Model(self) -> type[AirModel]:  # noqa: N802
+        """A base class whose subclasses are tracked in this instance's :attr:`models` list."""
+        if self._scoped_model is None:
+            self._scoped_model = _make_scoped_model(self)
+        return self._scoped_model
+
+    # -- connection lifecycle ------------------------------------------------
+
+    def lifespan(self, url: str, **pool_kwargs: Any) -> Any:
+        """Return an async context manager suitable for Air/FastAPI lifespan.
+
+        Args:
+            url: PostgreSQL connection string (supports ``postgresql://`` and
+                ``postgres://`` schemes, including ``?sslmode=require`` for
+                TLS connections like NeonDB).
+            **pool_kwargs: Extra keyword arguments forwarded to
+                :func:`asyncpg.create_pool`.
+
+        Returns:
+            An async context manager that opens the pool on entry and closes
+            it on exit.
+        """
+        db = self
+
+        @asynccontextmanager
+        async def _lifespan(app: Any) -> AsyncIterator[None]:
+            import asyncpg  # noqa: PLC0415
+
+            db.pool = await asyncpg.create_pool(url, **pool_kwargs)
+            _set_current_db(db)
+            try:
+                yield
+            finally:
+                if db.pool is not None:
+                    await db.pool.close()
+                    db.pool = None
+                _set_current_db(None)
+
+        return _lifespan
+
+    # -- table management ----------------------------------------------------
+
+    async def create_tables(self) -> None:
+        """Execute ``CREATE TABLE IF NOT EXISTS`` for every registered :class:`AirModel`.
+
+        Tables are registered automatically when their class body is executed,
+        so simply importing your models is enough.
+        """
+        if self.pool is None:
+            msg = "Database pool is not initialized. Did you forget to use db.lifespan()?"
+            raise RuntimeError(msg)
+        for table_cls in self.models:
+            sql = table_cls._create_table_sql()
+            await self.pool.execute(sql)
