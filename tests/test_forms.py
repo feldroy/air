@@ -230,30 +230,22 @@ def test_airform_notimplementederror() -> None:
 
 
 def test_airform_validate() -> None:
-    class CheeseModel(BaseModel):
+    class KareKareModel(BaseModel):
         name: str
-        age: int
+        servings: int
 
-    class CheeseForm(air.AirForm):
-        model = CheeseModel
+    class KareKareForm(air.AirForm):
+        model = KareKareModel
 
-    cheese_form = CheeseForm()
-    assert not cheese_form.is_valid
-    cheese_form.validate({})
-    assert not cheese_form.is_valid
-    cheese_form.validate({"name": "Cheddar"})
-    assert not cheese_form.is_valid
-    cheese_form.validate({"name": "Cheddar", "age": 5})
-    assert cheese_form.is_valid
-    assert cheese_form.errors == [
-        {
-            "type": "missing",
-            "loc": ("age",),
-            "msg": "Field required",
-            "input": {"name": "Cheddar"},
-            "url": "https://errors.pydantic.dev/2.12/v/missing",
-        },
-    ]
+    form = KareKareForm()
+    assert not form.is_valid
+    form.validate({})
+    assert not form.is_valid
+    form.validate({"name": "Kare-Kare"})
+    assert not form.is_valid
+    form.validate({"name": "Kare-Kare", "servings": 4})
+    assert form.is_valid
+    assert form.errors is None
 
 
 def test_airform_autofocus() -> None:
@@ -633,3 +625,147 @@ def test_air_to_form_generation_with_custom_widget() -> None:
 
     rendered = autoform.render()
     assert str(rendered) == "<custom>"
+
+
+def test_airform_generic_type_parameter() -> None:
+    """AirForm[M] sets model from the type parameter and makes form.data typed as M."""
+
+    class JeepneyRouteModel(air.AirModel):
+        route_name: str
+        origin: str
+        destination: str
+
+    class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+        pass  # no model = JeepneyRouteModel needed
+
+    # model was auto-set from the type parameter
+    assert JeepneyRouteForm.model is JeepneyRouteModel
+
+    form = JeepneyRouteForm()
+    form.validate({"route_name": "01C", "origin": "Antipolo", "destination": "Cubao"})
+    assert form.is_valid
+
+    # form.data is typed as JeepneyRouteModel, no cast() needed
+    assert form.data.route_name == "01C"
+    assert form.data.origin == "Antipolo"
+    assert form.data.destination == "Cubao"
+    assert isinstance(form.data, JeepneyRouteModel)
+
+
+def test_airform_data_before_validation_raises() -> None:
+    """Accessing form.data before validation raises AttributeError."""
+
+    class IslandModel(BaseModel):
+        name: str
+
+    class IslandForm(air.AirForm[IslandModel]):
+        pass
+
+    form = IslandForm()
+    with pytest.raises(AttributeError, match="No validated data"):
+        form.data  # noqa: B018
+
+
+def test_airform_data_after_failed_validation_raises() -> None:
+    """Accessing form.data after failed validation raises AttributeError."""
+
+    class IslandModel(BaseModel):
+        name: str
+
+    class IslandForm(air.AirForm[IslandModel]):
+        pass
+
+    form = IslandForm()
+    form.validate({})  # missing required field
+    assert not form.is_valid
+    with pytest.raises(AttributeError, match="No validated data"):
+        form.data  # noqa: B018
+
+
+def test_airform_explicit_model_not_overridden() -> None:
+    """Explicit model = X in class body takes priority over type parameter."""
+
+    class ModelA(BaseModel):
+        x: str
+
+    class ModelB(BaseModel):
+        y: str
+
+    class ExplicitForm(air.AirForm[ModelA]):
+        model = ModelB  # explicit wins
+
+    assert ExplicitForm.model is ModelB
+
+
+def test_airform_revalidation_resets_state() -> None:
+    """Calling validate() a second time clears stale data from the first call."""
+
+    class SariSariModel(BaseModel):
+        item: str
+        price: int
+
+    class SariSariForm(air.AirForm[SariSariModel]):
+        pass
+
+    form = SariSariForm()
+
+    # First validation succeeds
+    form.validate({"item": "Chicharon", "price": 25})
+    assert form.is_valid
+    assert form.data.item == "Chicharon"
+
+    # Second validation fails — stale data must not leak through
+    form.validate({})
+    assert not form.is_valid
+    assert form.errors is not None
+    with pytest.raises(AttributeError, match="No validated data"):
+        form.data  # noqa: B018
+
+
+def test_airform_multi_level_inheritance() -> None:
+    """Model propagates through multi-level class inheritance."""
+
+    class BarangayModel(BaseModel):
+        name: str
+        captain: str
+
+    class BaseBarangayForm(air.AirForm[BarangayModel]):
+        pass
+
+    class SpecificBarangayForm(BaseBarangayForm):
+        pass
+
+    assert SpecificBarangayForm.model is BarangayModel
+
+    form = SpecificBarangayForm()
+    form.validate({"name": "San Antonio", "captain": "Kap. Reyes"})
+    assert form.is_valid
+    assert form.data.captain == "Kap. Reyes"
+
+
+def test_to_form_generic_data_access() -> None:
+    """to_form() produces a form whose data property works after validation."""
+
+    class PalengkeModel(BaseModel):
+        vendor: str
+        stall_number: int
+
+    form = air.to_form(PalengkeModel)
+    form.validate({"vendor": "Aling Nena", "stall_number": 42})
+    assert form.is_valid
+    assert form.data.vendor == "Aling Nena"
+    assert form.data.stall_number == 42
+
+
+def test_airmodel_to_form_generic_data_access() -> None:
+    """AirModel.to_form() produces a form whose data property works after validation."""
+
+    class TricycleModel(air.AirModel):
+        route: str
+        fare: int
+
+    form = TricycleModel.to_form()
+    form.validate({"route": "Rizal Ave", "fare": 15})
+    assert form.is_valid
+    assert form.data.route == "Rizal Ave"
+    assert form.data.fare == 15

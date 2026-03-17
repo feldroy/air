@@ -18,7 +18,7 @@ from .requests import Request
 from .tags import SafeStr
 
 
-class AirForm:
+class AirForm[M: BaseModel]:
     """A form handler that validates incoming form data against a Pydantic model. Can be used with
     awaited form data or with FastAPI's dependency injection system.
 
@@ -62,18 +62,40 @@ class AirForm:
             return air.Html(air.H1(air.Raw(str(errors))))
     """
 
-    model: type[BaseModel] | None = None
-    data: Any = None  # TODO change type to something more specific
+    model: type[M] | None = None
+    _data: M | None = None
     initial_data: dict | None = None
     errors: list[ErrorDetails] | None = None
     is_valid: bool = False
     includes: Sequence[str] | None = None
+
+    def __init_subclass__(cls, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+        if "model" not in cls.__dict__:
+            for base in getattr(cls, "__orig_bases__", ()):
+                if get_origin(base) is AirForm:
+                    args = get_args(base)
+                    if args and isinstance(args[0], type) and issubclass(args[0], BaseModel):
+                        cls.model = args[0]
+                        break
 
     def __init__(self, initial_data: dict | None = None) -> None:
         if self.model is None:
             msg = "model"
             raise NotImplementedError(msg)
         self.initial_data = initial_data
+
+    @property
+    def data(self) -> M:
+        """The validated model instance.
+
+        Raises:
+            AttributeError: If accessed before successful validation.
+        """
+        if self._data is None:
+            msg = "No validated data available. Check is_valid before accessing data."
+            raise AttributeError(msg)
+        return self._data
 
     async def __call__(self, form_data: dict[Any, Any] | FormData) -> Self:
         self.validate(form_data)
@@ -119,11 +141,15 @@ class AirForm:
                     air.P(f"Errors: {len(flight_form.errors or [])}"),
                 )
         """
+        # Reset state from any previous validation
+        self._data = None
+        self.is_valid = False
+        self.errors = None
         # Store the submitted data to preserve values on error
         self.submitted_data = dict(form_data) if hasattr(form_data, "items") else form_data
         try:
             assert self.model is not None
-            self.data = self.model(**form_data)
+            self._data = self.model(**form_data)
             self.is_valid = True
         except ValidationError as e:
             self.errors = e.errors()
@@ -795,13 +821,13 @@ def AirField(  # noqa: N802
     )  # ty: ignore[no-matching-overload]
 
 
-def to_form(
-    model: type[BaseModel],
+def to_form[M: BaseModel](
+    model: type[M],
     *,
     name: str | None = None,
     includes: Sequence[str] | None = None,
     widget: Callable | None = None,
-) -> "AirForm":
+) -> "AirForm[M]":
     """Generate an :class:`AirForm` instance for the given Pydantic model.
 
     Args:
