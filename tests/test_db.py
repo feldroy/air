@@ -670,3 +670,231 @@ class TestDeleteClearsPrimaryKey:
             assert fruit.id is None
         finally:
             _set_current_db(None)
+
+
+# ---------------------------------------------------------------------------
+# CRUD operations with mock pool
+# ---------------------------------------------------------------------------
+
+
+class CRUDPool:
+    """Test double that captures SQL/args for all pool methods used by CRUD."""
+
+    def __init__(
+        self,
+        *,
+        fetchrow_return: dict[str, object] | None = None,
+        fetch_return: list[dict[str, object]] | None = None,
+        fetchval_return: object = None,
+    ) -> None:
+        self.last_sql: str | None = None
+        self.last_args: tuple[object, ...] = ()
+        self._fetchrow_return = fetchrow_return or {}
+        self._fetch_return = fetch_return if fetch_return is not None else []
+        self._fetchval_return = fetchval_return
+
+    async def fetchrow(self, sql: str, *args: object) -> dict[str, object]:
+        self.last_sql = sql
+        self.last_args = args
+        return self._fetchrow_return
+
+    async def fetch(self, sql: str, *args: object) -> list[dict[str, object]]:
+        self.last_sql = sql
+        self.last_args = args
+        return self._fetch_return
+
+    async def fetchval(self, sql: str, *args: object) -> object:
+        self.last_sql = sql
+        self.last_args = args
+        return self._fetchval_return
+
+
+def _wire_pool(pool: object) -> None:
+    """Wire a fake pool into the module-level _current_db."""
+    from air.db import _set_current_db
+
+    db = AirDB()
+    db.pool = pool
+    _set_current_db(db)
+
+
+def _unwire_pool() -> None:
+    from air.db import _set_current_db
+
+    _set_current_db(None)
+
+
+_DRAGON_ROW: dict[str, object] = {
+    "id": 1,
+    "created_at": datetime(2026, 3, 17),
+    "name": "Pink Pitaya",
+    "color": "magenta",
+    "sweetness": "high",
+    "origin": "Vietnam",
+}
+
+_DRAGON_ROW_2: dict[str, object] = {
+    "id": 2,
+    "created_at": datetime(2026, 3, 18),
+    "name": "Yellow Dragon",
+    "color": "yellow",
+    "sweetness": "medium",
+    "origin": "Colombia",
+}
+
+
+class TestCRUDWithMockPool:
+    """Test CRUD class methods by wiring a fake pool that captures SQL."""
+
+    # -- create() ------------------------------------------------------------
+
+    async def test_create_calls_fetchrow_with_insert_returning(self) -> None:
+        """create() should INSERT non-PK fields and use RETURNING *."""
+        pool = CRUDPool(fetchrow_return=dict(_DRAGON_ROW))
+        _wire_pool(pool)
+        try:
+            result = await DragonFruit.create(name="Pink Pitaya", color="magenta")
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('INSERT INTO "dragon_fruit"')
+            assert "RETURNING *" in pool.last_sql
+            assert '"name"' in pool.last_sql
+            assert '"color"' in pool.last_sql
+            # PK field should not appear in the INSERT column list
+            assert '"id"' not in pool.last_sql
+        finally:
+            _unwire_pool()
+
+    async def test_create_returns_hydrated_instance(self) -> None:
+        """create() should return a DragonFruit populated from the returned row."""
+        pool = CRUDPool(fetchrow_return=dict(_DRAGON_ROW))
+        _wire_pool(pool)
+        try:
+            result = await DragonFruit.create(name="Pink Pitaya", color="magenta")
+
+            assert isinstance(result, DragonFruit)
+            assert result.id == 1
+            assert result.name == "Pink Pitaya"
+            assert result.color == "magenta"
+            assert result.sweetness == "high"
+            assert result.origin == "Vietnam"
+        finally:
+            _unwire_pool()
+
+    # -- get() ---------------------------------------------------------------
+
+    async def test_get_one_match_returns_instance(self) -> None:
+        """get() with exactly one matching row should return that instance."""
+        pool = CRUDPool(fetch_return=[dict(_DRAGON_ROW)])
+        _wire_pool(pool)
+        try:
+            result = await DragonFruit.get(id=1)
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('SELECT * FROM "dragon_fruit" WHERE')
+            assert "LIMIT 2" in pool.last_sql
+            assert isinstance(result, DragonFruit)
+            assert result.id == 1
+            assert result.name == "Pink Pitaya"
+        finally:
+            _unwire_pool()
+
+    async def test_get_no_match_returns_none(self) -> None:
+        """get() with zero matching rows should return None."""
+        pool = CRUDPool(fetch_return=[])
+        _wire_pool(pool)
+        try:
+            result = await DragonFruit.get(id=999)
+
+            assert result is None
+        finally:
+            _unwire_pool()
+
+    async def test_get_two_matches_raises_multiple_objects_returned(self) -> None:
+        """get() with more than one match should raise MultipleObjectsReturned."""
+        pool = CRUDPool(fetch_return=[dict(_DRAGON_ROW), dict(_DRAGON_ROW_2)])
+        _wire_pool(pool)
+        try:
+            with pytest.raises(MultipleObjectsReturned, match="matched more than one row"):
+                await DragonFruit.get(color="magenta")
+        finally:
+            _unwire_pool()
+
+    # -- filter() ------------------------------------------------------------
+
+    async def test_filter_with_kwargs_uses_where(self) -> None:
+        """filter(color="magenta") should SELECT with a WHERE clause."""
+        pool = CRUDPool(fetch_return=[dict(_DRAGON_ROW)])
+        _wire_pool(pool)
+        try:
+            results = await DragonFruit.filter(color="magenta")
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('SELECT * FROM "dragon_fruit" WHERE')
+            assert '"color" = $1' in pool.last_sql
+            assert isinstance(results, list)
+            assert len(results) == 1
+            assert results[0].name == "Pink Pitaya"
+        finally:
+            _unwire_pool()
+
+    async def test_filter_no_kwargs_delegates_to_all(self) -> None:
+        """filter() with no kwargs should produce the same SQL as all()."""
+        pool = CRUDPool(fetch_return=[dict(_DRAGON_ROW), dict(_DRAGON_ROW_2)])
+        _wire_pool(pool)
+        try:
+            results = await DragonFruit.filter()
+
+            assert pool.last_sql is not None
+            # all() produces a bare SELECT * with no WHERE
+            assert pool.last_sql == 'SELECT * FROM "dragon_fruit"'
+            assert len(results) == 2
+        finally:
+            _unwire_pool()
+
+    # -- all() ---------------------------------------------------------------
+
+    async def test_all_calls_fetch_with_select_star(self) -> None:
+        """all() should SELECT * with no WHERE clause."""
+        pool = CRUDPool(fetch_return=[dict(_DRAGON_ROW), dict(_DRAGON_ROW_2)])
+        _wire_pool(pool)
+        try:
+            results = await DragonFruit.all()
+
+            assert pool.last_sql == 'SELECT * FROM "dragon_fruit"'
+            assert pool.last_args == ()
+            assert isinstance(results, list)
+            assert len(results) == 2
+            assert results[0].name == "Pink Pitaya"
+            assert results[1].name == "Yellow Dragon"
+        finally:
+            _unwire_pool()
+
+    # -- count() -------------------------------------------------------------
+
+    async def test_count_calls_fetchval_with_count(self) -> None:
+        """count() should SELECT COUNT(*) and return an int."""
+        pool = CRUDPool(fetchval_return=42)
+        _wire_pool(pool)
+        try:
+            result = await DragonFruit.count()
+
+            assert pool.last_sql == 'SELECT COUNT(*) FROM "dragon_fruit"'
+            assert pool.last_args == ()
+            assert result == 42
+        finally:
+            _unwire_pool()
+
+    async def test_count_with_kwargs_adds_where(self) -> None:
+        """count(color="magenta") should add a WHERE clause."""
+        pool = CRUDPool(fetchval_return=7)
+        _wire_pool(pool)
+        try:
+            result = await DragonFruit.count(color="magenta")
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('SELECT COUNT(*) FROM "dragon_fruit" WHERE')
+            assert '"color" = $1' in pool.last_sql
+            assert result == 7
+        finally:
+            _unwire_pool()
