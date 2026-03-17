@@ -28,6 +28,7 @@ Example::
 
 from __future__ import annotations
 
+import re
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import datetime
@@ -172,7 +173,7 @@ class AirModel(BaseModel):
     Use :func:`Field` with ``primary_key=True`` for auto-incrementing
     primary keys.
 
-    The table name is derived from the class name (lowercased). All query
+    The table name is derived from the class name (converted to snake_case). All query
     methods are async class methods.
 
     Example::
@@ -193,7 +194,7 @@ class AirModel(BaseModel):
 
     @classmethod
     def _table_name(cls) -> str:
-        return cls.__name__.lower()
+        return re.sub(r"(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_", cls.__name__).lower()
 
     @classmethod
     def _pk_field(cls) -> str | None:

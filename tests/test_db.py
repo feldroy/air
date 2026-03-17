@@ -17,21 +17,41 @@ from air.db import _PY_TO_PG, AirDB, AirModel, Field, MultipleObjectsReturned, _
 # ---------------------------------------------------------------------------
 
 
-class BetaApp(AirModel):
+class DragonFruit(AirModel):
     id: int | None = Field(default=None, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.now)
     name: str
-    email: str
-    making: str = Field(default="")
-    why: str = Field(default="")
+    color: str
+    sweetness: str = Field(default="")
+    origin: str = Field(default="")
 
 
-class SimpleModel(AirModel):
+class StarFruit(AirModel):
     id: int | None = Field(default=None, primary_key=True)
     title: str
     score: float
     active: bool
     created: datetime
+
+
+class UnicornSighting(AirModel):
+    id: int | None = Field(default=None, primary_key=True)
+    location: str
+
+
+class UbePancake(AirModel):
+    id: int | None = Field(default=None, primary_key=True)
+    weight: float
+
+
+class BokChoy(AirModel):
+    id: int | None = Field(default=None, primary_key=True)
+    bunch_size: int
+
+
+class Cassava(AirModel):
+    id: int | None = Field(default=None, primary_key=True)
+    variety: str
 
 
 # ---------------------------------------------------------------------------
@@ -40,11 +60,23 @@ class SimpleModel(AirModel):
 
 
 class TestTableName:
-    def test_table_name_is_lowercased_class_name(self) -> None:
-        assert BetaApp._table_name() == "betaapp"
+    def test_dragon_fruit_snake_case(self) -> None:
+        assert DragonFruit._table_name() == "dragon_fruit"
 
-    def test_simple_model_table_name(self) -> None:
-        assert SimpleModel._table_name() == "simplemodel"
+    def test_star_fruit_snake_case(self) -> None:
+        assert StarFruit._table_name() == "star_fruit"
+
+    def test_unicorn_sighting_snake_case(self) -> None:
+        assert UnicornSighting._table_name() == "unicorn_sighting"
+
+    def test_ube_pancake_snake_case(self) -> None:
+        assert UbePancake._table_name() == "ube_pancake"
+
+    def test_two_word_name_snake_case(self) -> None:
+        assert BokChoy._table_name() == "bok_choy"
+
+    def test_single_word_name(self) -> None:
+        assert Cassava._table_name() == "cassava"
 
 
 # ---------------------------------------------------------------------------
@@ -82,24 +114,24 @@ class TestTypeMapping:
 
 class TestField:
     def test_primary_key_stored_in_json_schema_extra(self) -> None:
-        field_info = BetaApp.model_fields["id"]
+        field_info = DragonFruit.model_fields["id"]
         assert field_info.json_schema_extra is not None
         assert field_info.json_schema_extra["primary_key"] is True
 
     def test_non_pk_field_has_no_primary_key_flag(self) -> None:
-        field_info = BetaApp.model_fields["name"]
+        field_info = DragonFruit.model_fields["name"]
         extra = field_info.json_schema_extra
         if extra is not None:
             assert extra.get("primary_key") is not True
 
     def test_pk_field_detection(self) -> None:
-        assert BetaApp._pk_field() == "id"
+        assert DragonFruit._pk_field() == "id"
 
     def test_non_pk_fields_excludes_pk(self) -> None:
-        non_pk = BetaApp._non_pk_fields()
+        non_pk = DragonFruit._non_pk_fields()
         assert "id" not in non_pk
         assert "name" in non_pk
-        assert "email" in non_pk
+        assert "color" in non_pk
 
 
 # ---------------------------------------------------------------------------
@@ -108,31 +140,31 @@ class TestField:
 
 
 class TestColumnDefs:
-    def test_pk_column_is_serial_primary_key(self) -> None:
-        cols = BetaApp._column_defs()
+    def test_pk_column_is_bigserial_primary_key(self) -> None:
+        cols = DragonFruit._column_defs()
         assert cols[0] == '"id" BIGSERIAL PRIMARY KEY'
 
     def test_str_field_with_no_default_is_not_null(self) -> None:
-        cols = BetaApp._column_defs()
+        cols = DragonFruit._column_defs()
         col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" in col_dict["name"]
-        assert "NOT NULL" in col_dict["email"]
+        assert "NOT NULL" in col_dict["color"]
 
     def test_str_field_with_default_is_nullable(self) -> None:
         """Fields with a default value should not have NOT NULL."""
-        cols = BetaApp._column_defs()
+        cols = DragonFruit._column_defs()
         col_dict = {c.split()[0].strip('"'): c for c in cols}
-        assert "NOT NULL" not in col_dict["making"]
-        assert "NOT NULL" not in col_dict["why"]
+        assert "NOT NULL" not in col_dict["sweetness"]
+        assert "NOT NULL" not in col_dict["origin"]
 
     def test_datetime_field_with_factory_no_not_null(self) -> None:
         """Fields with default_factory should not have NOT NULL."""
-        cols = BetaApp._column_defs()
+        cols = DragonFruit._column_defs()
         col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" not in col_dict["created_at"]
 
     def test_all_types_in_simple_model(self) -> None:
-        cols = SimpleModel._column_defs()
+        cols = StarFruit._column_defs()
         col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "TEXT" in col_dict["title"]
         assert "DOUBLE PRECISION" in col_dict["score"]
@@ -147,26 +179,26 @@ class TestColumnDefs:
 
 class TestCreateTableSQL:
     def test_create_table_starts_with_create_table_if_not_exists(self) -> None:
-        sql = BetaApp._create_table_sql()
-        assert sql.startswith('CREATE TABLE IF NOT EXISTS "betaapp" (')
+        sql = DragonFruit._create_table_sql()
+        assert sql.startswith('CREATE TABLE IF NOT EXISTS "dragon_fruit" (')
 
     def test_create_table_contains_all_columns(self) -> None:
-        sql = BetaApp._create_table_sql()
+        sql = DragonFruit._create_table_sql()
         assert '"id" BIGSERIAL PRIMARY KEY' in sql
         assert '"name" TEXT NOT NULL' in sql
-        assert '"email" TEXT NOT NULL' in sql
-        assert '"making" TEXT' in sql
-        assert '"why" TEXT' in sql
+        assert '"color" TEXT NOT NULL' in sql
+        assert '"sweetness" TEXT' in sql
+        assert '"origin" TEXT' in sql
         assert '"created_at" TIMESTAMP WITH TIME ZONE' in sql
 
     def test_create_table_is_valid_sql_shape(self) -> None:
-        sql = BetaApp._create_table_sql()
+        sql = DragonFruit._create_table_sql()
         assert sql.startswith("CREATE TABLE IF NOT EXISTS")
         assert sql.endswith(")")
 
     def test_simple_model_create_table(self) -> None:
-        sql = SimpleModel._create_table_sql()
-        assert '"simplemodel"' in sql
+        sql = StarFruit._create_table_sql()
+        assert '"star_fruit"' in sql
         assert '"id" BIGSERIAL PRIMARY KEY' in sql
         assert '"title" TEXT NOT NULL' in sql
         assert '"score" DOUBLE PRECISION NOT NULL' in sql
@@ -182,8 +214,8 @@ class TestCreateTableSQL:
 class TestTableRegistry:
     def test_subclasses_are_registered(self) -> None:
         registered_names = [t.__name__ for t in _table_registry]
-        assert "BetaApp" in registered_names
-        assert "SimpleModel" in registered_names
+        assert "DragonFruit" in registered_names
+        assert "StarFruit" in registered_names
 
     def test_base_model_not_registered(self) -> None:
         registered_names = [t.__name__ for t in _table_registry]
@@ -198,31 +230,31 @@ class TestTableRegistry:
 class TestPydanticIntegration:
     def test_table_is_a_pydantic_model(self) -> None:
         """Table instances should be valid Pydantic models."""
-        app = BetaApp(name="Audrey", email="audreyfeldroy@example.com")
-        assert app.name == "Audrey"
-        assert app.email == "audreyfeldroy@example.com"
-        assert app.id is None
-        assert app.making == ""
+        fruit = DragonFruit(name="Pink Pitaya", color="magenta")
+        assert fruit.name == "Pink Pitaya"
+        assert fruit.color == "magenta"
+        assert fruit.id is None
+        assert fruit.sweetness == ""
 
     def test_model_validate_from_dict(self) -> None:
         """model_validate should work (used by CRUD methods to hydrate from DB rows)."""
         data = {
             "id": 1,
             "created_at": datetime(2025, 1, 1),
-            "name": "Audrey",
-            "email": "audreyfeldroy@example.com",
-            "making": "cookiecutter",
-            "why": "templates",
+            "name": "Pink Pitaya",
+            "color": "magenta",
+            "sweetness": "high",
+            "origin": "Vietnam",
         }
-        app = BetaApp.model_validate(data)
-        assert app.id == 1
-        assert app.name == "Audrey"
+        fruit = DragonFruit.model_validate(data)
+        assert fruit.id == 1
+        assert fruit.name == "Pink Pitaya"
 
     def test_model_dump_roundtrip(self) -> None:
-        app = BetaApp(name="Audrey", email="audreyfeldroy@example.com")
-        dumped = app.model_dump()
-        assert dumped["name"] == "Audrey"
-        assert dumped["email"] == "audreyfeldroy@example.com"
+        fruit = DragonFruit(name="Pink Pitaya", color="magenta")
+        dumped = fruit.model_dump()
+        assert dumped["name"] == "Pink Pitaya"
+        assert dumped["color"] == "magenta"
         assert dumped["id"] is None
 
 
@@ -235,22 +267,22 @@ class TestLimitOffset:
     @pytest.mark.asyncio
     async def test_all_with_limit_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.all(limit=10)
+            await DragonFruit.all(limit=10)
 
     @pytest.mark.asyncio
     async def test_all_with_offset_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.all(offset=5)
+            await DragonFruit.all(offset=5)
 
     @pytest.mark.asyncio
     async def test_filter_with_limit_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.filter(name="test", limit=5)
+            await DragonFruit.filter(name="Yellow Dragon", limit=5)
 
     @pytest.mark.asyncio
     async def test_filter_with_offset_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.filter(name="test", limit=5, offset=10)
+            await DragonFruit.filter(name="Yellow Dragon", limit=5, offset=10)
 
 
 class TestMultipleObjectsReturned:
@@ -265,7 +297,7 @@ class TestMultipleObjectsReturned:
     @pytest.mark.asyncio
     async def test_get_without_pool_raises_runtime_error(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.get(id=1)
+            await DragonFruit.get(id=1)
 
 
 class TestAirDB:
@@ -294,39 +326,39 @@ class TestNoPoolErrors:
     @pytest.mark.asyncio
     async def test_create_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.create(name="test", email="test@example.com")
+            await DragonFruit.create(name="Yellow Dragon", color="yellow")
 
     @pytest.mark.asyncio
     async def test_get_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.get(id=1)
+            await DragonFruit.get(id=1)
 
     @pytest.mark.asyncio
     async def test_filter_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.filter(email="test@example.com")
+            await DragonFruit.filter(color="red")
 
     @pytest.mark.asyncio
     async def test_all_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.all()
+            await DragonFruit.all()
 
     @pytest.mark.asyncio
     async def test_count_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApp.count()
+            await DragonFruit.count()
 
     @pytest.mark.asyncio
     async def test_save_without_pool_raises(self) -> None:
-        app = BetaApp(id=1, name="test", email="test@example.com")
+        fruit = DragonFruit(id=1, name="Yellow Dragon", color="yellow")
         with pytest.raises(RuntimeError, match="No database connection"):
-            await app.save()
+            await fruit.save()
 
     @pytest.mark.asyncio
     async def test_delete_without_pool_raises(self) -> None:
-        app = BetaApp(id=1, name="test", email="test@example.com")
+        fruit = DragonFruit(id=1, name="Yellow Dragon", color="yellow")
         with pytest.raises(RuntimeError, match="No database connection"):
-            await app.delete()
+            await fruit.delete()
 
 
 # ---------------------------------------------------------------------------
@@ -341,17 +373,17 @@ class TestInstanceMethodErrors:
         # We need a pool for this test to reach the ValueError
         # (otherwise it hits RuntimeError first). We'll test the
         # validation logic by checking the error message pattern.
-        app = BetaApp(name="test", email="test@example.com")
-        assert app.id is None
+        fruit = DragonFruit(name="Yellow Dragon", color="yellow")
+        assert fruit.id is None
         # This will raise RuntimeError (no pool) before ValueError,
         # so we test the model state instead
-        assert app._pk_field() == "id"
+        assert fruit._pk_field() == "id"
 
     @pytest.mark.asyncio
     async def test_delete_without_pk_value_model_state(self) -> None:
-        app = BetaApp(name="test", email="test@example.com")
-        assert app.id is None
-        assert app._pk_field() == "id"
+        fruit = DragonFruit(name="Yellow Dragon", color="yellow")
+        assert fruit.id is None
+        assert fruit._pk_field() == "id"
 
 
 # ---------------------------------------------------------------------------
