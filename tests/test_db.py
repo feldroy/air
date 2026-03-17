@@ -18,7 +18,7 @@ from air.db import AirDB, Field, Model, MultipleObjectsReturned, _PY_TO_PG, _pg_
 # ---------------------------------------------------------------------------
 
 
-class BetaApplication(Model):
+class BetaApp(Model):
     id: int | None = Field(default=None, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.now)
     name: str
@@ -42,7 +42,7 @@ class SimpleModel(Model):
 
 class TestTableName:
     def test_table_name_is_lowercased_class_name(self) -> None:
-        assert BetaApplication._table_name() == "betaapplication"
+        assert BetaApp._table_name() == "betaapp"
 
     def test_simple_model_table_name(self) -> None:
         assert SimpleModel._table_name() == "simplemodel"
@@ -83,21 +83,21 @@ class TestTypeMapping:
 
 class TestField:
     def test_primary_key_stored_in_json_schema_extra(self) -> None:
-        field_info = BetaApplication.model_fields["id"]
+        field_info = BetaApp.model_fields["id"]
         assert field_info.json_schema_extra is not None
         assert field_info.json_schema_extra["primary_key"] is True
 
     def test_non_pk_field_has_no_primary_key_flag(self) -> None:
-        field_info = BetaApplication.model_fields["name"]
+        field_info = BetaApp.model_fields["name"]
         extra = field_info.json_schema_extra
         if extra is not None:
             assert extra.get("primary_key") is not True
 
     def test_pk_field_detection(self) -> None:
-        assert BetaApplication._pk_field() == "id"
+        assert BetaApp._pk_field() == "id"
 
     def test_non_pk_fields_excludes_pk(self) -> None:
-        non_pk = BetaApplication._non_pk_fields()
+        non_pk = BetaApp._non_pk_fields()
         assert "id" not in non_pk
         assert "name" in non_pk
         assert "email" in non_pk
@@ -110,25 +110,25 @@ class TestField:
 
 class TestColumnDefs:
     def test_pk_column_is_serial_primary_key(self) -> None:
-        cols = BetaApplication._column_defs()
+        cols = BetaApp._column_defs()
         assert cols[0] == '"id" SERIAL PRIMARY KEY'
 
     def test_str_field_with_no_default_is_not_null(self) -> None:
-        cols = BetaApplication._column_defs()
+        cols = BetaApp._column_defs()
         col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" in col_dict["name"]
         assert "NOT NULL" in col_dict["email"]
 
     def test_str_field_with_default_is_nullable(self) -> None:
         """Fields with a default value should not have NOT NULL."""
-        cols = BetaApplication._column_defs()
+        cols = BetaApp._column_defs()
         col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" not in col_dict["making"]
         assert "NOT NULL" not in col_dict["why"]
 
     def test_datetime_field_with_factory_no_not_null(self) -> None:
         """Fields with default_factory should not have NOT NULL."""
-        cols = BetaApplication._column_defs()
+        cols = BetaApp._column_defs()
         col_dict = {c.split()[0].strip('"'): c for c in cols}
         assert "NOT NULL" not in col_dict["created_at"]
 
@@ -148,11 +148,11 @@ class TestColumnDefs:
 
 class TestCreateTableSQL:
     def test_create_table_starts_with_create_table_if_not_exists(self) -> None:
-        sql = BetaApplication._create_table_sql()
-        assert sql.startswith('CREATE TABLE IF NOT EXISTS "betaapplication" (')
+        sql = BetaApp._create_table_sql()
+        assert sql.startswith('CREATE TABLE IF NOT EXISTS "betaapp" (')
 
     def test_create_table_contains_all_columns(self) -> None:
-        sql = BetaApplication._create_table_sql()
+        sql = BetaApp._create_table_sql()
         assert '"id" SERIAL PRIMARY KEY' in sql
         assert '"name" TEXT NOT NULL' in sql
         assert '"email" TEXT NOT NULL' in sql
@@ -161,7 +161,7 @@ class TestCreateTableSQL:
         assert '"created_at" TIMESTAMP WITH TIME ZONE' in sql
 
     def test_create_table_is_valid_sql_shape(self) -> None:
-        sql = BetaApplication._create_table_sql()
+        sql = BetaApp._create_table_sql()
         assert sql.startswith("CREATE TABLE IF NOT EXISTS")
         assert sql.endswith(")")
 
@@ -183,7 +183,7 @@ class TestCreateTableSQL:
 class TestTableRegistry:
     def test_subclasses_are_registered(self) -> None:
         registered_names = [t.__name__ for t in _table_registry]
-        assert "BetaApplication" in registered_names
+        assert "BetaApp" in registered_names
         assert "SimpleModel" in registered_names
 
     def test_base_model_not_registered(self) -> None:
@@ -199,7 +199,7 @@ class TestTableRegistry:
 class TestPydanticIntegration:
     def test_table_is_a_pydantic_model(self) -> None:
         """Table instances should be valid Pydantic models."""
-        app = BetaApplication(name="Audrey", email="audreyfeldroy@example.com")
+        app = BetaApp(name="Audrey", email="audreyfeldroy@example.com")
         assert app.name == "Audrey"
         assert app.email == "audreyfeldroy@example.com"
         assert app.id is None
@@ -215,12 +215,12 @@ class TestPydanticIntegration:
             "making": "cookiecutter",
             "why": "templates",
         }
-        app = BetaApplication.model_validate(data)
+        app = BetaApp.model_validate(data)
         assert app.id == 1
         assert app.name == "Audrey"
 
     def test_model_dump_roundtrip(self) -> None:
-        app = BetaApplication(name="Audrey", email="audreyfeldroy@example.com")
+        app = BetaApp(name="Audrey", email="audreyfeldroy@example.com")
         dumped = app.model_dump()
         assert dumped["name"] == "Audrey"
         assert dumped["email"] == "audreyfeldroy@example.com"
@@ -236,22 +236,22 @@ class TestLimitOffset:
     @pytest.mark.asyncio
     async def test_all_with_limit_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.all(limit=10)
+            await BetaApp.all(limit=10)
 
     @pytest.mark.asyncio
     async def test_all_with_offset_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.all(offset=5)
+            await BetaApp.all(offset=5)
 
     @pytest.mark.asyncio
     async def test_filter_with_limit_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.filter(name="test", limit=5)
+            await BetaApp.filter(name="test", limit=5)
 
     @pytest.mark.asyncio
     async def test_filter_with_offset_raises_without_pool(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.filter(name="test", limit=5, offset=10)
+            await BetaApp.filter(name="test", limit=5, offset=10)
 
 
 class TestMultipleObjectsReturned:
@@ -266,7 +266,7 @@ class TestMultipleObjectsReturned:
     @pytest.mark.asyncio
     async def test_get_without_pool_raises_runtime_error(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.get(id=1)
+            await BetaApp.get(id=1)
 
 
 class TestAirDB:
@@ -295,37 +295,37 @@ class TestNoPoolErrors:
     @pytest.mark.asyncio
     async def test_create_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.create(name="test", email="test@example.com")
+            await BetaApp.create(name="test", email="test@example.com")
 
     @pytest.mark.asyncio
     async def test_get_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.get(id=1)
+            await BetaApp.get(id=1)
 
     @pytest.mark.asyncio
     async def test_filter_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.filter(email="test@example.com")
+            await BetaApp.filter(email="test@example.com")
 
     @pytest.mark.asyncio
     async def test_all_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.all()
+            await BetaApp.all()
 
     @pytest.mark.asyncio
     async def test_count_without_pool_raises(self) -> None:
         with pytest.raises(RuntimeError, match="No database connection"):
-            await BetaApplication.count()
+            await BetaApp.count()
 
     @pytest.mark.asyncio
     async def test_save_without_pool_raises(self) -> None:
-        app = BetaApplication(id=1, name="test", email="test@example.com")
+        app = BetaApp(id=1, name="test", email="test@example.com")
         with pytest.raises(RuntimeError, match="No database connection"):
             await app.save()
 
     @pytest.mark.asyncio
     async def test_delete_without_pool_raises(self) -> None:
-        app = BetaApplication(id=1, name="test", email="test@example.com")
+        app = BetaApp(id=1, name="test", email="test@example.com")
         with pytest.raises(RuntimeError, match="No database connection"):
             await app.delete()
 
@@ -342,7 +342,7 @@ class TestInstanceMethodErrors:
         # We need a pool for this test to reach the ValueError
         # (otherwise it hits RuntimeError first). We'll test the
         # validation logic by checking the error message pattern.
-        app = BetaApplication(name="test", email="test@example.com")
+        app = BetaApp(name="test", email="test@example.com")
         assert app.id is None
         # This will raise RuntimeError (no pool) before ValueError,
         # so we test the model state instead
@@ -350,7 +350,7 @@ class TestInstanceMethodErrors:
 
     @pytest.mark.asyncio
     async def test_delete_without_pk_value_model_state(self) -> None:
-        app = BetaApplication(name="test", email="test@example.com")
+        app = BetaApp(name="test", email="test@example.com")
         assert app.id is None
         assert app._pk_field() == "id"
 
