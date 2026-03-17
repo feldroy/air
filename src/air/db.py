@@ -147,7 +147,7 @@ _LOOKUP_OPS: dict[str, str] = {
 }
 
 
-def _parse_kwargs(kwargs: dict[str, Any]) -> tuple[list[str], list[Any]]:
+def _parse_kwargs(kwargs: dict[str, Any], *, start_idx: int = 1) -> tuple[list[str], list[Any]]:
     """Parse keyword arguments into SQL WHERE conditions and parameter values.
 
     Supports Django-style ``__`` lookups (gt, gte, lt, lte, contains,
@@ -161,7 +161,7 @@ def _parse_kwargs(kwargs: dict[str, Any]) -> tuple[list[str], list[Any]]:
     """
     conditions: list[str] = []
     values: list[Any] = []
-    param_idx = 1  # asyncpg uses $1, $2, ...
+    param_idx = start_idx  # asyncpg uses $1, $2, ...
 
     for key, value in kwargs.items():
         # Split off a lookup suffix if present.
@@ -459,7 +459,91 @@ class AirModel(BaseModel):
         sql = f'SELECT COUNT(*) FROM "{cls._table_name()}"'  # noqa: S608
         return await pool.fetchval(sql)
 
-    # -- Instance methods ----------------------------------------------------
+    # -- Bulk class methods ---------------------------------------------------
+
+    @classmethod
+    async def bulk_create(cls, items: list[dict[str, Any]]) -> list[Self]:
+        """Insert multiple rows in a single query and return the new instances.
+
+        Builds a multi-row INSERT with ``RETURNING *`` so only one round-trip
+        is needed regardless of list length.
+
+        Args:
+            items: A list of dicts, each mapping column names to values.
+
+        Returns:
+            A list of model instances, one per inserted row.
+        """
+        if not items:
+            return []
+
+        pool = _get_pool()
+        fields = cls._non_pk_fields()
+        # Use the columns present in the first item (all items must have the same keys)
+        insert_fields = [f for f in fields if f in items[0]]
+        columns = ", ".join(f'"{f}"' for f in insert_fields)
+
+        # Build ($1, $2), ($3, $4), ... with flattened parameter list
+        value_groups: list[str] = []
+        all_values: list[Any] = []
+        for i, item in enumerate(items):
+            offset = i * len(insert_fields)
+            placeholders = ", ".join(f"${offset + j + 1}" for j in range(len(insert_fields)))
+            value_groups.append(f"({placeholders})")
+            all_values.extend(
+                item[f] for f in insert_fields)
+
+        values_sql = ", ".join(value_groups)
+        sql = f'INSERT INTO "{cls._table_name()}" ({columns}) VALUES {values_sql} RETURNING *'
+        rows = await pool.fetch(sql, *all_values)
+        return [cls.model_validate(dict(r)) for r in rows]
+
+    @classmethod
+    async def bulk_update(cls, set_values: dict[str, Any], **filter_kwargs: Any) -> int:
+        """Update multiple rows matching the filter and return the count affected.
+
+        Args:
+            set_values: A dict of column names to new values for the SET clause.
+            **filter_kwargs: Column name/value pairs (with optional ``__lookup``
+                suffixes) for the WHERE clause.
+
+        Returns:
+            The number of rows updated.
+        """
+        pool = _get_pool()
+        set_clauses = [f'"{col}" = ${i + 1}' for i, col in enumerate(set_values)]
+        set_sql = ", ".join(set_clauses)
+        set_params = list(set_values.values())
+
+        conditions, where_params = _parse_kwargs(filter_kwargs, start_idx=len(set_values) + 1)
+        where_sql = " AND ".join(conditions)
+
+        sql = f'UPDATE "{cls._table_name()}" SET {set_sql} WHERE {where_sql}'
+        status = await pool.execute(sql, *set_params, *where_params)
+        # asyncpg returns e.g. "UPDATE 3"
+        return int(status.split()[-1])
+
+    @classmethod
+    async def bulk_delete(cls, **filter_kwargs: Any) -> int:
+        """Delete all rows matching the filter and return the count deleted.
+
+        Args:
+            **filter_kwargs: Column name/value pairs (with optional ``__lookup``
+                suffixes) for the WHERE clause.
+
+        Returns:
+            The number of rows deleted.
+        """
+        pool = _get_pool()
+        conditions, values = _parse_kwargs(filter_kwargs)
+        where_sql = " AND ".join(conditions)
+
+        sql = f'DELETE FROM "{cls._table_name()}" WHERE {where_sql}'
+        status = await pool.execute(sql, *values)
+        # asyncpg returns e.g. "DELETE 5"
+        return int(status.split()[-1])
+
+        # -- Instance methods ----------------------------------------------------
 
     async def save(self) -> None:
         """Update the row identified by this instance's primary key.

@@ -1328,3 +1328,205 @@ class TestTransaction:
             )
         finally:
             _set_current_db(None)
+
+
+# ---------------------------------------------------------------------------
+# Bulk operations
+# ---------------------------------------------------------------------------
+
+
+class BulkPool(CRUDPool):
+    """Extends CRUDPool with execute() that returns a status string.
+
+    asyncpg's execute() returns a command-tag string like "UPDATE 3" or
+    "DELETE 5". bulk_update and bulk_delete parse that to get the affected
+    row count.
+    """
+
+    def __init__(
+        self,
+        *,
+        execute_return: str = "UPDATE 0",
+        **kwargs: object,
+    ) -> None:
+        super().__init__(**kwargs)  # type: ignore[arg-type]
+        self._execute_return = execute_return
+        self.execute_called = False
+
+    async def execute(self, sql: str, *args: object) -> str:
+        self.execute_called = True
+        self.last_sql = sql
+        self.last_args = args
+        return self._execute_return
+
+
+_DRAGON_ROW_3: dict[str, object] = {
+    "id": 3,
+    "created_at": datetime(2026, 3, 19),
+    "name": "White Pitaya",
+    "color": "white",
+    "sweetness": "low",
+    "origin": "Thailand",
+}
+
+
+class TestBulkOperations:
+    """Tests for bulk_create, bulk_update, and bulk_delete class methods.
+
+    These should all FAIL because the methods don't exist yet.
+    """
+
+    # -- bulk_create ---------------------------------------------------------
+
+    async def test_bulk_create_returns_list(self) -> None:
+        """bulk_create() should return a list of DragonFruit instances."""
+        pool = CRUDPool(
+            fetch_return=[dict(_DRAGON_ROW), dict(_DRAGON_ROW_2)],
+        )
+        _wire_pool(pool)
+        try:
+            results = await DragonFruit.bulk_create([
+                {"name": "Pink Pitaya", "color": "magenta"},
+                {"name": "Yellow Dragon", "color": "yellow"},
+            ])
+
+            assert isinstance(results, list)
+            assert len(results) == 2
+            assert all(isinstance(r, DragonFruit) for r in results)
+            assert results[0].name == "Pink Pitaya"
+            assert results[0].id == 1
+            assert results[1].name == "Yellow Dragon"
+            assert results[1].id == 2
+        finally:
+            _unwire_pool()
+
+    async def test_bulk_create_sql_is_multi_row_insert(self) -> None:
+        """bulk_create() should generate an INSERT with multiple value sets
+        or use a single INSERT...RETURNING * that covers all rows."""
+        pool = CRUDPool(
+            fetch_return=[
+                dict(_DRAGON_ROW),
+                dict(_DRAGON_ROW_2),
+                dict(_DRAGON_ROW_3),
+            ],
+        )
+        _wire_pool(pool)
+        try:
+            await DragonFruit.bulk_create([
+                {"name": "Pink Pitaya", "color": "magenta"},
+                {"name": "Yellow Dragon", "color": "yellow"},
+                {"name": "White Pitaya", "color": "white"},
+            ])
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('INSERT INTO "dragon_fruit"')
+            assert "RETURNING *" in pool.last_sql
+            # Should have multiple value placeholders (one set per row)
+            # e.g. ($1, $2), ($3, $4), ($5, $6)
+            assert pool.last_sql.count("(") >= 4  # table parens + 3 value sets
+        finally:
+            _unwire_pool()
+
+    async def test_bulk_create_empty_list_returns_empty(self) -> None:
+        """bulk_create([]) should return [] without hitting the database."""
+        pool = CRUDPool()
+        _wire_pool(pool)
+        try:
+            results = await DragonFruit.bulk_create([])
+
+            assert results == []
+            # Should not have issued any SQL
+            assert pool.last_sql is None
+        finally:
+            _unwire_pool()
+
+    # -- bulk_update ---------------------------------------------------------
+
+    async def test_bulk_update_generates_update_where(self) -> None:
+        """bulk_update() should generate UPDATE...SET...WHERE SQL."""
+        pool = BulkPool(execute_return="UPDATE 3")
+        _wire_pool(pool)
+        try:
+            count = await DragonFruit.bulk_update(
+                {"color": "red"}, name="Pink Pitaya"
+            )
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('UPDATE "dragon_fruit" SET')
+            assert '"color" =' in pool.last_sql
+            assert "WHERE" in pool.last_sql
+            assert '"name" =' in pool.last_sql
+        finally:
+            _unwire_pool()
+
+    async def test_bulk_update_with_lookup_operators(self) -> None:
+        """bulk_update() should support Django-style lookup operators in
+        the filter kwargs (the WHERE clause)."""
+        pool = BulkPool(execute_return="UPDATE 5")
+        _wire_pool(pool)
+        try:
+            count = await DragonFruit.bulk_update(
+                {"color": "red"}, sweetness__contains="high"
+            )
+
+            assert pool.last_sql is not None
+            assert "WHERE" in pool.last_sql
+            assert "LIKE" in pool.last_sql
+            assert '"color" =' in pool.last_sql
+        finally:
+            _unwire_pool()
+
+    async def test_bulk_update_returns_row_count(self) -> None:
+        """bulk_update() should return the number of rows affected as an int."""
+        pool = BulkPool(execute_return="UPDATE 7")
+        _wire_pool(pool)
+        try:
+            count = await DragonFruit.bulk_update(
+                {"color": "red"}, name__contains="Dragon"
+            )
+
+            assert isinstance(count, int)
+            assert count == 7
+        finally:
+            _unwire_pool()
+
+    # -- bulk_delete ---------------------------------------------------------
+
+    async def test_bulk_delete_generates_delete_where(self) -> None:
+        """bulk_delete() should generate DELETE FROM...WHERE SQL."""
+        pool = BulkPool(execute_return="DELETE 2")
+        _wire_pool(pool)
+        try:
+            count = await DragonFruit.bulk_delete(confirmed=False)
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('DELETE FROM "dragon_fruit" WHERE')
+            assert '"confirmed" = $1' in pool.last_sql
+        finally:
+            _unwire_pool()
+
+    async def test_bulk_delete_with_lookup_operators(self) -> None:
+        """bulk_delete() should support Django-style lookup operators."""
+        pool = BulkPool(execute_return="DELETE 4")
+        _wire_pool(pool)
+        try:
+            count = await DragonFruit.bulk_delete(sweetness__lt=3)
+
+            assert pool.last_sql is not None
+            assert pool.last_sql.startswith('DELETE FROM "dragon_fruit" WHERE')
+            assert '"sweetness" < $1' in pool.last_sql
+            assert pool.last_args == (3,)
+        finally:
+            _unwire_pool()
+
+    async def test_bulk_delete_returns_row_count(self) -> None:
+        """bulk_delete() should return the number of deleted rows as an int."""
+        pool = BulkPool(execute_return="DELETE 12")
+        _wire_pool(pool)
+        try:
+            count = await DragonFruit.bulk_delete(origin__icontains="vietnam")
+
+            assert isinstance(count, int)
+            assert count == 12
+        finally:
+            _unwire_pool()
