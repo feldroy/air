@@ -15,6 +15,7 @@ from . import (
 )
 from .db import AirDB as AirDB
 from .db import Model as Model
+from .db import MultipleObjectsReturned as MultipleObjectsReturned
 from .applications import (
     Air as Air,
     AirRoute as AirRoute,

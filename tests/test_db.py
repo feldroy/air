@@ -10,7 +10,7 @@ from datetime import datetime
 
 import pytest
 
-from air.db import AirDB, Field, Model, _PY_TO_PG, _pg_type, _table_registry
+from air.db import AirDB, Field, Model, MultipleObjectsReturned, _PY_TO_PG, _pg_type, _table_registry
 
 
 # ---------------------------------------------------------------------------
@@ -230,6 +230,21 @@ class TestPydanticIntegration:
 # ---------------------------------------------------------------------------
 # AirDB initialization
 # ---------------------------------------------------------------------------
+
+
+class TestMultipleObjectsReturned:
+    def test_is_an_exception(self) -> None:
+        assert issubclass(MultipleObjectsReturned, Exception)
+
+    def test_importable_from_air(self) -> None:
+        import air
+
+        assert hasattr(air, "MultipleObjectsReturned")
+
+    @pytest.mark.asyncio
+    async def test_get_without_pool_raises_runtime_error(self) -> None:
+        with pytest.raises(RuntimeError, match="No database connection"):
+            await BetaApplication.get(id=1)
 
 
 class TestAirDB:

@@ -132,6 +132,15 @@ def _is_primary_key(field_info: FieldInfo) -> bool:
 
 
 # ---------------------------------------------------------------------------
+# Exceptions
+# ---------------------------------------------------------------------------
+
+
+class MultipleObjectsReturned(Exception):
+    """Raised by :meth:`Model.get` when the query matches more than one row."""
+
+
+# ---------------------------------------------------------------------------
 # AirDB: connection pool + table registry
 # ---------------------------------------------------------------------------
 
@@ -341,19 +350,27 @@ class Model(BaseModel, metaclass=_TableMeta):
 
     @classmethod
     async def get(cls, **kwargs: Any) -> Self | None:
-        """Fetch a single row matching the given keyword filters.
+        """Fetch exactly one row matching the given keyword filters.
 
         Returns:
-            An instance of this Table subclass, or ``None`` if no row matches.
+            An instance of this Model subclass, or ``None`` if no row matches.
+
+        Raises:
+            MultipleObjectsReturned: If more than one row matches the filters.
         """
         pool = _get_pool()
-        conditions = [f'"{k}" = ${i + 1}' for i, k in enumerate(kwargs)]
+        items = list(kwargs.items())
+        conditions = [f'"{k}" = ${i + 1}' for i, (k, _) in enumerate(items)]
         where = " AND ".join(conditions)
-        sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where}'  # noqa: S608
-        row = await pool.fetchrow(sql, *kwargs.values())
-        if row is None:
+        values = [v for _, v in items]
+        sql = f'SELECT * FROM "{cls._table_name()}" WHERE {where} LIMIT 2'  # noqa: S608
+        rows = await pool.fetch(sql, *values)
+        if not rows:
             return None
-        return cls.model_validate(dict(row))
+        if len(rows) > 1:
+            msg = f"{cls.__name__}.get() matched more than one row. Use filter() to retrieve multiple results."
+            raise MultipleObjectsReturned(msg)
+        return cls.model_validate(dict(rows[0]))
 
     @classmethod
     async def filter(cls, **kwargs: Any) -> list[Self]:
