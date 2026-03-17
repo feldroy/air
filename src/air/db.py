@@ -56,8 +56,16 @@ _PY_TO_PG: dict[type, str] = {
 
 
 def _pg_type(python_type: type) -> str:
-    """Return the PostgreSQL column type string for a Python type."""
-    return _PY_TO_PG.get(python_type, "TEXT")
+    """Return the PostgreSQL column type string for a Python type.
+
+    Raises:
+        TypeError: If *python_type* has no entry in :data:`_PY_TO_PG`.
+    """
+    if python_type not in _PY_TO_PG:
+        supported = ", ".join(t.__name__ for t in _PY_TO_PG)
+        msg = f"No PostgreSQL type mapping for {python_type!r}. Supported types: {supported}"
+        raise TypeError(msg)
+    return _PY_TO_PG[python_type]
 
 
 # ---------------------------------------------------------------------------
@@ -280,7 +288,7 @@ class Model(BaseModel, metaclass=_TableMeta):
             else:
                 base_type = annotation
 
-            pg_type = _pg_type(base_type)  # type: ignore[arg-type]
+            pg_type = _pg_type(base_type)
 
             # NOT NULL when the field is required and not Optional
             nullable = _is_optional(annotation) if annotation else False

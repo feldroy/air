@@ -10,7 +10,7 @@ from datetime import datetime
 
 import pytest
 
-from air.db import AirDB, Field, Model, _PY_TO_PG, _table_registry
+from air.db import AirDB, Field, Model, _PY_TO_PG, _pg_type, _table_registry
 
 
 # ---------------------------------------------------------------------------
@@ -68,6 +68,12 @@ class TestTypeMapping:
 
     def test_datetime_maps_to_timestamptz(self) -> None:
         assert _PY_TO_PG[datetime] == "TIMESTAMP WITH TIME ZONE"
+
+    def test_unmapped_type_raises_type_error(self) -> None:
+        from decimal import Decimal
+
+        with pytest.raises(TypeError, match="No PostgreSQL type mapping"):
+            _pg_type(Decimal)
 
 
 # ---------------------------------------------------------------------------
