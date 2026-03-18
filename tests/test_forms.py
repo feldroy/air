@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 from pydantic import BaseModel, Field
 
 import air
+from air import AirForm
 
 
 def test_form_sync_check() -> None:
@@ -14,7 +15,7 @@ def test_form_sync_check() -> None:
         name: str
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     cheese = CheeseForm()
@@ -36,7 +37,7 @@ def test_form_validation_dependency_injection() -> None:
         name: str
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     app = air.Air()
@@ -71,7 +72,7 @@ def test_form_validation_in_view() -> None:
         name: str
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     app = air.Air()
@@ -105,7 +106,7 @@ def test_form_render() -> None:
         name: str
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     cheese = CheeseForm()
@@ -122,7 +123,7 @@ def test_form_render_with_values() -> None:
         name: str
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     cheese = CheeseForm({"name": "Cheddar", "age": 3})
@@ -139,7 +140,7 @@ def test_form_render_in_view() -> None:
         name: str
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     app = air.Air()
@@ -166,7 +167,7 @@ def test_form_render_with_errors() -> None:
         name: str
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     cheese = CheeseForm()
@@ -193,7 +194,7 @@ def test_html_input_field_types() -> None:
         email: str | None = Field(json_schema_extra={"email": True})
         date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})
 
-    class ContactForm(air.AirForm):
+    class ContactForm(AirForm):
         model = ContactModel
 
     contact_form = ContactForm()
@@ -208,7 +209,7 @@ def test_air_field() -> None:
         email: str = air.AirField(type="email", label="Email")
         date_and_time: str = air.AirField(type="datedatetime-local", label="Date and Time")
 
-    class ContactForm(air.AirForm):
+    class ContactForm(AirForm):
         model = ContactModel
 
     contact_form = ContactForm()
@@ -223,7 +224,7 @@ def test_air_field() -> None:
 
 def test_airform_notimplementederror() -> None:
     with pytest.raises(NotImplementedError) as exc:
-        air.AirForm()
+        AirForm()
 
     assert "model" in str(exc.value)
 
@@ -233,7 +234,7 @@ def test_airform_validate() -> None:
         name: str
         servings: int
 
-    class KareKareForm(air.AirForm):
+    class KareKareForm(AirForm):
         model = KareKareModel
 
     form = KareKareForm()
@@ -252,7 +253,7 @@ def test_airform_autofocus() -> None:
         name: str = air.AirField(label="Name", autofocus=True)
         age: int
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     html = CheeseForm().render()
@@ -264,7 +265,7 @@ def test_air_field_json_schema_extra() -> None:
         name: str = air.AirField(json_schema_extra={"autofocus": True})
         age: int = air.AirField(json_schema_extra={"label": "my-age"})
 
-    class CheeseForm(air.AirForm):
+    class CheeseForm(AirForm):
         model = CheeseModel
 
     html = CheeseForm().render()
@@ -280,14 +281,14 @@ def test_field_includes() -> None:
         max_airspeed: str
 
     # Control test - make sure existing system still works
-    class PlaneForm(air.AirForm):
+    class PlaneForm(AirForm):
         model = PlaneModel
 
     html = PlaneForm().render()
     assert '<label for="id">id</label><input name="id" type="number" required id="id">' in html
 
     # Test with includes active, removing id field
-    class PlaneForm(air.AirForm):
+    class PlaneForm(AirForm):
         model = PlaneModel
         includes = ("name", "year_released", "max_airspeed")
 
@@ -464,7 +465,7 @@ def test_html5_validation_attributes() -> None:
         email: str = air.AirField(type="email", label="Email Address")
         message: str = air.AirField(min_length=10, max_length=500)
 
-    class ContactForm(air.AirForm):
+    class ContactForm(AirForm):
         model = ContactModel
 
     html = ContactForm().render()
@@ -489,7 +490,7 @@ def test_html5_validation_optional_fields() -> None:
         name: str
         nickname: str | None = None
 
-    class OptionalForm(air.AirForm):
+    class OptionalForm(AirForm):
         model = OptionalModel
 
     html = OptionalForm().render()
@@ -508,7 +509,7 @@ def test_html5_validation_with_standard_field() -> None:
         name: str = Field(min_length=3, max_length=20)
         age: int
 
-    class StandardForm(air.AirForm):
+    class StandardForm(AirForm):
         model = StandardModel
 
     html = StandardForm().render()
@@ -526,7 +527,7 @@ def test_html5_validation_with_annotated() -> None:
         name: Annotated[str, annotated_types.MinLen(2), annotated_types.MaxLen(50)]
         age: int
 
-    class AnnotatedForm(air.AirForm):
+    class AnnotatedForm(AirForm):
         model = AnnotatedModel
 
     html = AnnotatedForm().render()
@@ -542,7 +543,7 @@ def test_html5_validation_optional_with_constraints() -> None:
     class OptionalConstrainedModel(BaseModel):
         nickname: Annotated[str | None, annotated_types.MinLen(2)] = None
 
-    class OptionalConstrainedForm(air.AirForm):
+    class OptionalConstrainedForm(AirForm):
         model = OptionalConstrainedModel
 
     html = OptionalConstrainedForm().render()
@@ -559,7 +560,7 @@ def test_html5_validation_field_with_default() -> None:
         name: str = Field("default_name", min_length=2, max_length=20)
         age: int = 25
 
-    class DefaultedForm(air.AirForm):
+    class DefaultedForm(AirForm):
         model = DefaultedModel
 
     html = DefaultedForm().render()
@@ -575,7 +576,7 @@ def test_airform_generic_validates() -> None:
         name: str
         age: int
 
-    class AutoForm(air.AirForm[AutoModel]):
+    class AutoForm(AirForm[AutoModel]):
         pass
 
     form = AutoForm()
@@ -589,7 +590,7 @@ def test_airform_generic_with_includes() -> None:
         name: str
         age: int
 
-    class AutoForm(air.AirForm[AutoModel]):
+    class AutoForm(AirForm[AutoModel]):
         includes = ("name", "age")
 
     form = AutoForm()
@@ -608,7 +609,7 @@ def test_airform_generic_type_parameter() -> None:
         origin: str
         destination: str
 
-    class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+    class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
         pass  # no model = JeepneyRouteModel needed
 
     # model was auto-set from the type parameter
@@ -631,7 +632,7 @@ def test_airform_data_before_validation_raises() -> None:
     class IslandModel(BaseModel):
         name: str
 
-    class IslandForm(air.AirForm[IslandModel]):
+    class IslandForm(AirForm[IslandModel]):
         pass
 
     form = IslandForm()
@@ -645,7 +646,7 @@ def test_airform_data_after_failed_validation_raises() -> None:
     class IslandModel(BaseModel):
         name: str
 
-    class IslandForm(air.AirForm[IslandModel]):
+    class IslandForm(AirForm[IslandModel]):
         pass
 
     form = IslandForm()
@@ -664,7 +665,7 @@ def test_airform_explicit_model_not_overridden() -> None:
     class ModelB(BaseModel):
         y: str
 
-    class ExplicitForm(air.AirForm[ModelA]):
+    class ExplicitForm(AirForm[ModelA]):
         model = ModelB  # explicit wins
 
     assert ExplicitForm.model is ModelB
@@ -677,7 +678,7 @@ def test_airform_revalidation_resets_state() -> None:
         item: str
         price: int
 
-    class SariSariForm(air.AirForm[SariSariModel]):
+    class SariSariForm(AirForm[SariSariModel]):
         pass
 
     form = SariSariForm()
@@ -702,7 +703,7 @@ def test_airform_multi_level_inheritance() -> None:
         name: str
         captain: str
 
-    class BaseBarangayForm(air.AirForm[BarangayModel]):
+    class BaseBarangayForm(AirForm[BarangayModel]):
         pass
 
     class SpecificBarangayForm(BaseBarangayForm):
@@ -723,7 +724,7 @@ def test_airform_generic_data_access() -> None:
         vendor: str
         stall_number: int
 
-    class PalengkeForm(air.AirForm[PalengkeModel]):
+    class PalengkeForm(AirForm[PalengkeModel]):
         pass
 
     form = PalengkeForm()

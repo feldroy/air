@@ -18,7 +18,7 @@ class ContactModel(air.AirModel):
     email: str = air.AirField(type="email", label="Email Address")
 
 
-class ContactForm(air.AirForm[ContactModel]):
+class ContactForm(AirForm[ContactModel]):
     pass
 
 
@@ -82,7 +82,7 @@ class JeepneyRouteModel(air.AirModel):
 Pass your model as a type parameter to `AirForm`:
 
 ```python
-class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
     pass
 ```
 
@@ -216,7 +216,7 @@ These all produce the same thing. Pick whichever fits your situation:
 **1. Subclass (recommended).** Best when you want a reusable form class with type safety:
 
 ```python
-class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
     pass
 ```
 
@@ -259,6 +259,6 @@ When you write `class JeepneyRouteForm(AirForm[JeepneyRouteModel])`, two things 
 If you prefer to set the model explicitly, that still works:
 
 ```python
-class JeepneyRouteForm(air.AirForm[JeepneyRouteModel]):
+class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
     model = JeepneyRouteModel  # optional, Air sets this from the type parameter
 ```

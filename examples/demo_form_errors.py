@@ -16,6 +16,7 @@ from pydantic import Field
 from rich import print
 
 import air
+from air import AirForm
 
 
 class ContactModel(AirModel):
@@ -24,7 +25,7 @@ class ContactModel(AirModel):
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
 
 
-class ContactForm(air.AirForm[ContactModel]):
+class ContactForm(AirForm[ContactModel]):
     pass
 
 

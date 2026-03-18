@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 import air
+from air import AirForm
 
 app = air.Air()
 
@@ -17,7 +18,7 @@ class ContactModel(BaseModel):
     )
 
 
-class ContactForm(air.AirForm):
+class ContactForm(AirForm):
     model = ContactModel
 
 

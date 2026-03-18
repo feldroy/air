@@ -1,6 +1,6 @@
 # Forms & validation
 
-Built on Pydantic's `BaseModel`, the `air.AirForm` class is used to validate data coming from HTML forms.
+Built on Pydantic's `BaseModel`, the `AirForm` class is used to validate data coming from HTML forms.
 
 ```python
 from typing import Annotated
@@ -16,7 +16,7 @@ class FlightModel(BaseModel):
     destination: str = Field(..., min_length=1)
 
 
-class FlightForm(air.AirForm):
+class FlightForm(AirForm):
     model = FlightModel
 
 
@@ -102,7 +102,7 @@ class FlightModel(BaseModel):
     destination: str
 
 
-class FlightForm(air.AirForm):
+class FlightForm(AirForm):
     model = FlightModel
 
 

@@ -1,6 +1,7 @@
 from airmodel import AirModel
 
 import air
+from air import AirForm
 
 app = air.Air()
 
@@ -10,7 +11,7 @@ class FlightModel(AirModel):
     destination: str
 
 
-class FlightForm(air.AirForm[FlightModel]):
+class FlightForm(AirForm[FlightModel]):
     pass
 
 

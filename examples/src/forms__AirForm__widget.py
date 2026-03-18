@@ -3,6 +3,7 @@ from collections.abc import Sequence
 from airmodel import AirModel
 
 import air
+from air import AirForm
 from air.forms import default_form_widget
 
 app = air.Air()
@@ -38,7 +39,7 @@ def contact_widget(
     )
 
 
-class ContactForm(air.AirForm[ContactModel]):
+class ContactForm(AirForm[ContactModel]):
     widget = contact_widget
 
 

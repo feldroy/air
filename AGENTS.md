@@ -316,8 +316,8 @@ async def submit_contact(request: air.Request):
 ### Alternative: AirForm subclass
 
 ```python
-class ContactForm(air.AirForm):
-    model = ContactModel
+class ContactForm(AirForm[ContactModel]):
+    pass
 
 form = ContactForm()
 flight = await ContactForm.from_request(request)

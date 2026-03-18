@@ -1,6 +1,7 @@
 from airmodel import AirModel
 
 import air
+from air import AirForm
 from air.forms import default_form_widget
 
 app = air.Air()
@@ -12,7 +13,7 @@ class FlightModel(AirModel):
     passengers: int
 
 
-class FlightForm(air.AirForm[FlightModel]):
+class FlightForm(AirForm[FlightModel]):
     pass
 
 

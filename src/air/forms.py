@@ -39,7 +39,7 @@ class AirForm[M: BaseModel]:
             destination: str
 
 
-        class FlightForm(air.AirForm):
+        class FlightForm(AirForm):
             model = FlightModel
 
 
@@ -124,7 +124,7 @@ class AirForm[M: BaseModel]:
                 destination: str
 
 
-            class FlightForm(air.AirForm[FlightModel]):
+            class FlightForm(AirForm[FlightModel]):
                 pass
 
 
@@ -185,7 +185,7 @@ class AirForm[M: BaseModel]:
                 destination: str
 
 
-            class FlightForm(air.AirForm[FlightModel]):
+            class FlightForm(AirForm[FlightModel]):
                 pass
 
 
@@ -264,7 +264,7 @@ class AirForm[M: BaseModel]:
                 )
 
 
-            class ContactForm(air.AirForm[ContactModel]):
+            class ContactForm(AirForm[ContactModel]):
                 widget = contact_widget
 
 
@@ -336,7 +336,7 @@ class AirForm[M: BaseModel]:
                 message: str
 
 
-            class ContactForm(air.AirForm):
+            class ContactForm(AirForm):
                 # AirForm that uses ContactModel for validation and rendering.
 
                 model = ContactModel
@@ -538,7 +538,7 @@ def default_form_widget(  # noqa: C901
             )
 
 
-        class FlightForm(air.AirForm[FlightModel]):
+        class FlightForm(AirForm[FlightModel]):
             pass
 
 
@@ -721,7 +721,7 @@ def AirField(  # noqa: N802
             )
 
 
-        class ContactForm(air.AirForm):
+        class ContactForm(AirForm):
             model = ContactModel
 
 
