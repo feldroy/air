@@ -11,16 +11,20 @@ Usage:
     uv run demo_form_errors.py
 """
 
-from pydantic import Field
+from pydantic import BaseModel, Field
 from rich import print
 
 import air
 
 
-class ContactModel(air.AirModel):
+class ContactModel(BaseModel):
     name: str = Field(min_length=2, max_length=50)
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
+
+
+class ContactForm(air.AirForm[ContactModel]):
+    pass
 
 
 app = air.Air()
@@ -33,7 +37,7 @@ async def show_form() -> air.Html | air.Children:
     Returns:
         HTML page with the contact form.
     """
-    contact_form = ContactModel.to_form()
+    contact_form = ContactForm()
     return air.layouts.picocss(
         air.Title("Enhanced Form Errors Demo"),
         air.H1("Contact Form - Error Message Demo"),
@@ -53,8 +57,7 @@ async def handle_form(request: air.Request) -> air.Html | air.Children:
     Returns:
         HTML page with form validation results or success message.
     """
-    contact_form = ContactModel.to_form()
-    form = await contact_form.from_request(request)
+    form = await ContactForm.from_request(request)
 
     if form.is_valid:
         return air.layouts.picocss(

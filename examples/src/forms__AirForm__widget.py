@@ -8,7 +8,7 @@ from air.forms import default_form_widget
 app = air.Air()
 
 
-class ContactModel(air.AirModel):
+class ContactModel(BaseModel):
     # Note: This uses `str` for email. For stricter server-side validation,
     # you can use `EmailStr` from pydantic.
     name: str
@@ -38,14 +38,14 @@ def contact_widget(
     )
 
 
-def get_contact_form() -> air.AirForm:
-    return ContactModel.to_form(widget=contact_widget)
+class ContactForm(air.AirForm[ContactModel]):
+    widget = contact_widget
 
 
 @app.page
 def contact(request: air.Request) -> air.Html | air.Children:
 
-    form = get_contact_form()
+    form = ContactForm()
 
     return air.layouts.mvpcss(
         air.H1("Contact Us"),
@@ -61,7 +61,7 @@ def contact(request: air.Request) -> air.Html | air.Children:
 
 @app.post("/contact")
 async def submit_contact(request: air.Request) -> air.Html:
-    form = get_contact_form()
+    form = ContactForm()
     form_data = await request.form()
 
     if form.validate(form_data):

@@ -1,14 +1,17 @@
+from pydantic import BaseModel
+
 import air
 
 app = air.Air()
 
 
-class FlightModel(air.AirModel):
+class FlightModel(BaseModel):
     flight_number: str
     destination: str
 
 
-FlightForm = FlightModel.to_form()
+class FlightForm(air.AirForm[FlightModel]):
+    pass
 
 
 @app.post("/flight")

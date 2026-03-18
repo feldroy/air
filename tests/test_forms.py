@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Annotated, cast
 
 import annotated_types
@@ -571,66 +570,34 @@ def test_html5_validation_field_with_default() -> None:
     assert "required" not in html
 
 
-def test_to_form_helper_generates_form() -> None:
+def test_airform_generic_validates() -> None:
     class AutoModel(BaseModel):
         name: str
         age: int
 
-    form = air.to_form(AutoModel)
+    class AutoForm(air.AirForm[AutoModel]):
+        pass
 
+    form = AutoForm()
     form.validate({"name": "Test", "age": 3})
     assert form.is_valid is True
 
 
-def test_air_to_form_generation() -> None:
-    from pydantic import BaseModel
-
-    class AutoModel(BaseModel):
-        name: str
-        age: int
-
-    form = air.to_form(AutoModel)
-
-    form.validate({"name": "Test", "age": 5})
-    assert form.is_valid is True
-
-
-def test_air_to_form_generation_with_includes() -> None:
-    from pydantic import BaseModel
-
+def test_airform_generic_with_includes() -> None:
     class AutoModel(BaseModel):
         id: int
         name: str
         age: int
 
-    autoform = air.to_form(AutoModel, includes=("name", "age"))
+    class AutoForm(air.AirForm[AutoModel]):
+        includes = ("name", "age")
 
-    html = autoform.render()
+    form = AutoForm()
+    html = form.render()
     assert 'name="id"' not in html
     assert 'for="id"' not in html
     assert "name" in html
     assert "age" in html
-
-
-def test_air_to_form_generation_with_custom_widget() -> None:
-    from pydantic import BaseModel as PydanticBase
-
-    class AutoModel(PydanticBase):
-        name: str
-
-    def custom_widget(
-        *,
-        model: type[BaseModel],
-        data: dict | None = None,
-        errors: list | None = None,
-        includes: Sequence[str] | None = None,
-    ) -> str:
-        return "<custom>"
-
-    autoform = air.to_form(AutoModel, widget=custom_widget)
-
-    rendered = autoform.render()
-    assert str(rendered) == "<custom>"
 
 
 def test_airform_generic_type_parameter() -> None:
@@ -749,30 +716,18 @@ def test_airform_multi_level_inheritance() -> None:
     assert form.data.captain == "Kap. Reyes"
 
 
-def test_to_form_generic_data_access() -> None:
-    """to_form() produces a form whose data property works after validation."""
+def test_airform_generic_data_access() -> None:
+    """AirForm[M] gives typed data after validation."""
 
     class PalengkeModel(BaseModel):
         vendor: str
         stall_number: int
 
-    form = air.to_form(PalengkeModel)
+    class PalengkeForm(air.AirForm[PalengkeModel]):
+        pass
+
+    form = PalengkeForm()
     form.validate({"vendor": "Aling Nena", "stall_number": 42})
     assert form.is_valid
     assert form.data.vendor == "Aling Nena"
     assert form.data.stall_number == 42
-
-
-def test_airmodel_to_form_generic_data_access() -> None:
-    """air.to_form() produces a form whose data property works after validation."""
-    from pydantic import BaseModel
-
-    class TricycleModel(BaseModel):
-        route: str
-        fare: int
-
-    form = air.to_form(TricycleModel)
-    form.validate({"route": "Rizal Ave", "fare": 15})
-    assert form.is_valid
-    assert form.data.route == "Rizal Ave"
-    assert form.data.fare == 15

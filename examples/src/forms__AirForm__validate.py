@@ -1,17 +1,23 @@
+from pydantic import BaseModel
+
 import air
 
 app = air.Air()
 
 
-class FlightModel(air.AirModel):
+class FlightModel(BaseModel):
     flight_number: str
     destination: str
+
+
+class FlightForm(air.AirForm[FlightModel]):
+    pass
 
 
 @app.post("/flight")
 async def submit_flight(request: air.Request) -> air.Html:
     form_data = await request.form()
-    flight_form = FlightModel.to_form()
+    flight_form = FlightForm()
 
     if flight_form.validate(form_data):
         # Form is valid

@@ -6,15 +6,22 @@ an AirDB instance and wires up the lifespan to open/close the pool.
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
-from unittest.mock import AsyncMock, MagicMock, patch
+import builtins
+from contextlib import asynccontextmanager
+from typing import TYPE_CHECKING, Any
+from unittest.mock import AsyncMock, patch
 
-import pytest
+from airmodel import AirDB
 from starlette.testclient import TestClient
 
 import air
 from air import Air
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+    from pathlib import Path
+
+    import pytest
 
 
 # ---------------------------------------------------------------------------
@@ -59,13 +66,12 @@ def test_db_is_none_when_airmodel_not_installed(
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
 
-    import builtins
-
     real_import = builtins.__import__
 
     def mock_import(name: str, *args: Any, **kwargs: Any) -> Any:
         if name == "airmodel":
-            raise ImportError("mocked")
+            msg = "mocked"
+            raise ImportError(msg)
         return real_import(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", mock_import)
@@ -83,8 +89,6 @@ def test_db_created_with_database_url_and_airmodel(
     monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
 
     app = Air()
-
-    from airmodel import AirDB
 
     assert isinstance(app.db, AirDB)
 
@@ -129,10 +133,8 @@ def test_db_lifespan_composes_with_user_lifespan(
     startup_ran = False
     shutdown_ran = False
 
-    from contextlib import asynccontextmanager
-
     @asynccontextmanager
-    async def user_lifespan(app: Any):
+    async def user_lifespan(app: Any) -> AsyncIterator[None]:
         nonlocal startup_ran, shutdown_ran
         startup_ran = True
         yield
@@ -163,10 +165,8 @@ def test_no_database_url_preserves_user_lifespan(
 
     startup_ran = False
 
-    from contextlib import asynccontextmanager
-
     @asynccontextmanager
-    async def user_lifespan(app: Any):
+    async def user_lifespan(app: Any) -> AsyncIterator[None]:
         nonlocal startup_ran
         startup_ran = True
         yield
