@@ -279,3 +279,10 @@ Thanks to all the contributors to the Air 💨 web framework!
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
  </picture>
 </a>
+
+
+## Usage
+
+```python
+# Usage examples
+```
