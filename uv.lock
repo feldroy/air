@@ -94,7 +94,7 @@ typing-stubs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "airfield", specifier = ">=0.3.1" },
+    { name = "airfield", specifier = ">=0.4.0" },
     { name = "airmodel", specifier = ">=0.1.2" },
     { name = "fastapi", specifier = ">=0.128.8" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
@@ -176,14 +176,14 @@ typing-stubs = [
 
 [[package]]
 name = "airfield"
-version = "0.3.1"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/26/ea/dc7fe97ffe635f15fe2e717240d455cc2c99ff0bc580a93a0c2dca1430ba/airfield-0.3.1.tar.gz", hash = "sha256:13f2b11e89e54ca892d0a5ddfd6607ce422f9382cf98aa070e3c633d810c7e7c", size = 57195, upload-time = "2026-03-18T14:15:45.3Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5b/4c/f8000d0c8e75ad283afef3b2a1b5d612947ad312f2baf13aa5aaa1c5bfc3/airfield-0.4.0.tar.gz", hash = "sha256:1199c0ac9dadd3c1eadd4c9f8606184932e94acda9924f12b07f05231e004c1c", size = 61865, upload-time = "2026-03-18T16:09:31.336Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/51/3f/542efa042497a262f829c0b9350653d716f0ab998686e9bbf53033199fba/airfield-0.3.1-py3-none-any.whl", hash = "sha256:9e37baa5fd168efeae4080ab00e117e4ca3ce8887e8a224d8d17591e9bf202db", size = 8047, upload-time = "2026-03-18T14:15:44.158Z" },
+    { url = "https://files.pythonhosted.org/packages/4a/01/ab36936051e8604b5b7a97d6e3c24ef7eebc7c114a22b4ebfaf72d56e26f/airfield-0.4.0-py3-none-any.whl", hash = "sha256:03285e65180b02076f3c2d56ee57b7fa8220406c945893f921f71faf7e9f4462", size = 8959, upload-time = "2026-03-18T16:09:29.875Z" },
 ]
 
 [[package]]

@@ -191,8 +191,8 @@ def test_form_render_with_errors() -> None:
 def test_html_input_field_types() -> None:
     class ContactModel(BaseModel):
         name: str
-        email: str | None = Field(json_schema_extra={"email": True})
-        date_and_time: str = Field(json_schema_extra={"datedatetime-local": True})
+        email: str | None = air.AirField(type="email")
+        date_and_time: str = air.AirField(type="datedatetime-local")
 
     class ContactForm(AirForm):
         model = ContactModel
@@ -260,10 +260,10 @@ def test_airform_autofocus() -> None:
     assert "autofocus" in html
 
 
-def test_air_field_json_schema_extra() -> None:
+def test_air_field_metadata() -> None:
     class CheeseModel(BaseModel):
-        name: str = air.AirField(json_schema_extra={"autofocus": True})
-        age: int = air.AirField(json_schema_extra={"label": "my-age"})
+        name: str = air.AirField(autofocus=True)
+        age: int = air.AirField(label="my-age")
 
     class CheeseForm(AirForm):
         model = CheeseModel
@@ -398,36 +398,39 @@ def test_default_form_widget_optional_fields() -> None:
 
 
 def test_default_form_widget_custom_label() -> None:
-    """Test form widget with custom label via json_schema_extra."""
+    """Test form widget with custom label via AirField."""
 
     class CustomLabelTestModel(BaseModel):
-        name: str = Field(json_schema_extra={"label": "Full Name"})
+        name: str = air.AirField(label="Full Name")
 
     html = air.forms.default_form_widget(CustomLabelTestModel)
     assert '<label for="name">Full Name</label>' in html
 
 
 def test_default_form_widget_autofocus() -> None:
-    """Test form widget with autofocus attribute via json_schema_extra."""
+    """Test form widget with autofocus attribute via AirField."""
 
     class AutofocusTestModel(BaseModel):
-        name: str = Field(json_schema_extra={"autofocus": True})
+        name: str = air.AirField(autofocus=True)
 
     html = air.forms.default_form_widget(AutofocusTestModel)
     assert "autofocus" in html
 
 
-def test_air_field_with_extra_kwargs() -> None:
-    """Test AirField with extra keyword arguments."""
+def test_air_field_with_typed_metadata() -> None:
+    """Test AirField stores presentation hints as typed metadata."""
+    from airfield import Label, Widget
 
     class TestModel(BaseModel):
-        name: str = air.AirField(label="Name", custom_attr="custom_value")
+        name: str = air.AirField(label="Name", type="email")
 
-    # Verify the field was created successfully with extra kwargs
-    assert TestModel.model_fields["name"].json_schema_extra == {
-        "label": "Name",
-        "custom_attr": "custom_value",
-    }
+    field_info = TestModel.model_fields["name"]
+    labels = [m for m in field_info.metadata if isinstance(m, Label)]
+    widgets = [m for m in field_info.metadata if isinstance(m, Widget)]
+    assert len(labels) == 1
+    assert labels[0].text == "Name"
+    assert len(widgets) == 1
+    assert widgets[0].kind == "email"
 
 
 def test_air_field_with_default_factory() -> None:

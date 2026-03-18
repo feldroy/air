@@ -7,6 +7,7 @@ from types import UnionType
 from typing import Any, Self, Union, get_args, get_origin
 
 import annotated_types
+from airfield import Autofocus, Label, Widget
 from pydantic import BaseModel, ValidationError
 from pydantic_core import ErrorDetails
 from starlette.datastructures import FormData
@@ -406,22 +407,12 @@ class AirForm[M: BaseModel]:
 def pydantic_type_to_html_type(field_info: Any) -> str:
     """Return HTML type from pydantic type.
 
-    Default to 'text' for unknown types.
+    Checks field_info.metadata for a Widget instance (from AirField),
+    then infers from the Python type annotation.
     """
-    special_fields = [
-        "hidden",
-        "email",
-        "password",
-        "url",
-        "datedatetime-local",
-        "month",
-        "time",
-        "color",
-        "file",
-    ]
-    for field in special_fields:
-        if field_info.json_schema_extra and field_info.json_schema_extra.get(field, False):
-            return field
+    for m in getattr(field_info, "metadata", []):
+        if isinstance(m, Widget):
+            return m.kind
 
     return {int: "number", float: "number", bool: "checkbox", str: "text"}.get(field_info.annotation, "text")
 
@@ -469,6 +460,14 @@ def errors_to_dict(errors: list[dict] | None) -> dict[str, dict]:
     if errors is None:
         return {}
     return {error["loc"][0]: error for error in errors}
+
+
+def _label_for_field(field_name: str, field_info: Any) -> str:
+    """Return the label for a field from AirField metadata."""
+    for m in getattr(field_info, "metadata", []):
+        if isinstance(m, Label):
+            return m.text
+    return field_name
 
 
 def default_form_widget(  # noqa: C901
@@ -600,8 +599,7 @@ def default_form_widget(  # noqa: C901
         error = error_dict.get(field_name)
         if error:
             kwargs["aria-invalid"] = "true"
-        json_schema_extra: dict = field_info.json_schema_extra or {}
-        if json_schema_extra.get("autofocus"):
+        if any(isinstance(m, Autofocus) for m in getattr(field_info, "metadata", [])):
             kwargs["autofocus"] = True
 
         # Add HTML5 validation attributes from Pydantic constraints
@@ -635,7 +633,7 @@ def default_form_widget(  # noqa: C901
         fields.append(
             tags.Tags(
                 tags.Label(
-                    json_schema_extra.get("label") or field_name,
+                    _label_for_field(field_name, field_info),
                     for_=field_name,
                 ),
                 tags.Input(name=field_name, type_=input_type, id_=field_name, **kwargs),
