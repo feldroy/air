@@ -63,13 +63,7 @@ export DATABASE_URL="postgresql://user:pass@localhost/mydb"
 app = air.Air()  # reads DATABASE_URL, connects automatically
 ```
 
-The asyncpg pool opens when your app starts and closes when it shuts down. `?sslmode=require` works for hosted databases like NeonDB. To create your tables:
-
-```python
-await app.db.create_tables()
-```
-
-Every AirModel subclass you've imported gets a `CREATE TABLE IF NOT EXISTS`. That's it.
+The asyncpg pool opens when your app starts, tables are created automatically for every AirModel subclass you've imported, and the pool closes on shutdown. `?sslmode=require` works for hosted databases like NeonDB.
 
 ## Your types become your schema
 

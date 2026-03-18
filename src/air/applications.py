@@ -352,6 +352,7 @@ class Air(RouterMixin):
 
             pool = await asyncpg.create_pool(url)
             db.connect(pool)
+            await db.create_tables()
             try:
                 if user_lifespan is not None:
                     async with user_lifespan(app):
