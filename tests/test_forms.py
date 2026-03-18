@@ -2,6 +2,7 @@ from typing import Annotated, cast
 
 import annotated_types
 import pytest
+from airfield import Label, Widget
 from fastapi import Depends, Request
 from fastapi.testclient import TestClient
 from pydantic import BaseModel, Field
@@ -419,7 +420,6 @@ def test_default_form_widget_autofocus() -> None:
 
 def test_air_field_with_typed_metadata() -> None:
     """Test AirField stores presentation hints as typed metadata."""
-    from airfield import Label, Widget
 
     class TestModel(BaseModel):
         name: str = air.AirField(label="Name", type="email")
