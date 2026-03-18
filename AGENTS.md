@@ -432,15 +432,15 @@ Zero config. Set `DATABASE_URL` in the environment, `uv add AirModel`, and Air a
 
 ```python
 import air
-from airmodel import AirModel, Field
+from airmodel import AirModel, AirField
 
 app = air.Air()  # reads DATABASE_URL, connects automatically
 
 class UnicornSighting(AirModel):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = AirField(default=None, primary_key=True)
     location: str
     sparkle_rating: int
-    confirmed: bool = Field(default=False)
+    confirmed: bool = AirField(default=False)
 
 @app.post("/sightings")
 async def create_sighting(request: air.Request):
