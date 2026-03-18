@@ -2,10 +2,10 @@
 
 from importlib.metadata import version
 
+from airfield import AirField as AirField
 from airmodel import (
     AirDB as AirDB,
     AirModel as AirModel,
-    Field as Field,
     MultipleObjectsReturned as MultipleObjectsReturned,
 )
 from fastapi import Query as Query
@@ -27,10 +27,7 @@ from .dependencies import is_htmx_request as is_htmx_request
 from .exceptions import (
     HTTPException as HTTPException,
 )
-from .forms import (
-    AirField as AirField,
-    AirForm as AirForm,
-)
+from .forms import AirForm as AirForm
 from .middleware import SessionMiddleware as SessionMiddleware
 from .requests import (
     AirRequest as AirRequest,
