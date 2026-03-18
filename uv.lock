@@ -93,7 +93,7 @@ typing-stubs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "airmodel", editable = "../AirModel" },
+    { name = "airmodel", specifier = ">=0.1.1" },
     { name = "fastapi", specifier = ">=0.128.8" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
     { name = "frozendict", specifier = ">=2.4.7" },
@@ -174,42 +174,18 @@ typing-stubs = [
 
 [[package]]
 name = "airmodel"
-version = "0.1.0"
-source = { editable = "../AirModel" }
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asyncpg" },
     { name = "pydantic" },
     { name = "rich" },
     { name = "typer" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "pydantic", specifier = ">=2.0" },
-    { name = "rich" },
-    { name = "typer" },
+sdist = { url = "https://files.pythonhosted.org/packages/d2/c9/01ea7956ec8dfc2d23d38bfbd9d3f5d3168d472ebdbc23327a64bdc778d3/airmodel-0.1.1.tar.gz", hash = "sha256:6ce1e78ee716f4bcab56066ef8afad9716c7deed25d629f3ce4dc24d5401f9af", size = 70776, upload-time = "2026-03-18T06:21:29.409Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ed/78/96d16a6431f35872db877702f691821f8499dfcfde52e189efd44596ce44/airmodel-0.1.1-py3-none-any.whl", hash = "sha256:53c73be1cc38edfec230e30804fee165f77884cf325740831c6c707b1b9cc730", size = 12968, upload-time = "2026-03-18T06:21:27.845Z" },
 ]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "ruff" },
-    { name = "ty" },
-]
-docs = [
-    { name = "mkdocstrings-python" },
-    { name = "zensical" },
-]
-lint = [{ name = "ruff" }]
-test = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-]
-typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "annotated-doc"
