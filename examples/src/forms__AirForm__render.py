@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 import air
+from air import AirForm
 
 app = air.Air()
 
@@ -13,7 +14,7 @@ class ContactModel(BaseModel):
     message: str
 
 
-class ContactForm(air.AirForm):
+class ContactForm(AirForm):
     # AirForm that uses ContactModel for validation and rendering.
 
     model = ContactModel

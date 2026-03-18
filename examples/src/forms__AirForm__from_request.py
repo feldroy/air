@@ -1,14 +1,18 @@
+from airmodel import AirModel
+
 import air
+from air import AirForm
 
 app = air.Air()
 
 
-class FlightModel(air.AirModel):
+class FlightModel(AirModel):
     flight_number: str
     destination: str
 
 
-FlightForm = FlightModel.to_form()
+class FlightForm(AirForm[FlightModel]):
+    pass
 
 
 @app.post("/flight")

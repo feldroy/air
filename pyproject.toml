@@ -95,6 +95,7 @@ dependencies = [
     "staticware>=0.2.0", # https://pypi.org/project/staticware
     "typer>=0.23.0", # https://pypi.org/project/typer
     "uvicorn>=0.40.0", # https://pypi.org/project/uvicorn
+    "airmodel>=0.1.1", # https://pypi.org/project/AirModel
 ]
 # endregion project
 

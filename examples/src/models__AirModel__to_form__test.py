@@ -4,13 +4,13 @@ from .models__AirModel__to_form import app
 
 
 def test_form_renders_with_all_parameters() -> None:
-    """Test that form renders with name, includes, and widget parameters"""
+    """Test that form renders with includes and widget parameters"""
     client = TestClient(app)
     response = client.get("/")
     assert response.status_code == 200
-    # Check the form demonstrates all parameters
+    # Check the form demonstrates includes and widget parameters
     assert "Contact Form" in response.text
-    assert "demonstrates name, includes, and widget parameters" in response.text
+    assert "demonstrates includes and widget parameters" in response.text
     # Check custom widget styling
     assert "Custom form styling:" in response.text
     assert 'class="custom-form"' in response.text

@@ -1,17 +1,24 @@
+from airmodel import AirModel
+
 import air
+from air import AirForm
 
 app = air.Air()
 
 
-class FlightModel(air.AirModel):
+class FlightModel(AirModel):
     flight_number: str
     destination: str
+
+
+class FlightForm(AirForm[FlightModel]):
+    pass
 
 
 @app.post("/flight")
 async def submit_flight(request: air.Request) -> air.Html:
     form_data = await request.form()
-    flight_form = FlightModel.to_form()
+    flight_form = FlightForm()
 
     if flight_form.validate(form_data):
         # Form is valid

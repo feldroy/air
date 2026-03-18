@@ -39,7 +39,7 @@ class AirForm[M: BaseModel]:
             destination: str
 
 
-        class FlightForm(air.AirForm):
+        class FlightForm(AirForm):
             model = FlightModel
 
 
@@ -112,20 +112,26 @@ class AirForm[M: BaseModel]:
 
         Example:
 
+            from pydantic import BaseModel
+
             import air
 
             app = air.Air()
 
 
-            class FlightModel(air.AirModel):
+            class FlightModel(BaseModel):
                 flight_number: str
                 destination: str
+
+
+            class FlightForm(AirForm[FlightModel]):
+                pass
 
 
             @app.post("/flight")
             async def submit_flight(request: air.Request) -> air.Html:
                 form_data = await request.form()
-                flight_form = FlightModel.to_form()
+                flight_form = FlightForm()
 
                 if flight_form.validate(form_data):
                     # Form is valid
@@ -167,17 +173,20 @@ class AirForm[M: BaseModel]:
 
         Example:
 
+            from pydantic import BaseModel
+
             import air
 
             app = air.Air()
 
 
-            class FlightModel(air.AirModel):
+            class FlightModel(BaseModel):
                 flight_number: str
                 destination: str
 
 
-            FlightForm = FlightModel.to_form()
+            class FlightForm(AirForm[FlightModel]):
+                pass
 
 
             @app.post("/flight")
@@ -225,7 +234,7 @@ class AirForm[M: BaseModel]:
             app = air.Air()
 
 
-            class ContactModel(air.AirModel):
+            class ContactModel(BaseModel):
                 # Note: This uses `str` for email. For stricter server-side validation,
                 # you can use `EmailStr` from pydantic.
                 name: str
@@ -255,14 +264,14 @@ class AirForm[M: BaseModel]:
                 )
 
 
-            def get_contact_form() -> air.AirForm:
-                return ContactModel.to_form(widget=contact_widget)
+            class ContactForm(AirForm[ContactModel]):
+                widget = contact_widget
 
 
             @app.page
             def contact(request: air.Request) -> air.Html | air.Children:
 
-                form = get_contact_form()
+                form = ContactForm()
 
                 return air.layouts.mvpcss(
                     air.H1("Contact Us"),
@@ -278,7 +287,7 @@ class AirForm[M: BaseModel]:
 
             @app.post("/contact")
             async def submit_contact(request: air.Request) -> air.Html:
-                form = get_contact_form()
+                form = ContactForm()
                 form_data = await request.form()
 
                 if form.validate(form_data):
@@ -327,7 +336,7 @@ class AirForm[M: BaseModel]:
                 message: str
 
 
-            class ContactForm(air.AirForm):
+            class ContactForm(AirForm):
                 # AirForm that uses ContactModel for validation and rendering.
 
                 model = ContactModel
@@ -483,13 +492,15 @@ def default_form_widget(  # noqa: C901
 
     Example:
 
+        from pydantic import BaseModel
+
         import air
         from air.forms import default_form_widget
 
         app = air.Air()
 
 
-        class FlightModel(air.AirModel):
+        class FlightModel(BaseModel):
             flight_number: str
             destination: str
             passengers: int
@@ -527,10 +538,14 @@ def default_form_widget(  # noqa: C901
             )
 
 
+        class FlightForm(AirForm[FlightModel]):
+            pass
+
+
         @app.post("/submit")
         async def submit(request: air.Request) -> air.Html:
             form_data = await request.form()
-            flight_form = FlightModel.to_form()
+            flight_form = FlightForm()
 
             if flight_form.validate(form_data):
                 return air.Html(
@@ -706,7 +721,7 @@ def AirField(  # noqa: N802
             )
 
 
-        class ContactForm(air.AirForm):
+        class ContactForm(AirForm):
             model = ContactModel
 
 
@@ -819,40 +834,3 @@ def AirField(  # noqa: N802
         union_mode=union_mode,
         fail_fast=fail_fast,
     )  # ty: ignore[no-matching-overload]
-
-
-def to_form[M: BaseModel](
-    model: type[M],
-    *,
-    name: str | None = None,
-    includes: Sequence[str] | None = None,
-    widget: Callable | None = None,
-) -> "AirForm[M]":
-    """Generate an :class:`AirForm` instance for the given Pydantic model.
-
-    Args:
-        model: The Pydantic model class the form should validate against.
-        name: Optional explicit class name for the generated form.
-        includes: Optional iterable of field names to render (defaults to all fields).
-        widget: Optional callable to render the form. Falls back to :func:`default_form_widget`.
-
-    Returns:
-        A new :class:`AirForm` instance bound to ``model``.
-    """
-
-    attrs: dict[str, Any] = {"model": model, "__module__": model.__module__}
-
-    if includes is not None:
-        attrs["includes"] = tuple(includes)
-
-    if widget is not None:
-
-        def _widget(self: AirForm, _widget: Callable = widget) -> Callable:
-            return _widget
-
-        attrs["widget"] = property(_widget)
-
-    form_name = name or f"{model.__name__}Form"
-    generated_form = type(form_name, (AirForm,), attrs)
-    generated_form.__doc__ = f"Auto-generated AirForm for {model.__module__}.{model.__name__}."
-    return generated_form()

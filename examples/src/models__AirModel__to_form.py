@@ -1,21 +1,22 @@
 from collections.abc import Sequence
 
-from pydantic import BaseModel
+from airmodel import AirModel
 
 import air
+from air import AirForm
 from air.forms import default_form_widget
 
 app = air.Air()
 
 
-class ContactModel(air.AirModel):
+class ContactModel(AirModel):
     name: str
     email: str
     phone: str | None = None
 
 
 def custom_widget(
-    model: type[BaseModel],
+    model: type[AirModel],
     data: dict | None = None,
     errors: list | None = None,
     includes: Sequence[str] | None = None,
@@ -27,20 +28,17 @@ def custom_widget(
     )
 
 
-def get_contact_form() -> air.AirForm:
-    return ContactModel.to_form(
-        name="CustomContactForm",  # Custom form class name
-        includes=["name", "email"],  # Only render these fields
-        widget=custom_widget,  # Custom rendering function
-    )
+class ContactForm(AirForm[ContactModel]):
+    includes = ("name", "email")  # Only render these fields
+    widget = custom_widget
 
 
 @app.page
 def index() -> air.Html:
-    contact_form = get_contact_form()
+    contact_form = ContactForm()
     return air.Html(
         air.H1("Contact Form"),
-        air.P("This form demonstrates name, includes, and widget parameters"),
+        air.P("This form demonstrates includes and widget parameters"),
         air.Form(
             contact_form.render(),
             air.Button("Submit", type_="submit"),
@@ -53,7 +51,7 @@ def index() -> air.Html:
 @app.post("/submit")
 async def submit(request: air.Request) -> air.Html:
     form_data = await request.form()
-    contact_form = get_contact_form()
+    contact_form = ContactForm()
 
     if contact_form.validate(form_data):
         return air.Html(

@@ -531,8 +531,8 @@ class ContactModel(BaseModel):  # (1)!
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern
 
 
-class ContactForm(air.AirForm):  # (2)!
-    model = ContactModel
+class ContactForm(AirForm[ContactModel]):  # (2)!
+    pass
 
 
 app = air.Air()

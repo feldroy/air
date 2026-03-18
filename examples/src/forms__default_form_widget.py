@@ -1,13 +1,20 @@
+from airmodel import AirModel
+
 import air
+from air import AirForm
 from air.forms import default_form_widget
 
 app = air.Air()
 
 
-class FlightModel(air.AirModel):
+class FlightModel(AirModel):
     flight_number: str
     destination: str
     passengers: int
+
+
+class FlightForm(AirForm[FlightModel]):
+    pass
 
 
 @app.page
@@ -45,7 +52,7 @@ def index(request: air.Request) -> air.Html:
 @app.post("/submit")
 async def submit(request: air.Request) -> air.Html:
     form_data = await request.form()
-    flight_form = FlightModel.to_form()
+    flight_form = FlightForm()
 
     if flight_form.validate(form_data):
         return air.Html(

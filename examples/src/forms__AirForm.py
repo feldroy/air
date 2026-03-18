@@ -4,6 +4,7 @@ from fastapi import Depends
 from pydantic import BaseModel
 
 import air
+from air import AirForm
 
 app = air.Air()
 
@@ -13,7 +14,7 @@ class FlightModel(BaseModel):
     destination: str
 
 
-class FlightForm(air.AirForm):
+class FlightForm(AirForm):
     model = FlightModel
 
 
