@@ -47,9 +47,7 @@ class FakePool:
 # ---------------------------------------------------------------------------
 
 
-def test_db_is_none_without_database_url(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_db_is_none_without_database_url(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Without DATABASE_URL, app.db should be None."""
     monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("DATABASE_URL", raising=False)
@@ -59,9 +57,7 @@ def test_db_is_none_without_database_url(
     assert app.db is None
 
 
-def test_db_is_none_when_airmodel_not_installed(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_db_is_none_when_airmodel_not_installed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """With DATABASE_URL but airmodel not importable, app.db should be None."""
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
@@ -81,9 +77,7 @@ def test_db_is_none_when_airmodel_not_installed(
     assert app.db is None
 
 
-def test_db_created_with_database_url_and_airmodel(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_db_created_with_database_url_and_airmodel(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """With DATABASE_URL and airmodel installed, app.db should be an AirDB instance."""
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
@@ -93,9 +87,7 @@ def test_db_created_with_database_url_and_airmodel(
     assert isinstance(app.db, AirDB)
 
 
-def test_db_lifespan_opens_and_closes_pool(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_db_lifespan_opens_and_closes_pool(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """The composed lifespan should open a pool on startup and close it on shutdown."""
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
@@ -122,9 +114,7 @@ def test_db_lifespan_opens_and_closes_pool(
         assert app.db.pool is None
 
 
-def test_db_lifespan_composes_with_user_lifespan(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_db_lifespan_composes_with_user_lifespan(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """A user-provided lifespan should still run inside the database lifespan."""
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
@@ -156,9 +146,7 @@ def test_db_lifespan_composes_with_user_lifespan(
         assert fake_pool.closed
 
 
-def test_no_database_url_preserves_user_lifespan(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_no_database_url_preserves_user_lifespan(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Without DATABASE_URL, user lifespan should work unchanged."""
     monkeypatch.chdir(tmp_path)
     monkeypatch.delenv("DATABASE_URL", raising=False)
