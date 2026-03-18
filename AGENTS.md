@@ -159,14 +159,14 @@ air.Div(
 
 Renders to: `<div class="container" id="main"><h1>Welcome</h1><p>Hello <strong>world</strong></p><a href="/about">Click here</a></div>`
 
-### Attribute rules
+### Air Tag Attribute rules
 
 - Python reserved words use trailing underscore: `class_`, `for_`, `type_`, `id_`, `async_`
 - Underscores become dashes: `hx_get` -> `hx-get`, `data_value` -> `data-value`
 - Boolean `True` renders bare attribute: `disabled=True` -> `disabled`
 - Boolean `False` omits the attribute entirely
 
-### Common tags
+### Common Air Tags
 
 Container: `Div`, `Span`, `Section`, `Article`, `Aside`, `Nav`, `Main`, `Header`, `Footer`
 Text: `H1`-`H6`, `P`, `A`, `Strong`, `Em`, `Small`, `Code`, `Pre`, `Blockquote`
@@ -177,13 +177,13 @@ Media: `Img`, `Video`, `Audio`, `Source`, `Picture`, `Canvas`
 Document: `Html`, `Head`, `Body`, `Title`, `Meta`, `Link`, `Script`, `Style`
 Self-closing: `Br`, `Hr`, `Img`, `Input`, `Meta`, `Link`
 
-### Special tags
+### Special Air Tags
 
 - `air.Raw("html string")` - renders without escaping
 - `air.Children(tag1, tag2)` / `air.Fragment(...)` - renders children without wrapper element
 - `air.Comment("text")` - HTML comment
 
-### Nesting and composition
+### Air Tag nesting and composition
 
 ```python
 def nav_bar():
@@ -200,19 +200,7 @@ def index():
     )
 ```
 
-## Static Files
-
-Zero config. Put files in `static/` and reference them with plain HTML paths. Unlike Django, there's no `{% load static %}` or template tag system for static files. Air handles path rewriting at the ASGI layer, so templates and Air tags both use the same plain `/static/` paths:
-
-```python
-air.Link(rel="stylesheet", href="/static/css/main.css")
-air.Script(src="/static/js/app.js")
-air.Img(src="/static/img/logo.png")
-```
-
-Air auto-detects and mounts `static/` at startup. Every static file gets a content hash appended to its URL (e.g. `/static/css/main.css` becomes `/static/css/main.abc123.css` in the served HTML), and the hashed URLs are served with immutable cache headers. Air rewrites `/static/` paths in HTML responses automatically, so you always write plain paths in your code and templates.
-
-## Layouts
+## Air Tag Layouts
 
 Quick prototyping layouts that auto-sort children into `<head>` and `<body>`:
 
@@ -230,6 +218,18 @@ async def index(request: air.Request) -> air.Html | air.Children:
 Available: `air.layouts.mvpcss()` (MVP.css), `air.layouts.picocss()` (Pico CSS). Both include HTMX automatically.
 
 When `is_htmx=True`, returns `Children` (fragment) instead of full `Html` document.
+
+## Static Files
+
+Zero config. Put files in `static/` and reference them with plain HTML paths. Unlike Django, there's no `{% load static %}` or template tag system for static files. Air handles path rewriting at the ASGI layer, so templates and Air tags both use the same plain `/static/` paths:
+
+```python
+air.Link(rel="stylesheet", href="/static/css/main.css")
+air.Script(src="/static/js/app.js")
+air.Img(src="/static/img/logo.png")
+```
+
+Air auto-detects and mounts `static/` at startup. Every static file gets a content hash appended to its URL (e.g. `/static/css/main.css` becomes `/static/css/main.abc123.css` in the served HTML), and the hashed URLs are served with immutable cache headers. Air rewrites `/static/` paths in HTML responses automatically, so you always write plain paths in your code and templates.
 
 ## Jinja Templates
 
@@ -327,18 +327,6 @@ flight = await ContactForm.from_request(request)
 
 ## HTMX
 
-Every request has `.htmx` with typed HTMX header access:
-
-```python
-@app.page
-def index(request: air.Request):
-    if request.htmx:
-        return air.H1("HTMX fragment")
-    return air.layouts.mvpcss(air.H1("Full page"))
-```
-
-Properties: `request.htmx.is_hx_request`, `.boosted`, `.target`, `.trigger`, `.trigger_name`, `.current_url`, `.prompt`.
-
 HTMX attributes on tags:
 
 ```python
@@ -347,8 +335,27 @@ air.Button(
     hx_get="/items",
     hx_target="#content",
     hx_swap="innerHTML",
+    id="more"
 )
 ```
+
+Every `air.Request` object has `.htmx` object with typed HTMX header access:
+
+```python
+@app.page
+def index(request: air.Request):
+    if request.htmx.is_hx_request: # boolean of whether or not HTMX object
+        return air.Children(
+            air.H1("HTMX fragment"),
+            air.P(request.htmx.trigger),
+        )
+    return air.layouts.mvpcss(
+        air.H1("Full page"),
+        air.P(request.htmx.trigger),
+    )
+```
+
+Properties: `request.htmx.is_hx_request`, `.boosted`, `.target`, `.trigger`, `.trigger_name`, `.current_url`, `.prompt`.
 
 ### Dependency injection alternative
 
