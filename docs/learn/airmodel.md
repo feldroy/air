@@ -246,7 +246,7 @@ AirModel and AirForm are independent. Use one without the other, or snap them to
 ```python
 from airmodel import AirModel, Field
 
-import air
+from air import AirForm
 
 
 class ContactMessage(AirModel):
@@ -256,7 +256,7 @@ class ContactMessage(AirModel):
     body: str
 
 
-class ContactForm(air.AirForm[ContactMessage]):
+class ContactForm(AirForm[ContactMessage]):
     pass
 
 
@@ -279,6 +279,7 @@ async def submit_contact(request: air.Request):
 
 ```python title="main.py"
 import air
+from air import AirForm
 from airmodel import AirModel, Field
 
 
@@ -288,7 +289,7 @@ class GuestBookEntry(AirModel):
     message: str
 
 
-class GuestBookForm(air.AirForm[GuestBookEntry]):
+class GuestBookForm(AirForm[GuestBookEntry]):
     pass
 
 
