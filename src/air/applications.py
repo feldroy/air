@@ -363,7 +363,7 @@ class Air(RouterMixin):
                     await db.pool.close()
                 db.disconnect()
 
-        return _lifespan  # type: ignore[return-value]
+        return _lifespan
 
     # =========================================================================
     # ASGI Interface
