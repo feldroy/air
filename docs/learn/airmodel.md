@@ -2,6 +2,23 @@
 
 Your Pydantic models just learned PostgreSQL.
 
+```jinja title="templates/sightings.html"
+<!DOCTYPE html>
+<html>
+  <head><link rel="stylesheet" href="https://unpkg.com/mvp.css"></head>
+  <body>
+    <main>
+      <h1>Confirmed Unicorn Sightings</h1>
+      <ul>
+        {% for s in sightings %}
+          <li>{{ s.location }} ({{ s.sparkle_rating }} sparkles)</li>
+        {% endfor %}
+      </ul>
+    </main>
+  </body>
+</html>
+```
+
 ```python title="main.py"
 import air
 from airmodel import AirModel, Field
@@ -15,15 +32,13 @@ class UnicornSighting(AirModel):
 
 
 app = air.Air()  # DATABASE_URL in env, that's it
+jinja = air.JinjaRenderer(directory="templates")
 
 
-@app.page
-async def index():
+@app.get("/")
+async def index(request: air.Request):
     sightings = await UnicornSighting.filter(confirmed=True, order_by="-sparkle_rating")
-    return air.layouts.mvpcss(
-        air.H1("Confirmed Unicorn Sightings"),
-        air.Ul(*[air.Li(f"{s.location} ({s.sparkle_rating} sparkles)") for s in sightings]),
-    )
+    return jinja(request, name="sightings.html", sightings=sightings)
 ```
 
 That's a database-backed web app. Set `DATABASE_URL` in your environment, and Air auto-connects to PostgreSQL on startup. No pool setup, no lifespan wiring, no configuration file. You wrote a Pydantic model, added `primary_key=True` to one field, and now it talks to PostgreSQL.
@@ -55,19 +70,6 @@ await app.db.create_tables()
 ```
 
 Every AirModel subclass you've imported gets a `CREATE TABLE IF NOT EXISTS`. That's it.
-
-### Manual connection setup
-
-If the zero-config path doesn't work for your situation (custom pool sizes, non-standard connection strings, multiple databases), you can wire the pool yourself:
-
-```python title="main.py"
-from airmodel import AirDB
-
-db = AirDB()
-app = air.Air(lifespan=db.lifespan("postgresql://localhost/mydb", min_size=5, max_size=20))
-```
-
-You shouldn't need this for most apps.
 
 ## Your types become your schema
 
@@ -312,7 +314,8 @@ async def index():
             action="/sign",
         ),
         air.Hr(),
-        *[air.Article(air.Strong(e.name), air.P(e.message)) for e in entries],
+        *[air.Article(air.Strong(e.name), air.P(e.message))
+          for e in entries],
     )
 
 
@@ -325,3 +328,16 @@ async def sign(request: air.Request):
 ```
 
 Model, form, database, HTML, validation, pagination, and two routes. Set `DATABASE_URL` and run it.
+
+## Manual connection setup
+
+If the zero-config path doesn't work for your situation (custom pool sizes, non-standard connection strings, multiple databases), you can wire the pool yourself:
+
+```python title="main.py"
+from airmodel import AirDB
+
+db = AirDB()
+app = air.Air(lifespan=db.lifespan("postgresql://localhost/mydb", min_size=5, max_size=20))
+```
+
+You shouldn't need this for most apps.
