@@ -3,9 +3,8 @@
 Your Pydantic models just learned PostgreSQL.
 
 ```python title="main.py"
-from air import AirDB, AirModel, Field
-
 import air
+from airmodel import AirModel, Field
 
 
 class UnicornSighting(AirModel):
@@ -15,8 +14,7 @@ class UnicornSighting(AirModel):
     confirmed: bool = Field(default=False)
 
 
-db = AirDB()
-app = air.Air(lifespan=db.lifespan("postgresql://localhost/mydb"))
+app = air.Air()  # DATABASE_URL in env, that's it
 
 
 @app.page
@@ -28,30 +26,48 @@ async def index():
     )
 ```
 
-That's a database-backed web app. No SQLAlchemy. No migrations framework. No session management. You wrote a Pydantic model, added `primary_key=True` to one field, and now it talks to PostgreSQL. Every query is async, every result is a type-checked Pydantic instance, and your editor knows the shape of every row.
+That's a database-backed web app. Set `DATABASE_URL` in your environment, and Air auto-connects to PostgreSQL on startup. No pool setup, no lifespan wiring, no configuration file. You wrote a Pydantic model, added `primary_key=True` to one field, and now it talks to PostgreSQL.
 
 ## One class, one import
 
 ```python
-from air import AirModel
+from airmodel import AirModel
 ```
 
 One import, one base class. Define your fields with type annotations, and AirModel handles validation, serialization, and async database operations.
 
-## Connecting takes two lines
+## Zero-config database
 
-```python title="main.py"
-db = AirDB()
-app = air.Air(lifespan=db.lifespan(os.environ["DATABASE_URL"]))
+Set the `DATABASE_URL` environment variable and Air handles the rest:
+
+```bash
+export DATABASE_URL="postgresql://user:pass@localhost/mydb"
 ```
 
-AirDB wraps an asyncpg connection pool. It opens when your app starts, closes when it shuts down, and handles `?sslmode=require` for hosted databases like NeonDB. To create your tables:
+```python title="main.py"
+app = air.Air()  # reads DATABASE_URL, connects automatically
+```
+
+The asyncpg pool opens when your app starts and closes when it shuts down. `?sslmode=require` works for hosted databases like NeonDB. To create your tables:
 
 ```python
-await db.create_tables()
+await app.db.create_tables()
 ```
 
 Every AirModel subclass you've imported gets a `CREATE TABLE IF NOT EXISTS`. That's it.
+
+### Manual connection setup
+
+If the zero-config path doesn't work for your situation (custom pool sizes, non-standard connection strings, multiple databases), you can wire the pool yourself:
+
+```python title="main.py"
+from airmodel import AirDB
+
+db = AirDB()
+app = air.Air(lifespan=db.lifespan("postgresql://localhost/mydb", min_size=5, max_size=20))
+```
+
+You shouldn't need this for most apps.
 
 ## Your types become your schema
 
@@ -59,7 +75,7 @@ Every AirModel subclass you've imported gets a `CREATE TABLE IF NOT EXISTS`. Tha
 from datetime import datetime
 from uuid import UUID
 
-from air import AirModel, Field
+from airmodel import AirModel, Field
 
 
 class BlogPost(AirModel):
@@ -131,6 +147,26 @@ page = await BlogPost.filter(published=True, order_by="-created_at", limit=10, o
 
 Prefix a field name with `-` for descending. Pagination without ordering is undefined in PostgreSQL (the rows come back in whatever order the database feels like), so `order_by` is right there next to `limit` and `offset` where you need it.
 
+### Lookup operators
+
+Go beyond equality with Django-style double-underscore suffixes:
+
+```python
+# Ratings above 8
+await UnicornSighting.filter(sparkle_rating__gte=8)
+
+# Location contains "Falls"
+await UnicornSighting.filter(location__contains="Falls")
+
+# Rating is one of these values
+await UnicornSighting.filter(sparkle_rating__in=[5, 8, 11])
+
+# Confirmed is not null
+await UnicornSighting.filter(confirmed__isnull=False)
+```
+
+Supported: `__gt`, `__gte`, `__lt`, `__lte`, `__contains`, `__icontains`, `__in`, `__isnull`. These work in `filter()`, `get()`, and `count()`.
+
 ### Fetch everything
 
 ```python
@@ -158,6 +194,12 @@ await post.save()
 
 `save()` uses `UPDATE ... RETURNING *`, so if your database has triggers or generated columns, the instance picks up those changes immediately. No stale data.
 
+To update only specific fields (avoiding lost-update bugs when two requests edit different columns):
+
+```python
+await post.save(update_fields=["title"])
+```
+
 ### Delete and forget
 
 ```python
@@ -168,11 +210,49 @@ await post.delete()
 
 After deletion, the primary key is cleared. Try to `save()` or `delete()` the same instance again and you get a clear `ValueError` instead of a silent no-op against a missing row.
 
+## Bulk operations
+
+Insert, update, or delete hundreds of rows in a single SQL statement:
+
+```python
+# Insert multiple rows at once
+fruits = await DragonFruit.bulk_create([
+    {"name": "Pink Pitaya", "color": "magenta"},
+    {"name": "Yellow Dragon", "color": "yellow"},
+])
+
+# Update all matching rows
+count = await DragonFruit.bulk_update({"color": "red"}, name__contains="Dragon")
+
+# Delete all matching rows
+count = await DragonFruit.bulk_delete(confirmed=False)
+```
+
+No N+1 round trips. Each operation is one SQL statement.
+
+## Transactions
+
+Group multiple operations so they all succeed or all fail:
+
+```python
+async with app.db.transaction():
+    user = await User.create(name="Audrey", email="audrey@feldroy.com")
+    await Profile.create(user_id=user.id, bio="Builds things")
+    # Both rows commit together, or both roll back
+```
+
+If an exception occurs inside the block, the transaction rolls back automatically.
+
 ## Forms and database, together or apart
 
 AirModel and AirForm are independent. Use one without the other, or snap them together:
 
 ```python
+from airmodel import AirModel, Field
+
+import air
+
+
 class ContactMessage(AirModel):
     id: int | None = Field(default=None, primary_key=True)
     name: str
@@ -202,10 +282,8 @@ async def submit_contact(request: air.Request):
 ## A complete app in 30 lines
 
 ```python title="main.py"
-import os
-
 import air
-from air import AirDB, AirModel, Field
+from airmodel import AirModel, Field
 
 
 class GuestBookEntry(AirModel):
@@ -218,8 +296,7 @@ class GuestBookForm(air.AirForm[GuestBookEntry]):
     pass
 
 
-db = AirDB()
-app = air.Air(lifespan=db.lifespan(os.environ["DATABASE_URL"]))
+app = air.Air()
 
 
 @app.page
@@ -247,4 +324,4 @@ async def sign(request: air.Request):
     return air.RedirectResponse("/")
 ```
 
-Model, form, database, HTML, validation, pagination, and two routes. Everything from one framework.
+Model, form, database, HTML, validation, pagination, and two routes. Set `DATABASE_URL` and run it.
