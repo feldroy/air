@@ -265,17 +265,29 @@ Use `as_string=True` to get a `SafeStr` for embedding Jinja output inside Air ta
 
 ## Forms
 
-### Define model, get form for free
+### AirForm[MyModel]: type-safe forms from Pydantic models
 
 ```python
-class ContactModel(air.AirModel):
-    name: str
-    email: str = air.AirField(type="email", label="Email Address")
-    message: str
+from airmodel import AirModel, AirField
+from air import AirForm
 
+class ContactModel(AirModel):
+    name: str
+    email: str = AirField(type="email", label="Email Address")
+    message: str = AirField(widget="textarea")
+
+class ContactForm(AirForm[ContactModel]):
+    pass
+```
+
+`AirForm[MyModel]` gives `form.data` full type information after validation. Editors autocomplete field names and catch typos.
+
+### Rendering a form
+
+```python
 @app.page
 def contact():
-    form = ContactModel.to_form()
+    form = ContactForm()
     return air.Html(
         air.Body(
             air.H1("Contact Us"),
@@ -283,17 +295,22 @@ def contact():
                 form.render(),
                 air.Button("Send", type_="submit"),
                 method="post",
-                action=submit_contact.url(),
+                action="/contact",
             ),
         ),
     )
+```
 
+`form.render()` produces HTML with labels, inputs, and error messages. After validation failure, it preserves submitted values and shows errors inline.
+
+### Validating submitted data
+
+```python
 @app.post("/contact")
 async def submit_contact(request: air.Request):
-    form = ContactModel.to_form()
-    form_data = await request.form()
+    form = await ContactForm.from_request(request)
 
-    if form.validate(form_data):
+    if form.is_valid:
         return air.Html(air.Body(air.P(f"Thanks, {form.data.name}!")))
 
     return air.Html(
@@ -303,27 +320,42 @@ async def submit_contact(request: air.Request):
                 form.render(),  # re-renders with errors and preserved values
                 air.Button("Send", type_="submit"),
                 method="post",
-                action=submit_contact.url(),
+                action="/contact",
             ),
         ),
     )
 ```
 
-`AirModel` extends Pydantic `BaseModel`. One class handles validation, form rendering, and error display.
+`from_request` calls `await request.form()` and validates in one step. Works with `Depends()`:
 
-`AirField` options: `type` (email, password, url, hidden), `label`, `autofocus`, plus all Pydantic `Field` params (`min_length`, `max_length`, `pattern`, etc.).
+```python
+async def handler(form: Annotated[ContactForm, Depends(ContactForm.from_request)]):
+    ...
+```
 
-### Alternative: AirForm subclass
+### AirField options
+
+`AirField` accepts database metadata (`primary_key`), form rendering hints (`type`, `label`, `widget`, `placeholder`, `help_text`, `autofocus`, `choices`), and all Pydantic Field params (`min_length`, `max_length`, `pattern`, `ge`, `le`, etc.).
+
+### Custom widget
+
+Override the `widget` property on your form subclass:
 
 ```python
 class ContactForm(AirForm[ContactModel]):
-    pass
-
-form = ContactForm()
-flight = await ContactForm.from_request(request)
+    @property
+    def widget(self):
+        return my_custom_widget_function
 ```
 
-`from_request` works with `Depends()`: `Annotated[ContactForm, Depends(ContactForm.from_request)]`.
+### Form includes
+
+Show only specific fields:
+
+```python
+class ContactForm(AirForm[ContactModel]):
+    includes = ("name", "email")  # only render these fields
+```
 
 ## HTMX
 
