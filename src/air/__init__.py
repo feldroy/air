@@ -9,7 +9,6 @@ from staticware import (
 )
 
 from . import (
-    db as db,
     layouts as layouts,
     responses as responses,
 )
@@ -18,7 +17,7 @@ from .applications import (
     AirRoute as AirRoute,
 )
 from .background import BackgroundTasks as BackgroundTasks
-from .db import (
+from airmodel import (
     AirDB as AirDB,
     AirModel as AirModel,
     Field as Field,

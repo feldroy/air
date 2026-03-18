@@ -7,7 +7,7 @@ name = "air"
 version = "0.47.0"
 source = { editable = "." }
 dependencies = [
-    { name = "asyncpg" },
+    { name = "airmodel" },
     { name = "fastapi" },
     { name = "frozendict" },
     { name = "itsdangerous" },
@@ -93,7 +93,7 @@ typing-stubs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "asyncpg", specifier = ">=0.30.0" },
+    { name = "airmodel", editable = "../AirModel" },
     { name = "fastapi", specifier = ">=0.128.8" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
     { name = "frozendict", specifier = ">=2.4.7" },
@@ -171,6 +171,45 @@ typing-stubs = [
     { name = "types-markdown", specifier = ">=3.10.2.20260211" },
     { name = "types-pygments", specifier = ">=2.19.0.20251121" },
 ]
+
+[[package]]
+name = "airmodel"
+version = "0.1.0"
+source = { editable = "../AirModel" }
+dependencies = [
+    { name = "asyncpg" },
+    { name = "pydantic" },
+    { name = "rich" },
+    { name = "typer" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "asyncpg", specifier = ">=0.30.0" },
+    { name = "pydantic", specifier = ">=2.0" },
+    { name = "rich" },
+    { name = "typer" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "ruff" },
+    { name = "ty" },
+]
+docs = [
+    { name = "mkdocstrings-python" },
+    { name = "zensical" },
+]
+lint = [{ name = "ruff" }]
+test = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+]
+typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "annotated-doc"
