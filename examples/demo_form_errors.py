@@ -11,13 +11,14 @@ Usage:
     uv run demo_form_errors.py
 """
 
-from pydantic import BaseModel, Field
+from airmodel import AirModel
+from pydantic import Field
 from rich import print
 
 import air
 
 
-class ContactModel(BaseModel):
+class ContactModel(AirModel):
     name: str = Field(min_length=2, max_length=50)
     age: int = Field(ge=1, le=120)  # Age between 1 and 120
     email: str = Field(pattern=r"^[^@]+@[^@]+\.[^@]+$")  # Basic email pattern

@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from pydantic import BaseModel
+from airmodel import AirModel
 
 import air
 from air.forms import default_form_widget
@@ -8,7 +8,7 @@ from air.forms import default_form_widget
 app = air.Air()
 
 
-class ContactModel(BaseModel):
+class ContactModel(AirModel):
     # Note: This uses `str` for email. For stricter server-side validation,
     # you can use `EmailStr` from pydantic.
     name: str
@@ -18,7 +18,7 @@ class ContactModel(BaseModel):
 
 def contact_widget(
     *,
-    model: type[BaseModel],
+    model: type[AirModel],
     data: dict | None = None,
     errors: list | None = None,
     includes: Sequence[str] | None = None,

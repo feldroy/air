@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from airmodel import AirModel
 
 import air
 from air.forms import default_form_widget
@@ -6,7 +6,7 @@ from air.forms import default_form_widget
 app = air.Air()
 
 
-class FlightModel(BaseModel):
+class FlightModel(AirModel):
     flight_number: str
     destination: str
     passengers: int

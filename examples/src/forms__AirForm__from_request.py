@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from airmodel import AirModel
 
 import air
 
 app = air.Air()
 
 
-class FlightModel(BaseModel):
+class FlightModel(AirModel):
     flight_number: str
     destination: str
 
