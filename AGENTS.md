@@ -419,6 +419,39 @@ app = air.Air()
 
 Use `lifespan` when you need async operations, cleanup on shutdown, or when the initialization depends on the app instance.
 
+## Database (AirModel)
+
+Zero config. Set `DATABASE_URL` in the environment, `uv add AirModel`, and Air auto-connects on startup. The pool is available as `app.db`.
+
+```python
+import air
+from airmodel import AirModel, Field
+
+app = air.Air()  # reads DATABASE_URL, connects automatically
+
+class UnicornSighting(AirModel):
+    id: int | None = Field(default=None, primary_key=True)
+    location: str
+    sparkle_rating: int
+    confirmed: bool = Field(default=False)
+
+@app.post("/sightings")
+async def create_sighting(request: air.Request):
+    form_data = await request.form()
+    sighting = await UnicornSighting.create(
+        location=form_data["location"],
+        sparkle_rating=int(form_data["sparkle_rating"]),
+    )
+    return air.P(f"Recorded sighting #{sighting.id}")
+
+@app.page
+async def sightings():
+    all_sightings = await UnicornSighting.filter(confirmed=True, order_by="-sparkle_rating")
+    return air.Ul(*[air.Li(s.location) for s in all_sightings])
+```
+
+Methods: `create`, `get`, `filter`, `all`, `count`, `save`, `delete`, `bulk_create`, `bulk_update`, `bulk_delete`. Django-style lookups: `field__gte=5`, `field__icontains="x"`, `field__isnull=True`. Transactions: `async with app.db.transaction():`. See [AirModel AGENTS.md](https://github.com/feldroy/AirModel/blob/main/AGENTS.md) for lookups, bulk ops, and transactions.
+
 ## Common Patterns
 
 ### Return JSON
