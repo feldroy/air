@@ -8,6 +8,7 @@ version = "0.47.0"
 source = { editable = "." }
 dependencies = [
     { name = "airfield" },
+    { name = "airform" },
     { name = "airmodel" },
     { name = "fastapi" },
     { name = "frozendict" },
@@ -94,8 +95,9 @@ typing-stubs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "airfield", specifier = ">=0.4.0" },
-    { name = "airmodel", specifier = ">=0.2.0" },
+    { name = "airfield", editable = "../AirField" },
+    { name = "airform", editable = "../AirForm" },
+    { name = "airmodel", editable = "../AirModel" },
     { name = "fastapi", specifier = ">=0.128.8" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
     { name = "frozendict", specifier = ">=2.4.7" },
@@ -177,19 +179,73 @@ typing-stubs = [
 [[package]]
 name = "airfield"
 version = "0.4.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../AirField" }
 dependencies = [
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5b/4c/f8000d0c8e75ad283afef3b2a1b5d612947ad312f2baf13aa5aaa1c5bfc3/airfield-0.4.0.tar.gz", hash = "sha256:1199c0ac9dadd3c1eadd4c9f8606184932e94acda9924f12b07f05231e004c1c", size = 61865, upload-time = "2026-03-18T16:09:31.336Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/01/ab36936051e8604b5b7a97d6e3c24ef7eebc7c114a22b4ebfaf72d56e26f/airfield-0.4.0-py3-none-any.whl", hash = "sha256:03285e65180b02076f3c2d56ee57b7fa8220406c945893f921f71faf7e9f4462", size = 8959, upload-time = "2026-03-18T16:09:29.875Z" },
+
+[package.metadata]
+requires-dist = [{ name = "pydantic" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "ruff" },
+    { name = "ty" },
 ]
+docs = [
+    { name = "mkdocstrings-python" },
+    { name = "zensical" },
+]
+lint = [{ name = "ruff" }]
+test = [
+    { name = "coverage" },
+    { name = "pytest" },
+]
+typecheck = [{ name = "ty" }]
+
+[[package]]
+name = "airform"
+version = "0.1.0"
+source = { editable = "../AirForm" }
+dependencies = [
+    { name = "airfield" },
+    { name = "annotated-types" },
+    { name = "pydantic" },
+    { name = "starlette" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "airfield", editable = "../AirField" },
+    { name = "annotated-types" },
+    { name = "pydantic", specifier = ">=2.0" },
+    { name = "starlette" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "ruff" },
+    { name = "ty" },
+]
+docs = [
+    { name = "mkdocstrings-python" },
+    { name = "zensical" },
+]
+lint = [{ name = "ruff" }]
+test = [
+    { name = "coverage" },
+    { name = "pytest" },
+]
+typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "airmodel"
 version = "0.2.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../AirModel" }
 dependencies = [
     { name = "airfield" },
     { name = "asyncpg" },
@@ -197,10 +253,35 @@ dependencies = [
     { name = "rich" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/af/a8/91388b3fc1220703a6cdc271fbc0919beed7e69d3b2d01641b226ae6d59f/airmodel-0.2.0.tar.gz", hash = "sha256:36a73faa63e71e73071e2ce7cd1d5a6ee2bb68ba55c098904b6ba6c1c0ae9fd9", size = 72322, upload-time = "2026-03-18T16:39:00.827Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/34/50/0a361d50a9bfd9877730497efb8c57ea2b81a1678827e361bc53cd401a22/airmodel-0.2.0-py3-none-any.whl", hash = "sha256:47f6eefd755952ddbb87491937695a95cb5aa0a38ad2b023266ddd69f0dd4172", size = 12705, upload-time = "2026-03-18T16:38:59.666Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "airfield", specifier = ">=0.4.0" },
+    { name = "asyncpg", specifier = ">=0.30.0" },
+    { name = "pydantic", specifier = ">=2.0" },
+    { name = "rich" },
+    { name = "typer" },
 ]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "ruff" },
+    { name = "ty" },
+]
+docs = [
+    { name = "mkdocstrings-python" },
+    { name = "zensical" },
+]
+lint = [{ name = "ruff" }]
+test = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+]
+typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "annotated-doc"

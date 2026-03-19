@@ -97,6 +97,7 @@ dependencies = [
     "uvicorn>=0.40.0", # https://pypi.org/project/uvicorn
     "AirModel>=0.2.0", # https://pypi.org/project/AirModel
     "AirField>=0.4.0", # https://pypi.org/project/AirField
+    "airform>=0.1.0", # https://pypi.org/project/AirForm
 ]
 # endregion project
 
@@ -260,6 +261,9 @@ cache-keys = [
 [tool.uv.sources]
 # Always use the local workspace copy of "air" instead of PyPI; in a monorepo or dev, uv uses your checked-out code.
 air = { workspace = true }
+airfield = { path = "../AirField", editable = true }
+airform = { path = "../AirForm", editable = true }
+airmodel = { path = "../AirModel", editable = true }
 
 # Settings specific to uv_build.
 [tool.uv.build-backend]

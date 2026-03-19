@@ -630,3 +630,9 @@ Create `railway.json`:
 ```
 
 Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is injected at runtime. For the full Railway CLI workflow (init, deploy, domains, custom domains), use the `/railway-deploy` skill.
+
+## Friction Notes
+
+### Local editable installs of Air sub-packages (2026-03-19)
+
+When developing against unreleased versions of AirField, AirForm, or AirModel in a downstream app, `[tool.uv.sources]` path overrides only take effect for **direct** dependencies. Packages that are only transitive (e.g. AirModel pulled in through Air) must be added to `[project.dependencies]` before the source override works. Without this, `uv sync` silently installs the PyPI version instead of the local one.
