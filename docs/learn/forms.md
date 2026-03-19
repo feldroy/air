@@ -10,12 +10,14 @@ Forms are how data is collected from users on web pages.
 Here is a contact form that renders on GET, validates on POST, re-renders with errors if validation fails, and uses the typed data on success:
 
 ```python
+from air import AirField, AirForm, AirModel
+
 import air
 
 
-class ContactModel(air.AirModel):
+class ContactModel(AirModel):
     name: str
-    email: str = air.AirField(type="email", label="Email Address")
+    email: str = AirField(type="email", label="Email Address")
 
 
 class ContactForm(AirForm[ContactModel]):
@@ -65,13 +67,13 @@ The rest of this page breaks down what each piece does.
 
 ## Defining a model
 
-Air Forms are powered by Air Models, which inherit directly from `pydantic.BaseModel`. You define your data model once, and the form inherits its validation rules, field types, and constraints automatically.
+AirForm works with any Pydantic model. The example below uses AirModel, which extends `BaseModel` with async database methods, but a plain `BaseModel` works too. You define your data model once, and the form inherits its validation rules, field types, and constraints automatically.
 
 ```python
-import air
+from air import AirModel
 
 
-class JeepneyRouteModel(air.AirModel):
+class JeepneyRouteModel(AirModel):
     route_name: str
     origin: str
     destination: str
@@ -82,11 +84,14 @@ class JeepneyRouteModel(air.AirModel):
 Pass your model as a type parameter to `AirForm`:
 
 ```python
+from air import AirForm
+
+
 class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
     pass
 ```
 
-That's it. No `model = JeepneyRouteModel` declaration needed. Air reads the type parameter and sets the model automatically. The model is specified exactly once.
+Air reads the type parameter and sets the model automatically. The model is specified exactly once.
 
 ## Rendering a form
 
@@ -195,56 +200,50 @@ Air automatically converts Pydantic's technical errors to user-friendly messages
 `AirField` wraps `pydantic.Field` and adds HTML-specific metadata. All standard `pydantic.Field` parameters (`min_length`, `max_length`, `gt`, `ge`, `pattern`, etc.) work alongside the HTML ones:
 
 ```python
-class ContactModel(air.AirModel):
-    name: str = air.AirField(label="Full Name", min_length=2, max_length=100)
-    email: str = air.AirField(type="email", label="Email Address")
-    message: str = air.AirField(label="Message", min_length=10)
+from air import AirField, AirModel
+
+
+class ContactModel(AirModel):
+    name: str = AirField(label="Full Name", min_length=2, max_length=100)
+    email: str = AirField(type="email", label="Email Address")
+    message: str = AirField(label="Message", min_length=10)
 ```
 
-The HTML-specific parameters are:
+The presentation parameters are:
 
 - **`type`**: HTML input type (`"email"`, `"password"`, `"url"`, `"hidden"`, etc.)
+- **`widget`**: Input mechanism (`"textarea"`, `"toggle"`, `"slider"`, etc.)
 - **`label`**: Custom label text (defaults to the field name)
+- **`placeholder`**: Hint text shown when the field is empty
+- **`help_text`**: Explanatory text below the input
+- **`choices`**: List of `(value, label)` tuples, renders as `<select>`
 - **`autofocus`**: Set to `True` to autofocus the field
+- **`primary_key`**: Set to `True` for database primary keys (auto-hidden in forms)
 
 Pydantic constraints like `min_length` and `max_length` automatically become HTML5 `minlength` and `maxlength` attributes, so browser-side validation matches server-side rules.
 
-## Three ways to create a form
+## Creating a form
 
-These all produce the same thing. Pick whichever fits your situation:
-
-**1. Subclass (recommended).** Best when you want a reusable form class with type safety:
+Pass your model as a type parameter to `AirForm`:
 
 ```python
 class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
     pass
 ```
 
-**2. AirModel.to_form().** Best for quick one-off forms:
-
-```python
-form = JeepneyRouteModel.to_form()
-```
-
-**3. air.to_form().** Works with any `pydantic.BaseModel`, not just AirModel:
-
-```python
-from pydantic import BaseModel
-
-class PlainModel(BaseModel):
-    name: str
-
-form = air.to_form(PlainModel)
-```
-
-All three paths produce an `AirForm` instance. The subclass approach gives the type checker the most information. The `to_form()` shortcuts are convenient when you don't need a named class.
+This works with any `pydantic.BaseModel`, not just AirModel. The type parameter gives your editor full autocomplete on `form.data`.
 
 ## Rendering a subset of fields
 
-Use `includes` to render only specific fields. This is useful for multi-step forms or splitting a form into fieldsets:
+Set `includes` on the form class to render only specific fields. This is useful for multi-step forms or splitting a form into fieldsets:
 
 ```python
-form = JeepneyRouteModel.to_form(includes=["route_name"])
+class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
+    includes = ("route_name",)
+```
+
+```python
+form = JeepneyRouteForm()
 form.render()  # only renders route_name
 ```
 
