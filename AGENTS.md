@@ -292,7 +292,7 @@ def contact():
         air.Body(
             air.H1("Contact Us"),
             air.Form(
-                form.render(),
+                air.Raw(form.render()),
                 air.Button("Send", type_="submit"),
                 method="post",
                 action="/contact",
@@ -301,7 +301,7 @@ def contact():
     )
 ```
 
-`form.render()` produces HTML with labels, inputs, and error messages. After validation failure, it preserves submitted values and shows errors inline.
+`form.render()` returns an HTML string. Wrap in `air.Raw()` to embed in Air Tags without escaping. After validation failure, it preserves submitted values and shows errors inline.
 
 ### Validating submitted data
 
@@ -317,7 +317,7 @@ async def submit_contact(request: air.Request):
         air.Body(
             air.H1("Please fix errors"),
             air.Form(
-                form.render(),  # re-renders with errors and preserved values
+                air.Raw(form.render()),
                 air.Button("Send", type_="submit"),
                 method="post",
                 action="/contact",
@@ -339,14 +339,14 @@ async def handler(form: Annotated[ContactForm, Depends(ContactForm.from_request)
 
 ### Custom widget
 
-Override the `widget` property on your form subclass:
+Set `widget` as a class attribute on your form subclass:
 
 ```python
 class ContactForm(AirForm[ContactModel]):
-    @property
-    def widget(self):
-        return my_custom_widget_function
+    widget = staticmethod(my_custom_widget_function)
 ```
+
+The widget callable receives `(*, model, data, errors, includes)` and returns an HTML string.
 
 ### Form includes
 

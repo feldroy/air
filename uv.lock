@@ -213,7 +213,9 @@ dependencies = [
     { name = "airfield" },
     { name = "annotated-types" },
     { name = "pydantic" },
+    { name = "rich" },
     { name = "starlette" },
+    { name = "typer" },
 ]
 
 [package.metadata]
@@ -221,7 +223,9 @@ requires-dist = [
     { name = "airfield", editable = "../AirField" },
     { name = "annotated-types" },
     { name = "pydantic", specifier = ">=2.0" },
+    { name = "rich" },
     { name = "starlette" },
+    { name = "typer" },
 ]
 
 [package.metadata.requires-dev]
