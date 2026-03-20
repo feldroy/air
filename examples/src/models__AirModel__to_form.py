@@ -16,6 +16,7 @@ class ContactModel(AirModel):
 
 
 def custom_widget(
+    *,
     model: type[AirModel],
     data: dict | None = None,
     errors: list | None = None,
@@ -23,7 +24,7 @@ def custom_widget(
 ) -> air.Div:
     return air.Div(
         air.P("Custom form styling:"),
-        air.Raw(default_form_widget(model, data, errors, includes)),
+        air.Raw(default_form_widget(model=model, data=data, errors=errors, includes=includes)),
         class_="custom-form",
     )
 
@@ -53,7 +54,7 @@ async def submit(request: air.Request) -> air.Html:
     form_data = await request.form()
     contact_form = ContactForm()
 
-    if contact_form.validate(form_data):
+    if contact_form.validate(dict(form_data)):
         return air.Html(
             air.H1("Success"),
             air.P(f"Name: {contact_form.data.name}"),

@@ -65,7 +65,7 @@ async def submit_contact(request: air.Request) -> air.Html:
     form = ContactForm()
     form_data = await request.form()
 
-    if form.validate(form_data):
+    if form.validate(dict(form_data)):
         return air.Html(
             air.H1("Thank you for your message!"),
             air.P("Your contact form was submitted successfully."),

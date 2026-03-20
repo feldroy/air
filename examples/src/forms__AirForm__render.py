@@ -44,7 +44,7 @@ async def submit(request: air.Request) -> air.Html:
 
     # Validate incoming form data; AirForm.render() will then include errors
     # and preserve submitted values when re-rendered.
-    form.validate(form_data)
+    form.validate(dict(form_data))
 
     if form.is_valid:
         return air.Html(

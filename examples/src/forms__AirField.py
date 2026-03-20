@@ -45,7 +45,7 @@ async def submit(request: air.Request) -> air.Html:
 
     # Parse form data from the incoming request and validate
     form_data = await request.form()
-    form.validate(form_data)
+    form.validate(dict(form_data))
 
     if form.is_valid:
         return air.Html(
