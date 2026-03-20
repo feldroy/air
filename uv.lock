@@ -95,9 +95,9 @@ typing-stubs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "airfield", editable = "../AirField" },
-    { name = "airform", editable = "../AirForm" },
-    { name = "airmodel", editable = "../AirModel" },
+    { name = "airfield", specifier = ">=0.5.1" },
+    { name = "airform", specifier = ">=0.3.0" },
+    { name = "airmodel", specifier = ">=0.4.2" },
     { name = "fastapi", specifier = ">=0.128.8" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
     { name = "frozendict", specifier = ">=2.4.7" },
@@ -178,37 +178,20 @@ typing-stubs = [
 
 [[package]]
 name = "airfield"
-version = "0.4.0"
-source = { editable = "../AirField" }
+version = "0.5.1"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
 ]
-
-[package.metadata]
-requires-dist = [{ name = "pydantic" }]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "ruff" },
-    { name = "ty" },
+sdist = { url = "https://files.pythonhosted.org/packages/67/ba/19b23e8885b74752e3f93f6d7e9d485ff3cb80793a3d522e21693339b4f9/airfield-0.5.1.tar.gz", hash = "sha256:1b19ebc65be45984c8b57f6fff030275dffb17a2766016931b7e60a2429011b6", size = 68268, upload-time = "2026-03-20T07:29:39.767Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e9/2b/5150f9989dd4afd9511bc0f2f2fd26607afd290bf392f83adf5edfb52a45/airfield-0.5.1-py3-none-any.whl", hash = "sha256:b3998706e93b5e12e45b87ed0882face446e0070d6c8bdfed7d7ecf20b1ade12", size = 9198, upload-time = "2026-03-20T07:29:38.589Z" },
 ]
-docs = [
-    { name = "mkdocstrings-python" },
-    { name = "zensical" },
-]
-lint = [{ name = "ruff" }]
-test = [
-    { name = "coverage" },
-    { name = "pytest" },
-]
-typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "airform"
-version = "0.1.0"
-source = { editable = "../AirForm" }
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "airfield" },
     { name = "annotated-types" },
@@ -217,39 +200,15 @@ dependencies = [
     { name = "starlette" },
     { name = "typer" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "airfield", editable = "../AirField" },
-    { name = "annotated-types" },
-    { name = "pydantic", specifier = ">=2.0" },
-    { name = "rich" },
-    { name = "starlette" },
-    { name = "typer" },
+sdist = { url = "https://files.pythonhosted.org/packages/5d/2a/349bd9eb38a8de8ce83e5d83ba04feccc7728322a32ab92aeecbe93ca2f0/airform-0.3.0.tar.gz", hash = "sha256:7c64e759fd3b7be895a68e347ca1579e3e36cc12aa76fa2528332c66ddab6659", size = 68302, upload-time = "2026-03-20T18:44:34.707Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/ac/bce59fc699b27796ee9b5ab25b731b22f62035f59da0cdaf2d5fedcab351/airform-0.3.0-py3-none-any.whl", hash = "sha256:00824b875592aae832a6283ecb82ea45af92edbcd2a71dbbd1fa4621f9b6684c", size = 11936, upload-time = "2026-03-20T18:44:33.263Z" },
 ]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "ruff" },
-    { name = "ty" },
-]
-docs = [
-    { name = "mkdocstrings-python" },
-    { name = "zensical" },
-]
-lint = [{ name = "ruff" }]
-test = [
-    { name = "coverage" },
-    { name = "pytest" },
-]
-typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "airmodel"
-version = "0.2.0"
-source = { editable = "../AirModel" }
+version = "0.4.2"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "airfield" },
     { name = "asyncpg" },
@@ -257,35 +216,10 @@ dependencies = [
     { name = "rich" },
     { name = "typer" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "airfield", specifier = ">=0.4.0" },
-    { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "pydantic", specifier = ">=2.0" },
-    { name = "rich" },
-    { name = "typer" },
+sdist = { url = "https://files.pythonhosted.org/packages/1c/3c/dcc0fea314be8c62cb5909e7bb2c20bd4a5720938140d80e602c86a9e538/airmodel-0.4.2.tar.gz", hash = "sha256:7bdc7c87c995519ff214abd9d29f057a68863f1e6d17a18b847eb334344849cd", size = 77917, upload-time = "2026-03-20T18:42:45.95Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/25/b7/b93c7c37dfc549c83102c91468a66ed89931b7f39349086a48d65328f0f4/airmodel-0.4.2-py3-none-any.whl", hash = "sha256:541ffeac7307e20494d2cd86ef0ff6cd3e90dc15244b2e56c7dfe5e34edd97b4", size = 13891, upload-time = "2026-03-20T18:42:44.791Z" },
 ]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "ruff" },
-    { name = "ty" },
-]
-docs = [
-    { name = "mkdocstrings-python" },
-    { name = "zensical" },
-]
-lint = [{ name = "ruff" }]
-test = [
-    { name = "coverage" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-]
-typecheck = [{ name = "ty" }]
 
 [[package]]
 name = "annotated-doc"
