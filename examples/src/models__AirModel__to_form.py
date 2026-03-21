@@ -1,10 +1,8 @@
-from collections.abc import Sequence
-
+from airform import default_form_widget
 from airmodel import AirModel
 
 import air
 from air import AirForm
-from air.forms import default_form_widget
 
 app = air.Air()
 
@@ -20,17 +18,17 @@ def custom_widget(
     model: type[AirModel],
     data: dict | None = None,
     errors: list | None = None,
-    includes: Sequence[str] | None = None,
+    excludes: set[str] | None = None,
 ) -> air.Div:
     return air.Div(
         air.P("Custom form styling:"),
-        air.Raw(default_form_widget(model=model, data=data, errors=errors, includes=includes)),
+        air.Raw(default_form_widget(model=model, data=data, errors=errors, excludes=excludes)),
         class_="custom-form",
     )
 
 
 class ContactForm(AirForm[ContactModel]):
-    includes = ("name", "email")  # Only render these fields
+    excludes = (("phone", "display"),)  # Don't render phone, but keep it in save_data
     widget = custom_widget
 
 
@@ -39,7 +37,7 @@ def index() -> air.Html:
     contact_form = ContactForm()
     return air.Html(
         air.H1("Contact Form"),
-        air.P("This form demonstrates includes and widget parameters"),
+        air.P("This form demonstrates excludes and widget parameters"),
         air.Form(
             contact_form.render(),
             air.Button("Submit", type_="submit"),

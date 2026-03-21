@@ -37,7 +37,7 @@ def test_form_validation_dependency_injection() -> None:
     @app.get("/cheese")
     async def cheese_page(request: Request) -> air.Html:
         form = CheeseForm()
-        return air.Html(air.Raw(form.render()))
+        return air.Html(form.render())
 
     @app.post("/cheese")
     async def cheese_form(
@@ -81,7 +81,7 @@ def test_form_validation_in_view() -> None:
     @app.get("/cheese")
     async def cheese_page(request: Request) -> air.Html:
         form = CheeseForm()
-        return air.Html(air.Raw(form.render()))
+        return air.Html(form.render())
 
     @app.post("/cheese")
     async def cheese_form(request: Request) -> air.Html:
@@ -109,7 +109,7 @@ def test_form_validation_in_view() -> None:
 
 
 def test_form_render_in_view() -> None:
-    """render() output embeds in Air Tags via air.Raw()."""
+    """render() output embeds directly in Air Tags via SafeHTML __html__ protocol."""
 
     class CheeseModel(BaseModel):
         name: str
@@ -123,7 +123,7 @@ def test_form_render_in_view() -> None:
     @app.post("/cheese")
     async def cheese_form(request: Request) -> air.Form:
         cheese = CheeseForm()
-        return air.Form(air.Raw(cheese.render()))
+        return air.Form(cheese.render())
 
     client = TestClient(app)
 
@@ -155,9 +155,6 @@ def test_airform_generic_type_parameter() -> None:
     assert isinstance(form.data, JeepneyRouteModel)
 
 
-def test_airform_reexports_helpers() -> None:
-    """Air re-exports AirForm helper functions."""
-    assert callable(air.forms.default_form_widget)
-    assert callable(air.forms.errors_to_dict)
-    assert callable(air.forms.get_user_error_message)
-    assert callable(air.forms.pydantic_type_to_html_type)
+def test_airform_reexport() -> None:
+    """Air re-exports AirForm from airform."""
+    assert air.AirForm is AirForm

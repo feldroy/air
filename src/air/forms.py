@@ -1,15 +1,8 @@
 """Display and Validation of HTML forms. Powered by pydantic.
 
-Re-exports from the airform package. AirForm validation, rendering,
-and request handling all live in airform. Air adds nothing on top.
+AirForm lives in the airform package. Air re-exports AirForm
+so `from air import AirForm` works.
 
 Pro-tip: Always validate incoming data."""
 
-from airform import (
-    AirForm as AirForm,
-    default_form_widget as default_form_widget,
-    errors_to_dict as errors_to_dict,
-    get_user_error_message as get_user_error_message,
-    label_for_field as label_for_field,
-    pydantic_type_to_html_type as pydantic_type_to_html_type,
-)
+from airform import AirForm as AirForm

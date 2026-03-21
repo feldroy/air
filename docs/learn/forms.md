@@ -33,7 +33,7 @@ def contact(request: air.Request) -> air.Html | air.Children:
     return air.layouts.mvpcss(
         air.H1("Contact us"),
         air.Form(
-            air.Raw(form.render()),
+            form.render(),
             air.Button("Send message", type_="submit"),
             method="post",
             action="/submit",
@@ -55,7 +55,7 @@ async def submit(request: air.Request) -> air.Html:
     return air.Html(
         air.H1("Please fix the errors below."),
         air.Form(
-            air.Raw(form.render()),
+            form.render(),
             air.Button("Send message", type_="submit"),
             method="post",
             action="/submit",

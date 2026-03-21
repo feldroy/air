@@ -292,7 +292,7 @@ def contact():
         air.Body(
             air.H1("Contact Us"),
             air.Form(
-                air.Raw(form.render()),
+                form.render(),
                 air.Button("Send", type_="submit"),
                 method="post",
                 action="/contact",
@@ -301,7 +301,7 @@ def contact():
     )
 ```
 
-`form.render()` returns an HTML string. Wrap in `air.Raw()` to embed in Air Tags without escaping. After validation failure, it preserves submitted values and shows errors inline.
+`form.render()` returns SafeHTML that embeds directly in Air Tags without `air.Raw()` wrapping. After validation failure, it preserves submitted values and shows errors inline. CSRF protection is automatic.
 
 ### Validating submitted data
 
@@ -317,7 +317,7 @@ async def submit_contact(request: air.Request):
         air.Body(
             air.H1("Please fix errors"),
             air.Form(
-                air.Raw(form.render()),
+                form.render(),
                 air.Button("Send", type_="submit"),
                 method="post",
                 action="/contact",
@@ -333,6 +333,15 @@ async def handler(form: Annotated[ContactForm, Depends(ContactForm.from_request)
     ...
 ```
 
+### Saving to database
+
+Use `save_data()` to get a dict with save-excluded fields stripped:
+
+```python
+if form.is_valid:
+    await ContactModel.create(**form.save_data())
+```
+
 ### AirField options
 
 `AirField` accepts database metadata (`primary_key`), form rendering hints (`type`, `label`, `widget`, `placeholder`, `help_text`, `autofocus`, `choices`), and all Pydantic Field params (`min_length`, `max_length`, `pattern`, `ge`, `le`, etc.).
@@ -346,16 +355,22 @@ class ContactForm(AirForm[ContactModel]):
     widget = staticmethod(my_custom_widget_function)
 ```
 
-The widget callable receives `(*, model, data, errors, includes)` and returns an HTML string.
+The widget callable receives `(*, model, data, errors, excludes)` and returns an HTML string.
 
-### Form includes
+### Excludes
 
-Show only specific fields:
+Hide fields from rendering, saving, or both:
 
 ```python
 class ContactForm(AirForm[ContactModel]):
-    includes = ("name", "email")  # only render these fields
+    excludes = (
+        "internal_notes",              # hidden from display and save
+        ("slug", "display"),           # not rendered, still in save_data()
+        ("tracking_id", "save"),       # rendered, excluded from save_data()
+    )
 ```
+
+PrimaryKey fields are default display excludes. The user's tuple extends the defaults.
 
 ## HTMX
 

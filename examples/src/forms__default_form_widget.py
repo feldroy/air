@@ -1,8 +1,8 @@
+from airform import default_form_widget
 from airmodel import AirModel
 
 import air
 from air import AirForm
-from air.forms import default_form_widget
 
 app = air.Air()
 
@@ -19,16 +19,16 @@ class FlightForm(AirForm[FlightModel]):
 
 @app.page
 def index(request: air.Request) -> air.Html:
-    # Render different field groups separately using includes parameter
+    # Render different field groups separately using excludes parameter
     basic_info = default_form_widget(
         model=FlightModel,
         data={"flight_number": "AA123"},  # Pre-populate flight_number
-        includes=["flight_number", "destination"],
+        excludes={"passengers"},
     )
 
     passenger_info = default_form_widget(
         model=FlightModel,
-        includes=["passengers"],
+        excludes={"flight_number", "destination"},
     )
 
     return air.Html(
@@ -67,14 +67,14 @@ async def submit(request: air.Request) -> air.Html:
         model=FlightModel,
         data=dict(form_data),
         errors=flight_form.errors,
-        includes=["flight_number", "destination"],
+        excludes={"passengers"},
     )
 
     passenger_info = default_form_widget(
         model=FlightModel,
         data=dict(form_data),
         errors=flight_form.errors,
-        includes=["passengers"],
+        excludes={"flight_number", "destination"},
     )
 
     return air.Html(
