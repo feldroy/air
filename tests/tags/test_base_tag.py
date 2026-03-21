@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final
 
 import pytest
+from airform.forms import SafeHTML
 from examples.samples.air_tag_samples import (
     AIR_TAG_SAMPLE,
     FRAGMENT_AIR_TAG_SAMPLE,
@@ -76,6 +77,13 @@ def test_children_escape_plain_strings_and_preserve_safe_and_nested_tags() -> No
     tag = WrapperTag("<script>", SafeStr("<em>safe</em>"), nested)
 
     assert tag.children == "&lt;script&gt;<em>safe</em><sampletag>inner</sampletag>"
+
+
+def test_children_skip_escaping_for_html_protocol_objects() -> None:
+    """Objects with __html__ (like AirForm's SafeHTML) pass through without escaping."""
+    html = '<div class="air-field"><label>name</label></div>'
+    tag = WrapperTag(SafeHTML(html))
+    assert html in tag.children
 
 
 def test_escape_text_escapes_html_entities() -> None:

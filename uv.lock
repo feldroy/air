@@ -8,6 +8,7 @@ version = "0.47.0"
 source = { editable = "." }
 dependencies = [
     { name = "airfield" },
+    { name = "airform" },
     { name = "airmodel" },
     { name = "fastapi" },
     { name = "frozendict" },
@@ -94,8 +95,9 @@ typing-stubs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "airfield", specifier = ">=0.3.1" },
-    { name = "airmodel", specifier = ">=0.1.2" },
+    { name = "airfield", specifier = ">=0.5.1" },
+    { name = "airform", specifier = ">=0.5.0" },
+    { name = "airmodel", specifier = ">=0.4.2" },
     { name = "fastapi", specifier = ">=0.128.8" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
     { name = "frozendict", specifier = ">=2.4.7" },
@@ -176,19 +178,36 @@ typing-stubs = [
 
 [[package]]
 name = "airfield"
-version = "0.3.1"
+version = "0.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/26/ea/dc7fe97ffe635f15fe2e717240d455cc2c99ff0bc580a93a0c2dca1430ba/airfield-0.3.1.tar.gz", hash = "sha256:13f2b11e89e54ca892d0a5ddfd6607ce422f9382cf98aa070e3c633d810c7e7c", size = 57195, upload-time = "2026-03-18T14:15:45.3Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/67/ba/19b23e8885b74752e3f93f6d7e9d485ff3cb80793a3d522e21693339b4f9/airfield-0.5.1.tar.gz", hash = "sha256:1b19ebc65be45984c8b57f6fff030275dffb17a2766016931b7e60a2429011b6", size = 68268, upload-time = "2026-03-20T07:29:39.767Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/51/3f/542efa042497a262f829c0b9350653d716f0ab998686e9bbf53033199fba/airfield-0.3.1-py3-none-any.whl", hash = "sha256:9e37baa5fd168efeae4080ab00e117e4ca3ce8887e8a224d8d17591e9bf202db", size = 8047, upload-time = "2026-03-18T14:15:44.158Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/2b/5150f9989dd4afd9511bc0f2f2fd26607afd290bf392f83adf5edfb52a45/airfield-0.5.1-py3-none-any.whl", hash = "sha256:b3998706e93b5e12e45b87ed0882face446e0070d6c8bdfed7d7ecf20b1ade12", size = 9198, upload-time = "2026-03-20T07:29:38.589Z" },
+]
+
+[[package]]
+name = "airform"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "airfield" },
+    { name = "annotated-types" },
+    { name = "pydantic" },
+    { name = "rich" },
+    { name = "starlette" },
+    { name = "typer" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/be/33/b21aeb35785c4f90e1384a2f7028ad5b76f9add9a2390fe043180be9676b/airform-0.5.0.tar.gz", hash = "sha256:fb68d6f67076cd5c1ae30b1bcabadb9d757b2458627d69c72047fddc5f45151d", size = 79393, upload-time = "2026-03-21T14:29:45.216Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e0/62/f849566051b3fc03d73ff10ad773378fc5354d1217ccaba78f6fd5830a8e/airform-0.5.0-py3-none-any.whl", hash = "sha256:9eb94d5ab42573d8c7efef6c4c6c0ca0a1b0423207e3ff46543fcd0b4e97d7f1", size = 14374, upload-time = "2026-03-21T14:29:43.929Z" },
 ]
 
 [[package]]
 name = "airmodel"
-version = "0.1.2"
+version = "0.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "airfield" },
@@ -197,9 +216,9 @@ dependencies = [
     { name = "rich" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5f/cd/23c15ab9ce36a173c2534ef477facc1c859380e724968c44cf6c238a854f/airmodel-0.1.2.tar.gz", hash = "sha256:96adeb906323ed44cb051f2414480630d2279110948791a8ce9e40f1629535de", size = 70808, upload-time = "2026-03-18T14:17:05.758Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/3c/dcc0fea314be8c62cb5909e7bb2c20bd4a5720938140d80e602c86a9e538/airmodel-0.4.2.tar.gz", hash = "sha256:7bdc7c87c995519ff214abd9d29f057a68863f1e6d17a18b847eb334344849cd", size = 77917, upload-time = "2026-03-20T18:42:45.95Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ba/5a/8900eefe9a918d1a59aed84fbb5bc431b51e94aa6c28d859b24ce60b9909/airmodel-0.1.2-py3-none-any.whl", hash = "sha256:d27496aeabfcd7cb3ae7ed2d226e7ee5a8019d9528e3844dedfe7067b79c7daa", size = 12690, upload-time = "2026-03-18T14:17:04.74Z" },
+    { url = "https://files.pythonhosted.org/packages/25/b7/b93c7c37dfc549c83102c91468a66ed89931b7f39349086a48d65328f0f4/airmodel-0.4.2-py3-none-any.whl", hash = "sha256:541ffeac7307e20494d2cd86ef0ff6cd3e90dc15244b2e56c7dfe5e34edd97b4", size = 13891, upload-time = "2026-03-20T18:42:44.791Z" },
 ]
 
 [[package]]

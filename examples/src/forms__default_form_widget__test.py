@@ -4,7 +4,7 @@ from .forms__default_form_widget import app
 
 
 def test_form_renders_with_prepopulated_data() -> None:
-    """Test that default_form_widget renders form with custom layout using includes"""
+    """Test that default_form_widget renders form with custom layout using excludes"""
     client = TestClient(app)
     response = client.get("/")
     assert response.status_code == 200

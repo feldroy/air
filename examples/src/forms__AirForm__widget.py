@@ -1,10 +1,8 @@
-from collections.abc import Sequence
-
+from airform import default_form_widget
 from airmodel import AirModel
 
 import air
 from air import AirForm
-from air.forms import default_form_widget
 
 app = air.Air()
 
@@ -22,14 +20,14 @@ def contact_widget(
     model: type[AirModel],
     data: dict | None = None,
     errors: list | None = None,
-    includes: Sequence[str] | None = None,
+    excludes: set[str] | None = None,
 ) -> air.Div:
 
     base_html = default_form_widget(
         model=model,
         data=data,
         errors=errors,
-        includes=includes,
+        excludes=excludes,
     )
 
     return air.Div(

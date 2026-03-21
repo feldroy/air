@@ -21,14 +21,14 @@ Your Pydantic models just learned PostgreSQL.
 
 ```python title="main.py"
 import air
-from airmodel import AirModel, Field
+from airmodel import AirModel, AirField
 
 
 class UnicornSighting(AirModel):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = AirField(default=None, primary_key=True)
     location: str
     sparkle_rating: int
-    confirmed: bool = Field(default=False)
+    confirmed: bool = AirField(default=False)
 
 
 app = air.Air()  # DATABASE_URL in env, that's it
@@ -71,15 +71,15 @@ The asyncpg pool opens when your app starts, tables are created automatically fo
 from datetime import datetime
 from uuid import UUID
 
-from airmodel import AirModel, Field
+from airmodel import AirModel, AirField
 
 
 class BlogPost(AirModel):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = AirField(default=None, primary_key=True)
     title: str
     body: str
-    published: bool = Field(default=False)
-    created_at: datetime = Field(default_factory=datetime.now)
+    published: bool = AirField(default=False)
+    created_at: datetime = AirField(default_factory=datetime.now)
     author_id: UUID
 ```
 
@@ -244,13 +244,13 @@ If an exception occurs inside the block, the transaction rolls back automaticall
 AirModel and AirForm are independent. Use one without the other, or snap them together:
 
 ```python
-from airmodel import AirModel, Field
+from airmodel import AirModel, AirField
 
 from air import AirForm
 
 
 class ContactMessage(AirModel):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = AirField(default=None, primary_key=True)
     name: str
     email: str
     body: str
@@ -280,11 +280,11 @@ async def submit_contact(request: air.Request):
 ```python title="main.py"
 import air
 from air import AirForm
-from airmodel import AirModel, Field
+from airmodel import AirModel, AirField
 
 
 class GuestBookEntry(AirModel):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = AirField(default=None, primary_key=True)
     name: str
     message: str
 

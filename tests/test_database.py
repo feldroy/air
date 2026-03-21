@@ -41,6 +41,15 @@ class FakePool:
     async def execute(self, sql: str, *args: Any) -> None:
         pass
 
+    async def fetch(self, sql: str, *args: Any) -> list:
+        return []
+
+    async def fetchrow(self, sql: str, *args: Any) -> None:
+        return None
+
+    async def fetchval(self, sql: str, *args: Any) -> None:
+        return None
+
 
 # ---------------------------------------------------------------------------
 # Auto-discovery: DATABASE_URL + airmodel installed

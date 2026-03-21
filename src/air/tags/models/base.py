@@ -153,7 +153,7 @@ class BaseTag:
             The rendered child string, escaped when the child is not tag-aware.
         """
         child_str = str(child)
-        if isinstance(child, BaseTag | SafeStr):
+        if isinstance(child, BaseTag | SafeStr) or hasattr(child, "__html__"):
             return child_str
         return self._escape_text(child_str)
 

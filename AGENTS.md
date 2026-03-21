@@ -265,17 +265,29 @@ Use `as_string=True` to get a `SafeStr` for embedding Jinja output inside Air ta
 
 ## Forms
 
-### Define model, get form for free
+### AirForm[MyModel]: type-safe forms from Pydantic models
 
 ```python
-class ContactModel(air.AirModel):
-    name: str
-    email: str = air.AirField(type="email", label="Email Address")
-    message: str
+from airmodel import AirModel, AirField
+from air import AirForm
 
+class ContactModel(AirModel):
+    name: str
+    email: str = AirField(type="email", label="Email Address")
+    message: str = AirField(widget="textarea")
+
+class ContactForm(AirForm[ContactModel]):
+    pass
+```
+
+`AirForm[MyModel]` gives `form.data` full type information after validation. Editors autocomplete field names and catch typos.
+
+### Rendering a form
+
+```python
 @app.page
 def contact():
-    form = ContactModel.to_form()
+    form = ContactForm()
     return air.Html(
         air.Body(
             air.H1("Contact Us"),
@@ -283,47 +295,82 @@ def contact():
                 form.render(),
                 air.Button("Send", type_="submit"),
                 method="post",
-                action=submit_contact.url(),
+                action="/contact",
             ),
         ),
     )
+```
 
+`form.render()` returns SafeHTML that embeds directly in Air Tags without `air.Raw()` wrapping. After validation failure, it preserves submitted values and shows errors inline. CSRF protection is automatic.
+
+### Validating submitted data
+
+```python
 @app.post("/contact")
 async def submit_contact(request: air.Request):
-    form = ContactModel.to_form()
-    form_data = await request.form()
+    form = await ContactForm.from_request(request)
 
-    if form.validate(form_data):
+    if form.is_valid:
         return air.Html(air.Body(air.P(f"Thanks, {form.data.name}!")))
 
     return air.Html(
         air.Body(
             air.H1("Please fix errors"),
             air.Form(
-                form.render(),  # re-renders with errors and preserved values
+                form.render(),
                 air.Button("Send", type_="submit"),
                 method="post",
-                action=submit_contact.url(),
+                action="/contact",
             ),
         ),
     )
 ```
 
-`AirModel` extends Pydantic `BaseModel`. One class handles validation, form rendering, and error display.
+`from_request` calls `await request.form()` and validates in one step. Works with `Depends()`:
 
-`AirField` options: `type` (email, password, url, hidden), `label`, `autofocus`, plus all Pydantic `Field` params (`min_length`, `max_length`, `pattern`, etc.).
+```python
+async def handler(form: Annotated[ContactForm, Depends(ContactForm.from_request)]):
+    ...
+```
 
-### Alternative: AirForm subclass
+### Saving to database
+
+Use `save_data()` to get a dict with save-excluded fields stripped:
+
+```python
+if form.is_valid:
+    await ContactModel.create(**form.save_data())
+```
+
+### AirField options
+
+`AirField` accepts database metadata (`primary_key`), form rendering hints (`type`, `label`, `widget`, `placeholder`, `help_text`, `autofocus`, `choices`), and all Pydantic Field params (`min_length`, `max_length`, `pattern`, `ge`, `le`, etc.).
+
+### Custom widget
+
+Set `widget` as a class attribute on your form subclass:
 
 ```python
 class ContactForm(AirForm[ContactModel]):
-    pass
-
-form = ContactForm()
-flight = await ContactForm.from_request(request)
+    widget = staticmethod(my_custom_widget_function)
 ```
 
-`from_request` works with `Depends()`: `Annotated[ContactForm, Depends(ContactForm.from_request)]`.
+The widget callable receives `(*, model, data, errors, excludes)` and returns an HTML string.
+
+### Excludes
+
+Hide fields from rendering, saving, or both:
+
+```python
+class ContactForm(AirForm[ContactModel]):
+    excludes = (
+        "internal_notes",              # hidden from display and save
+        ("slug", "display"),           # not rendered, still in save_data()
+        ("tracking_id", "save"),       # rendered, excluded from save_data()
+    )
+```
+
+PrimaryKey fields are default display excludes. The user's tuple extends the defaults.
 
 ## HTMX
 
@@ -432,15 +479,15 @@ Zero config. Set `DATABASE_URL` in the environment, `uv add AirModel`, and Air a
 
 ```python
 import air
-from airmodel import AirModel, Field
+from airmodel import AirModel, AirField
 
 app = air.Air()  # reads DATABASE_URL, connects automatically
 
 class UnicornSighting(AirModel):
-    id: int | None = Field(default=None, primary_key=True)
+    id: int | None = AirField(default=None, primary_key=True)
     location: str
     sparkle_rating: int
-    confirmed: bool = Field(default=False)
+    confirmed: bool = AirField(default=False)
 
 @app.post("/sightings")
 async def create_sighting(request: air.Request):
@@ -598,3 +645,9 @@ Create `railway.json`:
 ```
 
 Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variable is injected at runtime. For the full Railway CLI workflow (init, deploy, domains, custom domains), use the `/railway-deploy` skill.
+
+## Friction Notes
+
+### Local editable installs of Air sub-packages (2026-03-19)
+
+When developing against unreleased versions of AirField, AirForm, or AirModel in a downstream app, `[tool.uv.sources]` path overrides only take effect for **direct** dependencies. Packages that are only transitive (e.g. AirModel pulled in through Air) must be added to `[project.dependencies]` before the source override works. Without this, `uv sync` silently installs the PyPI version instead of the local one.
