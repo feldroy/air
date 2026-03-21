@@ -401,31 +401,27 @@ Here's a simple Jinja template:
 
 And here's the view that calls it:
 
-```python title="main.py"  hl_lines="6 10 14 16"
+```python title="main.py"  hl_lines="6 10 14"
 import air
 
 app = air.Air()
 
-# Set the Jinja render function
-jinja = air.JinjaRenderer(directory="templates")  # (1)!
-
 
 @app.page
 def index(request: air.Request):
-    return jinja(  # (2)!
+    return app.jinja(  # (1)!
         request,
-        name="base.html",
+        "base.html",
         # You can pass in individual keyword arguments
-        title="Hello, Air Benders",  # (3)!
+        title="Hello, Air Benders",  # (2)!
         # Or a dict for the context
-        context={"message": "Air + Jinja is awesome"},  # (4)!
+        context={"message": "Air + Jinja is awesome"},  # (3)!
     )
 ```
 
-1. This sets up the Jinja environment for calling and rendering of templates.
-2. Air automatically handles turning the `jinja` response into an HTML response.
-3. Individual keyword arguments for values can be passed, these are added to the Jinja template's context dictionary.
-4. This is the standard Jinja context dictionary, which is added to each template.
+1. `app.jinja` is auto-created, pointing at `templates/`. No setup needed.
+2. Individual keyword arguments for values can be passed, these are added to the Jinja template's context dictionary.
+3. This is the standard Jinja context dictionary, which is added to each template.
 
 ### Jinja + Air Tags
 
@@ -447,19 +443,17 @@ It is very easy to include Air Tags in Jinja. Let's first create our template:
 
 And here is our Python code describing the view:
 
-```python title="main.py"  hl_lines="13-16"
+```python title="main.py"  hl_lines="11-14"
 import air
 
 app = air.Air()
 
-jinja = air.JinjaRenderer(directory="templates")
-
 
 @app.get("/avatar")
 def avatar(request: air.Request):
-    return jinja(
+    return app.jinja(
         request,
-        name="avatar.html",
+        "avatar.html",
         title="Hello, Air Benders",
         fragment=air.Div(air.P("We are fans of the Last Avatar"), class_="thing"),  # (1)!
     )

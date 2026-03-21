@@ -32,13 +32,12 @@ class UnicornSighting(AirModel):
 
 
 app = air.Air()  # DATABASE_URL in env, that's it
-jinja = air.JinjaRenderer(directory="templates")
 
 
 @app.get("/")
 async def index(request: air.Request):
     sightings = await UnicornSighting.filter(confirmed=True, order_by="-sparkle_rating")
-    return jinja(request, name="sightings.html", sightings=sightings)
+    return app.jinja(request, "sightings.html", sightings=sightings)
 ```
 
 That's a database-backed web app. Set `DATABASE_URL` in your environment, and Air auto-connects to PostgreSQL on startup. No pool setup, no lifespan wiring, no configuration file. You wrote a Pydantic model, added `primary_key=True` to one field, and now it talks to PostgreSQL.
@@ -63,7 +62,9 @@ export DATABASE_URL="postgresql://user:pass@localhost/mydb"
 app = air.Air()  # reads DATABASE_URL, connects automatically
 ```
 
-The asyncpg pool opens when your app starts, tables are created automatically for every AirModel subclass you've imported, and the pool closes on shutdown. `?sslmode=require` works for hosted databases like NeonDB.
+The asyncpg pool opens when your app starts, tables are created automatically for every AirModel subclass you've imported, and the pool closes on shutdown. If you add a field to a model, `create_tables()` auto-migrates the existing table with `ALTER TABLE ADD COLUMN`. `?sslmode=require` works for hosted databases like NeonDB.
+
+If `DATABASE_URL` is not set, `app.db` is `None` and no database is configured. Your app still runs, it just can't do database operations.
 
 ## Your types become your schema
 
@@ -264,11 +265,7 @@ class ContactForm(AirForm[ContactMessage]):
 async def submit_contact(request: air.Request):
     form = await ContactForm.from_request(request)
     if form.is_valid:
-        await ContactMessage.create(
-            name=form.data.name,
-            email=form.data.email,
-            body=form.data.body,
-        )
+        await ContactMessage.create(**form.save_data())
         return air.Html(air.H1("Message sent"))
     return air.Html(air.Form(form.render(), method="post", action="/contact"))
 ```
