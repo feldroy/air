@@ -78,6 +78,16 @@ def test_children_escape_plain_strings_and_preserve_safe_and_nested_tags() -> No
     assert tag.children == "&lt;script&gt;<em>safe</em><sampletag>inner</sampletag>"
 
 
+def test_children_skip_escaping_for_html_protocol_objects() -> None:
+    """Objects with __html__ (like AirForm's SafeHTML) pass through without escaping."""
+
+    class SafeHTML(str):
+        __html__ = True
+
+    tag = WrapperTag(SafeHTML('<div class="air-field"><label>name</label></div>'))
+    assert '<div class="air-field"><label>name</label></div>' in tag.children
+
+
 def test_escape_text_escapes_html_entities() -> None:
     assert SampleTag()._escape_text("<b>bold</b>") == "&lt;b&gt;bold&lt;/b&gt;"
 
