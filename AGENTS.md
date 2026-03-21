@@ -301,7 +301,7 @@ def contact():
     )
 ```
 
-`form.render()` returns SafeHTML that embeds directly in Air Tags without `air.Raw()` wrapping. After validation failure, it preserves submitted values and shows errors inline. CSRF protection is automatic.
+`form.render()` returns SafeHTML that embeds directly in Air Tags without `air.Raw()` wrapping. After validation failure, it preserves submitted values and shows errors inline. CSRF protection is automatic. For multi-worker production, set `AIRFORM_SECRET` env var so all workers share the same signing key.
 
 ### Validating submitted data
 
@@ -346,6 +346,18 @@ if form.is_valid:
 
 `AirField` accepts database metadata (`primary_key`), form rendering hints (`type`, `label`, `widget`, `placeholder`, `help_text`, `autofocus`, `choices`), and all Pydantic Field params (`min_length`, `max_length`, `pattern`, `ge`, `le`, etc.).
 
+For context-aware visibility, use `Annotated` with AirField metadata types:
+
+```python
+from typing import Annotated
+from airfield import Hidden, ReadOnly
+
+class Article(AirModel):
+    title: str
+    slug: Annotated[str, Hidden("form")]      # hidden in forms, visible elsewhere
+    internal: Annotated[str, ReadOnly("form")] # read-only in forms
+```
+
 ### Custom widget
 
 Set `widget` as a class attribute on your form subclass:
@@ -355,7 +367,7 @@ class ContactForm(AirForm[ContactModel]):
     widget = staticmethod(my_custom_widget_function)
 ```
 
-The widget callable receives `(*, model, data, errors, excludes)` and returns an HTML string.
+The widget callable receives `(*, model, data=None, errors=None, excludes=None)` and returns an HTML string.
 
 ### Excludes
 
@@ -475,7 +487,9 @@ Use `lifespan` when you need async operations, cleanup on shutdown, or when the 
 
 ## Database (AirModel)
 
-Zero config. Set `DATABASE_URL` in the environment, `uv add AirModel`, and Air auto-connects on startup. The pool is available as `app.db`.
+Zero config. Set `DATABASE_URL` in the environment, `uv add AirModel`, and Air auto-connects on startup. The pool is available as `app.db`. If `DATABASE_URL` is not set, `app.db` is `None` and no database is configured.
+
+Air calls `create_tables()` automatically at startup. If you add a field to a model, the existing table is auto-migrated with `ALTER TABLE ADD COLUMN`.
 
 ```python
 import air
