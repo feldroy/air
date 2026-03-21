@@ -54,7 +54,7 @@ async def submit(request: air.Request) -> air.Html:
     form_data = await request.form()
     flight_form = FlightForm()
 
-    if flight_form.validate(dict(form_data)):
+    if flight_form.validate(form_data):
         return air.Html(
             air.H1("Flight Booked"),
             air.P(f"Flight: {flight_form.data.flight_number}"),
