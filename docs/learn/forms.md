@@ -103,12 +103,21 @@ form.render()
 ```
 
 ```html
-<label>route_name <input name="route_name" type="text" id="route_name" required /></label>
-<label>origin <input name="origin" type="text" id="origin" required /></label>
-<label>destination <input name="destination" type="text" id="destination" required /></label>
+<div class="air-field">
+  <label for="route_name">route_name</label>
+  <input name="route_name" id="route_name" type="text" required>
+</div>
+<div class="air-field">
+  <label for="origin">origin</label>
+  <input name="origin" id="origin" type="text" required>
+</div>
+<div class="air-field">
+  <label for="destination">destination</label>
+  <input name="destination" id="destination" type="text" required>
+</div>
 ```
 
-Air generates `<label>` and `<input>` pairs from the model fields, with HTML5 validation attributes (`required`, `minlength`, `maxlength`) derived from Pydantic constraints.
+Each field is wrapped in a `<div class="air-field">` with a label, input, and (after validation) error messages. HTML5 validation attributes (`required`, `minlength`, `maxlength`) are derived from Pydantic constraints. CSRF protection is automatic.
 
 ## Validating a form
 
@@ -162,8 +171,14 @@ form.render()
 ```
 
 ```html
-<label>name <input name="name" type="text" id="name" required /></label>
-<label>Email Address <input name="email" type="email" id="email" required /></label>
+<div class="air-field">
+  <label for="name">name</label>
+  <input name="name" id="name" type="text" required>
+</div>
+<div class="air-field">
+  <label for="email">Email Address</label>
+  <input name="email" id="email" type="email" required>
+</div>
 ```
 
 Now the same form after submitting with an empty name and a valid email:
@@ -174,18 +189,18 @@ form.render()
 ```
 
 ```html
-<label>
-  name
-  <input name="name" type="text" id="name" aria-invalid="true" required />
-  <small id="name-error">This field is required.</small>
-</label>
-<label>
-  Email Address
-  <input name="email" type="email" id="email" value="audreyfeldroy@example.com" required />
-</label>
+<div class="air-field air-field-error">
+  <label for="name">name</label>
+  <input name="name" id="name" type="text" required aria-invalid="true" aria-describedby="name-error">
+  <div class="air-field-message" id="name-error" role="alert">This field is required.</div>
+</div>
+<div class="air-field">
+  <label for="email">Email Address</label>
+  <input name="email" id="email" type="email" required value="audreyfeldroy@example.com">
+</div>
 ```
 
-The email field preserves the submitted value so the user doesn't have to retype it. The name field gets `aria-invalid="true"` and a `<small>` error message.
+The email field preserves the submitted value so the user doesn't have to retype it. The name field gets `aria-invalid="true"`, `aria-describedby` linking to the error, and a `role="alert"` error message for screen readers.
 
 Air automatically converts Pydantic's technical errors to user-friendly messages. For unknown error types, it falls back to the technical Pydantic message.
 
@@ -220,6 +235,18 @@ The presentation parameters are:
 - **`autofocus`**: Set to `True` to autofocus the field
 - **`primary_key`**: Set to `True` for database primary keys (auto-hidden in forms)
 
+For context-aware visibility, use `Annotated` with AirField metadata types directly:
+
+```python
+from typing import Annotated
+from airfield import Hidden, ReadOnly
+
+class ArticleModel(AirModel):
+    title: str
+    slug: Annotated[str, Hidden("form")]      # hidden in forms, visible in tables
+    internal: Annotated[str, ReadOnly("form")] # read-only in forms
+```
+
 Pydantic constraints like `min_length` and `max_length` automatically become HTML5 `minlength` and `maxlength` attributes, so browser-side validation matches server-side rules.
 
 ## Creating a form
@@ -233,18 +260,38 @@ class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
 
 This works with any `pydantic.BaseModel`, not just AirModel. The type parameter gives your editor full autocomplete on `form.data`.
 
-## Rendering a subset of fields
+## Excluding fields
 
-Set `includes` on the form class to render only specific fields. This is useful for multi-step forms or splitting a form into fieldsets:
+Use `excludes` to hide fields from display, saving, or both:
 
 ```python
 class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
-    includes = ("route_name",)
+    excludes = (
+        "internal_id",                    # hidden from display and save
+        ("origin", "display"),            # not rendered, still in save_data()
+        ("tracking_code", "save"),        # rendered, excluded from save_data()
+    )
 ```
 
+A bare string excludes from both display and save. A tuple targets specific scopes: `"display"`, `"save"`, or both. PrimaryKey fields are default display excludes.
+
+## Saving to database
+
+Use `save_data()` to get a dict with save-excluded fields stripped:
+
 ```python
-form = JeepneyRouteForm()
-form.render()  # only renders route_name
+if form.is_valid:
+    await JeepneyRouteModel.create(**form.save_data())
+```
+
+## Pre-populated edit forms
+
+Pass a dict to the form constructor to fill in values:
+
+```python
+route = await JeepneyRouteModel.get(id=42)
+form = JeepneyRouteForm(route.model_dump())
+form.render()  # inputs have existing values
 ```
 
 ## How the type parameter works
