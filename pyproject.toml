@@ -97,7 +97,7 @@ dependencies = [
     "uvicorn>=0.40.0", # https://pypi.org/project/uvicorn
     "AirModel>=0.4.2", # https://pypi.org/project/AirModel
     "AirField>=0.5.1", # https://pypi.org/project/AirField
-    "AirForm>=0.3.0", # https://pypi.org/project/AirForm
+    "AirForm>=0.4.1", # https://pypi.org/project/AirForm
 ]
 # endregion project
 

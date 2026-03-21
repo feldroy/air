@@ -96,7 +96,7 @@ typing-stubs = [
 [package.metadata]
 requires-dist = [
     { name = "airfield", specifier = ">=0.5.1" },
-    { name = "airform", specifier = ">=0.3.0" },
+    { name = "airform", specifier = ">=0.4.1" },
     { name = "airmodel", specifier = ">=0.4.2" },
     { name = "fastapi", specifier = ">=0.128.8" },
     { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
@@ -190,7 +190,7 @@ wheels = [
 
 [[package]]
 name = "airform"
-version = "0.3.0"
+version = "0.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "airfield" },
@@ -200,9 +200,9 @@ dependencies = [
     { name = "starlette" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5d/2a/349bd9eb38a8de8ce83e5d83ba04feccc7728322a32ab92aeecbe93ca2f0/airform-0.3.0.tar.gz", hash = "sha256:7c64e759fd3b7be895a68e347ca1579e3e36cc12aa76fa2528332c66ddab6659", size = 68302, upload-time = "2026-03-20T18:44:34.707Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fe/2e/c7b53b61ce01ef22a00df2eba8dee37d23d764e1288fe73f387eeffb53ba/airform-0.4.1.tar.gz", hash = "sha256:2333abcea93773e387f98e02b9d0f2f96f06280ea3da36421e3b04d203ab00b2", size = 76620, upload-time = "2026-03-21T05:45:11.636Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/ac/bce59fc699b27796ee9b5ab25b731b22f62035f59da0cdaf2d5fedcab351/airform-0.3.0-py3-none-any.whl", hash = "sha256:00824b875592aae832a6283ecb82ea45af92edbcd2a71dbbd1fa4621f9b6684c", size = 11936, upload-time = "2026-03-20T18:44:33.263Z" },
+    { url = "https://files.pythonhosted.org/packages/c4/ed/60c4408eed62433678f0e525e335b23ea14e8db49cb21a9c7a3b4098d3b3/airform-0.4.1-py3-none-any.whl", hash = "sha256:36102a101ac75fe2ba98f92d5589642c0c5d6ae5670c56ec96d0b0718b3f7d3b", size = 12794, upload-time = "2026-03-21T05:45:10.102Z" },
 ]
 
 [[package]]
