@@ -225,6 +225,21 @@ def test_renderer() -> None:
     assert response.text == "<!doctype html><html><title>Test Page</title><h1>Hello, World!</h1></html>"
 
 
+def test_render_rejects_non_str_or_basetag() -> None:
+    app = Air()
+
+    @app.page
+    def index() -> int:
+        return 42
+
+    client = TestClient(app)
+    with pytest.raises(
+        TypeError,
+        match=r"render\(\) expected BaseTag or str, got 'int'"
+    ):
+        client.get("/")
+
+
 def test_renderer_without_request_for_components() -> None:
     """Test the Renderer class."""
     app = air.Air()

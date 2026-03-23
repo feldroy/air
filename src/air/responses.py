@@ -29,7 +29,12 @@ class AirResponse(HTMLResponse):
 
         Returns:
             Rendered HTML as bytes or memoryview.
+        Raises:
+            TypeError: If tag is neither a BaseTag nor a string.
         """
+        if not isinstance(tag, (BaseTag, str)):
+            msg = f"render() expected BaseTag or str, got {type(tag).__name__!r}"
+            raise TypeError(msg)
         return super().render(str(tag))
 
 
