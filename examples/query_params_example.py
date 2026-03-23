@@ -18,7 +18,7 @@ def search(q: str = air.Query(""), page: int = air.Query(1)) -> Children | Html:
 
 @app.page
 def filter_tags(
-    tags: list[str] | None = air.Query(None),  # noqa: B008
+    tags: list[str] | None = air.Query(None),
 ) -> Children | Html:
     tags_display = tags or []
     return air.layouts.mvpcss(
@@ -35,7 +35,7 @@ def filter_tags(
 def advanced_search(
     q: str = air.Query(""),
     page: int = air.Query(1),
-    tags: list[str] | None = air.Query(None),  # noqa: B008
+    tags: list[str] | None = air.Query(None),
 ) -> Children | Html:
     tags_display = tags or []
     return air.layouts.mvpcss(
