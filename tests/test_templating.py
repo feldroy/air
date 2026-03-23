@@ -233,10 +233,7 @@ def test_render_rejects_non_str_or_basetag() -> None:
         return 42
 
     client = TestClient(app)
-    with pytest.raises(
-        TypeError,
-        match=r"render\(\) expected BaseTag or str, got 'int'"
-    ):
+    with pytest.raises(TypeError, match=r"render\(\) expected BaseTag or str, got 'int'"):
         client.get("/")
 
 
