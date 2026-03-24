@@ -141,6 +141,9 @@ ignore = [
 # Declare the banned `from` imports.
 banned-from = []
 
+[lint.flake8-bugbear]
+extend-immutable-calls = ["air.Query", "air.Depends", "air.Path", "air.Header", "air.Cookie", "air.Body"]
+
 [lint.isort]
 # group aliases coming from the same module
 combine-as-imports = true

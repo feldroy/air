@@ -296,7 +296,7 @@ def test_air_router_url_helper_supports_query_params() -> None:
     @router.get("/items/{item_id}")
     def get_item(
         item_id: int,
-        tags: list[str] | None = air.Query(None),  # noqa: B008
+        tags: list[str] | None = air.Query(None),
         page: int = 1,
     ) -> air.P:
         return air.P(f"Item {item_id} tags {tags} page {page}")
@@ -320,7 +320,7 @@ def test_air_router_url_helper_empty_query_params() -> None:
     @router.get("/items/{item_id}")
     def get_item(
         item_id: int,
-        tags: list[str] | None = air.Query(None),  # noqa: B008
+        tags: list[str] | None = air.Query(None),
         page: int = 1,
     ) -> air.P:
         return air.P(f"Item {item_id} tags {tags} page {page}")
@@ -344,7 +344,7 @@ def test_air_router_url_helper_supports_query_params_with_query() -> None:
     @router.get("/items/{item_id}")
     def get_item(
         item_id: int,
-        tags: list[str] | None = air.Query(None),  # noqa: B008
+        tags: list[str] | None = air.Query(None),
         page: int = air.Query(1),
     ) -> air.P:
         return air.P(f"Item {item_id} tags {tags} page {page}")
