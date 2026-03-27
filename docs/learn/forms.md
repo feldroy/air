@@ -152,9 +152,9 @@ After validation, `form.data` is the model instance with full type information:
 
 ```python
 if form.is_valid:
-    form.data.route_name    # your editor knows this is a str
-    form.data.destination   # autocomplete works
-    form.data.orign         # typo caught by the type checker
+    form.data.route_name  # your editor knows this is a str
+    form.data.destination  # autocomplete works
+    form.data.orign  # typo caught by the type checker
 ```
 
 In Django, `form.cleaned_data["route_name"]` is an untyped dict access. Typos become runtime bugs. In WTForms, `form.route_name.data` has no type information. Air is the first Python form system where your editor knows the shape of validated data, because `form.data` is the actual Pydantic model.
@@ -241,10 +241,11 @@ For context-aware visibility, use `Annotated` with AirField metadata types direc
 from typing import Annotated
 from airfield import Hidden, ReadOnly
 
+
 class ArticleModel(AirModel):
     title: str
-    slug: Annotated[str, Hidden("form")]      # hidden in forms, visible in tables
-    internal: Annotated[str, ReadOnly("form")] # read-only in forms
+    slug: Annotated[str, Hidden("form")]  # hidden in forms, visible in tables
+    internal: Annotated[str, ReadOnly("form")]  # read-only in forms
 ```
 
 Pydantic constraints like `min_length` and `max_length` automatically become HTML5 `minlength` and `maxlength` attributes, so browser-side validation matches server-side rules.
@@ -267,9 +268,9 @@ Use `excludes` to hide fields from display, saving, or both:
 ```python
 class JeepneyRouteForm(AirForm[JeepneyRouteModel]):
     excludes = (
-        "internal_id",                    # hidden from display and save
-        ("origin", "display"),            # not rendered, still in save_data()
-        ("tracking_code", "save"),        # rendered, excluded from save_data()
+        "internal_id",  # hidden from display and save
+        ("origin", "display"),  # not rendered, still in save_data()
+        ("tracking_code", "save"),  # rendered, excluded from save_data()
     )
 ```
 

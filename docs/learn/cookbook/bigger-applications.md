@@ -10,6 +10,7 @@ When building larger applications with Air, you may find yourself needing to org
 
 Let's imagine we have a landing page that links to a sophisticated dashboard. While our example dashboard is trivial, let's assume it is complicated enough that we want it in a separate Python module yet share state. We design the `main.py` as we would a normal Air application:
 
+<!-- blacken-docs:off -->
 ```python title="main.py"
 import air
 
@@ -20,9 +21,11 @@ app = air.Air()
 def index():
     return air.layouts.mvpcss(air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard")))
 ```
+<!-- blacken-docs:on -->
 
 Now for the dashboard, instead of using the typical `air.Air` tool to instantiate our application, we use `air.AirRouter` like so:
 
+<!-- blacken-docs:off -->
 ```python title="dashboard.py" hl_lines="3"
 import air
 
@@ -33,9 +36,11 @@ router = air.AirRouter()
 def dashboard():
     return air.layouts.mvpcss(air.H1("Avatar Data Dashboard"), air.P(air.A("<- Home", href="/")))
 ```
+<!-- blacken-docs:on -->
 
 Now if we go back to our `main.py` we can use the `app.include_router()` method to include the dashboard in our app:
 
+<!-- blacken-docs:off -->
 ```python title="main.py"  hl_lines="2 5"
 import air
 from .dashboard import router
@@ -50,6 +55,7 @@ def index():
         air.H1("Avatar Data"), air.P(air.A("Dashboard", href="/dashboard"))
     )
 ```
+<!-- blacken-docs:on -->
 
 If run locally these links should work:
 
@@ -64,6 +70,7 @@ If run locally these links should work:
 
 One of the really nice features of Air is the ability to mount apps inside each other. This allows you to create modular applications where different parts of your app can be developed and maintained independently. To do this, we lean on Starlette's `mount` functionality that Air inherits through FastAPI.
 
+<!-- blacken-docs:off -->
 ```python
 import air
 
@@ -90,11 +97,13 @@ def index():
 # This allows you to access the shop at /shop
 app.mount("/shop", shop)
 ```
+<!-- blacken-docs:on -->
 
 ## Mounting FastAPI inside of Air apps
 
 You can easily mount a FastAPI app inside an Air app. A common scenario is to have a FastAPI app that serves an API, while your main Air app serves the landing, billing, and usage frontends.
 
+<!-- blacken-docs:off -->
 ```python
 from fastapi import FastAPI
 
@@ -126,6 +135,7 @@ def api_root():
 # Combining the Air and and FastAPI apps into one
 app.mount("/api", api)
 ```
+<!-- blacken-docs:on -->
 
 ## Mounting FastAPI apps inside each other
 

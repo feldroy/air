@@ -19,9 +19,11 @@ def user_detail(user_id: int):
     user = db.get_user(user_id)
     return air.H1(user.name)
 
+
 @app.get("/about")
 def about():
     return air.H1("About")
+
 
 @app.get("/data")
 def get_data():
@@ -41,6 +43,7 @@ async def handle_form(request: air.Request):
         return air.H1(f"Hello, {form.data.name}!")
     return form.render()
 
+
 @app.get("/external")
 async def fetch_data():
     async with httpx.AsyncClient() as client:
@@ -56,6 +59,7 @@ async def fetch_data():
     @app.get("/data")
     async def get_data():
         return open("big_file.csv").read()
+
 
     # RIGHT: runs in a thread, other requests keep flowing
     @app.get("/data")

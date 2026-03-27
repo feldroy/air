@@ -2,6 +2,7 @@
 
 Built on Pydantic's `BaseModel`, the `AirForm` class validates data from HTML forms with type-safe access to the validated result.
 
+<!-- blacken-docs:off -->
 ```python
 from airmodel import AirModel
 
@@ -54,6 +55,7 @@ async def flight_info(request: air.Request):
         ),
     )
 ```
+<!-- blacken-docs:on -->
 
 ## Enhanced Form Features
 
