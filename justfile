@@ -29,6 +29,10 @@ fix:
     uv run ruff format .
     uv run ruff check --fix .
 
+# Format Python code blocks in documentation files
+fmt-docs:
+    git ls-files -z -- 'docs/**/*.md' '*.md' | xargs -0 uv run blacken-docs --line-length 120
+
 # Tag, push, and create a GitHub release
 release:
     uv run scripts/release.py
