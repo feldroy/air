@@ -2,7 +2,6 @@
 
 from importlib.metadata import version
 
-from airfield import AirField as AirField
 from airmodel import (
     AirDB as AirDB,
     AirModel as AirModel,
@@ -13,6 +12,8 @@ from staticware import (
     HashedStatic as HashedStatic,
     StaticRewriteMiddleware as StaticRewriteMiddleware,
 )
+
+from air.field import AirField as AirField
 
 from . import (
     layouts as layouts,
