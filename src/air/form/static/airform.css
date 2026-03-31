@@ -1,0 +1,86 @@
+/* AirForm default styles — looks good out of the box, easy to override. */
+
+.air-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.air-field label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.air-field input,
+.air-field textarea,
+.air-field select {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.air-field input:focus,
+.air-field textarea:focus,
+.air-field select:focus {
+  outline: none;
+  border-color: #555;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.air-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.air-field select {
+  cursor: pointer;
+}
+
+.air-field-help {
+  font-size: 0.85rem;
+  color: #777;
+  line-height: 1.4;
+}
+
+/* Error state */
+.air-field-error input,
+.air-field-error textarea,
+.air-field-error select {
+  border-color: #d32f2f;
+}
+
+.air-field-error input:focus,
+.air-field-error textarea:focus,
+.air-field-error select:focus {
+  box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.15);
+}
+
+.air-field-message {
+  font-size: 0.85rem;
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+/* Checkbox fields: label after input, inline */
+.air-field input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+.air-field:has(input[type="checkbox"]) {
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+}
+
+.air-field:has(input[type="checkbox"]) label {
+  font-weight: normal;
+}
