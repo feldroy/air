@@ -14,6 +14,7 @@ from staticware import (
 )
 
 from air.field import AirField as AirField
+from air.form import AirForm as AirForm
 
 from . import (
     layouts as layouts,
@@ -28,7 +29,6 @@ from .dependencies import is_htmx_request as is_htmx_request
 from .exceptions import (
     HTTPException as HTTPException,
 )
-from .forms import AirForm as AirForm
 from .middleware import SessionMiddleware as SessionMiddleware
 from .requests import (
     AirRequest as AirRequest,

@@ -135,7 +135,7 @@ ignore = [
 ]
 "scripts/copy_src_example_to_callable.py" = ["C901"]
 "scripts/missing_examples.py" = ["A004"]
-"src/air/forms.py" = ["A002"]
+"src/air/form/main.py" = ["A002"]
 
 [lint.flake8-import-conventions]
 # Declare the banned `from` imports.
