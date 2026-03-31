@@ -2,11 +2,6 @@
 
 from importlib.metadata import version
 
-from airmodel import (
-    AirDB as AirDB,
-    AirModel as AirModel,
-    MultipleObjectsReturned as MultipleObjectsReturned,
-)
 from fastapi import Query as Query
 from staticware import (
     HashedStatic as HashedStatic,
@@ -15,6 +10,11 @@ from staticware import (
 
 from air.field import AirField as AirField
 from air.form import AirForm as AirForm
+from air.model import (
+    AirDB as AirDB,
+    AirModel as AirModel,
+    MultipleObjectsReturned as MultipleObjectsReturned,
+)
 
 from . import (
     layouts as layouts,
