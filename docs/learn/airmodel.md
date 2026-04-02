@@ -21,7 +21,7 @@ Your Pydantic models just learned PostgreSQL.
 
 ```python title="main.py"
 import air
-from airmodel import AirModel, AirField
+from air import AirField, AirModel
 
 
 class UnicornSighting(AirModel):
@@ -45,7 +45,7 @@ That's a database-backed web app. Set `DATABASE_URL` in your environment, and Ai
 ## One class, one import
 
 ```python
-from airmodel import AirModel
+from air import AirModel
 ```
 
 One import, one base class. Define your fields with type annotations, and AirModel handles validation, serialization, and async database operations.
@@ -72,7 +72,7 @@ If `DATABASE_URL` is not set, `app.db` is `None` and no database is configured. 
 from datetime import datetime
 from uuid import UUID
 
-from airmodel import AirModel, AirField
+from air import AirField, AirModel
 
 
 class BlogPost(AirModel):
@@ -245,9 +245,7 @@ If an exception occurs inside the block, the transaction rolls back automaticall
 AirModel and AirForm are independent. Use one without the other, or snap them together:
 
 ```python
-from airmodel import AirModel, AirField
-
-from air import AirForm
+from air import AirField, AirForm, AirModel
 
 
 class ContactMessage(AirModel):
@@ -276,8 +274,7 @@ async def submit_contact(request: air.Request):
 
 ```python title="main.py"
 import air
-from air import AirForm
-from airmodel import AirModel, AirField
+from air import AirField, AirForm, AirModel
 
 
 class GuestBookEntry(AirModel):
@@ -326,7 +323,7 @@ Model, form, database, HTML, validation, pagination, and two routes. Set `DATABA
 If the zero-config path doesn't work for your situation (custom pool sizes, non-standard connection strings, multiple databases), you can wire the pool yourself:
 
 ```python title="main.py"
-from airmodel import AirDB
+from air import AirDB
 
 db = AirDB()
 app = air.Air(lifespan=db.lifespan("postgresql://localhost/mydb", min_size=5, max_size=20))
