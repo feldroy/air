@@ -3,10 +3,8 @@
 Built on Pydantic's `BaseModel`, the `AirForm` class validates data from HTML forms with type-safe access to the validated result.
 
 ```python
-from airmodel import AirModel
-
 import air
-from air import AirForm
+from air import AirForm, AirModel
 
 app = air.Air()
 

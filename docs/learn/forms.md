@@ -239,7 +239,7 @@ For context-aware visibility, use `Annotated` with AirField metadata types direc
 
 ```python
 from typing import Annotated
-from airfield import Hidden, ReadOnly
+from air.field import Hidden, ReadOnly
 
 class ArticleModel(AirModel):
     title: str
