@@ -124,6 +124,7 @@ examples = [
     "pyinstrument>=5.1.2", # https://pypi.org/project/pyinstrument
 ]
 devtools = [
+    "blacken-docs>=1.20.0", # https://pypi.org/project/blacken-docs
     "ruff>=0.15.0", # https://pypi.org/project/ruff
     "ty>=0.0.19", # https://pypi.org/project/ty
 ]

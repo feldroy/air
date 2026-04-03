@@ -61,6 +61,7 @@ async def create_item(request: Request):
 
 ### Reading Form Data
 
+<!-- blacken-docs:off -->
 ```python
 import air
 from air.requests import Request
@@ -76,6 +77,7 @@ async def login(request: Request):
         air.Section(air.Aside({"username": form.get("username")}))
     )
 ```
+<!-- blacken-docs:on -->
 
 ### Accessing the HTMX object
 

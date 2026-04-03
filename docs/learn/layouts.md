@@ -9,6 +9,7 @@ Layouts in Air provide a way to structure complete HTML documents without the re
 
 Air's layout functions automatically sort your tags into the right places using intelligent filtering. This allows you eliminate repetitive `air.Html`, `air.Body`, and `air.Head` boilerplate.
 
+<!-- blacken-docs:off -->
 ```python
 # Verbose Way
 air.Html(
@@ -26,6 +27,7 @@ air.layouts.mvpcss(
     air.P("Content here"),  # Also goes to <body>
 )
 ```
+<!-- blacken-docs:on -->
 
 ## The Tag Filtering System
 
@@ -38,6 +40,7 @@ Air layouts use two core functions to organize content:
 
 This automatic separation means you can focus on your content and let Air handle the document structure:
 
+<!-- blacken-docs:off -->
 ```python
 @app.get("/")
 def home():
@@ -50,6 +53,7 @@ def home():
         air.Script(src="dashboard.js"),
     )
 ```
+<!-- blacken-docs:on -->
 
 Air transforms this into proper HTML structure automatically.
 
@@ -57,6 +61,7 @@ Air transforms this into proper HTML structure automatically.
 
 Air provides minimal ready-to-use layouts for rapid prototyping, `mvpcss` and `picocss` for MVP.css and PicoCSS respectively. They both work and are used in the exact same way.
 
+<!-- blacken-docs:off -->
 ```python
 import air
 
@@ -70,6 +75,7 @@ def home():
         air.Button("Get Started"),
     )
 ```
+<!-- blacken-docs:on -->
 
 **What you get:**
 
@@ -90,6 +96,7 @@ The included layouts are designed for **quick prototyping**, not production comm
 
 Here's the foundational pattern for any Air layout:
 
+<!-- blacken-docs:off -->
 ```python
 import air
 
@@ -114,6 +121,7 @@ def my_layout(*children, **kwargs):
         ),
     ).render()
 ```
+<!-- blacken-docs:on -->
 
 **Key principles:**
 

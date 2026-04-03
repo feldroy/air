@@ -213,10 +213,12 @@ Insert, update, or delete hundreds of rows in a single SQL statement:
 
 ```python
 # Insert multiple rows at once
-fruits = await DragonFruit.bulk_create([
-    {"name": "Pink Pitaya", "color": "magenta"},
-    {"name": "Yellow Dragon", "color": "yellow"},
-])
+fruits = await DragonFruit.bulk_create(
+    [
+        {"name": "Pink Pitaya", "color": "magenta"},
+        {"name": "Yellow Dragon", "color": "yellow"},
+    ]
+)
 
 # Update all matching rows
 count = await DragonFruit.bulk_update({"color": "red"}, name__contains="Dragon")
@@ -274,6 +276,7 @@ async def submit_contact(request: air.Request):
 
 ## A complete app in 30 lines
 
+<!-- blacken-docs:off -->
 ```python title="main.py"
 import air
 from air import AirForm
@@ -318,6 +321,7 @@ async def sign(request: air.Request):
         await GuestBookEntry.create(name=form.data.name, message=form.data.message)
     return air.RedirectResponse("/")
 ```
+<!-- blacken-docs:on -->
 
 Model, form, database, HTML, validation, pagination, and two routes. Set `DATABASE_URL` and run it.
 
