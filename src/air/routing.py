@@ -117,6 +117,12 @@ class AirRoute(APIRoute):
 
         super().__init__(*args, **kwargs)
 
+        # FastAPI's APIRoute.__init__ does not call super().__init__(),
+        # so it drops Starlette's logic that adds HEAD to GET routes.
+        # Restore that behavior here.
+        if self.methods and "GET" in self.methods:
+            self.methods.add("HEAD")
+
     @override
     def get_route_handler(self) -> Callable:
         original_route_handler = super().get_route_handler()
