@@ -1,6 +1,6 @@
 """Tests for database auto-discovery in Air.
 
-When DATABASE_URL is set and airmodel is installed, Air auto-creates
+When DATABASE_URL is set and asyncpg is installed, Air auto-creates
 an AirDB instance and wires up the lifespan to open/close the pool.
 """
 
@@ -11,11 +11,11 @@ from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, Any
 from unittest.mock import AsyncMock, patch
 
-from airmodel import AirDB
 from starlette.testclient import TestClient
 
 import air
 from air import Air
+from air.model import AirDB
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -66,15 +66,15 @@ def test_db_is_none_without_database_url(tmp_path: Path, monkeypatch: pytest.Mon
     assert app.db is None
 
 
-def test_db_is_none_when_airmodel_not_installed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """With DATABASE_URL but airmodel not importable, app.db should be None."""
+def test_db_is_none_when_asyncpg_not_installed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """With DATABASE_URL but asyncpg not importable, app.db should be None."""
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("DATABASE_URL", "postgresql://localhost/test")
 
     real_import = builtins.__import__
 
     def mock_import(name: str, *args: Any, **kwargs: Any) -> Any:
-        if name == "airmodel":
+        if name == "asyncpg":
             msg = "mocked"
             raise ImportError(msg)
         return real_import(name, *args, **kwargs)

@@ -268,8 +268,7 @@ Use `as_string=True` to get a `SafeStr` for embedding Jinja output inside Air ta
 ### AirForm[MyModel]: type-safe forms from Pydantic models
 
 ```python
-from airmodel import AirModel, AirField
-from air import AirForm
+from air import AirField, AirForm, AirModel
 
 class ContactModel(AirModel):
     name: str
@@ -350,7 +349,7 @@ For context-aware visibility, use `Annotated` with AirField metadata types:
 
 ```python
 from typing import Annotated
-from airfield import Hidden, ReadOnly
+from air.field import Hidden, ReadOnly
 
 class Article(AirModel):
     title: str
@@ -487,13 +486,13 @@ Use `lifespan` when you need async operations, cleanup on shutdown, or when the 
 
 ## Database (AirModel)
 
-Zero config. Set `DATABASE_URL` in the environment, `uv add AirModel`, and Air auto-connects on startup. The pool is available as `app.db`. If `DATABASE_URL` is not set, `app.db` is `None` and no database is configured.
+Zero config. Set `DATABASE_URL` in the environment and Air auto-connects on startup. The pool is available as `app.db`. If `DATABASE_URL` is not set, `app.db` is `None` and no database is configured.
 
 Air calls `create_tables()` automatically at startup. If you add a field to a model, the existing table is auto-migrated with `ALTER TABLE ADD COLUMN`.
 
 ```python
 import air
-from airmodel import AirModel, AirField
+from air import AirField, AirModel
 
 app = air.Air()  # reads DATABASE_URL, connects automatically
 

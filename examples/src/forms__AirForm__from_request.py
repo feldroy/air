@@ -1,7 +1,5 @@
-from airmodel import AirModel
-
 import air
-from air import AirForm
+from air import AirForm, AirModel
 
 app = air.Air()
 

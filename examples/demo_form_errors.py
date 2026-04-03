@@ -11,12 +11,11 @@ Usage:
     uv run demo_form_errors.py
 """
 
-from airmodel import AirModel
 from pydantic import Field
 from rich import print
 
 import air
-from air import AirForm
+from air import AirForm, AirModel
 
 
 class ContactModel(AirModel):

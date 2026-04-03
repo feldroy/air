@@ -1,8 +1,6 @@
-from airform import default_form_widget
-from airmodel import AirModel
-
 import air
-from air import AirForm
+from air import AirForm, AirModel
+from air.form import default_form_widget
 
 app = air.Air()
 
