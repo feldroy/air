@@ -276,15 +276,17 @@ class Air(RouterMixin):
             exception_handlers = {}
         exception_handlers = DEFAULT_EXCEPTION_HANDLERS | exception_handlers
 
-        # Auto-detect database: DATABASE_URL env var + airmodel installed
+        # Auto-detect database: DATABASE_URL env var + asyncpg installed
         self.db = None
         database_url = os.environ.get("DATABASE_URL")
         if database_url is not None:
             try:
-                from airmodel import AirDB  # noqa: PLC0415
+                import asyncpg  # noqa: PLC0415, F401
             except ImportError:
                 pass
             else:
+                from air.model import AirDB  # noqa: PLC0415
+
                 self.db = AirDB()
                 lifespan = self._compose_db_lifespan(self.db, database_url, lifespan)
 

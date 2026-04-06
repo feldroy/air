@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final
 
 import pytest
-from airform.forms import SafeHTML
 from examples.samples.air_tag_samples import (
     AIR_TAG_SAMPLE,
     FRAGMENT_AIR_TAG_SAMPLE,
@@ -24,6 +23,7 @@ from full_match import match as full_match
 
 import air
 import air.tags.models.base as base_module
+from air.form import SafeHTML
 from air.tags.models.base import BaseTag
 from air.tags.utils import SafeStr
 from tests.utils import clean_doc

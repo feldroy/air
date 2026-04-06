@@ -514,10 +514,8 @@ async def email_handler(request: air.Request):  # (1)!
 The pydantic library isn't just a component of Air and FastAPI, it's an industry standard validation library using Python type annotations to determine the validity of incoming data. Here's how to use it with AirForms, which use pydantic models to determine how a form is constructed.
 
 ```python
-from airmodel import AirModel, AirField
-
 import air
-from air import AirForm
+from air import AirField, AirForm, AirModel
 
 
 class ContactModel(AirModel):  # (1)!

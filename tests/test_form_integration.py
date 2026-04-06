@@ -1,7 +1,7 @@
 """Tests for Air's AirForm integration.
 
-AirForm validation and rendering are tested in the airform package.
-AirField metadata is tested in the airfield package.
+AirForm validation and rendering are in tests/test_form.py.
+AirField metadata is in tests/test_field.py.
 These tests cover Air-specific usage: from_request() with Starlette,
 Depends(), embedding rendered HTML in Air Tags, and re-exports.
 """
