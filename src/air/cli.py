@@ -1,8 +1,14 @@
 """Air CLI - Command-line interface for running Air applications."""
 
+from __future__ import annotations
+
+import importlib
 import sys
 from pathlib import Path
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated
+
+if TYPE_CHECKING:
+    from air.checks import CheckMessage, CheckResult
 
 import typer
 import uvicorn
@@ -55,6 +61,26 @@ def _callback(
         typer.echo(ctx.get_help())
 
 
+def _resolve_app_path(path: str) -> str:
+    """Convert a user-supplied path to a ``module:attr`` import string.
+
+    Handles ``main.py``, ``main``, and ``main:app`` formats.
+    Adds the appropriate directory to ``sys.path`` so the module is importable.
+    """
+    if path.endswith(".py"):
+        file_path = Path(path).resolve()
+        module = file_path.stem
+        app_path = f"{module}:app"
+        sys.path.insert(0, str(file_path.parent))
+    elif ":" not in path:
+        app_path = f"{path}:app"
+        sys.path.insert(0, str(Path.cwd()))
+    else:
+        app_path = path
+        sys.path.insert(0, str(Path.cwd()))
+    return app_path
+
+
 @app.command()
 def run(
     path: Annotated[
@@ -76,23 +102,7 @@ def run(
     ] = True,
 ) -> None:
     """Run an Air application in development mode."""
-    # Handle both "main.py" and "main:app" formats
-    if path.endswith(".py"):
-        # Convert main.py -> main:app
-        file_path = Path(path).resolve()
-        module = file_path.stem
-        app_path = f"{module}:app"
-        # Add the file's directory to sys.path so uvicorn can import it
-        sys.path.insert(0, str(file_path.parent))
-    elif ":" not in path:
-        # Assume it's a module name without :app
-        app_path = f"{path}:app"
-        # Add current directory to sys.path
-        sys.path.insert(0, str(Path.cwd()))
-    else:
-        app_path = path
-        # Add current directory to sys.path
-        sys.path.insert(0, str(Path.cwd()))
+    app_path = _resolve_app_path(path)
 
     # Print startup banner
     url = f"http://{host}:{port}"
@@ -110,6 +120,78 @@ def run(
         reload=reload,
         log_config=LOG_CONFIG,
     )
+
+
+def _import_app(path: str) -> air.Air:
+    """Import and return the Air application object from *path*.
+
+    Raises:
+        TypeError: If the imported object is not an Air instance.
+    """
+    app_path = _resolve_app_path(path)
+    module_name, _, attr_name = app_path.partition(":")
+    module = importlib.import_module(module_name)
+    obj = getattr(module, attr_name)
+    if not isinstance(obj, air.Air):
+        msg = f"{app_path} is {type(obj).__name__}, not an Air application"
+        raise TypeError(msg)
+    return obj
+
+
+@app.command()
+def check(
+    path: Annotated[
+        str,
+        typer.Argument(help="Path to the Python file or module:app (e.g., main.py or main:app)"),
+    ] = "main:app",
+) -> None:
+    """Check an Air application for common issues."""  # noqa: DOC501
+    from air.checks import run_checks  # noqa: PLC0415
+
+    console.print()
+    console.print(f"  [bold cyan]Air[/bold cyan] v{air.__version__}")
+    console.print()
+
+    try:
+        air_app = _import_app(path)
+    except Exception as exc:  # noqa: BLE001
+        console.print(f"  [red]Could not import app:[/red] {exc}")
+        raise typer.Exit(code=1) from None
+
+    result = run_checks(air_app)
+    _print_check_result(result)
+    raise typer.Exit(code=0 if result.ok else 1)
+
+
+def _print_check_result(result: CheckResult) -> None:
+    """Pretty-print check results to the console."""
+
+    if result.ok and not result.warnings:
+        console.print(f"  [green]All checks passed[/green] ({result.route_count} routes)")
+        console.print()
+        return
+
+    # Group messages by category
+    by_category: dict[str, list[CheckMessage]] = {}
+    for msg in result.messages:
+        by_category.setdefault(msg.category, []).append(msg)
+
+    for category, msgs in by_category.items():
+        console.print(f"  [bold]{category.title()}[/bold]")
+        for msg in msgs:
+            color = "red" if msg.level == "error" else "yellow"
+            console.print(f"    [{color}]{msg.subject}[/{color}]  {msg.message}")
+        console.print()
+
+    error_count = len(result.errors)
+    warning_count = len(result.warnings)
+    parts = []
+    if error_count:
+        parts.append(f"[red]{error_count} error{'s' if error_count != 1 else ''}[/red]")
+    if warning_count:
+        parts.append(f"[yellow]{warning_count} warning{'s' if warning_count != 1 else ''}[/yellow]")
+    console.print(f"  {', '.join(parts)}")
+    console.print()
 
 
 def main() -> None:
