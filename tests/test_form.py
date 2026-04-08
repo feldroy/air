@@ -554,6 +554,47 @@ def test_validate_checked_checkbox_is_true() -> None:
     assert form.data.accepted is True
 
 
+def test_optional_bool_renders_as_checkbox() -> None:
+    """bool | None fields render as checkboxes, not text inputs."""
+
+    class ConsentModel(BaseModel):
+        agreed: bool | None = None
+
+    assert pydantic_type_to_html_type(ConsentModel.model_fields["agreed"]) == "checkbox"
+
+
+def test_optional_bool_unchecked_is_false() -> None:
+    """Unchecked optional bool becomes False, not None."""
+
+    class ConsentModel(BaseModel):
+        name: str
+        agreed: bool | None = None
+
+    class ConsentForm(AirForm[ConsentModel]):
+        pass
+
+    form = ConsentForm()
+    form.validate({"name": "Audrey"})
+    assert form.is_valid
+    assert form.data.agreed is False
+
+
+def test_optional_bool_checked_is_true() -> None:
+    """Checked optional bool becomes True."""
+
+    class ConsentModel(BaseModel):
+        name: str
+        agreed: bool | None = None
+
+    class ConsentForm(AirForm[ConsentModel]):
+        pass
+
+    form = ConsentForm()
+    form.validate({"name": "Audrey", "agreed": "on"})
+    assert form.is_valid
+    assert form.data.agreed is True
+
+
 def test_render_optional_not_required() -> None:
     class CompanionModel(BaseModel):
         catchphrase: str | None = None
