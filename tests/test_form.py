@@ -538,6 +538,22 @@ def test_validate_unchecked_checkbox_is_false() -> None:
     assert form.data.accepted is False
 
 
+def test_validate_required_bool_unchecked_is_false() -> None:
+    """Required bool with no default still validates; unchecked means False."""
+
+    class AgreementModel(BaseModel):
+        name: str
+        agreed: bool
+
+    class AgreementForm(AirForm[AgreementModel]):
+        pass
+
+    form = AgreementForm()
+    form.validate({"name": "Audrey"})
+    assert form.is_valid
+    assert form.data.agreed is False
+
+
 def test_validate_checked_checkbox_is_true() -> None:
     """Checked checkboxes send 'on'; Pydantic coerces to True."""
 
@@ -593,6 +609,48 @@ def test_optional_bool_checked_is_true() -> None:
     form.validate({"name": "Audrey", "agreed": "on"})
     assert form.is_valid
     assert form.data.agreed is True
+
+
+def test_validate_two_bools_one_checked_one_unchecked() -> None:
+    """Each bool field is coerced independently."""
+
+    class PrefsModel(BaseModel):
+        name: str
+        newsletter: bool = AirField(default=False)
+        terms: bool = AirField(default=False)
+
+    class PrefsForm(AirForm[PrefsModel]):
+        pass
+
+    form = PrefsForm()
+    form.validate({"name": "Audrey", "newsletter": "on"})
+    assert form.is_valid
+    assert form.data.newsletter is True
+    assert form.data.terms is False
+
+
+def test_render_slider_widget() -> None:
+    """widget='slider' renders as a range input with value, not checked."""
+
+    class MixerModel(BaseModel):
+        volume: int = AirField(default=50, widget="slider", label="Volume")
+
+    html = default_form_widget(model=MixerModel, data={"volume": 75})
+    assert 'type="range"' in html
+    assert 'value="75"' in html
+    assert "checked" not in html
+
+
+def test_render_rich_text_widget_as_textarea() -> None:
+    """widget='rich_text' renders as a textarea element."""
+
+    class PostModel(BaseModel):
+        body: str = AirField(widget="rich_text", label="Body")
+
+    html = default_form_widget(model=PostModel, data={"body": "Hello"})
+    assert "<textarea" in html
+    assert "Hello</textarea>" in html
+    assert "<input" not in html
 
 
 def test_render_optional_not_required() -> None:
