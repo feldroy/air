@@ -12,6 +12,9 @@ updates:
           - "*"
 
   - package-ecosystem: uv
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
     directory: "/"
     schedule:
       interval: daily
