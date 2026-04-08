@@ -1,3 +1,4 @@
+import pytest
 from fastapi import Depends, FastAPI
 from fastapi.routing import APIRouter
 from fastapi.testclient import TestClient
@@ -24,6 +25,13 @@ def test_air_app_factory() -> None:
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
     assert response.text == "<h1>Hello, World!</h1>"
+
+
+def test_air_app_factory_rejects_fastapi_params() -> None:
+    # https://github.com/feldroy/air/issues/1073
+
+    with pytest.raises(ValueError, match=r"Use `fastapi_app` to pass `docs_url`, `redoc_url` instead."):
+        air.Air(docs_url="", redoc_url="")
 
 
 def test_air_plus_fastapi() -> None:

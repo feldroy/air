@@ -270,6 +270,13 @@ class Air(RouterMixin):
         This preserves most FastAPI initialization parameters while setting:
             - AirResponse as the default response class.
             - AirRoute as the default route class.
+
+        Raises:
+            ValueError: If fastapi_app is None and kwargs contain parameters
+                that should be passed via fastapi_app instead. These
+                parameters are: default_response_class, on_startup,
+                on_shutdown, docs_url, redoc_url, openapi_url,
+                webhooks, deprecated.
         """
         self.path_separator = path_separator
         if exception_handlers is None:
@@ -292,6 +299,22 @@ class Air(RouterMixin):
 
         # Create internal FastAPI instance
         if fastapi_app is None:
+            fastapi_kwargs_with_fixed_values = {
+                "default_response_class",
+                "on_startup",
+                "on_shutdown",
+                "docs_url",
+                "redoc_url",
+                "openapi_url",
+                "webhooks",
+                "deprecated",
+            }
+
+            if kwargs_supplied := extra.keys() & fastapi_kwargs_with_fixed_values:
+                kwargs_supplied_str = ", ".join(sorted(f"`{kwarg}`" for kwarg in kwargs_supplied))
+                msg = f"Use `fastapi_app` to pass {kwargs_supplied_str} instead."
+                raise ValueError(msg)
+
             self._app = FastAPI(
                 debug=debug,
                 routes=routes,
