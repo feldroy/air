@@ -250,6 +250,36 @@ def test_pydantic_type_to_html_type() -> None:
     assert pydantic_type_to_html_type(TestModel.model_fields["active"]) == "checkbox"
 
 
+def test_pydantic_type_to_html_type_semantic_widgets() -> None:
+    """Semantic widget names map to valid HTML input types."""
+
+    class WidgetModel(BaseModel):
+        on_off: bool = AirField(widget="toggle")
+        intensity: int = AirField(widget="slider")
+        mobile: str = AirField(widget="phone")
+        price: float = AirField(widget="currency")
+        query: str = AirField(widget="search")
+        notes: str = AirField(widget="rich_text")
+        source: str = AirField(widget="code")
+
+    assert pydantic_type_to_html_type(WidgetModel.model_fields["on_off"]) == "checkbox"
+    assert pydantic_type_to_html_type(WidgetModel.model_fields["intensity"]) == "range"
+    assert pydantic_type_to_html_type(WidgetModel.model_fields["mobile"]) == "tel"
+    assert pydantic_type_to_html_type(WidgetModel.model_fields["price"]) == "number"
+    assert pydantic_type_to_html_type(WidgetModel.model_fields["query"]) == "search"
+    assert pydantic_type_to_html_type(WidgetModel.model_fields["notes"]) == "textarea"
+    assert pydantic_type_to_html_type(WidgetModel.model_fields["source"]) == "textarea"
+
+
+def test_pydantic_type_to_html_type_unknown_widget_passes_through() -> None:
+    """Unknown widget kinds pass through as-is (e.g. valid HTML types like 'date')."""
+
+    class DateModel(BaseModel):
+        birthday: str = AirField(type="date")
+
+    assert pydantic_type_to_html_type(DateModel.model_fields["birthday"]) == "date"
+
+
 # ── Render tests: Daniel's pattern + full AirField vocabulary ────────
 
 
@@ -451,6 +481,77 @@ def test_render_checkbox() -> None:
     input_pos = html.index("<input")
     label_pos = html.index("<label")
     assert input_pos < label_pos
+
+
+def test_render_checkbox_checked_when_true() -> None:
+    """Checkbox renders with 'checked' attribute when value is True."""
+
+    class WaiverModel(BaseModel):
+        accepted: bool = AirField(default=False, label="Accept terms")
+
+    html = default_form_widget(model=WaiverModel, data={"accepted": True})
+    assert "checked" in html
+    assert 'value="True"' not in html  # uses checked, not value
+
+
+def test_render_checkbox_unchecked_when_false() -> None:
+    """Checkbox renders without 'checked' when value is False."""
+
+    class WaiverModel(BaseModel):
+        accepted: bool = AirField(default=False, label="Accept terms")
+
+    html = default_form_widget(model=WaiverModel, data={"accepted": False})
+    assert "checked" not in html
+
+
+def test_render_toggle_widget_as_checkbox() -> None:
+    """widget='toggle' renders as a checkbox input."""
+
+    class SettingsModel(BaseModel):
+        is_public: bool = AirField(default=True, widget="toggle", label="Public")
+
+    class SettingsForm(AirForm[SettingsModel]):
+        pass
+
+    html = SettingsForm().render()
+    assert 'type="checkbox"' in html
+    # Label after input (checkbox behavior)
+    input_pos = html.index("<input")
+    label_pos = html.index("<label")
+    assert input_pos < label_pos
+
+
+def test_validate_unchecked_checkbox_is_false() -> None:
+    """Unchecked checkboxes send nothing; missing bool fields become False."""
+
+    class WaiverModel(BaseModel):
+        name: str
+        accepted: bool = AirField(default=True)
+
+    class WaiverForm(AirForm[WaiverModel]):
+        pass
+
+    form = WaiverForm()
+    # HTML checkbox omits the field entirely when unchecked
+    form.validate({"name": "Audrey"})
+    assert form.is_valid
+    assert form.data.accepted is False
+
+
+def test_validate_checked_checkbox_is_true() -> None:
+    """Checked checkboxes send 'on'; Pydantic coerces to True."""
+
+    class WaiverModel(BaseModel):
+        name: str
+        accepted: bool = AirField(default=False)
+
+    class WaiverForm(AirForm[WaiverModel]):
+        pass
+
+    form = WaiverForm()
+    form.validate({"name": "Audrey", "accepted": "on"})
+    assert form.is_valid
+    assert form.data.accepted is True
 
 
 def test_render_optional_not_required() -> None:
