@@ -88,17 +88,29 @@ def _is_optional(annotation: Any) -> bool:
 # ---------------------------------------------------------------------------
 
 
+_WIDGET_TO_HTML_TYPE: dict[str, str] = {
+    "toggle": "checkbox",
+    "slider": "range",
+    "phone": "tel",
+    "currency": "number",
+    "search": "search",
+    "rich_text": "textarea",
+    "code": "textarea",
+}
+
+
 def pydantic_type_to_html_type(field_info: Any) -> str:
     """Return HTML input type from a Pydantic field's type and metadata.
 
     Checks AirField metadata first (Widget, Choices), then infers
-    from the Python type annotation.
+    from the Python type annotation. Semantic widget names (toggle,
+    slider, etc.) are mapped to valid HTML input types.
     """
     meta = _meta_dict(field_info)
 
     widget = _get_meta(meta, Widget)
     if widget:
-        return widget.kind
+        return _WIDGET_TO_HTML_TYPE.get(widget.kind, widget.kind)
     if Choices in meta:
         return "select"
 
@@ -300,6 +312,10 @@ def default_form_widget(  # noqa: C901
                 sel = " selected" if value is not None and str(value) == opt_val else ""
                 parts.append(f'    <option value="{escape(opt_val)}"{sel}>{escape(opt_label)}</option>')
             parts.append("  </select>")
+
+        elif input_type == "checkbox":
+            checked = " checked" if value else ""
+            parts.append(f"  <input{_attr_str(input_attrs)}{checked}>")
 
         else:
             val_attr = f' value="{escape(str(value))}"' if value is not None else ""
@@ -508,9 +524,15 @@ class AirForm[M: BaseModel]:
                 self.errors = [{"type": "value_error", "loc": (CSRF_FIELD_NAME,), "msg": str(e), "input": raw_token}]
                 return self.is_valid
 
+        # Coerce bool fields for HTML checkbox behavior:
+        # checked -> "on", unchecked -> key missing entirely
+        assert self.model is not None
+        for field_name, field_info in self.model.model_fields.items():
+            if field_info.annotation is bool and field_name not in self.submitted_data:
+                self.submitted_data[field_name] = False
+
         # Validate against the user's model
         try:
-            assert self.model is not None
             self._data = self.model(**self.submitted_data)
             self.is_valid = True
         except ValidationError as e:
