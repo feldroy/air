@@ -83,6 +83,16 @@ def _is_optional(annotation: Any) -> bool:
     return False
 
 
+def _is_bool(annotation: Any) -> bool:
+    """Return True if annotation is ``bool`` or ``bool | None``."""
+    if annotation is bool:
+        return True
+    if _is_optional(annotation):
+        args = get_args(annotation)
+        return bool in args
+    return False
+
+
 # ---------------------------------------------------------------------------
 # Type and option helpers
 # ---------------------------------------------------------------------------
@@ -115,7 +125,7 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
         return "select"
 
     annotation = field_info.annotation
-    if annotation is bool:
+    if _is_bool(annotation):
         return "checkbox"
     if annotation is int or annotation is float:
         return "number"
@@ -528,7 +538,7 @@ class AirForm[M: BaseModel]:
         # checked -> "on", unchecked -> key missing entirely
         assert self.model is not None
         for field_name, field_info in self.model.model_fields.items():
-            if field_info.annotation is bool and field_name not in self.submitted_data:
+            if _is_bool(field_info.annotation) and field_name not in self.submitted_data:
                 self.submitted_data[field_name] = False
 
         # Validate against the user's model
