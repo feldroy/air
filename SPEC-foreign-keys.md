@@ -55,34 +55,28 @@ maker_id: int = AirField(foreign_key="Maker")
 
 String references resolve lazily against `_table_registry` at first use (SQL generation or form rendering), not at class definition time. Resolution searches by class name, not table name.
 
-### What changes
+#### Self-referential foreign keys
 
-#### 1. New base class for structural metadata
-
-`ForeignKey` is a structural constraint (affects SQL generation and referential integrity), not presentation metadata. `BasePresentation` is the wrong base.
-
-In `src/air/field/types.py`, add a new base class above `BasePresentation`:
+A model can reference itself. This is common for tree structures:
 
 ```python
-class BaseStructure:
-    """Base class for structural metadata that affects storage/schema.
-
-    Distinct from BasePresentation, which affects rendering only.
-    Consumers can check isinstance(m, BaseStructure) to find
-    metadata that changes DDL or database behavior.
-    """
-    __slots__ = ()
+class Category(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    name: str
+    parent_id: int | None = AirField(default=None, foreign_key="Category")
 ```
 
-Move `PrimaryKey` from `BasePresentation` to `BaseStructure` (it's structural too). This is backwards-compatible: code checking `isinstance(m, BasePresentation)` should also check `isinstance(m, BaseStructure)`, or better, check for the specific type directly (which existing code already does).
+Self-references must use a string to avoid `NameError` (the class doesn't exist yet when its body executes). The topological sort skips self-references when building the dependency graph (a model is not a dependency of itself).
 
-#### 2. ForeignKey metadata class
+### What changes
+
+#### 1. ForeignKey metadata class
 
 In `src/air/field/types.py`:
 
 ```python
 @dataclass(frozen=True, slots=True)
-class ForeignKey(BaseStructure):
+class ForeignKey(BasePresentation):
     """Marks this field as a foreign key to another AirModel.
 
     Affects DDL (emits REFERENCES constraint) and form rendering
@@ -91,15 +85,23 @@ class ForeignKey(BaseStructure):
     to: type[AirModel] | str  # Class or string name for forward refs
 ```
 
-When `to` is a string, it resolves against `_table_registry` on first access. A `resolve()` method handles this:
+`ForeignKey` inherits `BasePresentation` like `PrimaryKey` does. Both are structural in nature, but every consumer in the codebase checks for specific types (`isinstance(m, PrimaryKey)`, `isinstance(m, ForeignKey)`), not the base class. Introducing a second base class would add a classification decision for every future metadata type without a concrete consumer. If that changes, the base class split is a single-commit refactor.
+
+**Resolution.** `resolve()` accepts the registry as a parameter to avoid circular imports between `field/types.py` and `model/main.py`:
 
 ```python
-def resolve(self) -> type[AirModel]:
-    """Return the resolved AirModel class. Raises if not found."""
+def resolve(self, registry: list[type]) -> type:
+    """Return the resolved AirModel class.
+
+    Args:
+        registry: The model registry (_table_registry from model/main.py).
+
+    Raises:
+        ValueError: If the string target is not found in the registry.
+    """
     if isinstance(self.to, str):
-        for cls in _table_registry:
+        for cls in registry:
             if cls.__name__ == self.to:
-                # Cache the resolved class
                 object.__setattr__(self, 'to', cls)
                 return cls
         msg = f"ForeignKey target '{self.to}' not found in registered models"
@@ -107,9 +109,17 @@ def resolve(self) -> type[AirModel]:
     return self.to
 ```
 
-Note: `_table_registry` is in `src/air/model/main.py`. To avoid circular imports, `ForeignKey.resolve()` imports it lazily or accepts the registry as a parameter.
+The `object.__setattr__` on a frozen dataclass is the standard Python pattern for lazy initialization on immutable objects (`functools.cached_property` does the same thing). `ForeignKey` instances live in `field_info.metadata` and are shared across all uses of a model class, so this is effectively a one-time class-level cache.
 
-#### 3. AirField: new `foreign_key` parameter
+Callers pass the registry explicitly:
+
+```python
+# In _column_defs, _add_column_sql, _topological_sort:
+from air.model.main import _table_registry
+target = fk.resolve(_table_registry)
+```
+
+#### 2. AirField: new `foreign_key` parameter
 
 In `src/air/field/main.py`:
 
@@ -128,8 +138,8 @@ def AirField(
 Validation at call time:
 - `foreign_key` and `choices` are mutually exclusive (raise `ValueError`)
 - `foreign_key` and `primary_key` are mutually exclusive (raise `ValueError`)
+- If `foreign_key` is a class (not a string), validate `issubclass(foreign_key, AirModel)` immediately. This catches `AirField(foreign_key=str)` or `AirField(foreign_key=42)` at definition time rather than at SQL generation.
 
-When `foreign_key` is provided:
 ```python
 if foreign_key is not None:
     if choices:
@@ -138,10 +148,17 @@ if foreign_key is not None:
     if primary_key:
         msg = "foreign_key and primary_key are mutually exclusive"
         raise ValueError(msg)
-    field_info.metadata.append(ForeignKey(to=foreign_key))
+    if isinstance(foreign_key, str):
+        # String forward reference, validated lazily at resolve() time
+        field_info.metadata.append(ForeignKey(to=foreign_key))
+    else:
+        if not (isinstance(foreign_key, type) and issubclass(foreign_key, AirModel)):
+            msg = f"foreign_key must be an AirModel subclass or string, got {foreign_key!r}"
+            raise TypeError(msg)
+        field_info.metadata.append(ForeignKey(to=foreign_key))
 ```
 
-#### 4. SQL generation: REFERENCES constraint
+#### 3. SQL generation: REFERENCES constraint
 
 In `_column_defs()`, when a field has `ForeignKey` metadata, append the constraint:
 
@@ -149,7 +166,7 @@ In `_column_defs()`, when a field has `ForeignKey` metadata, append the constrai
 # After determining pg_type and constraint...
 fk = next((m for m in field_info.metadata if isinstance(m, ForeignKey)), None)
 if fk:
-    target = fk.resolve()
+    target = fk.resolve(_table_registry)
     target_table = target._table_name()
     target_pk = target._pk_field()
     constraint += f' REFERENCES "{target_table}"("{target_pk}")'
@@ -166,7 +183,7 @@ Produces:
 
 PostgreSQL enforces these constraints by default (no PRAGMA needed, unlike SQLite).
 
-#### 5. Table creation order: topological sort
+#### 4. Table creation order: topological sort
 
 `create_tables()` currently iterates `_table_registry` in registration order. If `Dango` registers before `Maker`, the `REFERENCES` clause targets a table that doesn't exist yet. PostgreSQL rejects this.
 
@@ -181,11 +198,16 @@ async def create_tables(self) -> None:
         # ... existing migration logic
 ```
 
-The sort function:
+The sort function skips self-references (a model is not a dependency of itself):
 
 ```python
 def _topological_sort(classes: list[type[AirModel]]) -> list[type[AirModel]]:
-    """Sort model classes so that FK targets come before dependents."""
+    """Sort model classes so that FK targets come before dependents.
+
+    Self-referential FKs (e.g., Category -> Category) are skipped
+    when building the dependency graph. PostgreSQL allows a table's
+    REFERENCES to point to itself within the same CREATE TABLE.
+    """
     # Build adjacency: cls -> set of classes it depends on
     deps: dict[type, set[type]] = {}
     for cls in classes:
@@ -193,8 +215,8 @@ def _topological_sort(classes: list[type[AirModel]]) -> list[type[AirModel]]:
         for field_info in cls.model_fields.values():
             for m in field_info.metadata:
                 if isinstance(m, ForeignKey):
-                    target = m.resolve()
-                    if target in classes:
+                    target = m.resolve(_table_registry)
+                    if target in classes and target is not cls:
                         deps[cls].add(target)
 
     # Kahn's algorithm
@@ -216,7 +238,7 @@ def _topological_sort(classes: list[type[AirModel]]) -> list[type[AirModel]]:
     return result
 ```
 
-#### 6. `_add_column_sql`: REFERENCES for new FK columns
+#### 5. `_add_column_sql`: REFERENCES for new FK columns
 
 `_add_column_sql()` currently emits bare `ALTER TABLE ADD COLUMN "x" TYPE`. When the new column has `ForeignKey` metadata, append the constraint:
 
@@ -231,12 +253,16 @@ def _add_column_sql(cls, field_name: str) -> str:
 
     fk = next((m for m in field_info.metadata if isinstance(m, ForeignKey)), None)
     if fk:
-        target = fk.resolve()
+        target = fk.resolve(_table_registry)
         sql += f' REFERENCES "{target._table_name()}"("{target._pk_field()}")'
     return sql
 ```
 
 Note: `NOT NULL` is still omitted for ALTER TABLE (existing rows have no value). This is the existing behavior and correct for migrations.
+
+#### 6. `_meta_dict` update for ForeignKey visibility
+
+The form's `_meta_dict` helper (`form/main.py:69`) builds a metadata lookup dict filtered by `isinstance(m, BasePresentation)`. Since `ForeignKey` inherits `BasePresentation`, it will be visible to the form rendering pipeline. `pydantic_type_to_html_type()` and `_get_options()` can find it via the existing `_meta_dict` and `_get_meta` helpers with no changes to the lookup function.
 
 #### 7. AirForm: render FK fields as `<select>`
 
@@ -250,7 +276,7 @@ This is the hardest part. `render()` is sync. Fetching FK options requires a dat
 # In the view (already async)
 makers = await Maker.all()
 form = DangoForm(
-    fk_choices={"maker_id": [(m.id, str(m)) for m in makers]}
+    choices={"maker_id": [(m.id, str(m)) for m in makers]}
 )
 html = form.render()  # stays sync
 ```
@@ -259,18 +285,20 @@ html = form.render()  # stays sync
 
 Implementation:
 
-1. `AirForm.__init__` accepts an optional `fk_choices: dict[str, list[tuple[Any, str]]]` parameter.
+1. `AirForm.__init__` accepts an optional `choices: dict[str, list[tuple[Any, str]]]` parameter for dynamic choice overrides. This works for FK fields and for any field where choices need to be computed at render time. One mechanism, not two.
 
-2. In `render()`, before calling the widget, inject `Choices` metadata for FK fields that have pre-fetched options:
+2. On `__init__`, validate that every key in `choices` corresponds to an actual field on the model. Raise `ValueError` on unknown keys so typos like `choices={"maker_di": [...]}` fail immediately instead of rendering an empty select.
+
+3. In `render()`, before calling the widget, inject `Choices` metadata for fields that have dynamic choices:
 
 ```python
 def render(self) -> str:
     # ... existing CSRF logic ...
 
-    # Inject FK choices as Choices metadata
+    # Inject dynamic choices as Choices metadata
     effective_model = self.model
-    if self._fk_choices:
-        effective_model = self._inject_fk_choices()
+    if self._choices:
+        effective_model = self._inject_choices()
 
     fields_html = self.widget(
         model=effective_model,
@@ -281,17 +309,31 @@ def render(self) -> str:
     return SafeHTML(f"{csrf_html}\n{fields_html}")
 ```
 
-3. `pydantic_type_to_html_type()`: when `ForeignKey` metadata is present, return `"select"`. This makes FK fields render as selects even without pre-fetched choices (the select will just be empty, signaling a missing `fk_choices`).
+4. `pydantic_type_to_html_type()`: when `ForeignKey` metadata is present, return `"select"`. This makes FK fields render as selects. If no dynamic choices were provided, the select renders with just the "Select..." placeholder, signaling a missing `choices` argument.
 
-4. `_get_options()`: check for `ForeignKey` metadata. If `Choices` was injected (from pre-fetching), use those. Otherwise return an empty list.
+5. `_get_options()`: when `Choices` metadata is present (injected from dynamic choices), use it. This is already the existing code path. No changes needed.
 
 **Convenience helper** (on AirModel, not AirForm):
 
 ```python
 @classmethod
-async def as_choices(cls, *, label_field: str | None = None) -> list[tuple[Any, str]]:
-    """Fetch all rows and return as (pk_value, label) pairs for form selects."""
-    rows = await cls.all()
+async def as_choices(
+    cls,
+    *,
+    order_by: str | None = None,
+    limit: int | None = None,
+) -> list[tuple[Any, str]]:
+    """Fetch rows and return as (pk_value, label) pairs for form selects.
+
+    Uses str(record) for the label. Define __str__ on the model
+    to control the display. Falls back to "ClassName #pk".
+
+    Args:
+        order_by: Optional field name to sort by. Prefix with "-"
+            for descending.
+        limit: Maximum number of options to return.
+    """
+    rows = await cls.all(order_by=order_by, limit=limit)
     pk = cls._pk_field()
     return [(getattr(r, pk), str(r)) for r in rows]
 ```
@@ -301,7 +343,7 @@ Usage in a view:
 ```python
 async def dango_form_view(request):
     form = DangoForm(
-        fk_choices={"maker_id": await Maker.as_choices()}
+        choices={"maker_id": await Maker.as_choices(order_by="name")}
     )
     return templates.TemplateResponse(request, "form.html", {"form": form})
 ```
@@ -329,6 +371,43 @@ The `<select>` renders:
 </select>
 ```
 
+#### 9. FK indexes
+
+PostgreSQL does not automatically create indexes on FK columns. Without an index, filtering or joining on a FK column does a sequential scan, and deleting a parent row scans the child table to check for references.
+
+`_column_defs()` and `_add_column_sql()` should record FK columns, and `create_tables()` should emit `CREATE INDEX IF NOT EXISTS` for each:
+
+```sql
+CREATE INDEX IF NOT EXISTS "idx_mochi_dango_maker_id" ON "mochi_dango"("maker_id")
+```
+
+The index name follows the pattern `idx_{table}_{column}`.
+
+## Deletion behavior
+
+The spec explicitly does not include cascading deletes. PostgreSQL's default FK enforcement is `NO ACTION` (equivalent to `RESTRICT` at end-of-statement). This means:
+
+- Deleting a parent row that is still referenced by child rows raises `asyncpg.ForeignKeyViolationError`
+- Users must delete or reassign child rows before deleting the parent
+- Air does not catch or wrap this error; it propagates as a database error with PostgreSQL's native message
+
+A future `on_delete` parameter can change this behavior (e.g., `CASCADE`, `SET NULL`). That is a separate feature.
+
+## Migration limitations
+
+Adding `foreign_key=Maker` to an existing column that already has data requires care:
+
+- **New column:** `_add_column_sql()` emits `REFERENCES` in the `ALTER TABLE ADD COLUMN` statement. Works automatically.
+- **Existing column:** If `maker_id` already exists in the database, `create_tables()` skips it (column already present). The `REFERENCES` constraint is never applied. Users must add the constraint manually:
+
+```sql
+ALTER TABLE "mochi_dango"
+    ADD CONSTRAINT "fk_mochi_dango_maker_id"
+    FOREIGN KEY ("maker_id") REFERENCES "mochi_maker"("id");
+```
+
+This is a known limitation. Air's migration system is additive (add columns, never drop or alter). Full schema migration (altering constraints, changing types, dropping columns) is out of scope and best handled by a dedicated migration tool.
+
 ## What this does NOT include
 
 - **Cascading deletes:** handle at the application level or add later with `on_delete` parameter
@@ -336,25 +415,27 @@ The `<select>` renders:
 - **Join queries / select_related:** a separate feature
 - **Composite foreign keys:** not needed, all PKs are single-column BIGSERIAL
 - **Automatic option fetching in forms:** views pre-fetch FK choices explicitly. No hidden queries.
+- **FK existence validation on form submit:** Pydantic validates the field as `int`. The database enforces the constraint. Air does not add a pre-INSERT query to check FK existence.
+- **Constraint migration for existing columns:** see Migration limitations above
 
 ## Implementation plan
 
-1. Add `BaseStructure` base class to `src/air/field/types.py`
-2. Move `PrimaryKey` from `BasePresentation` to `BaseStructure`
-3. Add `ForeignKey` metadata class to `src/air/field/types.py` (with `resolve()` and string support)
-4. Add `foreign_key` parameter to `AirField()` in `src/air/field/main.py` (with mutual-exclusivity validation)
-5. Update `_column_defs()` in `src/air/model/main.py` to emit `REFERENCES`
-6. Update `_add_column_sql()` to emit `REFERENCES` for FK columns
-7. Add `_topological_sort()` and use it in `create_tables()`
-8. Add `as_choices()` class method to `AirModel`
-9. Update `pydantic_type_to_html_type()` to return `"select"` for FK fields
-10. Add `fk_choices` parameter to `AirForm.__init__` and inject into rendering
-11. Tests for each layer
+1. Add `ForeignKey` metadata class to `src/air/field/types.py` (with `resolve(registry)` and string support)
+2. Add `foreign_key` parameter to `AirField()` in `src/air/field/main.py` (with mutual-exclusivity and `issubclass` validation)
+3. Update `_column_defs()` in `src/air/model/main.py` to emit `REFERENCES`
+4. Update `_add_column_sql()` to emit `REFERENCES` for FK columns
+5. Add `_topological_sort()` (with self-reference handling) and use it in `create_tables()`
+6. Emit `CREATE INDEX IF NOT EXISTS` for FK columns in `create_tables()`
+7. Add `as_choices()` class method to `AirModel` (with `order_by` and `limit`)
+8. Update `pydantic_type_to_html_type()` to return `"select"` for FK fields
+9. Add `choices` parameter to `AirForm.__init__` with key validation, inject into rendering
+10. Tests for each layer
 
 ## Test cases
 
 ```python
-# SQL generation
+# --- SQL generation ---
+
 class Maker(AirModel):
     id: int | None = AirField(default=None, primary_key=True)
     name: str
@@ -368,15 +449,41 @@ assert 'REFERENCES' in sql
 assert '"maker_id" INTEGER NOT NULL REFERENCES' in sql
 
 # Optional FK
-class Dango(AirModel):
+class DangoOptional(AirModel):
     id: int | None = AirField(default=None, primary_key=True)
     order_id: int | None = AirField(default=None, foreign_key=Order)
 
-sql = Dango._create_table_sql()
+sql = DangoOptional._create_table_sql()
 assert '"order_id" INTEGER REFERENCES' in sql
 assert 'NOT NULL' not in sql.split('order_id')[1].split('\n')[0]
 
-# String forward reference
+# Multiple FKs to the same target
+class User(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    name: str
+
+class Document(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    created_by: int = AirField(foreign_key=User)
+    updated_by: int = AirField(foreign_key=User)
+
+sql = Document._create_table_sql()
+assert sql.count('REFERENCES') == 2
+assert '"created_by" INTEGER NOT NULL REFERENCES' in sql
+assert '"updated_by" INTEGER NOT NULL REFERENCES' in sql
+
+# Self-referential FK
+class Category(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    name: str
+    parent_id: int | None = AirField(default=None, foreign_key="Category")
+
+sql = Category._create_table_sql()
+assert 'REFERENCES' in sql
+assert '"parent_id" INTEGER REFERENCES' in sql
+
+# --- Forward references ---
+
 class Child(AirModel):
     id: int | None = AirField(default=None, primary_key=True)
     parent_id: int = AirField(foreign_key="Parent")
@@ -389,26 +496,76 @@ class Parent(AirModel):
 sql = Child._create_table_sql()
 assert 'REFERENCES' in sql
 
-# Mutual exclusivity
+# Unresolvable string reference
+class Orphan(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    bad_id: int = AirField(foreign_key="DoesNotExist")
+
+with pytest.raises(ValueError, match="not found in registered models"):
+    Orphan._create_table_sql()
+
+# --- Validation ---
+
+# Mutual exclusivity: foreign_key + choices
 with pytest.raises(ValueError, match="mutually exclusive"):
     AirField(foreign_key=Maker, choices=[(1, "a")])
 
-# Topological sort
+# Mutual exclusivity: foreign_key + primary_key
+with pytest.raises(ValueError, match="mutually exclusive"):
+    AirField(foreign_key=Maker, primary_key=True)
+
+# Non-AirModel class reference
+with pytest.raises(TypeError, match="AirModel subclass"):
+    AirField(foreign_key=str)
+
+# Non-class, non-string reference
+with pytest.raises(TypeError, match="AirModel subclass"):
+    AirField(foreign_key=42)
+
+# --- Topological sort ---
+
 sorted_classes = _topological_sort([Dango, Maker])
 assert sorted_classes.index(Maker) < sorted_classes.index(Dango)
 
-# ALTER TABLE includes REFERENCES
+# Self-referential FK does not cause circular dependency error
+sorted_classes = _topological_sort([Category])
+assert sorted_classes == [Category]
+
+# --- ALTER TABLE ---
+
 sql = Dango._add_column_sql("maker_id")
 assert 'REFERENCES' in sql
 
-# Form rendering
-form = DangoForm(fk_choices={"maker_id": [(1, "Kuma-san"), (2, "Tanuki")]})
+# --- Form rendering ---
+
+form = DangoForm(choices={"maker_id": [(1, "Kuma-san"), (2, "Tanuki")]})
 html = form.render()
 assert '<select' in html
 assert 'name="maker_id"' in html
 assert 'Kuma-san' in html
 
-# as_choices helper
+# Edit form pre-selects current value
+form = DangoForm(
+    initial_data={"maker_id": 2},
+    choices={"maker_id": [(1, "Kuma-san"), (2, "Tanuki")]},
+)
+html = form.render()
+assert 'value="2" selected' in html or 'value="2"selected' in html
+
+# Misspelled choices key raises immediately
+with pytest.raises(ValueError, match="maker_di"):
+    DangoForm(choices={"maker_di": [(1, "Kuma-san")]})
+
+# --- as_choices helper ---
+
 choices = await Maker.as_choices()
 assert choices == [(1, "Kuma-san"), (2, "Tanuki Mochi Co")]
+
+# With ordering
+choices = await Maker.as_choices(order_by="name")
+assert choices[0][1] == "Kuma-san"  # alphabetical
+
+# With limit
+choices = await Maker.as_choices(limit=1)
+assert len(choices) == 1
 ```
