@@ -151,7 +151,9 @@ Callable[*, model, data, errors, excludes] -> str
 Callable[*, model, data, errors, excludes, choices] -> str
 ```
 
-`default_form_widget` accepts `choices` and passes it through to `_get_options`, which checks `choices.get(field_name)` before falling back to the existing metadata/Enum/Literal sources.
+`default_form_widget` accepts `choices` and passes it to `_get_options`, which takes `field_name` as a new parameter so it can look up `choices.get(field_name)` before falling back to the existing metadata/Enum/Literal sources. Both signature changes (the widget callable and `_get_options`) happen together.
+
+**Value stringification.** The existing select renderer calls `html.escape(opt_val)` on each option value and compares `str(value) == opt_val` for pre-selection. `_get_options` already stringifies values for the `Choices` metadata path via `[(str(v), lbl) for v, lbl in choices.options]`. Dynamic choices coming in as `list[tuple[Any, str]]` (with `Any` typically being an int PK) must hit the same stringification before reaching the template. Rather than stringifying at every call site, harden the render site itself: change `escape(opt_val)` to `escape(str(opt_val))` and `str(value) == opt_val` to `str(value) == str(opt_val)`. This also closes a latent bug in the existing `Enum` path, where enums with int values currently crash `html.escape`.
 
 This is the only approach that avoids shared-state mutation. The alternatives were:
 - **Mutate `field_info.metadata` at render time** to inject `Choices`. Rejected: `model_fields` is class-level state shared across every form instance and every request. Mutation during render, even with try/finally, makes the render path non-reentrant and creates thread-safety bugs under concurrent async requests.
@@ -336,7 +338,7 @@ This is a known limitation. Air's migration system is additive (add columns, nev
 8. Add `related()` instance method to `AirModel`
 9. Add `select_related` parameter to `all()`, `filter()`, and `get()` with `_load_related()` helper. **Remove the empty-kwargs delegation** at `filter()` (currently `if not kwargs: return await cls.all(...)`) so `select_related` is handled in one path. The delegation silently drops any new parameter that isn't explicitly forwarded, which is how a parameter like `select_related` can get lost. Each method handles its own query building.
 10. Update `pydantic_type_to_html_type()` to return `"select"` for FK fields
-11. Add `choices` parameter to `AirForm.__init__` with key validation. Grow the widget callable protocol to accept `choices`, thread it through `default_form_widget` to `_get_options` so dynamic choices take precedence over metadata.
+11. Add `choices` parameter to `AirForm.__init__` with key validation. Grow the widget callable protocol and `_get_options` to accept `choices` and `field_name`, thread them through `default_form_widget` so dynamic choices take precedence over metadata. Harden the select render site to call `escape(str(opt_val))` and `str(value) == str(opt_val)` so int PK values from `as_choices()` (and int-valued Enums) don't crash `html.escape`.
 12. Tests for each layer
 
 ## Test cases
@@ -382,7 +384,7 @@ class DangoOptional(AirModel):
 
 sql = DangoOptional._create_table_sql()
 assert '"order_id" INTEGER REFERENCES' in sql
-assert 'NOT NULL' not in sql.split('order_id')[1].split('\n')[0]
+assert '"order_id" INTEGER NOT NULL' not in sql
 assert 'ON DELETE SET NULL' in sql
 
 # set_null on non-nullable field raises
