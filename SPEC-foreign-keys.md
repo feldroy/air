@@ -1,5 +1,7 @@
 # Foreign Key Support for AirModel, AirField, and AirForm
 
+This spec targets the integrated `air` package (`air.model`, `air.field`, and `air.form` inside `src/air/`). The old standalone `AirModel`, `AirField`, and `AirForm` distributions are deprecated and are not the implementation target for this work.
+
 ## The problem
 
 Foreign key fields are plain `int` with no relationship metadata. This means:
@@ -43,17 +45,28 @@ class Dango(AirModel):
 
 #### Forward references
 
-When models reference each other, the target may not be defined yet. Accept either the class or a string name:
+When models reference each other, the target may not be defined yet. Accept either the class, a bare class-name string, or a fully-qualified string:
 
 ```python
 # Class reference (target already defined)
 maker_id: int = AirField(foreign_key=Maker)
 
-# String reference (target defined later or circular)
+# Bare string reference (target defined later or circular)
 maker_id: int = AirField(foreign_key="Maker")
+
+# Fully-qualified string reference (required when names are ambiguous)
+maker_id: int = AirField(foreign_key="shop.models.Maker")
 ```
 
-String references resolve lazily against `_table_registry` at first use (SQL generation or form rendering), not at class definition time. Resolution searches by class name, not table name.
+String references resolve lazily against `_table_registry` at first use (SQL generation, table ordering, or form rendering), not at class definition time.
+
+Resolution rules:
+
+1. If the string contains a dot, treat it as `module_path.ClassName` and require an exact match on `cls.__module__` + `cls.__name__`.
+2. If the string is bare and matches the declaring model's own class name, resolve it as a self-reference.
+3. Otherwise, search registered models by class name. One match resolves successfully. Zero matches raise `ValueError`. More than one match raises `ValueError` instructing the user to use a fully-qualified string.
+
+Resolution never falls back to table names. Caching happens only after a target resolves unambiguously, so a bare `"User"` never silently pins itself to the wrong model in Air's global registry.
 
 #### Self-referential foreign keys
 
@@ -107,13 +120,28 @@ dangos = await Dango.filter(flavor="matcha", select_related=["maker"])
 dango = await Dango.get(id=1, select_related=["maker"])
 ```
 
-`select_related` accepts relation names, not field names. The relation name is the FK field name with `_id` stripped: `maker_id` becomes `maker`. For FK fields that don't end in `_id`, the relation name is the field name itself. The resolved object is attached as an attribute with the relation name.
+`select_related` accepts relation attribute names, not database column names. Relation attributes are derived deterministically from the FK field name:
+
+- FK fields ending in `_id` strip that suffix: `maker_id` becomes `maker`
+- FK fields without `_id` get an `_obj` suffix: `created_by` becomes `created_by_obj`
+
+The resolved object is attached on that derived attribute, while the original scalar FK field stays unchanged.
+
+```python
+docs = await Document.all(select_related=["created_by_obj", "updated_by_obj"])
+print(docs[0].created_by)       # 7
+print(docs[0].created_by_obj)   # User(...)
+```
 
 If a model has both a declared field and a FK that would produce the same relation name, that is a modeling error and raises `ValueError` at definition time.
 
 **Implementation strategy: batch query, not JOIN.** For each FK field in `select_related`, collect all unique FK values from the result set, fetch the referenced records in one `__in` query, and attach them. This produces at most N+1 queries where N is the number of `select_related` fields (typically 1-3), not N+1 where N is the number of rows.
 
-Eagerly-loaded attributes are transient, read-only, and not part of the Pydantic model. `model_dump()` excludes them. They are set via `object.__setattr__` (the same pattern `save()` and `delete()` already use). Optional FK fields with a NULL value get `None` as the attached attribute.
+Eagerly-loaded attributes are transient, read-only, and not part of the Pydantic model. `model_dump()` excludes them. They are set via `object.__setattr__` (the same pattern `save()` and `delete()` already use).
+
+Optional FK fields with a NULL value get `None` as the attached attribute. Legacy orphaned rows are also tolerated: if a FK column contains a non-NULL value but the referenced parent row does not exist, `select_related` attaches `None` on the relation attribute and leaves the raw FK column untouched. This lets apps inspect and repair old data instead of crashing on read.
+
+Loaded relation attributes must not go stale. The implementation keeps a per-instance record of which relation attributes were attached by `select_related`, and every mutating instance method (`save()` and `delete()`) clears those transient attributes before returning. Correctness wins over cache reuse.
 
 ### Form rendering
 
@@ -141,17 +169,19 @@ When `ForeignKey` metadata is present on a field, `pydantic_type_to_html_type()`
 
 `ForeignKey` inherits `BasePresentation`, so it is visible to the form's `_meta_dict` helper with no changes to the lookup function.
 
-**Plumbing dynamic choices to the renderer.** `AirForm.render()` passes `self._choices` to the widget. The widget callable protocol grows one parameter:
+**Plumbing dynamic choices to the renderer.** `AirForm.render()` passes `self._choices` to widgets that opt in. The public widget contract stays backward compatible.
 
 ```python
-# Before:
+# Existing widgets keep working:
 Callable[*, model, data, errors, excludes] -> str
 
-# After:
-Callable[*, model, data, errors, excludes, choices] -> str
+# Widgets that want dynamic choices can opt in:
+Callable[*, model, data, errors, excludes, choices=None] -> str
 ```
 
-`default_form_widget` accepts `choices` and passes it to `_get_options`, which takes `field_name` as a new parameter so it can look up `choices.get(field_name)` before falling back to the existing metadata/Enum/Literal sources. Both signature changes (the widget callable and `_get_options`) happen together.
+`default_form_widget` accepts an optional `choices` keyword and passes it to `_get_options`, which takes `field_name` as a new parameter so it can look up `choices.get(field_name)` before falling back to the existing metadata/Enum/Literal sources.
+
+`AirForm.render()` preserves compatibility by checking whether the widget accepts `choices` (or `**kwargs`). If it does, pass `choices=self._choices`. If it does not, call the widget with the legacy signature. Existing custom widgets keep rendering unchanged; custom widgets that delegate to `default_form_widget` can opt in by adding `choices=None` and passing it through.
 
 **Value stringification.** The existing select renderer calls `html.escape(opt_val)` on each option value and compares `str(value) == opt_val` for pre-selection. `_get_options` already stringifies values for the `Choices` metadata path via `[(str(v), lbl) for v, lbl in choices.options]`. Dynamic choices coming in as `list[tuple[Any, str]]` (with `Any` typically being an int PK) must hit the same stringification before reaching the template. Rather than stringifying at every call site, harden the render site itself: change `escape(opt_val)` to `escape(str(opt_val))` and `str(value) == opt_val` to `str(value) == str(opt_val)`. This also closes a latent bug in the existing `Enum` path, where enums with int values currently crash `html.escape`.
 
@@ -160,7 +190,7 @@ This is the only approach that avoids shared-state mutation. The alternatives we
 - **Synthesize a per-render model subclass** via `create_model()` with `Choices` metadata injected. Rejected: creates a new Pydantic class on every render, and if it inherits from `AirModel` it pollutes `_table_registry`.
 - **Stuff choices into the `data` dict.** Rejected: `data` means "the current value of each field." Overloading it with "the set of allowable values" conflates two concerns.
 
-Growing the widget protocol by one parameter is a documented contract change. Custom widgets that don't care about dynamic choices can accept `**kwargs` and ignore it.
+This keeps the feature additive instead of turning it into a runtime-breaking API change.
 
 **Convenience helper** (on AirModel, not AirForm):
 
@@ -217,7 +247,7 @@ class ForeignKey(BasePresentation):
 
 `ForeignKey` inherits `BasePresentation` like `PrimaryKey` does. Both are structural in nature, but every consumer in the codebase checks for specific types (`isinstance(m, PrimaryKey)`, `isinstance(m, ForeignKey)`), not the base class. Introducing a second base class would add a classification decision for every future metadata type without a concrete consumer. If that changes, the base class split is a single-commit refactor.
 
-**Resolution.** `resolve()` accepts the registry as a parameter to avoid circular imports between `field/types.py` and `model/main.py`. It searches the registry by class name (`cls.__name__`), not table name. When a string target is resolved, the result is cached on the instance via `object.__setattr__` (the standard Python pattern for lazy initialization on frozen objects). This is effectively a one-time class-level cache since `ForeignKey` instances are shared via `field_info.metadata`.
+**Resolution.** `resolve()` accepts both the declaring model class and the registry as parameters to avoid circular imports between `field/types.py` and `model/main.py`, and to support self-references plus fully-qualified disambiguation. It never resolves by table name. When a string target resolves unambiguously, the result is cached on the instance via `object.__setattr__` (the standard Python pattern for lazy initialization on frozen objects). This is effectively a one-time class-level cache since `ForeignKey` instances are shared via `field_info.metadata`.
 
 #### 2. AirField: new `foreign_key` and `on_delete` parameters
 
@@ -246,7 +276,7 @@ Validation at call time:
 
 #### 3. SQL generation
 
-When a field has `ForeignKey` metadata, `_column_defs()` appends the `REFERENCES` and `ON DELETE` clause:
+When a field has `ForeignKey` metadata, `_column_defs()` appends the `REFERENCES` and `ON DELETE` clause. The referenced column is the target model's actual primary-key field, not a hard-coded `"id"` assumption.
 
 ```sql
 -- Required FK with cascade
@@ -328,7 +358,7 @@ This is a known limitation. Air's migration system is additive (add columns, nev
 
 ## Implementation plan
 
-1. Add `ForeignKey` metadata class to `src/air/field/types.py` (with `resolve(registry)`, string support, `Literal` on_delete)
+1. Add `ForeignKey` metadata class to `src/air/field/types.py` (with `resolve(owner_cls, registry)`, string support, fully-qualified disambiguation, and `Literal` on_delete)
 2. Add `foreign_key` and `on_delete` parameters to `AirField()` in `src/air/field/main.py` (with mutual-exclusivity, `issubclass`, and `on_delete` validation)
 3. Update `_column_defs()` in `src/air/model/main.py` to emit `REFERENCES ... ON DELETE`
 4. Update `_add_column_sql()` to emit `REFERENCES ... ON DELETE` for FK columns
@@ -336,9 +366,9 @@ This is a known limitation. Air's migration system is additive (add columns, nev
 6. Emit `CREATE INDEX IF NOT EXISTS` for FK columns in `create_tables()`
 7. Add `as_choices()` class method to `AirModel` (with `order_by` and `limit`)
 8. Add `related()` instance method to `AirModel`
-9. Add `select_related` parameter to `all()`, `filter()`, and `get()` with `_load_related()` helper. **Remove the empty-kwargs delegation** at `filter()` (currently `if not kwargs: return await cls.all(...)`) so `select_related` is handled in one path. The delegation silently drops any new parameter that isn't explicitly forwarded, which is how a parameter like `select_related` can get lost. Each method handles its own query building.
+9. Add relation-name helpers and `select_related` parameter to `all()`, `filter()`, and `get()` with `_load_related()` helper. Use collision-free derived relation attributes (`maker`, `created_by_obj`, etc.), tolerate orphaned targets by attaching `None`, and track loaded relation attributes so `save()` and `delete()` can clear them. **Remove the empty-kwargs delegation** at `filter()` (currently `if not kwargs: return await cls.all(...)`) so `select_related` is handled in one path. The delegation silently drops any new parameter that isn't explicitly forwarded, which is how a parameter like `select_related` can get lost. Each method handles its own query building.
 10. Update `pydantic_type_to_html_type()` to return `"select"` for FK fields
-11. Add `choices` parameter to `AirForm.__init__` with key validation. Grow the widget callable protocol and `_get_options` to accept `choices` and `field_name`, thread them through `default_form_widget` so dynamic choices take precedence over metadata. Harden the select render site to call `escape(str(opt_val))` and `str(value) == str(opt_val)` so int PK values from `as_choices()` (and int-valued Enums) don't crash `html.escape`.
+11. Add `choices` parameter to `AirForm.__init__` with key validation. Extend `_get_options` to accept `choices` and `field_name`, thread them through `default_form_widget` so dynamic choices take precedence over metadata, and keep `AirForm.render()` backward compatible by only passing `choices=` to widgets that accept it. Harden the select render site to call `escape(str(opt_val))` and `str(value) == str(opt_val)` so int PK values from `as_choices()` (and int-valued Enums) don't crash `html.escape`.
 12. Tests for each layer
 
 ## Test cases
@@ -434,6 +464,15 @@ class Parent(AirModel):
 # Resolves at SQL generation time, not definition time
 sql = Child._create_table_sql()
 assert 'REFERENCES' in sql
+
+# Ambiguous bare string reference requires a fully-qualified target
+# (setup omitted: another registered model class also named Parent)
+class AnotherChild(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    parent_id: int = AirField(foreign_key="Parent")
+
+with pytest.raises(ValueError, match="fully-qualified"):
+    AnotherChild._create_table_sql()
 
 # Unresolvable string reference
 class Orphan(AirModel):
@@ -542,6 +581,29 @@ dumped = dango.model_dump()
 assert "maker" not in dumped
 assert "maker_id" in dumped
 
+# save() clears transient eager-loaded relations so they cannot go stale
+other_maker = await Maker.create(name="Tanuki")
+dango = await Dango.get(id=d1.id, select_related=["maker"])
+dango.maker_id = other_maker.id
+await dango.save(update_fields=["maker_id"])
+assert not hasattr(dango, "maker")
+
+# Non-_id FKs use an _obj relation attribute
+class AuditLog(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    created_by: int = AirField(foreign_key=User)
+
+log = await AuditLog.create(created_by=user.id)
+results = await AuditLog.all(select_related=["created_by_obj"])
+assert results[0].created_by == user.id
+assert results[0].created_by_obj.name == "Audrey"
+
+# Orphaned FK values are tolerated during eager loading
+# (setup omitted: a legacy row with created_by=123456 was inserted
+# before the FK constraint existed, or via manual SQL)
+rows = await AuditLog.all(select_related=["created_by_obj"])
+assert any(row.created_by == 123456 and row.created_by_obj is None for row in rows)
+
 # Invalid relation name in select_related
 with pytest.raises(ValueError, match="Unknown"):
     await Dango.all(select_related=["nonexistent"])
@@ -569,6 +631,31 @@ assert 'value="2" selected' in html or 'value="2"selected' in html
 # Misspelled choices key raises immediately
 with pytest.raises(ValueError, match="maker_di"):
     DangoForm(choices={"maker_di": [(1, "Kuma-san")]})
+
+# Legacy custom widgets still render without accepting choices=
+def legacy_widget(*, model, data=None, errors=None, excludes=None) -> str:
+    return "<p>legacy ok</p>"
+
+class LegacyDangoForm(AirForm[Dango]):
+    widget = staticmethod(legacy_widget)
+
+assert "legacy ok" in LegacyDangoForm().render()
+
+# Widgets can opt in to dynamic choices
+def choices_widget(*, model, data=None, errors=None, excludes=None, choices=None) -> str:
+    assert choices == {"maker_id": [(1, "Kuma-san")]}
+    return default_form_widget(
+        model=model,
+        data=data,
+        errors=errors,
+        excludes=excludes,
+        choices=choices,
+    )
+
+class ChoicesDangoForm(AirForm[Dango]):
+    widget = staticmethod(choices_widget)
+
+ChoicesDangoForm(choices={"maker_id": [(1, "Kuma-san")]}).render()
 
 # --- as_choices helper ---
 
