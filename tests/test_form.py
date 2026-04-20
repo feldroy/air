@@ -424,6 +424,44 @@ def test_render_airfield_choices_with_selected() -> None:
     assert 'value="healer" selected' in html
 
 
+def test_render_dynamic_choices_turn_plain_field_into_select() -> None:
+    class TeaOrderModel(BaseModel):
+        syrup: str
+
+    class TeaOrderForm(AirForm[TeaOrderModel]):
+        pass
+
+    html = TeaOrderForm(choices={"syrup": [("brown_sugar", "Brown Sugar"), ("honey", "Honey")]}).render()
+    assert "<select" in html
+    assert 'name="syrup"' in html
+    assert '<option value="brown_sugar">Brown Sugar</option>' in html
+
+
+def test_render_dynamic_choices_preselects_non_string_values() -> None:
+    class MakerModel(BaseModel):
+        maker_id: int
+
+    class MakerForm(AirForm[MakerModel]):
+        pass
+
+    html = MakerForm(
+        {"maker_id": 2},
+        choices={"maker_id": [(1, "Kuma-san"), (2, "Tanuki")]},
+    ).render()
+    assert 'value="2" selected' in html
+
+
+def test_airform_choices_unknown_field_raises() -> None:
+    class TeaOrderModel(BaseModel):
+        syrup: str
+
+    class TeaOrderForm(AirForm[TeaOrderModel]):
+        pass
+
+    with pytest.raises(ValueError, match="sryup"):
+        TeaOrderForm(choices={"sryup": [("brown_sugar", "Brown Sugar")]})
+
+
 def test_render_airfield_autofocus() -> None:
     class CompanionModel(BaseModel):
         name: str = AirField(label="Name", autofocus=True)
@@ -718,6 +756,48 @@ def test_custom_widget_swap() -> None:
     html = CompanionForm().render()
     assert "<p>Fill this out or the barkeep gets cross.</p>" in html
     assert 'name="csrf_token"' in html  # CSRF token still included
+
+
+def test_custom_widget_without_choices_keyword_still_renders() -> None:
+    class CompanionModel(BaseModel):
+        name: str
+
+    def tavern_widget(
+        *, model: type, data: dict | None = None, errors: list | None = None, excludes: set | None = None
+    ) -> str:
+        return "<p>legacy widget</p>"
+
+    class CompanionForm(AirForm[CompanionModel]):
+        widget = staticmethod(tavern_widget)
+
+    html = CompanionForm(choices={"name": [("k", "Konstantina")]}).render()
+    assert "<p>legacy widget</p>" in html
+
+
+def test_custom_widget_with_choices_keyword_receives_dynamic_choices() -> None:
+    class CompanionModel(BaseModel):
+        role: str
+
+    seen: dict[str, list[tuple[str, str]]] | None = None
+
+    def tavern_widget(
+        *,
+        model: type,
+        data: dict | None = None,
+        errors: list | None = None,
+        excludes: set | None = None,
+        choices: dict[str, list[tuple[str, str]]] | None = None,
+    ) -> str:
+        nonlocal seen
+        seen = choices
+        return default_form_widget(model=model, data=data, errors=errors, excludes=excludes, choices=choices)
+
+    class CompanionForm(AirForm[CompanionModel]):
+        widget = staticmethod(tavern_widget)
+
+    html = CompanionForm(choices={"role": [("tank", "Tank")]}).render()
+    assert seen == {"role": [("tank", "Tank")]}
+    assert '<option value="tank">Tank</option>' in html
 
 
 # ── Empty string vs. too-short error message tests (pottery/ceramics) ──
