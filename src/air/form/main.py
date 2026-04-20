@@ -10,6 +10,7 @@ AirField metadata vocabulary.
 
 from __future__ import annotations
 
+import inspect
 from enum import Enum
 from html import escape
 from types import UnionType
@@ -18,7 +19,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self, Union, get_args,
 import annotated_types
 from pydantic import BaseModel, ValidationError
 
-from air.field import Autofocus, Label, Widget
+from air.field import Autofocus, ForeignKey, Label, Widget
 from air.field.types import (
     BasePresentation,
     Choices,
@@ -101,6 +102,8 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
         return widget.kind
     if Choices in meta:
         return "select"
+    if ForeignKey in meta:
+        return "select"
 
     annotation = field_info.annotation
     if annotation is bool:
@@ -115,8 +118,16 @@ def pydantic_type_to_html_type(field_info: Any) -> str:
     return "text"
 
 
-def _get_options(annotation: Any, meta: dict[type, BasePresentation]) -> list[tuple[str, str]]:
+def _get_options(
+    annotation: Any,
+    meta: dict[type, BasePresentation],
+    *,
+    field_name: str | None = None,
+    choices: dict[str, list[tuple[Any, str]]] | None = None,
+) -> list[tuple[str, str]]:
     """Get select/dropdown options from metadata or type."""
+    if field_name is not None and choices is not None and field_name in choices:
+        return [(str(v), lbl) for v, lbl in choices[field_name]]
     choices = _get_meta(meta, Choices)
     if choices:
         return [(str(v), lbl) for v, lbl in choices.options]
@@ -197,6 +208,7 @@ def default_form_widget(  # noqa: C901
     data: dict | None = None,
     errors: list | None = None,
     excludes: set[str] | None = None,
+    choices: dict[str, list[tuple[Any, str]]] | None = None,
 ) -> str:
     """Render form fields for a Pydantic model as HTML.
 
@@ -231,7 +243,7 @@ def default_form_widget(  # noqa: C901
         if readonly and readonly.in_context("form"):
             continue
 
-        input_type = pydantic_type_to_html_type(field_info)
+        input_type = "select" if choices is not None and field_name in choices else pydantic_type_to_html_type(field_info)
         label_text = label_for_field(field_name, field_info)
         error = error_dict.get(field_name)
         value = data.get(field_name) if data is not None else None
@@ -291,14 +303,14 @@ def default_form_widget(  # noqa: C901
             parts.append(f"  <textarea{_attr_str(input_attrs)}>{val}</textarea>")
 
         elif input_type == "select":
-            options = _get_options(annotation, meta)
+            options = _get_options(annotation, meta, field_name=field_name, choices=choices)
             parts.extend((
                 f"  <select{_attr_str(input_attrs)}>",
                 '    <option value="" disabled selected hidden>Select...</option>',
             ))
             for opt_val, opt_label in options:
-                sel = " selected" if value is not None and str(value) == opt_val else ""
-                parts.append(f'    <option value="{escape(opt_val)}"{sel}>{escape(opt_label)}</option>')
+                sel = " selected" if value is not None and str(value) == str(opt_val) else ""
+                parts.append(f'    <option value="{escape(str(opt_val))}"{sel}>{escape(opt_label)}</option>')
             parts.append("  </select>")
 
         else:
@@ -436,11 +448,23 @@ class AirForm[M: BaseModel]:
         if cls.model is not None:
             cls._display_excludes, cls._save_excludes = _build_excludes(cls.model, cls.excludes)
 
-    def __init__(self, initial_data: dict | None = None) -> None:
+    def __init__(
+        self,
+        initial_data: dict | None = None,
+        *,
+        choices: dict[str, list[tuple[Any, str]]] | None = None,
+    ) -> None:
         if self.model is None:
             msg = "model"
             raise NotImplementedError(msg)
+        if choices is not None:
+            unknown_fields = set(choices) - set(self.model.model_fields)
+            if unknown_fields:
+                unknown = ", ".join(sorted(unknown_fields))
+                msg = f"Unknown choices field(s): {unknown}"
+                raise ValueError(msg)
         self.initial_data = initial_data
+        self._choices = choices
         self.submitted_data: dict | None = None
         self._csrf_token: str | None = None
 
@@ -551,10 +575,21 @@ class AirForm[M: BaseModel]:
 
         csrf_html, self._csrf_token = csrf_hidden_input()
         render_data = self.submitted_data or self.initial_data
-        fields_html = self.widget(
-            model=self.model,
-            data=render_data,
-            errors=self.errors,
-            excludes=self._display_excludes or None,
-        )
+        widget_signature = inspect.signature(self.widget)
+        accepts_var_kwargs = any(param.kind == inspect.Parameter.VAR_KEYWORD for param in widget_signature.parameters.values())
+        if "choices" in widget_signature.parameters or accepts_var_kwargs:
+            fields_html = self.widget(
+                model=self.model,
+                data=render_data,
+                errors=self.errors,
+                excludes=self._display_excludes or None,
+                choices=self._choices,
+            )
+        else:
+            fields_html = self.widget(
+                model=self.model,
+                data=render_data,
+                errors=self.errors,
+                excludes=self._display_excludes or None,
+            )
         return SafeHTML(f"{csrf_html}\n{fields_html}")

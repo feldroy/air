@@ -8,6 +8,7 @@ json_schema_extra, etc.) pass straight through to Field().
 
 from __future__ import annotations
 
+import builtins
 from typing import TYPE_CHECKING, Any, Literal
 
 from pydantic import Field as PydanticField
@@ -74,7 +75,7 @@ def AirField(  # noqa: C901, N802
     if foreign_key is not None:
         if isinstance(foreign_key, str):
             pass
-        elif isinstance(foreign_key, type):
+        elif isinstance(foreign_key, builtins.type):
             from air.model import AirModel  # noqa: PLC0415
 
             if not issubclass(foreign_key, AirModel):

@@ -212,10 +212,11 @@ class TestForeignKeyRelationNames:
         class User(AirModel):
             id: int | None = AirField(default=None, primary_key=True)
 
-        with pytest.raises(ValueError, match='model_dump_id.*"model_dump".*existing model attribute'):
-            class BadDumpRelation(AirModel):
-                id: int | None = AirField(default=None, primary_key=True)
-                model_dump_id: int = AirField(foreign_key=User)
+        with pytest.warns(UserWarning, match="protected namespace 'model_dump'"):
+            with pytest.raises(ValueError, match='model_dump_id.*"model_dump".*existing model attribute'):
+                class BadDumpRelation(AirModel):
+                    id: int | None = AirField(default=None, primary_key=True)
+                    model_dump_id: int = AirField(foreign_key=User)
 
     def test_user_defined_attribute_collision_raises_at_definition_time(self) -> None:
         class User(AirModel):
