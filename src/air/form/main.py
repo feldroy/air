@@ -128,9 +128,9 @@ def _get_options(
     """Get select/dropdown options from metadata or type."""
     if field_name is not None and choices is not None and field_name in choices:
         return [(str(v), lbl) for v, lbl in choices[field_name]]
-    choices = _get_meta(meta, Choices)
-    if choices:
-        return [(str(v), lbl) for v, lbl in choices.options]
+    field_choices = _get_meta(meta, Choices)
+    if field_choices:
+        return [(str(v), lbl) for v, lbl in field_choices.options]
     if isinstance(annotation, type) and issubclass(annotation, Enum):
         return [(m.value, m.name.replace("_", " ").title()) for m in annotation]
     if get_origin(annotation) is Literal:
@@ -243,7 +243,9 @@ def default_form_widget(  # noqa: C901
         if readonly and readonly.in_context("form"):
             continue
 
-        input_type = "select" if choices is not None and field_name in choices else pydantic_type_to_html_type(field_info)
+        input_type = (
+            "select" if choices is not None and field_name in choices else pydantic_type_to_html_type(field_info)
+        )
         label_text = label_for_field(field_name, field_info)
         error = error_dict.get(field_name)
         value = data.get(field_name) if data is not None else None
@@ -576,7 +578,9 @@ class AirForm[M: BaseModel]:
         csrf_html, self._csrf_token = csrf_hidden_input()
         render_data = self.submitted_data or self.initial_data
         widget_signature = inspect.signature(self.widget)
-        accepts_var_kwargs = any(param.kind == inspect.Parameter.VAR_KEYWORD for param in widget_signature.parameters.values())
+        accepts_var_kwargs = any(
+            param.kind == inspect.Parameter.VAR_KEYWORD for param in widget_signature.parameters.values()
+        )
         if "choices" in widget_signature.parameters or accepts_var_kwargs:
             fields_html = self.widget(
                 model=self.model,

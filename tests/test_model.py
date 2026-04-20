@@ -181,6 +181,7 @@ class TestForeignKeyRelationNames:
             id: int | None = AirField(default=None, primary_key=True)
 
         with pytest.raises(ValueError, match='maker_id.*"maker".*existing field'):
+
             class BadDango(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)
                 maker: str
@@ -195,6 +196,7 @@ class TestForeignKeyRelationNames:
             id: int | None = AirField(default=None, primary_key=True)
 
         with pytest.raises(ValueError, match='save_id.*"save".*existing model attribute'):
+
             class BadSaveRelation(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)
                 save_id: int = AirField(foreign_key=User)
@@ -204,6 +206,7 @@ class TestForeignKeyRelationNames:
             id: int | None = AirField(default=None, primary_key=True)
 
         with pytest.raises(ValueError, match='delete_id.*"delete".*existing model attribute'):
+
             class BadDeleteRelation(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)
                 delete_id: int = AirField(foreign_key=User)
@@ -214,6 +217,7 @@ class TestForeignKeyRelationNames:
 
         with pytest.warns(UserWarning, match="protected namespace 'model_dump'"):
             with pytest.raises(ValueError, match='model_dump_id.*"model_dump".*existing model attribute'):
+
                 class BadDumpRelation(AirModel):
                     id: int | None = AirField(default=None, primary_key=True)
                     model_dump_id: int = AirField(foreign_key=User)
@@ -223,6 +227,7 @@ class TestForeignKeyRelationNames:
             id: int | None = AirField(default=None, primary_key=True)
 
         with pytest.raises(ValueError, match='author_id.*"author".*existing model attribute'):
+
             class BadAuthorRelation(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)
                 author_id: int = AirField(foreign_key=User)
