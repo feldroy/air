@@ -292,6 +292,20 @@ class Air(RouterMixin):
 
         # Create internal FastAPI instance
         if fastapi_app is None:
+            # These params are hardcoded below, so remove them from **extra
+            # to avoid "got multiple values for keyword argument" TypeError.
+            # Fixes #1073.
+            _reserved = {
+                "on_startup",
+                "on_shutdown",
+                "docs_url",
+                "redoc_url",
+                "openapi_url",
+                "webhooks",
+                "deprecated",
+            }
+            filtered_extra = {k: v for k, v in extra.items() if k not in _reserved}
+
             self._app = FastAPI(
                 debug=debug,
                 routes=routes,
@@ -309,7 +323,7 @@ class Air(RouterMixin):
                 webhooks=None,
                 deprecated=None,
                 redirect_slashes=redirect_slashes,
-                **extra,
+                **filtered_extra,
             )
         else:
             self._app = fastapi_app
