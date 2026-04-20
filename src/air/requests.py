@@ -82,6 +82,8 @@ class HtmxDetails:
     triggering_event: Any = field(init=False)
 
     def __post_init__(self) -> None:
+        """Perform the calculation and initialization of fields based on HTMX headers."""
+
         self.is_hx_request = self.headers.get(HX_REQUEST) == "true"
         self.boosted = self.headers.get(HX_BOOSTED) == "true"
 
@@ -137,6 +139,7 @@ class HtmxDetails:
         return self.headers.get("HX-Request") == "true"
 
     def __str__(self) -> str:
+        """Return the string representation of the HX-Request header."""
         return str(self.__bool__())
 
     # ----------------- Private helpers -----------------
