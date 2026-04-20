@@ -1,6 +1,7 @@
 from collections.abc import AsyncGenerator
 from typing import override
 
+import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
@@ -293,7 +294,7 @@ def test_redirect_response() -> None:
 
     @app.get("/air-response")
     async def air_response() -> air.AirResponse:
-        return air.AirResponse()
+        return air.AirResponse(air.P("ok"))
 
     @app.get("/redirect-response")
     async def redirect_response() -> air.RedirectResponse:
@@ -307,3 +308,9 @@ def test_redirect_response() -> None:
     response = client.get("/redirect-response", follow_redirects=True)
     assert response.status_code == 200
     assert "/air-response" in response.url.path
+
+
+def test_air_response_none_raises() -> None:
+    """Endpoint that returns None should raise TypeError, not render 'None'."""
+    with pytest.raises(TypeError, match="did you forget a return statement"):
+        air.AirResponse(None)

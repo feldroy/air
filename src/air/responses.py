@@ -29,7 +29,13 @@ class AirResponse(HTMLResponse):
 
         Returns:
             Rendered HTML as bytes or memoryview.
+
+        Raises:
+            TypeError: If the endpoint returned None instead of a tag or string.
         """
+        if tag is None:
+            msg = "Endpoint returned None — did you forget a return statement?"
+            raise TypeError(msg)
         return super().render(str(tag))
 
 
