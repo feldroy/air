@@ -133,7 +133,12 @@ print(docs[0].created_by)       # 7
 print(docs[0].created_by_obj)   # User(...)
 ```
 
-If a model has both a declared field and a FK that would produce the same relation name, that is a modeling error and raises `ValueError` at definition time.
+If a FK would produce a relation name that collides with either:
+
+- a declared field on the model, or
+- an existing attribute on `AirModel` / the model class reached by normal attribute lookup (for example `save`, `delete`, `related`, `model_dump`)
+
+that is a modeling error and raises `ValueError` at definition time. Relation attributes are attached with `object.__setattr__`, so inherited method names must be reserved too.
 
 **Implementation strategy: batch query, not JOIN.** For each FK field in `select_related`, collect all unique FK values from the result set, fetch the referenced records in one `__in` query, and attach them. This produces at most N+1 queries where N is the number of `select_related` fields (typically 1-3), not N+1 where N is the number of rows.
 
@@ -161,11 +166,11 @@ async def dango_form_view(request):
     return templates.TemplateResponse(request, "form.html", {"form": form})
 ```
 
-`AirForm.__init__` accepts an optional `choices: dict[str, list[tuple[Any, str]]]` parameter for dynamic choice overrides. This works for FK fields and for any field where choices need to be computed at render time. One mechanism, not two.
+`AirForm.__init__` accepts an optional `choices: dict[str, list[tuple[Any, str]]]` parameter for dynamic choice overrides. This works for FK fields and for any other field whose options need to be computed at render time. One mechanism, not two.
 
 On `__init__`, validate that every key in `choices` corresponds to an actual field on the model. Raise `ValueError` on unknown keys so typos like `choices={"maker_di": [...]}` fail immediately.
 
-When `ForeignKey` metadata is present on a field, `pydantic_type_to_html_type()` returns `"select"`. If no dynamic choices were provided, the select renders with just the "Select..." placeholder.
+When `ForeignKey` metadata is present on a field, `pydantic_type_to_html_type()` returns `"select"`. Dynamic `choices=` also force `<select>` rendering for that field even when the annotation is a plain `str`/`int` and no static `Choices` metadata is present. If no options were provided, the select renders with just the "Select..." placeholder.
 
 `ForeignKey` inherits `BasePresentation`, so it is visible to the form's `_meta_dict` helper with no changes to the lookup function.
 
@@ -179,7 +184,9 @@ Callable[*, model, data, errors, excludes] -> str
 Callable[*, model, data, errors, excludes, choices=None] -> str
 ```
 
-`default_form_widget` accepts an optional `choices` keyword and passes it to `_get_options`, which takes `field_name` as a new parameter so it can look up `choices.get(field_name)` before falling back to the existing metadata/Enum/Literal sources.
+`default_form_widget` accepts an optional `choices` keyword. Before it falls back to `pydantic_type_to_html_type()`, it checks `if choices and field_name in choices` and treats that field as `input_type = "select"`. `_get_options` takes `field_name` as a new parameter so it can look up `choices.get(field_name)` before falling back to the existing metadata/Enum/Literal sources.
+
+Dynamic `choices=` are presentation data, not validation rules. They drive rendering and pre-selection, but they do not make Pydantic enforce membership for arbitrary non-FK fields. Users who need server-side validation for non-FK choice sets should keep using `Literal`, `Enum`, static `Choices`, or custom validators.
 
 `AirForm.render()` preserves compatibility by checking whether the widget accepts `choices` (or `**kwargs`). If it does, pass `choices=self._choices`. If it does not, call the widget with the legacy signature. Existing custom widgets keep rendering unchanged; custom widgets that delegate to `default_form_widget` can opt in by adding `choices=None` and passing it through.
 
@@ -366,9 +373,9 @@ This is a known limitation. Air's migration system is additive (add columns, nev
 6. Emit `CREATE INDEX IF NOT EXISTS` for FK columns in `create_tables()`
 7. Add `as_choices()` class method to `AirModel` (with `order_by` and `limit`)
 8. Add `related()` instance method to `AirModel`
-9. Add relation-name helpers and `select_related` parameter to `all()`, `filter()`, and `get()` with `_load_related()` helper. Use collision-free derived relation attributes (`maker`, `created_by_obj`, etc.), tolerate orphaned targets by attaching `None`, and track loaded relation attributes so `save()` and `delete()` can clear them. **Remove the empty-kwargs delegation** at `filter()` (currently `if not kwargs: return await cls.all(...)`) so `select_related` is handled in one path. The delegation silently drops any new parameter that isn't explicitly forwarded, which is how a parameter like `select_related` can get lost. Each method handles its own query building.
+9. Add relation-name helpers and `select_related` parameter to `all()`, `filter()`, and `get()` with `_load_related()` helper. Use collision-free derived relation attributes (`maker`, `created_by_obj`, etc.), reject any derived relation name that collides with a field name or an inherited/public model attribute such as `save`, `delete`, or `model_dump`, tolerate orphaned targets by attaching `None`, and track loaded relation attributes so `save()` and `delete()` can clear them. **Remove the empty-kwargs delegation** at `filter()` (currently `if not kwargs: return await cls.all(...)`) so `select_related` is handled in one path. The delegation silently drops any new parameter that isn't explicitly forwarded, which is how a parameter like `select_related` can get lost. Each method handles its own query building.
 10. Update `pydantic_type_to_html_type()` to return `"select"` for FK fields
-11. Add `choices` parameter to `AirForm.__init__` with key validation. Extend `_get_options` to accept `choices` and `field_name`, thread them through `default_form_widget` so dynamic choices take precedence over metadata, and keep `AirForm.render()` backward compatible by only passing `choices=` to widgets that accept it. Harden the select render site to call `escape(str(opt_val))` and `str(value) == str(opt_val)` so int PK values from `as_choices()` (and int-valued Enums) don't crash `html.escape`.
+11. Add `choices` parameter to `AirForm.__init__` with key validation. Extend `_get_options` to accept `choices` and `field_name`, thread them through `default_form_widget`, and treat `choices[field_name]` as sufficient to render that field as a `<select>` even without static `Choices`/`ForeignKey` metadata. Keep `AirForm.render()` backward compatible by only passing `choices=` to widgets that accept it. Harden the select render site to call `escape(str(opt_val))` and `str(value) == str(opt_val)` so int PK values from `as_choices()` (and int-valued Enums) don't crash `html.escape`.
 12. Tests for each layer
 
 ## Test cases
@@ -518,6 +525,12 @@ assert sorted_classes.index(Maker) < sorted_classes.index(Dango)
 sorted_classes = _topological_sort([Category])
 assert sorted_classes == [Category]
 
+# Relation-name collisions with inherited AirModel attributes are rejected
+with pytest.raises(ValueError, match="save"):
+    class BadRelationName(AirModel):
+        id: int | None = AirField(default=None, primary_key=True)
+        save_id: int = AirField(foreign_key=User)
+
 # --- ALTER TABLE ---
 
 sql = Dango._add_column_sql("maker_id")
@@ -619,6 +632,19 @@ html = form.render()
 assert '<select' in html
 assert 'name="maker_id"' in html
 assert 'Kuma-san' in html
+
+# Dynamic choices also turn plain fields into selects
+class TeaOrder(BaseModel):
+    syrup: str
+
+class TeaOrderForm(AirForm[TeaOrder]):
+    pass
+
+form = TeaOrderForm(choices={"syrup": [("brown_sugar", "Brown Sugar"), ("honey", "Honey")]})
+html = form.render()
+assert '<select' in html
+assert 'name="syrup"' in html
+assert 'Brown Sugar' in html
 
 # Edit form pre-selects current value
 form = DangoForm(

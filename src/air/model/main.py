@@ -30,6 +30,7 @@ Example::
 
 from __future__ import annotations
 
+import inspect
 import re
 import tomllib
 from contextlib import asynccontextmanager
@@ -46,7 +47,7 @@ from pydantic import (
     ConfigDict,
 )
 
-from air.field import PrimaryKey
+from air.field import ForeignKey, PrimaryKey
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -158,6 +159,13 @@ def _unwrap_optional(annotation: Any) -> Any:
 
 def _is_primary_key(field_info: FieldInfo) -> bool:
     return any(isinstance(m, PrimaryKey) for m in field_info.metadata)
+
+
+def _get_foreign_key(field_info: FieldInfo) -> ForeignKey | None:
+    for metadata in field_info.metadata:
+        if isinstance(metadata, ForeignKey):
+            return metadata
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -295,8 +303,10 @@ class AirModel(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-    def __init_subclass__(cls, **kwargs: Any) -> None:
-        super().__init_subclass__(**kwargs)
+    @classmethod
+    def __pydantic_init_subclass__(cls, **kwargs: Any) -> None:
+        super().__pydantic_init_subclass__(**kwargs)
+        cls._validate_fk_relation_names()
         _table_registry.append(cls)
 
     # -- SQL generation helpers ----------------------------------------------
@@ -314,6 +324,44 @@ class AirModel(BaseModel):
             if _is_primary_key(info):
                 return name
         return None
+
+    @staticmethod
+    def _relation_attr_name(field_name: str) -> str:
+        """Derive the eager-loading relation attribute from an FK field name."""
+        if field_name.endswith("_id"):
+            return field_name.removesuffix("_id")
+        return f"{field_name}_obj"
+
+    @classmethod
+    def _relation_field_map(cls) -> dict[str, str]:
+        """Map derived relation attribute names to their FK field names."""
+        relation_fields: dict[str, str] = {}
+        for field_name, field_info in cls.model_fields.items():
+            if _get_foreign_key(field_info) is None:
+                continue
+            relation_name = cls._relation_attr_name(field_name)
+            if relation_name in cls.model_fields:
+                msg = (
+                    f'Foreign key field "{field_name}" derives relation attribute '
+                    f'"{relation_name}", which collides with existing field "{relation_name}".'
+                )
+                raise ValueError(msg)
+            marker = object()
+            existing = inspect.getattr_static(cls, relation_name, marker)
+            if existing is not marker:
+                msg = (
+                    f'Foreign key field "{field_name}" derives relation attribute '
+                    f'"{relation_name}", which collides with existing model attribute '
+                    f'"{relation_name}".'
+                )
+                raise ValueError(msg)
+            relation_fields[relation_name] = field_name
+        return relation_fields
+
+    @classmethod
+    def _validate_fk_relation_names(cls) -> None:
+        """Reject FK relation names that would shadow model attributes."""
+        cls._relation_field_map()
 
     @classmethod
     def _column_defs(cls) -> list[str]:

@@ -13,7 +13,7 @@ from uuid import UUID
 
 import pytest
 
-from air.field import AirField, PrimaryKey
+from air.field import AirField, ForeignKey, PrimaryKey
 from air.model import AirDB, AirModel, MultipleObjectsReturned
 from air.model.main import _PY_TO_PG, _pg_type, _table_registry  # noqa: PLC2701
 
@@ -140,6 +140,94 @@ class TestField:
         assert "id" not in non_pk
         assert "name" in non_pk
         assert "color" in non_pk
+
+
+class TestForeignKeyRelationNames:
+    def test_foreign_key_metadata_is_stored(self) -> None:
+        class Maker(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+            name: str
+
+        class Dango(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+            maker_id: int = AirField(foreign_key=Maker)
+
+        field_info = Dango.model_fields["maker_id"]
+        foreign_key = next((m for m in field_info.metadata if isinstance(m, ForeignKey)), None)
+        assert foreign_key is not None
+        assert foreign_key.to is Maker
+        assert Dango._relation_attr_name("maker_id") == "maker"
+        assert Dango._relation_field_map() == {"maker": "maker_id"}
+
+    def test_forward_reference_foreign_key_validates_relation_name_early(self) -> None:
+        class LocalChild(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+            parent_id: int = AirField(foreign_key="LocalParent")
+
+        class LocalParent(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+            name: str
+
+        field_info = LocalChild.model_fields["parent_id"]
+        foreign_key = next((m for m in field_info.metadata if isinstance(m, ForeignKey)), None)
+        assert foreign_key is not None
+        assert foreign_key.to == "LocalParent"
+        assert LocalChild._relation_field_map() == {"parent": "parent_id"}
+
+    def test_declared_field_collision_raises_at_definition_time(self) -> None:
+        before = {table.__name__ for table in _table_registry}
+
+        class Maker(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+
+        with pytest.raises(ValueError, match='maker_id.*"maker".*existing field'):
+            class BadDango(AirModel):
+                id: int | None = AirField(default=None, primary_key=True)
+                maker: str
+                maker_id: int = AirField(foreign_key=Maker)
+
+        after = {table.__name__ for table in _table_registry}
+        assert "BadDango" not in after
+        assert before <= after
+
+    def test_inherited_save_collision_raises_at_definition_time(self) -> None:
+        class User(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+
+        with pytest.raises(ValueError, match='save_id.*"save".*existing model attribute'):
+            class BadSaveRelation(AirModel):
+                id: int | None = AirField(default=None, primary_key=True)
+                save_id: int = AirField(foreign_key=User)
+
+    def test_inherited_delete_collision_raises_at_definition_time(self) -> None:
+        class User(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+
+        with pytest.raises(ValueError, match='delete_id.*"delete".*existing model attribute'):
+            class BadDeleteRelation(AirModel):
+                id: int | None = AirField(default=None, primary_key=True)
+                delete_id: int = AirField(foreign_key=User)
+
+    def test_basemodel_attribute_collision_raises_at_definition_time(self) -> None:
+        class User(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+
+        with pytest.raises(ValueError, match='model_dump_id.*"model_dump".*existing model attribute'):
+            class BadDumpRelation(AirModel):
+                id: int | None = AirField(default=None, primary_key=True)
+                model_dump_id: int = AirField(foreign_key=User)
+
+    def test_user_defined_attribute_collision_raises_at_definition_time(self) -> None:
+        class User(AirModel):
+            id: int | None = AirField(default=None, primary_key=True)
+
+        with pytest.raises(ValueError, match='author_id.*"author".*existing model attribute'):
+            class BadAuthorRelation(AirModel):
+                id: int | None = AirField(default=None, primary_key=True)
+                author_id: int = AirField(foreign_key=User)
+
+                def author(self) -> str:
+                    return "collision"
 
 
 # ---------------------------------------------------------------------------
