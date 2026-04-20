@@ -59,6 +59,10 @@ def AirField(  # noqa: C901, N802
 
     Returns:
         A Pydantic FieldInfo configured with all specified parameters.
+
+    Raises:
+        TypeError: If ``foreign_key`` is neither an AirModel subclass nor a string reference.
+        ValueError: If AirField-specific options are combined in an invalid way.
     """
     if foreign_key is not None and choices is not None:
         msg = "foreign_key and choices are mutually exclusive"

@@ -180,7 +180,7 @@ class TestForeignKeyRelationNames:
         class Maker(AirModel):
             id: int | None = AirField(default=None, primary_key=True)
 
-        with pytest.raises(ValueError, match='maker_id.*"maker".*existing field'):
+        with pytest.raises(ValueError, match=r'maker_id.*"maker".*existing field'):
 
             class BadDango(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)
@@ -195,7 +195,7 @@ class TestForeignKeyRelationNames:
         class User(AirModel):
             id: int | None = AirField(default=None, primary_key=True)
 
-        with pytest.raises(ValueError, match='save_id.*"save".*existing model attribute'):
+        with pytest.raises(ValueError, match=r'save_id.*"save".*existing model attribute'):
 
             class BadSaveRelation(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)
@@ -205,7 +205,7 @@ class TestForeignKeyRelationNames:
         class User(AirModel):
             id: int | None = AirField(default=None, primary_key=True)
 
-        with pytest.raises(ValueError, match='delete_id.*"delete".*existing model attribute'):
+        with pytest.raises(ValueError, match=r'delete_id.*"delete".*existing model attribute'):
 
             class BadDeleteRelation(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)
@@ -215,18 +215,23 @@ class TestForeignKeyRelationNames:
         class User(AirModel):
             id: int | None = AirField(default=None, primary_key=True)
 
-        with pytest.warns(UserWarning, match="protected namespace 'model_dump'"):
-            with pytest.raises(ValueError, match='model_dump_id.*"model_dump".*existing model attribute'):
+        with (
+            pytest.warns(UserWarning, match="protected namespace 'model_dump'"),
+            pytest.raises(
+                ValueError,
+                match=r'model_dump_id.*"model_dump".*existing model attribute',
+            ),
+        ):
 
-                class BadDumpRelation(AirModel):
-                    id: int | None = AirField(default=None, primary_key=True)
-                    model_dump_id: int = AirField(foreign_key=User)
+            class BadDumpRelation(AirModel):
+                id: int | None = AirField(default=None, primary_key=True)
+                model_dump_id: int = AirField(foreign_key=User)
 
     def test_user_defined_attribute_collision_raises_at_definition_time(self) -> None:
         class User(AirModel):
             id: int | None = AirField(default=None, primary_key=True)
 
-        with pytest.raises(ValueError, match='author_id.*"author".*existing model attribute'):
+        with pytest.raises(ValueError, match=r'author_id.*"author".*existing model attribute'):
 
             class BadAuthorRelation(AirModel):
                 id: int | None = AirField(default=None, primary_key=True)

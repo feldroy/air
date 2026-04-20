@@ -334,7 +334,11 @@ class AirModel(BaseModel):
 
     @classmethod
     def _relation_field_map(cls) -> dict[str, str]:
-        """Map derived relation attribute names to their FK field names."""
+        """Map derived relation attribute names to their FK field names.
+
+        Raises:
+            ValueError: If a derived relation attribute would shadow an existing field or attribute.
+        """
         relation_fields: dict[str, str] = {}
         for field_name, field_info in cls.model_fields.items():
             if _get_foreign_key(field_info) is None:
