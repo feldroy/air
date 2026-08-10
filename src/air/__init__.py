@@ -14,6 +14,7 @@ from air.form import (
     configure_csrf_secret as configure_csrf_secret,
 )
 from air.model import (
+    AirDatabase as AirDatabase,
     AirModel as AirModel,
     AirModelBackend as AirModelBackend,
     AirModelTransactionBackend as AirModelTransactionBackend,

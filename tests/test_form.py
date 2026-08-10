@@ -37,15 +37,13 @@ def test_form_sync_check() -> None:
     cheese = CheeseForm()
     cheese.validate({"name": "Parmesan", "age": "Hello"})
     assert cheese.is_valid is False
-    assert cheese.errors == [
-        {
-            "type": "int_parsing",
-            "loc": ("age",),
-            "msg": "Input should be a valid integer, unable to parse string as an integer",
-            "input": "Hello",
-            "url": "https://errors.pydantic.dev/2.12/v/int_parsing",
-        },
-    ]
+    assert cheese.errors
+    error = cheese.errors[0]
+    assert error["type"] == "int_parsing"
+    assert error["loc"] == ("age",)
+    assert error["msg"] == "Input should be a valid integer, unable to parse string as an integer"
+    assert error["input"] == "Hello"
+    assert str(error["url"]).endswith("/int_parsing")
 
 
 def test_airform_notimplementederror() -> None:

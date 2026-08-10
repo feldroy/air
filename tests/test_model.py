@@ -9,6 +9,8 @@ import pytest
 import air
 from air import AirField, AirModel
 from air.model import (
+    AirDatabase,
+    DatabaseNotConfigured,
     MultipleObjectsReturned,
     Predicate,
     Query,
@@ -87,6 +89,10 @@ class TestModelDefinition:
     def test_airmodel_is_exported_from_root(self) -> None:
         assert air.AirModel is AirModel
 
+    def test_database_contract_exports_match_staged_api(self) -> None:
+        assert air.AirDatabase is AirDatabase
+        assert issubclass(DatabaseNotConfigured, RuntimeError)
+
     def test_model_is_a_pydantic_model(self) -> None:
         note = Note(title="Hello")
         assert note.model_dump() == {"id": None, "title": "Hello", "body": ""}
@@ -128,7 +134,7 @@ class TestModelDefinition:
 class TestBackendConfiguration:
     def test_get_without_backend_has_actionable_error(self) -> None:
         clear_model_backend()
-        with pytest.raises(RuntimeError, match="Configure a persistence package such as AirPostgres or AirD1"):
+        with pytest.raises(DatabaseNotConfigured, match="Configure a persistence package such as AirPostgres or AirD1"):
             get_model_backend()
 
     def test_set_and_clear_backend(self) -> None:
@@ -136,7 +142,7 @@ class TestBackendConfiguration:
         set_model_backend(persistence)
         assert get_model_backend() is persistence
         clear_model_backend(persistence)
-        with pytest.raises(RuntimeError, match="No AirModel backend"):
+        with pytest.raises(DatabaseNotConfigured, match="No AirModel backend"):
             get_model_backend()
 
     def test_old_backend_cannot_clear_replacement(self) -> None:

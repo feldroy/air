@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
+from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Mapping, Sequence
+    from collections.abc import AsyncIterator, Iterable, Mapping, Sequence
     from contextlib import AbstractAsyncContextManager
 
     from air.model.main import AirModel, Query
@@ -52,6 +54,57 @@ class AirModelTransactionBackend(AirModelBackend, Protocol):
     def transaction(self) -> AbstractAsyncContextManager[None]: ...
 
 
+class AirDatabase(ABC):
+    """Optional base class for AirModel persistence backends.
+
+    Backends may implement :class:`AirModelBackend` structurally without
+    inheriting this class. ``AirDatabase`` preserves the staged subclassing API
+    and supplies a no-op transaction context for simple backends.
+    """
+
+    @abstractmethod
+    async def create_tables(self, models: Iterable[type[AirModel]] | None = None) -> None: ...
+
+    @abstractmethod
+    async def insert(self, model: type[AirModel], values: Mapping[str, Any]) -> Mapping[str, Any]: ...
+
+    @abstractmethod
+    async def insert_many(
+        self,
+        model: type[AirModel],
+        values: Sequence[Mapping[str, Any]],
+    ) -> Sequence[Mapping[str, Any]]: ...
+
+    @abstractmethod
+    async def select(self, query: Query) -> Sequence[Mapping[str, Any]]: ...
+
+    @abstractmethod
+    async def count(self, query: Query) -> int: ...
+
+    @abstractmethod
+    async def update(
+        self,
+        model: type[AirModel],
+        primary_key: Any,
+        values: Mapping[str, Any],
+    ) -> Mapping[str, Any]: ...
+
+    @abstractmethod
+    async def update_many(self, query: Query, values: Mapping[str, Any]) -> int: ...
+
+    @abstractmethod
+    async def delete_many(self, query: Query) -> int: ...
+
+    @asynccontextmanager
+    async def transaction(self) -> AsyncIterator[None]:
+        """Provide a no-op transaction for backends without scoped transactions."""
+        yield
+
+
+class DatabaseNotConfigured(RuntimeError):  # noqa: N818
+    """Raised when AirModel is used before a backend is configured."""
+
+
 _active_backend: AirModelBackend | None = None
 
 
@@ -77,12 +130,12 @@ def get_model_backend() -> AirModelBackend:
     """Return the configured persistence backend.
 
     Raises:
-        RuntimeError: If no backend has been configured.
+        DatabaseNotConfigured: If no backend has been configured.
     """
     if _active_backend is None:
         msg = (
             "No AirModel backend is configured. "
             "Configure a persistence package such as AirPostgres or AirD1 before using model CRUD methods."
         )
-        raise RuntimeError(msg)
+        raise DatabaseNotConfigured(msg)
     return _active_backend

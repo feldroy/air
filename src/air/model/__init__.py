@@ -1,8 +1,10 @@
 """Backend-agnostic Pydantic models with async persistence methods."""
 
 from air.model.backend import (
+    AirDatabase as AirDatabase,
     AirModelBackend as AirModelBackend,
     AirModelTransactionBackend as AirModelTransactionBackend,
+    DatabaseNotConfigured as DatabaseNotConfigured,
     clear_model_backend as clear_model_backend,
     get_model_backend as get_model_backend,
     set_model_backend as set_model_backend,
@@ -16,9 +18,11 @@ from air.model.main import (
 )
 
 __all__ = [
+    "AirDatabase",
     "AirModel",
     "AirModelBackend",
     "AirModelTransactionBackend",
+    "DatabaseNotConfigured",
     "MultipleObjectsReturned",
     "Predicate",
     "Query",
