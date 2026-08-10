@@ -151,6 +151,25 @@ Rotate the secret atomically across all workers when possible. During a rolling
 rotation, old-key and new-key workers coexist temporarily, so a form rendered by
 one group can be rejected by the other until the rollout finishes.
 
+### Custom template layouts
+
+Use `render_csrf()` when your Jinja template or hand-authored Air tags render
+the visible inputs themselves. It returns only the signed hidden input, so you
+keep AirForm's CSRF validation without rendering the default widget:
+
+```html
+<form action="/contact" method="post">
+  {{ form.render_csrf()|safe }}
+  <label for="name">Name</label>
+  <input id="name" name="name" required>
+  <button>Send</button>
+</form>
+```
+
+`render_csrf()` marks the form as expecting that token on the next
+`validate()` call, just like `render()` does. Call it again when re-rendering a
+failed submission to issue a fresh token.
+
 ## Validating a form
 
 ### From a request

@@ -577,6 +577,19 @@ class AirForm[M: BaseModel]:
     #:         widget = staticmethod(my_custom_widget)
     widget: Callable = staticmethod(default_form_widget)
 
+    def render_csrf(self) -> SafeHTML:
+        """Render only the signed CSRF hidden input for a custom form layout.
+
+        Use this when a Jinja template or hand-authored Air tags own the visible
+        fields, but the form should still use AirForm's CSRF protection. Calling
+        this method marks the form as expecting the generated token on its next
+        ``validate()`` call, just like :meth:`render`.
+        """
+        from air.form.csrf import csrf_hidden_input  # noqa: PLC0415
+
+        csrf_html, self._csrf_token = csrf_hidden_input()
+        return SafeHTML(csrf_html)
+
     def render(self) -> str:
         """Render the form as HTML using the widget.
 
@@ -584,9 +597,7 @@ class AirForm[M: BaseModel]:
         Uses submitted data if available (preserves values after
         validation errors), falls back to initial_data.
         """
-        from air.form.csrf import csrf_hidden_input  # noqa: PLC0415
-
-        csrf_html, self._csrf_token = csrf_hidden_input()
+        csrf_html = self.render_csrf()
         render_data = self.submitted_data or self.initial_data
         fields_html = self.widget(
             model=self.model,

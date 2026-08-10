@@ -373,6 +373,14 @@ class ContactForm(AirForm[ContactModel]):
 
 The widget callable receives `(*, model, data=None, errors=None, excludes=None)` and returns an HTML string.
 
+### Custom template layouts
+
+When a Jinja template or hand-authored Air tags own the visible fields, call
+`form.render_csrf()` inside the `<form>`. It returns only AirForm's signed
+hidden CSRF input and enforces that token on the subsequent `from_request()`
+validation. This avoids a placeholder custom widget solely to obtain CSRF
+protection.
+
 ### Excludes
 
 Hide fields from rendering, saving, or both:

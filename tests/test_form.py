@@ -788,6 +788,28 @@ def test_render_includes_csrf_token() -> None:
     assert 'name="csrf_token"' in html
 
 
+def test_render_csrf_supports_custom_form_layouts() -> None:
+    """Custom templates can use CSRF protection without rendering the default widget."""
+
+    class EarringModel(BaseModel):
+        material: str
+
+    class EarringForm(AirForm[EarringModel]):
+        pass
+
+    form = EarringForm()
+    html = form.render_csrf()
+
+    assert isinstance(html, SafeHTML)
+    assert 'name="csrf_token"' in html
+    assert 'name="material"' not in html
+
+    token = re.search(r'name="csrf_token" value="([^"]+)"', html)
+    assert token
+    form.validate({"csrf_token": token.group(1), "material": "silver"})
+    assert form.is_valid
+
+
 def test_validate_without_render_skips_csrf() -> None:
     """Direct validate() without render() skips CSRF (programmatic use)."""
 
