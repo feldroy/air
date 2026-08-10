@@ -1,6 +1,6 @@
 # AirModel
 
-Your Pydantic models just learned PostgreSQL.
+Your Pydantic models get one async API with swappable persistence backends.
 
 ```jinja title="templates/sightings.html"
 <!DOCTYPE html>
@@ -20,8 +20,12 @@ Your Pydantic models just learned PostgreSQL.
 ```
 
 ```python title="main.py"
+from contextlib import asynccontextmanager
+from os import getenv
+
 import air
 from air import AirField, AirModel
+from airpostgres import AirPostgres
 
 
 class UnicornSighting(AirModel):
@@ -31,7 +35,17 @@ class UnicornSighting(AirModel):
     confirmed: bool = AirField(default=False)
 
 
-app = air.Air()  # DATABASE_URL in env, that's it
+database = AirPostgres()
+
+
+@asynccontextmanager
+async def lifespan(app):
+    async with database.lifespan(getenv("DATABASE_URL", ""))(app):
+        await database.create_tables()
+        yield
+
+
+app = air.Air(lifespan=lifespan)
 
 
 @app.get("/")
@@ -40,7 +54,9 @@ async def index(request: air.Request):
     return app.jinja(request, "sightings.html", sightings=sightings)
 ```
 
-That's a database-backed web app. Set `DATABASE_URL` in your environment, and Air auto-connects to PostgreSQL on startup. No pool setup, no lifespan wiring, no configuration file. You wrote a Pydantic model, added `primary_key=True` to one field, and now it talks to PostgreSQL.
+`AirModel` and `AirField` live in Air core. The separate AirPostgres package
+handles asyncpg pooling, PostgreSQL SQL, transactions, and schema creation.
+Choosing a different backend does not change the model class or its CRUD calls.
 
 ## One class, one import
 
@@ -48,23 +64,27 @@ That's a database-backed web app. Set `DATABASE_URL` in your environment, and Ai
 from air import AirModel
 ```
 
-One import, one base class. Define your fields with type annotations, and AirModel handles validation, serialization, and async database operations.
+One import, one base class. Define your fields with type annotations, and
+AirModel handles validation, serialization, and the async persistence API.
 
-## Zero-config database
+## Choose a persistence backend
 
-Set the `DATABASE_URL` environment variable and Air handles the rest:
+Install the PostgreSQL backend:
 
 ```bash
-export DATABASE_URL="postgresql://user:pass@localhost/mydb"
+pip install AirPostgres
 ```
 
 ```python title="main.py"
-app = air.Air()  # reads DATABASE_URL, connects automatically
+from airpostgres import AirPostgres
+
+database = AirPostgres()
 ```
 
-The asyncpg pool opens when your app starts, tables are created automatically for every AirModel subclass you've imported, and the pool closes on shutdown. If you add a field to a model, `create_tables()` auto-migrates the existing table with `ALTER TABLE ADD COLUMN`. `?sslmode=require` works for hosted databases like NeonDB.
-
-If `DATABASE_URL` is not set, `app.db` is `None` and no database is configured. Your app still runs, it just can't do database operations.
+Connect it in the application's lifespan, as shown above. AirPostgres opens the
+asyncpg pool on startup and closes it on shutdown. `create_tables()` creates
+tables for imported AirModel subclasses and non-destructively adds new columns.
+The model API raises a clear error if no backend has been configured.
 
 ## Your types become your schema
 
@@ -84,7 +104,7 @@ class BlogPost(AirModel):
     author_id: UUID
 ```
 
-Every type annotation maps directly to a PostgreSQL column:
+With AirPostgres, every type annotation maps directly to a PostgreSQL column:
 
 | Python type | PostgreSQL type |
 |---|---|
@@ -95,7 +115,9 @@ Every type annotation maps directly to a PostgreSQL column:
 | `datetime` | TIMESTAMP WITH TIME ZONE |
 | `UUID` | UUID |
 
-Required fields get `NOT NULL`. Optional fields (`str | None = None`) allow NULL. Primary keys use BIGSERIAL so you never hit the 2-billion row ceiling. And if you use a type that's not supported, you get a clear `TypeError` at class definition time, not a confusing failure at query time.
+Required fields get `NOT NULL`. Optional fields (`str | None = None`) allow NULL.
+Primary keys use BIGSERIAL. Unsupported PostgreSQL field types produce a clear
+`TypeError` when AirPostgres builds the table schema.
 
 ## Table names just work
 
@@ -232,7 +254,7 @@ No N+1 round trips. Each operation is one SQL statement.
 Group multiple operations so they all succeed or all fail:
 
 ```python
-async with app.db.transaction():
+async with database.transaction():
     user = await User.create(name="Audrey", email="audrey@feldroy.com")
     await Profile.create(user_id=user.id, bio="Builds things")
     # Both rows commit together, or both roll back
@@ -281,8 +303,12 @@ async def submit_contact(request: air.Request):
 ## A complete app in 30 lines
 
 ```python title="main.py"
+from contextlib import asynccontextmanager
+from os import getenv
+
 import air
 from air import AirField, AirForm, AirModel
+from airpostgres import AirPostgres
 
 
 class GuestBookEntry(AirModel):
@@ -295,7 +321,17 @@ class GuestBookForm(AirForm[GuestBookEntry]):
     pass
 
 
-app = air.Air()
+database = AirPostgres()
+
+
+@asynccontextmanager
+async def lifespan(app):
+    async with database.lifespan(getenv("DATABASE_URL", ""))(app):
+        await database.create_tables()
+        yield
+
+
+app = air.Air(lifespan=lifespan)
 
 
 @app.page
@@ -324,17 +360,23 @@ async def sign(request: air.Request):
     return air.RedirectResponse("/")
 ```
 
-Model, form, database, HTML, validation, pagination, and two routes. Set `DATABASE_URL` and run it.
+Model, form, database, HTML, validation, pagination, and two routes use the same
+AirModel API.
 
-## Manual connection setup
+## Swap the backend
 
-If the zero-config path doesn't work for your situation (custom pool sizes, non-standard connection strings, multiple databases), you can wire the pool yourself:
+Application models import only from Air:
 
 ```python title="main.py"
-from air import AirDB
+from air import AirField, AirModel
 
-db = AirDB()
-app = air.Air(lifespan=db.lifespan("postgresql://localhost/mydb", min_size=5, max_size=20))
+class Note(AirModel):
+    id: int | None = AirField(default=None, primary_key=True)
+    body: str
 ```
 
-You shouldn't need this for most apps.
+The application lifespan chooses AirPostgres, AirD1, or another implementation
+of `AirModelBackend`. AirModel translates CRUD calls into backend-neutral
+queries and validates models; each backend owns its driver, SQL dialect, and
+schema lifecycle. Model definitions, forms, and CRUD call sites remain the
+same.

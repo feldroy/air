@@ -13,7 +13,7 @@ Why and how Air works.
 - **[Forms](forms.md)** - How to create and validate forms in Air
 - **[Jinja](jinja.md)** - How to use Jinja templates in Air
 - **[Layouts](layouts.md)** - Tools for building layouts in Air along with two simple layout systems
-- **[AirModel](airmodel.md)** - Air's built-in async ORM for PostgreSQL
+- **[AirModel](airmodel.md)** - Air's built-in model API with swappable persistence backends
 
 ## Cookbook
 

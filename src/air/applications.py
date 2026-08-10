@@ -2,9 +2,7 @@
 Instantiating Air applications.
 """
 
-import os
-from collections.abc import AsyncIterator, Callable, Sequence
-from contextlib import asynccontextmanager
+from collections.abc import Callable, Sequence
 from enum import Enum
 from pathlib import Path
 from typing import Annotated, Any, Literal, cast
@@ -301,20 +299,6 @@ class Air(RouterMixin):
         exception_handlers = DEFAULT_EXCEPTION_HANDLERS | exception_handlers
         exception_handlers = adapt_exception_handlers(exception_handlers)
 
-        # Auto-detect database: DATABASE_URL env var + asyncpg installed
-        self.db = None
-        database_url = os.environ.get("DATABASE_URL")
-        if database_url is not None:
-            try:
-                import asyncpg  # noqa: PLC0415, F401
-            except ImportError:
-                pass
-            else:
-                from air.model import AirDB  # noqa: PLC0415
-
-                self.db = AirDB()
-                lifespan = self._compose_db_lifespan(self.db, database_url, lifespan)
-
         # Create internal FastAPI instance
         if fastapi_app is None:
             # These arguments are set explicitly below. Catching duplicates here
@@ -374,38 +358,6 @@ class Air(RouterMixin):
         from .templating import JinjaRenderer  # noqa: PLC0415
 
         self.jinja = JinjaRenderer("templates")
-
-    # =========================================================================
-    # Database auto-discovery
-    # =========================================================================
-
-    @staticmethod
-    def _compose_db_lifespan(
-        db: Any,
-        url: str,
-        user_lifespan: Lifespan[Any] | None,
-    ) -> Lifespan[Any]:
-        """Wrap *user_lifespan* so the database pool opens on startup and closes on shutdown."""
-
-        @asynccontextmanager
-        async def _lifespan(app: Any) -> AsyncIterator[None]:
-            import asyncpg  # noqa: PLC0415
-
-            pool = await asyncpg.create_pool(url)
-            db.connect(pool)
-            await db.create_tables()
-            try:
-                if user_lifespan is not None:
-                    async with user_lifespan(app):
-                        yield
-                else:
-                    yield
-            finally:
-                if db.pool is not None:
-                    await db.pool.close()
-                db.disconnect()
-
-        return _lifespan
 
     # =========================================================================
     # ASGI Interface

@@ -14,9 +14,15 @@ from air.form import (
     configure_csrf_secret as configure_csrf_secret,
 )
 from air.model import (
-    AirDB as AirDB,
     AirModel as AirModel,
+    AirModelBackend as AirModelBackend,
+    AirModelTransactionBackend as AirModelTransactionBackend,
     MultipleObjectsReturned as MultipleObjectsReturned,
+    Predicate as Predicate,
+    clear_model_backend as clear_model_backend,
+    get_model_backend as get_model_backend,
+    registered_models as registered_models,
+    set_model_backend as set_model_backend,
 )
 
 from . import (
