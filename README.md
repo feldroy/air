@@ -276,10 +276,10 @@ Thanks to all the contributors to the Air 💨 web framework!
 
 ## Star History
 
-<a href="https://www.star-history.com/#feldroy/air&type=date&legend=top-left">
+<a href="https://star-history.dera.page/#feldroy/air&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=feldroy/air&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.dera.page/svg?repos=feldroy/air&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.dera.page/svg?repos=feldroy/air&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.dera.page/svg?repos=feldroy/air&type=date&legend=top-left" />
  </picture>
 </a>
