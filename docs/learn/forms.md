@@ -3,7 +3,8 @@
 Forms are how data is collected from users on web pages.
 
 > ## Note
-> This document covers how **Forms** work. The full reference for them is the [Forms reference](https://feldroy.github.io/air/api/forms/).
+> This document covers how **Forms** work. The full reference for them is the
+> [Forms reference](../api/forms.md).
 
 ## A complete example
 

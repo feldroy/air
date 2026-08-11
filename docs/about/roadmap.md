@@ -29,7 +29,7 @@ Here is what is planned for the Beta release, which is tracked on the <a href="h
 Forms are a core part of any web framework. While the foundations for forms are in place with Air Tags, there is still a lot of work to be done. Part of it is that form libraries have to support a lot of edge cases. This includes:
 
 - [x] Form validation - Ensure error messages are clear and helpful
-- [ ] CSRF protection - Implement CSRF protection for forms
+- [x] CSRF protection - Sign form tokens and reject cross-origin submissions
 - [ ] Integration with FastAPI's dependency injection - This is coded but it is not stable yet
 - [ ] Default widget cleanup - It is working but the code is ungainly and hard to extend
 

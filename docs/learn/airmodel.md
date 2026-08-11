@@ -72,7 +72,7 @@ AirModel handles validation, serialization, and the async persistence API.
 Install the PostgreSQL backend:
 
 ```bash
-pip install AirPostgres
+uv add "AirPostgres>=0.2.0"
 ```
 
 ```python title="main.py"
@@ -121,15 +121,26 @@ Primary keys use BIGSERIAL. Unsupported PostgreSQL field types produce a clear
 
 ## Table names just work
 
-Class names are auto-converted from CamelCase to snake_case, the way every PostgreSQL user expects:
+Class names are converted from CamelCase to snake_case and prefixed to avoid
+collisions between applications. Models in a top-level package use that package
+name. Models in generic modules such as `main`, `app`, or `models` use the
+normalized project name from `pyproject.toml`:
 
-| Class name | Table name |
-|---|---|
-| `BlogPost` | `blog_post` |
-| `UnicornSighting` | `unicorn_sighting` |
-| `DragonFruit` | `dragon_fruit` |
+| Model location | Project name | Class name | Table name |
+|---|---|---|---|
+| `main.py` | `my-app` | `BlogPost` | `my_app_blog_post` |
+| `blog/models.py` | any | `BlogPost` | `blog_blog_post` |
+| `sightings.py` | any | `UnicornSighting` | `sightings_unicorn_sighting` |
 
-No `__tablename__` to remember. Open psql and everything looks right.
+Set `table_name` when an existing schema or integration requires an exact name:
+
+```python
+class BlogPost(AirModel):
+    table_name = "blog_post"
+
+    id: int | None = AirField(default=None, primary_key=True)
+    title: str
+```
 
 ## Seven async methods that cover 90% of database work
 

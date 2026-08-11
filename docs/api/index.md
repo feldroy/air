@@ -6,9 +6,11 @@ Here is the Air reference documentation. It explains how to do things, as well a
 - [Background Tasks](../api/background.md) - Background tasks for Air
 - [Exception Handlers](../api/exception_handlers.md) - Exceptions are returned to the user, specifically 404 and 500
 - [Exceptions](../api/exceptions.md) - Sometimes it's good to know exactly what is breaking
+- [Fields](../api/fields.md) - Pydantic field metadata for forms, tables, and persistence
 - [Forms](../api/forms.md) - Receive and validate data from users on web pages
 - [Layouts](../api/layouts.md) - Utilities for building layout functions and two example layouts for css microframeworks (mvcss and picocss)
 - [Middleware](../api/middleware.md) - Middleware for Air
+- [Models](../api/models.md) - Validated models and swappable persistence backend contracts
 - [Requests](../api/requests.md) - HTMX utility function that can be used with dependency injection
 - [Responses](../api/responses.md) - AirResponse for normal responses and SSEResponse for Server Sent Events
 - [Routing](../api/routing.md) - For compositing multiple apps inside each other

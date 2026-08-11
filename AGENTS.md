@@ -501,7 +501,7 @@ Use `lifespan` when you need async operations, cleanup on shutdown, or when the 
 
 `AirModel` and `AirField` are part of Air core. Persistence is supplied by a separate backend package such as AirPostgres or AirD1. Application model definitions and CRUD calls stay the same when the backend changes.
 
-For PostgreSQL, install `AirPostgres`, create the backend explicitly, and own its connection lifecycle:
+For PostgreSQL, install `AirPostgres>=0.2.0`, create the backend explicitly, and own its connection lifecycle:
 
 ```python
 from contextlib import asynccontextmanager
