@@ -11,7 +11,10 @@ Pydantic discovers annotated-types constraints.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
+
+if TYPE_CHECKING:
+    from air.model import AirModel
 
 
 class BasePresentation:
@@ -37,6 +40,19 @@ class PrimaryKey(BasePresentation):
     forms, read-only in edit forms, displayed as a link in tables,
     used as the record identifier in detail views and URLs.
     """
+
+
+@dataclass(frozen=True, slots=True)
+class ForeignKey(BasePresentation):
+    """Marks this field as a foreign key to another AirModel.
+
+    This metadata is structural rather than presentational. Consumers in
+    ``air.model`` use it to derive relation attribute names, validate
+    collisions, and eventually build relationship-aware query helpers.
+    """
+
+    to: type["AirModel"] | str
+    on_delete: Literal["cascade", "set_null", "restrict"] = "restrict"
 
 
 @dataclass(frozen=True, slots=True)

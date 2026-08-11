@@ -8,13 +8,15 @@ json_schema_extra, etc.) pass straight through to Field().
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+import builtins
+from typing import TYPE_CHECKING, Any, Literal
 
 from pydantic import Field as PydanticField
 
 from air.field.types import (
     Autofocus,
     Choices,
+    ForeignKey,
     HelpText,
     Label,
     Placeholder,
@@ -31,6 +33,8 @@ def AirField(  # noqa: C901, N802
     *,
     # Presentation
     primary_key: bool = False,
+    foreign_key: type | str | None = None,
+    on_delete: Literal["cascade", "set_null", "restrict"] | None = None,
     type: str | None = None,  # noqa: A002
     label: str | None = None,
     widget: str | None = None,
@@ -44,9 +48,10 @@ def AirField(  # noqa: C901, N802
 ) -> Any:
     """Unified field descriptor for Pydantic models.
 
-    Accepts presentation metadata (``primary_key``, ``type``, ``label``,
-    ``widget``, ``choices``, ``placeholder``, ``help_text``,
-    ``autofocus``) and all standard ``pydantic.Field`` parameters.
+    Accepts presentation metadata (``primary_key``, ``foreign_key``,
+    ``on_delete``, ``type``, ``label``, ``widget``, ``choices``,
+    ``placeholder``, ``help_text``, ``autofocus``) and all standard
+    ``pydantic.Field`` parameters.
 
     All AirField-specific parameters become typed metadata objects in
     ``field_info.metadata``. Remaining ``**kwargs`` pass through to
@@ -54,7 +59,38 @@ def AirField(  # noqa: C901, N802
 
     Returns:
         A Pydantic FieldInfo configured with all specified parameters.
+
+    Raises:
+        TypeError: If ``foreign_key`` is neither an AirModel subclass nor a string reference.
+        ValueError: If AirField-specific options are combined in an invalid way.
     """
+    if foreign_key is not None and choices is not None:
+        msg = "foreign_key and choices are mutually exclusive"
+        raise ValueError(msg)
+    if foreign_key is not None and primary_key:
+        msg = "foreign_key and primary_key are mutually exclusive"
+        raise ValueError(msg)
+    if on_delete is not None and foreign_key is None:
+        msg = "on_delete requires foreign_key"
+        raise ValueError(msg)
+    if on_delete is not None and on_delete not in {"cascade", "set_null", "restrict"}:
+        msg = "on_delete must be one of: cascade, set_null, restrict"
+        raise ValueError(msg)
+    if foreign_key is not None:
+        if isinstance(foreign_key, str):
+            pass
+        elif isinstance(foreign_key, builtins.type):
+            from air.model import AirModel  # noqa: PLC0415
+
+            if not issubclass(foreign_key, AirModel):
+                msg = "foreign_key must be an AirModel subclass or string reference"
+                raise TypeError(msg)
+        else:
+            msg = "foreign_key must be an AirModel subclass or string reference"
+            raise TypeError(msg)
+        if on_delete is None:
+            on_delete = "restrict"
+
     if default is not ...:
         kwargs["default"] = default
     if default_factory is not None:
@@ -65,6 +101,8 @@ def AirField(  # noqa: C901, N802
     # Typed presentation metadata
     if primary_key:
         field_info.metadata.append(PrimaryKey())
+    if foreign_key is not None:
+        field_info.metadata.append(ForeignKey(to=foreign_key, on_delete=on_delete or "restrict"))
     if type:
         field_info.metadata.append(Widget(kind=type))
     if widget:
