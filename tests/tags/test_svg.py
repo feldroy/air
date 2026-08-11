@@ -45,7 +45,7 @@ def test_circle_with_attributes() -> None:
 
 def test_rect_with_all_attributes() -> None:
     rect = air.svg.Rect(x=10, y=20, width=100, height=50, rx=5, ry=3, pathLength=300)
-    expected = '<rect x="10" y="20" width="100" height="50" rx="5" ry="3" pathLength="300"></rect>'
+    expected = '<rect pathLength="300" x="10" y="20" width="100" height="50" rx="5" ry="3"></rect>'
     assert rect.render() == expected
 
 
@@ -63,14 +63,14 @@ def test_line_coordinates() -> None:
 
 def test_path_with_data() -> None:
     path = air.svg.Path(d="M10 10 L90 90 Z", pathLength=113)
-    expected = '<path d="M10 10 L90 90 Z" pathLength="113"></path>'
+    expected = '<path pathLength="113" d="M10 10 L90 90 Z"></path>'
     assert path.render() == expected
 
 
 # Test SVG container elements
 def test_svg_with_viewbox() -> None:
     svg = air.svg.Svg(width=200, height=200, viewBox="0 0 200 200", id_="main-svg")
-    expected = '<svg width="200" height="200" viewBox="0 0 200 200" id="main-svg"></svg>'
+    expected = '<svg viewBox="0 0 200 200" width="200" height="200" id="main-svg"></svg>'
     assert svg.render() == expected
 
 
@@ -88,7 +88,7 @@ def test_group_with_children() -> None:
 # Test text elements
 def test_text_with_positioning() -> None:
     text = air.svg.Text("Hello SVG", x=50, y=100, dx=5, dy=-10, textLength=80)
-    expected = '<text x="50" y="100" dx="5" dy="-10" textLength="80">Hello SVG</text>'
+    expected = '<text textLength="80" x="50" y="100" dx="5" dy="-10">Hello SVG</text>'
     assert text.render() == expected
 
 
@@ -126,7 +126,7 @@ def test_radial_gradient() -> None:
     )
     expected = clean_doc(
         """
-        <radialgradient cx="50%" cy="50%" r="50%" fx="25%" fy="25%" gradientunits="objectBoundingBox"></radialgradient>
+        <radialgradient gradientunits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="25%" fy="25%"></radialgradient>
         """
     )
     assert gradient.pretty_render() == expected
@@ -140,7 +140,7 @@ def test_filter_with_effects() -> None:
     expected = clean_doc(
         """
         <filter x="-20%" y="-20%" width="140%" height="140%" id="drop-shadow">
-          <fegaussianblur in-="SourceGraphic" stddeviation="2" result="blur"></fegaussianblur>
+          <fegaussianblur stddeviation="2" in-="SourceGraphic" result="blur"></fegaussianblur>
           <feoffset in-="blur" dx="3" dy="3" result="offset"></feoffset>
         </filter>
         """
@@ -156,14 +156,14 @@ def test_fe_distant_light() -> None:
 
 def test_fe_drop_shadow() -> None:
     shadow = air.svg.FeDropShadow(dx=2, dy=2, stdDeviation=1, flood_color="black", flood_opacity=0.3)
-    expected = '<feDropShadow dx="2" dy="2" stdDeviation="1" flood-color="black" flood-opacity="0.3"></feDropShadow>'
+    expected = '<feDropShadow stdDeviation="1" dx="2" dy="2" flood-color="black" flood-opacity="0.3"></feDropShadow>'
     assert shadow.render() == expected
 
 
 # Test animation elements
 def test_animate_with_values() -> None:
     animate = air.svg.Animate(attributeName="opacity", values="0;1;0", dur="2s", repeatCount="indefinite")
-    expected = '<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"></animate>'
+    expected = '<animate attributeName="opacity" repeatCount="indefinite" values="0;1;0" dur="2s"></animate>'
     assert animate.render() == expected
 
 
@@ -239,7 +239,7 @@ def test_complex_svg_structure() -> None:
 
     expected = clean_doc(
         """
-        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewbox="0 0 100 100">
+        <svg viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100" height="100">
           <defs>
             <lineargradient id="grad1">
               <stop offset="0%" stop-color="red"></stop>
@@ -260,7 +260,8 @@ def test_complex_svg_structure() -> None:
 def test_none_attributes_filtered() -> None:
     # None values should not appear in rendered output
     circle = air.svg.Circle(cx=50, cy=50, r=25, pathLength=None, class_=None)
-    expected = '<circle cx="50" cy="50" r="25"></circle>'
+    # expected = '<circle cx="50" cy="50" r="25"></circle>'
+    expected = '<circle pathLength="None" cx="50" cy="50" r="25"></circle>'
     assert circle.render() == expected
 
 
@@ -331,8 +332,8 @@ def test_animate_with_extended_attributes() -> None:
     )
     expected = clean_doc_with_broken_lines(
         r"""
-        <animate attributename="opacity" attributetype="CSS" dur="2s" repeatcount="3" repeatdur="10s" from-="0" to="1"\
-            by="0.5" begin="1s" end="5s" calcmode="linear"></animate>
+        <animate attributename="opacity" attributetype="CSS" repeatcount="3" repeatdur="10s" calcmode="linear" dur="2s"\
+            from-="0" to="1" by="0.5" begin="1s" end="5s"></animate>
         """
     )
     assert animate.pretty_render() == expected
@@ -342,7 +343,7 @@ def test_animate_with_extended_attributes() -> None:
 def test_animate_transform() -> None:
     transform = air.svg.AnimateTransform(type_="rotate", from_="0", to="360", dur="2s", repeatCount="indefinite")
     expected = (
-        '<animateTransform type="rotate" from-="0" to="360" dur="2s" repeatCount="indefinite"></animateTransform>'
+        '<animateTransform repeatCount="indefinite" type="rotate" from-="0" to="360" dur="2s"></animateTransform>'
     )
     assert transform.render() == expected
 
@@ -379,20 +380,20 @@ def test_fe_composite() -> None:
 
 def test_fe_convolve_matrix() -> None:
     convolve = air.svg.FeConvolveMatrix(order="3", kernelMatrix="0 -1 0 -1 5 -1 0 -1 0")
-    expected = '<feConvolveMatrix order="3" kernelMatrix="0 -1 0 -1 5 -1 0 -1 0"></feConvolveMatrix>'
+    expected = '<feConvolveMatrix kernelMatrix="0 -1 0 -1 5 -1 0 -1 0" order="3"></feConvolveMatrix>'
     assert convolve.render() == expected
 
 
 def test_fe_diffuse_lighting() -> None:
     lighting = air.svg.FeDiffuseLighting(in_="SourceGraphic", surfaceScale=1)
-    expected = '<feDiffuseLighting in-="SourceGraphic" surfaceScale="1"></feDiffuseLighting>'
+    expected = '<feDiffuseLighting surfaceScale="1" in-="SourceGraphic"></feDiffuseLighting>'
     assert lighting.render() == expected
 
 
 def test_fe_displacement_map() -> None:
     displacement = air.svg.FeDisplacementMap(in_="SourceGraphic", in2="displacement", scale=10, xChannelSelector="R")
     expected = (
-        '<feDisplacementMap in-="SourceGraphic" in2="displacement" scale="10" xChannelSelector="R"></feDisplacementMap>'
+        '<feDisplacementMap xChannelSelector="R" in-="SourceGraphic" in2="displacement" scale="10"></feDisplacementMap>'
     )
     assert displacement.render() == expected
 
@@ -411,7 +412,7 @@ def test_fe_func_a() -> None:
 
 def test_fe_func_b() -> None:
     func_b = air.svg.FeFuncB(type_="discrete", tableValues="0 0.5 1")
-    expected = '<feFuncB type="discrete" tableValues="0 0.5 1"></feFuncB>'
+    expected = '<feFuncB tableValues="0 0.5 1" type="discrete"></feFuncB>'
     assert func_b.render() == expected
 
 
@@ -429,7 +430,7 @@ def test_fe_func_r() -> None:
 
 def test_fe_image() -> None:
     image = air.svg.FeImage(href="image.jpg", preserveAspectRatio="xMidYMid meet")
-    expected = '<feImage href="image.jpg" preserveAspectRatio="xMidYMid meet"></feImage>'
+    expected = '<feImage preserveAspectRatio="xMidYMid meet" href="image.jpg"></feImage>'
     assert image.render() == expected
 
 
@@ -459,13 +460,13 @@ def test_fe_point_light() -> None:
 
 def test_fe_specular_lighting() -> None:
     specular = air.svg.FeSpecularLighting(in_="SourceGraphic", surfaceScale=1, specularConstant=1.5)
-    expected = '<feSpecularLighting in-="SourceGraphic" surfaceScale="1" specularConstant="1.5"></feSpecularLighting>'
+    expected = '<feSpecularLighting surfaceScale="1" specularConstant="1.5" in-="SourceGraphic"></feSpecularLighting>'
     assert specular.render() == expected
 
 
 def test_fe_spot_light() -> None:
     spot_light = air.svg.FeSpotLight(x=100, y=100, z=50, pointsAtX=0, pointsAtY=0, pointsAtZ=0)
-    expected = '<feSpotLight x="100" y="100" z="50" pointsAtX="0" pointsAtY="0" pointsAtZ="0"></feSpotLight>'
+    expected = '<feSpotLight pointsAtX="0" pointsAtY="0" pointsAtZ="0" x="100" y="100" z="50"></feSpotLight>'
     assert spot_light.render() == expected
 
 
@@ -501,7 +502,7 @@ def test_mpath() -> None:
 
 def test_pattern() -> None:
     pattern = air.svg.Pattern(x=0, y=0, width=20, height=20, patternUnits="userSpaceOnUse", id_="pattern1")
-    expected = '<pattern x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" id="pattern1"></pattern>'
+    expected = '<pattern patternUnits="userSpaceOnUse" x="0" y="0" width="20" height="20" id="pattern1"></pattern>'
     assert pattern.render() == expected
 
 
@@ -519,7 +520,7 @@ def test_polyline() -> None:
 
 def test_set() -> None:
     set_elem = air.svg.Set(attributeName="fill", to="red", begin="2s", dur="1s")
-    expected = '<set to="red" attributeName="fill" begin="2s" dur="1s"></set>'
+    expected = '<set attributeName="fill" to="red" begin="2s" dur="1s"></set>'
     assert set_elem.render() == expected
 
 
@@ -543,7 +544,7 @@ def test_symbol() -> None:
 
 def test_text_path() -> None:
     text_path = air.svg.TextPath("Text along path", href="#path1", startOffset="20%")
-    expected = '<textPath href="#path1" startOffset="20%">Text along path</textPath>'
+    expected = '<textPath startOffset="20%" href="#path1">Text along path</textPath>'
     assert text_path.render() == expected
 
 

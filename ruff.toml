@@ -118,7 +118,6 @@ ignore = [
     # TODO -> Remove the rules below this line
     "RUF029", # Function is declared `async`, but doesn't `await` or use `async` features.
     "ANN401", # https://docs.astral.sh/ruff/rules/any-type
-    "N803", # Argument names must be lowercase (snake_case)
     "N999", # Module (file) names must be snake_case
 ]
 
