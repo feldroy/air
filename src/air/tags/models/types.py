@@ -11,12 +11,7 @@ from .special import (
     Script,
     Style,
 )
-from .stock import (
-    Base,
-    Link,
-    Meta,
-    Title,
-)
+from .stock import Base, Footer, Header, Link, Meta, Title
 
 type Renderable = Annotated[
     str | BaseTag | SafeStr | int | float,
@@ -71,3 +66,5 @@ class TagDictType(TypedDict):
 
 type TagTypes = tuple[type[BaseTag], ...]
 HEAD_TAG_TYPES: Final[TagTypes] = (Title, Style, Meta, Link, Script, Base)
+HEADER_TAG_TYPES: Final[TagTypes] = Header
+FOOTER_TAG_TYPES: Final[TagTypes] = Footer
