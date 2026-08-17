@@ -104,11 +104,13 @@ select = [
     "RUF", # https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
     "TRY", # https://docs.astral.sh/ruff/rules/#tryceratops-try
 ]
+extend-select = [
+    "D105", # undocumented-magic-method
+]
 ignore = [
     "D100", # ignore missing docstring in module
     "D102", # ignore missing docstring in public method
     "D104", # ignore missing docstring in public package
-    "D105", # ignore missing docstring in magic methods
     "D107", # ignore missing docstring in __init__ methods
     "D206", # docstring-tab-indentation (formatter handles indentation)
     "D300", # triple-single-quotes (formatter enforces double quotes)
