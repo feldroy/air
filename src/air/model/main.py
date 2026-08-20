@@ -2,7 +2,7 @@
 
 ``AirModel`` owns model definition, validation, and public CRUD semantics.
 Persistence is supplied separately by an :class:`AirModelBackend`, such as
-AirPostgres or AirD1.
+AirPostgres.
 """
 
 from __future__ import annotations

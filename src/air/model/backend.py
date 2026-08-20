@@ -135,7 +135,7 @@ def get_model_backend() -> AirModelBackend:
     if _active_backend is None:
         msg = (
             "No AirModel backend is configured. "
-            "Configure a persistence package such as AirPostgres or AirD1 before using model CRUD methods."
+            "Configure a persistence package such as AirPostgres before using model CRUD methods."
         )
         raise DatabaseNotConfigured(msg)
     return _active_backend

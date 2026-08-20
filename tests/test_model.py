@@ -134,7 +134,7 @@ class TestModelDefinition:
 class TestBackendConfiguration:
     def test_get_without_backend_has_actionable_error(self) -> None:
         clear_model_backend()
-        with pytest.raises(DatabaseNotConfigured, match="Configure a persistence package such as AirPostgres or AirD1"):
+        with pytest.raises(DatabaseNotConfigured, match="Configure a persistence package such as AirPostgres"):
             get_model_backend()
 
     def test_set_and_clear_backend(self) -> None:

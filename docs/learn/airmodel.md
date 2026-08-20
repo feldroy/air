@@ -386,7 +386,7 @@ class Note(AirModel):
     body: str
 ```
 
-The application lifespan chooses AirPostgres, AirD1, or another implementation
+The application lifespan chooses AirPostgres or another implementation
 of `AirModelBackend`. AirModel translates CRUD calls into backend-neutral
 queries and validates models; each backend owns its driver, SQL dialect, and
 schema lifecycle. Model definitions, forms, and CRUD call sites remain the
