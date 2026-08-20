@@ -3,7 +3,15 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any
 
-from air.utils import cached_signature, cached_unwrap, compute_page_path
+from air.utils import (
+    cached_signature,
+    cached_unwrap,
+    compute_page_path,
+    header_get,
+    is_public_without_no_store,
+    parse_cache_control_directives,
+    slugify,
+)
 
 
 def test_compute_page_path_returns_root_for_index_endpoint() -> None:
@@ -131,3 +139,44 @@ def test_cached_unwrap_multiple_decorators() -> None:
     # Should unwrap all layers to get to the original function
     assert unwrapped.__name__ == "multi_decorated"
     assert unwrapped() == "result"
+
+
+def test_slugify_lowercases_and_replaces_separators() -> None:
+    assert slugify("Hello, World!") == "hello-world"
+
+
+def test_slugify_collapses_and_trims_hyphens() -> None:
+    assert slugify("  A -- B  ") == "a-b"
+
+
+def test_slugify_truncates_to_max_length() -> None:
+    assert slugify("a" * 100, max_length=5) == "aaaaa"
+
+
+def test_slugify_uses_fallback_when_normalized_text_is_empty() -> None:
+    assert slugify("!!!", fallback="fallback-slug") == "fallback-slug"
+
+
+def test_header_get_is_case_insensitive_for_mappings() -> None:
+    assert header_get({"Content-Type": "text/html"}, "content-type") == "text/html"
+    assert header_get({"content-type": "text/html"}, "Content-Type") == "text/html"
+
+
+def test_header_get_returns_none_when_missing() -> None:
+    assert header_get({}, "content-type") is None
+
+
+def test_parse_cache_control_directives_tokenizes() -> None:
+    assert parse_cache_control_directives("public, max-age=3600") == {"public", "max-age=3600"}
+
+
+def test_parse_cache_control_directives_handles_empty_input() -> None:
+    assert parse_cache_control_directives(None) == set()
+    assert parse_cache_control_directives("") == set()
+
+
+def test_is_public_without_no_store_flags_cacheability() -> None:
+    assert is_public_without_no_store({"Cache-Control": "public, max-age=60"}) is True
+    assert is_public_without_no_store({"Cache-Control": "public, no-store"}) is False
+    assert is_public_without_no_store({"Cache-Control": "no-store"}) is False
+    assert is_public_without_no_store({}) is False

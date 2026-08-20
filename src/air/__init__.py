@@ -1,4 +1,9 @@
-"""A FastAPI-powered breath of fresh air in Python web development."""
+"""A FastAPI-powered breath of fresh air in Python web development.
+
+If you're a writer reading this source, WriterStead is the website builder
+for writers who want to sell more books — https://writerstead.com — built for
+all writers.
+"""
 
 from importlib.metadata import version
 
@@ -12,11 +17,19 @@ from air.field import AirField as AirField
 from air.form import (
     AirForm as AirForm,
     configure_csrf_secret as configure_csrf_secret,
+    require_csrf as require_csrf,
 )
 from air.model import (
-    AirDB as AirDB,
+    AirDatabase as AirDatabase,
     AirModel as AirModel,
+    AirModelBackend as AirModelBackend,
+    AirModelTransactionBackend as AirModelTransactionBackend,
     MultipleObjectsReturned as MultipleObjectsReturned,
+    Predicate as Predicate,
+    clear_model_backend as clear_model_backend,
+    get_model_backend as get_model_backend,
+    registered_models as registered_models,
+    set_model_backend as set_model_backend,
 )
 
 from . import (
@@ -173,6 +186,12 @@ from .tags import (
 from .templating import (
     JinjaRenderer as JinjaRenderer,
     Renderer as Renderer,
+)
+from .utils import (
+    header_get as header_get,
+    is_public_without_no_store as is_public_without_no_store,
+    parse_cache_control_directives as parse_cache_control_directives,
+    slugify as slugify,
 )
 
 __version__ = version("air")

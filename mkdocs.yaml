@@ -1,6 +1,9 @@
 site_name: AIR
 site_url: https://docs.airwebframework.org/
 repo_url: https://github.com/feldroy/air
+copyright: >
+  Air is free and open source, built in public, and proven in production by
+  <a href="https://writerstead.com/">WriterStead</a>.
 
 nav:
   - Home: index.md
@@ -11,6 +14,7 @@ nav:
       - Air Tags: learn/air_tags.md
       - Escaping HTML: learn/escaping_html.md
       - Forms: learn/forms.md
+      - AirModel: learn/airmodel.md
       - Jinja: learn/jinja.md
       - Layouts: learn/layouts.md
       - Cookbook:
@@ -30,9 +34,11 @@ nav:
       - Dependencies: api/dependencies.md
       - Exception Handlers: api/exception_handlers.md
       - Exceptions: api/exceptions.md
+      - Fields: api/fields.md
       - Forms: api/forms.md
       - Layouts: api/layouts.md
       - Middleware: api/middleware.md
+      - Models: api/models.md
       - Requests: api/requests.md
       - Responses: api/responses.md
       - Routing: api/routing.md
@@ -67,7 +73,10 @@ nav:
       - sprint/index.md
       - Source Examples: sprint/src_examples.md
 
-  - Deployment: deployment/index.md
+  - Deployment:
+      - deployment/index.md
+      - Railway: deployment/railway.md
+      - Emscripten/WebAssembly: deployment/webassembly.md
 
 theme:
   name: material
@@ -151,9 +160,11 @@ plugins:
           - learn/air_tags.md
           - learn/escaping_html.md
           - learn/forms.md
+          - learn/airmodel.md
           - learn/jinja.md
           - learn/layouts.md
           - learn/cookbook/*.md
+          - deployment/*.md
           - api/*.md
           - api/tags/*.md
           - api/svg/*.md

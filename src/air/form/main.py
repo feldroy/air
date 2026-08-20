@@ -17,6 +17,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, Literal, Self, Union, get_args,
 
 import annotated_types
 from pydantic import BaseModel, ValidationError
+from starlette.responses import PlainTextResponse
 
 from air.field import Autofocus, Label, Widget
 from air.field.types import (
@@ -445,6 +446,11 @@ class AirForm[M: BaseModel]:
     errors: list[ErrorDetails] | None = None
     is_valid: bool = False
     excludes: Sequence[str | tuple[str, ...]] | None = None
+    #: Optional maximum age for CSRF tokens. ``None`` uses Air's default.
+    #:
+    #: Long-lived forms can override this deliberately without lengthening the
+    #: validity window for every other state-changing form in the application.
+    csrf_max_age: ClassVar[int | None] = None
     _display_excludes: ClassVar[set[str]] = set()
     _save_excludes: ClassVar[set[str]] = set()
 
@@ -534,7 +540,10 @@ class AirForm[M: BaseModel]:
                 if raw_token is None:
                     msg = "CSRF token is missing."
                     raise ValueError(msg)  # noqa: TRY301
-                _check_csrf_token(raw_token)
+                if self.csrf_max_age is None:
+                    _check_csrf_token(raw_token)
+                else:
+                    _check_csrf_token(raw_token, max_age=self.csrf_max_age)
             except ValueError as e:
                 self.errors = [{"type": "value_error", "loc": (CSRF_FIELD_NAME,), "msg": str(e), "input": raw_token}]
                 return self.is_valid
@@ -577,6 +586,19 @@ class AirForm[M: BaseModel]:
     #:         widget = staticmethod(my_custom_widget)
     widget: Callable = staticmethod(default_form_widget)
 
+    def render_csrf(self) -> SafeHTML:
+        """Render only the signed CSRF hidden input for a custom form layout.
+
+        Use this when a Jinja template or hand-authored Air tags own the visible
+        fields, but the form should still use AirForm's CSRF protection. Calling
+        this method marks the form as expecting the generated token on its next
+        ``validate()`` call, just like :meth:`render`.
+        """
+        from air.form.csrf import csrf_hidden_input  # noqa: PLC0415
+
+        csrf_html, self._csrf_token = csrf_hidden_input()
+        return SafeHTML(csrf_html)
+
     def render(self) -> str:
         """Render the form as HTML using the widget.
 
@@ -584,9 +606,7 @@ class AirForm[M: BaseModel]:
         Uses submitted data if available (preserves values after
         validation errors), falls back to initial_data.
         """
-        from air.form.csrf import csrf_hidden_input  # noqa: PLC0415
-
-        csrf_html, self._csrf_token = csrf_hidden_input()
+        csrf_html = self.render_csrf()
         render_data = self.submitted_data or self.initial_data
         fields_html = self.widget(
             model=self.model,
@@ -595,3 +615,30 @@ class AirForm[M: BaseModel]:
             excludes=self._display_excludes or None,
         )
         return SafeHTML(f"{csrf_html}\n{fields_html}")
+
+
+# ---------------------------------------------------------------------------
+# CSRF helper — Air + Pydantic remain the validators
+# ---------------------------------------------------------------------------
+
+
+class _CsrfOnlyModel(BaseModel):
+    """Empty model used when only the CSRF token needs validation."""
+
+
+class _CsrfOnlyForm(AirForm[_CsrfOnlyModel]):
+    """Internal form that validates only the CSRF token."""
+
+
+async def require_csrf(request: Request, message: str = "Invalid CSRF token.") -> PlainTextResponse | None:
+    """Validate the request's CSRF token via Air.
+
+    Uses the same HMAC + Origin check as any AirForm (single great place).
+    Returns a 403 PlainTextResponse on failure so callers can
+    `if resp := await require_csrf(request, "..."): return resp`.
+    """
+
+    form = await _CsrfOnlyForm.from_request(request)
+    if not form.is_valid:
+        return PlainTextResponse(message, status_code=403)
+    return None

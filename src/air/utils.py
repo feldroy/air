@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import re
 from functools import cache
 from typing import TYPE_CHECKING, Any, Final, Literal
 
@@ -104,3 +105,62 @@ def cached_unwrap(fn: Callable[..., Any]) -> Callable[..., Any]:
         original2 = cached_unwrap(my_func)  # Fast!
     """
     return inspect.unwrap(fn)
+
+
+def slugify(value: str, *, fallback: str = "post", max_length: int = 80) -> str:
+    """Create a URL-safe slug from arbitrary text.
+
+    Reusable across Air apps: lowercases, replaces non-alphanumerics with
+    a single hyphen, trims leading/trailing hyphens, and caps length.
+
+    Args:
+        value: Source text.
+        fallback: Returned when the normalized text is empty.
+        max_length: Maximum slug length; truncated and re-trimmed.
+
+    Returns:
+        URL-safe slug.
+    """
+
+    slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
+    return slug[:max_length].strip("-") or fallback
+
+
+def header_get(headers: Any, name: str) -> str | None:
+    """Case-insensitive header lookup tolerant of Worker and dict-like mappings."""
+
+    try:
+        getter = getattr(headers, "get", None)
+        if callable(getter):
+            value = getter(name)
+            if value is not None:
+                return str(value)
+            alt = name.lower() if name[:1].isupper() else name
+            if alt != name:
+                value = getter(alt)
+                if value is not None:
+                    return str(value)
+        if hasattr(headers, "items"):
+            lower = name.lower()
+            for key, val in headers.items():
+                if str(key).lower() == lower:
+                    return str(val)
+    except Exception:  # noqa: BLE001 - tolerate arbitrary Worker/JS header mappings
+        return None
+    return None
+
+
+def parse_cache_control_directives(value: str | None) -> set[str]:
+    """Tokenize a Cache-Control header into lower-cased directives."""
+
+    if not value:
+        return set()
+    return {token.strip().lower() for token in value.split(",") if token.strip()}
+
+
+def is_public_without_no_store(headers: Any) -> bool:
+    """Whether Cache-Control contains public without no-store."""
+
+    raw = header_get(headers, "Cache-Control")
+    directives = parse_cache_control_directives(raw)
+    return "public" in directives and "no-store" not in directives

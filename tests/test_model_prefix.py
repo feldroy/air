@@ -123,7 +123,7 @@ class TestTableNameWithPrefix:
         # Module is "tests.test_model_prefix" (package module), so prefix is "tests"
         assert SampleWidget._table_name() == "tests_sample_widget"
 
-    def test_create_table_sql_uses_prefixed_name(self) -> None:
+    def test_database_table_uses_prefix(self) -> None:
         from air.field import AirField  # noqa: PLC0415
         from air.model import AirModel  # noqa: PLC0415
 
@@ -131,5 +131,4 @@ class TestTableNameWithPrefix:
             id: int | None = AirField(default=None, primary_key=True)
             label: str
 
-        sql = GadgetItem._create_table_sql()
-        assert '"tests_gadget_item"' in sql
+        assert GadgetItem.database_table() == "tests_gadget_item"

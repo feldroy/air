@@ -373,6 +373,14 @@ class ContactForm(AirForm[ContactModel]):
 
 The widget callable receives `(*, model, data=None, errors=None, excludes=None)` and returns an HTML string.
 
+### Custom template layouts
+
+When a Jinja template or hand-authored Air tags own the visible fields, call
+`form.render_csrf()` inside the `<form>`. It returns only AirForm's signed
+hidden CSRF input and enforces that token on the subsequent `from_request()`
+validation. This avoids a placeholder custom widget solely to obtain CSRF
+protection.
+
 ### Excludes
 
 Hide fields from rendering, saving, or both:
@@ -491,21 +499,33 @@ Use `lifespan` when you need async operations, cleanup on shutdown, or when the 
 
 ## Database (AirModel)
 
-Zero config. Set `DATABASE_URL` in the environment and Air auto-connects on startup. The pool is available as `app.db`. If `DATABASE_URL` is not set, `app.db` is `None` and no database is configured.
+`AirModel` and `AirField` are part of Air core. Persistence is supplied by a separate backend package such as AirPostgres. Application model definitions and CRUD calls stay the same when the backend changes.
 
-Air calls `create_tables()` automatically at startup. If you add a field to a model, the existing table is auto-migrated with `ALTER TABLE ADD COLUMN`.
+For PostgreSQL, install `AirPostgres>=0.2.0`, create the backend explicitly, and own its connection lifecycle:
 
 ```python
+from contextlib import asynccontextmanager
+from os import getenv
+
 import air
 from air import AirField, AirModel
+from airpostgres import AirPostgres
 
-app = air.Air()  # reads DATABASE_URL, connects automatically
+database = AirPostgres()
 
 class UnicornSighting(AirModel):
     id: int | None = AirField(default=None, primary_key=True)
     location: str
     sparkle_rating: int
     confirmed: bool = AirField(default=False)
+
+@asynccontextmanager
+async def lifespan(app):
+    async with database.lifespan(getenv("DATABASE_URL", ""))(app):
+        await database.create_tables()
+        yield
+
+app = air.Air(lifespan=lifespan)
 
 @app.post("/sightings")
 async def create_sighting(request: air.Request):
@@ -522,7 +542,7 @@ async def sightings():
     return air.Ul(*[air.Li(s.location) for s in all_sightings])
 ```
 
-Methods: `create`, `get`, `filter`, `all`, `count`, `save`, `delete`, `bulk_create`, `bulk_update`, `bulk_delete`. Django-style lookups: `field__gte=5`, `field__icontains="x"`, `field__isnull=True`. Transactions: `async with app.db.transaction():`. See [AirModel AGENTS.md](https://github.com/feldroy/AirModel/blob/main/AGENTS.md) for lookups, bulk ops, and transactions.
+Methods: `create`, `get`, `filter`, `all`, `count`, `save`, `delete`, `bulk_create`, `bulk_update`, `bulk_delete`. AirPostgres supports Django-style lookups such as `field__gte=5`, `field__icontains="x"`, and `field__isnull=True`. Transactions use `async with database.transaction():`. If no backend is configured, model CRUD methods raise an actionable `RuntimeError`.
 
 ## Common Patterns
 
@@ -666,6 +686,6 @@ Railway detects `uv.lock` and installs dependencies with uv. The `$PORT` variabl
 
 ## Friction Notes
 
-### Local editable installs of Air sub-packages (2026-03-19)
+### Local editable installs of Air backends (2026-07-28)
 
-When developing against unreleased versions of AirField, AirForm, or AirModel in a downstream app, `[tool.uv.sources]` path overrides only take effect for **direct** dependencies. Packages that are only transitive (e.g. AirModel pulled in through Air) must be added to `[project.dependencies]` before the source override works. Without this, `uv sync` silently installs the PyPI version instead of the local one.
+When developing against an unreleased backend such as AirPostgres in a downstream app, add it as a direct project dependency and point `[tool.uv.sources]` at the local package. Keep Air itself as a direct dependency too when testing an unreleased backend protocol.

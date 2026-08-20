@@ -26,6 +26,7 @@ Community articles and blog posts about Air:
 
 Showcase of sites built with the Air framework:
 
+- <a href="https://writerstead.com/" target="_blank">WriterStead</a>: A live author-site platform built and run on Air, with accounts, subscriptions, forms, and author sites.
 - <a href="https://feldroy.com/", target="_blank">Feldroy</a>: The website of the people behind Air, Daniel and Audrey Roy Greenfeld
 - <a href="https://airconvert.fastapicloud.dev/", target="_blank">Air Convert:</a> Convert HTML to Air Tags
 - <a href="https://airmcp.fastapicloud.dev/", target="_blank">Air MCP:</a> A hosted MCP server with tools related to Air

@@ -1,9 +1,14 @@
 import pytest
+from pydantic import BaseModel
+from starlette.applications import Starlette
 from starlette.requests import Request
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+from starlette.testclient import TestClient
 
 import air
 import air.form.csrf as csrf
-from air.form import configure_csrf_secret
+from air.form import AirForm, configure_csrf_secret
 
 
 def _request_with_headers(*headers: tuple[str, str]) -> Request:
@@ -162,3 +167,97 @@ def test_check_csrf_token_rejects_invalid_types_and_oversized_values(token: obje
 
 def test_configure_csrf_secret_is_exported_from_air() -> None:
     assert air.configure_csrf_secret is configure_csrf_secret
+
+
+def _guarded_client() -> TestClient:
+    """Return a client whose only route reports require_csrf's outcome."""
+
+    async def guarded(request: Request) -> JSONResponse:
+        response = await air.require_csrf(request, "custom message.")
+        return JSONResponse({
+            "ok": response is None,
+            "status": response.status_code if response is not None else None,
+            "body": response.body.decode() if response is not None else None,
+        })
+
+    app = Starlette(routes=[Route("/", guarded, methods=["POST"])])
+    return TestClient(app)
+
+
+def test_require_csrf_accepts_a_valid_token_with_matching_origin() -> None:
+    with _guarded_client() as client:
+        result = client.post(
+            "/",
+            data={"csrf_token": csrf.generate_csrf_token()},
+            headers={"origin": "http://testserver"},
+        )
+
+    assert result.status_code == 200
+    assert result.json() == {"ok": True, "status": None, "body": None}
+
+
+def test_require_csrf_rejects_a_missing_token() -> None:
+    with _guarded_client() as client:
+        result = client.post("/", data={}, headers={"origin": "http://testserver"})
+
+    assert result.json() == {"ok": False, "status": 403, "body": "custom message."}
+
+
+def test_require_csrf_rejects_a_tampered_token() -> None:
+    token = csrf.generate_csrf_token()[:-2] + "xx"
+    with _guarded_client() as client:
+        result = client.post(
+            "/",
+            data={"csrf_token": token},
+            headers={"origin": "http://testserver"},
+        )
+
+    assert result.json() == {"ok": False, "status": 403, "body": "custom message."}
+
+
+def test_require_csrf_rejects_a_cross_origin_submission() -> None:
+    with _guarded_client() as client:
+        result = client.post(
+            "/",
+            data={"csrf_token": csrf.generate_csrf_token()},
+            headers={"origin": "https://evil.example"},
+        )
+
+    assert result.json() == {"ok": False, "status": 403, "body": "custom message."}
+
+
+def test_require_csrf_rejects_an_expired_token(monkeypatch: pytest.MonkeyPatch) -> None:
+    real_time = csrf.time.time()
+    token = csrf.generate_csrf_token()
+    monkeypatch.setattr(csrf.time, "time", lambda: real_time + 7200)
+
+    with _guarded_client() as client:
+        result = client.post(
+            "/",
+            data={"csrf_token": token},
+            headers={"origin": "http://testserver"},
+        )
+
+    assert result.json() == {"ok": False, "status": 403, "body": "custom message."}
+
+
+def test_form_csrf_max_age_extends_token_lifetime(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(csrf, "_SECRET", b"a" * 32)
+
+    class DraftModel(BaseModel):
+        title: str
+
+    class DraftForm(AirForm):
+        model = DraftModel
+        csrf_max_age = 7200
+
+    token = csrf.generate_csrf_token()
+    real_time = csrf.time.time()
+    # A token older than the default 3600s window, but within this form's 7200s.
+    monkeypatch.setattr(csrf.time, "time", lambda: real_time + 3601)
+
+    form = DraftForm()
+    form._csrf_token = "from_request"
+    form._csrf_request = None
+    assert form.validate({"csrf_token": token, "title": "Draft"}) is True
+    assert form.is_valid is True
