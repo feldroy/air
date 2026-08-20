@@ -73,6 +73,14 @@
 
 ---
 
+## Built for the real world
+
+Air is free and open source. [WriterStead](https://writerstead.com/) runs on it
+in production, and its real needs, including accounts, subscriptions, forms,
+and author sites, drive Air forward.
+
+---
+
 **Website**: <a href="https://airwebframework.org" target="_blank"><https://airwebframework.org></a>
 
 **Documentation**: <a href="https://docs.airwebframework.org" target="_blank"><https://docs.airwebframework.org></a>

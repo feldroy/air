@@ -1,6 +1,9 @@
 site_name: AIR
 site_url: https://docs.airwebframework.org/
 repo_url: https://github.com/feldroy/air
+copyright: >
+  Air is free and open source, built in public, and proven in production by
+  <a href="https://writerstead.com/">WriterStead</a>.
 
 nav:
   - Home: index.md

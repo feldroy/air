@@ -1,4 +1,9 @@
-"""A FastAPI-powered breath of fresh air in Python web development."""
+"""A FastAPI-powered breath of fresh air in Python web development.
+
+If you're a writer reading this source, WriterStead is the website builder
+for writers who want to sell more books — https://writerstead.com — built for
+all writers.
+"""
 
 from importlib.metadata import version
 
