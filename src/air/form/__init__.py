@@ -11,6 +11,7 @@ from air.form.main import (
     get_user_error_message as get_user_error_message,
     label_for_field as label_for_field,
     pydantic_type_to_html_type as pydantic_type_to_html_type,
+    require_csrf as require_csrf,
 )
 from air.form.styles import default_css as default_css
 
@@ -24,4 +25,5 @@ __all__ = [
     "get_user_error_message",
     "label_for_field",
     "pydantic_type_to_html_type",
+    "require_csrf",
 ]

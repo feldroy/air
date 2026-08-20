@@ -16,15 +16,10 @@ import os
 import secrets
 import sys
 import time
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
 
-from pydantic_core import core_schema
-
 if TYPE_CHECKING:
-    from pydantic import GetCoreSchemaHandler
-    from pydantic_core import CoreSchema
-
     from air.requests import Request
 
 
@@ -190,26 +185,6 @@ def _get_secret() -> bytes:
     if _SECRET is None:
         _SECRET = secrets.token_bytes(32)
     return _SECRET
-
-
-class ValidCsrfToken(str):  # noqa: FURB189
-    """A Pydantic-native string type that validates CSRF token signatures.
-
-    Used on the wrapper model that AirForm creates automatically.
-    Pydantic validates it alongside all other fields, so CSRF errors
-    appear in form.errors through the same machinery.
-    """
-
-    @classmethod
-    def __get_pydantic_core_schema__(cls, source_type: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
-        return core_schema.no_info_plain_validator_function(cls._validate)
-
-    @classmethod
-    def _validate(cls, value: Any) -> str:
-        if not isinstance(value, str):
-            msg = "CSRF token must be a string."
-            raise TypeError(msg)
-        return _check_csrf_token(value)
 
 
 def csrf_hidden_input() -> tuple[str, str]:
