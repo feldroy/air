@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import re
 import tomllib
+from collections.abc import Mapping
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -20,8 +21,6 @@ from air.field import PrimaryKey
 from air.model.backend import get_model_backend
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
-
     from pydantic.fields import FieldInfo
 
 
@@ -122,6 +121,29 @@ class AirModel(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
     table_name: ClassVar[str | None] = None
+    legacy_table_names: ClassVar[tuple[str, ...]] = ()
+    legacy_column_names: ClassVar[Mapping[str, str]] = {}
+
+    @classmethod
+    def legacy_database_tables(cls) -> tuple[str, ...]:
+        """Return former physical table names that may be safely renamed.
+
+        This is deliberately opt-in. A backend can use it during local schema
+        setup to preserve data after a model's explicit ``table_name`` changes.
+        Production migration runners should still record the same rename in a
+        versioned SQL migration.
+        """
+        return cls.legacy_table_names
+
+    @classmethod
+    def legacy_database_columns(cls) -> Mapping[str, str]:
+        """Map each new field name to its former physical column name.
+
+        Like :meth:`legacy_database_tables`, this is opt-in and only helps
+        development backends retain local data. Production still requires a
+        reviewed, versioned SQL migration.
+        """
+        return cls.legacy_column_names
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)

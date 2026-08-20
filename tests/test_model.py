@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import pytest
 
@@ -248,3 +248,22 @@ class TestModelAndQuerySemantics:
             await Note.bulk_update({"id": 2}, title="One")
         with pytest.raises(ValueError, match="Unknown or primary-key"):
             await Note.bulk_update({"missing": "value"}, title="One")
+
+
+def test_legacy_database_metadata_defaults_to_empty() -> None:
+    assert Note.legacy_database_tables() == ()
+    assert Note.legacy_database_columns() == {}
+
+
+def test_legacy_database_metadata_returns_declared_former_names() -> None:
+    class RenamedSite(AirModel):
+        table_name = "current_sites"
+        legacy_table_names: ClassVar[tuple[str, ...]] = ("old_sites", "sites_v1")
+        legacy_column_names: ClassVar[Mapping[str, str]] = {"site_id": "blog_id"}
+
+        id: int | None = AirField(default=None, primary_key=True)
+        site_id: int
+        title: str
+
+    assert RenamedSite.legacy_database_tables() == ("old_sites", "sites_v1")
+    assert RenamedSite.legacy_database_columns() == {"site_id": "blog_id"}
