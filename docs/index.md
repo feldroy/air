@@ -2,8 +2,8 @@
 <p align="center">
   <br>
   <a href="https://airwebframework.org">
-    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg#only-light" width="180" alt="Air">
-    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg#only-dark" width="180" alt="Air">
+    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air.svg#only-light" width="180" alt="Air" decoding="async" fetchpriority="high">
+    <img src="https://raw.githubusercontent.com/feldroy/air/main/img/air-dark.svg#only-dark" width="180" alt="Air" decoding="async" fetchpriority="high">
   </a>
   <br>
   <br>
@@ -47,52 +47,52 @@
 </p>
 
 <p align="center">
-    <img src="https://custom-icon-badges.demolab.com/badge/Windows%2011-%230079d5?logo=windows11&logoColor=white" alt="Windows">
-    <img src="https://img.shields.io/badge/MacOS-000000?logo=apple&logoColor=white&color=2e2e2e" alt="macOS">
-    <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&color=orange" alt="Ubuntu">
+    <img src="https://custom-icon-badges.demolab.com/badge/Windows%2011-%230079d5?logo=windows11&logoColor=white" alt="Windows" loading="lazy" decoding="async">
+    <img src="https://img.shields.io/badge/MacOS-000000?logo=apple&logoColor=white&color=2e2e2e" alt="macOS" loading="lazy" decoding="async">
+    <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&color=orange" alt="Ubuntu" loading="lazy" decoding="async">
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github&label=Commits" alt="GitHub commit activity">
-    <img src="https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github" alt="GitHub commits since latest release">
+    <img src="https://img.shields.io/github/commit-activity/t/feldroy/air?logo=github&label=Commits" alt="GitHub commit activity" loading="lazy" decoding="async">
+    <img src="https://img.shields.io/github/commits-since/feldroy/air/latest?logo=github" alt="GitHub commits since latest release" loading="lazy" decoding="async">
     <a href="https://github.com/feldroy/air/commit/main" target="_blank">
-        <img src="https://img.shields.io/github/last-commit/feldroy/air?logo=github&label=Last%20Commit" alt="GitHub last commit">
+        <img src="https://img.shields.io/github/last-commit/feldroy/air?logo=github&label=Last%20Commit" alt="GitHub last commit" loading="lazy" decoding="async">
     </a>
     <a href="https://github.com/feldroy/air/releases/latest" target="_blank">
-        <img src="https://img.shields.io/github/release-date/feldroy/air?logo=github&label=Release%20Date" alt="GitHub Release Date">
+        <img src="https://img.shields.io/github/release-date/feldroy/air?logo=github&label=Release%20Date" alt="GitHub Release Date" loading="lazy" decoding="async">
     </a>
 </p>
 
 <p align="center">
     <a href="https://github.com/feldroy/air/graphs/contributors" target="_blank">
-        <img src="https://img.shields.io/github/contributors/feldroy/air?logo=github&label=Contributors" alt="GitHub contributors">
+        <img src="https://img.shields.io/github/contributors/feldroy/air?logo=github&label=Contributors" alt="GitHub contributors" loading="lazy" decoding="async">
     </a>
     <a href="https://discord.gg/znf8vPsz47" target="_blank">
-        <img src="https://img.shields.io/discord/1388403469505007696?logo=discord&label=Discord" alt="Discord">
+        <img src="https://img.shields.io/discord/1388403469505007696?logo=discord&label=Discord" alt="Discord" loading="lazy" decoding="async">
     </a>
     <a href="https://x.com/AirWebFramework" target="_blank">
-        <img src="https://img.shields.io/badge/Air%20💨-%23000000.svg?logo=X&logoColor=white" alt="X">
+        <img src="https://img.shields.io/badge/Air%20💨-%23000000.svg?logo=X&logoColor=white" alt="X" loading="lazy" decoding="async">
     </a>
     <a href="https://bsky.app/profile/airwebframework.bsky.social" target="_blank">
-        <img src="https://img.shields.io/badge/Air%20💨-0285FF?logo=bluesky&logoColor=fff" alt="Bluesky">
+        <img src="https://img.shields.io/badge/Air%20💨-0285FF?logo=bluesky&logoColor=fff" alt="Bluesky" loading="lazy" decoding="async">
     </a>
     <a href="https://docs.airwebframework.org" target="_blank">
-        <img src="https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff" alt="MkDocs">
+        <img src="https://img.shields.io/badge/MkDocs-526CFE?logo=materialformkdocs&logoColor=fff" alt="MkDocs" loading="lazy" decoding="async">
     </a>
 </p>
 
 <p align="center">
     <a href="https://fastapi.tiangolo.com" target="_blank">
-        <img src="https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white" alt="FastAPI">
+        <img src="https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white" alt="FastAPI" loading="lazy" decoding="async">
     </a>
     <a href="https://docs.pydantic.dev/latest" target="_blank">
-        <img src="https://img.shields.io/badge/Pydantic-1B0613.svg?logo=pydantic&logoColor=E35AF3" alt="Pydantic">
+        <img src="https://img.shields.io/badge/Pydantic-1B0613.svg?logo=pydantic&logoColor=E35AF3" alt="Pydantic" loading="lazy" decoding="async">
     </a>
     <a href="https://jinja.palletsprojects.com/en/latest" target="_blank">
-        <img src="https://img.shields.io/badge/jinja-white.svg?&logo=Jinja&logoColor=black" alt="Jinja">
+        <img src="https://img.shields.io/badge/jinja-white.svg?&logo=Jinja&logoColor=black" alt="Jinja" loading="lazy" decoding="async">
     </a>
     <a href="https://docs.astral.sh" target="_blank">
-        <img src="https://img.shields.io/badge/uv|ruff|ty-black.svg?logo=astral&logoColor=D1FF4F" alt="Astral">
+        <img src="https://img.shields.io/badge/uv|ruff|ty-black.svg?logo=astral&logoColor=D1FF4F" alt="Astral" loading="lazy" decoding="async">
     </a>
 </p>
 
