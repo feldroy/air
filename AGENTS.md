@@ -254,7 +254,7 @@ Pass template variables as kwargs. You can also pass `context={"title": "Home"}`
 
 **Avoid `name` as a kwarg.** The `name` parameter is used internally for the template filename, so `app.jinja(request, "page.html", name="Alice")` raises `TypeError: got multiple values for argument 'name'`. Use a different variable name (e.g. `applicant_name`) or pass it via the context dict: `context={"name": "Alice"}`.
 
-**Air tags belong in Python, not pasted into templates.** When you have an Air tag that generates HTML (like an SVG logo component), pass it as a template variable and render it with `|safe`. Don't render the tag to a string and paste the HTML into a `.html` file. The Air tag is reusable across pages, testable in Python, and parameterizable (e.g. changing a fill color is a kwarg, not a find-and-replace across templates). Pasting the rendered output throws all of that away for a one-time shortcut. For complex HTML that originates in templates rather than Python, use `{% include "partials/logo.html" %}`.
+**Air tags belong in Python, not pasted into templates.** When you have an Air tag that generates HTML (like an SVG logo component), pass it as a template variable. Air tags implement Jinja's trusted `__html__` protocol, while ordinary strings remain autoescaped. The Air tag is reusable across pages, testable in Python, and parameterizable (e.g. changing a fill color is a kwarg, not a find-and-replace across templates). Pasting the rendered output throws all of that away for a one-time shortcut. For complex HTML that originates in templates rather than Python, use `{% include "partials/logo.html" %}`.
 
 ```python
 # Python: pass the Air tag as a variable
@@ -262,8 +262,8 @@ app.jinja(request, "page.html", sidebar=air.Nav(air.A("Home", href="/")))
 ```
 
 ```html
-{# Template: use |safe so Jinja renders the HTML instead of escaping it #}
-{{ sidebar|safe }}
+{# Template: Jinja recognizes the Air tag as trusted HTML #}
+{{ sidebar }}
 ```
 
 Use `as_string=True` to get a `SafeStr` for embedding Jinja output inside Air tags.

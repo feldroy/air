@@ -31,11 +31,7 @@ Here's a simple Jinja layout file:
     </head>
     <body>
         <main class="container">
-            {# We need to safe the content, which can be
-            a security risk. We'll cover mitigation
-            of such issues later on this page.
-        #}
-            {{ content|safe }}
+            {{ content }}
         </main>
     </body>
 </html>
@@ -67,6 +63,10 @@ def index(request: Request):
         content=content,
     )
 ```
+
+Air Tags implement Jinja's trusted `__html__` protocol, so they render as
+HTML without the `|safe` filter. Ordinary strings remain autoescaped by Jinja;
+use `air.Raw(...)` or `|safe` only when you intentionally provide trusted HTML.
 
 When run, this will look like this:
 
