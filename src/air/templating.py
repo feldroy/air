@@ -16,24 +16,8 @@ from starlette.responses import HTMLResponse
 from starlette.templating import _TemplateResponse
 
 from .requests import Request
-from .tags.models.base import BaseTag
 from .tags.utils import SafeStr
 from .utils import cached_signature
-
-
-def _jinja_context_item(item: Any) -> Any:
-    """Prepare an item for processing by Jinja.
-
-    BaseTag instances are converted to string.
-    All other objects are handled by Jinja directly.
-
-    Returns:
-        The item as a string if it's a BaseTag, otherwise the item unchanged.
-    """
-
-    if isinstance(item, BaseTag):
-        return str(item)
-    return item
 
 
 class JinjaRenderer:
@@ -146,8 +130,6 @@ class JinjaRenderer:
         if kwargs:
             context |= kwargs
 
-        # Attempt to render any Tags in the context
-        context = {k: _jinja_context_item(v) for k, v in context.items()}
         response = self.templates.TemplateResponse(request=request, name=name, context=context)
         if as_string:
             body = response.body
@@ -276,7 +258,6 @@ class Renderer:
         Returns:
             A TemplateResponse with the rendered template.
         """
-        context = {k: _jinja_context_item(v) for k, v in context.items()}
         return self.templates.TemplateResponse(request=request, name=name, context=context)  # type: ignore[arg-type]
 
     def _render_tag_callable(self, name: str, args: tuple, request: Request | None, context: dict[Any, Any]) -> str:

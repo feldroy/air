@@ -448,13 +448,13 @@ It is very easy to include Air Tags in Jinja. Let's first create our template:
     <body>
         <main class="container">
             <h1>{{ title }}</h1>
-            {{ fragment|safe }} {# (1)! #}
+            {{ fragment }} {# (1)! #}
         </main>
     </body>
 </html>
 ```
 
-1. The `safe` filter is necessary for using Air Tags in Jinja. This has security implications, so be careful what content you allow.
+1. Air Tags render through Jinja's trusted `__html__` protocol. Ordinary strings remain autoescaped; use `|safe` only for intentionally trusted HTML.
 
 And here is our Python code describing the view:
 

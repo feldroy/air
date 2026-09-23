@@ -52,6 +52,35 @@ class WrapperTag(BaseTag):
     """Container tag used to test nested structures."""
 
 
+class ValidHTML:
+    """Object implementing the standard HTML protocol."""
+
+    def __html__(self) -> str:
+        return "<em>trusted</em>"
+
+    def __str__(self) -> str:
+        return "untrusted fallback"
+
+
+class MalformedHTML:
+    """Object with a non-callable HTML protocol attribute."""
+
+    __html__ = None
+
+    def __str__(self) -> str:
+        return "<em>untrusted</em>"
+
+
+class MalformedHTMLResult:
+    """Object whose HTML protocol method returns a non-string value."""
+
+    def __html__(self) -> int:
+        return 42
+
+    def __str__(self) -> str:
+        return "<strong>untrusted</strong>"
+
+
 @pytest.fixture(autouse=True)
 def restore_registry() -> Iterator[None]:
     original_registry = BaseTag._registry.copy()
@@ -84,6 +113,16 @@ def test_children_skip_escaping_for_html_protocol_objects() -> None:
     html = '<div class="air-field"><label>name</label></div>'
     tag = WrapperTag(SafeHTML(html))
     assert html in tag.children
+
+
+def test_children_call_html_protocol_and_escape_malformed_protocol() -> None:
+    """Only callable __html__ methods should produce trusted markup."""
+    valid: Any = ValidHTML()
+    non_callable: Any = MalformedHTML()
+    non_string_result: Any = MalformedHTMLResult()
+    tag = WrapperTag(valid, non_callable, non_string_result)
+
+    assert tag.children == ("<em>trusted</em>&lt;em&gt;untrusted&lt;/em&gt;&lt;strong&gt;untrusted&lt;/strong&gt;")
 
 
 def test_escape_text_escapes_html_entities() -> None:

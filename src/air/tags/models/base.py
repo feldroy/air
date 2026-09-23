@@ -156,10 +156,22 @@ class BaseTag:
         Returns:
             The rendered child string, escaped when the child is not tag-aware.
         """
-        child_str = str(child)
-        if isinstance(child, BaseTag | SafeStr) or hasattr(child, "__html__"):
-            return child_str
-        return self._escape_text(child_str)
+        if isinstance(child, SafeStr):
+            return str(child)
+        html_method = getattr(child, "__html__", None)
+        if callable(html_method):
+            child_html = html_method()
+            if isinstance(child_html, str):
+                return child_html
+        return self._escape_text(str(child))
+
+    def __html__(self) -> str:
+        """Return this tag's rendered HTML for template engines.
+
+        Returns:
+            The rendered HTML string.
+        """
+        return self.html
 
     @staticmethod
     def _escape_text(text: str) -> str:

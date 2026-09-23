@@ -44,17 +44,15 @@ class SafeHTML(str):  # noqa: FURB189
     """A str subclass that HTML-aware systems can trust without escaping.
 
     Follows the __html__ protocol used by Jinja2 and MarkupSafe.
-    Air's tag system checks for __html__ and skips escaping, so
-    form.render() output can be passed directly to Air tags without
-    air.Raw() wrapping.
+    Air's tag system calls valid ``__html__`` methods, so form.render()
+    output can be passed directly to Air tags without air.Raw() wrapping.
     """
 
     def __html__(self) -> str:
         """Return self for the __html__ protocol.
 
         Jinja2/MarkupSafe calls obj.__html__() and expects an HTML
-        string back. Air's tag system checks hasattr(child, '__html__')
-        and skips escaping. This satisfies both.
+        string back. Air's tag system uses the same callable protocol.
         """
         return str(self)
 

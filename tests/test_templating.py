@@ -14,6 +14,7 @@ from starlette.responses import HTMLResponse
 
 import air
 from air import Air, JinjaRenderer, Request
+from air.form import SafeHTML
 
 from .components import index as index_callable
 from .utils import clean_doc, clean_doc_with_broken_lines
@@ -131,6 +132,74 @@ def test_jinja_plus_airtags() -> None:
         """
     )
     assert actual_html == expected_html.rstrip()
+
+
+@pytest.mark.parametrize("context_source", ["context", "keyword"])
+def test_jinja_renders_air_tags_without_safe_filter(context_source: str) -> None:
+    """Jinja trusts Air tags passed through either supported context path."""
+    app = Air()
+    jinja = JinjaRenderer(directory="tests/templates")
+
+    @app.get("/test")
+    def page(request: Request) -> HTMLResponse:
+        value = air.P("<script>alert(1)</script>")
+        if context_source == "context":
+            return jinja(request, name="jinja_value.html", context={"value": value})
+        return jinja(request, name="jinja_value.html", value=value)
+
+    response = TestClient(app).get("/test")
+
+    assert response.status_code == 200
+    assert response.text == "<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>"
+
+
+def test_jinja_preserves_plain_string_escaping() -> None:
+    """The same template slot still escapes a plain string."""
+    app = Air()
+    jinja = JinjaRenderer(directory="tests/templates")
+
+    @app.get("/test")
+    def page(request: Request) -> HTMLResponse:
+        return jinja(
+            request,
+            name="jinja_value.html",
+            value="<script>alert(1)</script>",
+        )
+
+    response = TestClient(app).get("/test")
+
+    assert response.status_code == 200
+    assert response.text == "&lt;script&gt;alert(1)&lt;/script&gt;"
+
+
+class TrustedHTML:
+    """HTML protocol object whose string representation is not trusted."""
+
+    def __html__(self) -> str:
+        return "<em>trusted</em>"
+
+    def __str__(self) -> str:
+        return "untrusted fallback"
+
+
+@pytest.mark.parametrize(
+    "value",
+    [SafeHTML("<em>trusted</em>"), TrustedHTML(), air.Raw("<em>trusted</em>")],
+    ids=["safe-html", "html-protocol", "raw-tag"],
+)
+def test_jinja_preserves_explicitly_trusted_html(value: object) -> None:
+    """Safe HTML protocols and Air's raw escape hatch remain trusted."""
+    app = Air()
+    jinja = JinjaRenderer(directory="tests/templates")
+
+    @app.get("/test")
+    def page(request: Request) -> HTMLResponse:
+        return jinja(request, name="jinja_value.html", value=value)
+
+    response = TestClient(app).get("/test")
+
+    assert response.status_code == 200
+    assert response.text == "<em>trusted</em>"
 
 
 def test_jinja_plus_airtags_autorender() -> None:
@@ -359,16 +428,16 @@ def test_renderer_render_template_with_air_tags() -> None:
     @app.page
     def context_with_tags(request: Request) -> str | HTMLResponse:
         return render(
-            name="home.html",
+            name="jinja_value.html",
             request=request,
-            context={"title": "Test", "content": air.P("Test content")},
+            context={"value": air.P("Test content")},
         )
 
     client = TestClient(app)
     response = client.get("/context-with-tags")
 
     assert response.status_code == 200
-    assert "Test content" in response.text
+    assert response.text == "<p>Test content</p>"
 
 
 def test_renderer_tag_callable_with_both_args_and_context() -> None:
