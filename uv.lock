@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.13, <3.15"
 
 [[package]]
@@ -32,7 +32,7 @@ standard = [
 dev = [
     { name = "asyncpg" },
     { name = "click" },
-    { name = "coverage" },
+    { name = "coverage", extra = ["toml"] },
     { name = "full-match" },
     { name = "httpx" },
     { name = "mkdocs" },
@@ -74,7 +74,7 @@ examples = [
 ]
 test = [
     { name = "asyncpg" },
-    { name = "coverage" },
+    { name = "coverage", extra = ["toml"] },
     { name = "full-match" },
     { name = "httpx" },
     { name = "pytest" },
@@ -86,82 +86,6 @@ test = [
 typing-stubs = [
     { name = "types-markdown" },
     { name = "types-pygments" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "asyncpg", marker = "extra == 'postgres'", specifier = ">=0.30.0" },
-    { name = "fastapi", specifier = ">=0.128.8" },
-    { name = "fastapi", extras = ["standard"], marker = "extra == 'standard'", specifier = ">=0.128.8" },
-    { name = "frozendict", specifier = ">=2.4.7" },
-    { name = "itsdangerous", specifier = ">=2.2.0" },
-    { name = "jinja2", specifier = ">=3.1.6" },
-    { name = "pygments", marker = "sys_platform != 'emscripten'", specifier = ">=2.19.2,!=2.20.0" },
-    { name = "python-multipart", specifier = ">=0.0.22" },
-    { name = "rich", marker = "sys_platform != 'emscripten'", specifier = ">=14.3.2" },
-    { name = "staticware", specifier = ">=0.2.0" },
-    { name = "tinyhtml5", specifier = ">=2.1.0,<3" },
-    { name = "typer", marker = "sys_platform != 'emscripten'", specifier = ">=0.23.0" },
-    { name = "uvicorn", marker = "sys_platform != 'emscripten'", specifier = ">=0.40.0" },
-]
-provides-extras = ["postgres", "standard"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "click", specifier = ">=8.3.1" },
-    { name = "coverage", extras = ["toml"], specifier = ">=7.13.4" },
-    { name = "full-match", specifier = ">=0.0.3" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "mkdocs", specifier = ">=1.6.1" },
-    { name = "mkdocs-autorefs", specifier = ">=1.4.4" },
-    { name = "mkdocs-exclude", specifier = ">=1.0.2" },
-    { name = "mkdocs-llmstxt", specifier = ">=0.5.0" },
-    { name = "mkdocs-material", extras = ["imaging"], specifier = ">=9.7.2" },
-    { name = "mkdocs-redirects", specifier = ">=1.2.2" },
-    { name = "mkdocstrings", extras = ["python"], specifier = ">=1.0.3" },
-    { name = "mkdocstrings-python", specifier = ">=2.0.3" },
-    { name = "pyinstrument", specifier = ">=5.1.2" },
-    { name = "pytest", specifier = ">=9.0.2" },
-    { name = "pytest-asyncio", specifier = ">=1.3.0" },
-    { name = "pytest-benchmark", specifier = ">=5.2.3" },
-    { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },
-    { name = "pytest-pretty", specifier = ">=1.3.0" },
-    { name = "ruff", specifier = ">=0.15.0" },
-    { name = "ty", specifier = ">=0.0.19" },
-    { name = "types-markdown", specifier = ">=3.10.2.20260211" },
-    { name = "types-pygments", specifier = ">=2.19.0.20251121" },
-]
-devtools = [
-    { name = "ruff", specifier = ">=0.15.0" },
-    { name = "ty", specifier = ">=0.0.19" },
-]
-docs = [
-    { name = "click", specifier = ">=8.3.1" },
-    { name = "mkdocs", specifier = ">=1.6.1" },
-    { name = "mkdocs-autorefs", specifier = ">=1.4.4" },
-    { name = "mkdocs-exclude", specifier = ">=1.0.2" },
-    { name = "mkdocs-llmstxt", specifier = ">=0.5.0" },
-    { name = "mkdocs-material", extras = ["imaging"], specifier = ">=9.7.2" },
-    { name = "mkdocs-redirects", specifier = ">=1.2.2" },
-    { name = "mkdocstrings", extras = ["python"], specifier = ">=1.0.3" },
-    { name = "mkdocstrings-python", specifier = ">=2.0.3" },
-]
-examples = [{ name = "pyinstrument", specifier = ">=5.1.2" }]
-test = [
-    { name = "asyncpg", specifier = ">=0.30.0" },
-    { name = "coverage", extras = ["toml"], specifier = ">=7.13.4" },
-    { name = "full-match", specifier = ">=0.0.3" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "pytest", specifier = ">=9.0.2" },
-    { name = "pytest-asyncio", specifier = ">=1.3.0" },
-    { name = "pytest-benchmark", specifier = ">=5.2.3" },
-    { name = "pytest-github-actions-annotate-failures", specifier = ">=0.3.0" },
-    { name = "pytest-pretty", specifier = ">=1.3.0" },
-]
-typing-stubs = [
-    { name = "types-markdown", specifier = ">=3.10.2.20260211" },
-    { name = "types-pygments", specifier = ">=2.19.0.20251121" },
 ]
 
 [[package]]
@@ -475,6 +399,9 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/0d/4a/331fe2caf6799d591109bb9c08083080f6de90a823695d412a935622abb2/coverage-7.13.4-py3-none-any.whl", hash = "sha256:1af1641e57cf7ba1bd67d677c9abdbcd6cc2ab7da3bca7fa1e2b7e50e65f2ad0", size = 211242, upload-time = "2026-02-09T12:59:02.032Z" },
 ]
 
+[package.optional-dependencies]
+toml = []
+
 [[package]]
 name = "cssselect2"
 version = "0.8.0"
@@ -499,11 +426,11 @@ wheels = [
 
 [[package]]
 name = "dnspython"
-version = "2.8.0"
+version = "2.9.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/8c/8b/57666417c0f90f08bcafa776861060426765fdb422eb10212086fb811d26/dnspython-2.8.0.tar.gz", hash = "sha256:181d3c6996452cb1189c4046c61599b84a5a86e099562ffde77d26984ff26d0f", size = 368251, upload-time = "2025-09-07T18:58:00.022Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ef/4a/50822184bd67cc6493f0fb6a880749158fcd31ab3fa07409acfd91f9fc85/dnspython-2.9.0.tar.gz", hash = "sha256:b44dc6b18f07a8b1c56676a19fbfdb5209415b046a9cece286baafa87ff3f7f1", size = 423560, upload-time = "2026-10-09T00:07:24.352Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ba/5a/18ad964b0086c6e62e2e7500f7edc89e3faa45033c71c1893d34eed2b2de/dnspython-2.8.0-py3-none-any.whl", hash = "sha256:01d9bbc4a2d76bf0db7c1f729812ded6d912bd318d3b1cf81d30c0f845dbf3af", size = 331094, upload-time = "2025-09-07T18:57:58.071Z" },
+    { url = "https://files.pythonhosted.org/packages/10/02/cdcc9b7c051786a103c3b09e1003a82fa0c66bcb91ffbdabcfbf7b4163b9/dnspython-2.9.0-py3-none-any.whl", hash = "sha256:9a4aedb833c3c1b49214d04d44d3032ab7a9135f7c1d29a549b4ff78fd82fda9", size = 354822, upload-time = "2026-10-09T00:07:22.622Z" },
 ]
 
 [[package]]
